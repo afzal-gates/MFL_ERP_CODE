@@ -1,0 +1,125 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Hr</a>
+
+    </li>
+    <li>
+        <a href="#">Employee Gross Update</a>
+    </li>
+</ul>
+
+@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+<div class="portlet box blue-dark" @*ng-controller="HrReportController as vm"*@>
+
+    <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+           data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+    <div class="portlet-title">
+        <div class="caption">
+            @*<i class="fa fa-gift"></i>*@ Employee Gross Update
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <form name="frmIDCardPrint" class="form-horizontal" novalidate>
+
+
+            <div class="form-body">
+
+                <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+                       data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+                <div class="row">
+
+                    <div class="col-md-12">
+
+                        <fieldset class="custom-fieldset">
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Employee Code</label>
+                                <div class="col-md-2">
+                                    <input type="text" id="EMPLOYEE_CODE" ng-model="vm.form.EMPLOYEE_CODE" placeholder="Search..." @*ng-disabled="vm.isEmployee!=true"*@
+                                           typeahead="item.EMPLOYEE_CODE as item.EMPLOYEE_CODE for item in emoloyeeAuto($viewValue)"
+                                           typeahead-on-select="onSelectItem($item)" typeahead-loading="loadingLocationsEmp" class="form-control" />
+                                    <i ng-show="loadingLocationsEmp" class="glyphicon glyphicon-refresh"></i>
+                                </div>
+                                <div class="col-md-8" style="width:auto;padding-left:0px;" ng-if="vm.form.EMP_FULL_NAME_EN!=null">
+                                    <span class="form-control" ng-style="vm.form.HR_EMPLOYEE_ID==null?{'color': 'red', 'background-color': 'hsl(0, 0%, 93%)'}:{'background-color': 'hsl(0, 0%, 93%)'}">{{vm.form.EMP_FULL_NAME_EN}}&nbsp;</span>
+                                </div>
+                            </div>
+
+                            @*<div class="form-group" ng-if="vm.form.EMP_FULL_NAME_EN!=null">
+                                <label class="col-md-2 control-label">&nbsp;</label>
+                                <div class="col-md-8" style="width:auto;">
+                                    <span class="form-control" style="background-color: hsl(0, 0%, 93%)">{{vm.form.EMP_FULL_NAME_EN}}&nbsp;</span>
+                                </div>
+                            </div>*@
+
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Gross Salary</label>
+                                <div class="col-md-2">
+                                    <input type="number" id="GROSS_SALARY" ng-model="vm.form.GROSS_SALARY" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2"></label>
+                                <div class="col-md-8">
+                                    <button type="button" id="BTN_UPDATE_GROSS" class="btn btn-sm green" ng-click="vm.submit(vm.form)"
+                                            ng-disabled="vm.form.HR_EMPLOYEE_ID<1||vm.form.GROSS_SALARY<1">
+                                        Save
+                                    </button>
+                                </div>
+                            </div>
+                        </fieldset>
+
+
+                        <p></p>
+                        
+
+                        @*<div class="form-group" ng-show="vm.empIndex>-1">
+                            <div class="col-md-12">
+                                <div id="IDCardPrintGrid" kendo-grid></div>
+                            </div>
+                        </div>*@
+
+                        
+
+                    </div>
+
+
+
+
+                </div>
+
+            </div>
+
+
+            @*}*@
+        </form>
+
+    </div>
+
+</div>

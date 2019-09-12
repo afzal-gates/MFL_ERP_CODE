@@ -1,0 +1,162 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Inventory</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+    <form name="formData" class="form-horizontal" style="background-color: white;">
+        <div class="portlet-body">
+
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend"><b>Store Info</b></legend>
+                <div><label id="lblMsgSub"></label></div>
+                <div class="row">
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">
+                                <span aria-required="true" class="required">*</span>
+                                Store Code
+                            </label>
+                            <div class="col-md-1">
+                                <input type="text" id="STORE_CODE" ng-model="vm.form.STORE_CODE" class="form-control required" />
+                                <input type="hidden" id="SCM_STORE_ID" ng-model="vm.form.SCM_STORE_ID" />
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">
+                                <span aria-required="true" class="requiredSub">*</span>
+                                Store Name (EN)
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" name="STORE_NAME_EN" ng-model="vm.form.STORE_NAME_EN" class="form-control required" />
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">
+                                <span aria-required="true" class="required"></span>
+                                Store Name (BN)
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" name="STORE_NAME_BN" ng-model="vm.form.STORE_NAME_BN" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">
+                                <span aria-required="true" class="required">*</span>
+                                Office Name
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control required" kendo-drop-down-list name="HR_OFFICE_ID" id="HR_OFFICE_ID" k-option-label="'-- Select Office --'"
+                                        k-data-text-field="'OFFICE_NAME_EN'" k-data-value-field="'HR_OFFICE_ID'"
+                                        k-auto-bind="'true'" k-data-source="vm.OfficeList" k-ng-delay="vm.OfficeList" k-filter="'contains'"
+                                        ng-model="vm.form.HR_OFFICE_ID" k-on-change="vm.getAddressInfo(kendoEvent)"></select>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">
+                                <span aria-required="true" class="required"></span>
+                                Address (EN)
+                            </label>
+                            <div class="col-md-4">
+                                <textarea name="ADDRESS_EN" ng-model="vm.form.ADDRESS_EN" readonly class="form-control requiredSub" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+
+                            <label class="col-md-4 control-label">
+                                <span aria-required="true" class="required">*</span>
+                                Store Type
+                            </label>
+                            <div class="col-md-3">
+                                <select kendo-drop-down-list name="LK_WH_TYPE_ID" id="LK_WH_TYPE_ID" class="form-control required"
+                                        options="vm.storeTypeList" ng-model="vm.form.LK_WH_TYPE_ID"></select>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+
+                            <label class="col-md-4 control-label">
+                                <span aria-required="true" class="required">*</span>
+                               Item Category
+                            </label>
+                            <div class="col-md-3">
+                                <select kendo-multi-select options='vm.itemCategoryList' id="INV_ITEM_CAT_LST" style="border: 1px solid #898383;"
+                                        ng-model='vm.form.INV_ITEM_CAT_LST' class='required'></select>
+                            </div>
+
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="form-group">
+
+                            <label class="col-md-4 control-label">
+                                <span aria-required="true" class="required"></span>
+                                Is Active?
+                            </label>
+                            <div class="col-md-1">
+                                <input type="checkbox" name="IS_ACTIVE" ng-model="vm.form.IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'" class="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <button type="button" ng-if="vm.form.SCM_STORE_ID>0" class="btn btn-sm yellow" ng-click="vm.submitAll(vm.form)">Update</button>
+                                <button type="button" ng-if="!vm.form.SCM_STORE_ID>0" class="btn btn-sm green" ng-click="vm.submitAll(vm.form)">Save</button>
+
+                                <button type="button" class="btn btn-sm default" ng-click="vm.resetAll()">Clear</button>
+                            </div>
+                                
+                            </div>
+                    </div>
+
+                    <div style="padding:3px;">
+                    </div>
+                    <div style="padding:2px;">
+                        <div kendo-grid="vm.webapiGrid" k-options="vm.gridOptions"></div>
+                    </div>
+                </div>
+            </fieldset>
+
+        </div>
+    </form>
+</div>

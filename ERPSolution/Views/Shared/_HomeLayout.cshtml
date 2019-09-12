@@ -1,0 +1,36 @@
+﻿        @{
+            Layout = "~/Views/Shared/_Layout.cshtml";
+        }
+        <!-- BEGIN CONTENT -->
+        <div class="page-content-wrapper">
+            <div class="page-content">
+                <!-- END PAGE HEADER-->
+                <!-- BEGIN PAGE CONTENT-->
+
+                <div class="row">
+                    <div class="col-md-12">
+                        @RenderBody()
+                    </div>
+                </div>
+                <!-- END PAGE CONTENT-->
+            </div>
+        </div>
+        <!-- END CONTENT -->
+
+
+        @if (IsSectionDefined("scripts"))
+        {
+            @section scripts{
+              
+            }
+        }
+        
+
+
+        @section angularscripts{                                   
+            <script src="~/Client/app/controllers/lineLoadPlanController.js?v=5"></script>
+
+            <script src="~/Client/app/controllers/hourlyProductionEntryController.js?v=5"></script>
+            <script src="~/Client/app/controllers/hourlyFinProductionEntryController.js?v=5"></script>
+            <script src="~/Client/app/controllers/partialManpowerEntryController.js"></script>
+        }

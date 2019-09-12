@@ -1,0 +1,183 @@
+﻿<div class="modal-body">
+    <div class="portlet grey-cascade box">
+        <div class="portlet-title">
+            <div style="padding-top:2px;">
+                <h4 class="title">
+                    <b>Yarn Requisition (In House Production)</b> 
+                    <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                </h4>
+            </div>
+        </div>
+        <div class="portlet-body">
+
+            <form class="form-horizontal" role="form" name="YarnReqInHouseProduction" novalidate>
+
+                <div class="row" style="padding-bottom:5px;">
+                    <div class="col-md-9">
+                    </div>
+                    <div class="col-md-3" align="right">
+                        <div class="input-icon right">
+                            <i class="icon-magnifier"></i>
+                            <input type="text" class="form-control form-control-solid" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" ng-model="q" placeholder="search...">
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <table class="table table-condensed table-striped table-bordered" style="margin:0;padding-bottom:0px;">
+                    <thead>
+                        <tr style="border: 1px solid #cecece;">
+                            <th style="width: 5%;" rowspan="2">
+                                Floor
+                            </th>
+                            <th style="width: 5%;" rowspan="2">
+                                M/C
+                            </th>
+                            <th style="width: 23%;" rowspan="2">
+                                Knit Card Detail
+                            </th>
+                            <th style="width: 20%;" rowspan="2">
+                                Yarn Details
+
+                            </th>
+                            <th style="width: 10%;" colspan="2">
+                                Knit Card(Kg)
+                            </th>
+
+                            <th style="width: 25%;" colspan="5">
+                                KP(Kg)
+                            </th>
+
+                            <th style="width:7%;" rowspan="2">
+                                NewRqs<br />(Kg)
+                            </th>
+                            <th style="width:7%;" rowspan="2">
+                                # of<br />Cone
+                            </th>
+                            <th style="width:1%;" rowspan="2">
+                                &nbsp;&nbsp;
+                            </th>
+                        </tr>
+
+                        <tr>
+
+                            <th style="width: 5%;">
+                                Req.
+                            </th>
+
+                            <th style="width: 5%;">
+                                RqsDn
+                            </th>
+
+                            <th style="width: 5%;">
+                                Req.
+                            </th>
+
+                            <th style="width: 5%;">
+                                RqsDn
+
+                            </th>
+                            <th style="width: 5%;">
+                                Iss
+
+                            </th>
+
+
+                            <th style="width: 5%;">
+                                Adv.Iss
+                            </th>
+
+                            <th style="width: 5%;">
+                                IssRet
+                            </th>
+                        </tr>
+
+                    </thead>
+                </table>
+                
+                <div slimscroll="{height: 500,allowPageScroll:true,railVisible :true,allowPageScroll :true}">
+
+                    <div class="table-scrollable" style="margin:0px;">
+                        <table class="table table-condensed table-striped table-bordered">
+                            <tbody>
+
+                                <tr ng-repeat="item in JobCardList|filter:q">
+                          
+                                    <td style="width: 5%;">
+                                        {{item.LOCATION_NAME}}
+
+                                    </td>
+                                    <td style="width: 5%;">
+                                        {{item.KNT_MACHINE_NO}}
+                                    </td>
+                                    <td style="width: 23%;">
+                                        {{item.KNIT_CARD_D}}
+                                    </td>
+                                    <td style="width: 20%;">
+                                        {{item.YARN_DETAILS}}
+
+                                    </td>
+                                    <td style="width: 5%;">
+                                        {{item.RQD_YRN_QTY_JC|number:2}}
+                                    </td>
+
+                                    <td style="width: 5%;">
+                                        {{item.REQ_DN_YRN_QTY_JC|number:2}}
+
+                                    </td>
+
+                                    <td style="width: 5%;">
+                                        {{item.RQD_YRN_QTY_KP|number:2}}
+
+                                    </td>
+
+                                    <td style="width: 5%;">
+                                        {{item.REQ_DN_YRN_QTY_KP|number:2}}
+
+                                    </td>
+
+                                    <td style="width: 5%;">
+                                        {{item.ISSUE_QTY_KP|number:2}}
+
+                                    </td>
+                                    <td style="width: 5%;">
+                                        {{item.ADV_ISSUE_QTY|number:2}}
+                                    </td>
+
+                                    <td style="width: 5%;">
+                                        {{item.ISSUE_RET_QTY_KP|number:2}}
+                                    </td>
+
+                                    <td style="width:7%;" ng-class="{'has-error': (YarnReqInHouseProduction['NEW_RQSTD_QTY-'+$index].$touched || YarnReqInHouseProduction.$submitted) && (YarnReqInHouseProduction['NEW_RQSTD_QTY-'+$index].$error.required||YarnReqInHouseProduction['NEW_RQSTD_QTY-'+$index].$error.min||YarnReqInHouseProduction['NEW_RQSTD_QTY-'+$index].$error.max)}">
+                                        <input class="form-control" min="0" ng-max="item.MAX_RQSTD_QTY" type="number" name="NEW_RQSTD_QTY-{{$index}}" ng-model="item.NEW_RQSTD_QTY" required />
+                                    </td>
+
+                                    <td style="width:7%;" >
+                                        <input class="form-control" type="number" name="RQD_CONE_QTY-{{$index}}" ng-model="item.RQD_CONE_QTY"  />
+                                    </td>
+
+                                    <td style="width: 1%;">
+                                        <a class="btn btn-xs red" style="margin:0px;padding:3px;" ng-click="remove(item.KNIT_CARD_D,$index,item.RQD_YRN_QTY!=item.RQSTD_QTY)" title="Remove from selection">
+                                            <i class="fa fa-times"></i>
+                                        </a>
+                                    </td>      
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-4">
+                        <button type="button" class="btn btn-sm green" ng-click="save(JobCardList,YarnReqInHouseProduction.$valid);YarnReqInHouseProduction.$submitted=true;"
+                                ng-class="{'disabled':!YarnReqInHouseProduction.$valid}">
+                            Save
+                        </button>
+                        <button type="button" class="btn btn-sm default" ng-click="cancel()">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

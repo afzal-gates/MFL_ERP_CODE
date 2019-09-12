@@ -1,0 +1,125 @@
+﻿<div class="row" style="padding:10px;">
+    <div class="col-md-3">
+        <div class="portlet-body" style="display: block;">
+            <div class="table-scrollable">
+                <table class="table table-bordered table-hover table-condensed">
+                    <tbody>
+                        <tr ng-repeat="item in vm.actionType">
+                            <td>
+                                {{item.LK_DATA_NAME_EN}}
+                            </td>
+                            <td ui-sref-active="active">
+                                <a ui-sref="ActionType({RF_ACTION_CFG_H_ID:item.RF_ACTION_CFG_H_ID,LK_STATUS_TBL_ID:item.LK_STATUS_TBL_ID,lvl:true})" ui-sref-opts="{reload: true}" class="btn btn-xs default">
+                                    @*<i class="fa fa-edit"></i>*@ Level
+                                </a>
+                            </td>
+                            <td ui-sref-active="active">
+                                <a ui-sref="ActionType({RF_ACTION_CFG_H_ID:item.RF_ACTION_CFG_H_ID,LK_STATUS_TBL_ID:item.LK_STATUS_TBL_ID,lvl:false})" ui-sref-opts="{reload: true}" class="btn btn-xs default">
+                                    Config
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="row" style="padding:10px;" ng-if="!vm.atData.lvl">
+            <kendo-grid k-options="vm.gridOptions"></kendo-grid>
+        </div>
+
+        <div class="row" ng-if="vm.showAddNewConfig">
+            <div class="col-md-2 col-md-offset-10">
+                <a ui-sref="ActionType.add({atData:vm.atData,configData:null})" class="btn btn-xs green">
+                    <i class="fa fa-plus"></i> Add New
+                </a>
+            </div>
+        </div>
+
+
+        <div class="row" style="padding:10px;" ng-if="vm.atData.lvl">
+            <table class="table table-bordered table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th>
+                            Level
+                        </th>
+                        <th>
+                          Act Msg
+                        </th>
+                        <th>
+                            Company
+                        </th>
+                        @*<th>
+                            Office
+                        </th>*@
+                        <th>
+                            Department
+                        </th>
+                        <th>
+                            Approver
+                        </th>
+                        <th>
+                            Exe By
+                        </th>
+                        <th>
+
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in vm.lvlDatas">
+                        <td>
+                            {{item.APROVER_LVL_NO}}
+                        </td>
+                        <td>
+                            {{item.LK_ACTION_STATUS}}
+                        </td>
+
+                        <td>
+                            {{item.COMP_NAME_EN}}
+                        </td>
+                        @*<td>
+                            {{item.OFFICE_NAME_EN}}
+                        </td>*@
+                        <td>
+                            {{item.DEPARTMENT_NAME_EN}}
+                        </td>
+                        <td>
+                            {{item.APPROVER_CODE}}
+                        </td>
+                        <td>
+                            {{item.EXEC_BY_CODE}}
+                        </td>
+
+                        <td>
+                            <a ui-sref="ActionType.approver({atData:vm.atData,configData:item})" class="btn default btn-xs blue">
+                                <i class="fa fa-edit"></i> Edit
+                            </a>
+                            
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row" ng-if="vm.showAddNewLvl">
+            <div class="col-md-2 col-md-offset-10">
+                <a ui-sref="ActionType.approver({atData:vm.atData,configData:null})" class="btn btn-xs green">
+                    <i class="fa fa-plus"></i> Add New
+                </a>
+            </div>
+        </div>
+
+
+
+
+        <div ui-view></div>
+    </div>
+
+</div>
+
+
+

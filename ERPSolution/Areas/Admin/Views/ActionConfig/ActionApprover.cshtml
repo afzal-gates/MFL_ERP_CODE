@@ -1,0 +1,217 @@
+﻿@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+<div class="row">
+    <form class="form-horizontal" role="form">
+        <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+               data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+        <div class="form-group">
+            <label class="col-md-3 control-label">
+                Company
+                <span class="required" aria-required="true">
+                    *
+                </span>
+            </label>
+            <div class="col-md-4">
+                <select kendo-drop-down-list name="HR_COMPANY_ID" class="form-control"
+                        options="vm.companyList" ng-model="vm.form.HR_COMPANY_ID" readonly></select>
+                <span class="field-validation-error" ng-repeat="err in vm.errors.HR_COMPANY_ID">
+                    {{err}}
+                </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-3 control-label">
+                Office
+                <span class="required" aria-required="true">
+                    *
+                </span>
+            </label>
+            <div class="col-md-4">
+                <select kendo-drop-down-list name="HR_OFFICE_ID" options="vm.getOfficeList" ng-model="vm.form.HR_OFFICE_ID" class="form-control" readonly></select>
+                <span class="field-validation-error" ng-repeat="err in vm.errors.HR_OFFICE_ID">
+                    {{err}}
+                </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-3 control-label">
+                Department
+                <span class="required" aria-required="true">
+                    *
+                </span>
+            </label>
+            <div class="col-md-4">
+                <select kendo-drop-down-list name="HR_DEPARTMENT_ID" options="vm.departmentList" ng-model="vm.form.HR_DEPARTMENT_ID" class="form-control"></select>
+
+                <span class="field-validation-error" ng-repeat="err in vm.errors.HR_DEPARTMENT_ID">
+                    {{err}}
+                </span>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="control-label col-md-3">
+                Section
+            </label>
+            <div class="col-md-4">
+                <select kendo-drop-down-list id="SECTION_ID" name="SECTION_ID" class="form-control"
+                        options="vm.subdepartmentListData" ng-model="vm.form.SECTION_ID"></select>
+            </div>
+        </div>
+
+
+
+
+        <div class="form-group">
+            <label class="col-md-3 control-label">Apporver Level</label>
+            <div class="col-md-2">
+                <input type="text" min="0" class="form-control" ng-model="vm.form.APROVER_LVL_NO" ui-number-mask="0">
+                <span class="field-validation-error" ng-repeat="err in vm.errors.APROVER_LVL_NO">
+                    {{err}}
+                </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-3 control-label">Apporver</label>
+            <div class="col-md-2">
+                <input type="text" ng-model="vm.form.EMPLOYEE_CODE" placeholder="Search..." typeahead="item.EMPLOYEE_CODE as item.EMPLOYEE_CODE for item in emoloyeeAuto($viewValue)" typeahead-on-select="onSelectItem($item)" typeahead-loading="loadingLocations" class="form-control">
+                <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+                <span class="field-validation-error" ng-repeat="err in vm.errors.APPROVER_ID">
+                    {{err}}
+                </span>
+            </div>
+        </div>
+
+        <div ng-if="vm.showEmployeeInfo">
+            <div class="form-group">
+                <label class="col-md-3 control-label"></label>
+                <div class="col-md-6">
+                    <span class="help-block">{{vm.employee.EMP_FULL_NAME_EN}},{{vm.employee.DESIGNATION_NAME_EN}},{{vm.employee.DEPARTMENT_NAME_EN}}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-3 control-label">
+                Action Status
+                <span class="required" aria-required="true">
+                    *
+                </span>
+            </label>
+            <div class="col-md-6">
+                <select kendo-drop-down-list name="LK_ACTION_STATUS_ID" class="form-control"
+                        options="vm.actionStatusData" ng-model="vm.form.LK_ACTION_STATUS_ID"></select>
+                <span class="field-validation-error" ng-repeat="err in vm.errors.LK_ACTION_STATUS_ID">
+                    {{err}}
+                </span>
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <label class="col-md-3 control-label" style="padding-top: 5px;">
+                Execution By ?
+            </label>
+            <div class="col-md-4">
+                <div class="radio-list">
+                    <label class="radio-inline" style="margin-left:20px">
+                        <span><input type="radio" ng-model="vm.form.EXE_BY" ng-value="'Self'"></span> Self
+                    </label>
+
+                    <label class="radio-inline" style="margin-left:20px">
+                        <span><input type="radio" ng-model="vm.form.EXE_BY" ng-value="'Other'"></span> Other
+                    </label>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" ng-if="vm.form.EXE_BY=='Other'">
+            <label class="col-md-3 control-label">Execute By</label>
+            <div class="col-md-2">
+                <input type="text" ng-model="vm.form.EMPLOYEE_CODE2" placeholder="Search..." typeahead="item.EMPLOYEE_CODE as item.EMPLOYEE_CODE for item in emoloyeeAuto($viewValue)" typeahead-on-select="onSelectItem2($item)" typeahead-loading="loadingLocations" class="form-control">
+                <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+                <span class="field-validation-error" ng-repeat="err in vm.errors.EXEC_BY_ID">
+                    {{err}}
+                </span>
+            </div>
+        </div>
+
+        <div ng-if="vm.onDutyEmployee">
+            <div class="form-group">
+                <label class="col-md-3 control-label"></label>
+                <div class="col-md-6">
+                    <span class="help-block">{{vm.onDutyEmployee.EMP_FULL_NAME_EN}},{{vm.onDutyEmployee.DESIGNATION_NAME_EN}},{{vm.onDutyEmployee.DEPARTMENT_NAME_EN}}</span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="col-md-3 control-label" style="padding-top: 12px;">
+                eMail Notify ?
+            </label>
+            <div class="col-md-4">
+                <div class="checkbox-list">
+                    <label class="checkbox-inline" style="margin-left:20px">
+                        <span><input type="checkbox" ng-model="vm.form.IS_NOTIFY_EMAIL" ng-true-value="'Y'" ng-false-value="'N'"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-3 control-label" style="padding-top: 12px;">
+                Is Auto Approve ?
+            </label>
+            <div class="col-md-4">
+                <div class="checkbox-list">
+                    <label class="checkbox-inline" style="margin-left:20px">
+                        <span><input type="checkbox" ng-model="vm.form.IS_AUTO_APRVD" ng-true-value="'Y'" ng-false-value="'N'"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-3 control-label" style="padding-top: 12px;">
+                Is Leaf ?
+            </label>
+            <div class="col-md-4">
+                <div class="checkbox-list">
+                    <label class="checkbox-inline" style="margin-left:20px">
+                        <span><input type="checkbox" ng-model="vm.form.IS_LEAF" ng-true-value="'Y'" ng-false-value="'N'"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <div class="row">
+                <div class="col-md-offset-3 col-md-9">
+                    <button ng-if="vm.form.RF_ACTION_CFG_LVL_ID" type="button" ng-click="vm.SubmitLvl(vm.form,'/Hr/Admin/ActionConfig/LvlUpdate',vm.antiForgeryToken,true)" class="btn yellow-gold btn-sm">Update</button>
+
+                    <button ng-if="!vm.form.RF_ACTION_CFG_LVL_ID" type="button" ng-click="vm.SubmitLvl(vm.form,'/Hr/Admin/ActionConfig/LvlSave',vm.antiForgeryToken,false)" class="btn green btn-sm">Save</button>
+
+                    <button type="button" class="btn default btn-sm" ui-sref="ActionType({RF_ACTION_CFG_H_ID:vm.form.RF_ACTION_CFG_H_ID})">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+

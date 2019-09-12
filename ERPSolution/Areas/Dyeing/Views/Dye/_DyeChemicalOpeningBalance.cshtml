@@ -1,0 +1,243 @@
+﻿
+<style type="text/css">
+    .clsTable {
+        width: 100%;
+        padding-left: 20px;
+        /*padding-right: 30px;*/
+    }
+
+    .clsthead {
+        padding: 15px;
+        width: 100%;
+    }
+
+    .clstd {
+        padding: 5px;
+        border: solid 1px #cecece;
+    }
+</style>
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Dyeing</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+    <form name="formData" class="form-horizontal" style="background-color: white;">
+        <div class="portlet-body">
+
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend"><b>Master Data</b></legend>
+                <div><label id="lblMsgSub"></label></div>
+                <table class="clsTable">
+                    <thead class="clsthead">
+                        <tr>
+                            <th class="clstd">
+                                <span aria-required="true" class="required">*</span>
+                                Company
+                            </th>
+                            <th class="clstd">
+                                <span aria-required="true" class="required">*</span>
+                                Receiving Store
+                            </th>
+                            <th class="clstd" style="width:150px;">
+                                <span aria-required="true" class="required">*</span>
+                                OB Date
+                            </th>
+                            <th class="clstd">
+                                <span aria-required="true" class="required">*</span>
+                                Item Category
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="clstr">
+                            <td class="clstd">
+                                <select kendo-drop-down-list name="HR_COMPANY_ID" id="HR_COMPANY_ID" class="form-control required"
+                                        options="vm.companyList" ng-model="vm.form.HR_COMPANY_ID" ng-change="vm.getOpeningBlance()"></select>
+                            </td>
+                            <td class="clstd">
+                                <select kendo-drop-down-list name="SCM_STORE_ID" id="SCM_STORE_ID" class="form-control required"
+                                        options="vm.reqSourceList" ng-model="vm.form.SCM_STORE_ID" ng-change="vm.getOpeningBlance()"></select>
+
+                            </td>
+                            <td class="clstd" style="width:150px;">
+                                <input type="text" class="form-control required" ng-click="OB_RCV_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                       name="OB_RCV_DT" max-date="vm.today" ng-model="vm.form.OB_RCV_DT" is-open="OB_RCV_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close"
+                                       required />
+                            </td>
+                            <td class="clstd">
+                                <select class="form-control required" kendo-drop-down-list name="INV_ITEM_CAT_ID" id="INV_ITEM_CAT_ID" k-option-label="'-- Select Category --'"
+                                        k-data-text-field="'ITEM_CAT_NAME_EN'" k-data-value-field="'INV_ITEM_CAT_ID'"
+                                        k-auto-bind="'true'" k-data-source="vm.itemCategoryList" k-delay="vm.itemCategoryList" 
+                                        k-filter="'contains'" ng-model="vm.form.INV_ITEM_CAT_ID" k-on-change="vm.getItemDataByCategory(kendoEvent)"></select>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+
+
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend"><b>Details Data</b></legend>
+
+                <table class="clsTable">
+
+                    <tr>
+                        <td class="clstd" style="width: 15%;">
+                            <b>Item Name</b>
+                        </td>
+
+                        <td class="clstd" style="width: 10%;">
+                            <b>Source</b>
+                        </td>
+                        <td class="clstd" style="width: 8%;">
+                            <b>Brand</b>
+                        </td>
+                        <td class="clstd" style="width: 5%;">
+                            <b>Pack Qty.</b>
+                        </td>
+                        <td class="clstd" style="width: 5%;">
+                            <b>Pack Unit</b>
+                        </td>
+                        <td class="clstd" style="width: 5%;">
+                            <b>Qty/Pack</b>
+                        </td>
+                        <td class="clstd" style="width: 5%;">
+                            <b>Loose Qty</b>
+                        </td>
+                        <td class="clstd" style="width: 5%;">
+                            <b>Total Qty.</b>
+                        </td>
+                        <td class="clstd" style="width: 5%;">
+                            <b>UoM</b>
+                        </td>
+                        <td class="clstd" style="width: 5%;">
+                            <b>Cost Price</b>
+                        </td>
+                        @*<td class="clstd" style="width: 5%;">
+                            <b>TTL Value</b>
+                        </td>*@
+                        <td class="clstd" style="width: 10%;">
+                            <b>Note</b>
+                        </td>
+                        <td class="clstd" style="width: 10%;">
+                            <b>Action</b>
+                        </td>
+
+                    </tr>
+                    <tr class="">
+                        <td class="clstd" style="width: 15%;">
+                            <select class="form-control required" style="min-width: 50px; max-width: 250px;" kendo-drop-down-list name="DC_ITEM_ID" k-option-label="'-- Select Dyes/Chemical Item --'"
+                                    k-data-text-field="'ITEM_NAME_EN'" k-data-value-field="'INV_ITEM_ID'" ng-disabled="vm.form.uid"
+                                    k-auto-bind="'true'" k-data-source="vm.DyItemList" k-ng-delay="vm.DyItemList" k-filter="'contains'" ng-model="vm.form.DC_ITEM_ID" k-on-change="vm.getItemBrandName(kendoEvent)"></select>
+
+                            <input type="hidden" name="DYE_DC_RCV_OB_ID" ng-model="vm.form.DYE_DC_RCV_OB_ID" class="form-control" />
+                            <input type="hidden" name="PCT_ADDL_PRICE" ng-model="vm.form.PCT_ADDL_PRICE" class="form-control" />
+                            
+                        </td>
+                        <td class="clstd" style="width: 10%;">
+                            <select kendo-drop-down-list name="LK_LOC_SRC_TYPE_ID" id="LK_LOC_SRC_TYPE_ID" class="form-control required"
+                                    options="vm.sourceTypeList" ng-model="vm.form.LK_LOC_SRC_TYPE_ID" ng-change="vm.setPaymentMethod();"></select>
+                        </td>
+                        
+                        <td class="clstd" style="width: 8%;">
+                            <input type="text" name="BRAND_NAME_EN" ng-model="vm.form.BRAND_NAME_EN" readonly="readonly" class="form-control" />
+                        </td>
+
+                        <td class="clstd" style="width: 5%;">
+                            <input type="number" name="PACK_RCV_QTY" ng-model="vm.form.PACK_RCV_QTY" ng-change="vm.TotalReceiveQty()" class="form-control" />
+
+                        </td>
+                        <td class="clstd" style="width: 5%;">
+                            <select class="form-control required" style="min-width: 50px; max-width: 160px;" kendo-drop-down-list name="PACK_MOU_ID" id="PACK_MOU_ID" k-option-label="'--Pack UoM--'"
+                                    k-data-text-field="'MOU_CODE'" k-data-value-field="'RF_MOU_ID'"
+                                    k-auto-bind="'true'" k-data-source="vm.pmOUList" k-filter="'contains'" ng-model="vm.form.PACK_MOU_ID"></select>
+                        </td>
+                        <td class="clstd" style="width: 5%;">
+                            <input type="number" name="QTY_PER_PACK" ng-model="vm.form.QTY_PER_PACK" ng-change="vm.TotalReceiveQty()" class="form-control" />
+
+                        </td>
+                        <td class="clstd" style="width: 5%;">
+                            <input type="number" name="LOOSE_QTY" ng-model="vm.form.LOOSE_QTY" ng-change="vm.TotalReceiveQty()" class="form-control" />
+
+                        </td>
+                        <td class="clstd" style="width: 5%;">
+                            <input type="number" name="RCV_QTY" ng-model="vm.form.RCV_QTY" class="form-control" />
+
+                        </td>
+                        <td class="clstd" style="width: 5%;">
+                            <select class="form-control requiredSub" style="min-width: 50px; max-width: 160px;" kendo-drop-down-list name="QTY_MOU_ID" id="QTY_MOU_ID" k-option-label="'--UoM--'"
+                                    k-data-text-field="'MOU_CODE'" k-data-value-field="'RF_MOU_ID'"
+                                    k-auto-bind="'true'" k-data-source="vm.mOUList" k-filter="'contains'" ng-model="vm.form.QTY_MOU_ID" ng-disabled="vm.form.QTY_MOU_ID>0"></select>
+
+                        </td>
+                        <td class="clstd" style="width: 5%;">
+                            <input type="number" name="COST_PRICE" ng-model="vm.form.COST_PRICE" @*ng-change="vm.TotalPriceAmount()"*@ class="form-control double" />
+
+                        </td>
+                        @*<td class="clstd" style="width: 5%;">
+                            <input type="number" name="TOTAL_AMT" ng-model="vm.form.TOTAL_AMT" readonly="readonly" class="form-control double" />
+
+                        </td>*@
+                        <td class="clstd" style="width: 10%;">
+                            <input type="text" name="REMARKS" ng-model="vm.form.REMARKS" class="form-control" />
+
+                        </td>
+                        <td class="clstd" style="width: 10%;">
+
+                            <div class="row">
+
+                                <div class="col-md-12">
+                                    <button type="button" ng-if="vm.form.uid" class="btn btn-sm yellow" ng-click="vm.submitAll(vm.form)">Update</button>
+                                    <button type="button" ng-if="!vm.form.uid" class="btn btn-sm green" ng-click="vm.submitAll(vm.form)">Save</button>
+                                    <button type="button" class="btn btn-sm" ng-click="vm.reset()">Clear</button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+
+
+                <div style="padding:3px;">
+                </div>
+
+                <div style="padding:3px;">
+                </div>
+
+                <div style="padding:2px;">
+                    <div kendo-grid k-options="vm.gridOptionsItem" id="IDRequisitionDS" k-data-source="vm.ReceiveItemList"></div>
+                </div>
+
+            </fieldset>
+        </div>
+        <div style="padding:3px;">
+        </div>
+        @*<div class="row">
+            <div class="col-md-12">
+                <button type="submit" ng-if="vm.form.DYE_DC_RCV_OB_ID>0" class="btn btn-sm yellow-gold" ng-click="vm.submitAll(vm.form);">Update</button>
+                <button type="submit" ng-if="!vm.form.DYE_DC_RCV_OB_ID>0" class="btn btn-sm green" ng-click="vm.submitAll(vm.form);">Save</button>
+                <button type="button" class="btn btn-sm default" ui-sref="DyeChemicalOpeningBalance({pDYE_DC_RCV_OB_ID : 0})" ui-sref-opts="{reload: true}">Cancel</button>
+            </div>
+        </div>*@
+        <div style="padding:3px;">
+        </div>
+    </form>
+</div>

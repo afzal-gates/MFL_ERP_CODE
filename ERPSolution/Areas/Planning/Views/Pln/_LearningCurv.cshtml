@@ -1,0 +1,116 @@
+﻿
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Garments</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">            
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <form class="form-horizontal" role="form" name="frmPlnLearningCurv" novalidate>
+            <div class="form-body clearfix" style="padding-top:5px;">
+                <div class="row">
+                    <div class="col-md-12">
+                                                
+                        <div class="col-md-12" style="padding-left:0px;padding-right:0px;">
+                            
+                            <fieldset class="custom-fieldset">
+                                <legend class="custom-legend">Key Information</legend>
+
+                                <kendo-grid k-options="vm.fabClassMainGridOption" k-data-source="vm.fabClassMainGridDataSource" k-scope-field="MainGrid" style="padding-top:0px;">
+                                    <div k-detail-template>
+                                        <kendo-grid k-options="vm.fabClassDetailGridOption(dataItem)" k-scope-field="dataItem['ChildGrid']"></kendo-grid>
+                                    </div>
+                                </kendo-grid>
+
+                            </fieldset>
+                            
+                        </div>
+
+                        
+
+                       
+                        <div class="col-md-12" style="padding-left:0px;padding-top:5px;">
+                            <div class="form-group">
+                                <div class="col-md-7">
+                                    <button type="button" class="btn btn-sm green" ng-click="vm.save(MainGrid)" ng-class="{'disabled':!frmPlnLearningCurv.$valid}">Save</button>                                    
+                                    <button type="button" class="btn btn-sm blue" ng-click="vm.reset();">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+        
+
+        
+       
+    </div>
+</div>
+
+
+<style scoped>
+    .k-treeview .k-in {
+        padding: 5px;
+    }
+
+    /*div.k-treeview {
+        overflow: auto;
+    }*/
+
+    #ItemCategTreeview .k-sprite {
+        background-image: url("/Content/assets/global/img/coloricons-sprite.png");
+    }
+
+    .rootfolder {
+        background-position: 0 0;
+    }
+
+    .folder {
+        background-position: 0 -16px;
+    }
+
+    .pdf {
+        background-position: 0 -32px;
+    }
+
+    .html {
+        background-position: 0 -48px;
+    }
+
+    .image {
+        background-position: 0 -64px;
+    }
+
+    .demo-section {
+        float: left;
+        width: 200px;
+        margin: 0 60px 0 0;
+    }
+</style>

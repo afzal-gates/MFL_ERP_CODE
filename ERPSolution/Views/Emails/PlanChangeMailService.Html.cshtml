@@ -1,0 +1,193 @@
+﻿Content-Type: text/html; charset=utf-8
+
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style media="all" type="text/css">
+        table td {
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+
+    <h4 style="margin:5px;"><span style="color: #5e9ca0;">Dept. Wise Plan Change  on @DateTime.Now.AddDays(-1).ToString("dd-MMM-yyyy") &nbsp;&nbsp;</span></h4>
+    <table border="1" cellpadding="0" cellspacing="0" style="width: 1000px; border: solid 1px #8a8a8a;">
+        <tbody>
+            <tr>
+                <td style=" text-align: center;"><span style="color:black;font-size:14px;"><strong>Responsible Dept</strong></span></td>
+                <td style=" text-align: center;"><span style="color:black;font-size:14px;"><strong>No of Plan Change</strong></span></td>
+                <td style="text-align: center; "><span style="color:black;font-size:14px;"><strong>Plan Change Details</strong></span></td>
+            </tr>
+            @for (var i = 0; i < Model.logDept.Count; i++)
+            {
+                var item = Model.logDept[i];
+
+
+                if (i % 2 == 0)
+                {
+                    <tr style="background-color: #e5e5e5;">
+
+                        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+                            @item.RESP_DEPT_NAME
+                        </td>
+
+                        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+                            @item.NO_OF_PLAN_CHANGE
+                        </td>
+
+                        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+                            @item.PLAN_CNGE_REASON
+                        </td>
+
+                    </tr>
+                }
+                else
+                {
+                    <tr style="background-color:white;">
+
+                        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+                            @item.RESP_DEPT_NAME
+                        </td>
+
+                        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+                            @item.NO_OF_PLAN_CHANGE
+                        </td>
+
+                        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+                            @item.PLAN_CNGE_REASON
+                        </td>
+                    </tr>
+
+                }
+            }
+
+        </tbody>
+    </table>
+
+    <h4 style="margin:5px;"><span style="color: #5e9ca0;">Plan Change Details on @DateTime.Now.AddDays(-1).ToString("dd-MMM-yyyy") &nbsp;&nbsp;</span></h4>    
+    <table  border="1" cellpadding="0" cellspacing="0" style="width: 1000px; border: solid 1px #8a8a8a;">
+        <tbody>
+            <tr>
+                <td  style=" text-align: center;"><span style="color:black;font-size:14px;"><strong>Buyer</strong></span></td>
+                <td style=" text-align: center;"><span style="color:black;font-size:14px;"><strong>Style Information</strong></span></td>
+                <td style="text-align: center; "><span style="color:black;font-size:14px;"><strong>Item/Allocation</strong></span></td>
+                <td style="text-align: center; "><span style="color:black;font-size:14px;"><strong>Change#</strong></span></td>
+                <td style="text-align: center; "><span style="color:black;font-size:14px;"><strong>Change Reason</strong></span></td>
+                <td style="text-align: center; "><span style="color:black;font-size:14px;"><strong>Change Details</strong></span></td>
+                <td style="text-align: center; "><span style="color:black;font-size:14px;"><strong>Resp.Dept.</strong></span></td>
+                <td style="text-align: center; "><span style="color:black;font-size:14px;"><strong>Planner</strong></span></td>
+            </tr>
+            @for (var i = 0; i < Model.log.Count; i++)
+            {
+                var item = Model.log[i];
+                
+                
+                if (i % 2 == 0) { 
+                    <tr style="background-color: #e5e5e5;">
+
+        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+            @item.BYR_ACC_GRP_NAME_EN
+        </td>
+        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+            @item.STYLE_NO ( @item.STYLE_DESC )
+            <br />
+            <small style="font-style:italic;">
+                @item.ORD_CONF_DT.ToString("dd-MMM-yyyy") - @item.SHIP_DT.ToString("dd-MMM-yyyy") ( @item.LEAD_TIME  Days)
+            </small>
+
+        </td>
+
+        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+            @item.ITEM_NAME_EN
+            <br />
+            <small style="font-style:italic;">
+                Allocation: @item.ALLOCATED_QTY &#x40;@item.LINE_CODE
+            </small>
+
+        </td>
+                        
+        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+            @item.PLN_CHANE_NO
+        </td>
+
+        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+            @item.PLAN_CNGE_REASON
+        </td>
+        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+            @item.PLAN_CHANGE_TEXT
+        </td>
+        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+            @item.RES_DEPT_TEXT
+        </td>
+
+        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+           @item.PLAN_CHANGE_BY_TXT 
+          <small style="font-style:italic;">
+          &#x40;@item.DT_PLN_CHANE.ToString("dd-MMM-yyyy")
+          </small>
+     </td>
+
+
+
+    </tr>
+                } else {
+                    <tr style="background-color:white;">
+
+                        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+                            @item.BYR_ACC_GRP_NAME_EN
+                        </td>
+                        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+                            @item.STYLE_NO ( @item.STYLE_DESC )
+                            <br />
+                            <small style="font-style:italic;">
+                                @item.ORD_CONF_DT.ToString("dd-MMM-yyyy") - @item.SHIP_DT.ToString("dd-MMM-yyyy") ( @item.LEAD_TIME  Days)
+                            </small>
+
+                        </td>
+
+                        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+                            @item.ITEM_NAME_EN
+                            <br />
+                            <small style="font-style:italic;">
+                                Allocation: @item.ALLOCATED_QTY &#x40;@item.LINE_CODE
+                            </small>
+
+                        </td>
+
+                        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+                            @item.PLN_CHANE_NO
+                        </td>
+
+                        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+                            @item.PLAN_CNGE_REASON
+                        </td>
+                        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+                            @item.PLAN_CHANGE_TEXT
+                        </td>
+                        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+                            @item.RES_DEPT_TEXT
+                        </td>
+
+                        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+                            @item.PLAN_CHANGE_BY_TXT
+                            <small style="font-style:italic;">
+                                &#x40;@item.DT_PLN_CHANE.ToString("dd-MMM-yyyy")
+                            </small>
+                        </td>
+                    </tr>
+                
+                }
+           }
+
+        </tbody>
+    </table>
+    <span style="display: block; font-size: 10px; font-style: italic;">
+        N.B: No need to reply. This mail is auto generated from MultiTex ERP server.
+    </span>
+   
+</body>
+</html>
+
+

@@ -1,0 +1,70 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Knitting</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body" id="PORTLET_BODY">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+        
+        <br />
+
+
+        <div style="padding:5px;">
+            <kendo-grid k-options="vm.gridOptions">
+                <div k-detail-template>
+                    <div>
+                        <div kendo-grid k-options="vm.detailGridOptionsForIssue(dataItem)"></div>
+                    </div>
+                </div>
+            </kendo-grid>
+
+        </div>
+        <div class="row">
+            <div class="col-md-12" style="text-align:right">
+                <button type="button" class="btn btn-sm green" ng-click="vm.submitAll(vm.form);">Clear Mark as Closed</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

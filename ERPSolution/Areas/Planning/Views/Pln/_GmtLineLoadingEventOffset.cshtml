@@ -1,0 +1,203 @@
+﻿<div class="modal-body">
+    <div id="splash-page" data-ng-show="showSplash" class="dissolve-animation">
+        <div class="page-splash">
+            <div class="page-splash-message">
+                <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+            </div>
+        </div>
+    </div>
+
+    <div class="portlet grey-cascade box">
+        <div class="portlet-title">
+            <div style="padding-top:2px;">
+                <h4 class="title">
+                    Manual Line Loading => Style # : <strong>{{data.STYLE_NO}}</strong>&nbsp;&nbsp;Order # : <strong>{{data.ORDER_NO}}</strong>&nbsp;&nbsp;Buyer : <strong>{{data.BYR_ACC_NAME_EN}}</strong>&nbsp;&nbsp;Order Quantity # : <strong>{{data.ORDER_QTY}}</strong>&nbsp;&nbsp;Order Confirm: <strong>{{data.ORD_CONF_DT|date:'dd-MMM-yyyy'}}</strong>&nbsp;&nbsp;
+                    Shipment: <strong>{{data.SHIP_DT|date:'dd-MMM-yyyy'}}</strong>
+                    <br />
+                    Line Load :# <strong style="color: darkblue;">{{data.SEW_START_DT|date:'dd-MMM-yyyy h:mma'}}</strong>&nbsp;Line Un-Load :# <strong style="color:darkblue;">{{data.SEW_END_DT|date:'dd-MMM-yyyy h:mma'}}</strong>&nbsp;
+                    <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                </h4>
+            </div>
+        </div>
+        <div class="portlet-body">
+                <div class="row">
+                    <form role="form" name="GmtPlanAllocationOffsetForm" class="form-horizontal">
+
+                        <div class="col-md-3">
+
+                            <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;">
+                                <legend class="custom-legend">Current Allocation</legend>
+                                <div class="form-body clearfix">
+                                    <div class="row" style="margin:auto;padding-top:10px;">
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                Item Name
+
+                                            </label>
+                                            <div class="col-md-5">
+                                                <h4 class="form-control-static">{{data.ITEM_NAME_EN}}</h4>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                SMV
+                                            </label>
+                                            <div class="col-md-5">
+                                                <h4 class="form-control-static">{{data.SMV}}</h4>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                Line
+                                            </label>
+                                            <div class="col-md-5">
+                                                {{ data.LINE_CODE }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                Allocated Qty
+                                            </label>
+                                            <div class="col-md-5">
+                                                {{ data.data.ALLOCATED_QTY }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                Early Prod
+                                            </label>
+                                            <div class="col-md-5">
+                                                {{data.INITIAL_PROD_QTY}}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                Produced  Qty
+                                            </label>
+                                            <div class="col-md-5">
+                                                <h4 class="form-control-static">{{data.TOT_PROD}}</h4>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label">
+                                                Plan Operator
+                                            </label>
+                                            <div class="col-md-5">
+                                                {{ data.PLAN_OP }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                Plan Helper
+                                            </label>
+                                            <div class="col-md-5">
+                                                {{ data.PLAN_HP }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                Loaded
+                                            </label>
+                                            <div class="col-md-6">
+                                               {{ data.SEW_START_DT|date:'dd-MMM-yyyy ha' }}
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                Unloaded
+                                            </label>
+                                            <div class="col-md-6">
+                                                {{ data.SEW_END_DT|date:'dd-MMM-yyyy ha' }}
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                        </div>
+                        <div class="col-md-9">
+                            <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;">
+                                <legend class="custom-legend">Next Allocations</legend>
+                                <div class="form-group" ng-class="{'has-error': (GmtPlanAllocationOffsetForm.PLN_OFFSET.$touched || GmtPlanAllocationOffsetForm.$submitted) && (GmtPlanAllocationOffsetForm.PLN_OFFSET.$error.required || GmtPlanAllocationOffsetForm.PLN_OFFSET.$error.min || GmtPlanAllocationOffsetForm.PLN_OFFSET.$error.max)}">
+                                    <label class="col-md-4 control-label">
+                                        Hours to be Offset
+                                    </label>
+                                    <div class="col-md-5">
+                                        <input type="number" min="-240" max="240" id="PLN_OFFSET" name="PLN_OFFSET" ng-model="data.PLN_OFFSET" class="form-control" required />
+                                    </div>
+                                </div>
+
+                                <table class="table table-condensed table-striped table-bordered">
+                                    <thead>
+                                        <tr class="site-table-header">
+                                            <th style="width: 5%">
+                                                <label  class="checkbox-list" style="margin-left: 20px; margin-top: 0px;">
+                                                    <span><input type="checkbox" ng-change="onSelectAll(data.IS_SELECTED)" ng-model="data.IS_SELECTED" ng-true-value="'Y'" ng-false-value="'N'"> </span>
+                                                </label>
+                                                 
+                                            </th>
+                                            <th style="width: 20%"> Style/Order</th>
+                                            <th style="width: 10%"> Buyer</th>
+
+                                            <th style="width: 10%"> Shipment</th>
+
+                                            <th style="width: 20%">Gmt Item</th>
+
+                                            <th style="width: 10%">Allocation</th>
+                                            <th style="width: 10%">Load</th>
+                                            <th style="width: 10%">Un-Load</th>
+
+                                            <th style="width: 10%">Status</th>
+                                            <th style="width: 10%">Ship D/E</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody style="font-weight:700">
+                                        <tr ng-repeat="status in others_allocations" ng-class="{ 'success' : status.DAYS_DE < 0 }">
+                                            <td>
+                                                <label class="checkbox-list" style="margin-left: 20px; margin-top: 0px;">
+                                                    <span><input type="checkbox" ng-disabled="status.GMT_PLN_STRIPE_PHASE_ID==2 || status.GMT_PLN_STRIPE_PHASE_ID==5" ng-model="status.IS_SELECTED" ng-true-value="'Y'" ng-false-value="'N'"> </span>
+                                                </label>
+                                            </td>
+                                            <td>{{status.ORDER_NO}}({{status.STYLE_NO}})</td>
+                                            <td>{{status.BYR_ACC_NAME_EN}}</td>
+                                            <td>{{status.SHIP_DT|date:'dd-MMM-yyyy'}}</td>
+                                            <td>{{status.ITEM_NAME_EN}}</td>
+                                            <td>{{status.ALLOCATED_QTY}}</td>
+                                            <td>{{status.SEW_START_DT|date:'dd-MMM-yyyy ha'}}</td>
+                                            <td>{{status.SEW_END_DT|date:'dd-MMM-yyyy ha'}}</td>
+                                            <td ng-style="{'color': status.RGB_COL_CODE}" >{{status.PLN_STRIPE_PHASE_NAME}}</td>
+                                            <td>{{status.SHIP_DE}}</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="10">
+                                                <button style="float:right;"  type="button" ng-click="cancel()" class="btn btn-sm default">Cancel</button>
+                                                <button style="float:right;" type="button" ng-click="SaveData(data, GmtPlanAllocationOffsetForm.$valid )" class="btn btn-sm yellow-gold">Update</button>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </fieldset>
+                        </div>
+                    </form>
+                </div>
+        </div>
+    </div>
+ </div>

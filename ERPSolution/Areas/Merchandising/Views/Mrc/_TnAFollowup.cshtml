@@ -1,0 +1,161 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+            <input id="access_token" data-ng-model="token" type="hidden"
+                   data-ng-init="token='@Session["access_token"]'" />
+
+            <div class="row" style="margin:auto;padding-top:8px;">
+
+                <div class="col-md-4">
+                    <div class="row">
+                        <form class="form-horizontal" role="form" name="TnAFollowupForm" novalidate ng-submit="vm.BuyerWiseOrderList(vm.form.MC_BYR_ACC_ID)">
+                                <label class="col-md-3 control-label" align="right">
+                                    Buyer Acc
+                                </label>
+                                <div class="col-md-7">
+
+                                    <select kendo-drop-down-list name="MC_BYR_ACC_ID" class="form-control"
+                                            k-options="vm.buyerAcList" id="MC_BYR_ACC_ID" ng-model="vm.form.MC_BYR_ACC_ID"></select>
+                                </div>
+
+                                <div class="col-md-1">
+                                    <button type="submit" class="btn btn-sm blue" ng-disabled="!vm.form.MC_BYR_ACC_ID">
+                                        Load
+                                    </button>
+                                </div>
+                        </form>
+                    </div>
+
+                    <div class="row">
+
+
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend">Style &  PO List</legend>
+
+
+
+                            <div class="input-icon right" style="padding-bottom:3px;">
+                                <i class="icon-magnifier"></i>
+                                <input type="text" class="form-control form-control-static" ng-model="q2" placeholder="Search Style/Order..." ng-change="vm.dataSource.filter( { field:'ORDER_NO', operator :'contains', value: q2 });Order=undefined" ng-model-options="{ debounce: { 'default': 1000, 'blur': 0 } }">
+                            </div>
+
+
+                            <kendo-grid k-options="vm.PO_LIST_OPTIONS" k-data-source="vm.dataSource" id="PO_LIST" style="float: left"></kendo-grid>
+
+                        </fieldset>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-8">
+
+                    <p class="block" style="margin: 0px; font-size: 14px; background-color: #ece9f8;padding-left:2px;" ng-if="Order">
+                        Style :
+                        <b>{{Order.WORK_STYLE_NO}}</b>
+
+                        &nbsp;
+                        Style Desc :
+                        <b>{{Order.STYLE_DESC}}</b>
+
+                        &nbsp;
+
+                        Order # :
+                        <b>{{Order.ORDER_NO}}</b>
+
+                        &nbsp;
+
+                        Confirm :
+                        <b>{{Order.ORD_CONF_DT|date:'dd-MMM-yyyy'}}</b>
+                        &nbsp;
+
+                        Ship :
+                        <b>{{Order.SHIP_DT|date:'dd-MMM-yyyy'}}</b>
+
+                        &nbsp;
+
+                        LeadTime :
+                        <b>{{Order.LEAD_TIME}}</b>
+                        &nbsp;
+
+                        Order Quantity :
+                        <b>{{Order.TOT_ORD_QTY}}</b>
+                        <b>{{Order.MOU_CODE}}</b>
+                        &nbsp;
+                    </p>
+                    <fieldset class="custom-fieldset">
+
+                        <legend class="custom-legend">Time & Action Task List</legend>
+
+              
+                        <div class="portlet-body" data-ui-view></div>
+                    </fieldset>
+                </div>
+
+            </div>
+    </div>
+</div>
+
+<script type="text/x-kendo-template" id="TnATaskToolBarTemplate">
+    <div class="toolbar">
+        <div class="actions">
+
+            <div class="col-md-6" style="padding-left:0px;padding-bottom:0px;">
+                    <div class="input-icon right">
+                        <i class="icon-magnifier"></i>
+                        <input type="text" class="form-control" ng-model="q1" placeholder="Search Task..." style="height: 21px;" ng-change="vm.dataSource.filter( { field:'TA_TASK_NAME_EN', operator :'contains', value: q1 })" ng-model-options="{ debounce: { 'default': 1000, 'blur': 0 } }">
+                    </div>
+
+            </div>
+
+            <div class="col-md-5" style="padding-right:0px;padding-bottom:0px;text-align:right;">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default btn-xs">Due On {{FilterName}}</button>
+                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-angle-down"></i></button>
+                    <div class="dropdown-menu hold-on-click dropdown-checkboxes" role="menu">
+                        <label><span class=""><input type="checkbox" ng-model="filterTna[0]" ng-true-value="'Y'" ng-false-value="'N'" ng-click="filterTna[1]='N';filterTna[2]='N';filterTna[3]='N';filterTna[4]='N'"></span>&nbsp; Today</label>
+                        <label><span class=""><input type="checkbox" ng-model="filterTna[1]" ng-true-value="'Y'" ng-false-value="'N'" ng-click="filterTna[0]='N';filterTna[2]='N';filterTna[3]='N';filterTna[4]='N'"></span>&nbsp; Tomorrow</label>
+                        <label><span class=""><input type="checkbox" ng-model="filterTna[2]" ng-true-value="'Y'" ng-false-value="'N'" ng-click="filterTna[0]='N';filterTna[1]='N';filterTna[3]='N';filterTna[4]='N'"></span>&nbsp; Day After Tomorrow</label>
+                        <label><span class=""><input type="checkbox" ng-model="filterTna[3]" ng-true-value="'Y'" ng-false-value="'N'" ng-click="filterTna[0]='N';filterTna[1]='N';filterTna[2]='N';filterTna[4]='N'"></span>&nbsp; Next 7 Days</label>
+                        <label><span class=""><input type="checkbox" ng-model="filterTna[4]" ng-true-value="'Y'" ng-false-value="'N'" ng-click="filterTna[0]='N';filterTna[1]='N';filterTna[2]='N';filterTna[3]='N'"></span>&nbsp; Next 30 Days</label>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </div>
+</script>
+
+

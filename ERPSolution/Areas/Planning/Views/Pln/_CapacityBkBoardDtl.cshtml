@@ -1,0 +1,29 @@
+﻿<div class="row" style="margin:5px;height:35px;">
+    <div class="row">
+        <div kendo-chart ng-repeat="item in vm.lineChart"
+             k-legend="{ position: 'bottom' }"
+             k-series-defaults="{ type: 'line' }"
+             k-series="item.series"
+             k-value-axis="valueAxis"
+             k-category-axis="item.categoryAxis"
+             k-tooltip="tooltip"
+             style="height: 150px;"></div>
+    </div>
+
+    <div class="row">
+        <tabset>
+            <tab ng-repeat="tab in vm.tabList" deselect="tab.IS_TAB_ACT=false" select="tab.IS_TAB_ACT=true;vm.onSelect(tab)" heading="{{tab.CAL_WK_CODE}}" active="tab.IS_TAB_ACT">
+                <div data-ui-view="TabInsideD{{tab.IS_TAB_ACT?'':0}}"></div>
+            </tab>
+        </tabset>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+

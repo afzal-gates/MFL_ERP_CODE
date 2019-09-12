@@ -1,0 +1,182 @@
+﻿
+@{
+    Layout = null;
+}
+
+<input id="access_token" data-ng-model="token" type="hidden"
+       data-ng-init="token='@Session["access_token"]'" />
+<div class="modal-body">
+    <div class="portlet grey-cascade box">
+        <div class="portlet-title">
+            <div>
+                <h3 style="padding-top:0px;">
+                    Bank Entry
+                    <span class="pull-right"><i class="fa fa-times red" style="cursor:pointer" ng-click="vm.cancel(vm.form)"></i></span>
+                </h3>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <form class="form-horizontal" role="form" name="BrandEntry" novalidate>
+
+                <div class="form-body clearfix">
+                    <div class="row" style="margin:auto;padding-top:10px;">
+
+
+                        <input id="access_token" data-ng-model="token" type="hidden"
+                               data-ng-init="token='@Session["access_token"]'" />
+
+                        <div class="form-group">
+                            <label class="col-md-5 control-label">
+                                <span aria-required="true" class="required"></span>
+                                Bank Code
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" min="1" max="200" name="BANK_CODE" ng-model="vm.form.BANK_CODE" readonly="readonly" class="form-control" />
+                                <input type="hidden" name="RF_BANK_ID" ng-model="vm.form.RF_BANK_ID" />
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-md-5 control-label">
+                                <span aria-required="true" class="required">*</span>
+                                Bank Name (EN)
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" min="1" max="200" name="BANK_NAME_EN" ng-model="vm.form.BANK_NAME_EN" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-5 control-label">
+                                <span aria-required="true" class="required"></span>
+                                Bank Name (BN)
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" min="1" max="200" name="BANK_NAME_BN" ng-model="vm.form.BANK_NAME_BN" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-5 control-label">
+                                <span aria-required="true" class="required"></span>
+                                Bank Prefix
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" min="1" max="200" name="BANK_PREFIX" ng-model="vm.form.BANK_PREFIX" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-5 control-label">
+                                <span aria-required="true" class="required"></span>
+                                Is Local
+                            </label>
+                            <div class="col-md-1">
+                                <input type="checkbox" name="IS_LOCAL" ng-model="vm.form.IS_LOCAL" ng-true-value="'Y'" ng-false-value="'N'" />
+                            </div>
+
+                            <label class="col-md-2 control-label">
+                                <span aria-required="true" class="required"></span>
+                                Is Treasury
+                            </label>
+                            <div class="col-md-1">
+                                <input type="checkbox" name="IS_TREASURY" ng-model="vm.form.IS_TREASURY" ng-true-value="'Y'" ng-false-value="'N'" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-5 control-label">
+                                <span aria-required="true" class="required">*</span>
+                                Country
+                            </label>
+                            <div class="col-md-4">
+                                <select kendo-drop-down-list name="HR_COUNTRY_ID" id="HR_COUNTRY_ID" class="form-control required"
+                                        options="vm.CountryList" ng-model="vm.form.HR_COUNTRY_ID" k-on-change="vm.HRCOUNTRYID();" tabindex="7" required></select>
+
+                            </div>
+                        </div>
+
+                        @*<div class="form-group">
+                            <label class="col-md-5 control-label">
+                                <span aria-required="true" class="required"></span>
+                                Is Treasury
+                            </label>
+                            <div class="col-md-1">
+                                <input type="checkbox" name="IS_TREASURY" ng-model="vm.form.IS_TREASURY" ng-true-value="'Y'" ng-false-value="'N'"  />
+                            </div>
+                        </div>*@
+                        <div class="form-group">
+                            <label class="col-md-5 control-label">
+                                <span aria-required="true" class="required">*</span>
+                                Swift Code
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" min="1" max="200" name="SWIFT_CODE" ng-model="vm.form.SWIFT_CODE" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-5 control-label">
+                                <span aria-required="true" class="required"></span>
+                                IBN No
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" min="1" max="200" name="IBN_NO" ng-model="vm.form.IBN_NO" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-5 control-label">
+                                <span aria-required="true" class="required"></span>
+                                Call Center No
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" min="1" max="200" name="CALL_CENTER_NO" ng-model="vm.form.CALL_CENTER_NO" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-5 control-label">
+                                <span aria-required="true" class="required"></span>
+                                Web Url
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" min="1" max="200" name="WEB_URL" ng-model="vm.form.WEB_URL" class="form-control" />
+                            </div>
+                        </div>                      
+
+                        <div class="form-group">
+                            <label class="col-md-5 control-label">
+                                <span aria-required="true" class="required"></span>
+                                Is Active
+                            </label>
+                            <div class="col-md-1">
+                                <input type="checkbox" name="IS_ACTIVE" ng-model="vm.form.IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'"  />
+                            </div>
+                        </div>
+                        <div class="form-group" style="text-align:center;">
+                            <div class="row">
+                                <div class="col-md-5 col-md-offset-4">
+                                    <button type="button" ng-if="vm.form.RF_BANK_ID" ng-click="vm.submitDataNewBank(vm.form,token)" class="btn btn-sm yellow-gold">Update</button>
+                                    <button type="button" ng-if="!vm.form.RF_BANK_ID" ng-click="vm.submitDataNewBank(vm.form,token)" class="btn btn-sm green">Save</button>
+                                    <button type="button" class="btn btn-sm default" ng-click="vm.resetBankInfo()">Clear</button>
+                                    <button type="button" class="btn btn-sm default" ng-click="vm.cancel(vm.form)">Exit</button>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div kendo-grid k-options="vm.gridBank" id="IDBankDS" k-data-source="vm.bankAllList"></div>
+
+                    </div>
+                    <br />
+                   
+                    <div class="row" style="margin:auto;padding-top:10px;" ng-if="vm.errors.length>0">
+                        <div class="alert alert-warning" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                            <ul ng-repeat="field in vm.errors">
+                                <li ng-repeat="error in field" ng-bind="error"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

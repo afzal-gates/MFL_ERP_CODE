@@ -1,0 +1,54 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Knitting</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        <input id="access_token" data-ng-model="token" type="hidden"
+               data-ng-init="token='@Session["access_token"]'" />
+        <input ng-model="vm.form.CREATED_BY" type="hidden"
+               data-ng-init="vm.form.CREATED_BY='@Session["multiScUserId"]'" />
+
+        <input id="access_token" ng-model="vm.form.LAST_UPDATED_BY" type="hidden"
+               ng-init="vm.form.LAST_UPDATED_BY='@Session["multiScUserId"]'" />
+
+        <div class="row" style="padding:5px">
+            <div class="col-md-1">
+                <a ui-sref="DailyTrimsReceive({pINV_TRMS_RCV_H_ID : 0})" class="btn btn-sm blue">
+                    <i class="fa fa-plus"></i> Add New
+                </a>
+            </div>
+        </div>
+
+        <div style="padding:5px;">
+            <kendo-grid k-options="vm.gridOptions"></kendo-grid>
+        </div>
+    </div>
+</div>

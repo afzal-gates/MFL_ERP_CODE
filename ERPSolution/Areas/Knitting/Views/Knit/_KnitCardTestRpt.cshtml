@@ -1,0 +1,277 @@
+﻿
+
+    <!-- BEGIN PAGE CONTENT-->
+<div class="portlet light" style="padding-top:0px;">
+    <div class="portlet-body" style="padding-top:5px;">
+        <div class="invoice">
+            <div class="row" style="margin:auto;">
+                <div class="col-xs-2 col-md-2 col-lg-2" style="text-align:right;">
+                </div>
+
+                <div class="col-xs-8 col-md-8 col-lg-8" style="text-align:center;">
+                    <h2 style="margin:0px;">{{vm.data.COMP_NAME_EN}}</h2>
+                    <h5 style="margin:3px;">{{vm.data.ADDRESS_EN}}</h5>
+                    <h4 style="margin:3px;"><b>Yarn Test</b></h4>
+                </div>
+                <div class="col-xs-2 col-md-2 col-lg-2" style="text-align:right;">
+                    <a class="btn btn-sm btn-default hidden-print margin-bottom-5" onclick="javascript:window.print();">
+                        <i class="fa fa-print"></i> Print
+                    </a>
+                </div>
+
+            </div>
+
+
+            <div class="row">
+                <div class="row" style="margin:auto;">
+                    <div class="col-xs-6 col-md-6 col-lg-6">
+                        <ul class="list-unstyled">
+                            <li>
+                                Knit Card# : &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<b>{{vm.data.JOB_CRD_NO}}</b>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-xs-6 col-md-6 col-lg-6">
+                        <ul class="list-unstyled">
+                            <li style="float:right;">
+                                <span kendo-barcode k-type="'code128'" ng-model="vm.data.JOB_CRD_NO" k-text="{visible:false}" style="width: 200px; margin: 0 auto;height:30px;"></span>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div class="row" style="margin:auto;">
+                    <div class="col-xs-12 col-md-12 col-lg-12">
+                        <table class="table table-condensed table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:6%;">
+                                        <b>Type</b>
+                                    </th>
+                                    <th style="width:22%;">
+                                        {{vm.data.FAB_PROD_CAT_SNAME}}
+                                    </th>
+                                    <th style="width:6%;">
+                                        <b> M/C</b>
+                                    </th>
+                                    <th style="width:22%;">
+                                        {{vm.data.KNT_MACHINE_NO}}
+                                    </th>
+                                    <th style="width:6%;">
+                                        <b>DiaxGauge</b>
+
+                                    </th>
+                                    <th style="width:22%;">
+                                        {{vm.data.MC_DIA_GG}}
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <th style="width:12%;">
+                                        <b>Schedule</b>
+                                    </th>
+                                    <th style="width:22%;">
+                                        {{vm.data.START_DT|date:'dd-MMM-yyyy hh:mma'}} to {{vm.data.END_DT|date:'dd-MMM-yyyy hh:mma'}}
+                                        <span style="display:block;" class="block">
+                                            <b>Shipment : {{vm.data.SHIP_DT|date:'dd-MMM-yyyy'}}</b>
+                                        </span>
+                                    </th>
+                                    <th style="width:11%;">
+                                        <b>Finish Dia</b>
+                                    </th>
+                                    <th style="width:22%;">
+                                        {{vm.data.FIN_DIA_N_DIA_TYPE}}
+                                    </th>
+                                    <th style="width:11%;">
+                                        <b>Fabric Type</b>
+                                    </th>
+                                    <th style="width:22%;">
+                                        {{vm.data.FAB_TYPE_NAME}}
+                                    </th>
+                                </tr>
+
+
+                                @*<tr>
+                                    <th style="width:12%;">
+                                        <b>Style</b>
+                                    </th>
+                                    <th style="width:22%;">
+                                        {{vm.data.WORK_STYLE_NO}}
+                                    </th>
+                                    <th style="width:11%;">
+
+                                        <b>Order#</b>
+                                    </th>
+                                    <th style="width:22%;">
+                                        {{vm.data.ORDER_NO_LIST}}
+                                    </th>
+                                    <th style="width:11%;">
+
+                                        <b>Fabric Type</b>
+                                    </th>
+                                    <th style="width:22%;">
+                                        {{vm.data.FAB_TYPE_NAME}}
+                                    </th>
+                                </tr>*@
+
+                                <tr>
+                                    <th style="width:12%;">
+                                        <b>Fin. GSM</b>
+                                    </th>
+                                    <th style="width:22%;">
+                                        {{vm.data.FIN_GSM}}
+                                    </th>
+                                    <th style="width:11%;">
+                                        <b>Colour</b>
+                                    </th>
+                                    <th style="width:22%;">
+                                        {{vm.data.COLOR_NAME_EN}}
+                                    </th>
+                                    <th style="width:11%;">
+                                        <b>Assign Qty(Kg)</b>
+                                    </th>
+                                    <th style="width:22%;">
+                                        {{vm.data.ASIGN_QTY-vm.data.UN_ASIGN_QTY}}
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <th style="width:12%;">
+                                        <b>Prod. Target(Kg)</b>
+                                    </th>
+                                    <th style="width:22%;">
+                                        {{vm.data.TG_D_PROD_QTY}}
+                                    </th>
+                                    <th style="width:6%;">
+                                        <b>Cnt-Brnd-Lot</b>
+                                    </th>
+                                    <th style="width:27%;">
+                                        <span style="display:block;" ng-repeat="n in vm.data.YRN_DETAILS_LST track by $index" ng-if="n">{{n}}</span>
+                                    </th>
+                                    <th style="width:6%;">
+                                        <b>Stitch Len</b>
+                                    </th>
+                                    <th style="width:27%;">
+                                        <span style="display:block;" ng-repeat="n in vm.data.SL_DETAILS_LST track by $index" ng-if="n">{{n}}</span>
+                                    </th>
+
+                                </tr>
+
+                                @*<tr>
+                            <th style="width:12%;">
+                                <b>Fabrication</b>
+                            </th>
+                            <th style="width:88%;" colspan="5">
+                                {{vm.data.FABRIC_SNAME}}
+                            </th>
+                        </tr>*@
+
+
+                            </thead>
+                        </table>
+
+                    </div>
+
+                </div>
+
+                <div class="row" style="margin:auto;" ng-if="vm.data.feeder.length>0">
+                    <div class="col-xs-12 col-md-12 col-lg-12">
+
+                        <table class="table table-condensed table-striped table-bordered">
+                            <caption style="text-align:left;font-style:italic;font-weight:bold;">Feeder Arrangement</caption>
+                            <thead>
+                                <tr>
+                                    <th style="width:5%;">
+                                        <b>SL#</b>
+                                    </th>
+                                    <th style="width:35%;">
+                                        <b>Color</b>
+                                    </th>
+
+                                    <th style="width:15%;">
+                                        <b>Y/D Batch</b>
+                                    </th>
+
+                                    <th style="width:20%;">
+                                        <b>No. of Feeder</b>
+                                    </th>
+                                    <th style="width:20%;">
+                                        <b>Remarks</b>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="itm in vm.data.feeder">
+                                    <td>{{itm.SL}}</td>
+                                    <td>{{itm.COLOR_NAME_EN}}</td>
+                                    <td>{{itm.YD_BATCH_NO_LST}}</td>  
+                                    <td>
+                                        
+                                        <b>{{itm.NO_OF_FDR}}</b>  
+
+                                        {{itm.YARN_PART_NAME?'    ('+itm.YARN_PART_NAME+')':''}}
+                                    
+                                    </td>
+                                    <td rowspan="{{itm.KNT_YD_FDR_REPEAT_ID_SPAN}}" ng-if="(itm.KNT_YD_FDR_REPEAT_ID_SPAN==1 ||itm.KNT_YD_FDR_REPEAT_ID_SL==1)">{{itm.NO_OF_REPEAT ? itm.NO_OF_REPEAT+' Times':'' }}</td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="3" style="text-align:right;"><b>Total Feeder</b></td>
+                                    <td><b>{{vm.ttl_fdr}}</b></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+
+                <div class="row" style="margin:auto;">
+                    <div class="col-xs-12 col-md-12 col-lg-12">
+                        <ul class="list-unstyled">
+                            <li>
+                                <b>Comment :</b> {{vm.data.REMARKS}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <br />
+            <br />
+
+            <div class="row" style="margin:auto;">
+                <div class="col-xs-4 col-md-4 col-lg-4">
+                    <div align="center">
+                        <address style="border-top:0.5px solid grey">
+                            <strong>Shift QC</strong>
+                        </address>
+                    </div>
+                </div>
+
+                <div class="col-xs-4 col-md-4 col-lg-4">
+                    <div align="center">
+                        <address style="border-top:0.5px solid grey">
+                            <strong>Shift Filter</strong>
+                        </address>
+                    </div>
+                </div>
+                <div class="col-xs-4 col-md-4 col-lg-4">
+                    <div align="center">
+                        <address style="border-top:0.5px solid grey">
+                            <strong>Shift Incharge</strong>
+                        </address>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END PAGE CONTENT-->
+
+
+

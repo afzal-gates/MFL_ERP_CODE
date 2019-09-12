@@ -1,0 +1,121 @@
+﻿
+@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Hr</a>
+
+    </li>
+    <li>
+        <a href="#">Mapping OT Team</a>
+    </li>
+</ul>
+
+
+<div class="portlet box blue-dark">
+
+    <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+           data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+    <div class="portlet-title">
+        <div class="caption">
+            @*<i class="fa fa-gift"></i>*@ Mapping OT Team
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+        <div class="row">
+
+            <div class="col-md-12">
+
+                <form name="frmOtEntitled" class="form-horizontal" ng-class="{ loading:form.submitting }"
+                      @*enctype="multipart/form-data"*@
+                      @*ng-submit="vm.submit(frmOtEntitled.$valid,vm.form,vm.insert)"*@ novalidate>
+
+                    <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+                           data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+                    <div class="form-body">
+
+                        <div class="col-md-12">
+                            
+                            <div class="form-group">
+                                <label class="control-label col-md-3">
+                                    &nbsp;&nbsp;OT Team
+                                </label>
+                                <div class="col-md-6">
+                                    <select kendo-drop-down-list id="HR_OT_TEAM_ID" name="HR_OT_TEAM_ID" class="form-control"
+                                            options="vm.otTeamListData" ng-model="vm.form.HR_OT_TEAM_ID"></select>
+                                </div>
+                            </div>                            
+
+                            <div class="form-group" ng-if="!vm.isNext">
+                                <label class="col-md-3 control-label">&nbsp;</label>
+                                <div class="col-md-2">
+                                    <input type="button" class="btn btn-default" value="Next" ng-click="vm.next()" />                                    
+                                </div>
+                            </div>
+                            
+                            @*<input type="button" class="btn btn-default" value="test" ng-click="vm.test2()" />*@
+
+                            <div ng-show="vm.isNext">
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">&nbsp;</label>
+                                    <div class="col-md-8">
+                                        <dualmultiselect options="demoOptions" ng-model="vm.form.HR_DESIGNATION_ID_LIST"></dualmultiselect>                                       
+                                    </div>
+                                </div>
+
+                                @*<pre>{{selectedItems}}</pre>*@
+
+                                <div class="form-group">
+                                    <div class="col-md-offset-2">
+                                        &nbsp;&nbsp;&nbsp;
+                                        <button type="submit" class="btn green" ng-if="vm.insert" ng-click="vm.submit(frmOtEntitled.$valid,vm.form,vm.insert)"><i class="fa fa-check"></i> Save</button>
+                                        @*<button type="submit" class="btn yellow-gold" ng-if="!vm.insert"><i class="fa fa-check"></i> Update</button>*@
+
+                                        @*<button type="button" class="btn default" ng-click="vm.reset()">Cancel</button>*@
+                                    </div>
+
+                                </div>
+                            </div>    
+                            
+                            @**@
+                        </div>
+
+                    </div>
+
+
+
+
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+

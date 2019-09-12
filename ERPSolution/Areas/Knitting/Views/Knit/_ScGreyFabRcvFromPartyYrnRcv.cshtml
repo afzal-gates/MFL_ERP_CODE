@@ -1,0 +1,221 @@
+﻿
+<div class="row">
+
+    <div class="col-md-12" @*style="padding-left:10px;padding-right:10px;"*@>
+        <fieldset class="custom-fieldset" ng-disabled="$parent.form.IS_FINALIZED=='Y'">
+            <legend class="custom-legend"><b>Yarn Receive Detail</b></legend>
+
+            <table class="table table-hover table-striped table-bordered" style="margin-bottom:0px; padding-bottom:0px;">
+                <thead>
+                    <tr class="row-border">
+                        <th>Return Type</th>
+                        <th>Style/Order#</th>
+                        <th>Yarn-Brand-Lot</th>
+                        @*<th>Reason Type</th>*@
+                        <th>Pac.Qty</th>
+                        <th>Pac.Unit</th>
+                        <th>Qty/Pac</th>
+                        @*<th>Loose.Qty</th>*@
+                        <th>Rcv.Qty</th>
+                        <th>Trans?</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr></tr>
+                    <tr style="border-bottom: 1px solid hsl(0, 0%, 87%); height: auto;" class="success">
+
+                        <td style="max-width: 10%; width: 10%; padding: 5px 2px 5px 0px">
+                            <select class="form-control" kendo-drop-down-list name="LK_YRN_RET_TYPE_ID" id="LK_YRN_RET_TYPE_ID" k-option-label="'--Select--'"
+                                    k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'"
+                                    k-auto-bind="'true'" k-options="vm.returnTypeOption" k-data-source="vm.returnTypeDataSource" k-filter="'contains'"
+                                    ng-model="vm.yrnItem.LK_YRN_RET_TYPE_ID"></select>
+                            @*{{vm.yrnItem.LK_YRN_RET_TYPE_ID}}*@
+                        </td>
+
+                        <td style="max-width: 15%; width: 15%; padding: 5px 2px 5px 0px">
+                            <select class="form-control" kendo-drop-down-list name="MC_FAB_PROD_ORD_H_ID" k-option-label="'-- Select --'"
+                                    k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_FAB_PROD_ORD_H_ID'" k-filter="'Contains'"
+                                    k-template="vm.styleExtTemplate" k-value-template="vm.styleExtValueTemplate"
+                                    k-auto-bind="'true'" k-options="vm.StyleExtDsOption" k-data-source="vm.StyleExtDs" ng-model="vm.yrnItem.MC_FAB_PROD_ORD_H_ID"
+                                    @*k-on-change="onFabOrderChange(kendoEvent)"*@></select>
+
+                        </td>
+
+
+                        <td style="max-width: 20%; width: 20%; padding: 5px 2px 5px 0px">
+
+                            <select class="form-control" kendo-drop-down-list name="YARN_ITEM_ID" id="YARN_ITEM_ID" k-option-label="'--Select--'"
+                                    k-data-text-field="'YARN_DETAIL'" k-data-value-field="'YARN_ITEM_ID'"
+                                    k-auto-bind="'true'" k-options="vm.yarnItemOption" k-data-source="vm.yarnItemDataSource" k-filter="'contains'"
+                                    ng-model="vm.yrnItem.YARN_ITEM_ID"></select>
+
+                        </td>
+
+                        @*<td style="max-width: 10%; width: 10%; padding: 5px 2px 5px 0px">
+                            <select class="form-control" kendo-drop-down-list name="LK_YRN_RET_COZ_ID" id="LK_YRN_RET_COZ_ID" k-option-label="'--Select--'"
+                                    k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'"
+                                    k-auto-bind="'true'" k-options="vm.cozTypeOption" k-data-source="vm.cozTypeDataSource" k-filter="'contains'"
+                                    ng-model="vm.yrnItem.LK_YRN_RET_COZ_ID"></select>
+
+                        </td>*@
+
+                        @*<td style="width: 5%; padding: 5px 0px 5px 0px">
+                            <input type="text" name="YRN_LOT_NO" ng-model="dataItem.YRN_LOT_NO" class="form-control" />
+
+                        </td>*@
+
+                        <td style="max-width: 5%; width: 5%; padding: 5px 0px 5px 0px">
+                            <input type="number" name="PACK_RET_QTY" ng-model="vm.yrnItem.PACK_RET_QTY" ng-change="vm.TotalReceiveQty(vm.yrnItem);" class="form-control double"
+                                   ng-disabled="vm.yrnItem.LK_YRN_RET_TYPE_ID!=489" />
+
+                        </td>
+                        <td style="max-width: 8%; width: 8%; padding: 5px 0px 5px 0px">
+                            <select class="form-control" kendo-drop-down-list name="PACK_MOU_ID" k-option-label="'--UoM--'"
+                                    k-data-text-field="'MOU_CODE'" k-data-value-field="'RF_MOU_ID'"
+                                    k-auto-bind="'true'" k-options="vm.packMouOption" k-data-source="vm.packMouDataSource" k-filter="'contains'"
+                                    ng-model="vm.yrnItem.PACK_MOU_ID"
+                                    ng-disabled="vm.yrnItem.LK_YRN_RET_TYPE_ID!=489"></select>
+
+                        </td>
+
+
+                        <td style="max-width: 5%; width: 5%; padding: 5px 0px 5px 0px">
+                            <input type="number" name="QTY_PER_PACK" ng-model="vm.yrnItem.QTY_PER_PACK" ng-change="vm.TotalReceiveQty(vm.yrnItem);" class="form-control double"
+                                   ng-disabled="vm.yrnItem.LK_YRN_RET_TYPE_ID!=489" />
+                            @*{{dataItem.QTY_PER_CTN}}*@
+                        </td>
+
+                        @*<td style="max-width: 5%; width: 5%; padding: 5px 0px 5px 0px">
+                            <input type="number" name="LOOSE_QTY" ng-model="vm.yrnItem.LOOSE_QTY" class="form-control double"
+                                   ng-disabled="vm.yrnItem.LK_YRN_RET_TYPE_ID!=490" ng-change="vm.TotalReceiveQty(vm.yrnItem);" />
+
+                        </td>*@
+                        <td style="max-width: 5%; width: 5%; padding: 5px 0px 5px 0px">
+                            <input type="number" name="RCV_QTY" ng-model="vm.yrnItem.RET_QTY" class="form-control double"
+                                   ng-disabled="vm.yrnItem.LK_YRN_RET_TYPE_ID==489" />
+
+                        </td>
+                        <td style="width: 5%; padding: 5px 2px 5px 0px">
+                            @*<input type="checkbox" name="IS_TRANSFER" ng-model="vm.yrnItem.IS_TRANSFER" ng-true-value="'Y'" ng-false-value="'N'" />*@
+                            <select class="form-control" kendo-drop-down-list name="IS_TRANSFER"
+                                    k-data-text-field="'LST_NAME'" k-data-value-field="'LST_ID'"
+                                    k-auto-bind="'true'" k-options="vm.yesNoOption" k-data-source="vm.yesNoDataSource"
+                                    ng-model="vm.yrnItem.IS_TRANSFER"></select>
+                        </td>
+
+
+                        <td style="max-width: 6%; width: 6%; padding: 5px 0px 5px 0px; text-align: center">
+                            <button type="button" class="btn btn-xs blue" title="Add" ng-click="vm.addYarnRcv(vm.yrnItem)" ng-show="vm.isYrnAddToGrid=='Y'">Add Yarn</button>
+                            <button type="button" class="btn btn-xs yellow-gold" ng-click="vm.updateYarnRcv(vm.yrnItem)" ng-show="vm.isYrnAddToGrid=='N'">Update</button>
+                        </td>
+                    </tr>
+
+                    <tr ng-repeat="itmYrn in $parent.form.yrnRcvDtl" class="success">
+
+                        <td>{{itmYrn.RETURN_TYPE_DESC}}</td>
+                        <td>{{itmYrn.STYLE_NO}}</td>
+                        <td>{{itmYrn.YARN_DETAIL}}</td>
+                        @*<td>{{itmYrn.RETURN_COZ_DESC}}</td>*@
+                        <td>{{itmYrn.PACK_RET_QTY}}</td>
+                        <td>{{itmYrn.PACK_MOU_CODE}}</td>
+                        <td>{{itmYrn.QTY_PER_PACK}}</td>
+                        @*<td>{{itmYrn.LOOSE_QTY}}</td>*@
+                        <td>{{itmYrn.RET_QTY}}</td>
+                        <td>{{itmYrn.IS_TRANSFER}}</td>
+                        <td>
+                            <a class="btn btn-xs blue" title="Edit Yarn" ng-click="vm.editYarnRcv($index, $parent.form.yrnRcvDtl)" @*ng-disabled="vm.form.itemsStyle.length==1?true:false"*@>
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            <a class="btn btn-xs red" title="Remove Yarn" ng-click="vm.removeYarnRcv($index, $parent.form.yrnRcvDtl)" @*ng-disabled="vm.form.itemsStyle.length==1?true:false"*@>
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+
+            @*<div class="form-group">
+                <div class="col-md-12">
+                    <kendo-grid id="smpBookingGrid" k-options="$parent.mainYrnRcvGridOption" k-scope-field="MainGrid" k-data-source="$parent.mainYrnRcvGridDataSource">
+                        <div k-detail-template>
+                            <table>
+                                <tr>
+                                    <td style="width: 30%; padding: 5px 2px 5px 0px">
+
+                                        <select class="form-control" kendo-drop-down-list name="INV_ITEM_ID" id="INV_ITEM_ID" k-option-label="'-- Select Yarn Item --'"
+                                                k-data-text-field="'ITEM_NAME_EN'" k-data-value-field="'INV_ITEM_ID'"
+                                                k-auto-bind="'true'" k-options="vm.yarnItemOption" k-data-source="vm.yarnItemDataSource" k-filter="'contains'" ng-model="dataItem.YARN_ITEM_ID"></select>
+
+                                    </td>
+                                    <td style="width: 10%; padding: 5px 2px 5px 0px">
+                                        <select class="form-control" kendo-drop-down-list name="LK_YRN_COLR_GRP_ID" id="LK_YRN_COLR_GRP_ID" k-option-label="'--Select Color--'"
+                                                k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'"
+                                                k-auto-bind="'true'" k-options="vm.colorGrpOption" k-data-source="vm.yarnColorGroupDataSource" k-filter="'contains'" ng-model="dataItem.LK_YRN_COLR_GRP_ID"></select>
+
+                                    </td>
+                                    <td style="width: 20%; padding: 5px 2px 5px 0px">
+                                        <select class="form-control" kendo-drop-down-list name="RF_BRAND_ID" id="RF_BRAND_ID" k-option-label="'-- Select Brand --'"
+                                                k-data-text-field="'BRAND_NAME_EN'" k-data-value-field="'RF_BRAND_ID'"
+                                                k-auto-bind="'true'" k-options="vm.catBrandOption" k-data-source="vm.categoryBrandDataSource" k-filter="'contains'" ng-model="dataItem.RF_BRAND_ID"></select>
+
+                                    </td>
+                                    <td style="width: 5%; padding: 5px 0px 5px 0px">
+                                        <input type="text" name="YRN_LOT_NO" ng-model="dataItem.YRN_LOT_NO" class="form-control" />
+
+                                    </td>
+
+                                    <td style="width: 5%; padding: 5px 0px 5px 0px">
+                                        <input type="number" name="CTN_RCV_QTY" ng-model="dataItem.CTN_RCV_QTY" ng-change="vm.TotalReceiveQty(dataItem)" class="form-control double" />
+
+                                    </td>
+                                    <td style="width: 8%; padding: 5px 0px 5px 0px">
+                                        <select class="form-control" kendo-drop-down-list name="PACK_MOU_ID" k-option-label="'--UoM--'"
+                                                k-data-text-field="'MOU_CODE'" k-data-value-field="'RF_MOU_ID'"
+                                                k-auto-bind="'true'" k-options="vm.mouOption" k-data-source="vm.mouDataSource" k-filter="'contains'" ng-model="dataItem.PACK_MOU_ID"></select>
+
+                                    </td>
+
+
+                                    <td style="width: 5%; padding: 5px 0px 5px 0px">
+                                        <input type="number" name="QTY_PER_CTN" ng-model="dataItem.QTY_PER_CTN" ng-change="vm.TotalReceiveQty(dataItem)" class="form-control double" />
+
+                                    </td>
+                                    <td style="width: 5%; padding: 5px 0px 5px 0px">
+                                        <input type="number" name="RCV_QTY" ng-model="dataItem.RCV_QTY" readonly="readonly" class="form-control double" />
+
+                                    </td>
+                                    <td style="width: 7%; padding: 5px 2px 5px 0px">
+                                        <select class="form-control" kendo-drop-down-list name="QTY_MOU_ID" k-option-label="'--UoM--'" ng-disabled="true"
+                                                k-data-text-field="'MOU_CODE'" k-data-value-field="'RF_MOU_ID'"
+                                                k-auto-bind="'true'" k-options="vm.mouOption" k-data-source="vm.mouDataSource" k-filter="'contains'" ng-model="dataItem.QTY_MOU_ID"></select>
+
+                                    </td>
+
+                                    <td style="width: 5%; padding: 5px 0px 5px 0px;text-align:center">
+                                        <button type="button" class="btn btn-xs blue" title="Add to Grid" ng-click="vm.addYarn(dataItem)" ng-show="vm.isYrnAddToGrid=='Y'">Add Yarn</button>
+                                        <button type="button" class="btn btn-xs yellow-gold" ng-click="vm.updateYarn(vm.yrnRcvForm)" ng-show="vm.isYrnAddToGrid=='N'">Update</button>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <kendo-grid id="dtlGrid" k-options="$parent.detailYrnRcvGridOption(dataItem)" k-scope-field="dataItem['ChildGrid']"></kendo-grid>
+                        </div>
+
+                    </kendo-grid>
+                </div>
+            </div>*@
+
+
+        </fieldset>
+
+        
+
+    </div>
+</div>
+
+
+@*<pre>{{vm.yrnItem|json}}</pre>
+<pre>{{$parent.form|json}}</pre>*@

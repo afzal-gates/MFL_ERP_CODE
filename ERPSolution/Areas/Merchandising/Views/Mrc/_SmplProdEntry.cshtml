@@ -1,0 +1,361 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 12px;
+    }
+</style>
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#">Sample Production</a>
+    </li>
+</ul>
+
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+
+        <ng-form class="form-horizontal" role="form" name="frmSampleProduction" @*ng-submit="vm.submitData(vm.form,token)"*@ novalidate>
+
+            <div class="form-body clearfix">
+                <div class="row" style="margin:auto;">
+
+                    <div ng-init="Showed=true">
+                        <div class="row" style="margin:auto;" ng-show="errors">
+                            <div class="alert alert-danger" role="alert">
+                                @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                                <div style="padding: 0px 0px 15px 25px; ">
+                                    <b>Please fix the following errors ....</b>
+                                </div>
+                                <ul ng-repeat="field in errors">
+                                    <li ng-repeat="error in field" ng-bind="error"></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        @*<div ng-class="{'col-md-10' : Showed, 'col-md-12' : !Showed }" style="padding-left:5px;">*@
+
+                        <div class="col-md-2" ng-class="{'col-md-pull-0' : !Showed, 'col-md-2' : Showed }" ng-hide="!Showed" style="padding-left:0px; padding-right:0px;">
+
+
+                            <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;">
+                                <legend class="custom-legend">&nbsp; @*<input type="checkbox" name="IS_PROG_PARAM" ng-model="vm.IS_PROG_PARAM" ng-init="vm.IS_PROG_PARAM='Y'" ng-true-value="'Y'" ng-false-value="'N'">*@ Program Parameter</legend>
+
+                                <input type="hidden" name="MC_SMP_REQ_H_ID" ng-model="vm.form.MC_SMP_REQ_H_ID" class="form-control" />
+
+
+
+                                <div class="form-group" ng-show="vm.IS_PROG_PARAM=='Y'">
+                                    <label class="col-md-4">
+                                        Date
+                                    </label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" ng-click="vm.sfbProdDateOpen($event)" datepicker-popup="{{vm.dtFormat}}" ng-change="vm.onChangeProdDate()"
+                                               name="PROD_DT" ng-model="vm.form.PROD_DT" is-open="vm.sfbProdDateOpened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" required />
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-show="vm.IS_PROG_PARAM=='Y'">
+                                    <label class="col-md-4">
+                                        Batch#
+                                    </label>
+                                    <div class="col-md-5">
+                                        <input type="number" class="form-control" ng-model="vm.form.PROD_BATCH_NO" min="1" required readonly />
+                                    </div>
+                                    <div class="col-md-3" style="padding-left:0px">
+                                        @*<button type="button" class="btn btn-xs blue" ng-click="vm.batchNoBrowse()"><i class="fa fa-share"></i></button>*@
+                                        <div class="btn-group" dropdown>
+                                            @*<button id="split-button" type="button" class="btn btn-sm blue" ng-click="vm.printBookingRecord(vm.form.REVISION_NO)" ng-disabled="vm.form.MC_BLK_FAB_REQ_H_ID<1 || vm.form.HAS_PLOSS=='N'">Print</button>*@
+                                            <button type="button" class="btn btn-xs blue" dropdown-toggle title="Batch# List">
+                                                <i class="fa fa-bars"></i>
+                                                <span class="caret"></span>
+                                                <span class="sr-only">Split button!</span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu" aria-labelledby="split-button">
+                                                <li role="menuitem" ng-repeat="itm in vm.batchList">
+                                                    <a ng-click="vm.onSelectBatch(itm.PROD_BATCH_NO)">Batch# {{itm.PROD_BATCH_NO}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                @*{{vm.NEW_BACH|json}}*@
+                            </fieldset>
+
+
+                            <div class="form-group" ng-show="vm.IS_PROG_PARAM=='Y'" style="padding-top:10px">
+                                <div class="col-md-12" style="padding-right:10px">
+                                    <kendo-grid k-options="vm.gridOptionsBooking" k-on-change="vm.selectSmpType(dataItem)"></kendo-grid>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-10" style="padding-left:5px; padding-right:0px;" ng-class="{'col-md-10' : Showed, 'col-md-12' : !Showed }">
+                            <a class="btn btn-xs btn-link" ng-click="Showed= !Showed"><i class="fa" ng-class="{'fa-chevron-left' : Showed, 'fa-chevron-right' : !Showed }"></i> {{Showed?'Hide':'Show'}} Production Order List</a>
+
+
+                            <div @*ng-show="vm.IS_NEXT=='Y'"*@>
+                                <div style="height:250px">
+                                    <div class="portlet-body" data-ui-view="SmplProdEntryDtl"></div>
+                                </div>
+
+                                <fieldset class="custom-fieldset">
+                                    <legend class="custom-legend">Sample Producton & Delivery</legend>
+
+                                    <div kendo-grid k-options="smpProdGridOption" k-data-source="smpProdGridDataSource"></div>
+                                </fieldset>
+
+
+                                
+
+                                    <div class="form-group">
+                                        <div class="col-md-4">
+                                            <fieldset class="custom-fieldset" style="padding-left:10px">
+                                                <legend class="custom-legend">Card Format</legend>
+
+                                                <div class="radio-list" style="margin-left:20px">
+                                                    <label class="radio-inline" ng-repeat="item in vm.smplCardFormatList" style="padding-top:0px">
+                                                        <span class="checked"><input type="radio" name="SMPL_FMT_ID" ng-model="vm.form.SMPL_FMT_ID" ng-value="item.SMPL_FMT_ID" required></span>{{item.SMPL_FMT_NAME}}
+                                                    </label>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+
+                                        <div class="col-md-8" style="text-align:right;padding-top:10px">
+                                            <div class="btn-group" dropdown>
+                                                @*<button id="split-button" type="button" class="btn btn-sm blue" ng-click="vm.printBookingRecord(vm.form.REVISION_NO)" ng-disabled="vm.form.MC_BLK_FAB_REQ_H_ID<1 || vm.form.HAS_PLOSS=='N'">Print</button>*@
+                                                <button type="button" class="btn btn-xs blue" dropdown-toggle title="Print List">
+                                                    <i class="fa fa-print"></i> Print
+                                                    <span class="caret"></span>
+                                                    <span class="sr-only">Split button!</span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu" aria-labelledby="split-button">
+                                                    <li role="menuitem" ng-repeat="itm in vm.printButtonList">
+                                                        <a ng-click="vm.print(itm)">{{itm.BTN_NAME}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                            <button type="button" class="btn btn-xs blue" ng-click="vm.addNewBatch()" ng-class="{'disabled':IS_PROD_SUBMIT=='N'}"><i class="fa fa-plus"></i> New Batch</button>
+                                            <button type="button" class="btn btn-xs green" ng-click="vm.submitData(token)" ng-class="{'disabled':frmSampleProduction.$invalid||IS_PROD_SUBMIT=='Y'||HAS_DATA_PROD_GRID=='N'}">Save</button>
+                                            &nbsp;&nbsp;&nbsp;
+                                            <button type="button" class="btn btn-xs blue" ng-click="vm.sendToInhouse(token)" ng-class="{'disabled':IS_PROD_SUBMIT=='Y'||IS_PROD_SAVE=='N'}">Submit</button>
+
+                                        </div>
+                                    </div>
+
+                               
+                            </div>
+                        </div>
+
+                        @*</div>*@
+
+                        @*<div class="col-md-2" style="padding-left:0px; padding-right:0px;">
+                <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;">
+                    <legend class="custom-legend">&nbsp;Program Parameter</legend>
+
+                    <input type="hidden" name="MC_SMP_REQ_H_ID" ng-model="vm.form.MC_SMP_REQ_H_ID" class="form-control" />
+
+
+
+                    <div class="form-group" ng-show="vm.IS_PROG_PARAM=='Y'">
+                        <label class="col-md-4">
+                            Date
+                        </label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" ng-click="vm.sfbProdDateOpen($event)" datepicker-popup="{{vm.dtFormat}}" ng-change="vm.onChangeProdDate()"
+                                   name="PROD_DT" ng-model="vm.form.PROD_DT" is-open="vm.sfbProdDateOpened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-show="vm.IS_PROG_PARAM=='Y'">
+                        <label class="col-md-4">
+                            Batch#
+                        </label>
+                        <div class="col-md-5" >
+                            <input type="number" class="form-control" ng-model="vm.form.PROD_BATCH_NO" min="1" required readonly />
+                        </div>
+                        <div class="col-md-3" style="padding-left:0px">
+
+                            <div class="btn-group" dropdown>
+                                <button type="button" class="btn btn-xs blue" dropdown-toggle title="Batch# List">
+                                    <i class="fa fa-bars"></i>
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Split button!</span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="split-button">
+                                    <li role="menuitem" ng-repeat="itm in vm.batchList">
+                                        <a ng-click="vm.onSelectBatch(itm.PROD_BATCH_NO)">Batch# {{itm.PROD_BATCH_NO}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </fieldset>
+
+
+                <div class="form-group" ng-show="vm.IS_PROG_PARAM=='Y'" style="padding-top:10px">
+                    <div class="col-md-12" style="padding-right:10px">
+                        <kendo-grid k-options="vm.gridOptionsBooking" k-on-change="vm.selectSmpType(dataItem)"></kendo-grid>
+                    </div>
+                </div>
+            </div>*@
+
+
+                        @*<div class="col-md-10" style="padding-left:5px; padding-right:0px;">
+
+
+                <div >
+                    <div style="height:250px">
+                        <div class="portlet-body" data-ui-view="SmplProdEntryDtl"></div>
+                    </div>
+
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend">Sample Producton & Delivery</legend>
+
+                        <div kendo-grid k-options="smpProdGridOption" k-data-source="smpProdGridDataSource"></div>
+                    </fieldset>
+
+
+                    <div style="padding-top:5px;text-align:right">
+
+                        <button type="button" class="btn btn-xs blue" ng-click="vm.addNewBatch()" ng-class="{'disabled':IS_PROD_SUBMIT=='N'}"><i class="fa fa-plus" ></i> New Batch</button>
+                        <button type="button" class="btn btn-xs green" ng-click="vm.submitData(token)" ng-class="{'disabled':frmSampleProduction.$invalid||IS_PROD_SUBMIT=='Y'||HAS_DATA_PROD_GRID=='N'}">Save</button>
+                        &nbsp;&nbsp;&nbsp;
+                        <button type="button" class="btn btn-xs blue" ng-click="vm.sendToInhouse(token)" ng-class="{'disabled':IS_PROD_SUBMIT=='Y'||IS_PROD_SAVE=='N'}">Submit</button>
+                        &nbsp;&nbsp;&nbsp;
+                        <button type="button" class="btn btn-xs blue" ng-click="vm.printProd(token)">Print</button>
+
+
+                    </div>
+                </div>
+            </div>*@
+
+
+
+
+                        <br />
+                        <div class="row" style="margin:auto;" ng-show="errors">
+                            <div class="alert alert-danger" role="alert">
+                                @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                                <div style="padding: 0px 0px 15px 25px; ">
+                                    <b>Please fix the following errors ....</b>
+                                </div>
+                                <ul ng-repeat="field in errors">
+                                    <li ng-repeat="error in field" ng-bind="error"></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+
+
+                </div>
+
+
+            </div>
+        </ng-form>
+    </div>
+</div>
+
+
+
+
+@*Start For Get Delevery Quentity*@
+<script type="text/ng-template" id="DelvQtyModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <p style="padding-top:10px;">
+                        Delevery Quantity Entry
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </p>
+
+
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="frmDelvQtyModal" novalidate @*ng-submit="save(Task,token,TaskForm.$valid)"*@>
+                    <input id="access_token" data-ng-model="token" type="hidden"
+                           data-ng-init="token='@Session["access_token"]'" />
+
+                    
+                    <div class="form-group">
+                        <label for="selectPeriod" class="col-md-6 control-label">Number of Delevery Qty for Print</label>
+                        <div class="col-md-2" style="padding-top:5px;">
+                            <input type="number" class="form-control" ng-model="vm.form.NO_OF_DELV_QTY_PRINT" />
+                        </div>                        
+                    </div>
+
+                    <div class="form-group" ng-if="vm.form.SMPL_FMT_ID==1">
+                        <label for="selectPeriod" class="col-md-6 control-label">Actual Weight (GSM)</label>
+                        <div class="col-md-2" style="padding-top:5px;">
+                            <input type="text" class="form-control" ng-model="vm.form.SMPL_ACT_FAB_GSM" />
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-if="vm.form.SMPL_FMT_ID==1">
+                        <label for="selectPeriod" class="col-md-6 control-label">Sample Rev#</label>
+                        <div class="col-md-2" style="padding-top:5px;">
+                            <input type="number" class="form-control" ng-model="vm.form.SMPL_REV_NO" />
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-if="vm.form.SMPL_FMT_ID==1">
+                        <label for="selectPeriod" class="col-md-6 control-label">Sample Option#</label>
+                        <div class="col-md-2" style="padding-top:5px;">
+                            <input type="number" class="form-control" ng-model="vm.form.SMPL_OPT_NO" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        
+                        <div class="col-md-offset-6 col-md-2" style="padding-top:5px;">
+                            <button type="button" class="btn btn-sm blue" ng-click="cancel()">Ok</button>
+                        </div>
+                    </div>
+
+                    @*<pre>{{vm.form|json}}</pre>*@
+
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+@*End For Get Delevery Quentity*@

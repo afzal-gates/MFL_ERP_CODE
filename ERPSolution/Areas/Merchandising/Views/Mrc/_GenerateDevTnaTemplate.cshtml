@@ -1,0 +1,173 @@
+﻿<div class="modal-body">
+    <div class="portlet grey-cascade box">
+
+        <div id="splash-page" data-ng-show="showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <div class="portlet-title">
+            <div style="padding-top:2px;">
+                <h4 class="title">
+                    Time & Action Calender => Style # : <strong>{{Order.WORK_STYLE_NO}}</strong>&nbsp;&nbsp;Job# <b>{{Order.JOB_TRAC_NO}}</b> &nbsp;&nbsp;Order # <b>{{Order.ORDER_NO}}</b>
+                    <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                </h4>
+            </div>
+        </div>
+        <div class="portlet-body">
+
+            <form class="form-horizontal" role="form" name="TNATaskList" novalidate>
+                <div class="alert alert-warning" role="alert" ng-if="!validShipDate||!validConfDate">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+
+                    Task Planned Start and/or End  Date is not between Order Confirmed Date & Shipment Date. Please fix it.
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-9">
+                        <h4 style="margin:0px;">Lead Time: <b>{{leadTime}}</b> Days <small>without (Weekend & Holiday)</small></h4>
+                    </div>
+                    <div class="col-md-3" align="right">
+                        <div class="input-icon right">
+                            <i class="icon-magnifier"></i>
+                            <input type="text" class="form-control form-control-solid" ng-model="q" placeholder="search...">
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <table class="table table-condensed table-striped table-bordered" style="margin:0;padding-bottom:0px;">
+                    <thead>
+                        <tr>
+                            <th style="width: 5%;">
+
+                            </th>
+                            <th style="width: 6%;">
+                                <small>
+                                    SL#
+                                </small>
+
+                            </th>
+                            <th style="width: 25%;">
+                                <small>
+                                    Task Name
+                                </small>
+
+                            </th>
+                            <th style="width: 10%;">
+                                <small>
+                                    Std. Day(s)
+                                </small>
+
+                            </th>
+
+                            <th style="width: 25%;">
+                                <small>
+                                    Base Task
+                                </small>
+
+                            </th>
+                            <th style="width: 15%;">
+                                <small>Planned Date</small>
+
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+                <div slimscroll="{height: 600,allowPageScroll:true,railVisible :true,allowPageScroll :true}">
+
+                    <div class="table-scrollable" style="margin:0px;">
+                        <div class="table-scrollable" style="margin:0px;">
+                            <table class="table table-condensed table-striped table-bordered">
+                                <tbody>
+
+                                    <tr ng-repeat="item in TnATaskList|filter:q" ng-class="{'warning': item.IS_CHECKED=='Y'}">
+                                        <td style="width: 5%;">
+                                            <input type="checkbox" ng-model="item.IS_CHECKED" ng-change="onChangeCheckUncheck(item)" ng-true-value="'N'" ng-false-value="'Y'" ng-disabled="item.IS_MANDATORY=='Y'">
+
+                                        </td>
+                                        <td style="width: 6%;">
+                                            {{item.TASK_ORDER}}
+                                        </td>
+                                        <td style="width: 25%;">
+                                            <strong>
+                                                {{item.TA_TASK_NAME_EN}}
+                                            </strong>
+
+
+                                            <input type="hidden" ng-value="item.TASK_ORDER=($index+1)" ng-model="item.TASK_ORDER" />
+                                        </td>
+                                        <td style="width: 10%;" ng-class="{'has-error': (TNATaskList['STD_DAYS_'+$index].$touched || TNATaskList.$submitted) && TNATaskList['STD_DAYS_'+$index].$error.required}">
+                                            <input type="number" min="0" max="200" ng-change="onChangeStdDays(item)" required name="STD_DAYS_{{$index}}" ng-model="item.STD_DAYS" ng-disabled="OrderCopy.IS_TNA_FINALIZED=='Y'" />
+                                        </td>
+                                        <td style="width: 25%;">
+                                            {{item.PARENT_TASK_NAME}}
+                                        </td>
+                                        <td style="width: 15%;">
+                                            @*<div ng-if="Order.TNA_REVISION_NO>0 && !item.IS_BEFORE && OrderCopy.IS_TNA_FINALIZED=='N' && (item.IS_START_TASK=='N'||item.IS_END_TASK=='N')">
+                                <span ng-if="item.PLAN_START_DT && !item.PLAN_END_DT">
+                                    <input type="text" class="form-control" ng-click="GridDateOpen($event, $index)" datepicker-popup="{{dtFormat}}"
+                                           name="PLAN_START_DT" ng-model="item.PLAN_START_DT" is-open="GridDateOpened[$index]" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" ng-change="onChangeDate(TnATaskListOld[$index].PLAN_END_DT,item.PLAN_END_DT,item)" />
+                                </span>
+                                <span ng-if="!item.PLAN_START_DT && item.PLAN_END_DT">
+                                    <input type="text" class="form-control" ng-click="GridDateOpen($event, $index)" datepicker-popup="{{dtFormat}}"
+                                           name="PLAN_START_DT" ng-model="item.PLAN_END_DT" is-open="GridDateOpened[$index]" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" ng-change="onChangeDate(TnATaskListOld[$index].PLAN_END_DT,item.PLAN_END_DT,item)" />
+                                </span>
+                                <span ng-if="item.PLAN_START_DT && item.PLAN_END_DT">
+                                    <input type="text" class="form-control" ng-click="GridDateOpen($event, $index)" datepicker-popup="{{dtFormat}}"
+                                           name="PLAN_START_DT" ng-model="item.PLAN_START_DT" is-open="GridDateOpened[$index]" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" ng-change="onChangeDate(TnATaskListOld[$index].PLAN_END_DT,item.PLAN_END_DT,item)" />
+                                    <input type="text" class="form-control"
+                                           name="PLAN_START_DT" ng-model="item.PLAN_END_DT" ng-value="item.PLAN_START_DT" is-open="GridDateOpened[$index]" datepicker-options="dateOptions" ng-hide="true" />
+                                </span>
+                            </div>*@
+
+                                            <div @*ng-if="Order.TNA_REVISION_NO==0 || item.IS_BEFORE || OrderCopy.IS_TNA_FINALIZED=='Y'  || item.IS_START_TASK=='Y'||item.IS_END_TASK=='Y'"*@>
+                                                <strong>
+                                                    {{item.PLAN_DT| date: 'dd-MMM-yyyy'}}
+                                                    @*{{item.PLAN_START_DT||item.PLAN_END_DT}}*@
+                                                </strong>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:auto;">
+                    <div align="right">
+                        <div class="checkbox-list">
+                            <label class="checkbox-inline" style="margin-left:20px">
+                                <span><input type="checkbox" ng-model="Order.IS_TNA_FINALIZED" ng-true-value="'Y'" ng-false-value="'N'" ng-disabled="OrderCopy.IS_TNA_FINALIZED=='Y'"><b><small> TNA Finalized ?</small></b> </span>
+                            </label>
+                            <label class="checkbox-inline" style="margin-left:20px">
+                                <button type="button" class="btn btn-sm" ng-if="Order.MC_ORDER_H_ID>0" ng-click="printOrderWiseTnA(Order.MC_ORDER_H_ID,'N')"><i class="fa fa-file-pdf-o"></i> TnA Report (pdf)</button>
+                            </label>
+                            <label class="checkbox-inline" style="margin-left:20px">
+                                <button type="button" class="btn btn-sm" ng-if="Order.MC_ORDER_H_ID>0" ng-click="printOrderWiseTnA(Order.MC_ORDER_H_ID,'Y')"><i class="fa fa-file-excel-o"></i> TnA Report (excel)</button>
+                            </label>
+
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+                <div class="row">
+                    <div class="col-md-4">
+                        <button type="button" class="btn btn-sm green" ng-if="OrderCopy.IS_TNA_FINALIZED==='Y'" ng-click="openTnaRevisionModal(Order)">Revise</button>
+                        <button type="button" class="btn btn-sm green" ng-click="save(TnATaskList,token)" ng-if="OrderCopy.IS_TNA_FINALIZED==='N'" ng-class="{'disabled':!TNATaskList.$valid||!validShipDate||!validConfDate}">Save</button>
+                        <button type="button" class="btn btn-sm default" ng-click="cancel()">Cancel</button>
+                    </div>
+                   
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

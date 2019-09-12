@@ -1,0 +1,344 @@
+﻿<style>
+    .nav-tabs > li > a {
+        margin-right: 2px;
+        margin-bottom: 3px;
+        font-size: 13px;
+        line-height: 1.42857143;
+        border: 1px solid #231f1f;
+        border-radius: 4px 4px 0 0;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    .k-selected-color {
+        height: 21px;
+    }
+</style>
+
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Garments</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="padding-top:5px;">
+            <div class="col-md-12">
+                <tabset>
+                    <tab>
+                        <tab-heading>
+                            Garment Plan Status Areas
+                        </tab-heading>
+
+
+                        <form class="form-horizontal" role="form" name="GmtPlanStatusArea" novalidate>
+                            <div class="table-scrollable">
+                                <table class="table table-condensed table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-md-2">
+                                                Status Group
+                                            </th>
+                                            <th class="col-md-10" style="text-align:center;">
+                                                Plan Status Areas
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <tr ng-repeat="(k,item) in vm.plnStatusAreas">
+                                            <td>
+
+                                                <b><i>{{(k+1)+'. '+item.LK_PLN_STS_GRP_NAME}}</i></b>
+                                                <a ng-click='vm.addPlnStatusArea(item)' class='btn btn-xs lightblue' style="float:right;"><i class='fa fa-plus'> </i></a>
+
+                                            </td>
+                                            <td style="padding:0px;">
+                                                <table class="table table-condensed table-striped table-bordered" style="padding:0px;margin-bottom:0px;">
+                                                    <thead ng-hide="k != 0">
+                                                        <tr>
+                                                            <th class="col-md-1">
+                                                                <small>
+                                                                    SL#
+                                                                </small>
+                                                            </th>
+
+                                                            <th class="col-md-1">
+                                                                <small>
+                                                                    Code
+                                                                </small>
+
+                                                            </th>
+                                                            <th class="col-md-3">
+                                                                <small>
+                                                                    Parent
+                                                                </small>
+                                                            </th>
+
+                                                            <th class="col-md-4">
+                                                                <small>
+                                                                    Plan Status Area
+                                                                </small>
+                                                            </th>
+
+                                                            <th class="col-md-1">
+                                                                <small>
+                                                                    WT Factor
+                                                                </small>
+                                                            </th>
+                                                            <th class="col-md-1">
+                                                                <small>
+                                                                    Is Active?
+                                                                </small>
+                                                            </th>
+                                                            <th class="col-md-1">
+
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+
+                                                    <tbody>
+                                                        <tr ng-repeat="(key, itm) in item.items">
+                                                            <td class="col-md-1" ng-class="{'has-error': (DISPLAY_ORDER_FORM.DISPLAY_ORDER.$touched || GmtPlanStatusArea.$submitted) && DISPLAY_ORDER_FORM.DISPLAY_ORDER.$error.required}">
+                                                                <ng-form name="DISPLAY_ORDER_FORM">
+                                                                    <input type="number" name="DISPLAY_ORDER" ng-init="itm.DISPLAY_ORDER=key+1" class="form-control" ng-model="itm.DISPLAY_ORDER" required />
+                                                                </ng-form>
+                                                            </td>
+                                                            <td class="col-md-1" ng-class="{'has-error': (PLN_STS_AREA_CODE_FORM.PLN_STS_AREA_CODE.$touched || GmtPlanStatusArea.$submitted) && PLN_STS_AREA_CODE_FORM.PLN_STS_AREA_CODE.$error.required}">
+                                                                <ng-form name="PLN_STS_AREA_CODE_FORM">
+                                                                    <input type="text" name="PLN_STS_AREA_CODE" class="form-control" ng-model="itm.PLN_STS_AREA_CODE" required />
+                                                                </ng-form>
+                                                            </td>
+                                                            <td class="col-md-3">
+
+                                                                <select name="LK_PLN_STS_GRP_NAME" id="PARENT_ID"
+                                                                        ng-options="option.LK_PLN_STS_GRP_ID as option.LK_PLN_STS_GRP_NAME for option in vm.plnStatusAreas"
+                                                                        ng-model="itm.PARENT_ID"></select>
+                                                                @*<select class="form-control" kendo-drop-down-list name="LK_PLN_STS_GRP_NAME" k-option-label="'--N/A--'"
+                                                                        k-data-text-field="'LK_PLN_STS_GRP_NAME'" k-data-value-field="'LK_PLN_STS_GRP_ID'"
+                                                                        k-auto-bind="'true'" k-data-source="vm.plnStatusAreasDs" ng-model="itm.PARENT_ID"
+                                                                        k-on-select="vm.onParentStatusArea(itm,kendoEvent)"></select>*@
+
+
+                                                            </td>
+                                                            <td class="col-md-4" ng-class="{'has-error': (PLN_STS_AREA_NAME_FORM.PLN_STS_AREA_NAME.$touched || GmtPlanStatusArea.$submitted) && PLN_STS_AREA_NAME_FORM.PLN_STS_AREA_NAME.$error.required}">
+                                                                <ng-form name="PLN_STS_AREA_NAME_FORM">
+                                                                    <input type="text" name="PLN_STS_AREA_NAME" class="form-control" ng-model="itm.PLN_STS_AREA_NAME" required />
+                                                                </ng-form>
+                                                            </td>
+                                                            <td class="col-md-1" ng-class="{'has-error': (WT_FACTOR_FORM.WT_FACTOR.$touched || GmtPlanStatusArea.$submitted) && (WT_FACTOR_FORM.WT_FACTOR.$error.required ||WT_FACTOR_FORM.WT_FACTOR.$error.min||WT_FACTOR_FORM.WT_FACTOR.$error.max) }">
+                                                                <ng-form name="WT_FACTOR_FORM">
+                                                                    <input type="number" name="WT_FACTOR" class="form-control" ng-model="itm.WT_FACTOR" min="0.001" max="100" required />
+                                                                </ng-form>
+                                                            </td>
+
+                                                            <td class="col-md-1">
+                                                                <input type="checkbox" class="checkbox" ng-model="itm.IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'" />
+                                                            </td>
+                                                            <td class="col-md-1">
+                                                                <a ng-click='vm.delPlnStatusArea(item,key)' class='btn btn-xs red'><i class='fa fa-times'> </i></a>
+                                                            </td>
+
+                                                        </tr>
+
+                                                    </tbody>
+
+                                                </table>
+                                            </td>
+                                        </tr>
+
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <button type="submit" class="btn btn-sm green" ng-click="vm.submitPlnStatusArea(vm.plnStatusAreas,GmtPlanStatusArea.$valid);GmtPlanStatusArea.$submitted=true">Save</button>
+                                    <button type="button" class="btn btn-sm default" ng-click="vm.cancelPlnStatusArea()">Cancel</button>
+                                </div>
+
+                            </div>
+                        </form>
+
+                    </tab>
+
+                    <tab select="alertMe()">
+                        <tab-heading>
+                            Garment Plan Status Rules
+                        </tab-heading>
+                        <form class="form-horizontal" role="form" name="GmtPlanStatusRules" novalidate>
+                            <div class="table-scrollable">
+                                <table class="table table-condensed table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-md-2">
+                                                Status Group
+                                            </th>
+                                            <th class="col-md-10" style="text-align:center;">
+                                                Plan Status Rules
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <tr ng-repeat="(k,item) in vm.plnStatusRules">
+                                            <td>
+
+                                                <b><i>{{(k+1)+'. '+item.LK_PLN_STS_GRP_NAME}}</i></b>
+                                                <a ng-click='vm.addPlnStatusRules(item)' class='btn btn-xs lightblue' style="float:right;"><i class='fa fa-plus'> </i></a>
+
+                                            </td>
+                                            <td style="padding:0px;">
+                                                <table class="table table-condensed table-striped table-bordered" style="padding:0px;margin-bottom:0px;">
+                                                    <thead ng-hide="k != 0">
+                                                        <tr>
+                                                            <th class="col-md-2" colspan="2" style="border-bottom: solid 1px #f9f9f9;text-align:center;">
+                                                                <small>
+                                                                    Score
+                                                                </small>
+                                                            </th>
+                                                            <th class="col-md-2" rowspan="2">
+                                                                <small>
+                                                                    Status Code
+                                                                </small>
+                                                            </th>
+
+                                                            <th class="col-md-4" rowspan="2">
+                                                                <small>
+                                                                    Status Desc
+                                                                </small>
+                                                            </th>
+
+                                                            <th class="col-md-2" rowspan="2">
+                                                                <small>
+                                                                    Color Code
+                                                                </small>
+                                                            </th>
+                                                            <th class="col-md-2" rowspan="2">
+                                                                <small>
+                                                                    Green Rank(0-1)
+                                                                </small>
+                                                            </th>
+                                                            <th class="col-md-1" rowspan="2">
+
+                                                            </th>
+                                                        </tr>
+
+
+                                                        <tr>
+                                                            <th class="col-md-1">
+                                                                <small>
+                                                                    From
+                                                                </small>
+                                                            </th>
+
+                                                            <th class="col-md-1">
+                                                                <small>
+                                                                    To
+                                                                </small>
+
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+
+                                                    <tbody>
+                                                        <tr ng-repeat="(key, itm) in item.details">
+                                                            <td class="col-md-1" ng-class="{'has-error': (SCORE_RNG_1_FORM.SCORE_RNG_1.$touched || GmtPlanStatusRules.$submitted) && SCORE_RNG_1_FORM.SCORE_RNG_1.$error.required}">
+                                                                <ng-form name="SCORE_RNG_1_FORM">
+                                                                    <input type="number" name="SCORE_RNG_1" class="form-control" ng-model="itm.SCORE_RNG_1" required />
+                                                                </ng-form>
+                                                            </td>
+                                                            <td class="col-md-1" ng-class="{'has-error': (SCORE_RNG_2_FORM.SCORE_RNG_2.$touched || GmtPlanStatusRules.$submitted) && SCORE_RNG_2_FORM.SCORE_RNG_2.$error.required}">
+                                                                <ng-form name="SCORE_RNG_2_FORM">
+                                                                    <input type="number" name="SCORE_RNG_2" class="form-control" ng-model="itm.SCORE_RNG_2" required />
+                                                                </ng-form>
+                                                            </td>
+                                                            <td class="col-md-2" ng-class="{'has-error': (PLN_STS_CODE_FORM.PLN_STS_CODE.$touched || GmtPlanStatusRules.$submitted) && PLN_STS_CODE_FORM.PLN_STS_CODE.$error.required}">
+                                                                <ng-form name="PLN_STS_CODE_FORM">
+                                                                    <input type="text" name="PLN_STS_CODE" class="form-control" ng-model="itm.PLN_STS_CODE" required />
+                                                                </ng-form>
+
+                                                            </td>
+                                                            <td class="col-md-4" ng-class="{'has-error': (PLN_STS_NAME_FORM.PLN_STS_NAME.$touched || GmtPlanStatusRules.$submitted) && PLN_STS_NAME_FORM.PLN_STS_NAME.$error.required}">
+                                                                <ng-form name="PLN_STS_NAME_FORM">
+                                                                    <input type="text" name="PLN_STS_NAME" class="form-control" ng-model="itm.PLN_STS_NAME" required />
+                                                                </ng-form>
+                                                            </td>
+
+                                                            <td class="col-md-2" ng-class="{'has-error': (STS_COLOR_CODE_FORM.STS_COLOR_CODE.$touched || GmtPlanStatusRules.$submitted) && STS_COLOR_CODE_FORM.STS_COLOR_CODE.$error.required }">
+                                                                <ng-form name="STS_COLOR_CODE_FORM">
+                                                                    <input kendo-color-picker ng-model="itm.STS_COLOR_CODE" style="width:100%" k-buttons="false" k-preview="false" k-input="false" required />
+
+                                                                </ng-form>
+                                                            </td>
+
+
+                                                            <td class="col-md-2" ng-class="{'has-error': (POSTIVE_RANK_FORM.POSTIVE_RANK.$touched || GmtPlanStatusRules.$submitted) && (POSTIVE_RANK_FORM.POSTIVE_RANK.$error.required||POSTIVE_RANK_FORM.POSTIVE_RANK.$error.max) }">
+                                                                <ng-form name="POSTIVE_RANK_FORM">
+                                                                    <input type="number" name="POSTIVE_RANK" class="form-control" ng-model="itm.POSTIVE_RANK" min="0.001" max="1" required />
+                                                                </ng-form>
+                                                            </td>
+
+                                                            <td class="col-md-1">
+                                                                <a ng-click='vm.delPlnStatusRules(item,key)' class='btn btn-xs red'><i class='fa fa-times'> </i></a>
+                                                            </td>
+
+                                                        </tr>
+
+                                                    </tbody>
+
+                                                </table>
+                                            </td>
+                                        </tr>
+
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <button type="submit" class="btn btn-sm green" ng-click="vm.submitPlnStatusRules(vm.plnStatusRules,GmtPlanStatusRules.$valid);GmtPlanStatusRules.$submitted=true">Save</button>
+                                    <button type="button" class="btn btn-sm default" ng-click="vm.cancelPlnStatusRules()">Cancel</button>
+                                </div>
+
+                            </div>
+                        </form>
+
+                    </tab>
+                </tabset>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+

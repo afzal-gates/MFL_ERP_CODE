@@ -1,0 +1,384 @@
+﻿@*<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Inventory</a>
+
+    </li>
+    <li>
+        <a href="#">Item Sales</a>
+    </li>
+</ul>*@
+
+<marquee style="background-color:green;color:white;font-size:18px;font-weight:bold;">Welcome To {{vm.STORE_NAME_EN}}&nbsp;*****&nbsp;Counter #: {{vm.COUNTER_NO}}&nbsp;*****&nbsp;Soled By: {{vm.LOGIN_ID}}&nbsp;*****&nbsp;Date of Sale: {{vm.MEMO_DT}}</marquee>
+
+<div class="portlet box" style="padding-top:0px;">
+    @*<div class="portlet-title">
+            <div class="caption" ng-bind="vm.Title">
+            </div>
+            <div class="tools">
+            </div>
+        </div>*@
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        <input id="access_token" data-ng-model="token" type="hidden"
+               data-ng-init="token='@Session["access_token"]'" />
+
+
+        <form class="form-horizontal" role="form" name="frmPOSItem" novalidate>
+
+            <div class="form-body clearfix" style="padding-top:0px;">
+
+                <div class="row">
+
+                    <input type="hidden" ng-model="vm.CREATED_BY" data-ng-init="vm.CREATED_BY='@Session["multiScUserId"]'" />
+                    <input type="hidden" id="access_token" ng-model="vm.LAST_UPDATED_BY" ng-init="vm.LAST_UPDATED_BY='@Session["multiScUserId"]'" />
+
+                    <input type="hidden" name="MEMO_DT" ng-model="vm.MEMO_DT" ng-init="vm.MEMO_DT='@Session["multiServerCurrDate"]'" class="form-control" ng-disabled="true" />
+                    <input type="hidden" name="STORE_NAME_EN" ng-model="vm.STORE_NAME_EN" ng-init="vm.STORE_NAME_EN='@Session["multiUserPosStoreNameEn"]'" class="form-control" ng-disabled="true" />
+                    <input type="hidden" name="PS_COUNTR_ID" ng-model="vm.PS_COUNTR_ID" ng-init="vm.PS_COUNTR_ID='@Session["multiUserPosCounterId"]'" class="form-control" ng-disabled="true" />
+                    <input type="hidden" name="COUNTER_NO" ng-model="vm.COUNTER_NO" ng-init="vm.COUNTER_NO='@Session["multiUserPosCounterNo"]'" class="form-control" ng-disabled="true" />
+                    <input type="hidden" ng-model="vm.LOGIN_ID" ng-init="vm.LOGIN_ID='@Session["multiLoginId"]'" class="form-control" ng-disabled="true" />
+
+
+                    <div class="row" style="margin:auto;" ng-show="vm.errors">
+                        <div class="alert alert-danger" role="alert">
+                            @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                            <div style="padding: 0px 0px 15px 25px; ">
+                                <b>Please fix the following errors ....</b>
+                            </div>
+                            <ul ng-repeat="field in vm.errors">
+                                <li ng-repeat="error in field" ng-bind="error"></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3" style="padding-left:0px;padding-right:0px">
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend">Customer Type</legend>
+
+                            <div class="form-group">
+                               
+                                <div class="col-md-12">
+                                    <div class="radio-list" style="margin-left:20px">
+                                        <label class="radio-inline" ng-repeat="item in vm.custTypeList">
+                                            <span class="checked"><input type="radio" name="LK_CUST_TYPE_ID" ng-model="vm.form.LK_CUST_TYPE_ID" ng-value="item.LOOKUP_DATA_ID" 
+                                                                         ng-click="vm.onChangeCustType(item)" required></span>{{item.LK_DATA_NAME_EN}}
+                                        </label>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+
+
+                        <fieldset class="custom-fieldset" ng-show="vm.form.LK_CUST_TYPE_ID!=590">
+                            <legend class="custom-legend">Customer Information</legend>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">
+                                    Name
+                                </label>
+                                <div class="col-md-8">
+                                    <input type="text" name="CUST_NAME" ng-model="vm.form.CUST_NAME" class="form-control" />
+                                </div>                                
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">
+                                    Mobile#
+                                </label>
+                                <div class="col-md-8">
+                                    <input type="text" name="CUST_MOB" ng-model="vm.form.CUST_MOB" class="form-control" />
+                                </div>
+                            </div>
+                        </fieldset>
+
+
+
+                        <fieldset class="custom-fieldset" ng-show="vm.form.LK_CUST_TYPE_ID==590">
+                            <legend class="custom-legend">Employee</legend>
+
+                            @*<div class="form-group">
+                                <label class="col-md-4 control-label">
+                                    Memo
+                                </label>
+                                <div class="col-md-6">
+                                    <input type="text" name="MEMO_NO" ng-model="vm.form.MEMO_NO" class="form-control" />
+                                </div>
+                            </div>*@
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Code</label>
+                                <div class="col-md-8">
+                                    @*{{vm.form.MEMO_NO}}*@
+                                    <input type="text" id="EMPLOYEE_CODE" ng-model="vm.form.EMPLOYEE_CODE" placeholder="Search..." @*ng-disabled="vm.isEmployee!=true"*@
+                                           typeahead="item.EMPLOYEE_CODE as item.EMPLOYEE_CODE for item in emoloyeeAuto($viewValue)" autocomplete="off"
+                                           typeahead-min-length="3" typeahead-wait-ms="1000"
+                                           typeahead-on-select="onSelectEmp($item)" typeahead-loading="loadingLocationsEmp" class="form-control" />
+                                    <i ng-show="loadingLocationsEmp" class="glyphicon glyphicon-refresh"></i>
+                                </div>
+                            </div>
+
+                            <div class="form-group" @*ng-if="vm.form.EMP_FULL_NAME_EN!=null"*@>
+                                <label class="col-md-4 control-label">Profile</label>
+                                <div class="col-md-8">
+                                    <textarea class="form-control" ng-model="vm.form.EMP_FULL_NAME_EN" rows="3" ng-disabled="true"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-show="false">
+                                <label class="col-md-4 control-label">
+                                    Gross
+                                </label>
+                                <div class="col-md-6">
+                                    <input type="text" name="GROSS_SALARY" ng-model="vm.form.GROSS_SALARY" class="form-control" ng-disabled="true" />
+                                </div>
+                            </div>
+
+                            <div class="form-group" @*ng-if="vm.form.HR_EMPLOYEE_ID!=null"*@>
+                                <div class="col-md-offset-4 col-md-5">
+                                    <img id="empPhoto" src="~/UPLOAD_DOCS/EMP_PHOTOS/{{vm.form.EMPLOYEE_CODE}}.jpg" @*onload='location.reload(true);'*@ @*onload="empPhotoLoad(this,vm.form.EMPLOYEE_CODE)"*@ alt="No Photo" style="border: 1px solid black; height: 130px; width: 120px" />
+                                </div>
+                            </div>
+
+                            @*<div class="form-group">
+                                <label class="col-md-4 control-label">&nbsp;</label>
+                            </div>*@
+
+                        </fieldset>
+
+                        <fieldset class="custom-fieldset" ng-show="vm.form.LK_CUST_TYPE_ID==590">
+                            <legend class="custom-legend">Verification</legend>
+
+                            <div class="row">
+                                <div class="col-md-offset-1 col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            Present Days
+                                        </label>
+                                        <input type="text" name="DAYS_PRESENT" ng-model="vm.form.DAYS_PRESENT" class="form-control blue" style="font-weight: bold; background-color: #b200ff;color:white;" value="10" ng-disabled="true" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-offset-1 col-md-5">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            Credit Limit
+                                        </label>
+                                        <input type="text" name="CRD_LMT_EARNED" ng-model="vm.form.CRD_LMT_EARNED" class="form-control" style="font-weight: bold; background-color: #b200ff; color: white;" value="10" ng-disabled="true" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-offset-1 col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            Already Sold
+                                        </label>
+                                        <input type="text" name="ALREADY_SOLD_AMT" ng-model="vm.form.ALREADY_SOLD_AMT" class="form-control" style="font-weight: bold; background-color:yellow;" value="10" ng-disabled="true" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-offset-1 col-md-5">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            Balance
+                                        </label>
+                                        <input type="text" name="CREDIT_BALANCE_AMT" ng-model="vm.form.CREDIT_BALANCE_AMT" class="form-control" style="font-weight: bold; background-color: yellow; " value="10" ng-disabled="true" />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </div>
+
+
+                    <div class="col-md-9" style="padding-left: 0px; padding-right: 5px" @*ng-show="vm.isVarify"*@>
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend">Sales Detail</legend>
+
+                            <div class="form-group">
+                                <div class="col-md-2" style="padding-left:15px;padding-right:0px;">
+                                    <input type="text" id="ITEM_CODE" ng-model="vm.formDtl.ITEM_CODE" placeholder="Search..." @*ng-disabled="vm.isEmployee!=true"*@
+                                           @*style="background-color:blue;color:white"*@ autocomplete="off"
+                                           typeahead="item.ITEM_CODE_NAME as item.ITEM_CODE_NAME for item in itemAuto($viewValue)"
+                                           typeahead-min-length="3" typeahead-wait-ms="1000"
+                                           typeahead-on-select="onSelectItem($item)" typeahead-loading="loadingLocationsItm" class="form-control" />
+                                    <i ng-show="loadingLocationsItm" class="glyphicon glyphicon-refresh"></i>
+                                </div>
+                                <div class="col-md-4" style="padding:0px">
+                                    <input type="text" name="ITEM_NAME_EN" ng-model="vm.formDtl.ITEM_NAME_EN" class="form-control" ng-disabled="true" />
+                                </div>
+                                <div class="col-md-1" style="padding:0px">
+                                    <input type="text" id="SOLD_QTY" name="SOLD_QTY" ng-model="vm.formDtl.SOLD_QTY" class="form-control" style="background-color:#ffd800" />
+                                </div>
+                                <div class="col-md-1" style="padding:0px">
+                                    <input type="text" id="CONS_MOU_CODE" name="CONS_MOU_CODE" ng-model="vm.formDtl.CONS_MOU_CODE" class="form-control" readonly />
+                                </div>
+                                <div class="col-md-1" style="padding:0px">
+                                    <input type="text" id="UNIT_PRICE" name="UNIT_PRICE" ng-model="vm.formDtl.UNIT_PRICE" class="form-control" ng-disabled="true" style="background-color:#00ffff" />
+                                </div>
+                                <div class="col-md-2" style="padding:0px">
+                                    <input type="text" id="TOT_SOLD_AMT" name="TOT_SOLD_AMT" ng-model="vm.formDtl.TOT_SOLD_AMT" class="form-control" ng-disabled="true" />
+                                </div>
+                                <div class="col-md-1" style="padding:0px">
+                                    <button type="button" id="ADD_ITEM" class="btn btn-sm green" ng-click="vm.salesItemAdd()"><i class="fa fa-plus"></i></button>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group" style="padding-left:15px;padding-right:15px;">
+                                <kendo-grid k-options="vm.gridOptions" id="salesItemGrid"></kendo-grid>
+                            </div>
+
+                            <div class="form-group" style="padding-left:15px;padding-right:15px;">
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        @*<button type="button" class="btn green" ng-click="vm.submitData(vm.form, token)"><i class="fa fa-check"></i> Save</button>
+                                    <button type="button" class="btn yellow-gold"><i class="fa fa-check"></i> Print Receipt</button>*@
+                                        <div class="form-group">
+                                            <div class="col-md-12" style="color:red;font-size:17px;">
+                                                {{vm.form.MSG_NOT_ELLIGABLE}}                                               
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <div class="col-md-5" style="padding-right:0px;">
+                                                    <label class="control-label" style="font-weight:bold">Total Amount</label>
+                                                </div>
+                                                <div class="col-md-7" style="padding-left:0px;padding-right:30px;">
+                                                    <input type="text" name="TOT_AMT" ng-model="vm.form.TOT_AMT" class="form-control" ng-disabled="true"
+                                                           style="background:#4800ff;color:white;font-weight:bold" />
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-5" style="padding-right:0px;">
+                                                    <label class="control-label" style="font-weight:bold">{{vm.DISC_PCT*100}}% Discount</label>
+                                                </div>
+                                                <div class="col-md-7" style="padding-left:0px;padding-right:30px;">
+                                                    <input type="text" name="DISC_AMT" ng-model="vm.form.DISC_AMT" class="form-control" ng-disabled="true"
+                                                           style="background: #569f9a; color: black; font-weight: bold" />
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-5" style="padding-right:0px;">
+                                                    <label class="control-label" style="font-weight:bold">Amount Sold</label>
+                                                </div>
+                                                <div class="col-md-7" style="padding-left:0px;padding-right:30px;">
+                                                    <input type="text" name="SOLD_AMT" ng-model="vm.form.SOLD_AMT" class="form-control" ng-disabled="true"
+                                                           style="background: green; color: white; font-weight: bold" />
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <div class="col-md-5" style="padding-right:0px;">
+                                                    <label class="control-label" style="font-weight:bold">{{vm.VAT_PCT*100}}% Vat</label>
+                                                </div>
+                                                <div class="col-md-7" style="padding-left:0px;padding-right:30px;">
+                                                    <input type="text" name="VAT_AMT" ng-model="vm.form.VAT_AMT" class="form-control" ng-disabled="true"
+                                                           style="background: #ffd800; color: black; font-weight: bold" />
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-5" style="padding-right:0px;">
+                                                    <label class="control-label" style="font-weight:bold">Amount with Vat</label>
+                                                </div>
+                                                <div class="col-md-7" style="padding-left:0px;padding-right:30px;">
+                                                    <input type="text" name="TOT_SOLD_WITH_VAT_AMT" ng-model="vm.form.TOT_SOLD_WITH_VAT_AMT" class="form-control" ng-disabled="true"
+                                                           style="background: yellow; color: black; font-weight: bold" />
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group" ng-show="false">
+                                                <div class="col-md-5" style="padding-right:0px;">
+                                                    <label class="control-label" style="font-weight:bold">Balance Due</label>
+                                                </div>
+                                                <div class="col-md-7" style="padding-left:0px;padding-right:30px;">
+                                                    <input type="text" name="G_TOT_REST_AMT" ng-model="vm.form.G_TOT_REST_AMT" class="form-control" ng-disabled="true"
+                                                           style="background: #4800ff; color: white; font-weight: bold" />
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                        </fieldset>
+                    </div>
+
+
+                </div>
+
+                <br />
+                
+            
+            </div>
+        </form>
+
+
+        <div class="row">
+            <div class="form-group" style="padding-left:15px;padding-right:15px;">
+                <div class="row">
+                    <div class="col-md-2">
+                        <button type="button" class="btn" ng-disabled="true" style="padding-top: 5px; height: 60px; font-size: 18px; font-weight: bold; color: black; border: 1px solid black;">Alt+C<br /><i class="fa fa-search"></i> Employee</button>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button type="button" class="btn" ng-disabled="true" style="padding-top: 5px; height: 60px; width: 100px; font-size: 18px; font-weight: bold; color: black; border: 1px solid black;">Alt+I<br /><i class="fa fa-search"></i> Item</button>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button type="button" class="btn" ng-disabled="true" style="padding-top: 5px; height: 60px; width: 100px; font-size: 18px; font-weight: bold; color: black; border: 1px solid black;">F2<br />Add Item</button>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button type="button" class="btn" ng-disabled="true" style="padding-top: 5px; height: 60px; width: 100px; font-size: 18px; font-weight: bold; color: black; border: 1px solid black;">F7<br />Save</button>
+                    </div>
+
+                    <div class="col-md-2">
+                        <form action="/Hr/HrReport/PreviewReport" method="post" target="_blank">
+                            <input type="hidden" name="REPORT_CODE" ng-value="'RPT-1041'" ng-model="vm.form.REPORT_CODE" />
+                            
+                            <button type="submit" class="btn" @*ng-disabled="true" ng-click="vm.memoPrint()"*@ style="padding-top: 5px; height: 60px; width: 100px; font-size: 18px; font-weight: bold; color: black; border: 1px solid black;">F10<br />Print</button>
+                            <input type="text" name="MEMO_NO" ng-model="vm.form.MEMO_NO"  />
+                        </form>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button type="button" class="btn" ng-disabled="true" style="padding-top: 5px; height: 60px;  font-size: 18px; font-weight: bold; color: black; border: 1px solid black;">F9<br />Add New</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+@*<pre>{{vm.form|json}}</pre>*@

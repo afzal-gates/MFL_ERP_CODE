@@ -1,0 +1,615 @@
+﻿<style>
+    .hideMaster {
+        display: none;
+    }
+</style>
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Dyeing</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="caption">
+
+        </div>
+    </div>
+
+
+    <div class="portlet-body form">
+        <form name="formData" class="form-horizontal" style="background-color: white;">
+            <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+                <div class="page-splash">
+                    <div class="page-splash-message">
+                        <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-body clearfix">
+                <div class="form-group">
+                    <div class="col-md-12">
+
+                        <fieldset class="custom-fieldset" ng-hide="collepsMaster">
+                            <legend class="custom-legend"><b>Search Data</b></legend>
+                            <div><label id="lblMsg"></label></div>
+
+                            <div class="form-group">
+
+                                <label class="control-label col-md-3 ">
+                                    <span aria-required="true" class="required"></span>
+                                    Batch No
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" name="DYE_BATCH_NO" id="DYE_BATCH_NO" style="cursor:text;" placeholder="Scan Batch Card Barcode"
+                                           ng-model="vm.form.DYE_BATCH_NO" class="form-control btn required" ng-keyup="vm.searchBatchInfo(vm.form.DYE_BATCH_NO);" />
+                                </div>
+                                <label class="control-label col-md-1">
+                                    <span aria-required="true" class="required"></span>
+                                    Roll No
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" name="FAB_ROLL_NO" style="cursor:text;" placeholder="Scan Fabric Roll Barcode"
+                                           ng-model="vm.form.FAB_ROLL_NO" class="form-control btn required" ng-keyup="vm.searchBatchInfo(vm.form.FAB_ROLL_NO);" />
+
+                                </div>
+
+                                <div class="col-md-1">
+                                    <a class="btn btn-sm yellow-gold" ng-click="vm.searchBatchInfo(1)">Load</a>
+                                </div>
+
+                                <div class="col-md-1">
+                                    <a class="btn btn-sm default" ng-click="vm.clearData()">Clear</a>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-6">
+                        <fieldset class="custom-fieldset" ng-hide="collepsMaster">
+                            <legend class="custom-legend"><b>Batch Details</b></legend>
+                            <div class="form-group">
+
+                                <label class="control-label col-md-2 ">
+                                    <span aria-required="true" class="required">*</span>
+                                    Req No
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" name="STR_REQ_NO" placeholder="[Auto Gen]" ng-model="vm.form.STR_REQ_NO" readonly="readonly" class="form-control" />
+                                    <input type="hidden" name="DYE_STR_REQ_H_ID" ng-model="vm.form.DYE_STR_REQ_H_ID" />
+                                    <input type="hidden" name="LOAD_TIME" ng-model="vm.form.LOAD_TIME" />
+                                    <input type="hidden" name="UN_LOAD_TIME" ng-model="vm.form.UN_LOAD_TIME" />
+                                    <input type="hidden" name="DYE_BT_PROD_ID" ng-model="vm.form.DYE_BT_PROD_ID" />
+                                </div>
+
+                                <label class="control-label col-md-2" style="padding:0px;">
+                                    <span aria-required="true" class="required">*</span>
+                                    Req Date
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control required" ng-click="STR_REQ_DT_LNopen($event)" ng-focus="STR_REQ_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                           name="STR_REQ_DT" max-date="vm.today" ng-model="vm.form.STR_REQ_DT" is-open="STR_REQ_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close"
+                                           required />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+
+                                <label class="control-label col-md-2">
+                                    <span aria-required="true" class="required">*</span>
+                                    Batch No
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" name="DYE_BATCH_NO_LST" ng-model="vm.form.DYE_BATCH_NO_LST" readonly="readonly" class="form-control" />
+
+                                </div>
+                                <label class="control-label col-md-2" style="padding:0px;">
+                                    Weights
+                                </label>
+                                <div class="col-md-3">
+                                    <input type="text" name="ACT_BATCH_QTY_LST" ng-model="vm.form.ACT_BATCH_QTY_LST" readonly="readonly" class="form-control" />
+
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+
+                                <label class="control-label col-md-2">
+                                    <span aria-required="true" class="required">*</span>
+                                    M/C No
+                                </label>
+                                <div class="col-md-4">
+
+                                    <input type="text" name="DYE_MACHINE_NO" ng-model="vm.form.DYE_MACHINE_NO" readonly="readonly" class="form-control" />
+                                    <input type="hidden" name="DYE_MACHINE_ID" ng-model="vm.form.DYE_MACHINE_ID" />
+
+                                </div>
+                                <label class="control-label col-md-2" style="padding:0px;">
+                                    <span aria-required="true" class="required">*</span>
+                                    Shift
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" name="DYE_SHIFT" ng-model="vm.form.DYE_SHIFT" readonly="readonly" class="form-control" />
+
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label class="control-label col-md-2">
+                                    <span aria-required="true" class="required">*</span>
+                                    Color
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" name="COLOR_NAME_EN" ng-model="vm.form.COLOR_NAME_EN" readonly="readonly" class="form-control" />
+                                    <input type="hidden" name="MC_COLOR_ID" ng-model="vm.form.MC_COLOR_ID" />
+
+                                </div>
+                                <label class="control-label col-md-2" style="padding:0px;">
+                                    Color Group
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" name="COLOR_GRP_NAME_EN" ng-model="vm.form.COLOR_GRP_NAME_EN" readonly="readonly" class="form-control" />
+
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label class="control-label col-md-2">
+                                    <span aria-required="true" class="required">*</span>
+                                    Buyer
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" name="BUYER_NAME_EN" ng-model="vm.form.BUYER_NAME_EN" readonly="readonly" class="form-control" />
+                                    <input type="hidden" name="MC_BYR_ACC_GRP_ID" ng-model="vm.form.MC_BYR_ACC_GRP_ID" />
+
+                                </div>
+                                <label class="control-label col-md-2" style="padding:0px;">
+                                    <span aria-required="true" class="required">*</span>
+                                    Style #
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" name="STYLE_NO" ng-model="vm.form.STYLE_NO" readonly="readonly" class="form-control" />
+
+                                    <input type="hidden" name="MC_STYLE_H_ID" ng-model="vm.form.MC_STYLE_H_ID" />
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label class="control-label col-md-2">
+                                    <span aria-required="true" class="required">*</span>
+                                    Order #
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" name="ORDER_NO" ng-model="vm.form.ORDER_NO" readonly="readonly" class="form-control" />
+
+                                </div>
+                                <label class="control-label col-md-2" style="padding:0px;">
+                                    <span aria-required="true" class="required">*</span>
+                                    Lab-dip #
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" name="LD_RECIPE_NO" ng-model="vm.form.LD_RECIPE_NO" readonly="readonly" class="form-control requiredSub" />
+                                    <input type="hidden" name="MC_LD_RECIPE_H_ID" ng-model="vm.form.MC_LD_RECIPE_H_ID" />
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+
+                                <label class="control-label col-md-2">
+                                    D Method
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" name="DYE_MTHD_NAME" ng-model="vm.form.DYE_MTHD_NAME" readonly="readonly" class="form-control" />
+
+                                </div>
+                                <label class="control-label col-md-2" style="padding:0px;">
+                                    <span aria-required="true" class="required">*</span>
+                                    Liqur Ratio
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" name="LQR_RATIO" ng-model="vm.form.LQR_RATIO" readonly="readonly" class="form-control requiredSub" />
+
+                                </div>
+                            </div>
+
+                        </fieldset>
+
+                        <fieldset class="custom-fieldset" ng-hide="collepsMaster">
+                            <legend class="custom-legend"><b>Fabrics Details</b></legend>
+                            <div class="form-group" style="margin:auto;">
+
+                                <div class="form-body clearfix">
+
+                                    <div kendo-grid k-options="vm.gridOptionsFabric" id="IDBatchFabricDS" k-data-source="vm.BatchFabricList"></div>
+
+                                </div>
+                            </div>
+
+                        </fieldset>
+
+                        <fieldset class="custom-fieldset" ng-hide="collepsMaster">
+                            <legend class="custom-legend"><b>Batch History</b></legend>
+                            <div class="form-group">
+
+
+                                <div class="form-body clearfix">
+
+                                    <div kendo-grid k-options="vm.gridOptionsBatch" id="IDBatchProgramDS" k-data-source="vm.BatchProgramList"></div>
+
+                                </div>
+                            </div>
+
+                        </fieldset>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+
+                        <fieldset class="custom-fieldset" ng-hide="collepsMaster">
+                            <legend class="custom-legend"><b>Mark Defects</b></legend>
+                            <table style="width:100%" ng-disabled="vm.form.CK_ROLL_RCV_DT==null || vm.form.CK_ROLL_FIN_DT==null">
+                                <tr>
+                                    <td style="width:33%">
+                                        <table style="width:100%">
+                                            <tr ng-if="item.DISPLAY_ORDER>=1 && item.DISPLAY_ORDER<=6" ng-repeat="item in vm.defectList">
+                                                <td style="padding-top: 5px;">
+                                                    <div class="col-md-2" style="padding:0px;">
+                                                        <input type="checkbox" class="form-control" ng-disabled="vm.form.CK_ROLL_RCV_DT==null || vm.form.CK_ROLL_FIN_DT==null"
+                                                               id="RF_FB_DFCT_TYPE_ID_{{$index}}" name="RF_FB_DFCT_TYPE_ID_{{$index}}" ng-model="item.LAST_UPDATED_BY" ng-true-value="'1'"
+                                                               ng-false-value="'0'" ng-change="vm.getMultipleDept();" />
+                                                    </div>
+                                                    <div class="col-md-8" style="padding:0px;">
+                                                        <label for="RF_FB_DFCT_TYPE_ID_{{$index}}">{{item.FB_DFCT_TYPE_NAME}}</label>
+                                                    </div>
+                                                    <input type="hidden" ng-model="vm.form.RF_FB_DFCT_TYPE_ID" />
+
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td style="width:33%">
+                                        <table style="width:100%">
+                                            <tr ng-if="item.DISPLAY_ORDER>=7 && item.DISPLAY_ORDER<=12" ng-repeat="item in vm.defectList">
+                                                <td style="padding-top: 5px;">
+                                                    <div class="col-md-2" style="padding:0px;">
+                                                        <input type="checkbox" class="form-control" ng-disabled="vm.form.CK_ROLL_RCV_DT==null || vm.form.CK_ROLL_FIN_DT==null"
+                                                               id="RF_FB_DFCT_TYPE_ID_{{$index}}" name="RF_FB_DFCT_TYPE_ID_{{$index}}" ng-model="item.LAST_UPDATED_BY" ng-true-value="'1'"
+                                                               ng-false-value="'0'" ng-change="vm.getMultipleDept();" />
+                                                    </div>
+                                                    <div class="col-md-8" style="padding:0px;">
+                                                        <label for="RF_FB_DFCT_TYPE_ID_{{$index}}">{{item.FB_DFCT_TYPE_NAME}}</label>
+                                                    </div>
+                                                    <input type="hidden" ng-model="vm.form.RF_FB_DFCT_TYPE_ID" />
+
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td style="width:33%">
+                                        <table style="width:100%">
+                                            <tr ng-if="item.DISPLAY_ORDER>=13" ng-repeat="item in vm.defectList">
+                                                <td style="padding-top: 5px;">
+                                                    <div class="col-md-2" style="padding:0px;">
+                                                        <input type="checkbox" class="form-control" ng-disabled="vm.form.CK_ROLL_RCV_DT==null || vm.form.CK_ROLL_FIN_DT==null" 
+                                                               id="RF_FB_DFCT_TYPE_ID_{{$index}}" name="RF_FB_DFCT_TYPE_ID_{{$index}}" ng-model="item.LAST_UPDATED_BY" ng-true-value="'1'" 
+                                                               ng-false-value="'0'" ng-change="vm.getMultipleDept();" />
+                                                    </div>
+                                                    <div class="col-md-8" style="padding:0px;">
+                                                        <label for="RF_FB_DFCT_TYPE_ID_{{$index}}">{{item.FB_DFCT_TYPE_NAME}}</label>
+                                                    </div>
+                                                    <input type="hidden" ng-model="vm.form.RF_FB_DFCT_TYPE_ID" />
+
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                            <br />
+                            <br />
+                            <br />
+                            <div class="form-group" ng-disabled="vm.form.CK_ROLL_RCV_DT==null || vm.form.CK_ROLL_FIN_DT==null">
+                                <label class="control-label col-md-2" style="padding:0px;">
+                                    Responsible Department
+                                </label>
+                                <div class="col-md-4">
+
+                                    <select class="form-control" kendo-drop-down-list name="RF_RESP_DEPT_ID" k-option-label="'-- Select Department --'"
+                                            k-data-text-field="'RESP_DEPT_NAME'" k-data-value-field="'RF_RESP_DEPT_ID'" k-filter="'contains'"
+                                            k-auto-bind="'true'" k-data-source="vm.getMultipleDeptData" k-ng-delay="vm.getMultipleDeptData" ng-model="vm.form.RF_RESP_DEPT_ID"></select>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-if="vm.form.CK_ROLL_RCV_DT!=null">
+                                <label class="control-label col-md-2" style="padding:0px;">
+                                    Finishing Process
+                                </label>
+                                <div class="col-md-10">
+
+                                    <select class="form-control" kendo-multi-select name="DF_PROC_TYPE_ID" k-option-label="'-- Select Process --'"
+                                            k-data-text-field="'DF_PROC_TYPE_NAME'" k-data-value-field="'DF_PROC_TYPE_ID'" k-filter="'contains'"
+                                            k-auto-bind="'true'" k-data-source="vm.processTypeList" k-ng-delay="vm.processTypeList" ng-model="vm.form.DF_PROC_TYP_LST"></select>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+
+                                <label class="control-label col-md-2" style="padding:0px;">
+                                    Remarks
+                                </label>
+                                <div class="col-md-10">
+
+                                    <textarea rows="4" name="REMARKS" class="form-control" ng-model="vm.form.REMARKS" cols="50"></textarea>
+                                    <br />
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-1">
+
+                                </div>
+                                <div class="col-md-11" style="padding-left:25px;" ng-if="vm.form.CK_ROLL_RCV_DT==null || vm.form.CK_ROLL_FIN_DT==null">
+                                    <table style="width:100%">
+                                        <tr>
+                                            <td>
+
+                                                <a title="Ok" ng-click="vm.updateAll(vm.form,0)" ng-disabled="!vm.form.DYE_STR_REQ_H_ID>0 || !vm.form.DYE_BATCH_NO" ng-if="vm.form.CK_ROLL_RCV_DT==null" class="btn btn-small green"><i class="fa fa-check"> Receive From Dyeing</i></a>
+                                                <a title="Not Ok" ng-click="vm.updateAll(vm.form,1)" ng-if="vm.form.CK_ROLL_RCV_DT!=null" class="btn btn-small blue"><i class="fa fa-check"> Return From Dyeing Finishing</i></a>
+                                                <a title="By Pass" ng-click="vm.updateAll(vm.form,2)" ng-if="vm.form.CK_ROLL_RCV_DT!=null" class="btn btn-small green"><i class="fa fa-check"> By-Pass</i></a>
+
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+
+                                <div class="col-md-12" style="padding-left:25px;" ng-if="vm.form.CK_ROLL_RCV_DT!=null && vm.form.CK_ROLL_FIN_DT!=null">
+                                    <table style="width:100%">
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" ng-model="vm.form.IS_FINALIZED" id="IS_FINALIZED" ng-true-value="'Y'" ng-false-value="'N'" /> <label for="IS_FINALIZED"> Is Finalized?</label>
+
+                                            </td>
+                                            <td ng-repeat="item in vm.rollStatusList">
+                                                <a title="Shade Ok" ng-click="vm.submitAll(vm.form,item.LOOKUP_DATA_ID)" ng-if="$index==0" class="btn btn-small green"><i class="fa fa-check"> {{item.LK_DATA_NAME_EN}}</i></a>
+                                                <a title="Shade Not Ok" ng-click="vm.submitAll(vm.form,item.LOOKUP_DATA_ID)" ng-if="$index==1" class="btn btn-small red"><i class="fa fa-remove"> {{item.LK_DATA_NAME_EN}}</i></a>
+                                                <a title="Shade Hold" ng-click="vm.submitAll(vm.form,item.LOOKUP_DATA_ID)" ng-if="$index==2" class="btn btn-small yellow"><i class="fa fa-warning"> {{item.LK_DATA_NAME_EN}}</i></a>
+                                                <a title="Shade Conditionally OK" ng-click="vm.submitAll(vm.form,item.LOOKUP_DATA_ID)" ng-if="$index==3" class="btn btn-small blue"><i class="fa fa-check"> {{item.LK_DATA_NAME_EN}}</i></a>
+                                                @*<a title="Complete" ng-click="vm.submitAll(vm.form,item.LOOKUP_DATA_ID)" ng-if="$index==3" class="btn btn-small blue"><i class="fa fa-android"> {{item.LK_DATA_NAME_EN}}</i></a>*@
+
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                            </div>
+
+                        </fieldset>
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend"><b>Extra Section</b></legend>
+                            <div class="form-group">
+
+                                <div class="col-md-12">
+                                    <a class="btn btn-sm blue" ui-sref="BatchProductionList">Back To List</a>
+                                    <a class="btn btn-sm yellow fa fa-warning" ng-click="vm.openDyeRollInspDtl();"> Hold List</a>
+
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                </div>
+
+                <div style="padding:3px;">
+                </div>
+                <fieldset class="custom-fieldset">
+                    <div class="form-group">
+                        <div class="col-md-4">
+
+                            <a title="Start" ng-click="vm.submitAll(vm.form,4)" ng-if="vm.form.DYE_BT_STS_TYPE_ID==1 || vm.form.DYE_BT_STS_TYPE_ID==8" ng-disabled="vm.form.IS_RPROC_DONE=='N'" class="btn btn-small green"><i class="fa fa-save"> Load</i></a>
+                            <a title="Resume" ng-click="vm.resumeThis(vm.form)" ng-if="vm.form.DYE_BT_STS_TYPE_ID==5 && vm.form.DYE_BT_STS_TYPE_ID!=6" ng-disabled="vm.form.IS_DISABLE==1 || vm.form.IS_EDT_LOCKED=='Y'" class="btn btn-small blue"><i class="fa fa-copy"> Re-Load</i></a>
+                            <a title="Push" ng-click="vm.pauseThis(vm.form)" ng-if="vm.form.DYE_BT_STS_TYPE_ID==4" ng-disabled="vm.form.IS_DISABLE==1 || vm.form.IS_EDT_LOCKED=='Y'" class="btn btn-small yellow-gold"><i class="fa fa-save"> In-Complete</i></a>
+                            <a title="Complete" ng-click="vm.submitAll(vm.form,6)" ng-if="vm.form.DYE_BT_STS_TYPE_ID==4" ng-disabled="vm.form.IS_DISABLE==1 || vm.form.IS_EDT_LOCKED=='Y'" class="btn btn-small green"><i class="fa fa-save"> Complete</i></a>
+
+                        </div>
+
+                    </div>
+                </fieldset>
+
+
+
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+
+<script type="text/ng-template" id="DyeRollInspDtl.html">
+    <input id="access_token" data-ng-model="token" type="hidden"
+           data-ng-init="token='@Session["access_token"]'" />
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h3 class="title">
+                        Hold Details
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel([])"></i></span>
+                    </h3>
+                </div>
+            </div>
+            <div class="portlet-body">
+
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend"><b>Search Data</b></legend>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" style="text-align: right;">
+                            <span aria-required="true" class="required"></span>
+                            Buyer Group
+                        </label>
+
+                        <div class="col-md-4">
+                            <select kendo-drop-down-list name="MC_BYR_ACC_GRP_ID" class="form-control" options="buyerAccGrpList" ng-model="vm.form.MC_BYR_ACC_GRP_ID"></select>
+                            @*<select class="form-control required" name="repeatSelectBG" id="repeatSelectBG" ng-model="MC_BYR_ACC_GRP_ID">
+                                    <option ng-repeat="option in buyerAccGrpList" value="{{option.MC_BYR_ACC_GRP_ID}}">{{option.BYR_ACC_GRP_NAME_EN}}</option>
+                                </select>*@
+
+                        </div>
+
+                        <label class="col-md-2 control-label" style="text-align: right;">
+                            <span aria-required="true" class="required"></span>
+                            Batch No
+                        </label>
+                        <div class="col-md-4">
+
+                            <input type="text" id="DYE_BATCH_NO" style="min-width:100%" ng-model="DYE_BATCH_NO" />
+
+                        </div>
+
+                    </div>
+                    <div style="padding:5px;"></div>
+                    <div style="padding:5px;"></div>
+                    <div class="form-group">
+
+
+                        <label class="col-md-2 control-label" style="text-align: right;">
+                            <span aria-required="true" class="required"></span>
+                            Style/Order No
+                        </label>
+
+                        <div class="col-md-4">
+                            <input type="text" id="STYLE_ORDER_NO" style="min-width:100%" ng-model="STYLE_ORDER_NO" />
+                        </div>
+
+                        <label class="col-md-2 control-label" style="text-align: right;">
+                            Check Date
+                        </label>
+
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" ng-click="CHK_ROLL_DT_LNopen($event)" ng-focus="CHK_ROLL_DT_LNopen($event)" datepicker-popup="{{dtFormat}}"
+                                   name="CHK_ROLL_DT" ng-model="CHK_ROLL_DT" is-open="CHK_ROLL_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close"
+                                   required />
+                        </div>
+
+                    </div>
+                    <div style="padding:5px;"></div>
+                    <div style="padding:5px;"></div>
+                    <div style="padding:5px;"></div>
+
+                    <div class="form-group">
+                        <div class="col-md-2">
+
+                        </div>
+                        <div class="col-md-1">
+
+                            <button type="submit" class="btn btn-sm blue" ng-click="getRollDtl(3);">Search</button>
+                        </div>
+                        <div class="col-md-1">
+
+                            <button type="submit" class="btn btn-sm default" ng-click="clearAll();">Clear</button>
+                        </div>
+
+                    </div>
+
+                </fieldset>
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend"><b>Roll Details</b></legend>
+
+                    <table style="width:100%" class="clsTableMtex">
+
+                        <tr class="clstheadMtex">
+                            <td class="clstdMtex">
+                                <b>Copy</b>
+                            </td>
+
+                            <td class="clstdMtex">
+                                <b>QC DT</b>
+                            </td>
+                            <td class="clstdMtex">
+                                <b>Buyer A/C</b>
+                            </td>
+
+                            <td class="clstdMtex">
+                                <b>Style #</b>
+                            </td>
+
+                            <td class="clstdMtex">
+                                <b>Order #</b>
+                            </td>
+                            <td class="clstdMtex">
+                                <b>Batch #</b>
+                            </td>
+
+                            <td class="clstdMtex">
+                                <b>OK</b>
+                            </td>
+                            <td class="clstdMtex">
+                                <b>Not OK</b>
+                            </td>
+
+                        </tr>
+                        <tr ng-repeat="item in formItemList">
+                            <td class="clstdMtex">
+                                <button ng-click="selectRollNo(item);" ng-disabled="item.IS_VALID=='N'" class="fa fa-arrow-circle-o-left"></button>
+                            </td>
+
+                            <td class="clstdMtex">
+                                {{item.CHK_ROLL_DT|date: 'dd-MMM-yyyy'}}
+                            </td>
+                            <td class="clstdMtex">
+                                {{item.BUYER_NAME_EN}}
+                            </td>
+
+                            <td class="clstdMtex">
+                                {{item.STYLE_NO}}
+                            </td>
+                            <td class="clstdMtex">
+                                {{item.ORDER_NO}}
+                            </td>
+                            <td class="clstdMtex">
+                                {{item.DYE_BATCH_NO}}
+
+                            </td>
+
+                            <td class="clstdMtex">
+
+                                <button class="btn btn-xs green" ng-disabled="item.IS_VALID=='N'" ng-click="submitData(item,1);">OK</button>
+
+                            </td>
+                            <td class="clstdMtex">
+
+                                <button class="btn btn-xs blue-hoki" ng-disabled="item.IS_VALID=='N'" ng-click="submitData(item,4);">Not OK</button>
+
+                            </td>
+
+                        </tr>
+                    </table>
+
+
+
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</script>

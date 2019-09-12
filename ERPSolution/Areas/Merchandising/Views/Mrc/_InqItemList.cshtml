@@ -1,0 +1,804 @@
+﻿<br />
+<fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;">
+    <legend class="custom-legend"> <b>Cost Breakup & Pricing</b></legend>
+
+    <!-- set  with without combo-->
+    <div class="row" style="padding-top:10px;margin:auto;" ng-if="vm.Style.HAS_SET=='Y' && vm.Style.HAS_COMBO=='N' && vm.Style.HAS_OPTION=='N'">
+
+        <div class="table-scrollable">
+            <table class="table table-condensed table-bordered">
+
+                <thead>
+
+                <th scope="col">
+                    SL
+                </th>
+
+                <th scope="col">
+                    Item Description
+                </th>
+
+
+                <th class="text-center">
+                    Fabrication & Cost Section
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+
+                </th>
+
+                <th>
+                    Fab.Cost
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+
+                <th>
+                    CM
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+                <th>
+                    Prt/Emb.
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+
+                <th>
+                    Trm&Acc
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+                <th>
+                    Comm.
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+                <th>
+                    FOB
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+                <th>
+                    Quoted
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+
+
+                <th scope="col"></th>
+
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in vm.allItemList">
+                        <td style="width:40px;">{{$index+1}}</td>
+                        <td ng-bind="item.ITEM_NAME_EN" style="width:150px;"></td>
+                        <td>
+                            <table class="table table-condensed table-hover table-bordered">
+                                <thead>
+                                <th class="col-md-3">
+                                    Item : Fabrication
+                                </th>
+                                <th class="col-md-1">
+                                    Cnt/Dia
+                                </th> 
+                                <th class="col-md-1">
+                                    Cons.
+                                </th>
+                                <th class="col-md-1">
+                                    FabPrice
+                                </th>
+
+                                <th class="col-md-1">
+                                    FabCost
+                                </th>
+
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="itm in item.items">
+                                        <td>
+                                            {{itm.ITEM_NAME_EN}}:{{itm.FABRIC_DESC}}
+                                        </td>
+
+                                        <td>
+                                            {{itm.YC_DIA}}
+                                        </td>
+
+
+                                        <td>
+                                            {{itm.FABRIC_CONS}}
+                                        </td>
+
+                                        <td>
+                                            {{itm.FABRIC_RATE}}
+                                        </td>
+
+                                        <td>
+                                            {{itm.FAB_COST_D}}
+                                        </td>
+
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+                        </td>
+
+                        <td>
+                            {{item.FAB_COST}}
+                        </td>
+
+                        <td>
+                            {{item.CM}}
+                        </td>
+
+                        <td>
+                            {{item.PRINT_COST}}
+                        </td>
+
+                        <td>
+                            {{item.TRIM_ACC}}
+                        </td>
+
+                        <td>
+                            {{(item.FOB*(item.COMMERCIAL+item.SERV)/100)|number:2}}
+                        </td>
+                        <td>
+                            {{item.FOB}}
+                        </td>
+
+                        <td>
+                            {{item.QUOTE_PRICE}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-4" align="left">
+                <button type="button" class="btn btn-sm blue" ng-click="vm.workMode()">Working Mode</button>
+                <button type="button" class="btn btn-sm blue">Send eMail</button>
+            </div>
+        </div>
+        <br />
+
+
+    </div>
+
+
+    <!-- set  with  combo -->
+    <div class="row" style="padding-top:10px;margin:auto;" ng-if="vm.Style.HAS_SET=='Y' && vm.Style.HAS_COMBO=='Y' && vm.Style.HAS_OPTION=='N'">
+
+        <div class="table-scrollable">
+            <table class="table table-condensed table-bordered">
+
+                <thead>
+                <th scope="col">
+                    SL
+                </th>
+
+                <th scope="col">
+                    Cmb/Mdl
+                </th>
+
+
+                <th scope="col">
+                    Item Description
+                </th>
+
+
+                <th class="text-center">
+                    Fabrication & Cost Section 
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+
+                <th>
+                    Fab.Cost
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+
+                <th>
+                    CM
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+                <th>
+                    Prt/Emb.
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+
+                <th>
+                    Trm&Acc
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+                <th>
+                    Comm.
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+                <th>
+                    FOB 
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+                <th>
+                    Quoted 
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+
+
+                <th scope="col"></th>
+
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in vm.allItemList">
+                        <td style="width:40px;">{{$index+1}}</td>
+                        <td style="width:40px;">{{item.COMBO_NO}}</td>
+                        <td ng-bind="item.ITEM_NAME_EN" style="width:150px;"></td>
+                        <td>
+                            <table class="table table-condensed table-hover table-bordered">
+                                <thead>
+                                <th class="col-md-3">
+                                    Item : Fabrication
+                                </th>
+                                <th class="col-md-1">
+                                    Cnt/Dia
+                                </th>
+                                <th class="col-md-1">
+                                    Cons.
+                                </th>
+                                <th class="col-md-1">
+                                    FabPrice
+                                </th>
+
+                                <th class="col-md-1">
+                                    FabCost
+                                </th>
+
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="itm in item.items">
+                                        <td>
+                                            {{itm.ITEM_NAME_EN}}:{{itm.FABRIC_DESC}}
+                                        </td>
+
+                                        <td>
+                                            {{itm.YC_DIA}}
+                                        </td>
+
+
+                                        <td>
+                                            {{itm.FABRIC_CONS}}
+                                        </td>
+
+                                        <td>
+                                            {{itm.FABRIC_RATE}}
+                                        </td>
+
+                                        <td>
+                                            {{itm.FAB_COST_D}}
+                                        </td>
+
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+                        </td>
+
+                        <td rowspan="{{vm.allItemList.length}}" ng-if="$index==0">
+                            {{vm.allItemList[0].FAB_COST}}
+                        </td>
+
+                        <td rowspan="{{vm.allItemList.length}}" ng-if="$index==0">
+                            {{vm.allItemList[0].CM}}
+                        </td>
+
+                        <td rowspan="{{vm.allItemList.length}}" ng-if="$index==0">
+                            {{vm.allItemList[0].PRINT_COST}}
+                        </td>
+
+                        <td rowspan="{{vm.allItemList.length}}" ng-if="$index==0">
+                            {{vm.allItemList[0].TRIM_ACC}}
+                        </td>
+
+                        <td rowspan="{{vm.allItemList.length}}" ng-if="$index==0">
+                            {{(vm.allItemList[0].FOB*(vm.allItemList[0].COMMERCIAL+vm.allItemList[0].SERV)/100)|number:2}}
+                        </td>
+                        <td rowspan="{{vm.allItemList.length}}" ng-if="$index==0">
+                            {{vm.allItemList[0].FOB}}
+                        </td>
+
+                        <td rowspan="{{vm.allItemList.length}}" ng-if="$index==0">
+                            {{vm.allItemList[0].QUOTE_PRICE}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-4" align="left">
+                <button type="button" class="btn btn-sm blue" ng-click="vm.workMode()">Working Mode</button>
+                <button type="button" class="btn btn-sm blue">Send eMail</button>
+            </div>
+        </div>
+        <br />
+
+
+    </div>
+
+    <!-- set  with with combo & Option -->
+    <div class="row" style="padding-top:10px;margin:auto;" ng-if="vm.Style.HAS_SET=='Y' && vm.Style.HAS_OPTION=='Y'">
+
+        <div class="table-scrollable">
+            <table class="table table-condensed table-bordered">
+
+                <thead>
+                <th scope="col">
+                    Opt
+                </th>
+
+
+                <th scope="col">
+                    Item Description
+                </th>
+
+
+                <th class="text-center">
+                    Fabrication & Cost Section
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+
+                <th>
+                    Fab.Cost
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+
+                <th>
+                    CM
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+                <th>
+                    Prt/Emb.
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+
+                <th>
+                    Trm&Acc
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+                <th>
+                    Comm.
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+                <th>
+                    FOB
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+                <th>
+                    Quoted
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+
+
+                <th scope="col"></th>
+
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in vm.allItemList">
+                        <td style="width:40px;" ng-bind="item.OPTION_NO"></td>
+                        <td ng-bind="item.ITEM_NAME_EN" style="width:150px;"></td>
+                        <td>
+                            <table class="table table-condensed table-hover table-bordered">
+                                <thead>
+                                <th class="col-md-3">
+                                    Item : Fabrication
+                                </th>
+                                <th class="col-md-1">
+                                    Cnt/Dia
+                                </th>
+                                <th class="col-md-1">
+                                    Cons.
+                                </th>
+                                <th class="col-md-1">
+                                    FabPrice
+                                </th>
+
+                                <th class="col-md-1">
+                                    FabCost
+                                </th>
+
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="itm in item.items">
+                                        <td>
+                                            <small> <b>{{itm.ITEM_NAME_EN}}</b>:{{itm.FABRIC_DESC}}</small>
+                                           
+                                        </td>
+
+                                        <td>
+                                            {{itm.YC_DIA}}
+                                        </td>
+
+
+                                        <td>
+                                            {{itm.FABRIC_CONS}}
+                                        </td>
+
+                                        <td>
+                                            {{itm.FABRIC_RATE}}
+                                        </td>
+
+                                        <td>
+                                            {{itm.FAB_COST_D}}
+                                        </td>
+
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+                        </td>
+
+                        <td>
+                            {{item.FAB_COST}}
+                        </td>
+
+                        <td>
+                            {{item.CM}}
+                        </td>
+
+                        <td>
+                            {{item.PRINT_COST}}
+                        </td>
+
+                        <td>
+                            {{item.TRIM_ACC}}
+                        </td>
+
+                        <td>
+                            {{(item.FOB*(item.COMMERCIAL+item.SERV)/100)|number:2}}
+                        </td>
+                        <td>
+                            {{item.FOB}}
+                        </td>
+
+                        <td>
+                            {{item.QUOTE_PRICE}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-4" align="left">
+                <button type="button" class="btn btn-sm blue" ng-click="vm.workMode()">Working Mode</button>
+                <button type="button" class="btn btn-sm blue">Send eMail</button>
+            </div>
+        </div>
+        <br />
+
+
+    </div>
+
+
+
+    <!--Other  with Without combo-->
+    <div class="row" style="padding-top:10px;margin:auto;" ng-if="vm.Style.HAS_SET=='N' && vm.Style.HAS_COMBO=='N'">
+
+        <div class="table-scrollable">
+            <table class="table table-condensed table-bordered">
+
+                <thead>
+                <th scope="col">
+                    SL
+                </th>
+
+                <th scope="col">
+                    Item Desc.
+                </th>
+
+
+                <th>
+                   Fabrication
+                </th>
+
+                <th>
+                    Count/Dia
+                </th>
+
+                <th>
+                    Consump.
+                </th>
+
+                <th>
+                   Fab.Price
+                </th>
+
+                <th>
+                    Fab.Cost
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+
+                <th>
+                    CM
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+                <th>
+                    Print/Embr.
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+
+                <th>
+                    Trim&Acc
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+                <th>
+                    Comm.
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+                <th>
+                    FOB 
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+                <th>
+                    Quoted
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+
+
+                <th scope="col"></th>
+
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in vm.allItemList">
+                        <td style="width:40px;">{{$index+1}}</td>
+                        <td ng-bind="item.ITEM_NAME_EN" style="width:150px;"></td>
+                        <td>
+                           {{item.FABRIC_DESC}}
+                        </td>
+
+                        <td>
+                            {{item.YC_DIA}}
+                        </td>
+
+                        <td>
+                            {{item.FABRIC_CONS}}
+                        </td>
+
+                        <td>
+                            {{item.FABRIC_RATE}}
+                        </td>
+
+                        <td>
+                            {{item.FAB_COST}}
+                        </td>
+
+                        <td>
+                            {{item.CM}}
+                        </td>
+
+                        <td>
+                            {{item.PRINT_COST}}
+                        </td>
+
+                        <td>
+                            {{item.TRIM_ACC}}
+                        </td>
+
+                        <td>
+                            {{(item.FOB*(item.COMMERCIAL+item.SERV)/100)|number:2}}
+                        </td>
+                        <td>
+                            {{item.FOB}}
+                        </td>
+
+                        <td>
+                            {{item.QUOTE_PRICE}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-4" align="left">
+                <button type="button" class="btn btn-sm blue" ng-click="vm.workMode()">Working Mode</button>
+                <button type="button" class="btn btn-sm blue">Send eMail</button>
+            </div>
+        </div>
+        <br />
+
+
+    </div>
+
+    <!-- Other  with  combo-->
+    <div class="row" style="padding-top:10px;margin:auto;" ng-if="vm.Style.HAS_SET=='N' && vm.Style.HAS_COMBO=='Y'">
+
+        <div class="table-scrollable">
+            <table class="table table-condensed table-bordered">
+
+                <thead>
+
+                <th scope="col">
+                    SL
+                </th>
+
+                <th scope="col">
+                    Item Description
+                </th>
+
+
+                <th class="text-center">
+                    Fabrication & Cost Section
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+
+                </th>
+
+                <th>
+                    Fab.Cost
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+
+                <th>
+                    CM
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+                <th>
+                    Prt/Emb.
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+
+                <th>
+                    Trm&Acc
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+                <th>
+                    Comm.
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+                <th>
+                    FOB
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+                <th>
+                    Quoted
+                    <br />
+                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                </th>
+
+
+                <th scope="col"></th>
+
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in vm.allItemList">
+                        <td style="width:40px;">{{$index+1}}</td>
+                        <td ng-bind="item.ITEM_NAME_EN" style="width:150px;"></td>
+                        <td>
+                            <table class="table table-condensed table-hover table-bordered">
+                                <thead>
+                                <th class="col-md-3">
+                                    Item : Fabrication
+                                </th>
+                                <th class="col-md-1">
+                                    Cnt/Dia
+                                </th>
+                                <th class="col-md-1">
+                                    Cons.
+                                </th>
+                                <th class="col-md-1">
+                                    FabPrice
+                                </th>
+
+                                <th class="col-md-1">
+                                    FabCost
+                                </th>
+
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="itm in item.items">
+                                        <td>
+                                            {{itm.ITEM_NAME_EN}}:{{itm.FABRIC_DESC}}
+                                        </td>
+
+                                        <td>
+                                            {{itm.YC_DIA}}
+                                        </td>
+
+
+                                        <td>
+                                            {{itm.FABRIC_CONS}}
+                                        </td>
+
+                                        <td>
+                                            {{itm.FABRIC_RATE}}
+                                        </td>
+
+                                        <td>
+                                            {{itm.FAB_COST_D}}
+                                        </td>
+
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+                        </td>
+
+                        <td>
+                            {{item.FAB_COST}}
+                        </td>
+
+                        <td>
+                            {{item.CM}}
+                        </td>
+
+                        <td>
+                            {{item.PRINT_COST}}
+                        </td>
+
+                        <td>
+                            {{item.TRIM_ACC}}
+                        </td>
+
+                        <td>
+                            {{(item.FOB*(item.COMMERCIAL+item.SERV)/100)|number:2}}
+                        </td>
+                        <td>
+                            {{item.FOB}}
+                        </td>
+
+                        <td>
+                            {{item.QUOTE_PRICE}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-4" align="left">
+                <button type="button" class="btn btn-sm blue" ng-click="vm.workMode()">Working Mode</button>
+                <button type="button" class="btn btn-sm blue">Send eMail</button>
+            </div>
+        </div>
+        <br />
+
+    </div>
+
+</fieldset>

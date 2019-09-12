@@ -1,0 +1,32 @@
+﻿<div class="portlet box" style="height:1000px;">
+        <div class="portlet-body">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        <div class="row well well-sm" style="margin:5px;">
+            <label class="col-md-1 control-label" style="padding-left: 0px; padding-right: 0px;">
+                Year
+            </label>
+
+            <div class="col-md-2" style="padding-left:0px;padding-right:0px;">
+                <select class="form-control" kendo-drop-down-list name="RF_FISCAL_YEAR_ID"
+                        k-data-text-field="'FY_NAME_EN'" k-data-value-field="'RF_FISCAL_YEAR_ID'" k-option-label="'-- Select --'"
+                        k-auto-bind="'true'" k-options="vm.fiscalYearOpt" ng-model="vm.form.RF_FISCAL_YEAR_ID"
+                        k-on-change="vm.onFiscalYearChange(kendoEvent)"></select>
+            </div>
+ 
+        </div>
+        <div class="row" style="margin:5px;">
+            <tabset>
+                <tab ng-repeat="tab in vm.tabList" deselect="tab.IS_TAB_ACT=false" select="tab.IS_TAB_ACT=true;vm.onSelect(tab)" heading="{{tab.MONTH_NAME_EN}}" active="tab.IS_TAB_ACT">
+                    <div data-ui-view="TabInside{{tab.IS_TAB_ACT?'':0}}"></div>
+                </tab>
+            </tabset>
+        </div>
+    </div>
+</div>

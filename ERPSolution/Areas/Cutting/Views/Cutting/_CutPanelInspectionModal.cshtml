@@ -1,0 +1,255 @@
+﻿<div class="modal-body">
+    <div class="portlet grey-cascade box">
+        <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+
+        <div class="portlet-title">
+            <div>
+                <h3 style="padding-top:10px;margin-top:3px;">
+                    Cut Panel Inspection: Fabric Defects
+                    <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                </h3>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div class="row" style="margin:auto;">
+                <table class="table table-condensed table-responsive table-bordered">
+                    <thead>
+                        <tr>
+                            <th>
+                              Part: {{CurrentBundle.GARM_PART_NAME}}>> Buyer: {{CurrentBundle.BYR_ACC_GRP_NAME_EN}}>> Style: {{CurrentBundle.STYLE_NO}}>> Order: {{CurrentBundle.ORDER_NO}}>> Color: {{CurrentBundle.COLOR_NAME_EN}}
+                               
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <div class="row list-separated" style="background-color: black; margin-bottom: 0px; margin: auto;font-size:40px;">
+
+                                    <div class="col-md-2 col-sm-2">
+                                        <div class="font-grey-mint font-sm">
+                                            Cutting No
+                                        </div>
+                                        <div class="uppercase  font-yellow-gold" style="font-size:40px;">
+                                            <b><b>{{CurrentBundle.CUTNG_NO}}</b></b>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2 col-sm-2">
+                                        <div class="font-grey-mint font-sm">
+                                            Bundle No
+                                        </div>
+                                        <div class="uppercase font-blue-sharp" style="font-size:40px;">
+                                            <b><b>{{CurrentBundle.BUNDLE_NO}}</b></b>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="font-grey-mint font-sm">
+                                            SL
+                                        </div>
+                                        <div class="uppercase font-yellow-gold" style="font-size:40px;">
+                                            <b><b>{{CurrentBundle.SL_RANGE_TXT}}</b></b>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-2">
+                                        <div class="font-grey-mint font-sm">
+                                             Quantity
+                                        </div>
+                                        <div class="uppercase font-yellow-gold" style="font-size:40px;">
+                                            <b><b>{{CurrentBundle.QTY_IN_BNDL}}</b></b>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="col-md-10" style="padding:1px;">
+                                    <table class="table table-condensed table-responsive table-bordered" style="padding: 2px; margin-bottom: 2px;">
+                                        <tbody>
+                                            <tr>
+                                                <td style="padding-bottom: 5px; padding-top: 0px;" ng-repeat="item in CurrentBundle.defects|limitTo :4:0">
+                                                    <b>{{item.DISPLAY_ORDER}}. {{item.FB_DFCT_TYPE_NAME}}</b>
+                                                    <div class="input-group" style="padding-left: 15px; padding-right: 15px;">
+                                                        <span class="input-group-btn">
+                                                            <button class="btn  red" ng-disabled="item.NO_OF_DFCT==0" ng-click="addOne(item,-1);" type="button"><b> &nbsp; &nbsp; &nbsp; - &nbsp; &nbsp; &nbsp;</b></button>
+                                                        </span>
+                                                        <input type="number" ng-model="item.NO_OF_DFCT" ng-click="setSelected(item, CurrentBundle.defects)" ng-style="{'background-color': item.SELECTED ?'blue':'white','color': item.SELECTED ?'white':'','color': item.SELECTED ?'white':'', 'color': item.NO_OF_DFCT > 0 ? '#E87E04':'', 'font-weight': item.NO_OF_DFCT > 0 ? '800':'600'  }" style="height: 35px; font-size: 20px;text-align:center;font-weight: 600;" readonly min="0" class="form-control">
+                                                        <span class="input-group-btn">
+                                                            <button class="btn   green" ng-disabled="item.NO_OF_DFCT==99" ng-click="addOne(item,1);setSelected(item, CurrentBundle.defects);" type="button"><b> &nbsp; &nbsp; &nbsp; + &nbsp; &nbsp; &nbsp;</b></button>
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                           </tr>
+
+                                            <tr>
+                                                <td style="padding-bottom: 5px; padding-top: 0px;" ng-repeat="item in CurrentBundle.defects|limitTo :4:4">
+                                                    <b>{{item.DISPLAY_ORDER}}. {{item.FB_DFCT_TYPE_NAME}}</b>
+                                                    <div class="input-group" style="padding-left: 15px; padding-right: 15px;">
+                                                        <span class="input-group-btn">
+                                                            <button class="btn  red" ng-click="addOne(item,-1);" ng-disabled="item.NO_OF_DFCT==0" type="button"><b> &nbsp; &nbsp; &nbsp; - &nbsp; &nbsp; &nbsp;</b></button>
+                                                        </span>
+                                                        <input type="number" ng-model="item.NO_OF_DFCT" ng-click="setSelected(item, CurrentBundle.defects)" ng-style="{'background-color': item.SELECTED ?'blue':'white','color': item.SELECTED ?'white':'','color': item.SELECTED ?'white':'', 'color': item.NO_OF_DFCT > 0 ? '#E87E04':'', 'font-weight': item.NO_OF_DFCT > 0 ? '800':'600' }" style="height: 35px; font-size: 20px;text-align:center;font-weight: 600;" readonly min="0" class="form-control">
+                                                        <span class="input-group-btn">
+                                                            <button class="btn   green" ng-disabled="item.NO_OF_DFCT==99" ng-click="addOne(item,1);setSelected(item, CurrentBundle.defects);" type="button"><b> &nbsp; &nbsp; &nbsp; + &nbsp; &nbsp; &nbsp;</b></button>
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td style="padding-bottom: 5px; padding-top: 0px;" ng-repeat="item in CurrentBundle.defects|limitTo :4:8">
+                                                    <b>{{item.DISPLAY_ORDER}}. {{item.FB_DFCT_TYPE_NAME}}</b>
+                                                    <div class="input-group" style="padding-left: 15px; padding-right: 15px;">
+                                                        <span class="input-group-btn">
+                                                            <button class="btn  red" ng-click="addOne(item,-1);"  type="button" ng-disabled="item.NO_OF_DFCT==0"><b> &nbsp; &nbsp; &nbsp; - &nbsp; &nbsp; &nbsp;</b></button>
+                                                        </span>
+                                                        <input type="number" ng-model="item.NO_OF_DFCT" ng-click="setSelected(item, CurrentBundle.defects)" ng-style="{'background-color': item.SELECTED ?'blue':'white','color': item.SELECTED ?'white':'','color': item.SELECTED ?'white':'', 'color': item.NO_OF_DFCT > 0 ? '#E87E04':'', 'font-weight': item.NO_OF_DFCT > 0 ? '800':'600' }" style="height: 35px; font-size: 20px;text-align:center;font-weight: 600;" readonly min="0" class="form-control">
+                                                        <span class="input-group-btn">
+                                                            <button class="btn   green" ng-click="addOne(item,1);setSelected(item, CurrentBundle.defects);" ng-disabled="item.NO_OF_DFCT==99" type="button"><b> &nbsp; &nbsp; &nbsp; + &nbsp; &nbsp; &nbsp;</b></button>
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td style="padding-bottom: 5px; padding-top: 0px;" ng-repeat="item in CurrentBundle.defects|limitTo :4:12">
+                                                    <b>{{item.DISPLAY_ORDER}}. {{item.FB_DFCT_TYPE_NAME}}</b>
+                                                    <div class="input-group" style="padding-left: 15px; padding-right: 15px;">
+                                                        <span class="input-group-btn">
+                                                            <button class="btn  red" ng-click="addOne(item,-1);" ng-disabled="item.NO_OF_DFCT==0" type="button"><b> &nbsp; &nbsp; &nbsp; - &nbsp; &nbsp; &nbsp;</b></button>
+                                                        </span>
+                                                        <input type="number" ng-model="item.NO_OF_DFCT" ng-click="setSelected(item, CurrentBundle.defects)" ng-style="{'background-color': item.SELECTED ?'blue':'white','color': item.SELECTED ?'white':'','color': item.SELECTED ?'white':'', 'color': item.NO_OF_DFCT > 0 ? '#E87E04':'', 'font-weight': item.NO_OF_DFCT > 0 ? '800':'600' }" style="height: 35px; font-size: 20px;text-align:center;font-weight: 600;" readonly min="0" class="form-control">
+                                                        <span class="input-group-btn">
+                                                            <button class="btn   green" ng-click="addOne(item,1);setSelected(item, CurrentBundle.defects);" ng-disabled="item.NO_OF_DFCT==99" type="button"><b> &nbsp; &nbsp; &nbsp; + &nbsp; &nbsp; &nbsp;</b></button>
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td style="padding-bottom: 5px; padding-top: 0px;" ng-repeat="item in CurrentBundle.defects|limitTo :4:16">
+                                                    <b>{{item.DISPLAY_ORDER}}. {{item.FB_DFCT_TYPE_NAME}}</b>
+                                                    <div class="input-group" style="padding-left: 15px; padding-right: 15px;">
+                                                        <span class="input-group-btn">
+                                                            <button class="btn  red" ng-click="addOne(item,-1);" type="button" ng-disabled="item.NO_OF_DFCT==0"><b> &nbsp; &nbsp; &nbsp; - &nbsp; &nbsp; &nbsp;</b></button>
+                                                        </span>
+                                                        <input type="number" ng-model="item.NO_OF_DFCT" ng-click="setSelected(item, CurrentBundle.defects)" ng-style="{'background-color': item.SELECTED ?'blue':'white','color': item.SELECTED ?'white':'', 'color': item.NO_OF_DFCT > 0 ? '#E87E04':'', 'font-weight': item.NO_OF_DFCT > 0 ? '800':'600'}" style="height: 35px; font-size: 20px;text-align:center;font-weight: 600;" readonly min="0" class="form-control">
+                                                        <span class="input-group-btn">
+                                                            <button class="btn   green" ng-click="addOne(item,1);setSelected(item, CurrentBundle.defects);" ng-disabled="item.NO_OF_DFCT==99" type="button"><b> &nbsp; &nbsp; &nbsp; + &nbsp; &nbsp; &nbsp;</b></button>
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+                                <div class="col-md-2" style="padding:1px;">
+                                    <table class="table table-condensed table-responsive table-bordered" style="padding: 0px; margin-bottom: 2px;">
+                                        <tbody>
+
+                                            <tr>
+
+                                                <td>
+                                                    <br />
+                                                    <br />
+                                                    <br />
+
+                                 
+                                                </td>
+
+                                            </tr>
+
+
+
+
+                                            <tr>
+
+                                                <td style="padding-bottom: 5px; padding-top: 0px;">
+                                                    <h1 style="font-size: 40px;font-weight:900">{{CurrentBundle.NO_OF_PANEL_REJ||0}}</h1>   Panel Reject
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>
+                                <div class="btn-group btn-group-justified">
+                      
+                                    <a class="btn btn-lg yellow-gold" ng-click="selectedDefect.NO_OF_DFCT > 99? selectedDefect.NO_OF_DFCT: selectedDefect.NO_OF_DFCT=(selectedDefect.NO_OF_DFCT+'1')*1;setTotalPnlRej()" ng-disabled="!selectedDefect">
+                                        <h1 style="margin:0px;"><b>1</b></h1>
+                                    </a>
+                                    <a class="btn btn-lg yellow-gold" ng-click="selectedDefect.NO_OF_DFCT > 99? selectedDefect.NO_OF_DFCT: selectedDefect.NO_OF_DFCT=(selectedDefect.NO_OF_DFCT+'2')*1;setTotalPnlRej()" ng-disabled="!selectedDefect">
+                                        <h1 style="margin:0px;"><b>2</b></h1>
+                                    </a>
+                                    <a class="btn btn-lg yellow-gold" ng-click="selectedDefect.NO_OF_DFCT > 99? selectedDefect.NO_OF_DFCT: selectedDefect.NO_OF_DFCT=(selectedDefect.NO_OF_DFCT+'3')*1;setTotalPnlRej()" ng-disabled="!selectedDefect">
+                                        <h1 style="margin:0px;"><b>3</b></h1>
+                                    </a>
+                                    <a class="btn btn-lg yellow-gold" ng-click="selectedDefect.NO_OF_DFCT > 99? selectedDefect.NO_OF_DFCT: selectedDefect.NO_OF_DFCT=(selectedDefect.NO_OF_DFCT+'4')*1;setTotalPnlRej()" ng-disabled="!selectedDefect">
+                                        <h1 style="margin:0px;"><b>4</b></h1>
+                                    </a>
+                                    <a class="btn btn-lg yellow-gold" ng-click="selectedDefect.NO_OF_DFCT > 99? selectedDefect.NO_OF_DFCT: selectedDefect.NO_OF_DFCT=(selectedDefect.NO_OF_DFCT+'5')*1;setTotalPnlRej()" ng-disabled="!selectedDefect">
+                                        <h1 style="margin:0px;"><b>5</b></h1>
+                                    </a>
+                                    <a class="btn btn-lg yellow-gold" ng-click="selectedDefect.NO_OF_DFCT > 99? selectedDefect.NO_OF_DFCT: selectedDefect.NO_OF_DFCT=(selectedDefect.NO_OF_DFCT+'6')*1;setTotalPnlRej()" ng-disabled="!selectedDefect">
+                                        <h1 style="margin:0px;"><b>6</b></h1>
+                                    </a>
+
+                                    <a class="btn btn-lg yellow-gold" ng-click="selectedDefect.NO_OF_DFCT > 99? selectedDefect.NO_OF_DFCT: selectedDefect.NO_OF_DFCT=(selectedDefect.NO_OF_DFCT+'7')*1;setTotalPnlRej()" ng-disabled="!selectedDefect">
+                                        <h1 style="margin:0px;"><b>7</b></h1>
+                                    </a>
+
+                                    <a class="btn btn-lg yellow-gold" ng-click="selectedDefect.NO_OF_DFCT > 99? selectedDefect.NO_OF_DFCT: selectedDefect.NO_OF_DFCT=(selectedDefect.NO_OF_DFCT+'8')*1;setTotalPnlRej()" ng-disabled="!selectedDefect">
+                                        <h1 style="margin:0px;"><b>8</b></h1>
+                                    </a>
+                                    <a class="btn btn-lg yellow-gold" ng-click="selectedDefect.NO_OF_DFCT > 99? selectedDefect.NO_OF_DFCT: selectedDefect.NO_OF_DFCT=(selectedDefect.NO_OF_DFCT+'9')*1;setTotalPnlRej()" ng-disabled="!selectedDefect">
+                                        <h1 style="margin:0px;"><b>9</b></h1>
+                                    </a>
+                                    <a class="btn btn-lg yellow-gold" ng-click="selectedDefect.NO_OF_DFCT > 99? selectedDefect.NO_OF_DFCT: selectedDefect.NO_OF_DFCT=(selectedDefect.NO_OF_DFCT+'0')*1;setTotalPnlRej()" ng-disabled="!selectedDefect">
+                                        <h1 style="margin:0px;"><b>0</b></h1>
+                                    </a>
+                                    <a class="btn btn-lg yellow-gold" ng-disabled="!selectedDefect" ng-click="onTrimDigit()">
+                                        <b><i class="fa  fa-arrow-left"></i></b>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                               <div class="row" style="padding-top:20px;">
+                                   <div class="col-md-4"style="text-align: left; padding-left: 20px; padding-right: 100px;">
+                                       <a class="btn purple-plum btn-lg btn-block" ng-click="prev()" ng-disabled="SL==1">
+                                           <i class="fa  fa-chevron-left"></i> Previous
+                                       </a>
+                                   </div>
+                                   <div class="col-md-4" style="text-align:center;padding-left:20px;padding-right:20px;" ng-click="save(BundleCaradList)">
+                                       <a class="btn bg-blue-soft btn-lg btn-block">
+                                           Save
+                                       </a>
+                                   </div>
+
+                                   <div class="col-md-4" style="text-align: right; padding-left: 100px; padding-right: 20px;">
+                                       <a class="btn purple-plum btn-lg btn-block" ng-click="next()" ng-disabled="SL==MAX_SL">
+                                           Next <i class="fa   fa-chevron-right"></i>
+                                       </a>
+                                   </div>
+                               </div>
+                            </td>
+                        </tr>
+                    </tfoot>
+
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>

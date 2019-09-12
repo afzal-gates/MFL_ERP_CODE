@@ -1,0 +1,945 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#">Budget Sheet</a>
+    </li>
+</ul>
+
+<style>
+    .no-margin {
+        margin-bottom:0px;
+        margin-top:0px;
+    }
+</style>
+
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption">
+          Budget Sheet
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+
+
+        <ng-form class="form-horizontal" role="form" name="bulkFabBooking">
+
+            <div class="form-body clearfix">
+                <div class="row" style="margin:auto;">
+                    <div>
+                        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;" ng-disabled="true">
+                            <legend class="custom-legend"> Key Information</legend>
+
+                            <input type="hidden" name="MC_BLK_FAB_REQ_H_ID" ng-model="vm.form.MC_BLK_FAB_REQ_H_ID" class="form-control" />
+
+                            <div class="form-group">
+
+                                <label class="col-md-2 control-label">
+                                   Buyer A/C
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" ng-model="vm.form.BYR_ACC_NAME_EN" />
+                                </div>
+
+                                <label class="col-md-2 control-label">
+                                    Style #
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" ng-model="vm.form.STYLE_NO" />
+                                </div>
+
+                            </div>
+
+                           <div class="form-group">
+                                <label class="col-md-2 control-label">
+                                    Style Name
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" ng-model="vm.form.STYLE_DESC" />
+                                </div>
+
+
+                                <label class="col-md-2 control-label">
+                                    Order No
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" ng-model="vm.form.ORDER_NO_LIST" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+
+
+                                <label class="col-md-2 control-label">
+                                    Currency
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" ng-model="vm.form.CURR_NAME_EN" />
+                                </div>
+
+                                <label class="col-md-1 control-label" style="padding-left:0px;padding-right:0px;">
+                                    Conv. Loc.
+                                </label>
+                                <div class="col-md-1">
+                                    <input type="number" class="form-control" ng-model="vm.form.CURR_CONV_LOC"/>
+                                </div>
+                                <label class="col-md-2 control-label">
+                                    OQ
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="number" class="form-control" ng-model="vm.form.TOT_ORD_QTY" />
+                                </div>
+
+                                <div class="col-md-1">
+                                    <input type="text" class="form-control" ng-model="vm.form.ORD_MOU_CODE" />
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">
+                                    Order Value
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="number" class="form-control" ng-model="vm.form.TOT_ORD_VALUE"  />
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-md-2 control-label checkbox-inline">
+                                    Item/Model #
+                                </label>
+                                <div class="col-md-10">
+                                    <input type="text" class="form-control" ng-model="vm.form.ITEM_NAME_LIST" />
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-if="vm.form.REVISION_NO!=null">
+                                <label class="col-md-2 control-label">
+                                    Revision #
+                                </label>
+                                <div class="col-md-1">
+                                    <input type="text" class="form-control" name="REVISION_NO" ng-model="vm.form.REVISION_NO"/>
+                                </div>
+
+                                <label class="col-md-1 control-label">
+                                    Rev. Date
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" ng-model="vm.form.REVISION_DT"/>
+                                </div>
+                                <label class="col-md-1 control-label">
+                                    Reason
+                                </label>
+                                <div class="col-md-5">
+                                    <textarea class="form-control" ng-model="vm.form.REV_REASON" rows="2"></textarea>
+                                </div>
+
+                            </div>
+
+
+
+                        </fieldset>
+
+                       
+                    </div>
+                </div>
+            </div>
+        </ng-form>
+
+        <div class="row" style="margin:auto;">
+            <div class="col-md-12" align="right">
+                <button class="btn btn-xs blue" ng-click="vm.getFile(vm.form)"><i class="fa fa-file-pdf-o"></i> Fabric Booking</button>
+            </div>
+        </div>
+        @*<embed ng-src="{{content}}" style="width:100%;height:200px;"></embed>*@
+
+
+
+            <div class="form-body clearfix">
+                <div class="row" style="margin:auto;">
+                    <tabset>
+                        <tab heading="Bill of Material">
+                            
+                                <form class="form-horizontal" role="form" name="StyleBomBlkForm" novalidate ng-submit="vm.submitData(vm.ItemData,token)">
+                                    <fieldset ng-disabled="vm.form.IS_BGT_FINALIZED==='Y'">
+                                        <details ng-repeat="item in vm.ItemData" ng-open="item.inv_items_view.length>0">
+                                            <br />
+                                            <summary class="large_bold_black"><b>{{($index+1)+' .'+item.ITEM_CAT_NAME_EN}}</b></summary>
+                                            <input type="hidden" ng-init="item.index=$index" ng-model="item.index" />
+                                            <table class="table table-condensed table-striped table-bordered" style="padding:0px;">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="col-md-3">
+                                                            <small>
+                                                                Item Name
+                                                            </small>
+
+                                                        </th>
+                                                        <th class="col-md-1">
+                                                            <small>
+                                                                Qty
+                                                            </small>
+
+                                                        </th>
+
+
+                                                        <th class="col-md-1">
+                                                            <small>
+                                                                Acc.Ut.
+                                                            </small>
+                                                        </th>
+
+
+                                                        <th class="col-md-1">
+                                                            <small>
+                                                                Addi.(%)
+                                                            </small>
+
+                                                        </th>
+
+
+                                                        <th class="col-md-1">
+                                                            <small>
+                                                                Rate
+                                                            </small>
+                                                        </th>
+
+                                                        <th class="col-md-1">
+                                                            <small>
+                                                                Purc.Ut
+                                                            </small>
+                                                        </th>
+
+                                                        <th class="col-md-1">
+                                                            <small>
+                                                                Cost
+                                                            </small>
+                                                        </th>
+
+
+                                                        <th class="col-md-1">
+                                                            <small>Remarks</small>
+                                                        </th>
+                                                        <th class="col-md-1" >
+                                                            <span class="col-md-10" style="padding-left: 0px; padding-right: 0px;">
+                                                                <a ng-click='vm.add(item)' class='btn btn-xs blue'><i class='fa fa-plus'> </i></a>
+                                                                <a ng-click='vm.refresh(item)' class='btn btn-xs purple' ng-disabled="!((item.ITEM_CAT_CODE=='FB')||(item.ITEM_CAT_CODE=='YR'))"><i class='fa fa-refresh'> </i></a>
+                                                            </span>
+                                                            <span class="col-md-2" style="padding-left: 0px; padding-right: 0px;">
+                                                                <i class="fa fa-info-circle" kendo-tooltip k-content="'Check to Add for Booking'"></i>
+                                                            </span>
+
+                                                        </th>
+                                                        <th>
+                                                            Status
+                                                        </th>  
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    <tr ng-repeat="itm in item.inv_items_view">
+                                                        <td>
+                                                            <span ng-if="itm.ITEM_NAME_EN && !itm.edit">
+                                                                {{itm.ITEM_NAME_EN}}
+                                                                <a class="badge" ng-class="itm.RATE_EST==itm.PURCH_PRICE?'badge-success':'badge-default'" ng-click="itm.RATE_EST=itm.PURCH_PRICE" ng-if="item.ITEM_CAT_CODE==='YR'">Local: <b>{{itm.PURCH_PRICE}}</b></a>
+                                                                <a class="badge" ng-class="itm.RATE_EST==itm.IMP_PRICE?'badge-success':'badge-default'" ng-click="itm.RATE_EST=itm.IMP_PRICE" ng-if="item.ITEM_CAT_CODE==='YR'">Import: <b>{{itm.IMP_PRICE}}</b></a>
+                                                            </span>
+                                                            <span ng-if="!itm.ITEM_NAME_EN" ng-class="{'danger':StyleBomBlkForm['INV_ITEM_ID-{{item.index+'-'+$index}}'].$invalid}">
+
+                                                                <select kendo-drop-down-list
+                                                                        options="vm.ItemListForDD" name="INV_ITEM_ID-{{item.index+'-'+$index}}" ng-model="itm.INV_ITEM_ID" ng-change="vm.onItemChange(itm,item)" required class="form-control"></select>
+                                                                <a class="badge" ng-class="itm.RATE_EST==itm.PURCH_PRICE?'badge-success':'badge-default'" ng-click="itm.RATE_EST=itm.PURCH_PRICE" ng-if="item.ITEM_CAT_CODE==='YR'">Local: <b>{{itm.PURCH_PRICE||0}}</b></a>
+                                                                <a class="badge" ng-class="itm.RATE_EST==itm.IMP_PRICE?'badge-success':'badge-default'" ng-click="itm.RATE_EST=itm.IMP_PRICE" ng-if="item.ITEM_CAT_CODE==='YR'">Import: <b>{{itm.IMP_PRICE||0}}</b></a>
+                                                            </span>
+
+                                                            <span ng-if="itm.edit">
+                                                                <select kendo-drop-down-list
+                                                                        options="vm.ItemListForDD" name="INV_ITEM_ID-{{item.index+'-'+$index}}" ng-model="itm.INV_ITEM_ID" ng-change="vm.onItemChange(itm,item)" required class="form-control"></select>
+                                                                <a class="badge" ng-class="itm.RATE_EST==itm.PURCH_PRICE?'badge-success':'badge-default'" ng-click="itm.RATE_EST=itm.PURCH_PRICE" ng-if="item.ITEM_CAT_CODE==='YR'">Local: <b>{{itm.PURCH_PRICE||0}}</b></a>
+                                                                <a class="badge" ng-class="itm.RATE_EST==itm.IMP_PRICE?'badge-success':'badge-default'" ng-click="itm.RATE_EST=itm.IMP_PRICE" ng-if="item.ITEM_CAT_CODE==='YR'">Import: <b>{{itm.IMP_PRICE||0}}</b></a>
+                                                            </span>
+
+                                                        </td>
+                                                        <td ng-class="{'danger':StyleBomBlkForm['QTY_EST-{{item.index+'-'+$index}}'].$invalid}">
+                                                            <input type="number" min="0.001" name="QTY_EST-{{item.index+'-'+$index}}" ng-model="itm.QTY_EST" class="form-control" required />
+                                                        </td>
+
+
+                                                        <td ng-class="{'danger':StyleBomBlkForm['ACCT_MOU_ID-{{item.index+'-'+$index}}'].$invalid}">
+                                                            <select kendo-drop-down-list name="ACCT_MOU_ID-{{item.index+'-'+$index}}"
+                                                                    options="vm.MOUList" id="ACCT_MOU_ID" ng-model="itm.ACCT_MOU_ID" class="form-control"></select>
+                                                        </td>
+
+
+                                                        <td ng-class="{'danger':StyleBomBlkForm['PCT_ADD_QTY-{{item.index+'-'+$index}}'].$invalid}">
+                                                            <input type="number" min="0" name="PCT_ADD_QTY-{{item.index+'-'+$index}}" ng-model="itm.PCT_ADD_QTY" class="form-control" />
+
+                                                        </td>
+
+
+                                                        <td ng-class="{'danger':StyleBomBlkForm['RATE_EST-{{item.index+'-'+$index}}'].$invalid}">
+                                                            <input type="number" min="0" name="RATE_EST-{{item.index+'-'+$index}}" ng-init="itm.RATE_EST=itm.RATE_EST?itm.RATE_EST:itm.PURCH_PRICE" ng-model="itm.RATE_EST" class="form-control" required />
+                                                        </td>
+
+                                                        <td ng-class="{'danger':StyleBomBlkForm['PURCH_MOU_ID-{{item.index+'-'+$index}}'].$invalid}">
+
+                                                            <select kendo-drop-down-list name="PURCH_MOU_ID-{{item.index+'-'+$index}}"
+                                                                    options="vm.MOUList" id="PURCH_MOU_ID" ng-model="itm.PURCH_MOU_ID" required class="form-control"></select>
+                                                        </td>
+
+                                                        <td>
+                                                            <input type="text" ng-value="itm.Cost=((itm.QTY_EST*itm.RATE_EST)*(1+((itm.PCT_ADD_QTY||0)/100)))" ng-model="itm.Cost" class="form-control" ui-number-mask readonly />
+
+
+                                                        </td>
+
+                                                        <td>
+                                                            <input type="text" name="REMARKS" ng-model="itm.REMARKS" class="form-control" />
+                                                        </td>
+                                                        <td>
+                                                            <span class="col-md-10" style="padding-left: 0px; padding-right: 0px;">
+                                                                <a ng-click='vm.remove(item,itm)' class='btn btn-xs red'><i class='fa fa-times'> </i></a>
+                                                                <a class='btn btn-xs blue' ng-click="vm.editItem(item,itm)" ng-disabled="!itm.ITEM_NAME_EN"><i class='fa' ng-class="{'fa-pencil': !itm.edit,'fa-ban':itm.edit}"> </i></a>
+                                                            </span>
+                                                            <span class="col-md-2" style="padding-left: 0px; padding-right: 0px;">
+                                                                <input type="checkbox" ng-model="itm.IS_CHK_BK" ng-disabled="((item.ITEM_CAT_CODE=='FB')||(item.ITEM_CAT_CODE=='YR')) && vm.form.IS_BGT_FINALIZED=='N' && item.IS_PO_CREATED =='Y'" ng-change="vm.blkBomIdListsForBooking(itm.IS_CHK_BK,itm.MC_STYLE_BLK_BOM_ID,itm.INV_ITEM_ID)" />
+                                                            </span>
+
+                                                            
+                                                        </td>
+                                                        <td>
+                                                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{itm.BOOKED_QTY}}" style="width:100%" aria-valuemin="0" aria-valuemax="{{itm.QTY_EST}}" ng-style="{width: (itm.BOOKED_QTY/itm.QTY_EST)*100 + '%'}"><h6 style="margin:0px;padding:0px;">{{itm.BOOKED_QTY}} / {{itm.QTY_EST}}/{{(itm.BOOKED_QTY/itm.QTY_EST)*100|number:2}}%</h6></div>
+
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr style="padding:0px;" ng-if="item.inv_items_view[0].INV_ITEM_CAT_ID==2">
+                                                        <td align="right">
+                                                            Sub Total
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" ng-model="item.inv_items_view.TOT_QTY" class="form-control" readonly />
+                                                        </td>
+
+                                                        <td></td>
+
+
+                                                        <td></td>
+
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td>
+                                                            <input type="number" ng-model="item.inv_items_view.TOT_COST" class="form-control" readonly />
+                                                        </td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                </tbody>
+
+                                            </table>
+
+
+
+
+                                        </details>                                
+                                   </fieldset>
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <button type="submit" class="btn btn-sm green" ng-class="{'disabled':StyleBomBlkForm.$invalid || vm.form.IS_BGT_FINALIZED==='Y'}">Save</button>
+                                    <button type="button" class="btn btn-sm default" ng-class="{'disabled': vm.form.IS_BGT_FINALIZED==='Y'}" ng-click="vm.cancel()">Cancel</button>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <button type="button" class="btn btn-sm btn-warning" ng-click="vm.blkBomReset()" ng-if="!vm.form.REVISION_NO">Reset</button>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <button type="button" class="btn btn-sm btn-default" ng-click="vm.lsitView()">Back to List</button>
+                                </div>
+                                <div class="col-md-2" align="right">
+                                    <button type="button" class="btn btn-sm btn-success" ng-disabled="vm.MC_STYLE_BLK_BOM_ID_LIST.length==0" ng-click="vm.goToTaBookingPage(vm.MC_STYLE_BLK_BOM_ID_LIST)">Create Booking</button>
+                                </div>
+
+                            </div>
+
+                            </form>
+
+                        </tab>
+
+                        <tab heading="Fabric Process Cost" ng-click="vm.getFabProcessCost()">
+                            <fieldset ng-disabled="vm.form.IS_BGT_FINALIZED==='Y'">
+                                <form class="form-horizontal" role="form" name="FabricProcessCostForm" novalidate ng-submit="vm.submitDataFPD(vm.ItemDataFPD,token,FabricProcessCostForm.$valid)">
+                                    <details ng-repeat="item in vm.ItemDataFPD" ng-open="item.items_view.length>0">
+                                        <summary class="large_bold_black">
+                                            <b>{{($index+1)+' .'+item.FAB_PROC_GRP_NAME}}</b>
+                                        </summary>
+                                        <input type="hidden" ng-init="item.index=$index" ng-model="item.index" />
+
+                                        <a style="float:left;" ng-click="openRateDyeRateChart()" class="btn btn-xs yellow" ng-if="item.MC_FAB_PROC_GRP_ID==4">
+                                            <i class="fa fa-search"></i>  Dyeing Rate Chart
+                                        </a>
+                                        <table class="table table-condensed table-striped table-bordered" style="padding:0px;">
+                                            <thead>
+                                                <tr>
+                                                    <th class="col-md-3">
+                                                        <small>
+                                                            Rate Description
+                                                        </small>
+
+                                                    </th>
+                                                    <th class="col-md-1">
+                                                        <small>
+                                                            Quantity
+                                                        </small>
+
+                                                    </th>
+
+                                                    <th class="col-md-1">
+                                                        <small>
+                                                            Acc.Unit
+                                                        </small>
+                                                    </th>
+
+                                                    <th class="col-md-1">
+                                                        <small>
+                                                            Rate
+                                                        </small>
+                                                    </th>
+
+                                                    <th class="col-md-1">
+                                                        <small>
+                                                            Purch.Unit
+                                                        </small>
+                                                    </th>
+
+                                                    <th class="col-md-1">
+                                                        <small>
+                                                            Amount
+                                                        </small>
+                                                    </th>
+                                                    <th class="col-md-2">
+                                                        <small>
+                                                            Remarks
+                                                        </small>
+                                                    </th>
+
+
+                                                    <th class="col-md-1">
+                                                        <a ng-click='vm.addFPD(item)' class='btn btn-xs blue'><i class='fa fa-plus'> </i></a>
+                                                        <a ng-click='vm.refreshFPD(item)' class='btn btn-xs purple' ng-disabled="item.items_view.length==0"><i class='fa fa-refresh'> </i></a>
+
+
+                                                    </th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                <tr ng-repeat="itm in item.items_view">
+                                                    <td>
+                                                        <span ng-if="itm.FAB_PROC_NAME && !itm.edit">
+                                                            {{itm.FAB_PROC_NAME}}
+                                                            <span class="badge badge-success" ng-repeat="wash in itm.WASH_TYPES">{{wash}}</span>
+                                                            <span class="badge badge-success" ng-repeat="finis in itm.FINIS_TYPES">{{finis}}</span>
+                                                        </span>
+                                                        <span ng-if="!itm.FAB_PROC_NAME" ng-class="{'danger':FabricProcessCostForm['INV_ITEM_ID-{{item.index+'-'+$index}}'].$invalid}">
+
+                                                            <select kendo-drop-down-list
+                                                                    options="vm.ItemListForDDFPD" name="MC_FAB_PROC_RATE_ID-{{item.index+'-'+$index}}" ng-model="itm.MC_FAB_PROC_RATE_ID" ng-change="vm.onItemChangeFPD(itm,item)" required class="form-control"></select>
+                                                        </span>
+
+                                                        <span ng-if="itm.edit" ng-class="{'danger':FabricProcessCostForm['INV_ITEM_ID-{{item.index+'-'+$index}}'].$invalid}">
+
+                                                            <select kendo-drop-down-list
+                                                                    options="vm.ItemListForDDFPD" name="MC_FAB_PROC_RATE_ID-{{item.index+'-'+$index}}" ng-model="itm.MC_FAB_PROC_RATE_ID" ng-change="vm.onItemChangeFPD(itm,item)" required class="form-control"></select>
+                                                        </span>
+
+                                                    </td>
+                                                    <td ng-class="{'danger':FabricProcessCostForm['FAB_QTY-{{item.index+'-'+$index}}'].$invalid}">
+                                                        <input type="number" min="1" name="FAB_QTY-{{item.index+'-'+$index}}" ng-model="itm.FAB_QTY" class="form-control" required />
+                                                        @*<input type="number" min="1" name="FAB_QTY-{{item.index+'-'+$index}}" ng-init="itm.ACCT_MOU_ID==1?itm.FAB_QTY=((vm.form.TOT_ORD_QTY/1)|number:0)*1:((vm.form.TOT_ORD_QTY/12)|number:0)*1" ng-model="itm.FAB_QTY" class="form-control" required />*@
+
+                                                    </td>
+
+                                                    <td ng-class="{'danger':FabricProcessCostForm['ACCT_MOU_ID-{{item.index+'-'+$index}}'].$invalid}">
+                                                        <select kendo-drop-down-list name="ACCT_MOU_ID-{{item.index+'-'+$index}}"
+                                                                options="vm.MOUList" id="ACCT_MOU_ID" ng-model="itm.ACCT_MOU_ID" class="form-control"></select>
+                                                    </td>
+
+
+                                                    <td ng-class="{'danger':FabricProcessCostForm['PROC_RATE-{{item.index+'-'+$index}}'].$invalid}">
+                                                        <input type="number" min="0" name="PROC_RATE-{{item.index+'-'+$index}}" ng-model="itm.PROC_RATE" class="form-control" required />
+                                                    </td>
+
+                                                    <td ng-class="{'danger':FabricProcessCostForm['PURCH_MOU_ID-{{item.index+'-'+$index}}'].$invalid}">
+
+                                                        <select kendo-drop-down-list name="PURCH_MOU_ID-{{item.index+'-'+$index}}"
+                                                                options="vm.MOUList" id="PURCH_MOU_ID" ng-model="itm.PURCH_MOU_ID" required class="form-control"></select>
+                                                    </td>
+
+                                                    <td>
+                                                        <input type="text" ng-value="itm.Cost=(itm.FAB_QTY*itm.PROC_RATE)" ng-model="itm.Cost" class="form-control" ui-number-mask readonly />
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" name="REMARKS" ng-model="itm.REMARKS" class="form-control" />
+                                                    </td>
+
+
+                                                    <td>
+                                                        <a ng-click='vm.removeFPD(item,itm)' class='btn btn-xs red'><i class='fa fa-times'> </i></a>
+                                                        <a class='btn btn-xs blue' ng-click="vm.editItemFPD(item,itm)" ng-disabled="!itm.FAB_PROC_NAME"><i class='fa' ng-class="{'fa-pencil': !itm.edit,'fa-ban':itm.edit}"> </i></a>
+                                                    </td>
+                                                </tr>
+
+                                                <tr style="padding:0px;">
+                                                    <td align="right">
+                                                        Sub Total
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" ng-model="item.items_view.TOT_QTY" class="form-control" readonly />
+                                                    </td>
+
+                                                    <td></td>
+
+
+                                                    <td></td>
+
+                                                    <td></td>
+                                                    <td>
+                                                        <input type="number" ng-model="item.items_view.TOT_COST" class="form-control" readonly />
+                                                    </td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                            </tbody>
+
+                                        </table>
+                                    </details>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <button type="submit" class="btn btn-sm green" ng-class="{'disabled':FabricProcessCostForm.$invalid}">Save</button>
+                                            <button type="button" class="btn btn-sm default" ng-click="vm.cancelFPD()">Cancel</button>
+
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <button type="button" class="btn btn-sm btn-warning" ng-click="vm.FabProcessReset()" ng-if="!vm.form.REVISION_NO">Reset</button>
+                                        </div>
+
+                                    </div>
+
+                                </form>
+                            </fieldset>
+                        </tab>
+                        <tab heading="Overall Cost" ng-click="vm.refreshOverallCost()">
+
+
+                            <form class="form-horizontal" role="form" name="OverAllCostForm" novalidate ng-submit="vm.submitOverAllCostDara(vm.costHeads,token,OverAllCostForm.$valid,'N')">
+                                <fieldset ng-disabled="vm.form.IS_BGT_FINALIZED==='Y'">
+                                    <table class="table table-condensed table-striped" style="padding: 0px; border: 1px solid #cecece;">
+                                        <tbody>
+                                            <tr ng-repeat="(key1,root) in vm.costHeads">
+                                                <td class="col-md-12" style="padding:0px;">
+                                                    <table class="table table-condensed table-striped" style="padding:0px; margin-bottom:0px;">
+                                                        <tbody>
+                                                            <tr ng-repeat="(key2,child) in root.items" ng-hide="child.MC_COST_HEAD_ID==5">
+                                                                <td class="col-md-2" style="border-left: 1px solid #cecece;padding:0px;">
+                                                                    {{child.COST_NAME_EN}}
+                                                                </td>
+
+                                                                <td class="col-md-11" style="padding:0px;">
+                                                                    <table class="table table-condensed table-striped" style="padding: 0px; margin-bottom: 0px;">
+                                                                        <tbody>
+                                                                            <tr ng-repeat="(key3,grandChild) in child.items">
+                                                                                <td class="col-md-2" style="border-left: 1px solid #cecece;padding:0px;">
+                                                                                    {{grandChild.COST_NAME_EN}}
+                                                                                </td>
+
+                                                                                <td class="col-md-11" style="padding:0px;">
+
+                                                                                    <table class="table table-condensed table-striped" style="padding: 0px; margin-bottom: 0px;">
+                                                                                        <thead ng-if="key1==0 && key2==0 && key3==0">
+                                                                                        <th></th>
+                                                                                        <th>
+                                                                                            <small>
+                                                                                                Is PCT?
+                                                                                            </small>
+
+                                                                                        </th>
+
+                                                                                        <th>
+                                                                                            <small>
+                                                                                                Quantity
+                                                                                            </small>
+
+                                                                                        </th>
+                                                                                        <th>
+                                                                                            <small>
+                                                                                                Acc.Unit
+                                                                                            </small>
+
+                                                                                        </th>
+
+
+                                                                                        <th>
+                                                                                            <small>
+                                                                                                Addi.(%)
+                                                                                            </small>
+
+                                                                                        </th>
+
+
+                                                                                        <th>
+                                                                                            <small>
+                                                                                                Rate
+                                                                                            </small>
+                                                                                        </th>
+
+                                                                                        <th>
+                                                                                            <small>
+                                                                                                Purc.Unit
+                                                                                            </small>
+
+                                                                                        </th>
+
+                                                                                        <th>(%)</th>
+                                                                                        <th>Amount</th>
+                                                                                        </thead>
+                                                                                        <tbody>
+                                                                                            <tr ng-repeat="(key4,grandChild1) in grandChild.items">
+
+
+                                                                                                <td class="col-md-2" style="border-left: 1px solid #cecece;padding:0px;">
+                                                                                                    {{grandChild1.COST_NAME_EN}}
+                                                                                                </td>
+                                                                                                <td class="col-md-1" style="border-left: 1px solid #cecece;padding:0px;">
+                                                                                                    <input type="checkbox" ng-model="grandChild1.IS_PCT" ng-true-value="'Y'" ng-false-value="'N'" ng-disabled="grandChild1.PARENT_ID!=2" />
+                                                                                                </td>
+                                                                                                <td style="padding: 0px; border: none;">
+                                                                                                    <input type="number" min="0" ng-model="grandChild1.QTY_EST" class="form-control" readonly />
+                                                                                                </td>
+
+
+                                                                                                <td style="padding: 0px; border: none;">
+                                                                                                    <select kendo-drop-down-list options="vm.MOUList" class="form-control" ng-model="grandChild1.ACCT_MOU_ID" disabled></select>
+                                                                                                </td>
+
+
+                                                                                                <td style="padding: 0px; border: none;">
+                                                                                                    <input type="number" min="0" ng-model="grandChild1.PCT_ADD_QTY" class="form-control" ng-disabled="grandChild1.IS_QTY=='N'" />
+                                                                                                </td>
+
+
+                                                                                                <td style="padding: 0px; border: none;">
+                                                                                                    <input type="number" min="0" ng-model="grandChild1.RATE_EST" class="form-control" ng-disabled="grandChild1.IS_QTY=='N'" />
+                                                                                                </td>
+
+                                                                                                <td style="padding: 0px; border: none;">
+                                                                                                    <select kendo-drop-down-list options="vm.MOUList" ng-model="grandChild1.PURCH_MOU_ID" class="form-control" disabled></select>
+                                                                                                </td>
+
+                                                                                                <td style="padding: 0px;">
+
+                                                                                                    <span class="col-md-10" style="padding: 0px;">
+                                                                                                        <input type="number" class="form-control" ng-model="grandChild1.PCT_COST" ng-disabled="grandChild1.IS_PCT=='N'" />
+                                                                                                    </span>
+                                                                                                    <span class="col-md-2" style="padding: 0px;">
+
+                                                                                                    </span>
+                                                                                                </td>
+                                                                                                <td style="padding: 0px; border: none;" class="col-md-2">
+                                                                                                    <input type="number" ng-model="grandChild1.HEAD_COST" class="form-control" ng-disabled="grandChild1.IS_PCT=='Y'" />
+                                                                                                </td>
+
+                                                                                            </tr>
+
+                                                                                            <tr ng-if="grandChild.items.length==0">
+                                                                                                <td class="col-md-2" style="padding:0px;"></td>
+
+                                                                                                <td class="col-md-1" style="border-left: 1px solid #cecece;padding:0px;">
+                                                                                                    <input type="checkbox" ng-model="grandChild.IS_PCT" ng-true-value="'Y'" ng-false-value="'N'" ng-disabled="grandChild.PARENT_ID!=2" />
+                                                                                                </td>
+
+                                                                                                <td style="padding: 0px; border: none;">
+                                                                                                    <input type="number" ng-init="vm.setQtyInDz(grandChild)" ng-model="grandChild.QTY_EST" class="form-control" ng-disabled="grandChild.IS_PCT=='Y'" />
+                                                                                                </td>
+
+                                                                                                <td style="padding: 0px; border: none;">
+                                                                                                    <select kendo-drop-down-list
+                                                                                                            options="vm.MOUList" id="ACCT_MOU_ID"  ng-change="grandChild.QTY_EST=grandChild.ACCT_MOU_ID==1?vm.form.TOT_ORD_QTY:((vm.form.TOT_ORD_QTY/12)|number:0)*1;grandChild.PURCH_MOU_ID=grandChild.ACCT_MOU_ID" ng-model="grandChild.ACCT_MOU_ID" class="form-control"></select>
+                                                                                                </td>
+
+                                                                                                <td style="padding: 0px; border: none;">
+                                                                                                    <input type="number" min="0" ng-model="grandChild.PCT_ADD_QTY" class="form-control" ng-change="grandChild.HEAD_COST=((grandChild.QTY_EST*grandChild.RATE_EST)*(1+((grandChild.PCT_ADD_QTY||0)/100)))" ng-disabled="grandChild.IS_QTY=='N'" />
+                                                                                                </td>
+
+
+                                                                                                <td style="padding: 0px; border: none;">
+                                                                                                    <input type="number" min="0" ng-model="grandChild.RATE_EST" ng-change="grandChild.HEAD_COST=((grandChild.QTY_EST*grandChild.RATE_EST)*(1+((grandChild.PCT_ADD_QTY||0)/100)))" class="form-control" ng-disabled="grandChild.IS_QTY=='N'" />
+                                                                                                </td>
+
+                                                                                                <td style="padding: 0px; border: none;">
+                                                                                                    <select kendo-drop-down-list
+                                                                                                            options="vm.MOUList" id="ACCT_MOU_ID"  ng-model="grandChild.PURCH_MOU_ID" class="form-control"></select>
+                                                                                                </td>
+
+
+
+
+
+                                                                                                <td style="padding: 0px; border: none;">
+
+                                                                                                    <span class="col-md-10" style="padding: 0px;">
+                                                                                                        <input type="number" class="form-control" ng-model="grandChild.PCT_COST" ng-disabled="grandChild.IS_PCT=='N'" />
+                                                                                                    </span>
+                                                                                                    <span class="col-md-2" style="padding: 0px;">
+
+                                                                                                    </span>
+                                                                                                </td>
+                                                                                                <td style="padding: 0px; border: none;" class="col-md-2">
+                                                                                                    <input type="number" ng-model="grandChild.HEAD_COST" class="form-control" ng-disabled="grandChild.IS_PCT=='Y'" />
+                                                                                                </td>
+                                                                                            </tr>
+
+                                                                                        </tbody>
+
+                                                                                    </table>
+
+                                                                                </td>
+
+
+
+                                                                            </tr>
+
+                                                                            <tr ng-if="child.items.length==0">
+                                                                                <td class="col-md-2" style="padding:0px;border:none;"></td>
+
+                                                                                <td class="col-md-11" style="padding: 0px; border: none;">
+
+                                                                                    <table class="table table-condensed table-striped" style="padding: 0px; margin-bottom: 0px;">
+                                                                                        <tbody>
+                                                                                            <tr>
+
+                                                                                                <td class="col-md-2" style="padding:0px;"></td>
+                                                                                                <td class="col-md-1" style="border-left: 1px solid #cecece;padding:0px;">
+                                                                                                    <input type="checkbox" ng-model="child.IS_PCT" ng-true-value="'Y'" ng-false-value="'N'" ng-change="vm.changePCT(child)" ng-disabled="child.PARENT_ID!=2" />
+                                                                                                </td>
+
+                                                                                                <td style="padding: 0px; border: none;">
+                                                                                                    <input type="number" ng-init="vm.setQtyInDz(child)" ng-model="child.QTY_EST" class="form-control" ng-disabled="child.IS_PCT=='Y'" />
+                                                                                                </td>
+
+                                                                                                <td style="padding: 0px; border: none;">
+                                                                                                    <select kendo-drop-down-list
+                                                                                                            options="vm.MOUList" id="ACCT_MOU_ID" ng-change="child.QTY_EST=child.ACCT_MOU_ID==1?vm.form.TOT_ORD_QTY:((vm.form.TOT_ORD_QTY/12)|number:0)*1;child.PURCH_MOU_ID=child.ACCT_MOU_ID" ng-model="child.ACCT_MOU_ID" class="form-control" ng-disabled="child.IS_PCT=='Y'"></select>
+                                                                                                </td>
+
+                                                                                                <td style="padding: 0px; border: none;">
+
+                                                                                                    <input type="number" min="0" ng-model="child.PCT_ADD_QTY" class="form-control" ng-change="child.HEAD_COST=((child.QTY_EST*child.RATE_EST)*(1+((child.PCT_ADD_QTY||0)/100)))" ng-disabled="child.IS_PCT=='Y'" />
+                                                                                                </td>
+
+
+                                                                                                <td style="padding: 0px; border: none;">
+                                                                                                    <input type="number" min="0" ng-model="child.RATE_EST" ng-change="child.HEAD_COST=((child.QTY_EST*child.RATE_EST)*(1+((child.PCT_ADD_QTY||0)/100)))" ng-disabled="child.IS_PCT=='Y'" class="form-control" />
+                                                                                                </td>
+
+                                                                                                <td style="padding: 0px; border: none;">
+                                                                                                    <select kendo-drop-down-list
+                                                                                                            options="vm.MOUList" id="ACCT_MOU_ID"  ng-model="child.PURCH_MOU_ID" class="form-control" ng-disabled="child.IS_PCT=='Y'"></select>
+                                                                                                </td>
+                                                                                                <td style="padding: 0px; border: none;">
+
+                                                                                                    <span class="col-md-10" style="padding: 0px;">
+                                                                                                        <input type="number" min="0" class="form-control" ng-model="child.PCT_COST" ng-disabled="child.IS_PCT=='N'" />
+                                                                                                    </span>
+                                                                                                    <span class="col-md-2" style="padding: 0px;">
+
+                                                                                                    </span>
+                                                                                                </td>
+                                                                                                <td style="padding: 0px; border: none;" class="col-md-2">
+                                                                                                    <input type="number" ng-model="child.HEAD_COST" class="form-control" ng-disabled="child.IS_PCT=='Y'" />
+                                                                                                </td>
+                                                                                            </tr>
+
+                                                                                        </tbody>
+
+                                                                                        <tbody>
+                                                                                            <tr ng-if="$last">
+                                                                                                <td class="col-md-2" style="padding: 0px; border: none;"></td>
+
+
+                                                                                                <td style="padding: 3px; border: none;" colspan="7" align="right">
+                                                                                                    <b>Total Expenditure</b>
+
+                                                                                                </td>
+                                                                                                <td style="padding: 3px; border: none;">
+                                                                                                    <input type="number" class="form-control" ng-model="vm.TOT_HEAD_COST" readonly />
+
+                                                                                                </td>
+                                                                                            </tr>
+
+                                                                                            <tr ng-if="$last">
+                                                                                                <td class="col-md-2" style="padding: 0px; border: none;"></td>
+                                                                                                <td style="padding: 3px; border: none;" colspan="7" align="right">
+                                                                                                    <b>Total Order Value</b>
+
+                                                                                                </td>
+                                                                                                <td style="padding: 3px; border: none;">
+                                                                                                    <input type="number" class="form-control" ng-model="vm.form.TOT_ORD_VALUE" readonly />
+                                                                                                </td>
+                                                                                            </tr>
+
+
+                                                                                            @*<tr ng-if="$last">
+                                                                        <td class="col-md-2" style="padding: 0px; border: none;"></td>
+
+                                                                        <td style="padding: 3px; border: none;" colspan="6" align="right">
+                                                                            <b>Budgeted Exp.(%)</b>
+
+                                                                        </td>
+                                                                        <td style="padding: 3px; border: none;">
+                                                                            <input type="number" class="form-control" ng-model="vm.BUDGETET_EXPENDITURE" readonly />
+
+                                                                        </td>
+                                                                    </tr>*@
+
+
+                                                                                            <tr ng-if="$last">
+                                                                                                <td class="col-md-2" style="padding: 0px; border: none;"></td>
+
+                                                                                                <td style="padding: 3px; border: none;" colspan="7" align="right">
+                                                                                                    <b>CM/Dz</b>
+
+                                                                                                </td>
+                                                                                                <td style="padding: 3px; border: none;">
+                                                                                                    <input type="number"  class="form-control" ng-model="vm.TOT_CM_COST" readonly />
+
+                                                                                                </td>
+                                                                                            </tr>
+
+
+                                                                                        </tbody>
+
+                                                                                    </table>
+
+                                                                                </td>
+
+
+
+                                                                            </tr>
+                                                                        </tbody>
+
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+
+                                                        </tbody>
+
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </fieldset>
+                                <div class="row">
+                                        <div class="col-md-5">
+                                            <button type="button" class="btn btn-sm green" ng-if="vm.form.IS_BGT_FINALIZED==='Y'" ng-click="vm.budgetRevisionModal(vm.form)">Revise</button>
+                                            <button type="submit" class="btn btn-sm green" ng-if="vm.form.IS_BGT_FINALIZED==='N'" ng-class="{'disabled':OverAllCostForm.$invalid}">Save</button>
+                                            <button type="button" class="btn btn-sm default"  ng-click="vm.cancelOverAllCost()">Cancel</button>
+                                        </div>
+
+                                        <div class="col-md-7" align="right">
+                                            <button type="button" class="btn btn-sm blue" ng-if="((vm.form.IS_BGT_FINALIZED==='N'||vm.form.IS_BFB_FINALIZED==='N') && (vm.form.MC_TNA_TASK_STATUS_ID==32||vm.form.MC_TNA_TASK_STATUS_ID==35))" ng-click="vm.setFinalizedFlag()">Send for Approval</button>
+
+                                            <div class="btn-group" dropdown>
+                                                <button id="split-button" type="button" class="btn btn-sm blue" ng-click="vm.printBudgetSheetReport({REVISION_NO:vm.form.REVISION_NO})"><i class="fa fa-print"></i>Print Budget Sheet</button>
+                                                <button type="button" class="btn btn-sm blue" dropdown-toggle>
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu" aria-labelledby="split-button">
+                                                    <li role="menuitem" ng-repeat="itm in vm.form.REV_DATA" ng-click="vm.printBudgetSheetReport({REVISION_NO : itm})"><a>{{itm==0?'Original':'Revision # '+itm}}</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                            </form>
+                        </tab>
+                    </tabset>
+                </div>
+
+
+            </div>
+    </div>
+</div>
+
+@*Start For Budget Revision Modal*@
+<script type="text/ng-template" id="BudgetRevisionModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <p style="padding-top:10px;">
+                        Order Revision
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </p>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="OrderRevisionModal" novalidate>
+                    <div class="form-group">
+                        <label for="selectPeriod" class="col-md-2 control-label">
+                            Rev. #
+                        </label>
+                        <div class="col-md-2" style="padding-top:5px;">
+                            <input type="text" class="form-control" ng-model="REVISION_NO" disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="selectPeriod" class="col-md-2 control-label">
+                            <span aria-required="true" class="required">*</span>Date
+                        </label>
+                        <div class="col-md-4" style="padding-top:5px;">
+                            <input type="text" class="form-control" ng-click="RevisionDate_LNopen($event)" datepicker-popup="{{dtFormat}}"
+                                   name="REVISION_DT" ng-model="REVISION_DT" is-open="RevisionDate_LNopened"
+                                   datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="selectPeriod" class="col-md-2 control-label">Reason</label>
+                        <div class="col-md-10" style="padding-top:5px;">
+                            <textarea class="form-control" ng-model="REV_REASON" rows="2"></textarea>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="form-group form-actions">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="button" class="btn green btn-sm" ng-click="save(token, OrderRevisionModal.$valid)" ng-class="{'disabled':!OrderRevisionModal.$valid}" ng-disabled="formInvalid">Save</button>
+                            <button type="button" class="btn btn-default btn-sm" ng-click="cancel()">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+@*End For  Budget Revision Modal*@

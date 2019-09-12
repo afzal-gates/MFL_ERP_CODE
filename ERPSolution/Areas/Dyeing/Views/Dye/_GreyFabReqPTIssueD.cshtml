@@ -1,0 +1,500 @@
+﻿
+<div class="row" style="margin:auto;">
+    <table class="table table-condensed table-striped table-bordered" style="padding: 5px;margin-bottom: 5px;">
+        <thead>
+            <tr class="site-table-header">
+                <th style="width:40%;">
+                    <small>
+                        Yarn  Details
+                    </small>
+
+                </th>
+                <th style="width:15%;">
+                    <small>
+                        Order List
+                    </small>
+
+                </th>
+
+                <th style="width:10%;">
+                    <small>
+                        Color
+                    </small>
+
+                </th>
+
+                <th style="width:10%;">
+                    <small>
+                        Finish Dia
+                    </small>
+
+                </th>
+
+                <th style="width:10%;">
+                    <small>
+                        Fin GSM
+                    </small>
+
+                </th>
+
+
+                <th style="width:15%;">
+                    <small>
+                        Req/Issued/Pending
+                    </small>
+
+                </th>
+
+                <th style="width:10%;">
+                    <small>
+                        Roll Scanned
+                    </small>
+
+                </th>
+
+                <th style="width:10%;">
+                    <small>
+                        Roll Weight
+                    </small>
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr ng-repeat="item in vm.nonColCuffData">
+                <td>
+                    <b>{{item.KNT_YRN_LOT_LST}}</b>
+
+                </td>
+                <td>
+                    <b>{{item.MC_ORDER_NO_LST}}</b>
+
+                </td>
+                <td>
+                    <b>{{item.COLOR_NAME_EN}}</b>
+
+                </td>
+
+                <td>
+                    {{item.FIN_DIA}}
+                </td>
+
+                <td>
+                    {{item.FIN_GSM}}
+                </td>
+
+                <td>
+
+                    <b>{{item.RQD_QTY}}/</b>
+                    <label class="label label-info">
+                        {{item.RCV_ROLL_WT}}
+                    </label>/
+                    <label class="label label-warning">
+                        {{(item.RQD_QTY-item.RCV_ROLL_WT) | number:2}}
+                    </label>
+
+                </td>
+
+                <td>
+                    <label class="label label-danger">
+                        <strong>
+                            {{item.NO_OF_ROLL}}
+                        </strong>
+
+
+                    </label>
+
+
+                </td>
+                <td>
+
+
+                    <label class="label label-success">
+                        <strong>
+                            {{item.RCV_ROLL_WT}}
+                        </strong>
+
+
+                    </label>
+
+
+                </td>
+
+            </tr>
+        </tbody>
+
+    </table>
+</div>
+
+<div class="row" style="margin:auto">
+
+    <div class="col-md-4" style="margin:auto;">
+        <fieldset class="custom-fieldset">
+            <legend class="custom-legend">Pending Roll List</legend>
+
+
+            <div class="row">
+                <div class="col-md-5">
+                    <b>Total: {{ getTotal()|number:2}} Kg</b> 
+                </div>
+                <div class="col-md-7" style="text-align:right;">
+
+                    <input type="text" class="form-control" placeholder="[Search Roll]" ng-model="searchText" />
+                </div>
+            </div>
+            <br />
+            <table class="table table-condensed table-striped table-bordered" style="padding:5px;">
+                <thead>
+                    <tr>
+                        <th style="width:40%;">
+                            <small>
+                                Roll No
+                            </small>
+
+                        </th>
+                        <th style="width:10%;">
+                            <small>
+                                Weight
+                            </small>
+
+                        </th>
+                        <th style="width:30%;">
+                            <small>
+                                Store Status
+                            </small>
+
+                        </th>
+                        <th style="width:20%;">
+                            <small>
+                                Quality Status
+                            </small>
+                        </th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr data-ng-repeat="item in vm.pendingRollList | filter:searchText | offset: (currentPage-1)*itemPerPage | limitTo: itemPerPage">
+
+                        <td>
+                            {{item.FAB_ROLL_NO}}
+                        </td>
+
+                        <td>
+                            {{item.FAB_ROLL_WT}}
+                        </td>
+                        <td>
+                            {{item.RL_STS_TYP_NAME}}
+                        </td>
+
+                        <td>
+                            <span class="label" ng-style="{'background-color' : item.RGB_COL_CODE_QC}">
+                                {{item.RL_STS_TYP_NAME_QC}}
+                            </span>
+                        </td>
+
+                    </tr>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+
+            <pagination pagination-id="mealsPagination" template-url="dirPagination.tpl.html" total-items="total" boundary-link-numbers="true" boundary-links="true" direction-links="true" items-per-page="itemPerPage" max-size="maxSize" item- ng-model="currentPage" ng-change="pageChanged()"></pagination>
+
+        </fieldset>
+    </div>
+
+    <div class="col-md-8">
+        <fieldset class="custom-fieldset" style="padding-top: 10px;padding-bottom: 10px;">
+            <legend class="custom-legend"> Fabric Roll Entry Area</legend>
+            <div class="col-md-offset-2 col-md-2"></div>
+            <div class="col-md-4 ">
+                <form name="RollIssueForm" class="form-horizontal" ng-submit="vm.checkRollStatus($parent.FAB_ROLL_NO);" @*ng-submit="vm.insertRoll(RollIssueForm.$valid,KNT_FAB_ROLL_ID);FAB_ROLL_NO=''"*@>
+                    <div class="form-group" ng-class="{'has-error': !(RollIssueForm.$dirty && RollIssueForm.$valid) }" style="margin:auto;">
+
+                        <div class="form-group" style="width:100%;">
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" id="FAB_ROLL_NO" name="FAB_ROLL_NO" ng-model="$parent.FAB_ROLL_NO" ng-maxlength="13" style="height: 27.660px;" autocomplete="off" required ng-disabled="($parent.RF_ACTN_STATUS_ID_ISS==43||$parent.RF_ACTN_STATUS_ID_ISS==49||$parent.RF_ACTN_STATUS_ID_ISS==56)" />
+
+                            </div>
+
+                            <div class="col-md-2">
+                                <a class="btn btn-sm green" ng-click="vm.openRollModal();"><i class="fa fa-file-o"></i> Split Roll</a>
+                                <input type="hidden" ng-model="KNT_FAB_ROLL_ID" />
+                            </div>
+                        </div>
+
+                        <div class="help-block" style="background-color:red;font-size:15px;color:white;padding:20px;" ng-if="RollIssueForm.FAB_ROLL_NO.$dirty && RollIssueForm.FAB_ROLL_NO.$error.minlength">
+                            <b>Invalid Roll : Min Char Length = 13</b>
+                        </div>
+
+                        <div class="help-block" style="background-color:red;font-size:15px;color:white;padding:20px;" ng-if="RollIssueForm.FAB_ROLL_NO.$dirty && RollIssueForm.FAB_ROLL_NO.$error.maxlength">
+                            <b>Invalid Roll : Max Char Length = 13</b>
+                        </div>
+
+                        <div class="help-block" style="background-color:red;font-size:15px;color:white;padding:20px;" ng-if="RollIssueForm.FAB_ROLL_NO.$dirty && RollIssueForm.FAB_ROLL_NO.$error.invalidRoll">
+
+                            <b>Invalid roll as expected</b>
+                        </div>
+
+                        <div class="help-block" ng-if="RollIssueForm.FAB_ROLL_NO.$dirty && RollIssueForm.FAB_ROLL_NO.$pending">
+
+                            Checking...
+                        </div>
+
+
+
+                    </div>
+                    <button type="submit" style="display:none;"></button>
+                </form>
+            </div>
+
+        </fieldset>
+
+
+        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 5px;" ng-if="!vm.NoJobCardFound && vm.RollProductionList.length>0">
+            <legend class="custom-legend">
+                Roll List
+            </legend>
+
+            <div class="form-group">
+                <div class="col-md-4"><b style="font-size:large;">Total Fabric: {{ getIssueTotal()|number:2}} Kg</b></div>
+                <div class="col-md-4"><b style="font-size:large;">Total Roll: {{ vm.RollProductionList.length}} Pcs</b></div>
+
+            </div>
+
+            @*<a ng-click="vm.printBatchCard()" class="btn btn-xs green"><i class="fa fa-print"></i> Print</a>*@
+            <table class="table table-condensed table-striped table-bordered" style="padding:5px;">
+                <thead>
+                    <tr>
+                        <th style="width:15%;">
+                            <small>
+                                Roll No
+                            </small>
+
+                        </th>
+                        <th style="width:10%;">
+                            <small>
+                                Weight
+                            </small>
+
+                        </th>
+                        <th style="width:10%;">
+                            <small>
+                                Quality Status
+                            </small>
+                        </th>
+
+                        <th style="width:20%;">
+                            <small>
+                                Remarks
+                            </small>
+                        </th>
+
+                        <th style="width:10%;">
+                            <small>
+                                Action
+                            </small>
+                        </th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="item in vm.RollProductionList">
+                        <td>
+                            {{item.FAB_ROLL_NO}}
+                        </td>
+
+                        <td>
+                            {{item.FAB_ROLL_WT}}
+                        </td>
+
+                        <td>
+                            <span class="label" ng-style="{'background-color' : item.RGB_COL_CODE_QC}">
+                                {{item.RL_STS_TYP_NAME_QC}}
+                            </span>
+                        </td>
+
+
+
+                        <td>
+                            {{item.KNT_YRN_LOT_LST}}
+                        </td>
+
+                        <td>
+                            <a class="btn btn-xs red" ng-click="vm.removeRoll(item.KNT_FAB_ROLL_ID)" ng-disabled="($parent.RF_ACTN_STATUS_ID_ISS==43||$parent.RF_ACTN_STATUS_ID_ISS==49||$parent.RF_ACTN_STATUS_ID_ISS==56)">
+                                <i class="fa fa-times-circle-o"></i> Delete
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </fieldset>
+    </div>
+
+</div>
+
+
+
+
+
+<script type="text/ng-template" id="FabRollSplit.html">
+    <input id="access_token" data-ng-model="token" type="hidden"
+           data-ng-init="token='@Session["access_token"]'" />
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h3 class="title">
+                        Roll Info Details
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel([])"></i></span>
+                    </h3>
+                </div>
+            </div>
+            <div class="portlet-body">
+
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend"><b>Scan Roll</b></legend>
+                    <div style="width:100%">
+                        <table class="clsTableMtex">
+                            <thead class="clstheadMtex">
+                                <tr>
+                                    <td class="clsthead">Roll #</td>
+                                    <td class="clsthead">Orginal Weight</td>
+                                    <td class="clsthead">Split Weight</td>
+                                    <td class="clsthead">Balance Weight</td>
+                                    <td class="clsthead">Action</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="clstdMtex">
+                                        <input type="text" id="FAB_ROLL_NO" style="min-width:100%" ng-keyup="checkRollStatus(FAB_ROLL_NO);" ng-model="FAB_ROLL_NO" />
+                                        <input type="hidden" id="KNT_FAB_ROLL_ID" ng-model="KNT_FAB_ROLL_ID" />
+                                    </td>
+                                    <td class="clstdMtex">
+                                        <input type="text" id="FAB_ROLL_WT" class="doubleSub" readonly ng-model="FAB_ROLL_WT" />
+                                    </td>
+                                    <td class="clstdMtex">
+                                        <input type="text" id="S_FAB_ROLL_WT" class="doubleSub" ng-change="checkMaxWeight();" ng-model="S_FAB_ROLL_WT" />
+                                    </td>
+
+                                    <td class="clstdMtex">
+                                        <input type="text" id="B_FAB_ROLL_WT" class="doubleSub" readonly ng-model="B_FAB_ROLL_WT" />
+                                    </td>
+                                    <td class="clstdMtex">
+                                        <a class="btn btn-sm blue" ng-click="submitData();"><i class="fa fa-save"> Split</i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <br />
+                        <div class="form-group">
+                            <div class="col-md-3">
+
+                            </div>
+                            <div class="col-md-6">
+
+                                <table class="clsTableMtex" style="padding:5px; font-size:larger;">
+                                    <thead class="clstheadMtex">
+                                        <tr class="">
+                                            <th style="width:70%;">
+                                                <small>
+                                                    Roll No
+                                                </small>
+
+                                            </th>
+                                            <th style="width:10%;">
+                                                <small>
+                                                    Weight
+                                                </small>
+
+                                            </th>
+
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr style="background-color: #a3ebfb;" data-ng-repeat="item2 in newRollList">
+
+                                            <td>
+                                                {{item2.FAB_ROLL_NO}}
+                                            </td>
+
+                                            <td>
+                                                {{item2.FAB_ROLL_WT}} Kg
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <div class="col-md-3">
+
+                            </div>
+                        </div>
+
+                </fieldset>
+
+
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend">Pending Roll List</legend>
+
+                    <table class="table table-condensed table-striped table-bordered" style="padding:5px;">
+                        <thead>
+                            <tr>
+                                <th style="width:70%;">
+                                    <small>
+                                        Roll No
+                                    </small>
+
+                                </th>
+                                <th style="width:10%;">
+                                    <small>
+                                        Weight
+                                    </small>
+
+                                </th>
+                                <th style="width:20%;">
+                                    <small>
+                                        Quality Status
+                                    </small>
+                                </th>
+
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr data-ng-repeat="item in pendingRollList | offset: (currentPage-1)*itemPerPage | limitTo: itemPerPage">
+
+                                <td>
+                                    {{item.FAB_ROLL_NO}}
+                                </td>
+
+                                <td>
+                                    {{item.FAB_ROLL_WT}}
+                                </td>
+
+                                <td>
+                                    <span class="label" ng-style="{'background-color' : item.RGB_COL_CODE_QC}">
+                                        {{item.RL_STS_TYP_NAME_QC}}
+                                    </span>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+
+                    <pagination pagination-id="mealsPagination" template-url="dirPagination.tpl.html" total-items="total" boundary-link-numbers="true" boundary-links="true" direction-links="true" items-per-page="itemPerPage" max-size="maxSize" item- ng-model="currentPage" ng-change="pageChanged()"></pagination>
+
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</script>

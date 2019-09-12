@@ -1,0 +1,623 @@
+﻿@*<script src="~/Scripts/jquery-1.10.2.min.js"></script>*@
+
+@*<script type="text/javascript">
+    $(function () {
+        $('#datatbl').dataTable({
+            "bPaginate": true,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": true,
+            "bAutoWidth": true
+        })
+    });
+</script>*@
+
+
+<style>
+    .angularjs-datetime-picker {
+        color: #333;
+        font: normal 14px sans-serif;
+        border: 1px solid #ddd;
+        display: inline-block;
+        background: #fff;
+    }
+
+        .angularjs-datetime-picker > .adp-month {
+            text-align: center;
+            line-height: 22px;
+            padding: 10px;
+            background: #fcfcfc;
+            text-transform: uppercase;
+            font-weight: bold;
+            border-bottom: 1px solid #ddd;
+            position: relative;
+        }
+
+            .angularjs-datetime-picker > .adp-month > button {
+                color: #555;
+                font: normal 14px sans-serif;
+                outline: none;
+                position: absolute;
+                background: transparent;
+                border: none;
+                cursor: pointer;
+            }
+
+                .angularjs-datetime-picker > .adp-month > button:hover {
+                    color: #333;
+                }
+
+                .angularjs-datetime-picker > .adp-month > button.adp-prev {
+                    left: 10px;
+                }
+
+                .angularjs-datetime-picker > .adp-month > button.adp-next {
+                    right: 10px;
+                }
+
+        .angularjs-datetime-picker > .adp-days {
+            width: 210px; /* 30 x 7 */
+            margin: 10px;
+            text-align: center;
+        }
+
+            .angularjs-datetime-picker > .adp-days > .adp-day-of-week, .angularjs-datetime-picker > .adp-days > .adp-day {
+                box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                border: 1px solid transparent;
+                width: 30px;
+                line-height: 28px;
+                float: left;
+            }
+
+            .angularjs-datetime-picker > .adp-days > .adp-day-of-week {
+                font-weight: bold;
+            }
+
+            .angularjs-datetime-picker > .adp-days > .adp-day:not(.selectable) {
+                opacity: 0.15;
+                cursor: default;
+            }
+
+            .angularjs-datetime-picker > .adp-days > .adp-day.selectable {
+                cursor: pointer;
+            }
+
+            .angularjs-datetime-picker > .adp-days > .adp-day.selected {
+                background: #e0e0e0;
+            }
+
+            .angularjs-datetime-picker > .adp-days > .adp-day.selectable:hover {
+                background: #eee;
+            }
+
+            .angularjs-datetime-picker > .adp-days:after {
+                content: '';
+                display: block;
+                clear: left;
+                height: 0;
+            }
+
+        .angularjs-datetime-picker input[type=range] {
+            width: 150px;
+        }
+</style>
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Dyeing</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+    <form name="formData" class="form-horizontal" style="background-color: white;">
+        <div class="portlet-body">
+            <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+                <div class="page-splash">
+                    <div class="page-splash-message">
+                        <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+                <fieldset class="custom-fieldset col-md-2">
+                    <legend class="custom-legend"><b>Master Data</b></legend>
+                    <div><label id="lblMsg"></label></div>
+
+                    <table class="clsTable" style="width:100%">
+                        <tr class="clsthead">
+                            <td class="clstd">
+                                Production Date
+                            </td>
+
+                        </tr>
+                        <tr class="clstd">
+
+                            <td class="clstd">
+                                <input type="text" class="form-control required" ng-click="PROD_DT_LNopen($event)" ng-focus="PROD_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                       name="PROD_DT" max-date="vm.today" ng-model="vm.form.PROD_DT" is-open="PROD_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close"
+                                       required />
+                                
+                            </td>
+                        </tr>
+                    </table>
+
+
+                </fieldset>
+                <fieldset class="custom-fieldset col-md-9">
+                    <legend class="custom-legend"><b>Search Data</b></legend>
+                    <div><label id="lblMsgSub"></label></div>
+
+                    <table class="clsTable" style="width:100%">
+                        <tr class="clsthead">
+                            <td class="clstd">
+                                Buyer A/C
+                            </td>
+                            <td class="clstd">
+                                Style/Order #
+                            </td>
+
+                            @*<td class="clstd">
+                                    Color
+                                </td>*@
+                            <td class="clstd">
+                                M/C #
+                            </td>
+                            <td class="clstd">
+                                Batch #
+                            </td>
+                            <td class="clstd">
+                                Batch Process
+                            </td>
+                            <td class="clstd">
+                                QC Status
+                            </td>
+                            <td class="clstd">
+                                Action
+                            </td>
+                        </tr>
+                        <tr class="clstd">
+
+                            <td class="clstd">
+                                <select kendo-drop-down-list name="MC_BYR_ACC_ID" id="MC_BYR_ACC_ID" class="form-control requiredSub"
+                                        options="vm.buyerAcList" ng-model="vm.form.MC_BYR_ACC_ID"></select>
+                            </td>
+                            <td class="clstd">
+
+                                <input type="text" name="STYLE_ORDER_NO" ng-model="vm.form.STYLE_ORDER_NO" class="form-control" />
+                            </td>
+
+                            @*<td class="clstd">
+
+                                    <select kendo-drop-down-list name="MC_COLOR_ID" id="MC_COLOR_ID" class="form-control requiredSub"
+                                            options="vm.colorList" ng-model="vm.form.MC_COLOR_ID"></select>
+                                </td>*@
+                            <td class="clstd">
+
+                                <input type="text" name="DYE_MACHINE_NO" ng-model="vm.form.DYE_MACHINE_NO" class="form-control" />
+                            </td>
+                            <td class="clstd">
+
+                                <input type="text" name="DYE_BATCH_NO" ng-model="vm.form.DYE_BATCH_NO" class="form-control" />
+
+                            </td>
+                            <td class="clstd">
+
+                                <select kendo-drop-down-list name="DYE_BT_STS_TYPE_ID" id="DYE_BT_STS_TYPE_ID" class="form-control requiredSub"
+                                        options="vm.statusList" ng-model="vm.form.DYE_BT_STS_TYPE_ID"></select>
+                            </td>
+                            <td class="clstd">
+
+                                <select kendo-drop-down-list name="LK_CHQ_RL_STS_ID" id="LK_CHQ_RL_STS_ID" class="form-control"
+                                        options="vm.rollStatusList" ng-model="vm.form.LK_CHQ_RL_STS_ID"></select>
+                            </td>
+                            
+                            <td class="clstd" style="width:80px;">
+
+
+                                <a title="Load" ng-click="vm.searchBatchInfo()" class="btn btn-sm default"><i class="fa fa-search"> Load</i></a>
+                            </td>
+
+                        </tr>
+                    </table>
+                    
+                </fieldset>
+                
+            </div>
+
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend"><b>Details Data</b></legend>
+
+
+                @*<kendo-grid id="grid" k-options="vm.gridOptions" k-data-source="vm.gridOptionsDS">
+
+                </kendo-grid>*@
+
+                <table id="datatbl" class="clsTableMtex">
+                    <thead>
+                        <tr class="clstheadMtex">
+                            <td class="clstdMtex">
+                                SL
+                            </td>
+                            <td class="clstdMtex">
+                                Batch #
+                            </td>
+                            <td class="clstdMtex">
+                                M/C #
+                            </td>
+                            <td class="clstdMtex">
+                                Buyer A/C
+                            </td>
+                            <td class="clstdMtex">
+                                Order #
+                            </td>
+
+                            <td class="clstdMtex">
+                                Style #
+                            </td>
+                            <td class="clstdMtex">
+                                Color
+                            </td>
+                            <td class="clstdMtex">
+                                Process
+                            </td>
+
+                            <td class="clstdMtex">
+                                Dyeing Method
+                            </td>
+                            <td class="clstdMtex">
+                                Batch Qty(Kg)
+                            </td>
+                            <td class="clstdMtex">
+                                Load Time
+                            </td>
+                            <td class="clstdMtex">
+                                Unload Time
+                            </td>
+                            <td class="clstdMtex">
+                                Prod. Hour
+                            </td>
+                            <td class="clstdMtex">
+                                Status
+                            </td>
+                            <td class="clstdMtex">
+                                Action
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-class="{'clstdMtex': item.DYE_BT_STS_TYPE_ID!=14,'clstdMtexHL':item.DYE_BT_STS_TYPE_ID==14}" ng-repeat="item in vm.BatchProgramList">
+
+                            <td ng-class="{'clstdMtex': item.DYE_BT_STS_TYPE_ID!=14,'clstdMtexHL':item.DYE_BT_STS_TYPE_ID==14}">
+                                {{$index+1}}
+                            </td>
+                            <td ng-class="{'clstdMtex': item.DYE_BT_STS_TYPE_ID!=14,'clstdMtexHL':item.DYE_BT_STS_TYPE_ID==14}">
+
+                                {{item.DYE_BATCH_NO}}
+
+                            </td>
+                            @*<td ng-class="{'clstdMtex': item.DYE_BT_STS_TYPE_ID!=14,'clstdMtexHL':item.DYE_BT_STS_TYPE_ID==14}" ng-if="item.DYE_BT_STS_TYPE_ID!=14">
+                                {{item.DYE_MACHINE_NO}}
+
+                                <input type="hidden" ng-model="item.DYE_MACHINE_ID" />
+                            </td>*@
+
+                            <td ng-class="{'clstdMtex': item.DYE_BT_STS_TYPE_ID!=14,'clstdMtexHL':item.DYE_BT_STS_TYPE_ID==14}" @*ng-if="item.DYE_BT_STS_TYPE_ID==14"*@>
+
+                                <select kendo-drop-down-list name="DYE_MACHINE_ID" id="DYE_MACHINE_ID" class="form-control"
+                                        options="vm.machineList" ng-model="item.DYE_MACHINE_ID"></select>
+
+                                @*<input type="hidden" ng-model="item.DYE_BT_CARD_H_ID" />*@
+
+                            </td>
+
+                            <td ng-class="{'clstdMtex': item.DYE_BT_STS_TYPE_ID!=14,'clstdMtexHL':item.DYE_BT_STS_TYPE_ID==14}">
+                                {{item.BYR_ACC_NAME_EN}}
+                                <input type="hidden" ng-model="item.DYE_BATCH_PLAN_ID" />
+                                <input type="hidden" ng-model="item.DYE_BT_PROD_ID" />
+                                <input type="hidden" ng-model="item.DYE_STR_REQ_H_ID" />
+                                <input type="hidden" ng-model="item.REQ_RE_PROC_TYPE_ID" />
+                                <input type="hidden" ng-model="item.DYE_BT_CARD_H_ID" />
+                            </td>
+                            <td ng-class="{'clstdMtex': item.DYE_BT_STS_TYPE_ID!=14,'clstdMtexHL':item.DYE_BT_STS_TYPE_ID==14}">
+                                {{item.ORDER_NO}}
+                            </td>
+                            <td ng-class="{'clstdMtex': item.DYE_BT_STS_TYPE_ID!=14,'clstdMtexHL':item.DYE_BT_STS_TYPE_ID==14}">
+
+                                {{item.STYLE_NO}}
+                                
+                            </td>
+                            <td ng-class="{'clstdMtex': item.DYE_BT_STS_TYPE_ID!=14,'clstdMtexHL':item.DYE_BT_STS_TYPE_ID==14}">
+                                {{item.COLOR_NAME_EN}}
+                            </td>
+                            <td ng-class="{'clstdMtex': item.DYE_BT_STS_TYPE_ID!=14,'clstdMtexHL':item.DYE_BT_STS_TYPE_ID==14}">
+                                {{item.RE_PROC_TYPE_NAME}}
+                            </td>
+                            <td ng-class="{'clstdMtex': item.DYE_BT_STS_TYPE_ID!=14,'clstdMtexHL':item.DYE_BT_STS_TYPE_ID==14}">
+                                {{item.DYE_MTHD_NAME}}
+                            </td>
+                            <td ng-class="{'clstdMtex': item.DYE_BT_STS_TYPE_ID!=14,'clstdMtexHL':item.DYE_BT_STS_TYPE_ID==14}" style="text-align:right;">
+                                {{item.ACT_BATCH_QTY}}
+                            </td>
+                            <td ng-class="{'clstdMtex': item.DYE_BT_STS_TYPE_ID!=14,'clstdMtexHL':item.DYE_BT_STS_TYPE_ID==14}" style="min-width:200px;">
+
+
+                                @*<input ng-model="date3" datetime-picker date-format="yyyy-MM-dd HH:mm:ss" close-on-select="false" />*@ 
+
+
+                                <input type="text" name="LOAD_TIME_{{$index}}" 
+                                    kendo-date-time-picker k-ng-model="item.LOAD_TIME" k-max="vm.today" 
+                                    k-options="datePickerOptions" class="form-control" />
+                            </td>
+
+                            <td ng-class="{'clstdMtex': item.DYE_BT_STS_TYPE_ID!=14,'clstdMtexHL':item.DYE_BT_STS_TYPE_ID==14}" style="min-width:200px;">
+
+                                <input type="text" name="UN_LOAD_TIME_{{$index}}" kendo-date-time-picker k-ng-model="item.UN_LOAD_TIME" min="item.LOAD_TIME"
+                                       k-rebind="item.LOAD_TIME" k-options="datePickerOptions" data-k-format="dd/MMM/yyyy" k-ng-change="timediff(item)"
+                                       class="form-control" />
+                            </td>
+                            <td ng-class="{'clstdMtex': item.DYE_BT_STS_TYPE_ID!=14,'clstdMtexHL':item.DYE_BT_STS_TYPE_ID==14}" k-rebind="item.UN_LOAD_TIME" ng-init="timediff(item)">
+                                {{item.TIME_DIFF}}
+                            </td>
+                            <td ng-class="{'clstdMtex': item.DYE_BT_STS_TYPE_ID!=14,'clstdMtexHL':item.DYE_BT_STS_TYPE_ID==14}">
+                                {{item.BT_STS_TYP_NAME}}
+                            </td>
+
+                            <td ng-class="{'clstdMtex': item.DYE_BT_STS_TYPE_ID!=14,'clstdMtexHL':item.DYE_BT_STS_TYPE_ID==14}" style="width:200px;">
+                                <a title="Push" ng-click="vm.updateThis(item)" ng-if="item.DYE_BT_STS_TYPE_ID==5 || item.IS_DISABLE==1 || item.IS_EDT_LOCKED=='Y'" class="btn btn-xs green"><i class="fa fa-edit"> Update</i></a>
+                                <a title="Complete" ng-click="vm.submitAll(item)" ng-if="item.DYE_BT_STS_TYPE_ID!=5 && item.DYE_BT_STS_TYPE_ID!=6 && item.DYE_BT_STS_TYPE_ID!=14" ng-disabled="item.IS_DISABLE==1 || item.IS_EDT_LOCKED=='Y'" class="btn btn-xs green"><i class="fa fa-save"> Complete</i></a>
+                                <a title="Push" ng-click="vm.pauseThis(item)" ng-if="item.DYE_BT_STS_TYPE_ID!=5 && item.DYE_BT_STS_TYPE_ID!=6 && item.DYE_BT_STS_TYPE_ID!=14" ng-disabled="item.IS_DISABLE==1 || item.IS_EDT_LOCKED=='Y'" class="btn btn-xs yellow-gold"><i class="fa fa-save"> Pause</i></a>
+                                <a title="Resume" ng-click="vm.copyThis(item,$index)" ng-if="item.DYE_BT_STS_TYPE_ID==5 && item.DYE_BT_STS_TYPE_ID!=6" ng-disabled="item.IS_DISABLE==1 || item.IS_EDT_LOCKED=='Y'" class="btn btn-xs yellow-gold"><i class="fa fa-copy"> Re-Start</i></a>
+                                <a title="Start" ng-click="vm.resumeThis(item)" ng-if="item.DYE_BT_STS_TYPE_ID==14" ng-disabled="item.IS_DISABLE==1 || item.IS_EDT_LOCKED=='Y'" class="btn btn-xs yellow-gold"><i class="fa fa-save"> Start</i></a>
+                                <a title="Open" ng-click="vm.openCheckRollModal(item)" ng-disabled="item.DYE_BT_STS_TYPE_ID!=6 && item.DYE_BT_STS_TYPE_ID!=8" class="btn btn-xs blue"><i class="fa fa-upload"> Check Roll</i></a>
+                                <a title="Remove" ng-click="vm.removeExtraRecord(item)" ng-if="item.DYE_BT_STS_TYPE_ID==14" class="btn btn-xs red"><i class="fa fa-remove"></i></a>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+                <pagination total-items="vm.form.totalItems" items-per-page="20" ng-model="currentPage" ng-change="vm.pageChanged(currentPage)"></pagination>
+            </fieldset>
+        </div>
+        <div style="padding:3px;">
+        </div>
+        @*<div class="row">
+                <div class="col-md-3">
+                    <button type="button" class="btn btn-sm blue" ui-sref="DCIssueRequisitionList">Back To List</button>
+                    <button type="submit" ng-if="vm.form.DYE_STR_REQ_H_ID>0" class="btn btn-sm yellow-gold" ng-click="vm.submitAll(vm.form);"> Submit</button>
+                    <button type="submit" ng-if="!vm.form.DYE_STR_REQ_H_ID>0" class="btn btn-sm green" ng-click="vm.submitAll(vm.form);">Save</button>
+                    <button type="button" class="btn btn-sm default" ui-sref="DCIssueRequisition({pDYE_STR_REQ_H_ID : 0})" ui-sref-opts="{reload: true}">Cancel</button>
+
+                </div>
+
+
+            </div>*@
+        <div style="padding:3px;">
+        </div>
+    </form>
+</div>
+
+
+
+
+<script type="text/ng-template" id="batchCheckRollStatus.html">
+    <style>
+        .dropdown-header {
+            border-width: 0 0 1px 0;
+            text-transform: uppercase;
+        }
+
+            .dropdown-header > span {
+                display: inline-block;
+                padding: 10px;
+            }
+
+                .dropdown-header > span:first-child {
+                    width: 10px;
+                }
+
+        .selected-value {
+            display: inline-block;
+            vertical-align: middle;
+            width: 24px;
+            height: 24px;
+            background-size: 100%;
+            margin-right: 5px;
+            border-radius: 50%;
+        }
+
+        #customers-list .k-item {
+            line-height: 1em;
+            min-width: 300px;
+        }
+
+        /* Material Theme padding adjustment*/
+
+        .k-material #customers-list .k-item,
+        .k-material #customers-list .k-item.k-state-hover,
+        .k-materialblack #customers-list .k-item,
+        .k-materialblack #customers-list .k-item.k-state-hover {
+            padding-left: 5px;
+            border-left: 0;
+        }
+
+        #customers-list .k-item > span {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            display: inline-block;
+            vertical-align: top;
+            margin: 20px 10px 10px 5px;
+        }
+
+            #customers-list .k-item > span:first-child {
+                -moz-box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+                -webkit-box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+                box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+                margin: 5px;
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                background-size: 100%;
+                background-repeat: no-repeat;
+            }
+
+        #customers-list h3 {
+            font-size: 1.2em;
+            font-weight: normal;
+            margin: 0 0 1px 0;
+            padding: 0;
+        }
+
+        #customers-list p {
+            margin: 0;
+            padding: 0;
+            font-size: .8em;
+        }
+
+
+        /*///////////////////////*/
+        .k-treeview .k-in {
+            padding: 5px;
+        }
+
+        #ItemCategTreeview .k-sprite {
+            background-image: url("/Content/assets/global/img/coloricons-sprite.png");
+        }
+
+        .rootfolder {
+            background-position: 0 0;
+        }
+
+        .folder {
+            background-position: 0 -16px;
+        }
+
+        .pdf {
+            background-position: 0 -32px;
+        }
+
+        .html {
+            background-position: 0 -48px;
+        }
+
+        .image {
+            background-position: 0 -64px;
+        }
+
+        /*.demo-section {
+            float: left;
+            width: 200px;
+            margin: 0 60px 0 0;
+        }*/
+    </style>
+    <input id="access_token" data-ng-model="token" type="hidden"
+           data-ng-init="token='@Session["access_token"]'" />
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h3 class="title">
+                        Check Batch Roll
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel();"></i></span>
+
+                    </h3>
+                </div>
+                <div><label id="lblMsg"></label></div>
+            </div>
+            <div class="portlet-body">
+
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend"><b>Check Batch Roll</b></legend>
+
+                    <table style="width:100%;padding-top:20px;">
+                        <tbody>
+                            <tr style="padding:15px;">
+                                <td style="padding: 5px;">Check Time <span aria-required="true" style="color:red;">*</span></td>
+                                <td style="padding: 5px;">
+
+                                    <input type="text" id="CHK_ROLL_DT" kendo-date-time-picker k-ng-model="vmS.CHK_ROLL_DT" k-max="today" k-options="datePickerOptions" class="form-control requiredSub2" />
+
+                                    <input type="hidden" id="DYE_BT_CARD_H_ID" name="DYE_BT_CARD_H_ID" ng-model="vmS.DYE_BT_CARD_H_ID" />
+                                </td>
+                            </tr>
+
+                            <tr style="padding:15px;">
+                                <td style="padding: 5px;">Check By <span aria-required="true" style="color:red;">*</span></td>
+                                <td style="padding: 5px;">
+                                    <select id="customers" kendo-drop-down-list options="userList" ng-model="vmS.CHECK_BY" class="form-control requiredSub2" style="width:100%;"></select>
+
+                                </td>
+                            </tr>
+
+                            <tr style="padding:15px;">
+                                <td style="padding: 5px;">Roll Status <span aria-required="true" style="color:red;">*</span></td>
+                                <td style="padding: 5px;">
+                                    <select kendo-drop-down-list name="LK_CHQ_RL_STS_ID" class="form-control" 
+                                            options="rollStatusList" ng-model="vmS.LK_CHQ_RL_STS_ID"></select>
+                                    @*<input type="radio" name="IS_ROLL_OK" ng-model="vmS.IS_ROLL_OK" id="is_ok" value="Y" ng-change="disableOtherType();" /><label for="is_ok"> OK</label>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="IS_ROLL_OK" ng-model="vmS.IS_ROLL_OK" id="not_ok" value="N" ng-change="disableOtherType();" /><label for="not_ok"> Not Okay</label>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="BY_PASS" ng-model="vmS.BY_PASS" id="by_ok" ng-true-value="'Y'" ng-false-value="'N'" ng-change="buPassOtherType();" /><label for="by_ok"> By Pass</label>*@
+
+                                </td>
+                            </tr>
+
+                            <tr style="padding:15px;">
+                                <td style="padding: 5px;"> Defect Type</td>
+                                <td style="padding: 5px;">
+                                    <select kendo-multi-select options='defectTypeList' id="RF_DY_DFCT_TYPE_LST" style="border: 1px solid #898383;" ng-disabled="vmS.IS_ROLL_OK=='Y'"
+                                            ng-model='vmS.RF_DY_DFCT_TYPE_LST'></select>
+
+                                </td>
+                            </tr>
+
+                            <tr style="padding:15px;">
+                                <td style="padding: 5px;">Remarks</td>
+                                <td style="padding: 5px;">
+                                    <textarea id="REMARKS" name="REMARKS" ng-model="vmS.REMARKS" class="form-control"></textarea>
+
+                                </td>
+                            </tr>
+
+                            <tr style="padding:15px;">
+                                <td style="padding: 5px;">Reprocess Type</td>
+                                <td style="padding: 5px;">
+                                    <select kendo-drop-down-list name="REQ_RE_PROC_TYPE_ID" class="form-control" ng-disabled="vmS.IS_ROLL_OK=='Y'"
+                                            options="btStatusList" ng-model="vmS.REQ_RE_PROC_TYPE_ID"></select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div style="padding:3px;">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5">
+                        </div>
+                        <div class="col-md-7">
+                            <button type="button" class="btn btn-sm green" ng-click="updateAll(vmS);;">Update</button>
+                            <button type="button" class="btn btn-sm yellow-gold" ng-click="confirmAll(vmS);;">Confirm</button>
+                            <button type="button" class="btn btn-sm default" ng-click="cancel();">Cancel</button>
+
+                        </div>
+
+
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</script>

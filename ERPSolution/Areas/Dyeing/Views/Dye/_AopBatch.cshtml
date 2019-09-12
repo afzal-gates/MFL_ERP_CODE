@@ -1,0 +1,206 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Dyeing Finishing</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        <input id="access_token" data-ng-model="token" type="hidden"
+               data-ng-init="token='@Session["access_token"]'" />
+        <input ng-model="vm.form.CREATED_BY" type="hidden"
+               data-ng-init="vm.form.CREATED_BY='@Session["multiScUserId"]'" />
+
+        <input id="access_token" ng-model="vm.form.LAST_UPDATED_BY" type="hidden"
+               ng-init="vm.form.LAST_UPDATED_BY='@Session["multiScUserId"]'" />
+
+        <fieldset class="custom-fieldset">
+            <legend class="custom-legend"><b>Search</b></legend>
+            <div>
+                <div>
+                    <table class="clsTable">
+                        <tbody class="clsthead">
+                            <tr class="clstd">
+                                <td class="clstd">
+                                    <b>Party Name</b>
+                                </td>
+                                <td class="clstd">
+                                    <b>Buyer A/C</b>
+                                </td>
+
+                                <td class="clstd">
+
+                                    <b>Work Style</b>
+                                </td>
+                                <td class="clstd">
+
+                                    <b>Order #</b>
+                                </td>
+
+                                <td class="clstd">
+
+                                    <b>Action</b>
+                                </td>
+                            </tr>
+                            <tr class="clstd">
+
+                                <td class="clstd">
+                                    <select kendo-drop-down-list name="SCM_SUPPLIER_ID" class="form-control"
+                                            k-options="vm.supplierList" id="SCM_SUPPLIER_ID" ng-model="vm.form.SCM_SUPPLIER_ID" required></select>
+
+                                    @*<select class="form-control required" kendo-drop-down-list name="SCM_SUPPLIER_ID" id="SCM_SUPPLIER_ID" k-option-label="'-- Select Party --'"
+                                            k-data-text-field="'SUP_TRD_NAME_EN'" k-data-value-field="'SCM_SUPPLIER_ID'"
+                                            k-auto-bind="'true'" k-data-source="vm.supplierList" k-delay="vm.supplierList" k-filter="'contains'"
+                                            ng-model="vm.form.SCM_SUPPLIER_ID"></select>*@
+                                </td>
+                                <td class="clstd">
+                                    <select kendo-drop-down-list name="MC_BYR_ACC_GRP_ID" class="form-control"
+                                            k-options="vm.buyerAcGrpList" id="MC_BYR_ACC_GRP_ID" ng-model="vm.form.MC_BYR_ACC_GRP_ID" required></select>
+
+                                </td>
+
+
+                                <td class="clstd">
+                                    <select class="form-control" kendo-drop-down-list name="MC_FAB_PROD_ORD_H_ID" k-option-label="'--Style --'"
+                                            k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_FAB_PROD_ORD_H_ID'" k-filter="'Contains'"
+                                            k-template="template" k-value-template="valueTemplate"
+                                            k-auto-bind="'true'" k-data-source="vm.StyleExtDs" ng-model="vm.form.MC_FAB_PROD_ORD_H_ID"
+                                            @*k-on-change="onFabOrderChange(kendoEvent)"*@></select>
+
+                                </td>
+                                <td class="clstd">
+                                    <select class="form-control" kendo-drop-down-list name="MC_FAB_PROD_ORD_H_ID" k-option-label="'--Order# --'"
+                                            k-data-text-field="'ORDER_NO_LST'" k-data-value-field="'MC_FAB_PROD_ORD_H_ID'" k-filter="'Contains'"
+                                            k-template="templateOh" k-value-template="valueTemplateOh"
+                                            k-auto-bind="'true'" k-data-source="vm.FabOederByOhDs" ng-model="vm.form.MC_FAB_PROD_ORD_H_ID"
+                                            required style="width:100%;"></select>
+
+                                </td>
+
+                                <td class="clstd">
+                                    <button class="btn btn-sm blue" ng-click="vm.SearchPendingSubLot();"><i class='fa fa-search'></i> Show</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+
+
+            </div>
+        </fieldset>
+
+        <div style="padding:3px;">
+        </div>
+        <fieldset class="custom-fieldset">
+            <legend class="custom-legend"><b>Master Data</b></legend>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-1"></div>
+                    <label class="control-label col-md-1">
+                        <span aria-required="true" class="required">*</span>
+                        Batch No
+                    </label>
+                    <div class="col-md-2">
+                        <input type="text" ng-model="vm.form.DYE_BATCH_NO" readonly />
+                        <input type="hidden" ng-model="vm.form.DYE_BT_CARD_H_ID" />
+                    </div>
+                    <div class="col-md-1"></div>
+                    <label class="control-label col-md-1">
+                        <span aria-required="true" class="required">*</span>
+                        Lot No
+                    </label>
+                    <div class="col-md-1">
+                        <input type="text" ng-model="vm.form.DYE_LOT_NO" id="DYE_LOT_NO" />
+                    </div>
+
+                    <div class="col-md-1"></div>
+                    <label class="control-label col-md-2" style="text-align:right;">
+                        <span aria-required="true" class="required">*</span>
+                        Batch Date
+                    </label>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control required" ng-click="BATCH_REQ_DT_LNopen($event)" ng-focus="BATCH_REQ_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                               name="BATCH_REQ_DT" max-date="vm.today" ng-model="vm.form.BATCH_REQ_DT" is-open="BATCH_REQ_DT_LNopened" style="width:60%;"
+                               datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                    </div>
+
+                </div>
+            </div>
+
+        </fieldset>
+
+        <fieldset class="custom-fieldset">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-3" style="padding:0px;">
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend">Receive Challan</legend>
+
+                            <div kendo-grid k-options="vm.delvChlnOptions" k-data-source="vm.delvChlnDataSource"></div>
+
+                            <div class="col-md-6" style="text-align:left;padding-left:0px;padding-top:5px">
+                                <button type="button" class="btn btn-sm yellow-gold" ng-click="vm.openChallan()">Receive Challan</button>
+                            </div>
+                            <div class="col-md-6" style="text-align:right;padding-right:0px;padding-top:5px">
+                                <button type="button" class="btn btn-sm blue" ng-disabled="vm.form.DYE_BT_CARD_H_ID>0" ng-click="vm.includeChallan()">Include Challan</button>
+                            </div>
+                        </fieldset>
+
+                    </div>
+
+
+                    <div class="col-md-9" style="padding:0px;">
+
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend"><b>Batch Lot Data</b></legend>
+
+                            <div kendo-grid k-options="vm.gridOptions" style="border-color:black;" k-data-source="vm.QcRollLotList"></div>
+
+                            <div style="padding:3px;">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-sm blue" ui-sref="AopBatchList">Back To List</button>
+                                    <button type="button" class="btn btn-sm green" ng-if="!vm.form.DYE_BT_CARD_H_ID>0" ng-click="vm.submitAll(vm.form);"><i class="fa fa-save"></i> Save</button>
+                                    <button type="button" class="btn btn-sm yellow-gold" ng-if="vm.form.DYE_BT_CARD_H_ID>0" ng-click="vm.submitAll(vm.form);"><i class="fa fa-refresh"></i> Update</button>
+                                    <button type="button" class="btn btn-sm default" ng-click="vm.reset();"><i class="fa fa-refresh"></i> Clear</button>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <a class="btn btn-sm green" ng-if="vm.form.DYE_BT_CARD_H_ID>0" ng-click="vm.printRDLC(vm.form);"><i class="fa fa-print"></i> Print</a>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+    </div>
+</div>

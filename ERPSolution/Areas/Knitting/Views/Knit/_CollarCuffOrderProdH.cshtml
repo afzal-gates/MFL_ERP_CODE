@@ -1,0 +1,186 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Knitting</a>
+
+    </li>
+    <li>
+        <a href="#">Order Wise Collar Cuff Production</a>
+    </li>
+</ul>
+
+
+<div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+    <div class="page-splash">
+        <div class="page-splash-message">
+            <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+        </div>
+    </div>
+</div>
+
+
+<div class="portlet box blue-dark" >
+    
+    
+    <div class="portlet-title">
+        <div class="caption">
+            @*<i class="fa fa-gift"></i>*@ Order Wise Collar Cuff Production
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <form class="form-horizontal form-body" name="frmClCfProd">
+            <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    <fieldset class="custom-fieldset" style="margin-bottom:5px">
+                        <legend class="custom-legend">Key Information</legend>
+
+
+                        <div class="form-group">
+
+                            <label class="control-label col-md-1">
+                                <span aria-required="true" class="required">*</span>Type
+                            </label>
+                            <div class="col-md-3">
+                                <select kendo-drop-down-list name="RF_FAB_PROD_CAT_ID" id="RF_FAB_PROD_CAT_ID" class="form-control"
+                                        options="vm.prodTypeList" ng-model="vm.form.RF_FAB_PROD_CAT_ID"></select>                                
+                            </div>
+
+                            <label class="control-label col-md-1">
+                                <span aria-required="true" class="required">*</span>Buyer A/C
+                            </label>
+                            <div class="col-md-3">
+                                @*<select kendo-drop-down-list name="MC_BYR_ACC_GRP_ID" id="MC_BYR_ACC_GRP_ID" class="form-control"
+                                        options="vm.buyerAccList" ng-model="vm.form.MC_BYR_ACC_GRP_ID" ng-change="vm.styleListByBuyerAC(vm.form.MC_BYR_ACC_GRP_ID);"></select>*@
+                                <select kendo-drop-down-list name="MC_BYR_ACC_GRP_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                        k-options="vm.buyerAcGrpList" ng-model="vm.form.MC_BYR_ACC_GRP_ID"
+                                        k-data-text-field="'BYR_ACC_GRP_NAME_EN'" k-data-value-field="'MC_BYR_ACC_GRP_ID'"
+                                        k-auto-bind="'true'"></select>
+                            </div>
+                            
+                            <label class="control-label col-md-1">
+                                Style/Order#
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control" kendo-drop-down-list name="MC_STYLE_H_EXT_ID" k-option-label="'-- Select Order --'"
+                                        k-template="vm.styleExtTemplate" k-value-template="vm.styleExtValueTemplate"
+                                        k-data-text-field="'ORDER_NO'" k-data-value-field="'MC_STYLE_H_EXT_ID'" k-filter="'contains'"
+                                        k-auto-bind="'true'" k-options="vm.orderOption" k-data-source="vm.orderDataSource" k-ng-delay="vm.orderDataSource" ng-model="vm.form.MC_STYLE_H_EXT_ID"
+                                        @*k-on-change="vm.getDataByStyleId(kendoEvent)"*@ required></select>
+                            </div>
+                            
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label class="control-label col-md-1">
+                                CPI
+                            </label>
+                            <div class="col-md-2">
+                                <input type="number" class="form-control" ng-model="vm.form.CPI" />
+
+                            </div>
+
+                           
+                            <label class="control-label col-md-1 col-md-offset-1">
+                                No of Ply
+                            </label>
+                            <div class="col-md-2">
+                                <input type="number" class="form-control" ng-model="vm.form.NO_PLY" />
+                            </div>
+
+                            <label class="control-label col-md-1 col-md-offset-1">
+                                Color
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control" kendo-drop-down-list name="MC_COLOR_ID" k-option-label="'-- Select Color --'"
+                                        k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'MC_COLOR_ID'" k-filter="'contains'"
+                                        k-auto-bind="'true'" k-options="vm.orderColorOption" k-data-source="vm.orderColorDataSource" k-ng-delay="vm.orderColorDataSource" ng-model="vm.form.MC_COLOR_ID"
+                                        @*k-on-change="vm.getDataByOrderColorId(kendoEvent)"*@ required></select>
+                            </div>
+
+                            
+                        </div>
+
+                        <div class="form-group">
+                            
+                            <label class="control-label col-md-1">
+                                Coll.Design
+                            </label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" ng-model="vm.form.COLLAR_DESIG_TYPE" readonly />
+                            </div>
+
+                            <label class="control-label col-md-1" >
+                                &nbsp;
+                            </label>
+                            <div class="col-md-3" >
+                                &nbsp;
+                                @*<textarea rows="1" class="form-control" ng-model="vm.form.YARN_DETAIL" readonly></textarea>*@
+                            </div>
+                            
+                            <label class="control-label col-md-1">
+                                Date
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" ng-click="vm.prodDateOpen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                       name="PROD_DT" ng-model="vm.form.PROD_DT" is-open="vm.prodDateOpened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" @*ng-required="true"*@ close-text="Close" />
+                            </div>
+                            <div class="col-md-1">
+                                <button type="button" class="btn btn-sm blue" ng-click="vm.nextLoad()"
+                                        ng-class="{'disabled':vm.form.MC_BYR_ACC_GRP_ID==null||(vm.form.MC_STYLE_H_EXT_ID==null||vm.form.MC_STYLE_H_EXT_ID=='')||
+                                        (vm.form.MC_COLOR_ID==null||vm.form.MC_COLOR_ID=='')}">
+                                    Next
+                                </button>
+                            </div>
+
+                        </div>
+
+                        
+
+                    </fieldset>
+
+                    @*<pre>{{IS_NEXT}}</pre>*@
+                    <div ng-show="IS_NEXT == 'Y'">
+                        <div class="portlet-body" data-ui-view="KntCollarCuffOrdProdH.dtl"></div>
+                    </div>
+
+                </div>
+
+            </div>
+        </form>
+
+       
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+

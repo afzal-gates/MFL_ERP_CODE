@@ -1,0 +1,283 @@
+﻿<div class="modal-body">
+    <div class="portlet grey-cascade box">
+        <div id="splash-page" data-ng-show="showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <div class="portlet-title">
+            <div style="padding-top:2px;">
+                <h4 class="title">
+                    Manual Line Loading => Style # : <strong>{{data.WORK_STYLE_NO}}</strong>&nbsp;&nbsp;Order # : <strong>{{data.ORDER_NO}}</strong>&nbsp;&nbsp;Buyer : <strong>{{data.BYR_ACC_GRP_NAME_EN}}</strong>&nbsp;&nbsp;Order Quantity # : <strong>{{data.TOT_ORD_QTY}}</strong>&nbsp;&nbsp;Order Confirm: <strong>{{data.ORD_CONF_DT|date:'dd-MMM-yyyy'}}</strong>&nbsp;&nbsp;
+                    Shipment: <strong>{{data.SHIP_DT|date:'dd-MMM-yyyy'}}</strong>&nbsp;&nbsp;
+                    <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                </h4>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <form role="form" name="ManulLineLoadingPlanForm" class="form-horizontal">
+                <table class="table table-condensed table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            @*<th rowspan="2" class="col-md-1">Category</th>*@
+                            <th rowspan="2" class="col-md-2">Item</th>
+                            <th rowspan="2" class="col-md-1">OQ//alloc//Left//%</th>
+                            @*<th rowspan="2" class="col-md-1">TrgtEffi.</th>*@
+                            <th colspan="5" class="col-md-9">Planning</th>
+                        </tr>
+
+                        <tr>
+                            <th class="col-md-1">Line</th>
+                            <th class="col-md-2">
+                                <span class="col-md-6" style="padding-left:0px;padding-right:3px;">
+                                        Allocation
+                                </span>
+                                <span class="col-md-6" style="padding-left:0px;padding-right:3px;">
+                                      Production
+                                </span>
+                            </th>
+
+                            <th class="col-md-2">Sew ST</th>
+                            <th class="col-md-2">Sew End</th>
+
+                            @*<th class="col-md-1">WH</th>*@
+
+                            <th class="col-md-1">
+                                LC||Effi.
+                            </th>
+                            <th class="col-md-1">
+                                Phase
+                            </th>
+
+
+                        </tr>
+
+
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="(key,item) in items">
+                            <td class="col-md-2">
+                                <div class="checkbox-list">
+                                    <label class="checkbox-inline" style="margin-left:20px;margin-top:-10px;">
+                                        <span><input type="checkbox" ng-model="item.IS_INCLUDE_4PLN" ng-true-value="'Y'" ng-false-value="'N'"></span>Incl.?
+                                    </label>
+                                </div>
+                                <small><b>{{ item.ORDER_NO }}</b></small><br>
+                                <small>Confirm:<b>{{item.ORD_CONF_DT }} </b> Ship: <b><span style="color: red;"> {{ item.SHIP_DT }} </span></b></small>
+                                <img data-ng-src="data:image/png;base64,{{item.STYL_KEY_IMG}}" ng-click="zoomImage(item.STYL_KEY_IMG)" title="Click for Image Enlarge" alt="No Photo" style="border:1px solid black;width:45px; height:45px" /> <span style="font-style:italic;"><small><b> {{item.ITEM_NAME_EN}} </small></span>
+
+                                <h6 style="font-style:italic;font-weight:600;">
+                                    {{'SMV: '+item.SMV+', OP:'+item.NO_OF_OPR+', Helper:'+item.NO_OF_HLPR+', Plan Effi :'+item.PLAN_EFICNCY+'%'}}
+                                </h6>
+                                <h2 style="font-style:italic;font-weight:600; color:coral;">
+                                    Req. M/C:  {{item.NO_OF_OPR}}
+                                </h2>
+                                <div>
+                                    <a class="btn btn-xs blue btn-block" ng-click="onAddOtherOrder(item)">
+                                        <i class="fa fa-plus-circle"></i> Merge Other Orders
+                                    </a>
+
+                                </div>
+
+
+                            </td>
+                            <td class="col-md-1">
+                                {{item.ORDER_QTY+'//'+item.ALLOCATED_QTY+'//'+(item.ORDER_QTY-item.ALLOCATED_QTY) }}
+                                <span class="badge badge-success" ng-class="{ 'badge-danger' : ((item.ALLOCATED_QTY/item.ORDER_QTY) < 1 || (item.ALLOCATED_QTY/item.ORDER_QTY) > 1.03)  }" style="display:block;font-weight:700;font-size: 18px;"> {{ ((item.ALLOCATED_QTY/item.ORDER_QTY)*100|number:2) }}%</span>
+
+                                <br />
+                                <span class="row" style="display:block;margin:auto;">
+                                    <span class="col-md-2" style="padding-left:0px;padding-right:3px;">
+                                        <br />
+                                        T&A:
+                                    </span>
+                                    <span class="col-md-5" style="padding-left:0px;padding-right:3px;">
+                                        Start
+                                        <br />
+                                        {{data.PLAN_START_DT|date:'dd-MMM-yy'}}
+
+                                    </span>
+                                    <span class="col-md-5" style="padding-left:0px;padding-right:0px;">
+                                        End
+                                        <br />
+                                        {{data.PLAN_END_DT|date:'dd-MMM-yy'}}
+                                    </span>
+                                </span>
+
+                                <span class="row" style="display:block;margin:auto;">
+                                    <span class="col-md-2" style="padding-left:0px;padding-right:3px;">
+
+                                        Pln:
+                                    </span>
+                                    <span class="col-md-5" style="padding-left:0px;padding-right:3px;">
+                                        {{item.LOAD_START_DT|date:'dd-MMM-yy'}}
+
+                                    </span>
+                                    <span class="col-md-5" style="padding-left:0px;padding-right:0px;">
+                                        {{item.LOAD_END_DT|date:'dd-MMM-yy'}}
+                                    </span>
+                                </span>
+
+                            </td>
+                            <td colspan="6" style="padding:0px;" class="col-md-9">
+
+                                <table class="table table-condensed table-striped table-bordered" style="padding:0px;margin-bottom:0px;">
+                                    <tr ng-repeat="(idx,itm) in item.ln_loads_items">
+                                        <td class="col-md-1" ng-class="{'has-error': (HR_PROD_LINE_ID_FORM.HR_PROD_LINE_ID.$touched || ManulLineLoadingPlanForm.$submitted) && (HR_PROD_LINE_ID_FORM.HR_PROD_LINE_ID.$error.required)}">
+
+                                            <ng-form name="HR_PROD_LINE_ID_FORM">
+                                                <select class="form-control" kendo-drop-down-list name="HR_PROD_LINE_ID" k-option-label="'-- Select --'"
+                                                        k-data-text-field="'name'" k-data-value-field="'HR_PROD_LINE_ID'" ng-disabled="itm.GMT_PLN_STRIPE_PHASE_ID == 2 || itm.GMT_PLN_STRIPE_PHASE_ID ==3 || itm.GMT_PLN_STRIPE_PHASE_ID ==5"
+                                                        k-auto-bind="'true'" k-data-source="resourceDs[key][idx]" k-ng-delay="resourceDs[key][idx]" ng-model="itm.HR_PROD_LINE_ID"
+                                                        k-on-change="onChangeLine(itm,kendoEvent,item)" k-template="template" k-value-template="valueTemplate" k-filter="'contains'"></select>
+
+                                            </ng-form>
+
+
+                                            <br />
+                                            <span ng-hide="( itm.PLAN_MP < 1 || itm.PLAN_WH < 1 || itm.ALLOCATED_QTY < 1) || itm.GMT_PLN_STRIPE_PHASE_ID == 2 || itm.GMT_PLN_STRIPE_PHASE_ID ==3 || itm.GMT_PLN_STRIPE_PHASE_ID ==5 " style="display: block; cursor: pointer; padding-top: 3px;" class="badge badge-important" ng-click="findSuggestedLine(item,itm,data)">Find Suggestion</span>
+                                            <br />
+                                            <div class="row" style="margin:auto;" ng-if="item.NO_OF_OPR > itm.TTL_ACTV_POINT && itm.IS_ACTV_POINT=='N'" ng-repeat="(kkk, it) in itm.HR_PROD_LINE_LST track by $index">
+                                                <div class="col-md-10">
+                                                    <h5 style="margin:5px;font-style:italic;">Merged Line: </h5>
+                                                    <select ng-model="itm.HR_PROD_LINE_LST[kkk]" ng-disabled="itm.GMT_PLN_STRIPE_PHASE_ID == 2 || itm.GMT_PLN_STRIPE_PHASE_ID ==3 || itm.GMT_PLN_STRIPE_PHASE_ID ==5" ng-options="option.HR_PROD_LINE_ID as option.name for option in onFindDataSource(itm)" class="form-control" />
+
+                                                </div>
+
+                                                <div class="col-md-1" style="text-align: left; padding-left: 2px;">
+                                                    <h5 style="margin:5px;font-style:italic;">.</h5>
+                                                    <button class="btn btn-xs blue" ng-click="itm.HR_PROD_LINE_LST.push(null)" type="button"><i class="fa fa-plus"></i></button>
+                                                    <button class="btn btn-xs red" ng-click="itm.HR_PROD_LINE_LST.splice(kkk,1)" type="button">X</button>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin:auto;" ng-if="itm.IS_ACTV_POINT=='Y'">
+                                                <div class="col-md-12">
+                                                    <h5 style="margin:5px;font-style:italic;">Attached To: </h5>
+                                                    <select ng-model="itm.PARENT_ID" ng-change="onChangeParentLine(item.ln_loads_items,itm)" ng-options="option.GMT_PLN_LINE_LOAD_ID as option.ALLOCATION_DESC for option in onFindParentData(item.ln_loads_items,itm)" class="form-control" />
+
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="col-md-2" ng-class="{'has-error': (ALLOCATED_QTY_FORM.ALLOCATED_QTY.$touched || PLAN_WH_FORM.PLAN_WH.$touched || ManulLineLoadingPlanForm.$submitted) && (ALLOCATED_QTY_FORM.ALLOCATED_QTY.$error.required || PLAN_WH_FORM.PLAN_WH.$error.required ||  PLAN_WH_FORM.PLAN_WH.$error.min || ALLOCATED_QTY_FORM.ALLOCATED_QTY.$error.min)}">
+
+                                            <span class="row" style="display:block;margin:auto;">
+                                                <span class="col-md-6" style="padding-left:0px;padding-right:3px;">
+                                                    <ng-form name="ALLOCATED_QTY_FORM">
+                                                        <input type="number" name="ALLOCATED_QTY" @*ng-min="itm.TOT_PROD"*@ class="form-control" ng-disabled="itm.GMT_PLN_STRIPE_PHASE_ID == 2 || itm.GMT_PLN_STRIPE_PHASE_ID ==5"
+                                                               ng-model="itm.ALLOCATED_QTY" ng-change="allocatedQtyChange(item)" />
+                                                    </ng-form>
+
+                                                </span>
+                                                <span class="col-md-6" style="padding-left:0px;padding-right:3px;">
+                                                    <input type="number" class="form-control" ng-disabled="true"
+                                                           ng-model="itm.TOT_PROD" />
+                                                </span>
+                                            </span>
+
+
+
+                                            <br />
+
+                                            <a ng-hide="(!itm.HR_PROD_LINE_ID || itm.PLAN_MP < 1 || itm.PLAN_WH < 1 || itm.ALLOCATED_QTY < 1) || itm.GMT_PLN_STRIPE_PHASE_ID == 2 || itm.GMT_PLN_STRIPE_PHASE_ID == 5" style="display:block;cursor:pointer;padding-top:3px;" class="badge badge-important" ng-click="findSewingEnd(item,itm);itm.STATUS_CHANGE = 'Y' "><i class="fa fa-refresh"></i>Auto Sewing End Date</a>
+
+                                            <span class="row" style="display:block;margin:auto;">
+                                                <span class="col-md-4" style="padding-left:0px;padding-right:3px;">
+                                                    OP
+                                                    <input type="number" class="form-control" readonly="readonly" ng-model="itm.PLAN_OP" />
+                                                </span>
+                                                <span class="col-md-4" style="padding-left:0px;padding-right:3px;">
+                                                    ASO
+                                                    <input type="number" class="form-control" readonly="readonly" ng-model="itm.PLAN_HP" />
+                                                </span>
+                                                <input type="hidden" ng-model="itm.PLAN_MP" ng-value="itm.PLAN_OP+itm.PLAN_HP" />
+                                                <span class="col-md-4" style="padding-left:0px;padding-right:0px;">
+                                                    WH
+                                                    <ng-form name="PLAN_WH_FORM">
+                                                        <input type="number" name="PLAN_WH" ng-change="itm.STATUS_CHANGE = 'Y'"
+                                                               ng-disabled="itm.GMT_PLN_STRIPE_PHASE_ID == 2 || itm.GMT_PLN_STRIPE_PHASE_ID ==3 || itm.GMT_PLN_STRIPE_PHASE_ID ==5" required min="8" class="form-control" ng-model="itm.PLAN_WH" />
+                                                    </ng-form>
+
+                                                </span>
+                                            </span>
+                                        </td>
+                                        <td class="col-md-2">
+                                            <input kendo-date-time-picker k-on-change="onPlnDateChanhe(kendoEvent, itm)" ng-disabled="itm.GMT_PLN_STRIPE_PHASE_ID == 2 || itm.GMT_PLN_STRIPE_PHASE_ID ==3 || itm.GMT_PLN_STRIPE_PHASE_ID ==5" k-ng-model="itm.SEW_START_DT" name="SEW_START_DT" k-options="datePickerOptions" data-k-format="'dd-MMM-yyyy htt'" k-interval="60" class="form-control" style="width: 100%;" />
+                                        </td>
+                                        <td class="col-md-2">
+                                            <input kendo-date-time-picker ng-disabled="itm.GMT_PLN_STRIPE_PHASE_ID == 2 || itm.GMT_PLN_STRIPE_PHASE_ID ==5" k-on-change="onPlnDateChanhe(kendoEvent, itm)" k-ng-model="itm.SEW_END_DT" k-rebind="itm.SEW_START_DT" k-min="itm.SEW_START_DT" name="SEW_END_DT" data-k-format="'dd-MMM-yyyy htt'" k-interval="60" class="form-control" k-options="datePickerOptions" style="width: 100%;" />
+                                            <br />
+                                            <span class="row" style="display:block;margin:auto;">
+               
+                                                <span class="col-md-6" style="padding-left:0px;padding-right:3px;">
+                                                    <span ng-hide="(!itm.HR_PROD_LINE_ID || itm.PLAN_MP < 1 || itm.PLAN_WH < 1 || itm.ALLOCATED_QTY < 1) || itm.GMT_PLN_STRIPE_PHASE_ID == 2 || itm.GMT_PLN_STRIPE_PHASE_ID ==3 || itm.GMT_PLN_STRIPE_PHASE_ID ==5" style="display:block;cursor:pointer;padding-top:3px;" class="badge badge-important" ng-click="findSewingStart(item,itm);itm.STATUS_CHANGE = 'Y'"><i class="fa fa-refresh"></i> Auto Start Date</span>
+                                                </span>
+                                                <span class="col-md-6" style="padding-left:0px;padding-right:0px;">
+                                                    <span ng-hide="(!itm.HR_PROD_LINE_ID || itm.PLAN_MP < 1 || itm.PLAN_WH < 1 || itm.ALLOCATED_QTY < 1) || itm.GMT_PLN_STRIPE_PHASE_ID == 2 || itm.GMT_PLN_STRIPE_PHASE_ID ==3 || itm.GMT_PLN_STRIPE_PHASE_ID ==5" style="display:block;cursor:pointer;padding-top:3px;" class="badge badge-info" ng-click="findOrderQuantity(item,itm);itm.STATUS_CHANGE = 'Y'"><i class="fa fa-refresh"></i> Refresh Allocation</span>
+                                                </span>
+                                            </span>
+
+
+                                            
+                                           
+
+                                        </td>
+
+                                        <td class="col-md-1">
+                                            <div class="row" style="margin:auto;">
+                                                <div class="col-md-6" style="padding-left:0px;padding-right:3px;">
+                                                    <div class="checkbox-list">
+                                                        <label class="checkbox-inline" style="margin-left:20px;margin-top:-10px;">
+                                                            <span><input type="checkbox" ng-disabled="itm.GMT_PLN_STRIPE_PHASE_ID == 2 || itm.GMT_PLN_STRIPE_PHASE_ID ==3 || itm.GMT_PLN_STRIPE_PHASE_ID ==5" ng-change="itm.PLAN_EFFICIENCY=''" ng-model="itm.IS_LRN_CRV_APP" ng-true-value="'Y'" ng-false-value="'N'"></span>Yes
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <span class="col-md-6" style="padding-left:0px;padding-right:0px;" ng-hide="itm.IS_LRN_CRV_APP=='Y'">
+                                                    <input type="number" ng-disabled="itm.IS_LRN_CRV_APP=='Y'||itm.GMT_PLN_STRIPE_PHASE_ID == 2 || itm.GMT_PLN_STRIPE_PHASE_ID ==3 || itm.GMT_PLN_STRIPE_PHASE_ID ==5" class="form-control" ng-model="itm.PLAN_EFFICIENCY" />
+                                                </span>
+
+                                                {{ itm.GMT_PLN_LINE_LOAD_ID }}
+
+                                            </div>
+                                        </td>
+
+                                        <td class="col-md-1">
+
+                                            <div class="row" style="margin:auto;">
+                                                <select class="form-control" kendo-drop-down-list name="GMT_PLN_STRIPE_PHASE_ID" k-option-label="'-- Select --'"
+                                                        k-data-text-field="'PLN_STRIPE_PHASE_NAME'" k-data-value-field="'GMT_PLN_STRIPE_PHASE_ID'" k-filter="'contains'"
+                                                        k-auto-bind="'true'" k-data-source="pahseDs" k-ng-delay="pahseDs" ng-model="itm.GMT_PLN_STRIPE_PHASE_ID"
+                                                        k-on-data-bound="onSelectIPhase(kendoEvent)" k-template="templatePhase" ng-disabled="itm.GMT_PLN_STRIPE_PHASE_ID ==2 || itm.GMT_PLN_STRIPE_PHASE_ID ==3 || itm.GMT_PLN_STRIPE_PHASE_ID ==5"></select>
+                                            </div>
+                                            <br />
+                                            <span ng-repeat="sts in itm.sts" ng-style="{'color': sts.STS_COLOR_CODE }">
+                                                {{sts.PLN_STS_CODE}}
+                                            </span>
+                                            <br />
+                                            <div class="row" style="margin:auto;">
+                                                <a class="btn btn-xs blue-hoki-stripe" ng-if="$last" ng-click="allocatedQtyChange(item);addNew(item,$index)">+Add</a>
+                                                <a class="btn btn-xs red-intense-stripe" ng-if="!( itm.GMT_PLN_STRIPE_PHASE_ID ==2 || itm.GMT_PLN_STRIPE_PHASE_ID ==3 || itm.GMT_PLN_STRIPE_PHASE_ID ==5)" ng-click="allocatedQtyChange(item);item.ln_loads_items.splice($index,1)">Del</a>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col-md-4">
+                        <button type="button" class="btn btn-sm default" ng-click="cancel()">Close</button>
+                    </div>
+                    <div class="col-md-4 col-md-offset-4" style="text-align:right;">
+                        <button type="button" class="btn btn-sm green" ng-click="save(items, ManulLineLoadingPlanForm.$valid); ManulLineLoadingPlanForm.$submitted = true">Save</button>
+                        <button type="button" class="btn btn-sm grey-cascade" ng-click="Reset()">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

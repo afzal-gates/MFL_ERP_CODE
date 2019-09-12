@@ -1,0 +1,457 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Garments</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption">
+            {{vm.Title}}
+        </div>
+        <div class="tools">
+        </div>
+
+        <div class="actions">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+        <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)"><h4 style="margin:0px;">{{alert.msg}}</h4></alert>
+
+
+        <table class="table table-condensed table-striped table-bordered" style="padding-left: 5px; padding-right: 5px; margin-bottom: 3px;">
+            <tbody>
+                <tr>
+
+                    <td style="width: 10%; padding-bottom: 0px; padding-bottom: 0px;">
+                        <select class="form-control" kendo-drop-down-list name="GMT_PROD_PLN_CLNDR_ID" k-option-label="'-- Select Date --'"
+                                k-data-text-field="'CALENDAR_DT_TXT'" k-data-value-field="'GMT_PROD_PLN_CLNDR_ID'"
+                                k-auto-bind="'true'" k-ng-delay="vm.clndrDateDs" k-data-source="vm.clndrDateDs" ng-model="vm.GMT_PROD_PLN_CLNDR_ID" k-filter="'contains'"
+                                k-on-data-bound="vm.ClndrListOnBound(kendoEvent)" k-on-change="vm.ClndrListOnChange(kendoEvent)"></select>
+                    </td>
+
+                    <td style="width: 20%; padding-bottom: 0px; padding-bottom: 0px;">
+                        <form name="SewOutputScanForm" ng-submit="vm.submitData(BARCODE, SewOutputScanForm.$valid)">
+                            <div class="form-group" ng-class="{'has-error': SewOutputScanForm.$invalid }">
+                                <input type="text" class="form-control" ng-disabled="!vm.GMT_PROD_PLN_CLNDR_ID" ng-model="BARCODE" name="BARCODE" style="height:28px;" autocomplete="off" focus-me="true" placeholder="Bundle Card" ng-maxlength="18" ng-minlength="18">
+                                <button type="submit" style="display:none;"></button>
+                            </div>
+                        </form>
+                    </td>
+
+
+                    <td style="width: 20%;  border-left: hidden; padding-bottom: 0px;">
+                        <div class="help-block" style="background-color: red; font-size: 13px; color: white; padding: 5px; " ng-if="vm.errors">
+                            <b>{{vm.errors}}</b>
+                        </div>
+
+                        <div class="help-block" style="background-color: red; font-size: 13px; color: white; padding: 5px; " ng-if="SewOutputScanForm.BARCODE.$dirty && (SewOutputScanForm.BARCODE.$error.invalid_barcode||SewOutputScanForm.BARCODE.$error.maxlength||SewOutputScanForm.BARCODE.$error.minlength)">
+                            <b>Invalid Barcode</b>
+                        </div>
+
+
+                    </td>
+
+                    <td style="width: 15%; text-align: right; border-left: hidden; padding-bottom: 0px;">
+
+                        <h4 class="block" style="margin:0px;">
+                            <span class="label label-primary">
+                                <b> {{ vm.totalBndlOk }}</b>
+                            </span>
+                            OK(No Reject)
+                            <a class="btn btn-xs yellow-gold" ng-click="vm.clearAll()" ng-disabled="vm.totalBndlOk==0">
+                                <i class="fa fa-eraser"></i> Clear All
+                            </a>
+                        </h4>
+                    </td>
+
+
+                    <td style="width: 15%; text-align: right; border-left: hidden; padding-bottom: 0px;">
+
+                        <h4 class="block" style="margin:0px;">
+                            <span class="label label-primary">
+                                <b>{{ vm.totalBndlPending }}</b> 
+                            </span>
+                            Not OK(Reject)
+                            <a class="btn btn-xs purple-intense" ng-disabled="vm.totalBndlPending==0" ng-click="vm.openDefectModal()">
+                                <i class="fa fa-list-alt"></i> Finalize All
+                            </a>
+                        </h4>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+
+        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;" ng-if="vm.LastBundle">
+            <legend class="custom-legend">Last Scanned Bundle(Scan)</legend>
+            <table class="table table-condensed table-striped table-bordered" style="padding:5px;">
+                <tbody>
+                    <tr>
+                        <td style="width:8%">
+                            Part:<b>{{vm.LastBundle.GARM_PART_NAME}}</b>
+                        </td>
+
+                        <td style="width:8%">
+                            <b>Buyer</b>
+                        </td>
+
+                        <td style="width: 8%">
+                            {{vm.LastBundle.BYR_ACC_GRP_NAME_EN}}
+                        </td>
+
+                        <td style="width: 16%" colspan="2">
+                            <b>Style</b>
+                        </td>
+
+                        <td style="width:16%" colspan="2">
+                            {{vm.LastBundle.WORK_STYLE_NO}}
+                        </td>
+
+                        <td style="width: 8%">
+                            <b>Order</b>
+                        </td>
+
+
+                        <td style="width: 8%">
+                            {{vm.LastBundle.ORDER_NO}}
+                        </td>
+                        <td style="width: 4%">
+                            <b>Item</b>
+                        </td>
+
+                        <td style="width: 12%" colspan="2">
+                            {{vm.LastBundle.ITEM_NAME_EN}}
+                        </td>
+
+
+                        <td style="width: 4%">
+                            Cntry
+                        </td>
+
+                        <td style="width: 4%">
+                            {{vm.LastBundle.COUNTRY_NAME_EN}}
+                        </td>
+
+
+
+                    </tr>
+
+                    <tr>
+
+                        <td style="width: 8%">
+                            <b>Color</b>
+                        </td>
+
+                        <td style="width:16%" colspan="2">
+                            {{vm.LastBundle.COLOR_NAME_EN}}
+                        </td>
+                        <td style="width:5%;color:red;">
+                            <b>CutNo</b>
+                        </td>
+
+                        <td style="width:5%">
+                            {{vm.LastBundle.CUTNG_NO}}
+                        </td>
+
+
+                        <td style="width: 5%; color: red; ">
+                            <b>Size</b>
+                        </td>
+
+
+                        <td style="width:8%">
+                            {{vm.LastBundle.SIZE_CODE}}
+                        </td>
+                        <td style="width: 8%; color: red;">
+                            <b>Bundle No</b>
+                        </td>
+
+
+                        <td style="width:8%">
+                            {{vm.LastBundle.BUNDLE_NO}}
+                        </td>
+
+                        <td style="width: 4%; color: red;">
+                            <b>Serial</b>
+                        </td>
+
+                        <td style="width: 12%;" colspan="2">
+                            {{vm.LastBundle.SL_RANGE_TXT}}
+                        </td>
+
+
+                        <td style="width: 8%; color: red;">
+                            <b>Quantity</b>
+
+                        </td>
+
+
+                        <td style="width: 8%">
+                            {{vm.LastBundle.FINAL_QTY}}
+                        </td>
+
+
+                    </tr>
+                    <tr>
+                        <td colspan="14" align="center">
+                            <a class="btn btn-xs btn-block btn-default" style="width:50%;" ng-click="vm.cutSewProdScanActions(vm.LastBundle.GMT_SEW_PROD_SCAN_ID,'Delete','Are You Sure?', 1009)">
+                                <i class="fa fa-times"></i> Remove
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </fieldset>
+
+
+        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 5px;" ng-if="vm.dataList.length > 0">
+            <legend class="custom-legend">Scanned Bundle List</legend>
+            <table class="table table-condensed table-striped table-bordered" style="padding:5px;" ng-repeat="item in vm.dataList">
+                <thead>
+                    <tr>
+                        <th colspan="8">
+                            Line: {{item.LINE_CODE}} >> Buyer: {{item.BYR_ACC_GRP_NAME_EN}}>> Style: {{item.STYLE_NO}}>> Order: {{item.ORDER_NO}}>> Color: {{item.COLOR_NAME_EN}}
+                        </th>
+                    </tr>
+                    <tr>
+                        <th colspan="10" style="border: 1px solid #cecece">
+                            <div class="row" style="padding:0px;">
+
+
+                                <div class="col-md-3" style="text-align:left;">
+                                    <h5 class="block" style="margin:0px;padding:0px;">
+                                        Input => <span class="label label-success">
+                                            <b>{{item.TTL_INPUTED}}</b>
+                                        </span>
+                                    </h5>
+                                </div>
+                                <div class="col-md-3" style="text-align:left;">
+                                    <h5 class="block" style="margin:0px;padding:0px;">
+                                        Output => <span class="label label-success">
+                                            <b>{{item.TTL_SEW_OUTPUT}}</b>
+                                        </span>
+                                    </h5>
+                                </div>
+
+                                <div class="col-md-3" style="text-align:left;">
+                                    <h5 class="block" style="margin:0px;padding:0px;">
+                                        Reject (Sewing) => <span class="label label-success">
+                                            <b>{{item.TTL_SEW_REJECTED}}</b>
+                                        </span>
+                                    </h5>
+                                </div>
+                                <div class="col-md-3" style="text-align:left;">
+                                    <h5 class="block" style="margin:0px;padding:0px;">
+                                        In-Line WIP (Sewing) => <span class="label label-success">
+                                            <b>{{item.TTL_INPUTED - item.TTL_SEW_OUTPUT -item.TTL_SEW_REJECTED}}</b>
+                                        </span>
+                                    </h5>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+
+
+
+                </thead>
+                <tbody>
+                    <tr>
+                        <th style="width:10%;">
+                            <small>
+                                Barcode
+                            </small>
+
+                        </th>
+                        <th style="width:15%;">
+                            <small>
+                                Item
+                            </small>
+
+                        </th>
+
+                        <th style="width:5%;">
+                            <small>
+                                Contry
+                            </small>
+
+                        </th>
+
+                        <th style="width:10%;">
+                            <small>
+                                Size
+                            </small>
+
+                        </th>
+
+                        <th style="width:5%;">
+                            <small>
+                                Bundle No
+                            </small>
+
+                        </th>
+
+                        <th style="width:5%;">
+                            <small>
+                                Lot No
+                            </small>
+
+                        </th>
+
+                        <th style="width:15%;">
+                            <small>
+                                Serial
+                            </small>
+
+                        </th>
+
+
+                        <th style="width:5%;">
+                            <small>
+                                Bndl Qty
+                            </small>
+
+                        </th>
+                        <th style="width:15%;">
+                            <small>
+                                Action
+                            </small>
+                        </th>
+                    </tr>
+                    <tr ng-repeat="itm in item.details">
+                        <td>
+                            {{itm.BUNDLE_BARCODE}}
+                        </td>
+
+                        <td>
+                            {{itm.ITEM_NAME_EN}}
+                        </td>
+
+                        <td>
+                            {{itm.COUNTRY_NAME_EN}}
+                        </td>
+
+                        <td>
+                            {{itm.SIZE_CODE}}
+                        </td>
+                        <td>
+                            {{itm.BUNDLE_NO}}
+                        </td>
+
+                        <td>
+                            {{itm.DYE_LOT_NO}}
+                        </td>
+
+                        <td>
+                            {{itm.SL_RANGE_TXT}}
+
+                        </td>
+
+                        <td>
+                            {{itm.QTY_IN_BNDL}}
+                        </td>
+
+                        <td>
+                            <a class="btn btn-xs btn-danger" ng-click="vm.cutSewProdScanActions(itm.GMT_SEW_PROD_SCAN_ID,'Marking as Defect/Reject...','Are You Sure?', 1010)" ng-if="itm.HAS_REJECT == 0">
+                                <i class="fa fa-plus-square"></i> Not OK
+                            </a>
+                            <a class="btn btn-xs btn-success" ng-click="vm.cutSewProdScanActions(itm.GMT_SEW_PROD_SCAN_ID,'Marking as OK body...','Are You Sure?', 1011)" ng-if="itm.HAS_REJECT == 1">
+                                <i class="fa fa-plus-square"></i>  OK
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </fieldset>
+
+        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 5px;">
+            <legend class="custom-legend">Hourly Production List</legend>
+
+
+            <details ng-open="item.ACTIVE_HR" ng-repeat="item in vm.dataListHrly">
+                <summary>
+                    <span class="badge badge-info" style="font-size: 12px;">Hour: {{ item.HOUR_NO }}</span>
+                    <span class="badge badge-danger" style="font-size: 12px;">{{ item.QTY_IN_BNDL }}</span>
+                </summary>
+                <table class="table table-condensed table-striped table-bordered table-sm" style="padding-left: 5px; padding-right: 5px; margin-bottom: 3px;">
+
+                    <thead>
+                        <tr style="border: 1px solid #cecece">
+
+                            <th style="width:10%;padding: 0px;">
+                                Line
+                            </th>
+                            <th style="width:10%;padding: 0px;">
+                                Buyer
+                            </th>
+                            <th style="width:10%;padding: 0px;">
+                                Style
+                            </th>
+                         
+                            <th style="width:10%;padding: 0px;">
+                                Order
+                            </th>
+                            <th style="width:20%;padding: 0px;">
+                                Garment Item
+                            </th>
+                            <th style="width:10%;padding: 0px;">
+                                Color
+                            </th>
+                            <th style="width:10%;padding: 0px;">
+                                Prod Qty (Col Wise)
+                            </th>
+                            <th style="width:10%;padding: 0px;">
+                                Prod Qty (LineWise)
+                            </th>
+
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr ng-repeat="itm in item.items">
+
+                            <td rowspan="{{ itm.LINE_CODE_SPAN }}" ng-if="itm.LINE_CODE_SL ==1 ">
+                                {{ itm.LINE_CODE }}
+                            </td>
+                            <td>
+                                {{ itm.BYR_ACC_GRP_NAME_EN }}
+                            </td>
+                            <td>
+                                {{ itm.STYLE_NO }}
+                            </td>
+                   
+                            <td>
+                                {{ itm.ORDER_NO }}
+                            </td>
+                            <td>
+                                {{ itm.ITEM_NAME_EN }}
+                            </td>
+                       
+                            <td>
+                                {{ itm.COLOR_NAME_EN }}
+                            </td>
+                            <td>
+                                {{ itm.QTY_IN_BNDL }}
+                            </td>
+                            <td rowspan="{{ itm.LINE_CODE_SPAN }}" ng-if="itm.LINE_CODE_SL ==1 ">
+                                {{ itm.LINE_WISE_PROD_QTY }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </details>
+        </fieldset>
+    </div>
+</div>

@@ -1,0 +1,66 @@
+﻿
+<style>
+    .k-grid-toolbar a {
+        float: right;
+    }
+</style>
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+
+        <fieldset class="custom-fieldset" style="padding-top: 0px; border-top-width: 1px; border-bottom-width: 1px;">
+            <legend class="custom-legend">Select In/Out Time /Day Type</legend>
+
+            <div class="form-group">
+
+                <div ng-if="vm.formData.PUNCH_TYPE==105||vm.formData.PUNCH_TYPE==107">
+                    <label class="col-md-1 control-label">IN</label>
+                    <div class="col-md-2">
+                        <input type="time" class="form-control" ng-model="vm.form['TIME'].IN_TIME_WT">
+                    </div>
+                </div>
+
+                <div ng-if="vm.formData.PUNCH_TYPE==106||vm.formData.PUNCH_TYPE==107">
+                    <label class="col-md-1 control-label">OUT</label>
+                    <div class="col-md-2">
+                        <input type="time" class="form-control" ng-model="vm.form['TIME'].OUT_TIME_WT">
+                    </div>
+                </div>
+
+                <div ng-if="vm.formData.PUNCH_TYPE==106||vm.formData.PUNCH_TYPE==437">
+                    <label class="col-md-2 control-label">Day Type</label>
+                    <div class="col-md-4">
+                        <select class="form-control" name="HR_DAY_TYPE_ID" ng-model="vm.form.HR_DAY_TYPE_ID"
+                                ng-options="Item.HR_DAY_TYPE_ID as Item.DAY_TYPE_NAME_EN for Item in vm.dayTypeList"></select>
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="col-md-2">
+
+                    <div class="radio-list">
+                        <label class="checkbox-inline">
+                            <span class=""><input type="checkbox" ng-model="vm.form.IS_BATCH_UPDATE"></span>All?
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <button type="button" ng-click="vm.saveBatchData()" class="btn yellow-gold btn-sm" ng-class="vm.form.IS_BATCH_UPDATE && (vm.form['TIME'].IN_TIME_WT||vm.form['TIME'].OUT_TIME_WT ||vm.form.HR_DAY_TYPE_ID||vm.formData.PUNCH_TYPE==629 )?'':'disabled'">Update</button>
+                    <button type="button" ui-sref="HrTaProcessDataCorr({data:{}})" class="btn default btn-sm">Cancel</button>
+                </div>
+
+
+            </div>
+        </fieldset>
+    </div>
+</div>
+
+<br />
+<div class="row" style="padding-top:20px;">
+    <div kendo-grid k-options="vm.gridOptions"
+         k-ng-delay="vm.gridOptions"></div>
+</div>
+

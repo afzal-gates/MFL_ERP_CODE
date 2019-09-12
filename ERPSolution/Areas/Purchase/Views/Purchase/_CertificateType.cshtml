@@ -1,0 +1,384 @@
+﻿@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Purchase</a>
+
+    </li>
+    <li>
+        <a href="#">{{vm.Title}}</a>
+    </li>
+</ul>
+
+
+<form class="form-horizontal">
+    <div class="portlet box blue-dark">
+        <div class="portlet-title">
+            <div class="caption" ng-bind="vm.Title">
+            </div>
+            <div class="tools">
+            </div>
+        </div>
+
+        <div class="portlet-body">
+
+            <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+                <div class="page-splash">
+                    <div class="page-splash-message">
+                        <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                    </div>
+                </div>
+            </div>
+
+            <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+                   data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+            <fieldset class="custom-fieldset" style="text-transform: capitalize">
+                <legend class="custom-legend"><b>Master Data</b></legend>
+                <div><label id="lblMsgSub"></label></div>
+                <div class="row" style="padding-left: 5px; padding-right: 5px;">
+
+
+                    <div class="row">
+                        <div class="form-group">
+
+                            <div class="col-md-2">
+                            </div>
+                            <label class="col-md-2 control-label">
+                                <span aria-required="true" class="required">*</span>
+                                Document Type Code
+                            </label>
+                            <div class="col-md-1">
+                                <input type="text" class="form-control" readonly placeholder="[Auto Gen]" ng-model="vm.form.CERT_TYPE_CODE" />
+                                <input type="hidden" ng-model="vm.form.RF_AUD_CERT_TYPE_ID" />
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="form-group">
+
+                            <div class="col-md-2">
+                            </div>
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>
+                                Document Type
+                            </label>
+                            <div class="col-md-3" ng-if="!vm.form.CM_IMP_PO_H_ID>0">
+
+
+                                <select kendo-drop-down-list name="LK_AUD_DOC_TYPE_ID" id="LK_AUD_DOC_TYPE_ID" class="form-control required"
+                                        options="vm.auditTypeList" ng-model="vm.form.LK_AUD_DOC_TYPE_ID"></select>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+
+                            <div class="col-md-2">
+                            </div>
+                            <label class="col-md-2 control-label">
+                                <span aria-required="true" class="required">*</span>
+                                Document type title
+                            </label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control required" ng-model="vm.form.CERT_TYPE_TITLE" />
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+
+                            <div class="col-md-2">
+                            </div>
+                            <label class="col-md-2 control-label">
+                                <span aria-required="true" class="required">*</span>
+                                Document Type Description
+                            </label>
+                            <div class="col-md-6">
+                                <textarea class="form-control required" ng-model="vm.form.CERT_TYPE_DESC"></textarea>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-2">
+                            </div>
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>
+                                Organization
+                            </label>
+
+                            <div class="col-md-3">
+
+
+                                <select kendo-drop-down-list name="RF_DOC_ISS_ORG_ID" id="RF_DOC_ISS_ORG_ID" class="form-control required"
+                                        options="vm.orgList" ng-model="vm.form.RF_DOC_ISS_ORG_ID"></select>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+
+                            <div class="col-md-2">
+                            </div>
+                            <label class="col-md-2 control-label">
+                                <span aria-required="true" class="required"></span>
+                                Issue By Org. Name
+                            </label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" ng-model="vm.form.ISS_BY_ORG_NAME" />
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+
+                            <div class="col-md-2">
+                            </div>
+                            <label class="col-md-2 control-label">
+                                <span aria-required="true" class="required"></span>
+                                Org. Web Link
+                            </label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" ng-model="vm.form.ORG_WEB_LINK" />
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+
+                            <div class="col-md-2">
+                            </div>
+                            <label class="col-md-2 control-label">
+                                <span aria-required="true" class="required"></span>
+                                Logo
+                            </label>
+
+                            <div class="col-md-2">
+                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                                    <div class="input-group">
+                                        <div class="form-control span3" data-trigger="fileinput" style="padding-top: 0px;padding-bottom: 0px;height: 22px;">
+                                            <i class="fa fa-file fileinput-exists"></i>&nbsp; <span class="fileinput-filename"></span>
+                                        </div>
+                                        <span class="input-group-addon btn default btn-file" style="padding-bottom: 0px;padding-top: 0px;">
+                                            <span class="fileinput-new btn-circle">
+                                                <i class="fa fa-paperclip"></i>
+                                            </span>
+                                            <span class="fileinput-exists">
+                                                <i class="fa fa-exchange"></i>
+                                            </span>
+                                            <input type="hidden" value="" name="..."><input type="file" name="" accept="image/*" data-ak-file-model=" vm.fileApply.ATT_FILE">
+                                        </span>
+                                        <a class="input-group-addon btn green fileinput-exists" data-dismiss="fileinput" ng-click="vm.addToApplyDocGrid(vm.fileApply)" ng-disabled="vm.disableApply==true">
+                                            <i class="fa fa-plus"></i>
+                                        </a>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-md-4" ng-if="vm.form.apply_docs.length>0">
+
+                                <table style="width:100%;">
+                                    <tbody>
+                                        <tr ng-repeat="item in vm.form.apply_docs">
+
+                                            <td style="overflow:hidden; width:70%;">
+                                                <a href="/UPLOAD_DOCS/AUD_CRT_DOCS/{{item.CERT_LOGO}}" target="_blank" class="btn btn-xs green">{{item.ATT_FILE.name||item.CERT_LOGO}}</a>
+                                            </td>
+
+                                            <td style="width:30%;">
+                                                <a href="/UPLOAD_DOCS/AUD_CRT_DOCS/{{item.CERT_LOGO}}" target="_blank" class="btn btn-xs green"><i class="fa fa-eye"></i></a> <a class="btn btn-xs red" ng-click="vm.removeAddedDoc($index)">
+    <i class="fa fa-trash-o"></i>
+</a>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+                        </div>
+
+                        @*<div class="col-md-3">
+                                <input type="text" class="form-control" ng-model="vm.form.CERT_LOGO" />
+
+                            </div>*@
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="form-group">
+
+                        <div class="col-md-2">
+                        </div>
+                        <label class="col-md-2 control-label">
+                            <span aria-required="true" class="required"></span>
+                            Is Active?
+                        </label>
+                        <div class="col-md-3">
+                            <input type="checkbox" ng-true-value="'Y'" ng-false-value="'N'" ng-model="vm.form.IS_ACTIVE" />
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="form-group">
+
+                        <div class="col-md-2">
+                        </div>
+                        <label class="col-md-2 control-label">
+                            <span aria-required="true" class="required"></span>
+                            Display Order
+                        </label>
+                        <div class="col-md-1">
+                            <input type="text" class="form-control" ng-model="vm.form.DISPLAY_ORDER" />
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+
+                        <div class="col-md-2">
+                        </div>
+                        <label class="col-md-2 control-label">
+                            <span aria-required="true" class="required"></span>
+                            Is Notify Email
+                        </label>
+                        <div class="col-md-3">
+
+                            <input type="radio" ng-model="vm.form.IS_NOTIFY_EMAIL" ng-change="vm.emptyVal();" value="Y" id="IS_NOTIFY_EMAIL_1" /><label for="IS_NOTIFY_EMAIL_1"> Renewal </label>
+                            <input type="radio" ng-model="vm.form.IS_NOTIFY_EMAIL" ng-change="vm.emptyVal();" value="N" id="IS_NOTIFY_EMAIL_2" /><label for="IS_NOTIFY_EMAIL_2"> Not Renewal</label>
+                            @*<input type="checkbox" ng-true-value="'Y'" ng-false-value="'N'" ng-model="vm.form.IS_NOTIFY_EMAIL" />*@
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="form-group">
+
+                        <div class="col-md-2">
+                        </div>
+                        <label class="col-md-2 control-label">
+                            <span aria-required="true" class="required"></span>
+                            Notify Before Days
+                        </label>
+                        <div class="col-md-1">
+                            <input type="text" class="form-control" ng-model="vm.form.NOTIFY_BF_DAYS" ng-disabled="vm.form.IS_NOTIFY_EMAIL=='N'" />
+
+                        </div>
+                    </div>
+                </div>
+
+                @*<div class="row">
+                        <div class="form-group">
+
+                            <div class="col-md-2">
+                            </div>
+                            <label class="col-md-2 control-label">
+                                <span aria-required="true" class="required">*</span>
+                                Last Issue Date
+                            </label>
+                            <div class="col-md-1">
+                                <input type="text" class="form-control" ng-click="LAST_ISSUE_DT_LNopen($event)" ng-focus="LAST_ISSUE_DT_LNopen($event)"
+                                       datepicker-popup="{{vm.dtFormat}}" name="LAST_ISSUE_DT" id="LAST_ISSUE_DT" max-date="vm.today" ng-model="vm.form.LAST_ISSUE_DT"
+                                       is-open="LAST_ISSUE_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+
+                            </div>
+                        </div>
+                    </div>*@
+
+                <div class="row">
+                    <div class="form-group">
+
+                        <div class="col-md-2">
+                        </div>
+                        <label class="col-md-2 control-label">
+                            <span aria-required="true" class="required">*</span>
+                            Responsible Person
+                        </label>
+                        <div class="col-md-3">
+                            <select kendo-drop-down-list name="RESP_EMP_ID" id="RESP_EMP_ID" class="form-control required"
+                                    options="vm.userList" ng-model="vm.form.RESP_EMP_ID"></select>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+
+                        <div class="col-md-2">
+                        </div>
+                        <label class="col-md-2 control-label">
+                            <span aria-required="true" class="required"></span>
+                            Associated Buyer
+                        </label>
+                        <div class="col-md-3">
+
+                            <select kendo-multi-select name="MC_BUYER_ID_LST" class="form-control"
+                                    options="vm.buyerList" ng-model="vm.form.MC_BUYER_ID_LST"></select>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div style="padding:3px;">
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                    </div>
+                    <div class="col-md-4">
+
+                        @*<button type="button" class="btn btn-sm blue" ui-sref="CertificateType" ui-sref-opts="{inherit: false, reload: true}">Clear</button>*@
+
+                        <button type="submit" ng-if="vm.form.RF_AUD_CERT_TYPE_ID>0" class="btn btn-sm yellow-gold" ng-click="vm.submitAll(vm.form,vm.antiForgeryToken);">Update</button>
+                        <button type="submit" ng-if="!vm.form.RF_AUD_CERT_TYPE_ID>0" class="btn btn-sm green" ng-click="vm.submitAll(vm.form,vm.antiForgeryToken);">Save</button>
+                        <a type="button" class="btn btn-sm default" ng-click="vm.resetAll();">Cancel</a>
+
+                    </div>
+                </div>
+
+            </fieldset>
+
+
+            <div style="padding: 5px; text-transform: capitalize">
+                <kendo-grid k-options="vm.gridOptions" k-data-source="vm.gridOptionsDS"></kendo-grid>
+            </div>
+        </div>
+    </div>
+</form>

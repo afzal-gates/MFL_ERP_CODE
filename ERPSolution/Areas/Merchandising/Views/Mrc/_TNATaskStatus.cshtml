@@ -1,0 +1,414 @@
+﻿<style>
+    .dropdown-header {
+        border-width: 0 0 1px 0;
+        text-transform: uppercase;
+    }
+
+        .dropdown-header > span {
+            display: inline-block;
+            padding: 10px;
+        }
+
+            .dropdown-header > span:first-child {
+                width: 10px;
+            }
+
+    .selected-value {
+        display: inline-block;
+        vertical-align: middle;
+        width: 24px;
+        height: 24px;
+        background-size: 100%;
+        margin-right: 5px;
+        border-radius: 50%;
+    }
+
+    #customers-list .k-item {
+        line-height: 1em;
+        min-width: 300px;
+    }
+
+    /* Material Theme padding adjustment*/
+
+    .k-material #customers-list .k-item,
+    .k-material #customers-list .k-item.k-state-hover,
+    .k-materialblack #customers-list .k-item,
+    .k-materialblack #customers-list .k-item.k-state-hover {
+        padding-left: 5px;
+        border-left: 0;
+    }
+
+    #customers-list .k-item > span {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        display: inline-block;
+        vertical-align: top;
+        margin: 20px 10px 10px 5px;
+    }
+
+        #customers-list .k-item > span:first-child {
+            -moz-box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            -webkit-box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            margin: 5px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+
+    #customers-list h3 {
+        font-size: 1.2em;
+        font-weight: normal;
+        margin: 0 0 1px 0;
+        padding: 0;
+    }
+
+    #customers-list p {
+        margin: 0;
+        padding: 0;
+        font-size: .8em;
+    }
+
+
+    /*///////////////////////*/
+    .k-treeview .k-in {
+        padding: 5px;
+    }
+
+    #ItemCategTreeview .k-sprite {
+        background-image: url("/Content/assets/global/img/coloricons-sprite.png");
+    }
+
+    .rootfolder {
+        background-position: 0 0;
+    }
+
+    .folder {
+        background-position: 0 -16px;
+    }
+
+    .pdf {
+        background-position: 0 -32px;
+    }
+
+    .html {
+        background-position: 0 -48px;
+    }
+
+    .image {
+        background-position: 0 -64px;
+    }
+
+    /*.demo-section {
+        float: left;
+        width: 200px;
+        margin: 0 60px 0 0;
+    }*/
+</style>
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+    <form name="formData" style="background-color: white;">
+        <div class="portlet-body">
+            <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+                <div class="page-splash">
+                    <div class="page-splash-message">
+                        <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class=" form-group">
+                    <div class="col-md-3">
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend"><b>TNA Task List</b></legend>
+                            <div class="form-group">
+                                <label class="control-label col-md-4">
+                                    <span aria-required="true" class="required">*</span>
+                                    Search
+                                </label>
+                                <div class="col-md-8">
+                                    <input type="text" name="TASK_NAME" ng-model="vm.form.TASK_NAME" class="form-control" ng-keyup="vm.filterTaskList();" />
+
+                                </div>
+                            </div>
+                            <div class="form-group" style="padding-top:20px;">
+
+
+                                <div kendo-list-view
+                                     k-selectable="'single'"
+                                     @*k-data-text-field="'TA_TASK_NAME_EN'" k-data-value-field="'MC_TNA_TASK_ID'"*@
+                                     k-data-source="vm.TnaTaskList"
+                                     k-on-change="vm.getTnaTaskStatusList(dataItem);">
+                                    
+                                    <div k-template>
+                                        <dd class="k-state-default" style="padding: 5px; border-bottom: solid 1px; border-color: lightgray; ">
+                                            {{dataItem.TA_TASK_NAME_EN}}
+                                        </dd>
+                                    </div>
+                                </div>
+                                <div kendo-pager k-data-source="vm.TnaTaskList"></div>
+                            </div>
+                            @*<div class="" style="max-height: 500px; overflow: scroll !important;">
+                                    <ul ng-repeat="m in vm.TnaTaskList">
+                                        <li>
+                                            <a ng-click="vm.getTnaTaskStatusList(m);">{{m.TA_TASK_NAME_EN}}</a>
+                                        </li>
+
+                                    </ul>
+                                </div>*@
+                        </fieldset>
+                    </div>
+                    <div class="col-md-9">
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend"><b>Master Data</b></legend>
+                            <div><label id="lblMsg"></label></div>
+                            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-1">
+                                        </div>
+                                        <label class="control-label col-md-2">
+                                            <span aria-required="true" class="required">*</span>
+                                            Event Name
+                                        </label>
+                                        <div class="col-md-3">
+                                            <input type="text" name="EVENT_NAME" ng-model="vm.form.EVENT_NAME" class="form-control required" />
+
+                                        </div>
+
+                                        <label class="col-md-2 control-label">
+                                            <span aria-required="true" class="required">*</span>
+                                            Task Message
+                                        </label>
+                                        <div class="col-md-3">
+                                            <input type="text" name="TASK_STATUS_NAME" ng-model="vm.form.TASK_STATUS_NAME" class="form-control required" />
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="padding:3px;">
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+
+                                        <div class="col-md-1">
+                                        </div>
+                                        <label class="control-label col-md-2 ">
+                                            <span aria-required="true" class="required">*</span>
+                                            Status Order
+                                        </label>
+                                        <div class="col-md-1">
+                                            <input type="number" name="STATUS_ORDER" ng-model="vm.form.STATUS_ORDER" class="form-control double" />
+
+                                            <input type="hidden" name="MC_TNA_TASK_STATUS_ID" ng-model="vm.form.MC_TNA_TASK_STATUS_ID" />
+                                            <input type="hidden" name="MC_TNA_TASK_ID" ng-model="vm.form.MC_TNA_TASK_ID" />
+                                        </div>
+                                        <div class="col-md-2">
+                                        </div>
+                                        <label class="control-label col-md-2">
+                                            <span aria-required="true" class="required"></span>
+                                            Parent
+                                        </label>
+                                        <div class="col-md-3">
+                                            <select class="form-control" kendo-drop-down-list name="PARENT_ID" id="PARENT_ID" k-option-label="'-- Select Parent Event --'"
+                                                    k-data-text-field="'TASK_STATUS_NAME'" k-data-value-field="'MC_TNA_TASK_STATUS_ID'"
+                                                    k-auto-bind="'true'" k-data-source="vm.parentList" k-delay="vm.parentList" k-filter="'contains'" ng-model="vm.form.PARENT_ID"></select>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div style="padding:3px;">
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-1">
+                                        </div>
+                                        <label class="control-label col-md-2 ">
+                                            <span aria-required="true" class="required">*</span>
+                                            Section
+                                        </label>
+                                        <div class="col-md-3">
+                                            <select class="form-control required" kendo-drop-down-list name="HR_DEPARTMENT_ID" id="HR_DEPARTMENT_ID" k-option-label="'-- Select Section --'"
+                                                    k-data-text-field="'DEPARTMENT_NAME_EN'" k-data-value-field="'HR_DEPARTMENT_ID'"
+                                                    k-auto-bind="'true'" k-data-source="vm.sectionList" k-delay="vm.sectionList" k-filter="'contains'" ng-model="vm.form.HR_DEPARTMENT_ID"></select>
+                                        </div>
+
+                                        <label class="col-md-2 control-label">
+                                            <span aria-required="true" class="required"></span>
+                                            Task Status
+                                        </label>
+                                        <div class="col-md-2">
+                                            <select name="ST_END_FLAG" ng-model="vm.form.ST_END_FLAG" class="form-control">
+                                                <option value="">
+                                                    N/A
+                                                </option>
+                                                <option value="S">S</option>
+                                                <option value="E">E</option>
+
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="padding:3px;">
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-1">
+                                        </div>
+                                        <label class="control-label col-md-2 ">
+                                            <span aria-required="true" class="required">*</span>
+                                            Assign To
+                                        </label>
+                                        <div class="col-md-3">
+                                            @*ALT_ASSIGNED_TO_ID*@
+                                            <select id="customers" kendo-drop-down-list options="vm.userList" ng-model="vm.form.ASSIGNED_TO_ID" class="form-control" style="width:100%;"></select>
+                                        </div>
+
+                                        <label class="col-md-2 control-label">
+                                            <span aria-required="true" class="required"></span>
+                                             Execution By
+                                        </label>
+                                        <div class="col-md-3">
+                                            <select id="customers" kendo-drop-down-list options="vm.userList" ng-model="vm.form.EXEC_BY_ID" class="form-control" style="width:100%;"></select>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="padding:3px;">
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-1">
+                                        </div>
+                                        <label class="control-label col-md-2">
+                                            <span aria-required="true" class="required"></span>
+                                            Is Active
+                                        </label>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" name="IS_ACTIVE" ng-model="vm.form.IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'" />
+
+                                        </div>
+
+                                        <div class="col-md-1">
+                                        </div>
+                                        <label class="col-md-2 control-label">
+                                            <span aria-required="true" class="required"></span>
+                                            Is Buyer Feedback
+                                        </label>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" name="IS_FB_FRM_BUYER" ng-model="vm.form.IS_FB_FRM_BUYER" ng-true-value="'Y'" ng-false-value="'N'" />
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="padding:3px;">
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+
+                                        <div class="col-md-1">
+                                        </div>
+                                        <label class="control-label col-md-2">
+                                            <span aria-required="true" class="required"></span>
+                                            Is Repeat
+                                        </label>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" name="IS_REPEAT" ng-model="vm.form.IS_REPEAT" ng-true-value="'Y'" ng-false-value="'N'" />
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                                <div style="padding:3px;">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12" style="text-align:center;">
+                                        <button type="submit" ng-if="vm.form.MC_TNA_TASK_STATUS_ID>0" class="btn btn-sm yellow-gold" ng-click="vm.submitAll(vm.form);">Update</button>
+                                        <button type="submit" ng-if="!vm.form.MC_TNA_TASK_STATUS_ID>0" class="btn btn-sm green" ng-click="vm.submitAll(vm.form);">Save</button>
+                                        <button type="button" class="btn btn-sm" ng-click="vm.reset(vm.form);">Clear</button>
+                                    </div>
+                                </div>
+                                <div style="padding:3px;">
+                                </div>
+                                <div style="padding:2px;">
+                                    <div kendo-grid k-options="vm.gridOptionsTnaTaskStatus" id="IDTnaTaskDS" k-data-source="vm.TnaTaskStatusList"></div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+
+            </div>
+            <div style="padding:3px;">
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+<div class="col-md-3">
+    <fieldset class="custom-fieldset">
+        <legend class="custom-legend">Mapped User List</legend>
+
+            <div class="input-icon right" style="padding-bottom:3px;">
+                <i class="icon-magnifier"></i>
+                <input type="text" class="form-control form-control-solid" ng-model="q" placeholder="search..." ng-change="vm.dataSource.filter( { field:'LOGIN_ID', operator :'contains', value: q })" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }">
+            </div>
+
+            <div kendo-list-view
+                 k-selectable="'single'"
+                 k-data-source="vm.dataSource"
+                 k-on-change="vm.getTnaTaskByUserId(dataItem.SC_USER_ID);vm.form.SC_USER_ID=dataItem.SC_USER_ID">
+                <div k-template>
+                    <dd class="k-state-default" style="padding: 5px; border-bottom: solid 1px; border-color: lightgray; ">
+                        <h4 style="padding-left:5px;margin:0px;"><b>{{dataItem.LOGIN_ID}}</b></h4>
+                        <h5 style="padding-left: 5px; margin: 0px;">{{dataItem.USER_NAME_EN}}</h5>
+                    </dd>
+                </div>
+            </div>
+            <div kendo-pager k-data-source="vm.dataSource"></div>
+
+        <script>
+            //vm.dataSource = new kendo.data.DataSource({
+            //    data: res,
+            //    pageSize: 6
+            //});
+        </script>
+
+
+    </fieldset>
+</div>

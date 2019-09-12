@@ -1,0 +1,213 @@
+﻿@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+<style>
+    .dropdown-header {
+        border-width: 0 0 1px 0;
+        text-transform: uppercase;
+    }
+
+        .dropdown-header > span {
+            display: inline-block;
+            padding: 10px;
+        }
+
+            .dropdown-header > span:first-child {
+                width: 50px;
+            }
+
+    .selected-value {
+        display: inline-block;
+        vertical-align: middle;
+        width: 24px;
+        height: 24px;
+        background-size: 100%;
+        margin-right: 5px;
+        border-radius: 50%;
+    }
+
+    #customers-list .k-item {
+        line-height: 1em;
+        min-width: 300px;
+    }
+
+    /* Material Theme padding adjustment*/
+
+    .k-material #customers-list .k-item,
+    .k-material #customers-list .k-item.k-state-hover,
+    .k-materialblack #customers-list .k-item,
+    .k-materialblack #customers-list .k-item.k-state-hover {
+        padding-left: 5px;
+        border-left: 0;
+    }
+
+    #customers-list .k-item > span {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        display: inline-block;
+        vertical-align: top;
+        margin: 20px 10px 10px 5px;
+    }
+
+        #customers-list .k-item > span:first-child {
+            -moz-box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            -webkit-box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            margin: 10px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+
+    #customers-list h3 {
+        font-size: 1.2em;
+        font-weight: normal;
+        margin: 0 0 1px 0;
+        padding: 0;
+    }
+
+    #customers-list p {
+        margin: 0;
+        padding: 0;
+        font-size: .8em;
+    }
+</style>
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Inventory</a>
+
+    </li>
+    <li>
+        <a href="#">Assign User To Category</a>
+    </li>
+</ul>
+
+@model ERP.Model.INV_USER_ITMCATModel
+
+@{
+    //Layout = null;
+    ViewBag.Title = "Assign User To Category";
+}
+
+<div class="portlet box blue-dark">
+
+    <div class="portlet-title">
+        <div class="caption">
+           Assign User To Category
+        </div>
+        <div class="tools">            
+        </div>        
+    </div>
+
+    <div class="portlet-body form">
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <form class="form-horizontal" name="frmRoleCategory" ng-submit="vm.submit( vm.isInsert, vm.form)" novalidate>
+                    <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+                           data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+                    <div class="form-body">
+                        @Html.ValidationSummary(true)
+
+                        @*<p id="result">No nodes checked.</p>*@
+                        <input type="hidden" name="SC_ROLE_MENU_ID" ng-model="vm.myForm.SC_ROLE_MENU_ID" />
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">
+                                User
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-5">
+                                <select id="customers" kendo-drop-down-list name="SC_USER_ID" class="form-control" style="width:100%;"
+                                        ng-change="vm.RoleSelect()" options="vm.userList" ng-model="vm.form.SC_USER_ID"></select>
+                                <br />
+                                <button type="button" class="btn default" ng-click="vm.getMenuTreeData(vm.form)" ng-if="vm.isInsert">Show</button>
+                                @*<button type="button" class="btn default" ng-click="vm.getMenuTreeData(vm.form)" ng-if="!vm.isInsert">Show</button>
+                                    <button type="button" class="btn default" ng-click="vm.getMenuTreeData(vm.form)" ng-if="vm.isInsert" disabled>Show</button>*@
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="vm.IsChange">
+                            <label class="control-label col-md-3">
+                                Item
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-5">
+                                <div kendo-tree-view="treeWidget" id="ItemCategTreeview" k-options="vm.menuOptions"
+                                     k-on-change="selectedItem = dataItem" k-ng-delay="vm.menuOptions.dataSource">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-3 col-md-6">
+                                <button type="submit" class="btn green" ng-if="vm.isInsert"><i class="fa fa-check"></i> Save</button>
+                                @*<button type="submit" class="btn yellow-gold" ng-if="vm.form.INV_ITEM_CAT_ID"><i class="fa fa-check"></i> Update</button>
+                                    <button type="button" class="btn blue" ng-click="vm.TranCancel()">Cancel</button>*@
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style scoped>
+    .k-treeview .k-in {
+        padding: 5px;
+    }
+
+    #ItemCategTreeview .k-sprite {
+        background-image: url("/Content/assets/global/img/coloricons-sprite.png");
+    }
+
+    .rootfolder {
+        background-position: 0 0;
+    }
+
+    .folder {
+        background-position: 0 -16px;
+    }
+
+    .pdf {
+        background-position: 0 -32px;
+    }
+
+    .html {
+        background-position: 0 -48px;
+    }
+
+    .image {
+        background-position: 0 -64px;
+    }
+
+    .demo-section {
+        float: left;
+        width: 200px;
+        margin: 0 60px 0 0;
+    }
+</style>

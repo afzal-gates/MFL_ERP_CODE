@@ -1,0 +1,236 @@
+﻿@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+<input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+       data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+
+    <div class="portlet light">
+        <div class="portlet-title">
+            <div class="caption">
+                <span class="caption-subject font-green-sharp bold ">Week Group</span>
+            </div>
+            <div class="col-md-offset-1 col-md-1"  >
+                <button type="button" class="btn" style="margin-left:-55px;"
+                        ng-click="vm.resetGroup()">
+                    New Group <i class="fa fa-plus"></i>
+                </button>
+
+            </div>
+            <div class="col-md-7" >
+                <label class="col-md-offset-2 control-label col-md-4" > Work hours per day:</label> 
+                <div class="col-md-3">
+                    <input type="text" class="form-control" style="margin-left:-50px;" ng-model="vm.weekData.DAY_WORK_HOURS" readonly />
+                </div>
+            </div>
+        </div>
+        <div class="portlet-body form">
+            <form class="form-horizontal" role="form">
+                <div class="form-body row">
+                    <div class="form-group col-md-5">
+                        <label class="control-label col-md-4">Group Name</label>
+                        <div class="col-md-7">
+                            <input type="hidden" class="form-control" ng-model="vm.weekData.HR_SCHEDULE_D01_ID" />
+                            <input type="text" class="form-control" ng-model="vm.weekData.WK_GRP_NAME_EN" placeholder="Enter group name" />
+                            <label class="checkbox-inline">
+                                <input type="checkbox" ng-model="vm.weekData.IS_DAY_OVERLAP" ng-true-value="'Y'" ng-false-value="'N'"> Work end overlap next day?
+                            </label>
+                            <br />
+                            
+                        </div>
+                        
+                    </div>
+
+                    <div class="form-group col-md-7">
+                      
+                            <div class="checkbox-list">
+                                <label class="checkbox-inline" ng-repeat="day in vm.dayData">
+                                    <input type="hidden" ng-model="day.HR_SCHEDULE_D011_ID" />
+                                    <input type="hidden" ng-model="day.HR_SCHEDULE_D01_ID" />
+                                    <input type="hidden" ng-model="day.RF_CALENDAR_DAY_ID" />
+                                    <input type="hidden" ng-model="day.CALENDAR_DAY_NAME_EN" />
+                                    <input type="checkbox" name="IS_ACTIVE" ng-model="day.IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'"> {{day.CALENDAR_DAY_NAME_EN}}
+                                </label>                          
+                            </div>
+                            <br />
+                            <ul>
+                                <li id="errorMessages" class="field-validation-error" data-ng-repeat="error in vm.errors">{{error}}</li>
+                            </ul>
+                    </div>
+                    
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+
+<div class="portlet light" style="margin-top:-60px">
+    <div class="portlet-title">
+        <div class="caption">
+            <span class="caption-subject font-green-sharp bold ">Schedule Clock</span>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="col-md-12" style="margin-top:-50px">
+    <form class="form-horizontal" role="form" name="frmScheduleClock">
+        <div class="form-body">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="col-md-2">
+
+                        </th>
+
+                        <th colspan="5">
+                            Start Clocking Time
+                        </th>
+
+                        <th colspan="5">
+                            End Clocking Time
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>
+                            Apply
+                        </th>
+
+                        <th>
+                            From
+                        </th>
+                        <th>
+                            Actual
+                        </th>
+                        <th>
+                            To
+                        </th>
+                        <th>
+                            Grace
+                        </th>
+                        <th>
+                            Skip
+                        </th>
+
+
+                        @*<th style="border-left: 1px solid #C2BCBC">&nbsp;&nbsp;</th>*@
+
+
+                        <th style="border-left: 1px solid #C2BCBC">
+                            From
+
+                        </th>
+                        <th>
+                            Actual
+                        </th>
+                        <th>
+                            To
+                        </th>
+                        <th>
+                            Grace
+                        </th>
+                        <th>
+                            Skip
+                        </th>
+
+
+                    </tr>
+                </thead>
+                <tbody>
+
+
+                    <tr ng-repeat="data in vm.clockData">
+                        <td>
+                            <label class="checkbox-inline" style="font-size:13px">
+                                <input type="checkbox" ng-model="data.IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'" disabled>{{data.PUNCH_TYPE_NAME_EN}}
+                            </label>
+                        </td>
+
+                        <td>
+                            <input type="time" class="timeControl" ng-disabled="data.IS_ACTIVE=='N'" ng-model="data.CLK_START_FROM"                                   
+                                   placeholder="HH:mm" min="00:00:00" max="23:59:00"  />
+                        </td>
+                        <td>
+                            <input type="time" class="timeControl" ng-disabled="data.IS_ACTIVE=='N'" ng-model="data.CLK_START_ACT"
+                                   placeholder="HH:mm:ss" min="00:00:00" max="23:59:00"  />
+                        </td>
+                        <td>
+
+
+                            <input type="time" class="timeControl" ng-disabled="data.IS_ACTIVE=='N'" ng-model="data.CLK_START_TO"
+                                   placeholder="HH:mm" min="00:00:00" max="23:59:00"  />
+                        </td>
+                        <td>
+                            <input type="time" class="timeControl" ng-disabled="data.IS_ACTIVE=='N'" ng-model="data.CLK_START_GRACE"
+                                   placeholder="HH:mm:ss" min="00:00:00" max="23:59:00" />
+                        </td>
+                        <td>
+                            <input type="checkbox" ng-disabled="data.IS_ACTIVE=='N'" ng-model="data.IS_CLK_START_SKIP" ng-init="data.IS_CLK_START_SKIP='N'" ng-true-value="'Y'" ng-false-value="'N'" />
+                        </td>
+
+
+                        @*<td style="border-left: 1px solid #C2BCBC"></td>*@
+
+
+                        <td style="border-left: 1px solid #C2BCBC">
+                            <input type="time" class="timeControl" ng-disabled="data.IS_ACTIVE=='N'" ng-model="data.CLK_END_FROM"
+                                   placeholder="HH:mm:ss" min="00:00:00" max="23:59:00"  />
+                        </td>
+                        <td>
+                            <input type="time" class="timeControl" ng-disabled="data.IS_ACTIVE=='N'" ng-model="data.CLK_END_ACT"
+                                   placeholder="HH:mm:ss" min="00:00:00" max="23:59:00"  />
+                        </td>
+                        <td>
+                            <input type="time" class="timeControl" ng-disabled="data.IS_ACTIVE=='N'" ng-model="data.CLK_END_TO"
+                                   placeholder="HH:mm:ss" min="00:00:00" max="23:59:00"  />
+                        </td>
+                        <td>
+                            <input type="time" class="timeControl" ng-disabled="data.IS_ACTIVE=='N'" ng-model="data.CLK_END_GRACE"
+                                   placeholder="HH:mm:ss" min="00:00:00" max="23:59:00" />
+                        </td>
+                        <td>
+                            <input type="checkbox" ng-disabled="data.IS_ACTIVE=='N'" ng-model="data.IS_CLK_END_SKIP" @*ng-init="data.IS_CLK_END_SKIP='N'"*@ ng-true-value="'Y'" ng-false-value="'N'" />
+                        </td>
+                    </tr>
+
+
+
+                </tbody>
+            </table>
+            
+
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-offset-3 col-md-9">
+                    <button type="submit" class="btn green" ng-click="vm.submit(frmScheduleClock.$valid)"><i class="fa fa-check"></i> Save</button>
+                    <button type="button" class="btn default" ng-click="vm.cancel()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+
+
+<style>
+    .timeControl {
+        width: 86px;
+        height: 27px;
+        border-radius: 3px 3px;
+        border: 1px solid #898383;/*#C2BCBC;*/
+        font-size: 12px;
+    }
+</style>

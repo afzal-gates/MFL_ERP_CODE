@@ -1,0 +1,840 @@
+﻿
+<script src="~/Scripts/ui-validation.js"></script>
+<style>
+    .dropdown-header {
+        border-width: 0 0 1px 0;
+        text-transform: uppercase;
+    }
+
+        .dropdown-header > span {
+            display: inline-block;
+            padding: 10px;
+        }
+
+            .dropdown-header > span:first-child {
+                width: 10px;
+            }
+
+    .selected-value {
+        display: inline-block;
+        vertical-align: middle;
+        width: 24px;
+        height: 24px;
+        background-size: 100%;
+        margin-right: 5px;
+        border-radius: 50%;
+    }
+
+    #customers-list .k-item {
+        line-height: 1em;
+        min-width: 300px;
+    }
+
+    /* Material Theme padding adjustment*/
+
+    .k-material #customers-list .k-item,
+    .k-material #customers-list .k-item.k-state-hover,
+    .k-materialblack #customers-list .k-item,
+    .k-materialblack #customers-list .k-item.k-state-hover {
+        padding-left: 5px;
+        border-left: 0;
+    }
+
+    #customers-list .k-item > span {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        display: inline-block;
+        vertical-align: top;
+        margin: 20px 10px 10px 5px;
+    }
+
+        #customers-list .k-item > span:first-child {
+            -moz-box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            -webkit-box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            margin: 5px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+
+    #customers-list h3 {
+        font-size: 1.2em;
+        font-weight: normal;
+        margin: 0 0 1px 0;
+        padding: 0;
+    }
+
+    #customers-list p {
+        margin: 0;
+        padding: 0;
+        font-size: .8em;
+    }
+
+
+    /*///////////////////////*/
+    .k-treeview .k-in {
+        padding: 5px;
+    }
+
+    #ItemCategTreeview .k-sprite {
+        background-image: url("/Content/assets/global/img/coloricons-sprite.png");
+    }
+
+    .rootfolder {
+        background-position: 0 0;
+    }
+
+    .folder {
+        background-position: 0 -16px;
+    }
+
+    .pdf {
+        background-position: 0 -32px;
+    }
+
+    .html {
+        background-position: 0 -48px;
+    }
+
+    .image {
+        background-position: 0 -64px;
+    }
+
+    /*.demo-section {
+        float: left;
+        width: 200px;
+        margin: 0 60px 0 0;
+    }*/
+</style>
+
+<div class="portlet box blue-dark">
+    <alert ng-repeat="alert in alerts" dismiss-on-timeout="6000" type="{{alert.type}}" close="closeAlert($index)"><h4 style="margin:0px;">{{alert.msg}}</h4></alert>
+    @*<div class="portlet-title">
+            <div class="caption">
+                {{vm.Title}}
+            </div>
+            <div class="tools">
+            </div>
+        </div>*@
+
+    <div class="portlet-body">
+        <div><label id="lblMsg"></label></div>
+        <table class="table table-condensed table-striped table-responsive table-bordered" style="padding-left: 5px;padding-right: 5px;margin-bottom: 3px;">
+            <tbody>
+                <tr>
+                    <td style="width:40%;border-right:none;">
+                        <form name="JobCardSearchForm" ng-submit="vm.loadDataByJobCardNo(vm.form.FAB_ROLL_NO)">
+                            <div class="input-group input-medium">
+                                <input type="text" class="form-control required" id="FAB_ROLL_NO" ng-model="vm.form.FAB_ROLL_NO" style="height:28px;" autofocus focus-me="true" placeholder="Roll No">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-sm blue" type="button" ng-click="vm.loadDataByJobCardNo(vm.form.FAB_ROLL_NO)">Enter</button>
+                                </span>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-sm default" ng-click="vm.ClearForm()">Cancel</button>
+                                </span>
+                            </div>
+                        </form>
+                    </td>
+
+                    <td style="width: 20%; text-align: right; border-left: none; border-right: none;">
+
+                        <input type="hidden" ng-model="vm.form.KNT_FAB_ROLL_ID" />
+                        <h4 class="block" style="margin:0px;padding-bottom: 0px;padding-top: 5px;">
+                            Roll #  <span class="label label-warning">
+                                <b>{{vm.form.FAB_ROLL_NO}}</b>
+                            </span>
+                            &nbsp;
+                            Wt   <span class="label label-warning">
+                                <b>{{vm.form.FAB_ROLL_WT}}</b>
+                            </span>
+                        </h4>
+                    </td>
+
+                    <td style="width: 40%; text-align: right; border-left: none;">
+                        <span class="col-md-2" style="padding-left:0;padding-right:0px;">
+                            <h4 class="block" style="margin:0px;padding-bottom: 0px;padding-top: 5px;">
+                                QC Name
+                            </h4>
+                        </span>
+
+                        <span class="col-md-5" style="padding-left:3px;padding-right:0px;">
+
+                            <select class="form-control requiredDDL btn" style="height:30px" ng-model="vm.form.GREY_QC_BY" ng-options="item.HR_EMPLOYEE_ID as item.EMP_FULL_NAME_EN for item in vm.userList"></select>
+                            <span class="field-validation-error" ng-repeat="err in vm.errors.HR_EMPLOYEE_ID">
+                                {{err}}
+                            </span>
+
+                            @*<select class="form-control requiredDDL btn" style="height:30px" name="repeatSelect" id="repeatSelect" ng-model="vm.form.GREY_QC_BY">
+                                <option ng-init="vm.form.GREY_QC_BY" ng-repeat="option in vm.userList" value="{{option.HR_EMPLOYEE_ID}}">{{option.EMP_FULL_NAME_EN}}</option>
+                            </select>*@
+                            
+                        </span>
+
+                        <span class="col-md-1" style="padding-left:3px;padding-right:0px;">
+                            <h4 class="block" style="margin:0px;padding-bottom: 0px;padding-top: 5px;">
+                                Shift
+                            </h4>
+                        </span>
+
+                        <span class="col-md-2" style="padding-left:3px;padding-right:0px;">
+
+                            <select class="form-control requiredDDL btn" style="height:30px" ng-model="vm.form.HR_SCHEDULE_H_ID" ng-options="item.HR_SCHEDULE_H_ID as item.SCHEDULE_NAME_EN for item in vm.shiftList"></select>
+                            <span class="field-validation-error" ng-repeat="err in vm.errors.HR_SCHEDULE_H_ID">
+                                {{err}}
+                            </span>
+
+                            @*<select class="form-control requiredDDL btn" style="height:30px" name="repeatSelectShift" id="repeatSelectShift" ng-model="vm.form.HR_SCHEDULE_H_ID">
+                                <option ng-init="vm.form.HR_SCHEDULE_H_ID" ng-repeat="option in vm.shiftList" value="{{option.HR_SCHEDULE_H_ID}}">{{option.SCHEDULE_NAME_EN}}</option>
+                            </select>*@
+                            
+                        </span>
+
+                    </td>
+
+
+                </tr>
+            </tbody>
+        </table>
+
+
+
+
+
+        <table class="table table-condensed table-responsive table-bordered" style="padding: 2px; margin-bottom: 2px;">
+            <tbody>
+                <tr>
+                    <td style="padding-bottom: 5px; padding-top: 0px;" ng-if="item.DISPLAY_ORDER<=7" ng-repeat="item in vm.formItemList">
+                        <b>{{item.FB_DFCT_TYPE_NAME}}</b>
+                        <input type="hidden" ng-model="item.RF_FB_DFCT_TYPE_ID" />
+                        <input type="hidden" ng-model="item.IS_CALC_APLY" />
+                        <input type="hidden" ng-model="item.STD_PT" />
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <button class="btn btn-sm  green" ng-click="vm.addOne(item);" type="button"><b>+</b></button>
+
+                            </span>
+                            <input type="number" style="height:28px;" min="0" ng-model="item.DFCT_QTY" class="form-control">
+                            <span class="input-group-btn">
+                                <button class="btn btn-sm red" ng-click="vm.subOne(item);" type="button"><b>-</b></button>
+                            </span>
+                        </div>
+                    </td>
+
+                <tr>
+                    <td style="padding-bottom: 5px; padding-top: 0px;">
+
+                        <table>
+                            <tr ng-if="item.DISPLAY_ORDER>=8 && item.DISPLAY_ORDER<=9" ng-repeat="item in vm.formItemList">
+                                <td>
+                                    <b>{{item.FB_DFCT_TYPE_NAME}}</b>
+                                    <input type="hidden" ng-model="item.RF_FB_DFCT_TYPE_ID" />
+                                    <input type="hidden" ng-model="item.IS_CALC_APLY" />
+                                    <input type="hidden" ng-model="item.STD_PT" />
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-sm  green" ng-click="vm.addOne(item);" type="button"><b>+</b></button>
+
+                                        </span>
+                                        <input type="number" style="height:28px;" min="0" ng-model="item.DFCT_QTY" class="form-control">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-sm red" ng-click="vm.subOne(item);" type="button"><b>-</b></button>
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+
+                    </td>
+
+                    <td style="padding-bottom: 5px; padding-top: 0px;">
+
+                        <table>
+                            <tr ng-if="item.DISPLAY_ORDER>=10 && item.DISPLAY_ORDER<=11" ng-repeat="item in vm.formItemList">
+                                <td>
+                                    <b>{{item.FB_DFCT_TYPE_NAME}}</b>
+                                    <input type="hidden" ng-model="item.RF_FB_DFCT_TYPE_ID" />
+                                    <input type="hidden" ng-model="item.IS_CALC_APLY" />
+                                    <input type="hidden" ng-model="item.STD_PT" />
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-sm  green" ng-click="vm.addOne(item);" type="button"><b>+</b></button>
+
+                                        </span>
+                                        <input type="number" style="height:28px;" min="0" ng-model="item.DFCT_QTY" class="form-control">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-sm red" ng-click="vm.subOne(item);" type="button"><b>-</b></button>
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+
+                    </td>
+                    <td style="padding-bottom: 5px; padding-top: 0px;">
+
+                        <table>
+                            <tr ng-if="item.DISPLAY_ORDER>=12 && item.DISPLAY_ORDER<=14" ng-repeat="item in vm.formItemList">
+                                <td>
+                                    <input type="checkbox" ng-model="item.DFCT_QTY" ng-true-value="'1'" ng-false-value="'0'" ng-change="vm.updateDDL(item);" /> <b>{{item.FB_DFCT_TYPE_NAME}}</b>
+                                    <input type="hidden" ng-model="item.RF_FB_DFCT_TYPE_ID" />
+                                    <input type="hidden" ng-model="item.IS_CALC_APLY" />
+                                    <input type="hidden" ng-model="item.STD_PT" />
+
+                                </td>
+                            </tr>
+                        </table>
+
+
+                    </td>
+
+                    <td style="padding-bottom: 5px; padding-top: 0px;">
+
+                        <table>
+                            <tr ng-if="item.DISPLAY_ORDER>=15" ng-repeat="item in vm.formItemList">
+                                <td>
+                                    <input type="checkbox" ng-model="item.DFCT_QTY" ng-true-value="'1'" ng-false-value="'0'" ng-change="vm.updateDDL(item);" /> <b>{{item.FB_DFCT_TYPE_NAME}}</b>
+                                    <input type="hidden" ng-model="item.RF_FB_DFCT_TYPE_ID" />
+                                    <input type="hidden" ng-model="item.IS_CALC_APLY" />
+                                    <input type="hidden" ng-model="item.STD_PT" />
+                                </td>
+                            </tr>
+                        </table>
+
+
+                    </td>
+
+                    <td style="padding-bottom: 5px; padding-top: 0px;">
+                        <b>Deduct Weight</b>
+                        <input type="number" class="form-control" name="name" ng-model="vm.form.DED_ROLL_WT" />
+                        <b>Comments</b>
+                        <textarea rows="3" name="QC_NOTE" class="form-control" ng-model="vm.form.QC_NOTE" cols="50"></textarea>
+                        @*<span class="col-md-9" style="padding-left:0;padding-right:0px;">
+
+                                <b>QC Name</b>
+
+                                <select class="form-control">
+                                    <option>Operator 1</option>
+                                    <option>Operator 2</option>
+                                    <option>Operator 3</option>
+                                    <option>Operator 4</option>
+                                    <option>Operator 5</option>
+                                </select>
+
+                            </span>
+                            <span class="col-md-3" style="padding-left:3px;padding-right:0px;">
+
+                                <b>Shift</b>
+                                <select class="form-control">
+                                    <option>A</option>
+                                    <option>C</option>
+                                    <option>D</option>
+                                </select>
+                            </span>*@
+                        <br />
+                        <button class="btn blue btn-block" ng-disabled="!vm.form.FAB_ROLL_WT>0" ng-click="vm.ClaculateDefectResult();"><span aria-hidden="true" class="icon-calculator"></span> Calculate</button>
+
+
+
+                    </td>
+
+                    <td style="padding-bottom: 5px; padding-top: 0px;" colspan="2">
+                        <br />
+                        <div class="alert alert-block alert-info fade in" style="padding-top:5px;">
+                            <input type="hidden" ng-model="vm.form.FIN_GSM" />
+                            <input type="hidden" ng-model="vm.form.LK_QC_GRD_ID" />
+                            <p>
+                                Grade for this roll is : <b>{{vm.form.GRADE_NO}}</b>
+                            </p>
+
+                            <p>
+                                Total Point for this roll is : <b>{{vm.form.TOTAL_PT}}</b>
+                            </p>
+
+                            <p>
+                                Grade Point for this roll is : <b>{{vm.form.GRADE_PT}}</b>
+                            </p>
+
+                            <p>
+                                <button class="btn btn-sm green" ng-if="vm.form.KNT_QC_STS_TYPE_ID==0 || vm.form.KNT_QC_STS_TYPE_ID==3" ng-click="vm.submitData(vm.form,1);">Pass</button>
+                                <button class="btn btn-sm blue-hoki" ng-if="vm.form.KNT_QC_STS_TYPE_ID==0 || vm.form.KNT_QC_STS_TYPE_ID==3" ng-click="vm.submitData(vm.form,3);">Hold</button>
+
+                                <select class="btn" style="max-width: 120px; min-width: 100px;" name="defectSelect" id="defectSelect" ng-model="vm.form.HOLD_DFCT_TYPE_ID">
+                                    <option ng-selected="vm.form.HOLD_DFCT_TYPE_ID" ng-repeat="option in vm.defectList" ng-rebind="vm.defectList" value="{{option.RF_FB_DFCT_TYPE_ID}}">{{option.FB_DFCT_TYPE_NAME}}</option>
+                                </select>
+                                @*<a class="btn btn-sm green">
+                                        Pass
+                                    </a>
+                                    <a class="btn btn-sm blue-hoki">
+                                        Hold
+                                    </a>*@
+                                <button style="float:right;" class="btn btn-sm red" ng-if="vm.form.KNT_QC_STS_TYPE_ID==0 || vm.form.KNT_QC_STS_TYPE_ID==3" ng-disabled="!vm.form.GRADE_PT || (vm.form.GRADE_PT||0)<=70" ng-click="vm.submitData(vm.form,4);">Reject</button>
+
+                                @*<a class="btn btn-sm red" ng-disabled="!vm.form.GRADE_NO=='F'" style="float:right;">
+                                        Reject
+                                    </a>*@
+                            </p>
+                        </div>
+
+                    </td>
+
+
+
+
+
+                </tr>
+            </tbody>
+        </table>
+
+        <h4 style="margin-bottom: 0px;">
+            Roll Details
+        </h4>
+
+        <table class="table table-condensed table-striped table-bordered" style="padding: 2px; margin-bottom: 2px;">
+            <tbody>
+
+                <tr>
+                    <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                        <b>Job Card#</b>
+                    </td>
+
+                    <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;">
+                        {{vm.form.JOB_CRD_NO}}
+                    </td>
+
+
+                    <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                        <b>Roll #</b>
+                    </td>
+
+                    <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;">
+                        {{vm.form.FAB_ROLL_NO}}
+                    </td>
+
+                    <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                        <b>Shift</b>
+                    </td>
+
+
+                    <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;">
+                        {{vm.form.SCHEDULE_NAME_EN}}
+                    </td>
+
+                    <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                        <b>Operator</b>
+                    </td>
+
+
+                    <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;">
+                        @*Md. X (KNT-000102)*@
+                        {{vm.form.OPERATOR_NAME}}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                        <b>Buyer</b>
+                    </td>
+
+                    <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;">
+                        @*{{item.BYR_ACC_NAME_EN}}*@
+                        {{vm.form.BUYER_NAME_EN}}
+
+                    </td>
+
+                    <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                        <b>Style</b>
+                    </td>
+
+                    <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;">
+                        @*{{item.WORK_STYLE_NO}}*@
+                        {{vm.form.STYLE_NO}}
+
+                    </td>
+
+                    <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                        <b>Order</b>
+                    </td>
+
+
+                    <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;">
+                        @*{{item.ORDER_NO_LIST}}*@
+                        {{vm.form.MC_ORDER_H_ID_LST}}
+                    </td>
+
+                    <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                        @*<b>Order</b>*@
+                    </td>
+
+
+                    <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;">
+                        @*{{vm.form.MC_ORDER_H_ID_LST}}*@
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                        <b>Fab Type</b>
+                    </td>
+
+                    <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;">
+                        {{vm.form.FAB_TYPE_NAME}}
+                    </td>
+
+                    <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                        <b>Finish Dia</b>
+                    </td>
+
+                    <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;">
+
+                        {{vm.form.ACT_FIN_DIA}}
+                    </td>
+
+                    <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                        <b>Color</b>
+                    </td>
+
+
+                    <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;">
+
+                        {{vm.form.COLOR_NAME_EN}}
+
+                    </td>
+                    <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;"></td>
+
+
+                    <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;"></td>
+                </tr>
+
+                <tr>
+                    <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                        <b>Yarn Details</b>
+                    </td>
+
+                    <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;" colspan="3">
+                        {{vm.form.KNT_YRN_LOT_LST}}
+
+                    </td>
+
+                    <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                        <b>M/C</b>
+
+                    </td>
+
+                    <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;">
+
+                        {{vm.form.KNT_MACHINE_NO}}
+                    </td>
+                    <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                        <b>Dia x Gauge</b>
+
+                    </td>
+
+                    <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;">
+
+                        {{vm.form.MC_DIA}} x {{vm.form.MC_GG}}
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                        <b>F-GSM</b>
+                    </td>
+
+                    <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;" colspan="3">
+                        {{vm.form.FIN_GSM}}
+
+                    </td>
+
+                    <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                        <b>Stich Length</b>
+
+                    </td>
+
+                    <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;">
+
+                        {{vm.form.STITCH_LEN}}
+                    </td>
+                    <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                        <b></b>
+
+                    </td>
+
+                    <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;"></td>
+                </tr>
+                @*<tr>
+                        <td style="width:12%">
+                            <b>Finish GSM</b>
+                        </td>
+
+                        <td style="width:21%">
+                            {{item.FIN_GSM}}
+                        </td>
+
+                        <td style="width:12%">
+                            <b>M/C</b>
+                        </td>
+
+                        <td style="width:21%">
+                            {{item.KNT_MACHINE_NO}}
+                        </td>
+
+                        <td style="width:12%">
+                            <b>M/C Dia X Gauge</b>
+                        </td>
+
+
+                        <td style="width:21%">
+                            {{item.MC_DIA_GG}}
+                        </td>
+                    </tr>*@
+            </tbody>
+        </table>
+        <div style="padding:3px;">
+        </div>
+        <div style="padding:3px;">
+        </div>
+        <div style="padding:3px;">
+        </div>
+        <div class="form-group">
+
+            <a class="btn btn-sm default" href="~/" ui-sref-opts="{reload: true}">Back to Home</a>
+            <button type="submit" class="btn btn-sm green" ng-click="vm.openRollInspDtl();">Hold List</button>
+
+        </div>
+    </div>
+
+</div>
+
+
+<script type="text/ng-template" id="RollInspDtl.html">
+    <input id="access_token" data-ng-model="token" type="hidden"
+           data-ng-init="token='@Session["access_token"]'" />
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h3 class="title">
+                        Roll Details
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel([])"></i></span>
+                    </h3>
+                </div>
+            </div>
+            <div class="portlet-body">
+
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend"><b>Search Data</b></legend>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" style="text-align: right;">
+                            <span aria-required="true" class="required"></span>
+                            Buyer Group
+                        </label>
+
+                        <div class="col-md-2">
+                            <select class="form-control required" name="repeatSelectBG" id="repeatSelectBG" ng-model="MC_BYR_ACC_GRP_ID">
+                                <option ng-repeat="option in buyerAccGrpList" value="{{option.MC_BYR_ACC_GRP_ID}}">{{option.BYR_ACC_GRP_NAME_EN}}</option>
+                            </select>
+
+                        </div>
+
+                        <label class="col-md-2 control-label" style="text-align: right;">
+                            <span aria-required="true" class="required"></span>
+                            Color
+                        </label>
+                        <div class="col-md-2">
+
+                            <input type="text" id="COLOR_NAME_EN" style="min-width:100%" ng-model="COLOR_NAME_EN" />
+
+                            @*<select class="form-control required" name="repeatSelect" id="repeatSelect" ng-model="MC_COLOR_ID">
+                                    <option ng-repeat="option in colorList" value="{{option.MC_COLOR_ID}}">{{option.COLOR_NAME_EN}}</option>
+                                </select>*@
+
+                        </div>
+
+                    </div>
+                    <div style="padding:5px;"></div>
+                    <div style="padding:2px;"></div>
+                    <div class="form-group">
+
+
+                        <label class="col-md-2 control-label" style="text-align: right;">
+                            <span aria-required="true" class="required"></span>
+                            Style/Order No
+                        </label>
+
+                        <div class="col-md-2">
+                            <input type="text" id="STYLE_ORDER_NO" style="min-width:100%" ng-model="STYLE_ORDER_NO" />
+                        </div>
+
+                        <label class="col-md-2 control-label" style="text-align: right;">
+                            QC Date
+                        </label>
+
+                        <div class="col-md-2">
+                            <input type="date" id="QC_DT" style="min-width:100%" ng-model="QC_DT" />
+                        </div>
+
+                    </div>
+                    <div style="padding:5px;"></div>
+                    <div style="padding:5px;"></div>
+                    <div style="padding:5px;"></div>
+
+                    <div class="form-group">
+                        <div class="col-md-2">
+
+                            @*<button type="submit" class="btn btn-sm green" ng-click="getRollDtl(1);">Pass</button>*@
+                        </div>
+                        <div class="col-md-1">
+
+                            <button type="submit" class="btn btn-sm blue" ng-click="getRollDtl(3);">Search</button>
+                        </div>
+                        <div class="col-md-1">
+
+                            <button type="submit" class="btn btn-sm default" ng-click="clearAll();">Clear</button>
+                        </div>
+
+                    </div>
+
+                </fieldset>
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend"><b>Roll Details</b></legend>
+
+                    <table style="width:100%" class="clsTableMtex">
+
+                        <tr class="clstheadMtex">
+                            <td class="clstdMtex">
+                                <b>Copy</b>
+                            </td>
+                            <td class="clstdMtex">
+                                <b>Company</b>
+                            </td>
+                            <td class="clstdMtex">
+                                <b>QC DT</b>
+                            </td>
+                            <td class="clstdMtex">
+                                <b>Buyer A/C</b>
+                            </td>
+
+                            <td class="clstdMtex">
+                                <b>Style #</b>
+                            </td>
+
+                            <td class="clstdMtex">
+                                <b>Order #</b>
+                            </td>
+                            <td class="clstdMtex">
+                                <b>Color</b>
+                            </td>
+                            <td class="clstdMtex">
+                                <b>Job Card #</b>
+                            </td>
+
+                            <td class="clstdMtex">
+                                <b>Roll No</b>
+                            </td>
+                            <td class="clstdMtex">
+                                <b>Roll Wt(Kg)</b>
+                            </td>
+                            <td class="clstdMtex">
+                                <b>Total Point</b>
+                            </td>
+                            <td class="clstdMtex">
+                                <b>Grade Pint</b>
+                            </td>
+
+                            <td class="clstdMtex">
+                                <b>Grade</b>
+                            </td>
+                            <td class="clstdMtex">
+                                <b>QC Note</b>
+                            </td>
+
+                            <td class="clstdMtex">
+                                <b>Pass</b>
+                            </td>
+                            <td class="clstdMtex">
+                                <b>Reject</b>
+                            </td>
+
+                        </tr>
+                        <tr ng-repeat="item in formItemList">
+                            <td class="clstdMtex">
+                                <button ng-click="selectRollNo(item);" ng-disabled="item.IS_VALID=='N'" class="fa fa-arrow-circle-o-left"></button>
+                            </td>
+
+                            <td class="clstdMtex">
+                                {{item.COMP_SNAME}}
+                                <input type="hidden" ng-model="item.GREY_QC_BY" />
+                            </td>
+                            <td class="clstdMtex">
+                                {{item.QC_DT|date: 'dd-MMM-yyyy'}}
+                            </td>
+                            <td class="clstdMtex">
+                                {{item.BUYER_NAME_EN}}
+                            </td>
+
+                            <td class="clstdMtex">
+                                {{item.STYLE_NO}}
+                            </td>
+
+                            <td class="clstdMtex">
+                                {{item.MC_ORDER_H_ID_LST}}
+                            </td>
+                            <td class="clstdMtex">
+                                {{item.COLOR_NAME_EN}}
+
+                            </td>
+                            <td class="clstdMtex">
+                                {{item.JOB_CRD_NO}}
+
+                            </td>
+                            <td class="clstdMtex">
+                                {{item.FAB_ROLL_NO}}
+
+                            </td>
+
+                            <td class="clstdMtex">
+                                {{item.FAB_ROLL_WT}}
+                            </td>
+                            <td class="clstdMtex">
+                                {{item.TOTAL_PT}}
+
+                            </td>
+                            <td class="clstdMtex">
+                                {{item.GRADE_PT}}
+
+                            </td>
+                            <td class="clstdMtex">
+                                {{item.GRADE_NO}}
+
+                            </td>
+                            <td class="clstdMtex">
+                                <input type="text" ng-model="item.QC_NOTE" />
+                            </td>
+
+                            <td class="clstdMtex">
+
+                                <button class="btn btn-xs green" ng-disabled="item.IS_VALID=='N'" ng-click="submitData(item,1);">Pass</button>
+
+                            </td>
+                            <td class="clstdMtex">
+
+                                <button class="btn btn-xs blue-hoki" ng-disabled="item.IS_VALID=='N'" ng-click="submitData(item,4);">Reject</button>
+
+                            </td>
+
+                        </tr>
+                    </table>
+
+
+
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</script>

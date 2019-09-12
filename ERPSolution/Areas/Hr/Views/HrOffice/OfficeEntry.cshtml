@@ -1,0 +1,332 @@
+﻿@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+
+
+<form name="frmOffice" novalidate class="form-horizontal " method="post" ng-class="{ loading:form.submitting }"
+      ng-submit="vm.submit(frmOffice.$valid,vm.form,vm.insert)">
+
+
+    @*{{frmOffice.$error=[]}}*@
+
+
+    @*@using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-horizontal form-bordered", name="frmOffice" }))
+        {*@
+    <div class="form-body">
+        @*@Html.AntiForgeryToken()*@
+        <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+               data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+        <div class="form-group">
+            <fieldset class="custom-fieldset col-md-7">
+                <legend class="custom-legend"><b>Line Entry</b></legend>
+                <div class="form-group">
+                    <label class="control-label col-md-3">
+                    </label>
+                    <div class="col-md-5">
+                        <input type="hidden" class="form-control" name="HR_OFFICE_ID" ng-model="vm.form.HR_OFFICE_ID" ng-show="" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-3">
+                        Company Group
+                    </label>
+                    <div class="col-md-5">
+                        <select kendo-drop-down-list name="HR_COMPANY_GRP_ID" class="form-control"
+                                options="vm.compGroupList" ng-model="vm.form.HR_COMPANY_GRP_ID" required disabled></select>
+
+                        <div class="help-block help-block-error" ng-messages="frmOffice.HR_COMPANY_GRP_ID.$error" ng-if="frmOffice.$submitted || frmOffice.HR_COMPANY_GRP_ID.$touched">
+                            <div ng-message="required">Please select company group</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-3">
+                        Office Code
+                    </label>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="OFFICE_CODE" ng-model="vm.form.OFFICE_CODE" disabled />
+                    </div>
+                </div>
+
+                <div class="form-group" ng-class="{'has-error': (frmOffice.OFFICE_NAME_EN.$error.required) && (frmOffice.OFFICE_NAME_EN.$touched || frmOffice.$submitted) }">
+                    <label class="control-label col-md-3">
+                        Office Name [E]
+                        <span class="required" aria-required="true">*</span>
+                    </label>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="OFFICE_NAME_EN" ng-model="vm.form.OFFICE_NAME_EN" required />
+
+                        <div class="help-block help-block-error" ng-messages="frmOffice.OFFICE_NAME_EN.$error" ng-if="frmOffice.$submitted || frmOffice.OFFICE_NAME_EN.$touched">
+                            <div ng-message="required">Please input office name [E]</div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group" ng-class="{'has-error': (frmOffice.OFFICE_NAME_BN.$error.required) && (frmOffice.OFFICE_NAME_BN.$touched || frmOffice.$submitted) }">
+                    <label class="control-label col-md-3">
+                        Office Name [B]
+                        <span class="required" aria-required="true">*</span>
+                    </label>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control banglafont" name="OFFICE_NAME_BN" ng-model="vm.form.OFFICE_NAME_BN" required />
+
+                        <div class="help-block help-block-error" ng-messages="frmOffice.OFFICE_NAME_BN.$error" ng-if="frmOffice.$submitted || frmOffice.OFFICE_NAME_BN.$touched">
+                            <div ng-message="required">Please input office name [B]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-class="{'has-error': (frmOffice.OFFICE_SNAME.$error.required) && (frmOffice.OFFICE_SNAME.$touched || frmOffice.$submitted) }">
+                    <label class="control-label col-md-3">
+                        Short Name
+                        <span class="required" aria-required="true">*</span>
+                    </label>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="OFFICE_SNAME" ng-model="vm.form.OFFICE_SNAME" required />
+
+                        <div class="help-block help-block-error" ng-messages="frmOffice.OFFICE_SNAME.$error" ng-if="frmOffice.$submitted || frmOffice.OFFICE_SNAME.$touched">
+                            <div ng-message="required">Please input short name</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-3">
+                        Description
+                    </label>
+                    <div class="col-md-5">
+                        <textarea class="form-control" name="OFFICE_DESC" ng-model="vm.form.OFFICE_DESC" rows="3"></textarea>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="control-label col-md-3">
+                        Office Type
+                    </label>
+                    <div class="col-md-5">
+                        <select kendo-drop-down-list name="LK_OFF_TYPE_ID" class="form-control"
+                                options="vm.officeTypeList" ng-model="vm.form.LK_OFF_TYPE_ID"></select>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-class="{'has-error': (frmOffice.ADDRESS_EN.$error.required) && (frmOffice.ADDRESS_EN.$touched || frmOffice.$submitted) }">
+                    <label class="control-label col-md-3">
+                        Address [E]
+                        <span class="required" aria-required="true">*</span>
+                    </label>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="ADDRESS_EN" ng-model="vm.form.ADDRESS_EN" required />
+
+                        <div class="help-block help-block-error" ng-messages="frmOffice.ADDRESS_EN.$error" ng-if="frmOffice.$submitted || frmOffice.ADDRESS_EN.$touched">
+                            <div ng-message="required">Please address [E]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-class="{'has-error': (frmOffice.ADDRESS_BN.$error.required) && (frmOffice.ADDRESS_BN.$touched || frmOffice.$submitted) }">
+                    <label class="control-label col-md-3">
+                        Address [B]
+                        <span class="required" aria-required="true">*</span>
+                    </label>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control banglafont" name="ADDRESS_BN" ng-model="vm.form.ADDRESS_BN" required />
+
+                        <div class="help-block help-block-error" ng-messages="frmOffice.ADDRESS_BN.$error" ng-if="frmOffice.$submitted || frmOffice.ADDRESS_BN.$touched">
+                            <div ng-message="required">Please input address [B]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-class="{'has-error': (frmOffice.POST_CODE.$error.required) && (frmOffice.POST_CODE.$touched || frmOffice.$submitted) }">
+                    <label class="control-label col-md-3">
+                        Post Code
+                        <span class="required" aria-required="true">*</span>
+                    </label>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="POST_CODE" ng-model="vm.form.POST_CODE" required />
+
+                        <div class="help-block help-block-error" ng-messages="frmOffice.POST_CODE.$error" ng-if="frmOffice.$submitted || frmOffice.POST_CODE.$touched">
+                            <div ng-message="required">Please input post code</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-3">
+                        Post Office Name [E]
+                    </label>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="PO_NAME_EN" ng-model="vm.form.PO_NAME_EN" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-3">
+                        Post Office Name [B]
+                    </label>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="PO_NAME_BN" ng-model="vm.form.PO_NAME_BN" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-3">
+                        Post Box
+                    </label>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="PO_BOX_NO" ng-model="vm.form.PO_BOX_NO" />
+                    </div>
+                </div>
+
+                <div class="form-group" ng-class="{'has-error': (frmOffice.HR_TIMEZONE_ID.$error.required) && (frmOffice.HR_TIMEZONE_ID.$touched || frmOffice.$submitted) }">
+                    <label class="control-label col-md-3">
+                        Time Zone
+                        <span class="required" aria-required="true">*</span>
+                    </label>
+                    <div class="col-md-5">
+                        <select kendo-drop-down-list name="HR_TIMEZONE_ID" class="form-control"
+                                options="vm.timezoneList" ng-model="vm.form.HR_TIMEZONE_ID" required></select>
+
+                        <div class="help-block help-block-error" ng-messages="frmOffice.HR_TIMEZONE_ID.$error" ng-if="frmOffice.$submitted || frmOffice.HR_TIMEZONE_ID.$touched">
+                            <div ng-message="required">Please select time zone</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-3">
+                        District
+                    </label>
+                    <div class="col-md-5">
+                        <select kendo-drop-down-list name="HR_GEO_DISTRICT_ID" class="form-control"
+                                options="vm.districtList" ng-model="vm.form.HR_GEO_DISTRICT_ID"></select>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-class="{'has-error': (frmOffice.HR_COUNTRY_ID.$error.required) && (frmOffice.HR_COUNTRY_ID.$touched || frmOffice.$submitted) }">
+                    <label class="control-label col-md-3">
+                        Country
+                        <span class="required" aria-required="true">*</span>
+                    </label>
+                    <div class="col-md-5">
+                        <select kendo-drop-down-list name="HR_COUNTRY_ID" class="form-control"
+                                options="vm.countryList" ng-model="vm.form.HR_COUNTRY_ID" required></select>
+
+                        <div class="help-block help-block-error" ng-messages="frmOffice.HR_COUNTRY_ID.$error" ng-if="frmOffice.$submitted || frmOffice.HR_COUNTRY_ID.$touched">
+                            <div ng-message="required">Please select country</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-3">
+                        Phone#
+                    </label>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" name="PHONE_NO" ng-model="vm.form.PHONE_NO" />
+                    </div>
+                    <label class="control-label col-md-1">
+                        Extention
+                    </label>
+                    <div class="col-md-1">
+                        <input type="text" class="form-control" name="PHONE_EXT" ng-model="vm.form.PHONE_EXT" />
+                    </div>
+                </div>
+
+                @*<div class="form-group">
+                    <label class="control-label col-md-3">
+                        Phone Ext.
+                    </label>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="PHONE_EXT" ng-model="vm.form.PHONE_EXT" />
+                    </div>
+                </div>*@
+
+                <div class="form-group">
+                    <label class="control-label col-md-3">
+                        Fax#
+                    </label>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="FAX_NO" ng-model="vm.form.FAX_NO" />
+                    </div>
+                </div>
+
+                <div class="form-group" ng-class="{'has-error':  frmOffice.EMAIL_ID.$error.email  }">
+                    <label class="control-label col-md-3">
+                        Email
+                    </label>
+                    <div class="col-md-5">
+                        <input type="email" class="form-control" name="EMAIL_ID" ng-model="vm.form.EMAIL_ID" />
+                        <div class="help-block help-block-error" ng-messages="frmOffice.EMAIL_ID.$error" ng-if="frmOffice.EMAIL_ID.$dirty">
+                            <div ng-message="email">Please input valid email</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-3">
+                    </label>
+                    <div class="col-md-2">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="IS_ACTIVE" ng-model="vm.form.IS_ACTIVE" ng-init="vm.form.IS_ACTIVE='Y'" ng-true-value="'Y'" ng-false-value="'N'">&nbsp;Active?
+                        </label>
+                    </div>
+                </div>
+
+
+            </fieldset>
+
+
+
+            <fieldset class="custom-fieldset col-md-4" style="padding-right:5px;">
+                <legend class="custom-legend"><b>Company Mapping</b></legend>
+                <table class="clsTableMtex">
+                    <tr class="clstheadMtex">
+                        <th class="clstdMtex">Select</th>
+                        <th class="clstdMtex">
+                            Company Name
+                        </th>
+                        <th class="clstdMtex">
+                            Is Primary
+                        </th>
+                    </tr>
+                    <tr ng-repeat="item in vm.companyList">
+                        <td style="text-align:center;"><input type="checkbox" ng-model="item.IS_SELECT" ng-click="vm.removeCompany(item);"/></td>
+
+                        <td>
+                            {{item.COMP_NAME_EN}}
+                        </td>
+                        <td><input type="checkbox" id="IS_PRIMARY" name="IS_PRIMARY" ng-disabled="!item.IS_SELECT" 
+                                  ng-true-value="'Y'" ng-false-value="'N'" ng-model="item.IS_PRIMARY" ng-click="vm.deselectOther($index);" /></td>
+                    </tr>
+                </table>
+            </fieldset>
+        </div>
+
+    </div>
+
+    <div class="form-actions">
+        <div class="row">
+            <div class="col-md-offset-3 col-md-6">
+
+                <button type="submit" class="btn green" ng-if="vm.insert"><i class="fa fa-check"></i> Save</button>
+                <button type="submit" class="btn yellow-gold" ng-if="!vm.insert"><i class="fa fa-check"></i> Update</button>
+
+                <button type="button" class="btn blue" @*ng-if="TRAN_MODE==2" *@ ng-click="vm.TranCancel()">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+    @*}*@
+</form>

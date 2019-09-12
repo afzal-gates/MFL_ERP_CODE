@@ -1,0 +1,219 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#">Template for TNA</a>
+    </li>
+</ul>
+
+
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption">
+            Template for T&A
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+
+        <form class="form-horizontal" role="form" name="TnaTemplateForm" novalidate ng-submit="vm.submitData(vm.form,token)">
+
+            <div class="form-body clearfix">
+                <div class="row" style="margin:auto;padding-top:10px;">
+                    <input id="access_token" data-ng-model="token" type="hidden"
+                           data-ng-init="token='@Session["access_token"]'" />
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                          <span aria-required="true" class="required">*</span>
+                            Template Code
+                        </label>
+                        <div class="col-md-3">
+                            <input type="text" name="TNA_TMPLT_CODE" ng-model="vm.form.TNA_TMPLT_CODE" class="form-control" required/>
+                        </div>
+
+                        <div class="col-md-5">
+                            <div ng-messages="TnaTemplateForm.TNA_TMPLT_CODE.$error" ng-if="TnaTemplateForm.$submitted || TnaTemplateForm.TNA_TMPLT_CODE.$touched">
+                                <div ng-message="required" class="field-validation-error">The field Templated Code is required</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                          <span aria-required="true" class="required">*</span>
+                          Template Type
+                        </label>
+                        <div class="col-md-5" ng-init="vm.form.TempType=(vm.form.MC_BUYER_ID>0)?2:1">
+                            <div class="radio-list" style="margin-left:20px">
+                                <label class="radio-inline">
+                                    <span class="checked"><input type="radio" ng-model="vm.form.TempType" ng-value="1" required></span>General
+                                </label>
+                                <label class="radio-inline">
+                                    <span class="checked"><input type="radio" ng-model="vm.form.TempType" ng-value="2" required></span>Buyer Specific
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-if="vm.form.TempType==2">
+                        <label class="control-label col-md-3">
+                            <span aria-required="true" class="required">*</span>
+                        Buyer</label>
+                        <div class="col-md-3">
+                            <select kendo-drop-down-list name="MC_BUYER_ID" class="form-control"
+                                    options="vm.buyerList" id="BuyerDropDown" ng-model="vm.form.MC_BUYER_ID" required></select>
+                        </div>
+
+                        <div class="col-md-5">
+                            <div ng-messages="TnaTemplateForm.MC_BUYER_ID.$error" ng-if="TnaTemplateForm.$submitted || TnaTemplateForm.MC_BUYER_ID.$touched">
+                                <div ng-message="required" class="field-validation-error">Please select Buyer</div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3"><span aria-required="true" class="required">*</span> Order Type</label>
+                            <div class="col-md-5">
+                                <div class="radio-list" style="margin-left:20px">
+                                    <label class="radio-inline" ng-repeat="item in vm.OrderTypeList">
+                                        <span class="checked"><input type="radio" name="LK_ORDER_TYPE_ID" ng-model="vm.form.LK_ORDER_TYPE_ID" ng-value="item.LOOKUP_DATA_ID" required></span>{{item.LK_DATA_NAME_EN}}
+                                    </label>
+                                </div>
+                            </div>
+                        <div class="col-md-4">
+                            <div ng-messages="TnaTemplateForm.LK_ORDER_TYPE_ID.$error" ng-if="TnaTemplateForm.$submitted || TnaTemplateForm.LK_ORDER_TYPE_ID.$touched">
+                                <div ng-message="required" class="field-validation-error">Please select Order Type</div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3"><span aria-required="true" class="required">*</span> Nature of Work</label>
+
+                        <div class="col-md-5">
+                            <div class="radio-list" style="margin-left:20px">
+                                <label class="radio-inline" ng-repeat="item in vm.NatureOfWorkList">
+                                    <span class="checked"><input type="radio" name="LK_GARM_TYPE_ID" ng-model="vm.form.LK_GARM_TYPE_ID" ng-value="item.LOOKUP_DATA_ID" required></span>{{item.LK_DATA_NAME_EN}}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div ng-messages="TnaTemplateForm.LK_GARM_TYPE_ID.$error" ng-if="TnaTemplateForm.$submitted || TnaTemplateForm.LK_GARM_TYPE_ID.$touched">
+                                <div ng-message="required" class="field-validation-error">Please select nature of wrok</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            <span aria-required="true" class="required">*</span>
+                            Lead Time
+                        </label>
+                        <div class="col-md-1">
+                            <input type="text" name="LEAD_TIME_FROM" ng-model="vm.form.LEAD_TIME_FROM" class="form-control" ui-number-mask="0" required />
+                        </div>
+                        <label class="col-md-1 control-label">
+                            <span aria-required="true" class="required">*</span>
+                            To
+                        </label>
+
+                        <div class="col-md-1">
+                            <input type="text" name="LEAD_TIME_TO" ng-model="vm.form.LEAD_TIME_TO" class="form-control" ui-number-mask="0" required />
+                        </div>
+
+                        <div class="col-md-1  control-label">
+                            <span aria-required="true" class="required">*</span>
+                            Std Dys
+                        </div>
+                        <div class="col-md-1">
+                            <input type="text" name="STD_LEAD_TIME" ng-model="vm.form.STD_LEAD_TIME" class="form-control" ui-number-mask="0" required />
+                        </div>
+
+                        
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-4 col-md-offset-3">
+                            <div ng-messages="TnaTemplateForm.LEAD_TIME_TO.$error" ng-if="TnaTemplateForm.$submitted || TnaTemplateForm.LEAD_TIME_TO.$touched">
+                                <div ng-message="range" class="field-validation-error">Please insert valid lead time range</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                          Description
+                        </label>
+                        <div class="col-md-5">
+                            <textarea rows="3" name="REMARKS" class="form-control" cols="50" ng-model="vm.form.REMARKS"></textarea>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3"><span aria-required="true" class="required">*</span>Approved By</label>
+                        <div class="col-md-2">
+                            <select kendo-drop-down-list name="APPROVED_BY" class="form-control"
+                                    options="vm.userList" ng-model="vm.form.APPROVED_BY" required></select>
+                        </div>
+
+                        <label class="control-label col-md-1">Prep. By</label>
+                        <div class="col-md-2">
+                            <select kendo-drop-down-list name="PREPARED_BY" class="form-control"
+                                    options="vm.userList" ng-model="vm.form.PREPARED_BY" ng-init="vm.form.PREPARED_BY='@Session["multiScUserId"]'" readonly></select>
+                        </div>
+                    </div>
+                </div>
+                @*<br />
+                <div class="row">
+                    <div class="col-md-5 col-md-offset-3">
+                        
+                        <button type="submit" ng-if="vm.form.MC_TNA_TMPLT_H_ID" class="btn btn-sm yellow-gold" ng-class="{'disabled':!TnaTemplateForm.$valid}">Update</button>
+                        <button type="submit" ng-if="!vm.form.MC_TNA_TMPLT_H_ID" class="btn btn-sm green" ng-class="{'disabled':!TnaTemplateForm.$valid}">Save</button>
+                        <button type="button" class="btn btn-sm purple" ng-if="vm.form.MC_TNA_TMPLT_H_ID" ui-sref="TnaTemplate.Dtl({MC_TNA_TMPLT_H_ID:vm.form.MC_TNA_TMPLT_H_ID})" ng-disabled="vm.disableShowAssignTask">Assign Task</button>
+
+                        <button type="button" class="btn btn-sm default" ui-sref="TnaTemplate({ MC_TNA_TMPLT_H_ID : null })" ui-sref-opts="{reload: true}">Cancel</button>
+                    </div>
+
+                </div>*@
+
+                <div class="row" style="margin:auto;padding-top:10px;" ng-if="vm.errors">
+                    <div class="alert alert-warning" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                        <ul ng-repeat="field in vm.errors">
+                            <li ng-repeat="error in field" ng-bind="error"></li>
+                        </ul>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </form>
+
+        <div class="row" style="margin:auto;padding-top:10px;" data-ui-view>
+        </div>
+
+    </div>
+</div>

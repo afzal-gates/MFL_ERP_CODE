@@ -1,0 +1,235 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Hr</a>
+
+    </li>
+    <li>
+        <a href="#">Assign Employee Bank A/C</a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+    
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+
+        @*<form class="form-horizontal" role="form" name="BuyerForm" novalidate ng-submit="vm.submitBuyerData(vm.form,token)">*@
+
+        <div class="form-body clearfix">
+            <div class="row" style="margin:auto;">
+                
+
+                <div class="col-md-12">
+                    <form name="frmAssignBankAc" class="form-horizontal" role="form" novalidate>
+
+                        <div class="form-body">
+
+                            <input id="access_token" data-ng-model="token" type="hidden"
+                                   data-ng-init="token='@Session["access_token"]'" value="" />
+
+                            @*<meta http-equip="Authorization" name="Bearer @Session["access_token"]" />*@
+
+                            <input name="CREATED_BY" ng-model="vm.CREATED_BY" type="hidden"
+                                   data-ng-init="vm.CREATED_BY='@Session["multiScUserId"]'" value="@Session["multiScUserId"]" />
+
+                            <input name="LAST_UPDATED_BY" ng-model="vm.LAST_UPDATED_BY" type="hidden"
+                                   ng-init="vm.LAST_UPDATED_BY='@Session["multiScUserId"]'" value="@Session["multiScUserId"]" />
+
+
+                            <div class="row" style="margin:auto;padding-top:10px;" ng-if="vm.errors">
+                                <div class="alert alert-danger" role="alert">
+                                    @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                                    <div style="padding: 0px 0px 15px 25px; ">
+                                        <b>Please fix the following errors ....</b>
+                                    </div>
+                                    <ul ng-repeat="field in vm.errors">
+                                        <li ng-repeat="error in field" ng-bind="error"></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    Bank
+                                </label>
+                                <div class="col-md-5">
+                                    <div class="col-md-10">
+                                        <select kendo-drop-down-list id="RF_BANK_ID" name="RF_BANK_ID" class="form-control" @*ng-disabled="vm.isManagementType!=true"*@
+                                                options="vm.bankListData" ng-model="vm.form.RF_BANK_ID"></select>
+                                    </div>
+                                    <div class="col-md-1" style="padding:0px">
+                                        <button type="button" id="ADD_ITEM" class="btn btn-sm" @*ng-click="vm.salesItemAdd()"*@><i class="fa fa-plus"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    Branch
+                                </label>
+                                <div class="col-md-5">
+                                    <div class="col-md-10">
+                                        <select kendo-drop-down-list id="RF_BANK_BRANCH_ID" name="RF_BANK_BRANCH_ID" class="form-control" @*ng-disabled="vm.isManagementType!=true"*@
+                                                options="vm.branchListData" ng-model="vm.form.RF_BANK_BRANCH_ID"></select>
+                                    </div>
+                                    <div class="col-md-1" style="padding:0px">
+                                        <button type="button" id="ADD_ITEM" class="btn btn-sm" @*ng-click="vm.salesItemAdd()"*@><i class="fa fa-plus"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr />
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    Bank Account
+                                </label>
+                                <div class="col-md-5">
+                                    <div class="col-md-8">
+                                        <input type="text" id="BK_ACC_NO" ng-model="vm.form.BK_ACC_NO" placeholder="Search..." @*ng-disabled="vm.isEmployee!=true"*@
+                                               @*style="background-color:blue;color:white"*@
+                                               typeahead="item.BK_ACC_NO as item.BK_ACC_NO for item in bankAccountAuto($viewValue)"
+                                               typeahead-min-length="3" typeahead-wait-ms="1000"
+                                               typeahead-on-select="onSelectBnkAc($item)" typeahead-loading="loadingLocationsBnkAc" class="form-control" />
+                                        <i ng-show="loadingLocationsBnkAc" class="glyphicon glyphicon-refresh"></i>
+                                    </div>  
+                                    <div class="col-md-4">
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" ng-model="vm.form.IS_EMP_ACC" name="IS_EMP_ACC" ng-true-value="'Y'" ng-false-value="'N'" />Salary A/C?
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-if="vm.form.IS_EMP_ACC=='Y'">
+                                <label class="control-label col-md-2">
+                                    Employee
+                                </label>
+                                <div class="col-md-5">
+                                    <div class="col-md-8">
+                                        <input type="text" id="EMPLOYEE_CODE" ng-model="vm.form.EMPLOYEE_CODE" placeholder="Search..." @*ng-disabled="vm.isEmployee!=true"*@
+                                               @*style="background-color:blue;color:white"*@
+                                               typeahead="item.EMPLOYEE_CODE as item.EMPLOYEE_CODE for item in emoloyeeAuto($viewValue)"
+                                               typeahead-min-length="3" typeahead-wait-ms="1000"
+                                               typeahead-on-select="onSelectEmp($item)" typeahead-loading="loadingLocationsEmp" class="form-control" />
+                                        <i ng-show="loadingLocationsEmp" class="glyphicon glyphicon-refresh"></i>
+                                    </div>                                    
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-show="vm.form.IS_EMP_ACC=='Y' && vm.form.EMP_FULL_NAME_EN!=null">
+                                <label class="control-label col-md-2">
+                                    &nbsp;
+                                </label>
+                                <div class="col-md-5">
+                                    <div class="col-md-12">
+                                        {{vm.form.EMP_FULL_NAME_EN}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    Account Title
+                                </label>
+                                <div class="col-md-5">
+                                    <div class="col-md-12">
+                                        <input type="text" class="form-control" name="BK_ACC_TITLE" ng-model="vm.form.BK_ACC_TITLE" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*{{vm.form.ACC_BK_ACCOUNT_ID}}*@
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    Account Type
+                                </label>
+                                <div class="col-md-5">
+                                    <div class="col-md-5">
+                                        <select kendo-drop-down-list id="LK_ACC_TYPE_ID" name="LK_ACC_TYPE_ID" class="form-control" @*ng-disabled="vm.isManagementType!=true"*@
+                                                options="vm.bankAcTypeList" ng-model="vm.form.LK_ACC_TYPE_ID"></select>                                        
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    Currency
+                                </label>
+                                <div class="col-md-5">
+                                    <div class="col-md-5">
+                                        <select kendo-drop-down-list id="RF_CURRENCY_ID" name="RF_CURRENCY_ID" class="form-control" @*ng-disabled="vm.isManagementType!=true"*@
+                                                options="vm.currencyList" ng-model="vm.form.RF_CURRENCY_ID"></select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2">&nbsp;</label>
+                                <div class="col-md-5">
+                                    <div class="col-md-10">
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" ng-model="vm.form.IS_INT_ACC" name="IS_INT_ACC" ng-true-value="'Y'" ng-false-value="'N'" />International A/C?
+                                        </label>                                        
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="control-label col-md-2">&nbsp;</label>
+                                <div class="col-md-5">
+                                    <div class="col-md-10">
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" ng-model="vm.form.IS_ACTIVE" name="IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'" />Active?
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2">&nbsp;</label>
+                                <div class="col-md-5">
+                                    <div class="col-md-10">
+                                        <button type="button" class="btn green" ng-if="!vm.form.ACC_BK_ACCOUNT_ID" ng-click="vm.submitData(vm.form,token)"><i class="fa fa-check"></i> Save</button>
+                                        <button type="button" class="btn yellow-gold" ng-if="vm.form.ACC_BK_ACCOUNT_ID" ng-click="vm.submitData(vm.form,token)"><i class="fa fa-check"></i> Update</button>
+
+                                        <button type="button" class="btn blue" ng-click="vm.TranCancel()">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+
+
+            </div>
+        </div>
+        @*</form>*@
+    </div>
+</div>
+
+

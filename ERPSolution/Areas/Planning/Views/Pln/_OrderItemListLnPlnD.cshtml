@@ -1,0 +1,126 @@
+﻿<style>
+    .k-grid .k-grid-header .k-header {
+        white-space: normal;
+    }
+</style>
+
+
+
+<div kendo-grid k-options="vm.gridOptions" k-data-source="vm.gridOptionsDS">
+    <div k-detail-template>
+        <div kendo-grid k-options="vm.planerDashboardD(dataItem)"></div>
+    </div>
+
+</div>
+
+
+
+<div class="row" style="padding-top:3px;">
+    <div class="col-md-12">
+        <button class="btn btn-xs blue-chambray" style="float:right;" type="button" ng-click="vm.onPrint()" ng-disabled="vm.params.pMC_BYR_ACC_ID<1 || !vm.params.pMONTHOF"><i class="fa fa-print"></i> Print</button>
+    </div>
+</div>
+
+<script type="text/x-kendo-template" id="PmsToolbarTemplate">
+    <div class="toolbar">
+        <div class="actions">
+
+            <form class="form-horizontal" role="form" name="PmsToolbar" novalidate
+                  ng-submit="vm.onSearch(vm.form)">
+
+                <label class="col-md-1 control-label" style="padding-left: 0px; padding-right: 0px;">
+                    Item Group
+                </label>
+
+                <div class="col-md-1">
+
+                    <select class="form-control" kendo-drop-down-list name="INV_ITEM_CAT_ID_P" k-option-label="'-- All --'"
+                            k-data-text-field="'ITEM_CAT_NAME_EN'" k-data-value-field="'INV_ITEM_CAT_ID'"
+                            k-auto-bind="'true'" k-data-source="vm.gmtCategoryGroupDs" ng-model="vm.form.INV_ITEM_CAT_ID_P"
+                            k-on-change="vm.onChangeItemGroup(kendoEvent)"></select>
+
+                </div>
+
+                <label class="col-md-1 control-label" style="padding-left: 0px; padding-right: 0px;">
+                    Item Category
+                </label>
+                
+                <div class="col-md-1">
+
+                    <select class="form-control" kendo-drop-down-list name="INV_ITEM_CAT_ID" k-option-label="'-- All --'"
+                            k-data-text-field="'ITEM_CAT_NAME_EN'" k-data-value-field="'INV_ITEM_CAT_ID'" k-filter="'Contains'"
+                            k-auto-bind="'true'" k-data-source="vm.gmtCategoryDs" ng-model="vm.form.INV_ITEM_CAT_ID"
+                            k-on-change="vm.onChangeItemCategory(kendoEvent)"></select>
+
+                </div>
+
+                <label class="col-md-1 control-label" style="padding-left: 0px; padding-right: 0px;">
+                    GmtType
+                </label>
+
+                <div class="col-md-1">
+                    <select class="form-control" kendo-drop-down-list name="LK_GARM_TYPE_ID" k-option-label="'-- All --'"
+                            k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'" k-filter="'Contains'"
+                            k-auto-bind="'true'" k-data-source="vm.basicFancyPoloDs" ng-model="vm.form.LK_GARM_TYPE_ID"></select>
+                </div>
+
+                <label class="col-md-2 control-label" style="padding-left: 0px; padding-right: 0px;">
+                    <label class="radio-inline" style="margin-left:20px;">
+                        <span class="checked"><input type="radio" ng-model="vm.form.LK_ORD_TYPE_ID" ng-change="vm.onChangeOrderType(vm.form.LK_ORD_TYPE_ID)" ng-value="''" /></span> All
+                    </label>
+                    <label class="radio-inline" style="margin-left:20px;">
+                        <span class="checked"><input type="radio" ng-model="vm.form.LK_ORD_TYPE_ID" ng-change="vm.onChangeOrderType(vm.form.LK_ORD_TYPE_ID)" ng-value="175" /></span> New
+                    </label>
+                    <label class="radio-inline" style="margin-left:20px;">
+                        <span class="checked"><input type="radio" ng-model="vm.form.LK_ORD_TYPE_ID" ng-change="vm.onChangeOrderType(vm.form.LK_ORD_TYPE_ID)" ng-value="174" /></span> Repeat
+                    </label>
+                </label>
+
+
+                <label class="col-md-1 control-label" style="padding-left: 0px; padding-right: 0px;">
+                    Style/Order
+                </label>
+                <div class="col-md-2" style="padding-left:5px;padding-right:0px;">
+                    <span style="padding-left:0px;padding-right:3px;" class="col-md-10">
+                        <select class="form-control" kendo-multi-select name="MC_ORDER_H_ID" k-option-label="'--Order --'"
+                                k-data-text-field="'ORDER_NO'" k-data-value-field="'MC_ORDER_SHIP_ID'" k-filter="'Contains'"
+                                k-template="template" k-value-template="valueTemplate"
+                                k-auto-bind="'true'" k-data-source="vm.oderListDs" ng-model="vm.form.MC_ORDER_SHIP_LST"
+                                required style="width:100%;border-bottom-width:1px;"></select>
+                    </span>
+
+                    <span style="padding-left:0px;padding-right:0px;" class="col-md-1">
+                        <button type="submit" class="btn btn-sm primary">
+                            <i class="fa fa-search-plus"></i>
+                            Search
+                        </button>
+                    </span>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="StyleItemImageStyleG.html">
+    <div class="modal-body">
+        <div class="portlet">
+            <div class="portlet-body">
+                <div class="tiles">
+                    <div class="tile image big" style="height: 450px;">
+                        <div class="tile-body">
+                            <img data-ng-src="data:image/png;base64,{{image}}">
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-xs btn-warning" style="float:right;" ng-click="cancel()"> <i class="fa fa-times"></i> Close</button>
+            </div>
+        </div>
+    </div>
+</script>
+
+
+
+

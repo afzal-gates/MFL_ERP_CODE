@@ -1,0 +1,262 @@
+﻿
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+    </li>
+    <li>
+        <a href="#">Request For Labdip Program</a>
+    </li>
+</ul>
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <div kendo-notification="kNotification" style="display: none" k-position="msgPosition" k-auto-hide-after="8000" k-button="true" k-height="'auto'" k-width="'400px'" k-animation="{open:{ effects: 'slideIn:left'},close:{effects: 'slideIn:left',reverse:true}}" k-stacking="'down'"> </div>
+
+
+
+
+        <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+
+        <form class="form-horizontal" role="form" name="LapdipForm" @*ng-submit="vm.submitData(vm.form,token)"*@ novalidate>
+  
+            <div class="form-body clearfix">
+
+                <div kendo-notification="kNotification" style="display: none" k-position="msgPosition" k-auto-hide-after="8000" k-button="true" k-height="'auto'" k-width="'400px'" k-animation="{open:{ effects: 'slideIn:left'},close:{effects: 'slideIn:left',reverse:true}}" k-stacking="'down'"> </div>
+
+               <div class="row" style="margin:auto;">
+                <div class="col-md-12">
+                        <div class="row" style="margin:auto;" ng-show="vm.errors">
+                            <div class="alert alert-danger" role="alert">
+                                <div style="padding: 0px 0px 15px 25px; ">
+                                    <b>Please fix the following errors ....</b>
+                                </div>
+                                <ul ng-repeat="field in vm.errors">
+                                    <li ng-repeat="error in field" ng-bind="error"></li>
+                                </ul>
+                            </div>
+                        </div>
+
+
+
+                        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;">
+                            <legend class="custom-legend"> Request Details</legend>
+
+                            <input type="hidden" name="MC_LD_REQ_H_ID" ng-model="vm.form.MC_LD_REQ_H_ID" class="form-control" />
+
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">
+                                    <span aria-required="true" class="required">*</span>Buyer Acc
+                                </label>
+                                <div class="col-md-4" ng-class="{'has-error': (LapdipForm.MC_BYR_ACC_ID.$touched || LapdipForm.$submitted) && LapdipForm.MC_BYR_ACC_ID.$error.required}">
+                                    <select kendo-drop-down-list name="MC_BYR_ACC_ID" class="form-control" options="vm.buyerAccList" ng-model="vm.form.MC_BYR_ACC_ID" required></select>
+                                </div>
+                                <label class="col-md-2 control-label">
+                                  Buyer
+                                </label>
+                                <div class="col-md-4" ng-class="{'has-error': (LapdipForm.MC_BUYER_ID.$touched || LapdipForm.$submitted) && LapdipForm.MC_BUYER_ID.$error.required}">
+
+                                    <select class="form-control" kendo-drop-down-list name="MC_BUYER_ID" k-option-label="'-- Select Buyer --'"
+                                            k-data-text-field="'BUYER_NAME_EN'" k-data-value-field="'MC_BUYER_ID'"
+                                            k-auto-bind="'true'" k-data-source="vm.BuyerListDs" ng-model="vm.form.MC_BUYER_ID"
+                                            k-on-data-bound="vm.buyerListOnBound(kendoEvent)" required></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">
+                                    Program No.
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" name="LD_REQ_NO" ng-model="vm.form.LD_REQ_NO" class="form-control" readonly />
+                                </div>
+                                <label class="col-md-2 control-label"></label>
+                                <label class="col-md-2 control-label">
+                                    <span aria-required="true" class="required">*</span>Date of Request
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" ng-model="vm.form.LD_REQ_DT" ng-click="LD_REQ_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                           name="LD_REQ_DT" is-open="LD_REQ_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                                </div>
+                                <label class="col-md-2 control-label"></label>
+                            </div>
+
+                            <div class="form-group">
+
+                                <label class="col-md-2 control-label">
+                                    <span aria-required="true" class="required">*</span>Request To
+                                </label>
+                                <div class="col-md-4" ng-class="{'has-error': (LapdipForm.LD_REQ_TO.$touched || LapdipForm.$submitted) && LapdipForm.LD_REQ_TO.$error.required}">
+                                    <select kendo-drop-down-list name="LD_REQ_TO" class="form-control" options="vm.userList" ng-model="vm.form.LD_REQ_TO" required></select>
+                                </div>
+
+                                @*<label class="col-md-2 control-label">
+                                    <span aria-required="true" class="required">*</span>Order Type
+                                </label>
+                                <div class="col-md-4">
+                                    <div class="radio-list" style="margin-left:20px">
+                                        <label class="radio-inline" ng-repeat="item in vm.OrderTypeList">
+                                            <span class="checked"><input type="radio" name="LK_ORD_TYPE_ID" ng-model="vm.form.LK_ORD_TYPE_ID" ng-value="item.LOOKUP_DATA_ID" required></span>{{item.LK_DATA_NAME_EN}}
+                                        </label>
+                                    </div>
+                                </div>*@
+                                <label class="col-md-2 control-label">
+                                    <span aria-required="true" class="required">*</span>Request By
+                                </label>
+                                <div class="col-md-4">
+                                    @*<select kendo-drop-down-list name="LD_REQ_BY" class="form-control" options="vm.userList" ng-model="vm.form.LD_REQ_BY" ng-init="vm.form.LD_REQ_BY='@Session["multiScUserId"]'" readonly></select>*@
+                                    <select kendo-drop-down-list name="LD_REQ_BY" class="form-control" options="vm.userListReqBy" ng-model="vm.form.LD_REQ_BY" ng-init="vm.form.LD_REQ_BY='@Session["multiScUserId"]'" readonly></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+
+                                @*<div class="col-md-1">
+                                        <div ng-messages="LapdipForm.LD_REQ_TO.$error" ng-if="LapdipForm.$submitted || LapdipForm.LD_REQ_TO.$touched">
+                                            <div ng-message="required" class="field-validation-error">required</div>
+                                        </div>
+                                    </div>*@
+                                <label class="col-md-2 control-label">
+                                    Attn. User
+                                </label>
+                                <div class="col-md-4">
+                                    <select kendo-multi-select name="LD_ATTN_MAIL" id="mulAttnUser" class="form-control" options="vm.userListForAttnUser" ng-model="vm.form.LD_ATTN_MAIL"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @*<pre>
+                                     {{vm.form|json}}
+                                    </pre>*@
+                                <label class="col-md-2 control-label">
+                                    Remarks
+                                </label>
+                                <div class="col-md-4">
+                                    <textarea rows="2" class="form-control" name="REMARKS" ng-model="vm.form.REMARKS" />
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+
+                    <div class="col-md-12">
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend">Labdip Specification</legend>
+                            <ng-form name="LapdipSpec">
+                                <input type="hidden" name="MC_LD_REQ_D_ID" ng-model="item.MC_LD_REQ_D_ID" class="form-control" />
+                                <div class="table-scrollable">
+                                    <table class="table table-condensed table-bordered">
+                                        <tr>
+                                            <td>Style #</td>
+                                            <td>Order #</td>
+                                            <td>Color</td>
+                                            <td>Panton/Swatch</td>
+                                            <td>Fabric</td>
+                                            <td>Light Source</td>
+                                            <td>Target Date</td>
+                                            @*<td>Ship. Date</td>*@
+                                            <td><p style="width:inherit">Action</p></td>
+                                        </tr>
+                                        <tr ng-repeat="item in vm.obGrid">
+                                            <td @*ng-class="{'has-error': (LapdipSpec.MC_STYLE_H_ID.$touched || LapdipForm.$submitted) && LapdipSpec.MC_STYLE_H_ID.$error.required}"*@>
+                                                @*<select class="form-control" kendo-drop-down-list name="MC_STYLE_H_ID" k-option-label="'-- Style --'"
+                                                        k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_STYLE_H_ID'"
+                                                        k-auto-bind="'true'" k-data-source="item.StyleListDs" ng-model="item.MC_STYLE_H_ID"
+                                                        k-on-data-bound="vm.buyerListOnBound(kendoEvent)" k-on-change="vm.buyerListOnChange(kendoEvent)"></select>*@
+                                                {{item.STYLE_NO}}
+
+                                            </td>
+                                            <td @*ng-class="{'has-error': (LapdipSpec.MC_ORDER_H_ID.$touched || LapdipForm.$submitted) && LapdipSpec.MC_ORDER_H_ID.$error.required}"*@>
+
+                                                <select class="form-control" kendo-drop-down-list name="MC_ORDER_H_ID" k-option-label="'-- Order --'"
+                                                        k-data-text-field="'ORDER_NO'" k-data-value-field="'MC_ORDER_H_ID'"
+                                                        k-auto-bind="'true'" k-data-source="item.OrderListDs" ng-model="item.MC_ORDER_H_ID"
+                                                        @*k-on-data-bound="vm.buyerListOnBound(kendoEvent)" k-on-change="vm.buyerListOnChange(kendoEvent)"*@></select>
+
+                                            </td>
+                                            <td @*ng-class="{'has-error': (LapdipSpec.MC_COLOR_ID.$touched || LapdipForm.$submitted) && LapdipSpec.MC_COLOR_ID.$error.required}"*@>
+                                                {{item.COLOR_NAME_EN}}
+                                                @*<select class="form-control" kendo-drop-down-list name="MC_COLOR_ID" k-option-label="'-- Color --'"
+                                                        k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'MC_COLOR_ID'"
+                                                        k-auto-bind="'true'" k-data-source="item.ColourListDs" ng-model="item.MC_COLOR_ID"></select>*@
+
+                                            </td>
+                                            <td ng-class="{'has-error': (LapdipSpec.PANTON_NO.$touched || LapdipForm.$submitted) && LapdipSpec.PANTON_NO.$error.required}">
+                                                <input type="text" name="PANTON_NO" ng-model="item.PANTON_NO" class="form-control" required/>
+                                            </td>
+                                            <td ng-class="{'has-error': (LapdipSpec.MC_STYLE_D_FAB_ID.$touched || LapdipForm.$submitted) && LapdipSpec.MC_STYLE_D_FAB_ID.$error.required}">
+
+                                                <select class="form-control" kendo-drop-down-list name="MC_STYLE_D_FAB_ID" k-option-label="'-- Fabrication --'"
+                                                        k-data-text-field="'FABRIC_SNAME'" k-data-value-field="'MC_STYLE_D_FAB_ID'"
+                                                        k-auto-bind="'true'" k-data-source="item.FabricationListDs" ng-model="item.MC_STYLE_D_FAB_ID"></select>
+                                            </td>
+                                            <td ng-class="{'has-error': (LapdipSpec.LK_LTSRC_ID.$touched || LapdipForm.$submitted) && LapdipSpec.LK_LTSRC_ID.$error.required}">
+                                                <select class="form-control" kendo-drop-down-list name="LK_LTSRC_ID" k-option-label="'-- Light Source --'"
+                                                        k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'"
+                                                        k-auto-bind="'true'" k-data-source="item.LightSourceListDs" ng-model="item.LK_LTSRC_ID" required></select>
+                                            </td>
+                                            <td ng-class="{'has-error': (LapdipSpec.TARGET_DT.$touched || LapdipForm.$submitted) && LapdipSpec.TARGET_DT.$error.required}">
+
+                                                <input type="text" class="form-control" ng-click="GridDateOpen($event, $index)" datepicker-popup="{{dtFormat}}"
+                                                       name="TARGET_DT" ng-model="item.TARGET_DT" is-open="GridDateOpened[$index]" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                                            </td>
+                                            @*<td>
+                                                <input type="text" class="form-control" name="SHIP_DT" ng-model="item.SHIP_DT" readonly />
+                                            </td>*@
+                                            <td>
+                                                <a class="btn btn-xs red" ng-click="vm.removeStyleRow($index,vm.obGrid)"><i class="fa fa-times"></i></a>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                </div>
+                            </ng-form>
+                        </fieldset>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12" style="padding-top:10px;">
+                            <div class="col-md-4" align="left">
+                                <button type="button" id="btnSave" class="btn btn-sm green" ng-if="!vm.form.MC_LD_REQ_H_ID" ng-click="vm.submitData(vm.form,token,LapdipForm.$valid)">Save</button>
+                                <button type="button" ng-if="vm.form.MC_LD_REQ_H_ID" class="btn btn-sm yellow-gold" ng-click="vm.BatchUpdateData(vm.form,token)" ng-disabled="vm.isSendToLab">Update</button>
+                                <button type="button" class="btn btn-sm blue" ng-if="vm.form.MC_LD_REQ_H_ID" ng-click="vm.SendToLab(vm.form,token)" ng-disabled="vm.isSendToLab">Send To Lab</button>
+                                <button type="button" class="btn btn-sm blue" ui-sref="LabdipList({BAC:vm.form.MC_BYR_ACC_ID})" ui-sref-opts="{reload:true}">Back to list</button>
+                                <button type="button" class="btn btn-sm default" ng-click="vm.masterCancel(vm.form.MC_LD_REQ_H_ID)" ng-disabled="vm.isSendToLab">Cancel</button>
+                                
+                            </div>
+
+                            <div class="col-md-4" align="right">
+                                <button type="button" class="btn btn-sm blue" ng-if="vm.form.MC_LD_REQ_H_ID" ng-click="vm.printLapDipReport(vm.form)"><i class="fa fa-print"></i> Report</button>
+                            </div>
+
+                           
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+

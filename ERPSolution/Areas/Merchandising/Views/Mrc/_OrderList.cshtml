@@ -1,0 +1,271 @@
+﻿
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#">Order List</a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body" >
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        
+        <input ng-model="vm.form.CREATED_BY" type="hidden" data-ng-init="vm.form.CREATED_BY='@Session["multiScUserId"]'" />
+
+        @*<div class="row" style="padding:5px">
+            <div class="col-md-1">
+                <a ui-sref="OfficeEntry({MC_BUYER_OFF_ID : null})" class="btn btn-sm blue">
+                    <i class="fa fa-plus"></i> Add Order
+                </a>
+            </div>
+        </div>*@
+
+        <div class="row">
+            <div class="col-md-12">
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend"></legend>
+                    <div class="form-group">
+                        <label class="col-md-1" style="padding-right:0px;">
+                            Search By
+                        </label>
+                        @*<div class="col-md-3">
+                            <div class="demo-section k-content">
+                                <select kendo-drop-down-list options="vm.localAgentList" ng-model="vm.form.MC_BUYER_OFF_ID" class="form-control"></select>
+                            </div>
+                        </div>*@
+
+                        <div class="col-md-3">
+                            <select kendo-drop-down-list name="MC_BYR_ACC_ID" class="form-control" options="vm.buyerAcList" ng-model="vm.form.MC_BYR_ACC_ID"></select>
+                        </div>
+
+                        @*<div class="col-md-3">
+                            <select kendo-drop-down-list name="MC_BUYER_ID" class="form-control" options="vm.buyerList" ng-model="vm.form.MC_BUYER_ID"></select>
+                        </div>*@
+
+                        <div class="col-md-1">
+                            <button class="btn btn-sm" ng-click="vm.showOrder()" ng-disabled="vm.form.MC_BYR_ACC_ID==''||vm.form.MC_BYR_ACC_ID==null">Show</button>
+                        </div>
+
+                        <div class="col-md-2">
+                            <button class="btn btn-sm blue" ng-click="vm.addNewOrder()">Add Order <i class="fa fa-plus"></i></button>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+
+        <br />
+        @*{{vm.width}}*@
+        <div @*style="padding:5px;"*@>
+            <kendo-grid k-options="vm.gridOptionsOrder" id="orderGrid" ></kendo-grid>
+            @*<div kendo-grid k-options="vm.gridOptionsFabReq" k-data-source="vm.fabReqDataSource"></div>*@
+            @*<kendo-grid k-options="vm.gridOptions"></kendo-grid>*@
+        </div>
+
+    </div>
+</div>
+
+<script type="text/ng-template" id="GenerateTnaTemplate.html">
+    <input id="access_token" data-ng-model="token" type="hidden"
+           data-ng-init="token='@Session["access_token"]'" />
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div style="padding-top:2px;">
+                    <h4 class="title">
+                        TNA Generation for    Style #  <b>{{Order.WORK_STYLE_NO}}</b>      Job# <b>{{Order.JOB_TRAC_NO}}</b>      PO # <b>{{Order.ORDER_NO}}</b>
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </h4>
+                </div>
+            </div>
+            <div class="portlet-body">
+
+
+
+
+
+                <form class="form-horizontal" role="form" name="TNATaskList" novalidate>
+                    <div class="alert alert-warning" role="alert" ng-if="!validShipDate||!validConfDate">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+
+                        Task Planned Start and/or End  Date is not between Order Confirmed Date & Shipment Date. Please fix it.
+
+                    </div>
+
+
+
+                    <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 250px;">
+                        <div class="scroller" style="height: 250px; overflow: hidden; width: auto;" data-always-visible="1" data-rail-visible1="0" data-handle-color="#D7DCE2" data-initialized="1" slimscroll="{height: 400,alwaysVisible:true,allowPageScroll:true}">
+
+                            <div class="table-scrollable">
+                                <table class="table table-condensed table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>
+
+                                            </th>
+                                            <th>
+                                                <small>
+                                                    SL#
+                                                </small>
+
+                                            </th>
+                                            <th>
+                                                <small>
+                                                    Task Name
+                                                </small>
+
+                                            </th>
+                                            <th>
+                                                <small>
+                                                    Day(s)
+                                                </small>
+
+                                            </th>
+                                            <th>
+                                                <small>
+                                                    Base Task
+                                                </small>
+
+                                            </th>
+                                            <th>
+                                                <small>Req</small>
+
+                                            </th>
+
+                                            <th>
+                                                <small>Planned Start</small>
+
+                                            </th>
+                                            <th>
+                                                <small>Planned End</small>
+
+                                            </th>
+                                            @*<th>
+                                                    Remarks
+                                                </th>*@
+                                            <th>
+                                                <small>Up/Down</small>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <tr ng-repeat="item in TnATaskList" ng-class="{'warning': item.IS_CHECKED=='Y'}">
+                                            <td>
+                                                <input type="checkbox" ng-model="item.IS_CHECKED" ng-true-value="'N'" ng-false-value="'Y'" ng-disabled="item.IS_START_TASK=='Y'||item.IS_END_TASK=='Y'">
+
+                                            </td>
+                                            <td>
+                                                {{item.TASK_ORDER}}
+                                            </td>
+                                            <td>
+                                                <small>
+                                                    <b>{{item.TA_TASK_NAME_EN}}</b>
+                                                </small>
+
+                                            </td>
+                                            <td>
+                                                <input type="hidden" ng-init="item.TASK_ORDER=($index+1)" ng-model="item.TASK_ORDER" />
+
+                                                <input type="number" min="-200" max="200" required name="STD_DAYS_{{$index}}" ng-model="item.STD_DAYS" style="width:50px;" ng-disabled="OrderCopy.IS_TNA_FINALIZED=='Y'" />
+                                            </td>
+
+                                            <td>
+                                                <small>
+                                                    <b> {{item.PARENT_TASK_NAME}}</b>
+                                                </small>
+
+                                            </td>
+
+                                            <td>
+                                                <input type="number" min="0" max="200" required name="RQD_DAYS_{{$index}}" ng-model="item.RQD_DAYS" style="width:50px;" ng-disabled="item.IS_PRODUCTION=='N'||OrderCopy.IS_TNA_FINALIZED=='Y'" />
+                                            </td>
+
+                                            <td>
+                                                <small>
+                                                    <b>
+                                                        {{item.PLAN_START_DT}}
+                                                    </b>
+
+                                                </small>
+
+                                            </td>
+
+                                            <td>
+                                                <p ng-hide="item.IS_PRODUCTION=='N'">
+                                                    <small>
+                                                        <b>{{item.PLAN_END_DT}}</b>
+                                                    </small>
+
+                                                </p>
+
+                                            </td>
+
+                                            @*<td>
+                                                    {{item.REMARKS}}
+                                                </td>*@
+                                            <td>
+                                                <div>
+                                                    <a class="btn btn-xs default" ng-click="Up($index)" ng-disabled="OrderCopy.IS_TNA_FINALIZED=='Y'"><i class="fa fa-chevron-up"></i>  </a><a class="btn btn-xs default" ng-click="Down($index)" ng-disabled="OrderCopy.IS_TNA_FINALIZED=='Y'"><i class="fa fa-chevron-down"></i> </a>
+                                                </div>
+
+                                            </td>
+                                        </tr>
+
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin:auto;">
+                        <div align="right">
+                            <div class="checkbox-list">
+                                <label class="checkbox-inline" style="margin-left:20px">
+                                    <span><input type="checkbox" ng-model="Order.IS_TNA_FINALIZED" ng-true-value="'Y'" ng-false-value="'N'" ng-disabled="OrderCopy.IS_TNA_FINALIZED=='Y'"><b><small> TNA Finalized ?</small></b> </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <br />
+                    <div class="row">
+                        <div class="col-md-4">
+                            <button type="button" class="btn btn-sm green" ng-click="save(TnATaskList,token)" ng-class="{'disabled':!TNATaskList.$valid||!validShipDate||!validConfDate||OrderCopy.IS_TNA_FINALIZED=='Y'}">Save</button>
+                            <button type="button" class="btn btn-sm default" ng-click="cancel()">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+
+
+
+
+

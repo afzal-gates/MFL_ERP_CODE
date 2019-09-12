@@ -1,0 +1,154 @@
+﻿<style>
+    /*.k-grid .k-header {
+        display: none;
+    }*/
+
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header {
+        font-size: 13px;
+    }
+</style>
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Knitting</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+@*<div class="row">*@
+    <div class="portlet box blue-dark">
+        <div class="portlet-title">
+            <div class="caption" @*ng-bind="vm.Title"*@>
+                {{vm.Title}}@*&nbsp;<span style="color:#ff4600" ng-show="vm.form.IS_ORD_FINALIZED == 'Y'"><b>[ Record Locked ]</b></span>*@
+            </div>
+            <div class="tools">
+            </div>
+        </div>
+
+        <div class="portlet-body form">
+            <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+                <div class="page-splash">
+                    <div class="page-splash-message">
+                        <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                    </div>
+                </div>
+            </div>
+
+            <form class="form-horizontal" role="form" name="frmFabBk4Labdip" novalidate>
+                <div class="form-body clearfix">
+                    <div class="row" style="margin:auto;">
+
+                        <fieldset class="custom-fieldset" ng-disabled="form.RF_ACTN_STATUS_ID==73">
+                            <legend class="custom-legend"><b>Key Information</b></legend>
+
+
+                            <div class="form-group">
+                                <label class="control-label col-md-1">
+                                    Req#
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" name="GFAB_REQ_NO" ng-model="vm.form.GFAB_REQ_NO" disabled />
+                                </div>
+
+                                <label class="control-label col-md-1 col-md-offset-1">
+                                    <span aria-required="true" class="required">*</span>Date
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" ng-click="vm.GFAB_REQ_DT_Open($event)" datepicker-popup="{{vm.dtFormat}}"
+                                           name="GFAB_REQ_DT" ng-model="vm.form.GFAB_REQ_DT" is-open="vm.GFAB_REQ_DT_Opened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                                </div>
+
+                                <label class="control-label col-md-1 col-md-offset-1">
+                                    <span aria-required="true" class="required">*</span>Req Type
+                                </label>
+                                <div class="col-md-3">
+                                    <select kendo-drop-down-list name="RF_REQ_TYPE_ID" id="RF_REQ_TYPE_ID" class="form-control"
+                                            options="vm.reqTypeList" ng-model="vm.form.RF_REQ_TYPE_ID" required></select>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="control-label col-md-1">
+                                    Req By
+                                </label>
+                                <div class="col-md-3">
+                                    <input type="hidden" class="form-control" name="GFAB_REQ_BY" ng-model="vm.form.GFAB_REQ_BY" data-ng-init="vm.form.GFAB_REQ_BY='@Session["multiLoginEmpId"]'" />
+
+                                    <input type="text" class="form-control" name="REQ_BY_NAME_DUMMY" ng-model="vm.form.REQ_BY_NAME_DUMMY"
+                                           data-ng-init="vm.form.REQ_BY_NAME_DUMMY='@Session["multiLoginEmpName"]'" ng-show="vm.form.KNT_GEN_FAB_REQ_H_ID<1" readonly />
+
+                                    <input type="text" class="form-control" name="REQ_BY_NAME" ng-model="vm.form.REQ_BY_NAME"
+                                           ng-show="vm.form.KNT_GEN_FAB_REQ_H_ID>0" readonly />
+                                </div>
+
+                                <label class="control-label col-md-1">
+                                    Req To
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" ng-model="vm.form.REQ_TO_EMP_CODE" placeholder="Search..." @*ng-disabled="vm.isEmployee!=true"*@
+                                           typeahead="item.EMPLOYEE_CODE as item.EMPLOYEE_CODE for item in vm.emoloyeeAuto($viewValue)"
+                                           typeahead-on-select="vm.onSelectItem($item)" typeahead-loading="loadingLocations"
+                                           @*ng-show="vm.form.KNT_ORD_TRN_REQ_H_ID<1"*@ class="form-control" >
+                                    <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+                                </div>
+
+
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control" name="REQ_TO_EMP_PROFILE" ng-model="vm.form.REQ_TO_EMP_PROFILE" disabled />
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+
+                                <label class="control-label col-md-1">
+                                    Buyer A/C
+                                </label>
+                                <div class="col-md-3">
+
+                                    <select kendo-drop-down-list name="MC_BYR_ACC_GRP_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                            k-options="vm.buyerAcGrpList" ng-model="vm.form.MC_BYR_ACC_GRP_ID"
+                                            k-data-text-field="'BYR_ACC_GRP_NAME_EN'" k-data-value-field="'MC_BYR_ACC_GRP_ID'"
+                                            k-auto-bind="'true'"></select>
+                                </div>
+
+                                <label class="control-label col-md-1">
+                                    Style/Ord#
+                                </label>
+                                <div class="col-md-3">
+                                    <select kendo-drop-down-list name="MC_STYLE_H_EXT_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                            k-template="vm.styleExtTemplate" k-value-template="vm.styleExtValueTemplate"
+                                            k-options="vm.styleExtOption" k-data-source="vm.styleExtDataSource" ng-model="vm.form.MC_STYLE_H_EXT_ID"
+                                            k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_STYLE_H_EXT_ID'"
+                                            k-auto-bind="'true'"></select>
+                                </div>
+                            </div>
+           
+                        </fieldset>
+                              
+                        
+                        <div class="portlet-body" data-ui-view="FabBk4LabdipH.Dtl"></div>
+                                         
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+
+    </div>
+@*</div>*@
+
+
+

@@ -1,0 +1,165 @@
+﻿<style>
+    .k-grid td {
+        padding: 3px;
+        padding-right: 4px;
+        padding-bottom: 0px;
+    }
+
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header {
+        font-size: 12px;
+    }
+</style>
+
+
+
+@*{{$parent.form.IS_NEXT}}*@
+@*{{$stateParams.pIS_FROM_BATCH_LIST}}*@
+<div class="row" style="margin:auto;padding-top:5px" >
+
+    <ng-form name="frmIncrProposalD" role="form">
+
+        <fieldset class="custom-fieldset" ng-disabled="$parent.form.LK_INCR_STATUS_ID==510" @*ng-disabled="($parent.form.USER_LEVEL=='PROPOSER' && $parent.form.LK_INCR_STATUS_ID>506)||
+                  ($parent.form.USER_LEVEL=='VERIFIER' && $parent.form.LK_INCR_STATUS_ID!=507)||
+                  ($parent.form.USER_LEVEL=='VERIFIER' && $parent.form.USER_APROVER_LVL_NO!=$parent.form.APROVER_LVL_NO)||
+                  ($parent.form.USER_LEVEL=='APPROVER' && $parent.form.LK_INCR_STATUS_ID!=508)||$parent.form.LK_INCR_STATUS_ID==510"*@>
+            <div kendo-grid id="incrEmpListGrid" k-options="vm.incrEmpListGridOption" k-data-source="$parent.incrEmpListGridDataSource"></div>
+
+            @*<div class="form-group">
+                <div class="col-md-2">
+                    <b>Total Employee:</b> {{$parent.form.total}}
+                </div>
+            </div>*@
+        </fieldset>
+
+        @*{{$parent.form.IS_P_F}}*@        
+        @*<pre>{{$parent.form|json}}</pre>*@        
+        <div class="form-group" style="padding-top:10px">
+            <div class="col-md-12">
+                <button type="button" class="btn btn-sm green" ng-click="vm.submit()" ng-show="$parent.form.HR_YR_INCR_H_ID<1"
+                        ng-class="{'disabled':$parent.form.LK_INCR_STATUS_ID==639||$parent.form.USER_LEVEL==''||
+                        ($parent.form.USER_LEVEL=='PROPOSER' && $parent.form.LK_INCR_STATUS_ID>636)||
+                        ($parent.form.USER_LEVEL=='APPROVER' && $parent.form.LK_INCR_STATUS_ID!=637)}">
+                    Save
+                </button>
+                <button type="button" class="btn btn-sm yellow-gold" ng-click="vm.submit()" ng-show="$parent.form.HR_YR_INCR_H_ID>0"
+                        ng-class="{'disabled':$parent.form.LK_INCR_STATUS_ID==639||$parent.form.USER_LEVEL==''||
+                        ($parent.form.USER_LEVEL=='PROPOSER' && $parent.form.LK_INCR_STATUS_ID>636)||
+                        ($parent.form.USER_LEVEL=='APPROVER' && $parent.form.LK_INCR_STATUS_ID!=637)}">
+                    Update
+                </button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                
+                <button type="button" class="btn btn-sm blue" ng-click="vm.propose()" ng-show="($parent.form.USER_LEVEL=='PROPOSER')"
+                        ng-class="{'disabled':frmIncrProposalD.$invalid||$parent.form.HR_YR_INCR_H_ID<1||$parent.form.LK_INCR_STATUS_ID==639||
+                        ($parent.form.USER_LEVEL=='PROPOSER' && $parent.form.LK_INCR_STATUS_ID!=636)}">
+                    Propose
+                </button>
+                
+                <button type="button" class="btn btn-sm blue" ng-click="vm.batchFinalize()" ng-show="($parent.form.USER_LEVEL=='APPROVER')"
+                        ng-class="{'disabled':frmIncrProposalD.$invalid||$parent.form.HR_YR_INCR_H_ID<1||$parent.form.LK_INCR_STATUS_ID==639||
+                        ($parent.form.USER_LEVEL=='PROPOSER' && $parent.form.LK_INCR_STATUS_ID>636)||                        
+                        ($parent.form.USER_LEVEL=='APPROVER' && $parent.form.LK_INCR_STATUS_ID!=637)||vm.isUpdated=='N'}">
+                    Approve & Finalize
+                </button>
+                @*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" class="btn btn-sm blue" ng-click="vm.backToBachList()" ng-show="$parent.form.USER_LEVEL=='APPROVER'">
+                    Back to Batch List
+                </button>*@
+                @*<button type="button" class="btn btn-sm blue" ng-click="vm.printIncrPropBatch()" ng-show="$parent.form.IS_P_F!='N'">
+                    <i class='fa fa-print'> Print</i>
+                </button>*@
+                <div class="btn-group" dropdown ng-show="$parent.form.IS_P_F!='N'">
+                    @*<button id="split-button" type="button" class="btn btn-sm blue" ng-click="vm.printBookingRecord(vm.form.REVISION_NO)" ng-disabled="vm.form.MC_BLK_FAB_REQ_H_ID<1 || vm.form.HAS_PLOSS=='N'">Print</button>*@
+                    <button type="button" class="btn btn-sm blue" dropdown-toggle title="Print">
+                        <i class="fa fa-print"> Print</i>
+                        <span class="caret"></span>
+                        <span class="sr-only">Split button!</span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="split-button">
+                        <li role="menuitem" ng-repeat="itm in vm.printButtonList">
+                            <a ng-click="vm.printIncrBatch(itm.BUTTON_ID)">{{itm.BUTTON_CAPTION}}</a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+    </ng-form>
+
+</div>
+
+
+
+
+
+@*Start For Employee Increment History Model*@
+<script type="text/ng-template" id="EmpIncrHistoryModal.html">
+    <div class="modal-body" id="x">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <p style="padding-top:10px;">
+                        Employee Increment History
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </p>
+
+
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="FiberComposition" novalidate>
+
+                    <div class="form-body clearfix">
+                        <div class="row" style="margin:auto;">
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">
+                                        Employee Code
+                                    </label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" name="EMPLOYEE_CODE" ng-model="form.EMPLOYEE_CODE" readonly />                                       
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">
+                                        Name
+                                    </label>
+                                    <div class="col-md-7">
+                                        <input type="text" class="form-control" name="EMP_FULL_NAME_EN" ng-model="form.EMP_FULL_NAME_EN" readonly />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">
+                                        Designation
+                                    </label>
+                                    <div class="col-md-7">
+                                        <input type="text" class="form-control" name="DESIGNATION_NAME_EN" ng-model="form.DESIGNATION_NAME_EN" readonly />
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-3" >
+                                <img id="empPhoto1" src="/UPLOAD_DOCS/EMP_PHOTOS/{{form.EMPLOYEE_CODE}}.jpg" alt="No Photo" style="border:1px solid black; height:140px;width:130px" />
+                            </div>
+
+                        </div>
+                                                                        
+                    </div>
+                </form>
+                              
+
+                <div kendo-grid id="incrEmpListGrid" k-options="empIncrHistoryGridOption" k-data-source="empIncrHistoryGridDataSource"></div>
+
+            </div>
+        </div>
+    </div>
+</script>
+@*End For Employee Increment History Model*@

@@ -1,0 +1,213 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 13px;
+    }
+</style>
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Dyeing Finishing</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class=" form-group">
+                <div class="col-md-2" style="padding-right:0px">
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend">Fabric Process Group List</legend>
+
+                        <div class="input-icon right" style="padding-bottom:3px;">
+                            <i class="icon-magnifier"></i>
+                            <input type="text" class="form-control form-control-solid" ng-model="q" placeholder="Search..." ng-change="vm.FabProcGrpList.filter( { field:'FAB_PROC_GRP_NAME', operator :'contains', value: q })" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }">
+                        </div>
+
+                        <div kendo-list-view
+                             k-selectable="'single'"
+                             k-data-source="vm.FabProcGrpList"
+                             k-on-change="vm.onChangeFabProcGrp(dataItem)">
+                            <div k-template>
+                                <dd class="k-state-default" style="padding: 5px; border-bottom: solid 1px; border-color: lightgray; ">
+                                    {{dataItem.FAB_PROC_GRP_NAME}}
+                                </dd>
+                            </div>
+                        </div>
+                        <div kendo-pager k-data-source="vm.labdipMasterList"></div>
+
+                    </fieldset>
+                </div>
+
+                <div class="col-md-10" style="padding-left:0px;">
+
+                    @*===================== New Entry ==========================*@
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend"><b>Process Type Info</b></legend>
+                        <div><label id="lblMsg"></label></div>
+                        <div class="row" style="padding-left: 5px; padding-right: 5px;">
+
+                            <form class="form-horizontal" role="form" name="frmDfProcess" novalidate>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-1">
+                                        </div>
+                                        <label class="control-label col-md-3">
+                                            Process Code
+                                        </label>
+                                        <div class="col-md-2">
+                                            <input type="text" name="DF_PROC_TYPE_CODE" ng-model="vm.form.DF_PROC_TYPE_CODE" class="form-control required" />
+                                            <input type="hidden" name="DF_PROC_TYPE_ID" ng-model="vm.form.DF_PROC_TYPE_ID" class="form-control" />
+                                            <input type="hidden" name="MC_FAB_PROC_GRP_ID" ng-model="vm.form.MC_FAB_PROC_GRP_ID" class="form-control" />
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-1">
+                                        </div>
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required">*</span>
+                                            Process Name
+                                        </label>
+                                        <div class="col-md-4">
+                                            <input type="text" name="DF_PROC_TYPE_NAME" ng-model="vm.form.DF_PROC_TYPE_NAME" class="form-control required" />
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-1">
+                                        </div>
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required">*</span>
+                                            Short Name
+                                        </label>
+                                        <div class="col-md-2">
+                                            <input type="text" name="DF_PROC_TYPE_SNAME" ng-model="vm.form.DF_PROC_TYPE_SNAME" class="form-control required" />
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-1">
+                                        </div>
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required">*</span>
+                                            Process Sub-Group
+                                        </label>
+                                        <div class="col-md-4">
+                                            <select kendo-drop-down-list name="LK_PROC_SUB_GRP_ID" class="form-control required"
+                                                    options="vm.processSubGroupList" ng-model="vm.form.LK_PROC_SUB_GRP_ID"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-1">
+                                        </div>
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required">*</span>
+                                            Rate
+                                        </label>
+                                        <div class="col-md-2">
+                                            <input type="text" name="PROC_RATE" ng-model="vm.form.PROC_RATE" class="form-control double" />
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-1">
+                                        </div>
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required">*</span>
+                                            Display Order
+                                        </label>
+                                        <div class="col-md-2">
+                                            <input type="text" name="DISPLAY_ORDER" ng-model="vm.form.DISPLAY_ORDER" class="form-control double" />
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-1">
+                                        </div>
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required">*</span>
+                                            Is Active?
+                                        </label>
+                                        <div class="col-md-1">
+                                            <input type="checkbox" name="IS_ACTIVE" ng-model="vm.form.IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'" />
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="button" ng-if="vm.form.DF_PROC_TYPE_ID>0" class="btn btn-sm yellow-gold" ng-click="vm.submitAll(vm.form);">Update</button>
+                                        <button type="button" ng-if="!vm.form.DF_PROC_TYPE_ID>0" class="btn btn-sm green" ng-click="vm.submitAll(vm.form);">Save</button>
+                                        <button type="button" class="btn btn-sm default" ng-click="vm.clearAll(vm.form);">Cancel</button>
+                                    </div>
+                                </div>
+
+                                <fieldset class="custom-fieldset">
+                                    <legend class="custom-legend"><b>Process Type List</b></legend>
+                                    <div class="form-group" style="padding-left: 10px; padding-right: 10px;">
+
+                                        <div class="form-group" style="padding-left:15px;">
+                                            <div kendo-grid k-options="vm.gridOptions" k-data-source="vm.processList" style="width:98%"></div>
+
+                                        </div>
+
+                                    </div>
+                                </fieldset>
+                            </form>
+
+
+                        </div>
+                    </fieldset>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

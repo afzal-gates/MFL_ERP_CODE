@@ -1,0 +1,272 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 12px;
+    }
+
+    .k-grid-content {
+        height: 200px;
+    }
+</style>
+
+
+
+
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Knitting</a>
+
+    </li>
+    <li>
+        <a href="#">{{vm.Title}}</a>
+    </li>
+</ul>
+
+
+<div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+    <div class="page-splash">
+        <div class="page-splash-message">
+            <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+        </div>
+    </div>
+</div>
+
+
+<div class="portlet box blue-dark" @*ng-controller="HrReportController as vm"*@>
+
+
+    <div class="portlet-title">
+        <div class="caption" @*ng-bind="vm.Title"*@>
+           {{form.IS_ACTIVE}} {{vm.Title}}&nbsp;<span style="color:#ff4600" ng-show="form.IS_ACTIVE == 'Y'"><b>[ {{form.EVENT_NAME}} ]</b></span>&nbsp;<span style="color:#ff4600" ng-show="form.IS_ACTIVE == 'N'"><b>[ Inactive ]</b></span>
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    @*<pre>{{form|json}}</pre>*@
+
+    <div class="portlet-body">
+
+        <form class="form-horizontal form-body" name="frmAddFabBk">
+            <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+
+            <div class="row" style="margin:auto;" ng-show="vm.errors">
+                <div class="alert alert-danger" role="alert">
+                    @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                    <div style="padding: 0px 0px 15px 25px; ">
+                        <b>Please fix the following errors ....</b>
+                    </div>
+                    <ul ng-repeat="field in vm.errors">
+                        <li ng-repeat="error in field" ng-bind="error"></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-12">
+                    <fieldset class="custom-fieldset" style="margin-bottom:5px" ng-disabled="form.RF_ACTN_STATUS_ID>16">
+                        <legend class="custom-legend">Key Information</legend>                                               
+
+                        <div class="form-group">
+                            <label class="control-label col-md-1">
+                                Ref#
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" name="AFAB_REQ_NO" ng-model="vm.form.AFAB_REQ_NO" disabled />
+                            </div>
+
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>Booking Date
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" ng-click="vm.AFAB_REQ_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                       name="AFAB_REQ_DT" ng-model="vm.form.AFAB_REQ_DT" is-open="vm.AFAB_REQ_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                            </div>
+
+                            <label class="control-label col-md-2 col-md-offset-1">
+                                Booking By
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" name="AFAB_REQ_BY_NAME_DUMMY" ng-model="vm.form.AFAB_REQ_BY_NAME_DUMMY"
+                                       data-ng-init="vm.form.AFAB_REQ_BY_NAME_DUMMY='@Session["multiLoginEmpName"]'" ng-show="vm.form.MC_BLK_ADFB_REQ_H_ID<1" readonly />
+
+                                <input type="text" class="form-control" name="AFAB_REQ_BY_NAME" ng-model="vm.form.AFAB_REQ_BY_NAME"
+                                       ng-show="vm.form.MC_BLK_ADFB_REQ_H_ID>0" readonly />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-1">
+                                <span aria-required="true" class="required">*</span>Buyer
+                            </label>
+                            <div class="col-md-2" ng-class="{'has-error': (frmAddFabBk.MC_BYR_ACC_ID.$touched || frmAddFabBk.$submitted) && (frmAddFabBk.MC_BYR_ACC_ID.$error.required)}">
+                                <select kendo-drop-down-list name="MC_BYR_ACC_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                        k-options="vm.buyerAcList" ng-model="vm.form.MC_BYR_ACC_ID"
+                                        k-data-text-field="'BYR_ACC_NAME_EN'" k-data-value-field="'MC_BYR_ACC_ID'"
+                                        k-auto-bind="'true'" required></select>
+                            </div>
+
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>Style/Order#
+                            </label>
+                            <div class="col-md-4" ng-class="{'has-error': (frmAddFabBk.MC_BLK_FAB_REQ_H_ID.$touched || frmAddFabBk.$submitted) && (frmAddFabBk.MC_BLK_FAB_REQ_H_ID.$error.required)}">
+                                <select kendo-drop-down-list name="MC_STYLE_H_EXT_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                        k-template="vm.styleExtTemplate" k-value-template="vm.styleExtValueTemplate"
+                                        k-options="vm.styleExtOption" k-data-source="vm.styleExtDataSource" ng-model="vm.form.MC_BLK_FAB_REQ_H_ID"
+                                        k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_BLK_FAB_REQ_H_ID'"
+                                        k-auto-bind="'true'" required></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-1"><span aria-required="true" class="required">*</span>Remarks</label>
+                            <div class="col-md-11" ng-class="{'has-error': (frmAddFabBk.REMARKS.$touched || frmAddFabBk.$submitted) && (frmAddFabBk.REMARKS.$error.required)}">
+                                <textarea class="form-control" name="REMARKS" ng-model="vm.form.REMARKS" rows="2" required></textarea>
+                            </div>
+                        </div>
+
+                    </fieldset>
+
+
+                    <fieldset class="custom-fieldset" style="margin-bottom:5px" ng-show="vm.form.LAST_REV_NO>0">
+                        <legend class="custom-legend">Bill Revision Information</legend>
+
+                        <div class="form-group">
+
+                            <label class="control-label col-md-1">Revision#</label>
+                            <div class="col-md-1">
+                                <input type="text" class="form-control" name="LAST_REV_NO" ng-model="vm.form.LAST_REV_NO" disabled />
+                            </div>
+
+                            <label class="control-label col-md-1">Reason</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" name="REV_REASON" ng-model="vm.form.REV_REASON" disabled />
+                            </div>
+
+                        </div>
+
+                    </fieldset>
+                    
+                </div>
+
+
+
+                <div class="portlet-body" data-ui-view="AddFabBkingH.Dtl"></div>
+
+
+            </div>
+
+            <div ng-show="vm.IS_NEXT=='Y'">
+
+            </div>
+
+            @*<div class="col-md-12" style="padding-top:10px;padding-left:32px;">
+                    <div class="form-group">
+
+                        <button type="button" class="btn btn-sm green" ng-click="vm.batchSave(token, 'N')" ng-show="vm.form.KNT_SCO_YRN_TR_H_ID<1"
+                                ng-class="{'disabled':!frmScProgTrans.$valid || form.IS_FINALIZED=='Y'}">
+                            Save
+                        </button>
+                        <button type="button" class="btn btn-sm yellow-gold" ng-click="vm.batchSave(token, 'N')" ng-show="vm.form.KNT_SCO_YRN_TR_H_ID>0"
+                                ng-class="{'disabled':!frmScProgTrans.$valid || form.IS_FINALIZED=='Y'}">
+                            Update
+                        </button>
+                        <button type="button" class="btn btn-sm blue" ng-click="vm.cancel()">Cancel</button>
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <button type="button" class="btn btn-sm blue-hoki" ng-click="vm.backToList()">Back to List</button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <button type="button" class="btn btn-sm blue" ng-click="vm.batchSave(token, 'Y')" ng-disabled="vm.form.KNT_SCO_YRN_TR_H_ID<1 || form.IS_FINALIZED=='Y'">Finalize</button>
+                        <button type="button" class="btn btn-sm blue" ng-click="vm.printChallan()" ng-disabled="form.IS_FINALIZED!='Y'">Print</button>
+                    </div>
+                </div>*@
+
+
+        </form>
+
+
+
+    </div>
+
+</div>
+
+
+
+
+
+@*Start Revision*@
+<script type="text/ng-template" id="AdfbRevisionModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <p style="padding-top:10px;">
+                        Revision
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </p>
+
+
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="AdfbRevisionModal" novalidate @*ng-submit="save(Task,token,TaskForm.$valid)"*@>
+                    <input id="access_token" data-ng-model="token" type="hidden"
+                           data-ng-init="token='@Session["access_token"]'" />
+
+                    @*<div kendo-grid k-data-source="asortDataList" k-columns="asortColumns" k-selectable="true" k-on-change="selected = data" k-height="300" k-filterable="true" k-sortable="true"></div>*@
+
+                    <div class="form-group">
+                        <label for="selectPeriod" class="col-md-2 control-label">
+                            <span aria-required="true" class="required">*</span>Date
+                        </label>
+                        <div class="col-md-5" style="padding-top:5px;">
+                            <input type="text" class="form-control" ng-click="RevisionDate_LNopen($event)" datepicker-popup="{{dtFormat}}"
+                                   name="LAST_REV_DT" ng-model="LAST_REV_DT" is-open="RevisionDate_LNopened"
+                                   datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close"
+                                   ng-disabled="true" required />
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="selectPeriod" class="col-md-2 control-label">Reason</label>
+                        <div class="col-md-10" style="padding-top:5px;">
+                            <textarea class="form-control" ng-model="REV_REASON" rows="2"></textarea>
+                        </div>
+                    </div>
+
+                    @*<pre>{{AdfbRevisionModal.$valid}}</pre>*@
+
+                    <br />
+                    <div class="form-group form-actions">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="button" class="btn green btn-sm" ng-click="save(token, AdfbRevisionModal.$valid)" ng-class="{'disabled':!AdfbRevisionModal.$valid}" ng-disabled="formInvalid">Save</button>
+                            <button type="button" class="btn btn-default btn-sm" ng-click="cancel()">Cancel</button>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</script>
+@*End Bill Revision*@

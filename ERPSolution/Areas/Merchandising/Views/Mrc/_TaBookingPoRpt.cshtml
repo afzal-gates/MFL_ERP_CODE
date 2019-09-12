@@ -1,0 +1,82 @@
+﻿
+
+
+
+<div class="col-xs-12 col-md-12 col-lg-12" ng-repeat="(sl,itemObj) in vm.gridData">
+    <p>
+        <strong>{{(sl+1)+'. '+itemObj.ITEM_NAME_EN}}</strong> <span class="muted">
+            @*<small>Item Spec</small>*@
+        </span>
+    </p>
+
+
+       <table class="table table-condensed table-striped table-bordered" style="padding:5px;">
+        <thead>
+            <tr>
+                <th style="width:3%;">
+                    <small>SL#</small>
+                </th>
+
+                <th class="col-md-3" ng-repeat="(key,value) in itemObj.ITEM_SPEC_LIST[0]" ng-if="vm.checkKey(key)" ng-style="{ 'width': itemObj.pcTRepo[key] + '%' }">
+                    <small>
+                        {{itemObj.labelRepo[key]}}
+                    </small>
+                </th>
+                <th style="width:10%;">Price</th>
+                <th style="width:15%;">Remarks
+                {{itemObj.is_swatch}}
+                </th>
+            </tr>
+        </thead>
+
+           <tbody ng-if="itemObj.ITEM_SPEC_LIST.length>0">
+               <tr ng-repeat="(sl2,item) in itemObj.ITEM_SPEC_LIST" ng-style="{'height': itemObj.is_swatch?'70px':''}">
+                   <td>{{(sl+1)+'.'+(sl2+1)}}</td>
+
+                   <td ng-repeat="(key,value) in item" ng-if="vm.checkKey(key)">
+                       {{value}}
+                   </td>
+                   <td>
+                       {{itemObj.ITEM_SPEC_LIST[sl2]['PRICE']}}
+                   </td>
+
+                   <td>
+                       {{itemObj.ITEM_SPEC_LIST[sl2]['REMARKS']}}
+                   </td>
+
+               </tr>
+
+               <tr>
+                   <td colspan="{{ itemObj.count-4 }}" style="text-align:right;">Sub Total</td>
+                   <td>{{itemObj.sub_ttl_qty}}</td>
+                   <td></td>
+                   <td></td>
+                   <td>{{itemObj.sub_total}}</td>
+                   <td></td>
+               </tr>
+           </tbody>
+    </table>
+
+ 
+
+
+</div>
+
+<div class="col-xs-12 col-md-12 col-lg-12">
+
+    <table class="table table-condensed" style="padding:5px;">
+        <tbody>
+            <tr>
+                <td style="width: 90%; text-align: right;">
+                    <strong>Grand Total: &nbsp;&nbsp; {{vm.GTTL}}</strong> 
+                </td>
+                <td style="width: 10%; text-align: right;"></td>
+            </tr>
+        </tbody>
+
+    </table>
+
+
+
+
+</div>

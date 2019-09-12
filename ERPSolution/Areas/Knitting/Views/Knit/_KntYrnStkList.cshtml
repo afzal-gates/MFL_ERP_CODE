@@ -1,0 +1,237 @@
+﻿<style>
+    #grid tr td {
+        /* this makes the menu visibile */
+        overflow: visible;
+    }
+
+    #grid .k-grid-header {
+        padding-right: 0 !important;
+    }
+</style>
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Knitting</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="margin:auto;">
+            <br />
+            <div class="col-md-12">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td style="width:10%">
+                                <select kendo-drop-down-list name="RF_YRN_CNT_ID" class="form-control"
+                                        options="vm.YarnCountList" id="RF_YRN_CNT_ID" ng-model="vm.form.RF_YRN_CNT_ID" required></select>
+                            </td>
+                            <td style="width:15%">
+                                <select kendo-drop-down-list name="RF_FIB_COMP_ID" class="form-control"
+                                        options="vm.FabricCompList" id="RF_FIB_COMP_ID" ng-model="vm.form.RF_FIB_COMP_ID" required></select>
+                            </td>
+                            <td style="width:10%">
+                                <select kendo-drop-down-list name="LK_SPN_PRCS_ID" class="form-control"
+                                        options="vm.SpinFinList" id="LK_SPN_PRCS_ID" ng-model="vm.form.LK_SPN_PRCS_ID"></select>
+                            </td>
+                            <td style="width:10%">
+                                <select kendo-drop-down-list name="LK_COTN_TYPE_ID" class="form-control"
+                                        options="vm.CotnTypeList" id="LK_COTN_TYPE_ID" ng-model="vm.form.LK_COTN_TYPE_ID"></select>
+                            </td>
+                            <td style="width: 5%; text-align: center;">
+                                <div style="border: 1px solid hsl(0, 2%, 53%); padding-top: 2px; padding-bottom: 3px">
+                                    <input type="checkbox" name="IS_SLUB" ng-model="vm.form.IS_SLUB" ng-true-value="'Y'" ng-false-value="'N'" />
+                                </div>
+                            </td>
+                            <td style="width:5%;text-align:center">
+                                <div style="border: 1px solid hsl(0, 2%, 53%); padding-top: 2px; padding-bottom: 3px; ">
+                                    <input type="checkbox" name="IS_MELLANGE" ng-model="vm.form.IS_MELLANGE" ng-true-value="'Y'" ng-false-value="'N'" />
+                                </div>
+                            </td>
+                            <td style="width:10%">
+                                <select class="form-control" kendo-drop-down-list name="RF_BRAND_ID" id="RF_BRAND_ID" k-option-label="'-- Select Brand --'"
+                                        k-data-text-field="'BRAND_NAME_EN'" k-data-value-field="'RF_BRAND_ID'"
+                                        k-auto-bind="'true'" k-options="vm.catBrandOption" k-data-source="vm.categoryBrandDataSource" k-filter="'contains'" ng-model="vm.form.RF_BRAND_ID"></select>
+                            </td>
+                            <td style="width: 10%; padding: 5px 0px 5px 0px">
+                                <select class="form-control" kendo-drop-down-list name="KNT_YRN_LOT_ID" id="KNT_YRN_LOT_ID" k-option-label="'-- Select Lot --'"
+                                        k-data-text-field="'YRN_LOT_NO'" k-data-value-field="'KNT_YRN_LOT_ID'"
+                                        k-auto-bind="'true'" k-options="vm.brandLotOption" k-data-source="vm.brandWiseYarnLOtDataSource" k-filter="'contains'" ng-model="vm.form.KNT_YRN_LOT_ID"></select>
+
+                                @*<input type="text" name="YRN_LOT_NO" ng-model="vm.form.YRN_LOT_NO" class="form-control" />*@
+                            </td>
+                            <td style="width: 10%">
+                                <select kendo-drop-down-list name="SCM_STORE_ID" id="SCM_STORE_ID" class="form-control"
+                                        options="vm.storeList" ng-model="vm.form.SCM_STORE_ID" required></select>
+                            </td>
+                            <td style="width:15%">
+                                <button type="button" class="btn btn-sm blue" ng-click="vm.getYarnCurrStock()"><i class="fa fa-search"></i> </button>
+                                <button type="button" class="btn btn-sm blue" ng-click="vm.printYarnCurrStock()" ng-show="vm.yarnCurrStockDs.data().length>0"><i class="fa fa-print"></i> Print</button>
+                                <button type="button" class="btn btn-sm blue" ng-click="vm.excelYarnCurrStock()" ng-show="vm.yarnCurrStockDs.data().length>0"><i class="fa fa-download"></i> Excel</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+                <div kendo-grid k-options="vm.yarnCurrStockOpt" k-data-source="vm.yarnCurrStockDs"></div>
+
+                @*<div style="text-align:right">
+
+                    </div>*@
+
+            </div>
+        </div>
+        <br />
+    </div>
+</div>
+
+
+
+<script type="text/ng-template" id="AlocYarnRequisitionDetails.html">
+    <input id="access_token" data-ng-model="token" type="hidden"
+           data-ng-init="token='@Session["access_token"]'" />
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h3 class="title">
+                        Yarn Allocation Details
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel([])"></i></span>
+                    </h3>
+                </div>
+            </div>
+            <div class="portlet-body">
+
+
+                <div class="row" ng-repeat="obj in data" ng-if="$index==0">
+                    <div class="form-group">
+
+                        <label class="control-label col-md-2 ">
+                            <span aria-required="true" class="required"></span>
+                            Yarn Item
+                        </label>
+                        <div class="col-md-4" style="padding:0px;">
+
+                            <input type="text" name="REQ_TYPE_NAME" ng-model="obj.ITEM_NAME_EN" readonly="readonly" class="form-control" />
+
+                        </div>
+                        <label class="control-label col-md-1 ">
+                            <span aria-required="true" class="required"></span>
+                            Lot #
+                        </label>
+
+                        <div class="col-md-2">
+                            <input type="text" name="STR_REQ_NO" ng-model="obj.YRN_LOT_NO" style="padding:0px;" readonly="readonly" class="form-control" />
+
+                        </div>
+                        <label class="control-label col-md-1 ">
+                            <span aria-required="true" class="required"></span>
+                            Stock
+                        </label>
+
+                        <div class="col-md-1">
+                            <input type="text" name="STR_REQ_NO" ng-model="obj.STOCK_QTY" style="padding:0px;" readonly="readonly" class="form-control" />
+
+                        </div>
+
+                    </div>
+                </div>
+                <br />
+                <table style="width:100%" class="clsTableMtex">
+
+                    <tr class="clstheadMtex">
+                        <td class="clstdMtex">
+                            <b>Buyer Name</b>
+                        </td>
+                        <td class="clstdMtex">
+                            <b>Style #</b>
+                        </td>
+                        <td class="clstdMtex">
+                            <b>Order #</b>
+                        </td>
+                        <td class="clstdMtex">
+                            <b>Requisition No</b>
+                        </td>
+                        @* <td class="clstdMtex">
+                                <b>Lot #</b>
+                            </td>*@
+                        <td class="clstdMtex">
+                            <b>Requisition Qty</b>
+                        </td>
+                        <td class="clstdMtex">
+                            <b>Issue Qty</b>
+                        </td>
+                        <td class="clstdMtex">
+                            <b>Balance Qty</b>
+                        </td>
+                        @*<td class="clstdMtex">
+                                <b>Stock Qty</b>
+                            </td>*@
+
+                    </tr>
+                    <tr ng-repeat="item in data">
+                        <td class="clstdMtex">
+                            {{item.BYR_ACC_GRP_NAME_EN}}
+                        </td>
+                        <td class="clstdMtex">
+                            {{item.STYLE_NO}}
+                        </td>
+                        <td class="clstdMtex">
+                            {{item.MC_ORDER_NO_LST}}
+                        </td>
+                        <td class="clstdMtex">
+                            {{item.STR_REQ_NO}}
+                        </td>
+                        @*<td class="clstdMtex">
+                                {{item.YRN_LOT_NO}}
+                            </td>*@
+                        <td class="clstdMtex">
+                            {{item.RQD_YRN_QTY}}
+                        </td>
+                        <td class="clstdMtex">
+                            {{item.ISS_YRN_QTY}}
+                        </td>
+                        <td class="clstdMtex">
+                            {{(item.RQD_YRN_QTY-item.ISS_YRN_QTY)|number:2}}
+                        </td>
+                        @*<td class="clstdMtex">
+                                {{item.STOCK_QTY}}
+                            </td>*@
+                    </tr>
+                </table>
+
+
+            </div>
+        </div>
+    </div>
+</script>
+
+
+
+

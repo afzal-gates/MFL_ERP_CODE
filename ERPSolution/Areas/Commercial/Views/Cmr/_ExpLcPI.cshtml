@@ -1,0 +1,783 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 13px;
+    }
+</style>
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Commercial</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class=" form-group">
+
+                <div class="col-md-12 form-horizontal">
+
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend"><b>Master Information</b></legend>
+                        <div><label id="lblMsg"></label></div>
+                        <form class="form-horizontal" role="form" name="frmKnitMachinOperatorAssign" novalidate>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">
+                                        Beneficiary
+                                    </label>
+                                    <div class="col-md-3">
+
+                                        <select kendo-drop-down-list name="HR_COMPANY_ID" class="form-control"
+                                                options="vm.companyList" ng-model="vm.form.HR_COMPANY_ID"></select>
+
+                                        <input type="hidden" name="CM_EXP_PI_H_ID" ng-model="vm.form.CM_EXP_PI_H_ID" class="form-control" />
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        {{vm.form.COMPANY_ADDRESS}}
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">
+                                        <span aria-required="true" class="required"></span>
+                                        Buyer/Importer
+                                    </label>
+                                    <div class="col-md-3">
+                                        <select class="form-control required" kendo-drop-down-list name="MC_BUYER_ID" id="MC_BUYER_ID"
+                                                k-option-label="'-- Select Buyer --'"
+                                                k-data-text-field="'BUYER_NAME_EN'" k-data-value-field="'MC_BUYER_ID'"
+                                                k-auto-bind="'true'" k-data-source="vm.buyerList" k-ng-delay="vm.buyerList" k-filter="'contains'"
+                                                ng-model="vm.form.MC_BUYER_ID" k-on-change="vm.getBuyerNotifyPartyList(kendoEvent);"></select>
+
+                                    </div>
+
+                                    <label class="control-label col-md-2">
+                                        <span aria-required="true" class="required"></span>
+                                        Buyer Attention
+                                    </label>
+                                    <div class="col-md-3">
+
+                                        <input type="text" name="ATTN_BUYER" ng-model="vm.form.ATTN_BUYER" class="form-control" />
+
+                                        @*<select class="form-control required" kendo-multi-select name="CM_NOTIFY_PARTY_ID" k-option-label="'-- Select Notify Party --'"
+                                            k-data-text-field="'NTF_PARTY_NAME_EN'" k-data-value-field="'CM_NOTIFY_PARTY_ID'"
+                                            k-auto-bind="'true'" k-data-source="vm.notifyPartyList" k-ng-delay="vm.notifyPartyList" k-filter="'contains'"
+                                            ng-model="vm.form.ATTN_BUYER"></select>*@
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group">
+
+
+                                    <label class="control-label col-md-3">
+                                        <span aria-required="true" class="required">*</span>
+                                        PI No
+                                    </label>
+                                    <div class="col-md-3">
+
+                                        <input type="text" name="PI_NO_EXP" ng-model="vm.form.PI_NO_EXP" class="form-control" />
+
+                                    </div>
+                                    <label class="control-label col-md-2">
+                                        <span aria-required="true" class="required"></span>
+                                        PI Date
+                                    </label>
+                                    <div class="col-md-2">
+
+                                        <input type="text" name="PI_DT_EXP" ng-model="vm.form.PI_DT_EXP" class="form-control" max-date="vm.today"
+                                               ng-click="PI_DT_EXP_LNopen($event)" datepicker-popup="{{vm.dtFormat}}" is-open="PI_DT_EXP_LNopened"
+                                               datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+
+                            <div class="row" ng-if="vm.form.IS_REVISE == true">
+                                <div class="form-group">
+
+
+                                    <label class="control-label col-md-3">
+                                        <span aria-required="true" class="required">*</span>
+                                        Revised #
+                                    </label>
+                                    <div class="col-md-3">
+
+                                        <input type="text" name="REVISION_NO" ng-model="vm.form.REVISION_NO" class="form-control" />
+
+                                    </div>
+                                    <label class="control-label col-md-2">
+                                        <span aria-required="true" class="required"></span>
+                                        Revised Date
+                                    </label>
+                                    <div class="col-md-2">
+
+                                        <input type="text" name="REVISION_DT" ng-model="vm.form.REVISION_DT" class="form-control" max-date="vm.today"
+                                               ng-click="REVISION_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}" is-open="REVISION_DT_LNopened"
+                                               datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <div class="row" ng-if="vm.form.IS_REVISE == true">
+                                <div class="form-group">
+
+                                    <label class="control-label col-md-3">
+                                        <span aria-required="true" class="required">*</span>
+                                        Reason for Revised
+                                    </label>
+                                    <div class="col-md-8">
+                                        <textarea name="REV_REASON" ng-model="vm.form.REV_REASON" class="form-control" />
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group">
+
+
+                                    <label class="control-label col-md-3">
+                                        <span aria-required="true" class="required"></span>
+                                        Currency Code
+                                    </label>
+                                    <div class="col-md-3">
+                                        <select kendo-drop-down-list name="RF_CURRENCY_ID" class="form-control"
+                                                options="vm.currencyList" ng-model="vm.form.RF_CURRENCY_ID"></select>
+                                    </div>
+                                    <label class="control-label col-md-2">
+                                        <span aria-required="true" class="required"></span>
+                                        PI Amount
+                                    </label>
+                                    <div class="col-md-1">
+
+                                        <input type="number" name="PI_TOT_VAL" ng-model="vm.form.PI_TOT_VAL" class="form-control" />
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">
+                                        <span aria-required="true" class="required"></span>
+                                        Description of Goods
+                                    </label>
+                                    <div class="col-md-8">
+                                        <textarea name="ITEM_DESC" ng-model="vm.form.ITEM_DESC" class="form-control" />
+                                    </div>
+
+                                </div>
+                            </div>
+                        </form>
+                    </fieldset>
+                    @*===================== New Entry ==========================*@
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend"><b>Terms & Condition</b></legend>
+                        <div class="row" style="padding-left: 5px; padding-right: 5px;">
+
+                            <form class="form-horizontal" role="form" name="frmKnitMachinOperatorAssign" novalidate>
+
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            LC Type
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <select kendo-drop-down-list name="RF_LC_TYPE_ID" class="form-control"
+                                                    options="vm.lcTypeList" ng-model="vm.form.RF_LC_TYPE_ID"></select>
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <span aria-required="true" class="required"></span>
+                                            Inco Term
+                                        </label>
+                                        <div class="col-md-1" style="padding-right:0px;">
+
+                                            <select kendo-drop-down-list name="RF_INCO_TERM_ID" class="form-control"
+                                                    options="vm.incoTermList" ng-model="vm.form.RF_INCO_TERM_ID"></select>
+                                        </div>
+                                        <div class="col-md-2">
+
+                                            <select kendo-drop-down-list name="RF_DELV_PLC_ID" class="form-control"
+                                                    options="vm.deliveryPlaceList" ng-model="vm.form.RF_DELV_PLC_ID"></select>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+
+
+                                <div class="row">
+                                    <div class="form-group">
+
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            Payment Term
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <select kendo-drop-down-list name="RF_PAYM_TERM_ID" class="form-control"
+                                                    options="vm.paymentTermList" ng-model="vm.form.RF_PAYM_TERM_ID"></select>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                @*<div class="row">
+                                        <div class="form-group">
+
+                                            <label class="control-label col-md-3">
+                                                <span aria-required="true" class="required">*</span>
+                                                Payment Term Description
+                                            </label>
+                                            <div class="col-md-8">
+
+                                                <input type="text" name="PAYM_TERM_DESC" ng-model="vm.form.PAYM_TERM_DESC" class="form-control required" />
+
+                                            </div>
+                                        </div>
+                                    </div>*@
+
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            Bank
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <select class="form-control required" kendo-drop-down-list name="ADV_BKBR_ID" id="ADV_BKBR_ID" k-option-label="'-- Select Bank Branch --'"
+                                                    k-data-text-field="'BANK_BRANCH_NAME_EN'" k-data-value-field="'RF_BANK_BRANCH_ID'"
+                                                    k-auto-bind="'true'" k-data-source="vm.SenderbankBranchList" k-ng-delay="vm.SenderbankBranchList" k-filter="'contains'"
+                                                    ng-model="vm.form.ADV_BKBR_ID" k-on-change="vm.newBankBranchAdd(vm.form.SND_BKBR_ID,1,kendoEvent);"></select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            {{vm.form.SND_BANK_AS}}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            Origin
+                                        </label>
+                                        <div class="col-md-3">
+                                            <select kendo-drop-down-list name="ORG_CNTRY_ID" class="form-control"
+                                                    options="vm.CountryList" ng-model="vm.form.ORG_CNTRY_ID"></select>
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <span aria-required="true" class="required"></span>
+                                            Packing
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <input type="text" name="PACKING" ng-model="vm.form.PACKING" class="form-control" />
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            Mode of Shipment
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <select kendo-drop-down-list name="RF_SHIP_MODE_ID" class="form-control"
+                                                    options="vm.shipModeList" ng-model="vm.form.RF_SHIP_MODE_ID"></select>
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <span aria-required="true" class="required"></span>
+                                            Availability
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <input type="text" name="AVAIL_WITH" ng-model="vm.form.AVAIL_WITH" class="form-control" />
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3" for="IS_PART_SHPM">
+                                            <span aria-required="true" class="required"></span>
+                                            Partial Shipment Allowed
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <input type="checkbox" id="IS_PART_SHPM" ng-true-value="'Y'" ng-false-value="'N'" ng-model="vm.form.IS_PART_SHPM" />
+                                        </div>
+
+                                        <label class="control-label col-md-2" for="IS_TRAN_SHPM">
+                                            <span aria-required="true" class="required"></span>
+                                            Transshipment Allowed
+                                        </label>
+
+                                        <div class="col-md-2">
+
+                                            <input type="checkbox" id="IS_TRAN_SHPM" ng-true-value="'Y'" ng-false-value="'N'" ng-model="vm.form.IS_TRAN_SHPM" />
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+
+
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            Last Date of Shipment
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <input type="text" name="LTST_SHPMNT_DT" ng-model="vm.form.LTST_SHPMNT_DT" class="form-control" min-date="vm.today"
+                                                   ng-click="LTST_SHPMNT_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}" is-open="LTST_SHPMNT_DT_LNopened"
+                                                   datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                                        </div>
+                                        <label class="control-label col-md-2">
+                                            <span aria-required="true" class="required"></span>
+                                            Shipment Schedule
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <textarea name="SHIP_SCHDL" ng-model="vm.form.SHIP_SCHDL" class="form-control" />
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            PI Validity(Days)
+                                        </label>
+                                        <div class="col-md-1">
+
+                                            <input type="number" name="PI_VALIDITY" ng-model="vm.form.PI_VALIDITY" class="form-control" />
+
+                                        </div>
+
+                                        <label class="control-label col-md-4">
+                                            <span aria-required="true" class="required"></span>
+                                            Description
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <input type="text" name="PI_VALIDITY_DESC" ng-model="vm.form.PI_VALIDITY_DESC" class="form-control" />
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            % Tollarance
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <input type="text" name="PCT_TOLR_LMT" ng-model="vm.form.PCT_TOLR_LMT" class="form-control" />
+
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <span aria-required="true" class="required"></span>
+                                            Tollarance Description
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <input type="text" name="TOLR_LMT_DESC" ng-model="vm.form.TOLR_LMT_DESC" class="form-control" />
+
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            Payment Way
+                                        </label>
+                                        <div class="col-md-8">
+
+                                            <textarea type="text" name="PAYMENT" ng-model="vm.form.PAYMENT" class="form-control" />
+
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            Delivery Terms
+                                        </label>
+                                        <div class="col-md-8">
+
+                                            <textarea type="text" name="DELV_DESC" ng-model="vm.form.DELV_DESC" class="form-control" />
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            Port of Loading
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <select kendo-drop-down-list name="LOAD_PORT_ID" class="form-control"
+                                                    options="vm.portList" ng-model="vm.form.LOAD_PORT_ID"></select>
+
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <span aria-required="true" class="required"></span>
+                                            Port of Discharge
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <select kendo-multi-select name="DSG_PORT_LST" class="form-control"
+                                                    options="vm.portList" ng-model="vm.form.DSG_PORT_LST"></select>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            Insurance
+                                        </label>
+                                        <div class="col-md-8">
+
+                                            <textarea name="INSURANCE" ng-model="vm.form.INSURANCE" class="form-control" />
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            Shipment Terms
+                                        </label>
+                                        <div class="col-md-8">
+
+                                            <textarea name="SHIP_TERM" ng-model="vm.form.SHIP_TERM" class="form-control" />
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            Additional Terms
+                                        </label>
+                                        <div class="col-md-8">
+
+                                            <textarea name="ADDL_TERM" ng-model="vm.form.ADDL_TERM" class="form-control" />
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            REMARKS
+                                        </label>
+                                        <div class="col-md-8">
+
+                                            <textarea name="REMARKS" ng-model="vm.form.REMARKS" class="form-control" />
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                @*<div class="row">
+                                        <div class="form-group">
+
+                                            <label class="control-label col-md-3">
+                                                <span aria-required="true" class="required"></span>
+                                                Expected Delivery Date
+                                            </label>
+                                            <div class="col-md-3">
+
+                                                <input type="text" name="EXP_DELV_DT" ng-model="vm.form.EXP_DELV_DT" class="form-control" min-date="vm.today"
+                                                       ng-click="EXP_DELV_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}" is-open="EXP_DELV_DT_LNopened"
+                                                       datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                                            </div>
+
+                                        </div>
+                                    </div>*@
+
+
+
+                            </form>
+                        </div>
+                    </fieldset>
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend"><b>Other Information</b></legend>
+                        <div class="row" style="padding-left: 5px; padding-right: 5px;">
+
+                            <form class="form-horizontal" role="form" name="frmKnitMachinOperatorAssign" novalidate>
+
+                                @*<div class="row">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">
+                                                <span aria-required="true" class="required"></span>
+                                                Available With
+                                            </label>
+                                            <div class="col-md-3">
+
+                                                <input type="text" name="AVAIL_WITH" ng-model="vm.form.AVAIL_WITH" class="form-control" />
+
+                                            </div>
+
+                                        </div>
+                                    </div>*@
+
+
+
+                                <fieldset class="custom-fieldset">
+                                    <legend class="custom-legend"><b>PO List</b></legend>
+
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">
+                                                <span aria-required="true" class="required"></span>
+                                                Style #
+                                            </label>
+                                            <div class="col-md-3">
+                                                <select class="form-control" kendo-drop-down-list name="MC_STYLE_H_ID"
+                                                        id="MC_STYLE_H_ID" k-option-label="'-- Select Style No --'"
+                                                        k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_STYLE_H_ID'"
+                                                        k-auto-bind="'true'" k-data-source="vm.styleList" k-ng-delay="vm.styleList" k-filter="'contains'"
+                                                        ng-model="vm.form.MC_STYLE_H_ID" k-on-change="vm.getStyleOrderList(kendoEvent);"></select>
+
+                                            </div>
+
+                                            <label class="control-label col-md-2">
+                                                <span aria-required="true" class="required"></span>
+                                                Order #
+                                            </label>
+                                            <div class="col-md-3">
+                                                <select class="form-control" kendo-drop-down-list name="MC_ORDER_H_ID"
+                                                        id="MC_ORDER_H_ID" k-option-label="'-- Select Order No --'"
+                                                        k-data-text-field="'ORDER_NO'" k-data-value-field="'MC_ORDER_H_ID'"
+                                                        k-auto-bind="'true'" k-data-source="vm.orderList" k-ng-delay="vm.orderList" k-filter="'contains'"
+                                                        ng-model="vm.form.MC_ORDER_H_ID" k-on-change="vm.showOrderDtl(kendoEvent);"></select>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" style="padding-left:15px;" ng-if="vm.form.MC_ORDER_H_ID>0">
+                                        <div kendo-grid k-options="vm.gridOptionsODL" k-data-source="vm.orderDtlList" style="width:98%"></div>
+
+                                    </div>
+                                    <div class="row" ng-if="vm.form.MC_ORDER_H_ID>0">
+                                        <div class="form-group">
+                                            <div style="text-align:right;padding-right:100px;">
+                                                <button type="button" ng-if="vm.form.MC_ORDER_H_ID>0" class="btn btn-sm yellow-gold" ng-click="vm.AddToGrid();">Add to Grid</button>
+                                                <button type="button" class="btn btn-sm default" ng-click="vm.clearGrid();">Cancel</button>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="padding-left:15px;">
+                                        <div kendo-grid k-options="vm.gridOptions" k-data-source="vm.exportOrderList" style="width:98%"></div>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-9">
+                                                <span aria-required="true" class="required"></span>
+                                                Total PO Amount
+                                            </label>
+                                            <div class="col-md-2">
+                                                <input type="text" name="PO_AMT" style="text-align: right; padding-right: 10px;" readonly ng-model="vm.form.PO_AMT" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-9">
+                                                <span aria-required="true" class="required"></span>
+                                                Discount
+                                            </label>
+                                            <div class="col-md-2">
+                                                <input type="radio" id="IS_DISC_P" name="IS_DISC_P" ng-model="vm.form.IS_DISC_P_A" value="P" ng-change="vm.CalculateDiscount();"><label for="IS_DISC_P"> Percent(%)&nbsp; &nbsp;</label><input type="radio" name="IS_DISC_A" id="IS_DISC_A" ng-model="vm.form.IS_DISC_P_A" value="A" ng-change="vm.CalculateDiscount();"><label for="IS_DISC_A"> Amount</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-9">
+                                                <span aria-required="true" class="required"></span>
+                                                Discount Amount
+                                            </label>
+                                            <div class="col-md-2">
+                                                <input type="number" style="text-align:right" name="DISC_AMT" ng-model="vm.form.DISC_AMT" ng-change="vm.CalculateDiscount();" class="form-control" />
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-9">
+                                                <span aria-required="true" class="required"></span>
+                                                Net PI Amount
+                                            </label>
+                                            <div class="col-md-2">
+                                                <input type="text" style="text-align:right;padding-right:10px;" readonly name="PI_NET_AMT" ng-model="vm.form.PI_NET_AMT" class="form-control" />
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*<div class="row">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-2">
+                                                    <span aria-required="true" class="required"></span>
+                                                    Inspection
+                                                </label>
+                                                <div class="col-md-3">
+
+                                                    <input type="text" name="INSPECTION" ng-model="vm.form.INSPECTION" class="form-control" />
+
+                                                </div>
+                                            </div>
+                                        </div>*@
+
+                                </fieldset>
+                                <br />
+                            </form>
+                        </div>
+                    </fieldset>
+
+                    <br />
+                    <div class="row">
+                        <div class="form-group">
+
+                            <div class="col-md-4" style="padding-left:30px;">
+                                <button type="button" class="btn btn-sm blue" ui-sref="ExpLcPIList">Back To List</button>
+                                <button type="button" ng-if="vm.form.CM_EXP_PI_H_ID>0 && vm.form.IS_REVISE == true" class="btn btn-sm green" ng-click="vm.reviseAll(vm.form);">Revise</button>
+                                <button type="button" ng-if="vm.form.CM_EXP_PI_H_ID>0 && vm.form.IS_REVISE == false" class="btn btn-sm green" ng-click="vm.updateAll(vm.form);">Update</button>
+                                <button type="button" ng-if="vm.form.CM_EXP_PI_H_ID>0 && vm.form.IS_REVISE == false" class="btn btn-sm yellow-gold" ng-click="vm.submitAll(vm.form);">Submit</button>
+                                <button type="button" ng-if="!vm.form.CM_EXP_PI_H_ID>0 && vm.form.IS_REVISE == false" class="btn btn-sm green" ng-click="vm.submitAll(vm.form);">Save</button>
+                                @*<button type="button" class="btn btn-sm default" ng-click="vm.clearAll(vm.form);">Cancel</button>*@
+                                <button type="button" class="btn btn-sm blue" ui-sref="ExpLcPI({pCM_EXP_PI_H_ID:0})" ui-sref-opts="{inherit: false, reload: true}">Cancel</button>
+
+                            </div>
+                            <label class="control-label col-md-2" style="padding:0px;">
+                                <span aria-required="true" class="required">*</span>
+                                Take Action
+                            </label>
+                            <div class="col-md-2" ng-if="vm.form.RF_ACTN_VIEW>0">
+                                <select kendo-drop-down-list name="RF_ACTN_STATUS_ID" id="RF_ACTN_STATUS_ID" class="form-control" ng-class="{'required': vm.form.DYE_RE_PROC_TYPE_ID<2}"
+                                        options="vm.statusList" ng-model="vm.form.RF_ACTN_STATUS_ID" required></select>
+                            </div>
+
+                            <div class="col-md-2" ng-if="!vm.form.RF_ACTN_VIEW>0">
+
+                                <input type="text" ng-model="vm.form.ACTN_STATUS_NAME" style="width: 100%;" readonly="readonly" />
+                                <input type="hidden" ng-model="vm.form.RF_ACTN_STATUS_ID" />
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

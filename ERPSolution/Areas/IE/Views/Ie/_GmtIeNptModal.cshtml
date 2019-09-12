@@ -1,0 +1,101 @@
+﻿        <div class="modal-body">
+            <div class="portlet grey-cascade box">
+                <div class="portlet-title">
+                    <div>
+                        <h3 style="padding-top:10px;margin-top:3px;">
+                            <span class="item"> <span aria-hidden="true" class="icon-settings"></span>&nbsp;NPT Entry: {{ npts_data.LINE_CODE }}</span>
+                            <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                        </h3>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <form role="form" class="form-horizontal" name="GmtIeNptTransactionForm" ng-submit="save(npts_data, GmtIeNptTransactionForm.$valid);GmtIeNptTransactionForm.$submitted=true">
+                        <div class="row" style="margin:auto;">
+                            <table class="table table-condensed table-striped table-bordered">
+                                <thead>
+
+                                    <tr class="site-table-header">
+                                        <th style="width: 5%">SL</th>
+                                        <th style="width: 20%">NPT Reason</th>
+                                        <th style="width: 20%">Responsible <br /> Dept.</th>
+                                        <th style="width: 15%">Hours Slot</th>
+                                        <th style="width: 5%">Manpower</th>
+                                        <th style="width: 5%">+/- Minutes</th>
+                                        <th style="width: 5%">NPT</th>
+                                        <th style="width: 5%">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="(key,item) in npts_data.npts">
+                                        <td>
+                                            {{key+1}}
+                                        </td>
+                                        <td ng-class="{'has-error': (GMT_IE_NPT_REASON_ID_FORM.GMT_IE_NPT_REASON_ID.$touched || GmtIeNptTransactionForm.$submitted) && GMT_IE_NPT_REASON_ID_FORM.GMT_IE_NPT_REASON_ID.$error.required}">
+
+                                            <ng-form name="GMT_IE_NPT_REASON_ID_FORM">
+                                                <select class="form-control" kendo-drop-down-list name="GMT_IE_NPT_REASON_ID" k-option-label="'-- NPT Reasons --'"
+                                                        k-data-text-field="'label'" k-data-value-field="'value'" k-filter="'contains'"
+                                                        k-auto-bind="'true'" k-data-source="NptReasonsDs" ng-model="item.GMT_IE_NPT_REASON_ID" required></select>
+                                            </ng-form>
+
+                                        </td>
+                                        <td ng-class="{'has-error': (RF_RESP_DEPT_ID_FORM.RF_RESP_DEPT_ID.$touched || GmtIeNptTransactionForm.$submitted) && RF_RESP_DEPT_ID_FORM.RF_RESP_DEPT_ID.$error.required}">
+
+                                            <ng-form name="RF_RESP_DEPT_ID_FORM">
+                                                <select class="form-control" kendo-drop-down-list name="RF_RESP_DEPT_ID" k-option-label="'-- Res. Dept. --'"
+                                                        k-data-text-field="'RESP_DEPT_NAME'" k-data-value-field="'RF_RESP_DEPT_ID'" k-filter="'contains'"
+                                                        k-auto-bind="'true'" k-data-source="ResDeptDs" ng-model="item.RF_RESP_DEPT_ID" required></select>
+                                            </ng-form>
+
+                                        </td>
+                                        <td ng-class="{'has-error': (HOUR_NO_LST_FORM.HOUR_NO_LST.$touched || GmtIeNptTransactionForm.$submitted) && HOUR_NO_LST_FORM.HOUR_NO_LST.$error.required}">
+
+                                            <ng-form name="HOUR_NO_LST_FORM">
+                                                <select kendo-multi-select k-data-source="item.HourSlotDs" k-place-holder="'--NPT Reason--'" k-filter="'contains'" k-data-text-field="'label'" k-data-value-field="'value'"
+                                                        style="border: 1px solid #898383;" name="HOUR_NO_LST" ng-model='item.HOUR_NO_LST' class='form-control'
+                                                        k-value-primitive="true" ng-change="onNptCal(item)" k-auto-bind="true" required></select>
+                                            </ng-form>
+                                        </td>
+                                        <td ng-class="{'has-error': (AFFECTED_MP_FORM.AFFECTED_MP.$touched || GmtIeNptTransactionForm.$submitted) && ( AFFECTED_MP_FORM.AFFECTED_MP.$error.required || AFFECTED_MP_FORM.AFFECTED_MP.$error.min )}">
+                                            <ng-form name="AFFECTED_MP_FORM">
+                                                <input type="number" class="form-control" ng-change="onNptCal(item)" name="AFFECTED_MP" ng-model="item.AFFECTED_MP" required min="1" />
+                                            </ng-form>
+                                        </td>
+                                        <td ng-class="{'has-error': (MIN_ADJUST_FORM.MIN_ADJUST.$touched || GmtIeNptTransactionForm.$submitted) && ( MIN_ADJUST_FORM.MIN_ADJUST.$error.required || MIN_ADJUST_FORM.MIN_ADJUST.$error.min )}">
+                                            <ng-form name="MIN_ADJUST_FORM">
+                                                <input type="number" class="form-control" ng-change="onNptCal(item)" name="MIN_ADJUST" ng-model="item.MIN_ADJUST" required min="0" />
+                                            </ng-form>
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control" ng-change="onNptCal(item)" name="NPT" ng-model="item.NPT" readonly />
+                                        </td>
+
+                                        <td>
+                                            <button class="btn btn-xs green" ng-click="npts_data.npts.push({ GMT_IE_NPT_DATA_ID: -1, HOUR_NO_LST: [], HourSlotDs: HourSlotDs, MIN_ADJUST: 0 })"> Add <i class="fa fa-plus"></i></button>
+                                            <button class="btn btn-xs red" ng-click="npts_data.npts.splice($index,1)" ng-disabled="$index == 0"> X <i class="fa fa-ban"></i></button>
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="text-align:right;">
+                                            <strong>Total</strong>
+                                        </td>
+                                        <td>
+                                            0
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row" style="margin:auto;">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-sm green">Save</button>
+                                <button type="button" class="btn btn-sm default" ng-click="cancel()">Close</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>

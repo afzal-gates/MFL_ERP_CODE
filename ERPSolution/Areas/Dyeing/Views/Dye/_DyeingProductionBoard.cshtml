@@ -1,0 +1,1120 @@
+﻿<style>
+    .hideMaster {
+        display: none;
+    }
+</style>
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Dyeing</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="caption">
+
+        </div>
+    </div>
+
+
+    <div class="portlet-body form">
+        <form name="formData" class="form-horizontal" style="background-color: white;">
+            <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+                <div class="page-splash">
+                    <div class="page-splash-message">
+                        <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-body clearfix">
+                <div class="form-group">
+                    <div class="col-md-12">
+
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend"><b>Search</b></legend>
+                            <div>
+                                <div>
+                                    <table class="clsTable">
+                                        <tbody class="clsthead">
+                                            <tr class="clstd">
+                                                <td class="clstd">
+                                                    <b>Dia Type</b>
+                                                </td>
+                                                <td class="clstd">
+                                                    <b>Buyer A/C</b>
+                                                </td>
+
+                                                @*<td class="clstd">
+                                                        <b>Shipment</b>
+                                                    </td>*@
+                                                <td class="clstd">
+
+                                                    <b>Work Style</b>
+                                                </td>
+                                                <td class="clstd">
+
+                                                    <b>Order #</b>
+                                                </td>
+
+                                                <td class="clstd">
+
+                                                    <b>Color</b>
+                                                </td>
+                                                <td class="clstd" ng-if="vm.form.REPROCESS_FLAG==3008">
+                                                    <b>Fin Process</b>
+                                                </td>
+                                                <td class="clstd">
+
+                                                    <b>Action</b>
+                                                </td>
+                                            </tr>
+                                            <tr class="clstd">
+                                                <td class="clstd">
+                                                    @*<select kendo-drop-down-list name="RF_FAB_PROD_CAT_ID" id="RF_FAB_PROD_CAT_ID" class="form-control"
+                                                        options="vm.productionTypeList" ng-model="vm.form.RF_FAB_PROD_CAT_ID"></select>*@
+
+                                                    <select kendo-drop-down-list name="LK_DIA_TYPE_ID" id="LK_DIA_TYPE_ID" class="form-control"
+                                                            options="vm.diaTypeList" ng-model="vm.form.LK_DIA_TYPE_ID"></select>
+
+                                                    <input type="hidden" ng-model="vm.form.REPROCESS_FLAG" />
+                                                </td>
+                                                <td class="clstd">
+                                                    <select kendo-drop-down-list name="MC_BYR_ACC_GRP_ID" class="form-control"
+                                                            k-options="vm.buyerAcGrpList" id="MC_BYR_ACC_GRP_ID" ng-model="vm.form.MC_BYR_ACC_GRP_ID" required></select>
+
+                                                </td>
+
+                                                @*<td class="clstd">
+                                                        <select class="form-control" kendo-drop-down-list name="MONTHOF" k-option-label="'-- Select Month --'"
+                                                                k-data-text-field="'MONTHOF'" k-data-value-field="'MONTHOF'" k-filter="'contains'"
+                                                                k-auto-bind="'true'" k-data-source="vm.shipMonthList" k-ng-delay="vm.shipMonthList" ng-model="vm.form.MONTHOF"
+                                                                k-on-change="vm.onChangeShipMonth(kendoEvent)"></select>
+                                                    </td>*@
+
+                                                <td class="clstd">
+                                                    <select class="form-control" kendo-drop-down-list name="MC_FAB_PROD_ORD_H_ID" k-option-label="'--Style --'"
+                                                            k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_FAB_PROD_ORD_H_ID'" k-filter="'Contains'"
+                                                            k-template="template" k-value-template="valueTemplate"
+                                                            k-auto-bind="'true'" k-data-source="vm.StyleExtDs" ng-model="vm.form.MC_FAB_PROD_ORD_H_ID"
+                                                            @*k-on-change="onFabOrderChange(kendoEvent)"*@></select>
+
+                                                </td>
+                                                <td class="clstd">
+                                                    <select class="form-control" kendo-drop-down-list name="MC_FAB_PROD_ORD_H_ID" k-option-label="'--Order# --'"
+                                                            k-data-text-field="'ORDER_NO_LST'" k-data-value-field="'MC_FAB_PROD_ORD_H_ID'" k-filter="'Contains'"
+                                                            k-template="templateOh" k-value-template="valueTemplateOh"
+                                                            k-auto-bind="'true'" k-data-source="vm.FabOederByOhDs" ng-model="vm.form.MC_FAB_PROD_ORD_H_ID"
+                                                            required style="width:100%;"></select>
+
+                                                </td>
+                                                <td class="clstd">
+                                                    <select class="form-control" kendo-drop-down-list name="MC_COLOR_ID" k-option-label="'-- Color --'"
+                                                            k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'MC_COLOR_ID'" k-filter="'Contains'"
+                                                            k-auto-bind="'true'" k-data-source="vm.colorListDS" ng-model="vm.form.MC_COLOR_ID"
+                                                            required style="width:100%;"></select>
+
+                                                </td>
+                                                <td class="clstd" ng-if="vm.form.REPROCESS_FLAG==3008">
+                                                    <select kendo-drop-down-list name="DF_PROC_TYPE_ID" class="form-control"
+                                                            k-options="vm.finProcessList" id="DF_PROC_TYPE_ID" ng-model="vm.form.DF_PROC_TYPE_ID"></select>
+
+                                                    @*<select class="form-control" kendo-drop-down-list name="DF_PROC_TYPE_ID" k-option-label="'-- Color --'"
+                                                            k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'DF_PROC_TYPE_ID'" k-filter="'Contains'"
+                                                            k-auto-bind="'true'" k-data-source="vm.finProcessList" ng-model="vm.form.DF_PROC_TYPE_ID"
+                                                            required style="width:100%;"></select>*@
+
+                                                </td>
+
+
+
+
+                                                <td class="clstd">
+                                                    <button class="btn btn-sm blue" ng-click="vm.loadProcessData(vm.form.REPROCESS_FLAG);"><i class='fa fa-search'></i> Show</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+
+
+                            </div>
+                        </fieldset>
+
+
+
+                        <fieldset class="custom-fieldset" ng-hide="collepsMaster">
+                            <legend class="custom-legend"><b>Production Board</b></legend>
+
+                            <div class="col-md-12">
+                                <tabset>
+                                    <tab heading="Dyeing M/C Run" ng-click="vm.loadProcessData(3000);">
+                                        <div class="form-group">
+                                            <div class="col-lg-10">
+                                                <a title="Open" ng-click="vm.openMachineUI()" ng-if="vm.form.STR_REQ_NO!=''" class="btn btn-xs green"><i class="fa fa-openid"></i></a>
+
+                                            </div>
+                                            <div class="col-lg-2">Total Batch Qty: {{getTotal(vm.DyeingMCRunList)}} Kg</div>
+                                        </div>
+
+                                        <table style="width:100%">
+
+                                            <tr class="clstheadMtex">
+
+                                                <td class="clstdMtex">
+                                                    Machine No
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Buyer Name
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Style No
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Order No
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    Color
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Fabric Type
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Req GSM
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Lot No
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Batch Qty
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Loading Time
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    Unloading Time
+                                                </td>
+                                            </tr>
+                                            <tr ng-repeat="preItem in vm.DyeingMCRunList">
+
+                                                <td class="clstdMtex">
+                                                    {{preItem.DYE_MACHINE_NO}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.BUYER_NAME_EN}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.STYLE_NO}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.ORDER_NO}}
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    {{preItem.COLOR_NAME_EN}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.FAB_TYPE_NAME}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.RQD_GSM}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.DYE_LOT_NO}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.BATCH_QTY}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.LOAD_TIME|date:'dd-MM hh:mm a'}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.UN_LOAD_TIME|date:'dd-MM hh:mm a'}}
+                                                </td>
+
+                                            </tr>
+
+                                        </table>
+
+                                    </tab>
+                                    <tab heading="Check Roll Run" ng-click="vm.loadProcessData(3001);">
+                                        <div class="form-group">
+                                            <div class="col-lg-10">
+                                            </div>
+                                            <div class="col-lg-2">Total Batch Qty: {{getTotal(vm.DyeingMCRunList)}} Kg</div>
+                                        </div>
+                                        <table style="width:100%">
+
+                                            <tr class="clstheadMtex">
+
+                                                @*<td class="clstdMtex">
+                                                        Machine No
+                                                    </td>*@
+                                                <td class="clstdMtex">
+                                                    Buyer Name
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Style No
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Order No
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    Color
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Fabric Type
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Req GSM
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Lot No
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Batch Qty
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Finishing Line
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    Unloading Time
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    Not Ok Time
+                                                </td>
+                                                @*<td class="clstdMtex">
+                                                        Comments
+                                                    </td>*@
+                                            </tr>
+                                            <tr ng-repeat="preItem in vm.DyeingMCRunList">
+
+                                                @*<td class="clstdMtex">
+                                                        {{preItem.DYE_MACHINE_NO}}
+                                                    </td>*@
+                                                <td class="clstdMtex">
+                                                    {{preItem.BUYER_NAME_EN}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.STYLE_NO}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.ORDER_NO}}
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    {{preItem.COLOR_NAME_EN}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.FAB_TYPE_NAME}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.RQD_GSM}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.DYE_LOT_NO}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.BATCH_QTY}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.BT_STS_TYP_NAME}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.UN_LOAD_TIME|date:'dd-MM hh:mm a'}}
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    {{preItem.CHK_ROLL_DT|date:'dd-MM hh:mm a'}}
+                                                </td>
+
+                                                @*<td class="clstdMtex">
+                                                        {{preItem.REMARKS}}
+                                                    </td>*@
+                                            </tr>
+
+                                        </table>
+                                    </tab>
+                                    <tab heading="Ready for Slitting/Squezzing/HydroExtractor" ng-click="vm.loadProcessData(3002);">
+                                        <div class="form-group">
+                                            <div class="col-lg-10">
+
+                                            </div>
+                                            <div class="col-lg-2">Total Batch Qty: {{getTotal(vm.DyeingMCRunList)}} Kg</div>
+                                        </div>
+
+                                        <table style="width:100%">
+
+                                            <tr class="clstheadMtex">
+
+                                                @*<td class="clstdMtex">
+                                                        Machine No
+                                                    </td>*@
+                                                <td class="clstdMtex">
+                                                    Buyer Name
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Style No
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Order No
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    Color
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Fabric Type
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Req GSM
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Lot No
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Batch Qty
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Finishing Line
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    Dyeing  OK Time
+                                                </td>
+
+                                                @*<td class="clstdMtex">
+                                                        Comments
+                                                    </td>*@
+                                            </tr>
+                                            <tr ng-repeat="preItem in vm.DyeingMCRunList">
+
+                                                @*<td class="clstdMtex">
+                                                        {{preItem.DYE_MACHINE_NO}}
+                                                    </td>*@
+                                                <td class="clstdMtex">
+                                                    {{preItem.BUYER_NAME_EN}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.STYLE_NO}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.ORDER_NO}}
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    {{preItem.COLOR_NAME_EN}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.FAB_TYPE_NAME}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.RQD_GSM}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.DYE_LOT_NO}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.BATCH_QTY}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.BT_STS_TYP_NAME}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.CHK_ROLL_DT|date:'dd-MM hh:mm a'}}
+                                                </td>
+
+                                                @*<td class="clstdMtex">
+                                                        {{preItem.REMARKS}}
+                                                    </td>*@
+                                            </tr>
+
+                                        </table>
+                                    </tab>
+
+                                    <tab heading="Ready for Stenter/Dryer" ng-click="vm.loadProcessData(3003);">
+                                        <div class="form-group">
+                                            <div class="col-lg-10">
+
+                                            </div>
+                                            <div class="col-lg-2">Total Batch Qty: {{getTotal(vm.DyeingMCRunList)}} Kg</div>
+                                        </div>
+                                        <table style="width:100%">
+
+                                            <tr class="clstheadMtex">
+
+                                                @*<td class="clstdMtex">
+                                                        Machine No
+                                                    </td>*@
+                                                <td class="clstdMtex">
+                                                    Buyer Name
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Style No
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Order No
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Color
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Fabric Type
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Req GSM
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    Lot No
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Batch Qty
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Finishing Line
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    Dewatering Time
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    Dyeing  OK Time
+                                                </td>
+                                                @*<td class="clstdMtex">
+                                                        Comments
+                                                    </td>*@
+                                            </tr>
+                                            <tr ng-repeat="preItem in vm.DyeingMCRunList">
+
+                                                @*<td class="clstdMtex">
+                                                        {{preItem.DYE_MACHINE_NO}}
+                                                    </td>*@
+                                                <td class="clstdMtex">
+                                                    {{preItem.BUYER_NAME_EN}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.STYLE_NO}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.ORDER_NO}}
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    {{preItem.COLOR_NAME_EN}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.FAB_TYPE_NAME}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.RQD_GSM}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.DYE_LOT_NO}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.BATCH_QTY}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.BT_STS_TYP_NAME}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.UN_LOAD_TIME|date:'dd-MM hh:mm a'}}
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    {{preItem.CHK_ROLL_DT|date:'dd-MM hh:mm a'}}
+                                                </td>
+
+                                                @*<td class="clstdMtex">
+                                                        {{preItem.REMARKS}}
+                                                    </td>*@
+                                            </tr>
+
+                                        </table>
+                                    </tab>
+
+                                    <tab heading="Ready for Compacting/Tumble Dryer" ng-click="vm.loadProcessData(3004);">
+                                        <div class="form-group">
+                                            <div class="col-lg-10">
+
+                                            </div>
+                                            <div class="col-lg-2">Total Batch Qty: {{getTotal(vm.DyeingMCRunList)}} Kg</div>
+                                        </div>
+                                        <table style="width:100%">
+
+                                            <tr class="clstheadMtex">
+
+                                                @*<td class="clstdMtex">
+                                                        Machine No
+                                                    </td>*@
+                                                <td class="clstdMtex">
+                                                    Buyer Name
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Style No
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Order No
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Color
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Fabric Type
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Req GSM
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    Lot No
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Batch Qty
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Finishing Line
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    Stanter Time
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    Dyeing   Ok Time
+                                                </td>
+                                                @*<td class="clstdMtex">
+                                                        Comments
+                                                    </td>*@
+                                            </tr>
+                                            <tr ng-repeat="preItem in vm.DyeingMCRunList">
+
+                                                @*<td class="clstdMtex">
+                                                        {{preItem.DYE_MACHINE_NO}}
+                                                    </td>*@
+                                                <td class="clstdMtex">
+                                                    {{preItem.BUYER_NAME_EN}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.STYLE_NO}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.ORDER_NO}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.COLOR_NAME_EN}}
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    {{preItem.FAB_TYPE_NAME}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.RQD_GSM}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    ({{preItem.DYE_LOT_NO}})
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.BATCH_QTY}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.BT_STS_TYP_NAME}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.UN_LOAD_TIME|date:'dd-MM hh:mm a'}}
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    {{preItem.CHK_ROLL_DT|date:'dd-MM hh:mm a'}}
+                                                </td>
+
+                                                @*<td class="clstdMtex">
+                                                        {{preItem.REMARKS}}
+                                                    </td>*@
+                                            </tr>
+
+                                        </table>
+                                    </tab>
+
+                                    <tab heading="Summary Data" ng-click="vm.loadProcessData(3008);">
+                                        <div class="form-group">
+                                            <div class="col-lg-10">
+                                                <a ng-click="vm.PrintProcessData(3008);" class="btn btn-success green"><i class="fa fa-print"> Print</i></a>
+                                            </div>
+                                            <div class="col-lg-2">Total Batch Qty: {{getTotal(vm.DyeingMCRunList)}} Kg</div>
+                                        </div>
+                                        <table style="width:100%">
+
+                                            <tr class="clstheadMtex">
+
+                                                @*<td class="clstdMtex">
+                                                        Machine No
+                                                    </td>*@
+                                                <td class="clstdMtex">
+                                                    Buyer Name
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Style No
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Order No
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    Color
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Fabric Type
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Req GSM
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Lot No
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Batch Qty
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Finishing Line
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    Unloading Time
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    Not Ok Time
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Fabric Position
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Fin Process
+                                                </td>
+                                                @*<td class="clstdMtex">
+                                                        Comments
+                                                    </td>*@
+                                            </tr>
+                                            <tr ng-repeat="preItem in vm.DyeingMCRunList">
+
+                                                @*<td class="clstdMtex">
+                                                        {{preItem.DYE_MACHINE_NO}}
+                                                    </td>*@
+                                                <td class="clstdMtex">
+                                                    {{preItem.BUYER_NAME_EN}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.STYLE_NO}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.ORDER_NO}}
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    {{preItem.COLOR_NAME_EN}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.FAB_TYPE_NAME}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.RQD_GSM}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.DYE_LOT_NO}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.BATCH_QTY}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.BT_STS_TYP_NAME}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.UN_LOAD_TIME|date:'dd-MM hh:mm a'}}
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    {{preItem.CHK_ROLL_DT|date:'dd-MM hh:mm a'}}
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    {{preItem.POSITION}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.DF_PROC_TYPE_NAME}}
+                                                </td>
+                                                @*<td class="clstdMtex">
+                                                        {{preItem.REMARKS}}
+                                                    </td>*@
+                                            </tr>
+
+                                        </table>
+                                    </tab>
+                                    <tab heading="Fin QC Running" ng-click="vm.loadProcessData(3005);">
+                                        <div class="form-group">
+                                            <div class="col-lg-10">
+
+                                            </div>
+                                            <div class="col-lg-2">Total Batch Qty: {{getTotal(vm.DyeingMCRunList)}} Kg</div>
+                                        </div>
+                                        <table style="width:100%">
+
+                                            <tr class="clstheadMtex">
+
+                                                @*<td class="clstdMtex">
+                                                        Machine No
+                                                    </td>*@
+                                                <td class="clstdMtex">
+                                                    Buyer Name
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Style No
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Order No
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    Color
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Fabric Type
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Req GSM
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Lot No
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Batch Qty
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Finishing Line
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    Unloading Time
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    Not Ok Time
+                                                </td>
+                                                @*<td class="clstdMtex">
+                                                        Comments
+                                                    </td>*@
+                                            </tr>
+                                            <tr ng-repeat="preItem in vm.DyeingMCRunList">
+
+                                                @*<td class="clstdMtex">
+                                                        {{preItem.DYE_MACHINE_NO}}
+                                                    </td>*@
+                                                <td class="clstdMtex">
+                                                    {{preItem.BUYER_NAME_EN}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.STYLE_NO}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.ORDER_NO}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.COLOR_NAME_EN}}
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    {{preItem.FAB_TYPE_NAME}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.RQD_GSM}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.DYE_LOT_NO}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.BATCH_QTY}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.BT_STS_TYP_NAME}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.UN_LOAD_TIME|date:'dd-MM hh:mm a'}}
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    {{preItem.CHK_ROLL_DT|date:'dd-MM hh:mm a'}}
+                                                </td>
+
+                                                @*<td class="clstdMtex">
+                                                        {{preItem.REMARKS}}
+                                                    </td>*@
+                                            </tr>
+
+                                        </table>
+                                    </tab>
+                                    <tab heading="Ready for Delivery (RFD)" ng-click="vm.loadProcessData(3006);">
+                                        <div class="form-group">
+                                            <div class="col-lg-10">
+
+                                            </div>
+                                            <div class="col-lg-2">Total Batch Qty: {{getTotal(vm.DyeingMCRunList)}} Kg</div>
+                                        </div>
+                                        <table style="width:100%">
+
+                                            <tr class="clstheadMtex">
+
+                                                @*<td class="clstdMtex">
+                                                        Machine No
+                                                    </td>*@
+                                                <td class="clstdMtex">
+                                                    Buyer Name
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Style No
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Order No
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    Color
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Fabric Type
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Req GSM
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Lot No
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Batch Qty
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Finishing Line
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    Unloading Time
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    Not Ok Time
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Fabric Position
+                                                </td>
+                                                @*<td class="clstdMtex">
+                                                        Comments
+                                                    </td>*@
+                                            </tr>
+                                            <tr ng-repeat="preItem in vm.DyeingMCRunList">
+
+                                                @*<td class="clstdMtex">
+                                                        {{preItem.DYE_MACHINE_NO}}
+                                                    </td>*@
+                                                <td class="clstdMtex">
+                                                    {{preItem.BUYER_NAME_EN}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.STYLE_NO}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.ORDER_NO}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.COLOR_NAME_EN}}
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    {{preItem.FAB_TYPE_NAME}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.RQD_GSM}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.DYE_LOT_NO}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.BATCH_QTY}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.BT_STS_TYP_NAME}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.UN_LOAD_TIME|date:'dd-MM hh:mm a'}}
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    {{preItem.CHK_ROLL_DT|date:'dd-MM hh:mm a'}}
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    {{preItem.POSITION}}
+                                                </td>
+                                                @*<td class="clstdMtex">
+                                                        {{preItem.REMARKS}}
+                                                    </td>*@
+                                            </tr>
+
+                                        </table>
+                                    </tab>
+                                    <tab heading="Batch Delv to Fin. Store" ng-click="vm.loadProcessData(3007);">
+                                        <div class="form-group">
+                                            <div class="col-lg-10">
+
+                                            </div>
+                                            <div class="col-lg-2">Total Batch Qty: {{getTotal(vm.DyeingMCRunList)}} Kg</div>
+                                        </div>
+                                        <table style="width:100%">
+
+                                            <tr class="clstheadMtex">
+
+                                                @*<td class="clstdMtex">
+                                                        Machine No
+                                                    </td>*@
+                                                <td class="clstdMtex">
+                                                    Buyer Name
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Style No
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Order No
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    Color
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Fabric Type
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Req GSM
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Lot No
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Batch Qty
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Finishing Line
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    Unloading Time
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    Not Ok Time
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    Fabric Position
+                                                </td>
+                                                @*<td class="clstdMtex">
+                                                        Comments
+                                                    </td>*@
+                                            </tr>
+                                            <tr ng-repeat="preItem in vm.DyeingMCRunList">
+
+                                                @*<td class="clstdMtex">
+                                                        {{preItem.DYE_MACHINE_NO}}
+                                                    </td>*@
+                                                <td class="clstdMtex">
+                                                    {{preItem.BUYER_NAME_EN}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.STYLE_NO}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.ORDER_NO}}
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    {{preItem.COLOR_NAME_EN}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.FAB_TYPE_NAME}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.RQD_GSM}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.DYE_LOT_NO}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.BATCH_QTY}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.BT_STS_TYP_NAME}}
+                                                </td>
+                                                <td class="clstdMtex">
+                                                    {{preItem.UN_LOAD_TIME|date:'dd-MM hh:mm a'}}
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    {{preItem.CHK_ROLL_DT|date:'dd-MM hh:mm a'}}
+                                                </td>
+
+                                                <td class="clstdMtex">
+                                                    {{preItem.POSITION}}
+                                                </td>
+
+                                                @*<td class="clstdMtex">
+                                                        {{preItem.REMARKS}}
+                                                    </td>*@
+                                            </tr>
+
+                                        </table>
+                                    </tab>
+                                </tabset>
+
+                            </div>
+
+
+                        </fieldset>
+
+                    </div>
+
+                    <div style="padding:3px;">
+                    </div>
+
+                </div>
+
+                <div style="padding:3px;">
+                </div>
+                <fieldset class="custom-fieldset">
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            <a title="Start" ng-click="vm.submitAll(vm.form,0)" ng-if="vm.form.IS_PRODUCTION=='N'" class="btn btn-small green"><i class="fa fa-save"> Load</i></a>
+                            <a title="Complete" ng-click="vm.submitAll(vm.form,1)" ng-if="vm.form.IS_PRODUCTION=='L'" class="btn btn-small green"><i class="fa fa-save"> Complete</i></a>
+
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </form>
+
+    </div>
+</div>

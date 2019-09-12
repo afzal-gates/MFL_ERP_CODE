@@ -1,0 +1,275 @@
+﻿<div class="modal-body">
+    <div class="portlet grey-cascade box">
+        <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+
+        <div class="portlet-title">
+            <div>
+                <h3 style="padding-top:10px;margin-top:3px;">
+                    Bundle Movement Status
+                    <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                </h3>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <table class="table table-condensed table-striped table-bordered" style="padding:5px;">
+
+                <thead>
+                    <tr style="font-size:15px;font-weight:900;">
+                        <th colspan="22" style="color:darkorange;">
+                            Buyer: {{bndlData.BYR_ACC_GRP_NAME_EN}}>> Style: {{bndlData.WORK_STYLE_NO}}>> Order: {{bndlData.ORDER_NO}}>> Color: {{bndlData.COLOR_NAME_EN}}>>Cutting No: {{bndlData.CUTNG_NO}}
+                        </th>
+                    </tr>
+                    <tr class="site-table-header">
+                        <th style="width:10%;" rowspan="2">
+                            <small>
+                                Item
+                            </small>
+
+                        </th>
+
+                        <th style="width:5%;" rowspan="2">
+                            <small>
+                                Country
+                            </small>
+
+                        </th>
+
+                        <th style="width:5%;" rowspan="2">
+                            <small>
+                                Size
+                            </small>
+
+                        </th>
+                        <th style="width:5%;" rowspan="2">
+                            <small>
+                                Bundle No
+                            </small>
+
+                        </th>
+                        <th style="width:5%;" rowspan="2">
+                            <small>
+                               Lot
+                            </small>
+
+                        </th>
+
+                        <th style="width:10%;" rowspan="2">
+                            <small>
+                                Serial
+                            </small>
+
+                        </th>
+                        <th style="width:5%;" rowspan="2">
+                            <small>
+                                Cut Qty
+                            </small>
+
+                        </th>
+
+                        
+                        <th style="width: 40%; border: 1px solid #cecece;text-align:center" colspan="12">
+                            <small>
+                               Bundle Movement Area
+                            </small>
+
+                        </th>
+
+                        @*<th style="width:5%;" rowspan="2">
+        <small>
+            Revised <br />
+             Qty
+        </small>
+
+    </th>
+
+    <th style="width:5%;" rowspan="2">
+        <small>
+         Remarks
+        </small>
+
+    </th>*@
+                    </tr>
+                    <tr class="site-table-header">
+
+                        <th style="width:3%;">
+                            <small>
+                                Reject<br />Panel 
+                            </small>
+
+                        </th>
+
+                        <th style="width:3%;">
+                            <small>
+                                Str<br />Recv
+                            </small>
+                        </th>
+
+                        <th style="width:3%;">
+                            <small>
+                                Recut
+                            </small>
+                        </th>
+
+                        <th style="width:3%;">
+                            <small>
+                                Embls<br />Sent
+                            </small>
+
+                        </th>
+                        <th style="width:3%;">
+                            <small>
+                                Embls<br />Recv
+                            </small>
+
+                        </th>
+
+                        <th style="width:3%;">
+                            <small>
+                                Cut<br /> Bank<br /> wo/Tag
+                            </small>
+                        </th>
+
+                        <th style="width:3%;">
+                            <small>
+                                Cut<br /> Bank<br /> w/Tag
+                            </small>
+                        </th>
+
+                        <th style="width:3%;">
+                            <small>
+                                S/C
+                            </small>
+                        </th>
+
+
+                        <th style="width:3%;">
+                            <small>
+                                Sewing In
+                            </small>
+
+                        </th>
+
+                        <th style="width:3%;">
+                            <small>
+                                Sewing<br />Out
+                            </small>
+                        </th>
+
+                        <th style="width:3%;">
+                            <small>
+                                SW In<br />Qty
+                            </small>
+
+                        </th>
+
+                        <th style="width:3%;">
+                            <small>
+                                SW Out<br />Qty
+                            </small>
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="itm in bndlData.itemDtl">
+                        <td rowspan="{{itm.ITEM_ROW_SPAN}}" ng-if="itm.ITEM_ROW_SL==1">
+                            {{itm.ITEM_SNAME}}
+                        </td>
+
+                        <td rowspan="{{itm.COUNTRY_ROW_SPAN}}" ng-if="itm.COUNTRY_ROW_SL==1">
+                            {{itm.COUNTRY_NAME_EN}}
+                        </td>
+
+                        <td rowspan="{{itm.SIZE_ROW_SPAN}}" ng-if="itm.SIZE_ROW_SL==1">
+                            {{itm.SIZE_CODE}}
+                        </td>
+                        <td>
+                            {{itm.BUNDLE_NO}}
+                        </td>
+
+                        <td>
+                            {{itm.DYE_LOT_NO}}
+                        </td>
+
+                        <td>
+                            {{itm.SL_RANGE_TXT}}
+
+                        </td>
+
+                        <td>
+                            {{itm.CUTTING_QTY}}
+                        </td>
+                        <td><span ng-class="{'badge bg-green':itm.IS_REJ_PNL==1, 'badge bg-grey':itm.IS_REJ_PNL==0}"><span style="font-size:1px;"></span></span></td>
+                        <td><span ng-class="{'badge bg-green':itm.IS_RECUT==1, 'badge bg-grey':itm.IS_RECUT==0}"><span style="font-size:1px;"></span></span></td>
+                        <td><span ng-class="{'badge bg-green':itm.IS_STR_RCV==1, 'badge bg-grey':itm.IS_STR_RCV==0}"><span style="font-size:1px;"></span></span></td>
+                        <td><span ng-class="{'badge bg-green':itm.IS_PRNT_SENT==1, 'badge bg-grey':itm.IS_PRNT_SENT==0}"><span style="font-size:1px;"></span></span></td>
+                        <td><span ng-class="{'badge bg-green':itm.IS_PRNT_RECV==1, 'badge bg-grey':itm.IS_PRNT_RECV==0}"><span style="font-size:1px;"></span></span></td>
+                        <td><span ng-class="{'badge bg-green':itm.IS_CUT_BNK_WTH_TAG==1, 'badge bg-grey':itm.IS_CUT_BNK_WTH_TAG==0}"><span style="font-size:1px;"></span></span></td>
+                        <td><span ng-class="{'badge bg-green':itm.IS_CUT_BNK_WTHOT_TAG==1, 'badge bg-grey':itm.IS_CUT_BNK_WTHOT_TAG==0}"><span style="font-size:1px;"></span></span></td>
+                        <td><span ng-class="{'badge bg-green':itm.IS_SC==1, 'badge bg-grey':itm.IS_SC==0}"><span style="font-size:1px;"></span></span></td>
+                        <td><span ng-class="{'badge bg-green':itm.IS_SEW_INPUT==1, 'badge bg-grey':itm.IS_SEW_INPUT==0}"><span style="font-size:1px;"></span></span></td>
+                        <td><span ng-class="{'badge bg-green':itm.IS_SEW_OUTPUT==1, 'badge bg-grey':itm.IS_SEW_OUTPUT==0}"><span style="font-size:1px;"></span></span></td>
+                        <td>{{itm.SEW_INPUT_QTY}}</td>
+                        <td>{{itm.SEW_OUTPUT_QTY}}</td>
+
+                        @*<td>
+                15
+            </td>
+            <td></td>*@
+                    </tr>
+        
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="6" style="text-align:right;">
+                            <b>Total</b>
+                        </td>
+                        <td>
+                            {{bndlData.TTL_CUTTING_QTY}}
+                        </td>
+                        <td>
+                            {{bndlData.TTL_IS_REJ_PNL}}
+                        </td>
+                        <td>
+                            {{bndlData.TTL_IS_RECUT}}
+                        </td>
+                        <td>
+                            {{bndlData.TTL_IS_STR_RCV}}
+                        </td>
+                        <td>
+                            {{bndlData.TTL_IS_PRNT_SENT}}
+                        </td>
+                        <td>
+                            {{bndlData.TTL_IS_PRNT_RECV}}
+                        </td>
+                        <td>
+                            {{bndlData.TTL_IS_CUT_BNK_WTH_TAG}}
+                        </td>
+                        <td>
+                            {{bndlData.TTL_IS_CUT_BNK_WTHOT_TAG}}
+                        </td>
+                        <td>
+                            {{bndlData.TTL_IS_SC}}
+                        </td>
+                        <td>
+                            {{bndlData.TTL_IS_SEW_INPUT}}
+                        </td>
+                        <td>
+                            {{bndlData.TTL_IS_SEW_OUTPUT}}
+                        </td>
+                        <td>
+                            {{bndlData.TTL_SEW_INPUT_QTY}}
+                        </td>
+                        <td>
+                            {{bndlData.TTL_SEW_OUTPUT_QTY}}
+                        </td>
+                        
+
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

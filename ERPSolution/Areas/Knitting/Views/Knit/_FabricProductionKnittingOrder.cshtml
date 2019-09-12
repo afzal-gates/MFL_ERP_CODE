@@ -1,0 +1,276 @@
+﻿@{
+    ViewBag.Title = "Fabric Production Knitting Order";
+}
+
+<style>
+    #FabProdOrderGrid tr td {
+        /* this makes the menu visibile */
+        overflow: visible;
+    }
+
+    #FabProdOrderGrid .k-grid-header {
+        padding-right: 0 !important;
+    }
+</style>
+
+
+<div class="portlet-body" data-ui-view>
+    <ul class="page-breadcrumb breadcrumb">
+        <li>
+            <a href="index.html">MultiTex ERP</a>
+
+        </li>
+        <li>
+            <a href="#">Knitting</a>
+
+        </li>
+        <li>
+            <a href="#">Fabric Production Knitting Order</a>
+        </li>
+    </ul>
+
+
+
+    <div class="portlet box blue-dark">
+        <div class="portlet-title">
+            <div class="caption" ng-bind="vm.Title">
+            </div>
+            <div class="tools">
+            </div>
+        </div>
+
+        <div class="portlet-body">
+
+            <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+                <div class="page-splash">
+                    <div class="page-splash-message">
+                        <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                    </div>
+                </div>
+            </div>
+            <input id="access_token" data-ng-model="token" type="hidden"
+                   data-ng-init="token='@Session["access_token"]'" />
+            <input ng-model="vm.form.CREATED_BY" type="hidden"
+                   data-ng-init="vm.form.CREATED_BY='@Session["multiScUserId"]'" />
+
+            <input id="access_token" ng-model="vm.form.LAST_UPDATED_BY" type="hidden"
+                   ng-init="vm.form.LAST_UPDATED_BY='@Session["multiScUserId"]'" />
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend"><b>Search</b></legend>
+                <div >
+                    <div >
+                        <table class="clsTable">
+                            <tbody class="clsthead">
+                                <tr class="clstd">
+                                    <td class="clstd">
+                                        <b>Type</b>
+                                    </td>
+                                    <td class="clstd">
+                                        <b>Buyer A/C</b>
+                                    </td>
+
+                                    <td class="clstd">
+                                        <b>Shipment</b>
+                                    </td>
+                                    <td class="clstd">
+
+                                        <b>Work Style</b>
+                                    </td>
+                                    <td class="clstd">
+
+                                        <b>Order #</b>
+                                    </td>
+
+                                    <td class="clstd">
+
+                                        <b>Action</b>
+                                    </td>
+                                </tr>
+                                <tr class="clstd">
+                                    <td class="clstd">
+                                        <select kendo-drop-down-list name="RF_FAB_PROD_CAT_ID" id="RF_FAB_PROD_CAT_ID" class="form-control"
+                                                options="productionTypeList" ng-model="search.RF_FAB_PROD_CAT_ID"></select>
+
+                                    </td>
+                                    <td class="clstd">
+                                        <select kendo-drop-down-list name="MC_BYR_ACC_ID" class="form-control"
+                                                k-options="buyerAcList" id="MC_BYR_ACC_ID" ng-model="search.MC_BYR_ACC_ID" required></select>
+
+                                    </td>
+
+                                    <td class="clstd">
+                                        <select class="form-control" kendo-drop-down-list name="MONTHOF" k-option-label="'-- Select Month --'"
+                                                k-data-text-field="'MONTHOF'" k-data-value-field="'MONTHOF'" k-filter="'contains'"
+                                                k-auto-bind="'true'" k-data-source="shipMonthList" k-ng-delay="shipMonthList" ng-model="search.MONTHOF"
+                                                k-on-change="onChangeShipMonth(kendoEvent)"></select>
+                                    </td>
+
+                                    <td class="clstd">
+                                        <select class="form-control" kendo-drop-down-list name="MC_FAB_PROD_ORD_H_ID" k-option-label="'--Style --'"
+                                                k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_FAB_PROD_ORD_H_ID'" k-filter="'Contains'"
+                                                k-template="template" k-value-template="valueTemplate"
+                                                k-auto-bind="'true'" k-options="StyleExtOption" k-data-source="StyleExtDs" ng-model="search.MC_FAB_PROD_ORD_H_ID"
+                                                @*k-on-change="onFabOrderChange(kendoEvent)"*@ ></select>
+
+                                    </td>
+                                    <td class="clstd">
+                                        <select class="form-control" kendo-drop-down-list name="MC_FAB_PROD_ORD_H_ID" k-option-label="'--Order# --'"
+                                                k-data-text-field="'ORDER_NO_LST'" k-data-value-field="'MC_FAB_PROD_ORD_H_ID'" k-filter="'Contains'"
+                                                k-template="templateOh" k-value-template="valueTemplateOh"
+                                                k-auto-bind="'true'" k-options="FabOederByOhOption" k-data-source="FabOederByOhDs" ng-model="search.MC_FAB_PROD_ORD_H_ID"
+                                                required style="width:100%;"></select>
+
+                                    </td>
+
+                                    <td class="clstd">
+                                        <button class="btn btn-sm blue" ng-click="vm.showFabProdOrderList();"><i class='fa fa-search'></i> Show</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        @*<label class="col-md-1 control-label" style=" text-align: right;">
+                            Type
+                        </label>
+                        <div class="col-md-1">
+                            <select kendo-drop-down-list name="RF_FAB_PROD_CAT_ID" id="RF_FAB_PROD_CAT_ID" class="form-control"
+                                    options="vm.productionTypeList" ng-model="vm.form.RF_FAB_PROD_CAT_ID"></select>
+
+                        </div>
+
+
+                        <label class="col-md-1 control-label"  style=" text-align: right;">
+                            Buyer A/C
+                        </label>
+                        <div class="col-md-2">
+                            <select kendo-drop-down-list name="MC_BYR_ACC_ID" id="MC_BYR_ACC_ID" class="form-control"
+                                    options="vm.buyerAccList" ng-model="vm.form.MC_BYR_ACC_ID" ng-change="vm.styleListByBuyerAC(vm.form.MC_BYR_ACC_ID);"></select>
+                            
+                        </div>
+
+
+                        <label class="col-md-1 control-label" style=" text-align: right;">
+                            Work Style
+                        </label>
+                        <div class="col-md-1">
+                            <select class="form-control" kendo-drop-down-list name="MC_STYLE_H_ID" k-option-label="'-- Select Style --'"
+                                    k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_STYLE_H_ID'"
+                                    k-auto-bind="'true'" k-data-source="vm.styleList" k-ng-delay="vm.styleList" ng-model="vm.form.MC_STYLE_H_ID"
+                                    k-on-change="vm.getDataByStyleId(kendoEvent)" required></select>
+
+                        </div>
+                        <label class="col-md-1 control-label" style=" text-align: right;">
+                            Order #
+                        </label>
+                        <div class="col-md-1">
+                            <input type="text" name="ORDER_NO" ng-model="vm.form.ORDER_NO" class="form-control" />
+
+                        </div>
+                        <label class="col-md-1 control-label" style=" text-align: right;">
+                            Shipment
+                        </label>
+                        <div class="col-md-1">
+                            <select class="form-control" kendo-drop-down-list name="MONTHOF" k-option-label="'-- Select Month --'"
+                                    k-data-text-field="'MONTHOF'" k-data-value-field="'MONTHOF'"
+                                    k-auto-bind="'true'" k-data-source="vm.shipMonthList" k-ng-delay="vm.shipMonthList" ng-model="vm.form.MONTHOF"></select>
+
+                        </div>
+                        <div class="col-md-1">
+                            <button class="btn btn-sm" ng-click="vm.showFabProdOrderList();"><i class='fa fa-search'></i></button>
+                        </div>*@
+                    </div>
+
+
+
+                </div>
+            </fieldset>
+            <div style="padding:5px;">
+                <kendo-grid k-options="vm.gridOptions" id="FabProdOrderGrid" k-data-source="vm.gridOptionsDs">
+                    <div k-detail-template>
+                        <div>
+                            <div kendo-grid k-options="vm.detailGridOptionsForSupp(dataItem)"></div>
+                        </div>
+                    </div>
+
+                </kendo-grid>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script type="text/ng-template" id="KnitProdOrderFabDtl.html">
+    <input id="access_token" data-ng-model="token" type="hidden"
+           data-ng-init="token='@Session["access_token"]'" />
+    <div class="modal-body" >
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h6 class="title">
+                        Fabric Details
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel([])"></i></span>
+                    </h6>
+                </div>
+            </div>
+            <div class="portlet-body">
+
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend"><b>Fabric Details</b></legend>
+
+                    <table style="width:100%">
+
+                        <tr>
+
+                            <td style="border: solid 1px black; width: 10%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                                <b>Fabrics Item</b>
+                            </td>
+
+                        </tr>
+                        <tr ng-repeat="item in ItemList">
+                            <td style="padding:5px;border:solid 1px black;width:15%;">
+                                {{item.FABRIC_DESC}}
+
+                            </td>
+
+
+                        </tr>
+                    </table>
+
+
+
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="StyleItemImage.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h3 class="title">
+                        Image(s)
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel(vm.form)"></i></span>
+                    </h3>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="tiles">
+                    <div class="tile image big" ng-repeat="n in images" style="height: 450px;">
+                        <div class="tile-body">
+                            <img data-ng-src="data:image/png;base64,{{n.STYL_KEY_IMG}}">
+                        </div>
+                        <div class="tile-object" style="background-color: #1f365d;">
+                            <div class="name">
+                                <b>{{n.ITEM_SNAME}}</b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

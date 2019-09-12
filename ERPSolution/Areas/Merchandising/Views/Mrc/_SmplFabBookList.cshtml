@@ -1,0 +1,110 @@
+﻿<style>
+    #bookingGrid .k-grid-content, #bookingGrid tr td {
+        /* this makes the menu visibile */
+        overflow: visible;
+    }
+
+    #bookingGrid .k-grid-header {
+        padding-right: 0 !important;
+    }
+</style>
+
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#">Order List</a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        
+
+        @*<div class="row" style="padding:5px">
+            <div class="col-md-1">
+                <a ui-sref="OfficeEntry({MC_BUYER_OFF_ID : null})" class="btn btn-sm blue">
+                    <i class="fa fa-plus"></i> Add Order
+                </a>
+            </div>
+        </div>*@
+
+        <div class="row">
+            <div class="col-md-12">
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend"></legend>
+                    
+                    <div class="form-group">
+                        <label class="col-md-1" style="padding-right:0px;">
+                            Buyer A/C
+                        </label>
+                        <div class="col-md-3">                           
+                            <select kendo-drop-down-list name="MC_BYR_ACC_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'" required
+                                    @*k-data-source="vm.buyerAcList"*@ k-options="vm.buyerAcList" ng-model="vm.form.MC_BYR_ACC_ID"
+                                    k-data-text-field="'BYR_ACC_NAME_EN'" k-data-value-field="'MC_BYR_ACC_ID'"
+                                    k-auto-bind="'true'" @*k-on-data-bound="vm.getBuyerAccWiseStyleList(kendoEvent)"*@ @*k-on-select="vm.getBuyerAccWiseStyleList(kendoEvent)"*@></select>
+                        </div>
+                        
+                        <label class="col-md-1" style="padding-right:0px;">
+                            Style/Order#
+                        </label>
+                        <div class="col-md-3">                           
+                            <select kendo-drop-down-list name="MC_STYLE_H_EXT_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                    k-template="vm.styleExtTemplate" k-value-template="vm.styleExtValueTemplate"
+                                    k-options="vm.styleExtOption" k-data-source="vm.styleExtDataSource" ng-model="vm.form.MC_STYLE_H_EXT_ID"
+                                    k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_STYLE_H_EXT_ID'" 
+                                    k-auto-bind="'true'" ></select>
+                        </div>
+
+                        <div class="col-md-1">
+                            <button class="btn btn-sm" ng-click="vm.showBooking()">Show</button>
+                        </div>
+                            
+                        <div class="col-md-1">
+                            <button class="btn btn-sm blue" ng-click="vm.addNew()">Add New <i class="fa fa-plus"></i></button>
+                        </div>
+                    </div>
+                    
+                    @*<pre>{{vm.form|json}}</pre>*@
+
+                </fieldset>
+            </div>
+        </div>
+
+        <br />
+        <div @*style="padding:5px;"*@>
+            @*<kendo-grid k-options="vm.gridOptionsBooking" id="bookingGrid"></kendo-grid>*@
+            @*<kendo-grid k-options="vm.gridOptions"></kendo-grid>*@
+
+            <div kendo-grid id="bookingGrid" options="vm.smplGridOptions" k-data-source="vm.smplGridDataSource"></div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+

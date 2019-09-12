@@ -1,0 +1,36 @@
+﻿<div class="col-xs-12 col-md-12 col-lg-12" ng-repeat="(sl,itemObj) in vm.gridData">
+    <p>
+        <strong>{{(sl+1)+'. '+itemObj.ITEM_NAME_EN}}</strong> <span class="muted">
+            @*<small>Item Spec</small>*@
+        </span>
+    </p>
+
+    <table class="table table-condensed table-striped table-bordered" style="padding:5px;">
+        <thead>
+            <tr>
+                <th style="width:3%;">
+                    SL#
+                </th>
+
+                <th class="col-md-3" ng-repeat="(key,value) in itemObj.ITEM_SPEC_LIST[0]" ng-if="vm.checkKey(key)" ng-style="{ 'width': itemObj.pcTRepo[key] + '%' }">
+                    <small>
+                        {{itemObj.labelRepo[key]}}
+                    </small>
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr ng-repeat="(sl2,item) in itemObj.ITEM_SPEC_LIST">
+                <td>{{(sl+1)+'.'+(sl2+1)}}</td>
+                <td ng-repeat="(key,value) in item" ng-if="vm.checkKey(key)">
+                    {{value}}
+                </td>
+            </tr>
+
+
+        </tbody>
+
+    </table>
+
+</div>

@@ -1,0 +1,394 @@
+﻿<style>
+    /*.k-grid .k-header {
+        display: none;
+    }*/
+
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header {
+        font-size: 13px;
+    }
+
+    .k-list-container {
+        white-space: nowrap !important;
+        width: auto !important;
+        overflow-x: hidden !important;
+        min-width: 243px !important;
+    }
+
+    .k-list {
+        overflow-x: hidden !important;
+        /*overflow-style: marquee;*/
+        overflow-y: auto !important;
+        width: auto !important;
+    }
+
+</style>
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Knitting</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+
+    <div class="portlet box blue-dark">
+        <div class="portlet-title">
+            <div class="caption" @*ng-bind="vm.Title"*@>
+                {{vm.Title}}@*&nbsp;<span style="color:#ff4600" ng-show="vm.form.IS_ORD_FINALIZED == 'Y'"><b>[ Record Locked ]</b></span>*@
+            </div>
+            <div class="tools">
+            </div>
+        </div>
+
+        <div class="portlet-body form">
+            <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+                <div class="page-splash">
+                    <div class="page-splash-message">
+                        <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                    </div>
+                </div>
+            </div>
+
+            <form class="form-horizontal" role="form" name="frmSrtFabProdOrder" novalidate>
+                <div class="form-body clearfix">
+                    <div class="row" style="margin:auto;">
+
+                        <fieldset class="custom-fieldset" ng-disabled="vm.form.RF_ACTN_STATUS_ID>58">
+                            <legend class="custom-legend"><b>Key Information</b></legend>
+
+                            <input type="hidden" class="form-control" name="SFAB_REQ_BY" ng-model="vm.form.SFAB_REQ_BY" data-ng-init="vm.form.SFAB_REQ_BY='@Session["multiLoginEmpId"]'" />
+                            <input type="hidden" class="form-control" name="HR_DEPARTMENT_ID" ng-model="vm.form.HR_DEPARTMENT_ID" data-ng-init="vm.form.HR_DEPARTMENT_ID='@Session["multiLoginDeptId"]'" />
+
+                            <div class="form-group">
+
+                                <label class="control-label col-md-2">
+                                    Program#
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" name="SFAB_REQ_NO" ng-model="vm.form.SFAB_REQ_NO" readonly />
+                                </div>
+
+
+                                <label class="control-label col-md-2">
+                                    <span aria-required="true" class="required">*</span>Booking Date
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control required" ng-click="vm.SFAB_REQ_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                           name="SFAB_REQ_DT" ng-model="vm.form.SFAB_REQ_DT" is-open="vm.SFAB_REQ_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close"
+                                           ng-disabled="vm.form.RF_ACTN_STATUS_ID==60" required />
+                                </div>
+
+
+                                <label class="control-label col-md-1 col-md-offset-1">
+                                    Booking By
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" name="SFAB_REQ_BY_NAME_DUMMY" ng-model="vm.form.SFAB_REQ_BY_NAME_DUMMY"
+                                           data-ng-init="vm.form.SFAB_REQ_BY_NAME_DUMMY='@Session["multiLoginEmpName"]'" ng-show="vm.form.KNT_SRT_FAB_REQ_H_ID<1" readonly />
+
+                                    <input type="text" class="form-control" name="SFAB_REQ_BY_NAME" ng-model="vm.form.SFAB_REQ_BY_NAME"
+                                           ng-show="vm.form.KNT_SRT_FAB_REQ_H_ID>0" readonly />
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label class="control-label col-md-2">
+                                    Department
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="hidden" name="HR_DEPARTMENT_ID" ng-model="vm.form.HR_DEPARTMENT_ID" data-ng-init="vm.form.HR_DEPARTMENT_ID='@Session["multiLoginDeptId"]'" />
+
+                                    <input type="text" class="form-control" name="DEPARTMENT_NAME_EN_DUMMY" ng-model="vm.form.DEPARTMENT_NAME_EN_DUMMY"
+                                           data-ng-init="vm.form.DEPARTMENT_NAME_EN_DUMMY='@Session["multiLoginEmpSectionName"]'" ng-show="vm.form.KNT_SRT_FAB_REQ_H_ID<1" readonly />
+
+                                    <input type="text" class="form-control" name="DEPARTMENT_NAME_EN" ng-model="vm.form.DEPARTMENT_NAME_EN"
+                                           ng-show="vm.form.KNT_SRT_FAB_REQ_H_ID>0" readonly />
+                                </div>
+
+
+                                <label class="control-label col-md-2">
+                                    <span aria-required="true" class="required">*</span>Attention
+                                </label>
+                                <div class="col-md-6">
+                                    <select class="form-control" kendo-multi-select name="SFAB_REQ_ATTN" k-placeholder="'Search...'" required
+                                            k-data-text-field="'LOGIN_ID'" k-data-value-field="'SC_USER_ID'" k-ng-dely="vm.userDataSource"
+                                            k-auto-bind="'true'" k-data-source="vm.userDataSource" ng-model="vm.form.SFAB_REQ_ATTN_LIST"
+                                            ng-change="vm.onChangeReqToList()"
+                                            ng-disabled="vm.form.RF_ACTN_STATUS_ID>58"></select>
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    <span aria-required="true" class="required">*</span>Buyer A/C
+                                </label>
+                                <div class="col-md-2">
+                                    <select kendo-drop-down-list name="MC_BYR_ACC_GRP_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                            k-options="vm.buyerAcGrpList" ng-model="vm.form.MC_BYR_ACC_GRP_ID"
+                                            k-data-text-field="'BYR_ACC_GRP_NAME_EN'" k-data-value-field="'MC_BYR_ACC_GRP_ID'"
+                                            k-auto-bind="'true'" ng-disabled="vm.form.RF_ACTN_STATUS_ID>58" required></select>
+                                </div>
+
+                                <label class="control-label col-md-2">
+                                    <span aria-required="true" class="required">*</span>Style/Order#
+                                </label>
+                                <div class="col-md-3" style="padding-right:0px">
+                                    <select kendo-drop-down-list name="MC_STYLE_H_EXT_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                            k-template="vm.styleExtTemplate" k-value-template="vm.styleExtValueTemplate"
+                                            k-options="vm.styleExtOption" k-data-source="vm.styleExtDataSource" ng-model="vm.form.MC_STYLE_H_EXT_ID"
+                                            k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_STYLE_H_EXT_ID'"
+                                            k-auto-bind="'true'" ng-disabled="vm.form.RF_ACTN_STATUS_ID>58" required></select>
+                                </div>
+                            </div>
+
+                            <div ng-show="vm.form.LAST_REV_NO>0">
+                                <hr style="border-top: 1px solid green;" />
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        Revesion Date
+                                    </label>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control required" ng-click="vm.LAST_REV_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                               name="LAST_REV_DT" ng-model="vm.form.LAST_REV_DT" is-open="vm.LAST_REV_DT_LNopened" datepicker-options="dateOptions"
+                                               min="{{vm.today}}" date-disabled="disabled(date, mode)" close-text="Close" ng-disabled="true" />
+                                    </div>
+
+                                    <label class="control-label col-md-2">
+                                        Revesion#
+                                    </label>
+                                    <div class="col-md-1" style="padding-right:0px">
+                                        <input class="form-control" name="LAST_REV_NO" ng-model="vm.form.LAST_REV_NO" ng-disabled="true" />
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </fieldset>
+
+
+
+                        <fieldset class="custom-fieldset" ng-disabled="form.RF_ACTN_STATUS_ID>59">
+                            <legend class="custom-legend"><b>Reason</b></legend>
+                                                        
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Reason Type
+                                    </label>
+                                    <select class="form-control" kendo-drop-down-list name="RF_SFAB_RSN_TYPE_ID" k-option-label="'--Select--'"
+                                            ng-model="vm.srtReason.RF_SFAB_RSN_TYPE_ID" k-data-text-field="'SFAB_RSN_TYPE_NAME'" k-data-value-field="'RF_SFAB_RSN_TYPE_ID'"
+                                            k-options="vm.reasonOption" k-data-source="vm.reasonDataSource" k-filter="'contains'" k-auto-bind="'true'"
+                                            k-on-change="" ng-disabled="form.RF_ACTN_STATUS_ID>59"></select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Description
+                                    </label>
+                                    <input type="text" class="form-control" name="REASON_DESC" ng-model="vm.srtReason.REASON_DESC" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-1">
+                                <div class="form-group" style="margin-bottom:10px">&nbsp;</div>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-xs green" title="Add To Grid" ng-click="vm.addReasonRow(vm.srtReason)" ng-show="vm.isAddReasonToGrid == 'Y'"
+                                            ng-disabled="(vm.srtReason.RF_SFAB_RSN_TYPE_ID==''||vm.srtReason.RF_SFAB_RSN_TYPE_ID==null||$parent.form.RF_ACTN_STATUS_ID>59)">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-xs yellow-gold" title="Update" ng-click="vm.updateReasonRow(vm.srtReason)" ng-show="vm.isAddReasonToGrid == 'N'"
+                                            ng-disabled="(vm.srtReason.RF_SFAB_RSN_TYPE_ID==''||vm.srtReason.RF_SFAB_RSN_TYPE_ID==null||$parent.form.RF_ACTN_STATUS_ID>59)">
+                                        <i class="fa fa-pencil"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-xs blue" title="Cancel" ng-click="vm.cancelReasonToGrid()"><i class="fa fa-refresh"></i></button>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12" style="padding:0px">
+                                <kendo-grid k-options="reasonGridOption" k-data-source="reasonGridDataSource"></kendo-grid>
+                            </div>
+                           
+                        </fieldset>
+
+
+                        <div class="form-body clearfix" style="padding-left:0px;">
+                            <tabset>
+                                <tab heading="Fabric Detail" active="vm.srtFabDtlState" ui-sref="KntShortFabProdOrdH.SrtFabDtl">
+                                    <div data-ui-view="KntShortFabProdOrdH.SrtFabDtl"></div>
+                                </tab>
+
+                                @*<tab heading="Reason" active="vm.reason4srtFabState" ui-sref="KntShortFabProdOrdH.Reason4SrtFab">
+                                    <div data-ui-view="KntShortFabProdOrdH.Reason4SrtFab"></div>
+                                </tab>*@
+
+                                <tab heading="Resposibility" active="vm.resposibility4srtFabState" ui-sref="KntShortFabProdOrdH.Resposibility4SrtFab"
+                                     ng-show="vm.form.RF_ACTN_STATUS_ID>58" disabled="vm.form.RF_ACTN_STATUS_ID<59">
+                                    <div data-ui-view="KntShortFabProdOrdH.Resposibility4SrtFab"></div>
+                                </tab>
+                            </tabset>
+                        </div>
+
+                        <div style="margin:auto;" @*ng-show="vm.form.KNT_SRT_FAB_REQ_H_ID>0"*@>
+                            
+                        </div>
+
+
+
+                        <div class="row" style="padding-top:5px;padding-bottom:5px">
+                            <div class="col-md-12">
+
+                                <button type="button" class="btn btn-sm green" ng-click="vm.save()" ng-show="vm.form.KNT_SRT_FAB_REQ_H_ID<1"
+                                        ng-class="{'disabled':frmSrtFabProdOrder.$invalid||vm.form.RF_ACTN_STATUS_ID>59}">
+                                    Save
+                                </button>
+                                <button type="button" class="btn btn-sm yellow-gold" ng-click="vm.save()" ng-show="vm.form.KNT_SRT_FAB_REQ_H_ID>0"
+                                        ng-class="{'disabled':frmSrtFabProdOrder.$invalid || (vm.form.RF_ACTN_STATUS_ID==60 && vm.form.USER_CORR_AFTER_APPROVE!='CORR_AFTER_APPROVE') || (vm.form.RF_ACTN_STATUS_ID<59 && vm.form.USER_APPROVER_NAME=='APPROVER') || (vm.form.RF_ACTN_STATUS_ID==59  && vm.form.USER_APPROVER_NAME!='APPROVER')}">
+                                    Update @*{{reasonGridDataSource.data().length}}*@
+                                </button>
+
+                                <a ui-sref="KntShortFabProdOrdH.SrtFabDtl({pKNT_SRT_FAB_REQ_H_ID : 0, pMC_BYR_ACC_GRP_ID: null, pMC_STYLE_H_EXT_ID: null})" class="btn btn-sm blue">
+                                    Cancel
+                                </a>                                
+
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <button type="button" class="btn btn-sm blue" ng-click="vm.submit()" ng-show="vm.form.KNT_SRT_FAB_REQ_H_ID>0 && vm.form.RF_ACTN_STATUS_ID==58  && vm.form.USER_APPROVER_NAME!='APPROVER'">
+                                    Submit
+                                </button>
+                                <button type="button" class="btn btn-sm blue" ng-click="vm.approve()" ng-show="vm.form.KNT_SRT_FAB_REQ_H_ID>0 && vm.form.RF_ACTN_STATUS_ID==59 && vm.form.USER_APPROVER_NAME=='APPROVER'">
+                                    Approve
+                                </button>
+                                @*<button type="button" class="btn btn-sm blue" ng-click="vm.revise()" ng-show="vm.form.KNT_SRT_FAB_REQ_H_ID>0 && vm.form.RF_ACTN_STATUS_ID==60">
+                                    Revise
+                                </button>*@
+
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="/Knitting/Knit/ShortFabProdOrderRpt?a=213/#/shortFabProdOrdRpt?pKNT_SRT_FAB_REQ_H_ID={{vm.form.KNT_SRT_FAB_REQ_H_ID}}" target="_blank" class="btn btn-sm blue"
+                                   ng-show="vm.form.RF_ACTN_STATUS_ID>58">
+                                    Print
+                                </a>
+                                @*<button type="button" class="btn btn-sm blue" ng-click="vm.printLedger()" ng-show="vm.form.KNT_SRT_FAB_REQ_H_ID>0">Print</button>*@
+                                @*<button type="button" class="btn btn-sm blue-hoki" ng-click="vm.backToList()">Back to List</button>*@
+                                <a ng-show="vm.form.USER_CORR_AFTER_APPROVE!='CORR_AFTER_APPROVE'" ui-sref="KntShortFabProdOrdList({pMC_BYR_ACC_GRP_ID : vm.form.MC_BYR_ACC_GRP_ID, pMC_STYLE_H_EXT_ID: vm.form.MC_STYLE_H_EXT_ID})" class="btn btn-sm blue">
+                                    Back to List
+                                </a>
+                                <a ng-show="vm.form.USER_CORR_AFTER_APPROVE=='CORR_AFTER_APPROVE'" ui-sref="KntSrtFabProdOrdAprovList({pMC_BYR_ACC_GRP_ID : vm.form.MC_BYR_ACC_GRP_ID, pMC_STYLE_H_EXT_ID: vm.form.MC_STYLE_H_EXT_ID})" class="btn btn-sm blue">
+                                    Back to List
+                                </a>
+                            </div>
+                        </div>
+
+                        @*<pre>{{vm.form|json}}</pre>*@
+
+                                               
+                    </div>
+                </div>
+            </form>
+
+
+            @*<div  style="margin:auto;" ng-show="vm.form.KNT_SRT_FAB_REQ_H_ID>0" >
+                <div class="form-body clearfix">
+                    <tabset>
+                        <tab heading="Fabric Detail" active="vm.srtFabDtlState" ui-sref="KntShortFabProdOrdH.SrtFabDtl">
+                            <div data-ui-view="KntShortFabProdOrdH.SrtFabDtl"></div>
+                        </tab>
+
+                        <tab heading="Reason" active="vm.reason4srtFabState" ui-sref="KntShortFabProdOrdH.Reason4SrtFab">
+                            <div data-ui-view="KntShortFabProdOrdH.Reason4SrtFab"></div>
+                        </tab>
+
+                        <tab heading="Resposibility" active="vm.resposibility4srtFabState" ui-sref="KntShortFabProdOrdH.Resposibility4SrtFab"
+                             ng-show="vm.form.RF_ACTN_STATUS_ID>58" disabled="vm.form.RF_ACTN_STATUS_ID<59">
+                            <div data-ui-view="KntShortFabProdOrdH.Resposibility4SrtFab"></div>
+                        </tab>
+                    </tabset>
+                </div>
+            </div>*@
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+@*Start For New Reason Type*@
+<script type="text/ng-template" id="NewSFabBkReasonEntryModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <p style="padding-top:10px;">
+                        Reason Type
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </p>
+
+
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="NewSFabBkReasonEntryModal" novalidate @*ng-submit="save(Task,token,TaskForm.$valid)"*@>
+                    <input id="access_token" data-ng-model="token" type="hidden"
+                           data-ng-init="token='@Session["access_token"]'" />
+
+                    @*<div kendo-grid k-data-source="asortDataList" k-columns="asortColumns" k-selectable="true" k-on-change="selected = data" k-height="300" k-filterable="true" k-sortable="true"></div>*@
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">
+                            <span aria-required="true" class="required">*</span>Reason
+                        </label>
+                        <div class="col-md-5" style="padding-top:5px;">
+                            <input type="text" class="form-control" name="SFAB_RSN_TYPE_NAME" ng-model="SFAB_RSN_TYPE_NAME" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-2">
+                            <label class="control-label checkbox-inline">
+                                <input type="checkbox" name="IS_ACTIVE" ng-model="IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'" /> Active?
+                            </label>
+                        </div>
+                    </div>
+
+                    @*<pre>{{ProcessLossModalForm.$valid}}</pre>*@
+
+                    <br />
+                    <div class="form-group form-actions">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="button" class="btn green btn-sm" ng-click="save(token, NewSFabBkReasonEntryModal.$invalid)" ng-class="{'disabled':!NewSFabBkReasonEntryModal.$valid}" ng-show="RF_SFAB_RSN_TYPE_ID<1">Save</button>
+                            <button type="button" class="btn yellow-gold btn-sm" ng-click="save(token, NewSFabBkReasonEntryModal.$invalid)" ng-class="{'disabled':!NewSFabBkReasonEntryModal.$valid}" ng-show="RF_SFAB_RSN_TYPE_ID>0">Update</button>
+
+                            <button type="button" class="btn btn-default btn-sm" ng-click="vm.tranCancel()">Cancel</button>
+                        </div>
+                    </div>
+
+                    <kendo-grid k-options="vm.reasonTypeGridOption" k-data-source="vm.reasonTypeGridDataSource"></kendo-grid>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+@*End For New Reason Type*@

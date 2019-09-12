@@ -1,0 +1,163 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Hr</a>
+
+    </li>
+    <li>
+        <a href="#">Import Raw Data</a>
+    </li>
+</ul>
+
+@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+<div class="portlet box blue-dark" @*ng-controller="HrReportController as vm"*@>
+
+    <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+           data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+    <div class="portlet-title">
+        <div class="caption">
+            @*<i class="fa fa-gift"></i>*@ Import Raw Data
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <form name="frmRawDataImport" class="form-horizontal"
+              ng-submit="vm.importData()" novalidate>
+
+
+            <div class="form-body">
+                @*@Html.AntiForgeryToken()*@
+                <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+                       data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+                <div class="row">
+
+                    <div class="col-md-offset-1 col-md-10">
+
+                        <fieldset class="custom-fieldset">
+
+                            <div class="col-md-4">
+                                <fieldset class="custom-fieldset">
+                                    <legend class="custom-legend">Import Type</legend>
+
+                                    <div class="col-md-11 col-md-offset-1">
+                                        <div class="radio-list">
+                                            <label class="radio"><input type="radio" name="IMPORT_TYPE" ng-value="99" ng-model="vm.form.IMPORT_TYPE">Finger</label>
+                                            <label class="radio"><input type="radio" name="IMPORT_TYPE" ng-value="98" ng-model="vm.form.IMPORT_TYPE">Proximity</label>
+                                            <label class="radio"><input type="radio" name="IMPORT_TYPE" ng-value="3" ng-model="vm.form.IMPORT_TYPE">HO Text File</label>
+                                            <label class="radio"><input type="radio" name="IMPORT_TYPE" ng-value="4" ng-model="vm.form.IMPORT_TYPE">Movement Text File</label>
+                                        </div>
+
+                                        @*<input type="text" name="IMPORT_TYPE" ng-model="vm.form.IMPORT_TYPE" />*@
+                                    </div>
+                                </fieldset>
+                            </div>
+
+                            <div class="col-md-5">
+                                <p></p>
+
+                                <div class="form-group">
+                                    @*<input type="file" id="ATT_FILE" name="ATT_FILE" ng-disabled="vm.isTextFile==false" class="form-control" accept="text/*" data-ak-file-model="vm.form.ATT_FILE" />*@
+                                    <input type="file" id="ATT_FILE" name="ATT_FILE" ng-disabled="vm.isTextFile==false" class="form-control" accept="text/*" data-ak-file-model="vm.form.ATT_FILE" />
+                                    @*<img id="empPhoto" ng-src="data:image/jpeg;base64,{{vm.form.EMP_PHOTO_PREVIEW}}" alt="No Photo" style="border:1px solid black; height:140px;width:130px" />
+                                    <input type="file" id="ATT_FILE" name="ATT_FILE" class="fileinput-button" accept="image/*" data-ak-file-model="vm.form.ATT_FILE" onchange="changePhoto(this);" />*@
+
+                                    <p></p>
+                                    <button type="submit" class="btn btn-default">Import</button>
+                                    <label class="checkbox-inline col-md-offset-2">
+                                        <input type="checkbox" ng-model="isShowDeviceList" ng-true-value="'Y'" ng-false-value="'N'" ng-change="vm.isShowDeviceListChange()">Show Device List?
+                                    </label>
+                                </div>
+
+
+
+                            </div>
+                            <div class="row" @*style="border:1px solid red"*@>
+                            </div>
+                            <p></p>
+
+                            <div ng-if="isShowDeviceList=='Y'" id="grid" kendo-grid></div>
+                        </fieldset>
+
+
+                        <p></p>
+                        <div data-ui-view="List@ImportRawdata" class="shuffle-animation"></div>
+
+                    </div>
+
+                    @*<div class="col-md-offset-2 col-md-6">
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend">Import Data</legend>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-4">
+                                    From Date
+                                </label>
+                                <div class="col-md-5 input-group">
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-4">
+                                    To Date
+                                </label>
+                                <div class="col-md-5 input-group">
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-4">
+                                </label>
+                                <div class="col-md-5">
+                                    <button type="button" class="btn btn-default" ng-click="vm.importData()"> Import</button>
+                                </div>
+                            </div>
+
+                        </fieldset>
+
+                    </div>
+                    <div class="col-md-6">
+                    </div>*@
+
+
+                </div>
+
+            </div>
+
+
+            @*}*@
+        </form>
+
+    </div>
+
+</div>
+
+
+
+
+

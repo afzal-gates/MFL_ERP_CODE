@@ -1,0 +1,424 @@
+﻿<div class="modal-body">
+    <div class="portlet grey-cascade box">
+        <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+
+        <div class="portlet-title">
+            <div>
+                <h3 style="padding-top:10px;margin-top:3px;">
+                     Bundle Card Amendment
+                    <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                </h3>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div class="row" style="margin:auto;">
+                <table class="table table-condensed table-responsive table-bordered">
+                    <thead>
+                        <tr>
+                            <th>
+                                Buyer: {{CurrentBundle.BYR_ACC_GRP_NAME_EN}}>> Style: {{CurrentBundle.STYLE_NO}}>> Order: {{CurrentBundle.ORDER_NO}}>> Color: {{CurrentBundle.COLOR_NAME_EN}}>>Cutting No: {{CurrentBundle.CUTNG_NO}}
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <div class="row list-separated" style="background-color: black; margin-bottom: 0px; margin: auto;font-size:40px;">
+
+                                    <div class="col-md-2 col-sm-2">
+                                        <div class="font-grey-mint font-sm">
+                                            Cutting No
+                                        </div>
+                                        <div class="uppercase  font-yellow-gold" style="font-size:40px;">
+                                            <b><b>{{CurrentBundle.CUTNG_NO}}</b></b>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2 col-sm-2">
+                                        <div class="font-grey-mint font-sm">
+                                            Bundle No
+                                        </div>
+                                        <div class="uppercase font-blue-sharp" style="font-size:40px;">
+                                            <b><b>{{CurrentBundle.BUNDLE_NO}}</b></b>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="font-grey-mint font-sm">
+                                            SL
+                                        </div>
+                                        <div class="uppercase font-yellow-gold" style="font-size:40px;">
+                                            <b><b>{{CurrentBundle.SL_RANGE_TXT}}</b></b>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-2">
+                                        <div class="font-grey-mint font-sm">
+                                            Quantity
+                                        </div>
+                                        <div class="uppercase font-yellow-gold" style="font-size:40px;">
+                                            <b><b>{{CurrentBundle.QTY_IN_BNDL}}</b></b>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>                                
+                                <div class="col-md-2" style="padding:1px;">
+                                    <table class="table table-condensed table-responsive table-bordered" style="padding: 0px; margin-bottom: 2px;">
+                                        <tbody>
+
+                                            <tr>
+
+                                                <td>
+                                                    <br />
+                                                    <b>Short From Cutting</b>                                                    
+                                                </td>
+
+                                            </tr>
+
+                                            <tr>
+
+                                                <td>
+                                                    <button class="btn btn-sm green btn-block" ng-disabled="(CurrentBundle.IS_LOK_S_CUTTING=='Y')||((CurrentBundle.SHRT_FRM_CUTNG+CurrentBundle.SHRT_FRM_PRN_EMB+CurrentBundle.SHRT_DTO_LOST)>=CurrentBundle.QTY_IN_BNDL)" ng-click="addOne('SHRT_FRM_CUTNG',1);" type="button"><b>+</b></button>
+                                                </td>
+
+                                            </tr>
+
+
+                                            <tr>
+
+                                                <td style="padding-bottom: 5px; padding-top: 5px;">
+                                                    
+                                                    <div class="input-group">
+                                                        <div class="uppercase font-yellow-gold" style="font-size: 20px;">
+                                                            <input type="number" ng-model="CurrentBundle.SHRT_FRM_CUTNG" ng-click="setSelected('SHRT_FRM_CUTNG', CurrentBundle.IS_LOK_S_CUTTING)" ng-style="{'background-color': CurrentBundle.IS_SHRT_FRM_CUTNG ?'blue':'white','color': CurrentBundle.IS_SHRT_FRM_CUTNG ?'white':'','color': CurrentBundle.IS_SHRT_FRM_CUTNG ?'white':'', 'color': CurrentBundle.IS_SHRT_FRM_CUTNG > 0 ? '#E87E04':'', 'font-weight': CurrentBundle.IS_SHRT_FRM_CUTNG > 0 ? '800':'600' }" style="height: 28px; font-size: 20px;text-align:center;font-weight: 600;" readonly min="0" class="form-control" ng-change="CurrentBundle.IS_DATA_ITEM_CHANGED='Y'">
+                                                        </div>                                                        
+                                                        
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+
+                                            <tr>
+
+                                                <td>                                                    
+                                                    <button class="btn btn-sm red btn-block" ng-disabled="(CurrentBundle.IS_LOK_S_CUTTING=='Y')||(CurrentBundle.SHRT_FRM_CUTNG==0)" ng-click="addOne('SHRT_FRM_CUTNG',-1);" type="button"><b>-</b></button>
+                                                </td>
+
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+                                <div class="col-md-2" style="padding:1px;">
+                                    <table class="table table-condensed table-responsive table-bordered" style="padding: 0px; margin-bottom: 2px;">
+                                        <tbody>
+
+                                            <tr>
+
+                                                <td>                                                    
+                                                    <b>Short From Print/Embr</b>
+                                                </td>
+
+                                            </tr>
+
+                                            <tr>
+
+                                                <td>
+                                                    <button class="btn btn-sm green btn-block" ng-disabled="(CurrentBundle.IS_LOK_S_PRNT_EMR=='Y')||((CurrentBundle.SHRT_FRM_CUTNG+CurrentBundle.SHRT_FRM_PRN_EMB+CurrentBundle.SHRT_DTO_LOST)>=CurrentBundle.QTY_IN_BNDL)" ng-click="addOne('SHRT_FRM_PRN_EMB',1);" type="button"><b>+</b></button>
+                                                </td>
+
+                                            </tr>
+
+
+                                            <tr>
+
+                                                <td style="padding-bottom: 5px; padding-top: 5px;">
+
+
+                                                    <div class="input-group">
+                                                        <div class="uppercase font-yellow-gold" style="font-size: 20px;">
+                                                            <input type="number" ng-model="CurrentBundle.SHRT_FRM_PRN_EMB" ng-click="setSelected('SHRT_FRM_PRN_EMB', CurrentBundle.IS_LOK_S_PRNT_EMR)" ng-style="{'background-color': CurrentBundle.IS_SHRT_FRM_PRN_EMB ?'blue':'white','color': CurrentBundle.IS_SHRT_FRM_PRN_EMB ?'white':'','color': CurrentBundle.IS_SHRT_FRM_PRN_EMB ?'white':'', 'color': CurrentBundle.IS_SHRT_FRM_PRN_EMB > 0 ? '#E87E04':'', 'font-weight': CurrentBundle.IS_SHRT_FRM_PRN_EMB > 0 ? '800':'600' }" style="height: 28px; font-size: 20px;text-align:center;font-weight: 600;" readonly min="0" class="form-control" ng-change="CurrentBundle.IS_DATA_ITEM_CHANGED='Y'">
+                                                        </div>
+
+                                                        
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+
+                                            <tr>
+
+                                                <td>
+                                                    <button class="btn btn-sm red btn-block" ng-disabled="(CurrentBundle.IS_LOK_S_PRNT_EMR=='Y')||(CurrentBundle.SHRT_FRM_PRN_EMB==0)" ng-click="addOne('SHRT_FRM_PRN_EMB',-1);" type="button"><b>-</b></button>
+                                                </td>
+
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-2" style="padding:1px;">
+                                    <table class="table table-condensed table-responsive table-bordered" style="padding: 0px; margin-bottom: 2px;">
+                                        <tbody>
+
+                                            <tr>
+
+                                                <td>
+                                                    <br />
+                                                    <b>Short due to Lost</b>                                                   
+                                                </td>
+
+                                            </tr>
+
+                                            <tr>
+
+                                                <td>
+                                                    <button class="btn btn-sm green btn-block" ng-disabled="(CurrentBundle.IS_LOK_S_LOST=='Y')||((CurrentBundle.SHRT_FRM_CUTNG+CurrentBundle.SHRT_FRM_PRN_EMB+CurrentBundle.SHRT_DTO_LOST)>=CurrentBundle.QTY_IN_BNDL)" ng-click="addOne('SHRT_DTO_LOST',1);" type="button"><b>+</b></button>
+                                                </td>
+
+                                            </tr>
+
+
+                                            <tr>
+
+                                                <td style="padding-bottom: 5px; padding-top: 5px; ">
+
+
+                                                    <div class="input-group">
+                                                        <div class="uppercase font-yellow-gold" style="font-size: 20px;">
+                                                            <input type="number" ng-model="CurrentBundle.SHRT_DTO_LOST" ng-click="setSelected('SHRT_DTO_LOST', CurrentBundle.IS_LOK_S_LOST)" ng-style="{'background-color': CurrentBundle.IS_SHRT_DTO_LOST ?'blue':'white','color': CurrentBundle.IS_SHRT_DTO_LOST ?'white':'','color': CurrentBundle.IS_SHRT_DTO_LOST ?'white':'', 'color': CurrentBundle.IS_SHRT_DTO_LOST > 0 ? '#E87E04':'', 'font-weight': CurrentBundle.IS_SHRT_DTO_LOST > 0 ? '800':'600' }" style="height: 28px; font-size: 20px;text-align:center;font-weight: 600;" readonly min="0" class="form-control" ng-change="CurrentBundle.IS_DATA_ITEM_CHANGED='Y'">
+                                                        </div>                                                        
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+
+                                            <tr>
+
+                                                <td>
+                                                    <button class="btn btn-sm red btn-block" ng-disabled="(CurrentBundle.IS_LOK_S_LOST=='Y')||(CurrentBundle.SHRT_DTO_LOST==0)" ng-click="addOne('SHRT_DTO_LOST',-1);" type="button"><b>-</b></button>
+                                                </td>
+
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="col-md-2" style="padding:1px;">
+                                    <table class="table table-condensed table-responsive table-bordered" style="padding: 0px; margin-bottom: 2px;">
+                                        <tbody>
+
+                                            <tr>
+
+                                                <td>                                                    
+                                                    <b>Surplus due to Balance</b>
+                                                </td>
+
+                                            </tr>
+
+                                            <tr>
+
+                                                <td>                                                    
+                                                    <button class="btn btn-sm green btn-block" ng-disabled="(CurrentBundle.IS_LOK_SP_CUT_BAL=='Y')||(CurrentBundle.SRPL_DTO_CUT_BAL==999)" ng-click="addOne('SRPL_DTO_CUT_BAL',1);" type="button"><b>+</b></button>
+                                                </td>
+
+                                            </tr>
+
+
+                                            <tr>
+
+                                                <td style="padding-bottom: 5px; padding-top: 5px;">
+
+
+                                                    <div class="input-group">
+                                                        <div class="uppercase font-yellow-gold" style="font-size: 20px;">
+                                                            <input type="number" ng-model="CurrentBundle.SRPL_DTO_CUT_BAL" ng-click="setSelected('SRPL_DTO_CUT_BAL', CurrentBundle.IS_LOK_SP_CUT_BAL)" ng-style="{'background-color': CurrentBundle.IS_SRPL_DTO_CUT_BAL ?'blue':'white','color': CurrentBundle.IS_SRPL_DTO_CUT_BAL ?'white':'','color': CurrentBundle.IS_SRPL_DTO_CUT_BAL ?'white':'', 'color': CurrentBundle.IS_SRPL_DTO_CUT_BAL > 0 ? '#E87E04':'', 'font-weight': CurrentBundle.IS_SRPL_DTO_CUT_BAL > 0 ? '800':'600' }" style="height: 28px; font-size: 20px;text-align:center;font-weight: 600;" readonly min="0" class="form-control" ng-change="CurrentBundle.IS_DATA_ITEM_CHANGED='Y'">
+                                                        </div>                                                        
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+
+                                            <tr>
+
+                                                <td>
+                                                    <button class="btn btn-sm red btn-block" ng-disabled="(CurrentBundle.IS_LOK_SP_CUT_BAL=='Y')||(CurrentBundle.SRPL_DTO_CUT_BAL==0)" ng-click="addOne('SRPL_DTO_CUT_BAL',-1);" type="button"><b>-</b></button>
+                                                </td>
+
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-2" style="padding:1px;">
+                                    <table class="table table-condensed table-responsive table-bordered" style="padding: 0px; margin-bottom: 2px;">
+                                        <tbody>
+
+                                            <tr>
+
+                                                <td>                                             
+                                                    <b>Surplus due to Panel Replace</b>
+                                                </td>
+
+                                            </tr>
+
+                                            <tr>
+
+                                                <td>
+                                                    <button class="btn btn-sm green btn-block" ng-disabled="(CurrentBundle.IS_LOK_SP_CUT_PNL_REP=='Y')||(CurrentBundle.SRPL_DTO_CUT_PNL_RPL==999)" ng-click="addOne('SRPL_DTO_CUT_PNL_RPL',1);" type="button"><b>+</b></button>
+                                                </td>
+
+                                            </tr>
+
+
+                                            <tr>
+
+                                                <td style="padding-bottom: 5px; padding-top: 5px; ">
+
+
+                                                    <div class="input-group">
+                                                        <div class="uppercase font-yellow-gold" style="font-size: 20px;">
+                                                            <input type="number" ng-model="CurrentBundle.SRPL_DTO_CUT_PNL_RPL" ng-click="setSelected('SRPL_DTO_CUT_PNL_RPL', CurrentBundle.IS_LOK_SP_CUT_PNL_REP)" ng-style="{'background-color': CurrentBundle.IS_SRPL_DTO_CUT_PNL_RPL ?'blue':'white','color': CurrentBundle.IS_SRPL_DTO_CUT_PNL_RPL ?'white':'','color': CurrentBundle.IS_SRPL_DTO_CUT_PNL_RPL ?'white':'', 'color': CurrentBundle.IS_SRPL_DTO_CUT_PNL_RPL > 0 ? '#E87E04':'', 'font-weight': CurrentBundle.IS_SRPL_DTO_CUT_PNL_RPL > 0 ? '800':'600' }" style="height: 28px; font-size: 20px;text-align:center;font-weight: 600;" readonly min="0" class="form-control" ng-change="CurrentBundle.IS_DATA_ITEM_CHANGED='Y'">
+                                                        </div>                                                       
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <button class="btn btn-sm red btn-block" ng-disabled="(CurrentBundle.IS_LOK_SP_CUT_PNL_REP=='Y')||(CurrentBundle.SRPL_DTO_CUT_PNL_RPL==0)" ng-click="addOne('SRPL_DTO_CUT_PNL_RPL',-1);" type="button"><b>-</b></button>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="col-md-2" style="padding:1px;">
+                                    <table class="table table-condensed table-responsive table-bordered" style="padding: 0px; margin-bottom: 2px;">
+                                        <tbody>
+
+                                            <tr>
+
+                                                <td>                                                   
+                                                    <b>Surplus due to Print/Embr. Bal</b>
+                                                </td>
+
+                                            </tr>
+
+                                            <tr>
+
+                                                <td>
+                                                    <button class="btn btn-sm green btn-block" ng-disabled="(CurrentBundle.IS_LOCK_SP_PRNT_EMBR=='Y')||(CurrentBundle.SRPL_DTO_PRN_EMB_BAL==999)" ng-click="addOne('SRPL_DTO_PRN_EMB_BAL',1);" type="button"><b>+</b></button>
+                                                </td>
+
+                                            </tr>
+
+
+                                            <tr>
+
+                                                <td style="padding-bottom: 5px; padding-top: 5px;">
+
+
+                                                    <div class="input-group">
+                                                        <div class="uppercase font-yellow-gold" style="font-size: 20px;">
+                                                            <input type="number" ng-model="CurrentBundle.SRPL_DTO_PRN_EMB_BAL" ng-click="setSelected('SRPL_DTO_PRN_EMB_BAL', CurrentBundle.IS_LOCK_SP_PRNT_EMBR)" ng-style="{'background-color': CurrentBundle.IS_SRPL_DTO_PRN_EMB_BAL ?'blue':'white','color': CurrentBundle.IS_SRPL_DTO_PRN_EMB_BAL ?'white':'','color': CurrentBundle.IS_SRPL_DTO_PRN_EMB_BAL ?'white':'', 'color': CurrentBundle.IS_SRPL_DTO_PRN_EMB_BAL > 0 ? '#E87E04':'', 'font-weight': CurrentBundle.IS_SRPL_DTO_PRN_EMB_BAL > 0 ? '800':'600' }" style="height: 28px; font-size: 20px;text-align:center;font-weight: 600;" readonly min="0" class="form-control" ng-change="CurrentBundle.IS_DATA_ITEM_CHANGED='Y'">
+                                                        </div>                                                        
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+
+                                            <tr>
+
+                                                <td>
+                                                    <button class="btn btn-sm red btn-block" ng-disabled="(CurrentBundle.IS_LOCK_SP_PRNT_EMBR=='Y')||(CurrentBundle.SRPL_DTO_PRN_EMB_BAL==0)" ng-click="addOne('SRPL_DTO_PRN_EMB_BAL',-1);" type="button"><b>-</b></button>
+                                                </td>
+
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </td>
+                        </tr>
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>
+                                <div class="btn-group btn-group-justified">
+                                    <a class="btn btn-lg btn-default" ng-click="shortCutInput('1')" ng-disabled="!isSelected">
+                                        <h1 style="margin:0px;"><b>1</b></h1>
+                                    </a>
+                                    <a class="btn btn-lg btn-default" ng-click="shortCutInput('2')" ng-disabled="!isSelected">
+                                        <h1 style="margin:0px;"><b>2</b></h1>
+                                    </a>
+                                    <a class="btn btn-lg btn-default" ng-click="shortCutInput('3')" ng-disabled="!isSelected">
+                                        <h1 style="margin:0px;"><b>3</b></h1>
+                                    </a>
+                                    <a class="btn btn-lg btn-default" ng-click="shortCutInput('4')" ng-disabled="!isSelected">
+                                        <h1 style="margin:0px;"><b>4</b></h1>
+                                    </a>
+                                    <a class="btn btn-lg btn-default" ng-click="shortCutInput('5')" ng-disabled="!isSelected">
+                                        <h1 style="margin:0px;"><b>5</b></h1>
+                                    </a>
+                                    <a class="btn btn-lg btn-default" ng-click="shortCutInput('6')" ng-disabled="!isSelected">
+                                        <h1 style="margin:0px;"><b>6</b></h1>
+                                    </a>
+
+                                    <a class="btn btn-lg btn-default" ng-click="shortCutInput('7')" ng-disabled="!isSelected">
+                                        <h1 style="margin:0px;"><b>7</b></h1>
+                                    </a>
+
+                                    <a class="btn btn-lg btn-default" ng-click="shortCutInput('8')" ng-disabled="!isSelected">
+                                        <h1 style="margin:0px;"><b>8</b></h1>
+                                    </a>
+                                    <a class="btn btn-lg btn-default" ng-click="shortCutInput('9')" ng-disabled="!isSelected">
+                                        <h1 style="margin:0px;"><b>9</b></h1>
+                                    </a>
+                                    <a class="btn btn-lg btn-default" ng-click="shortCutInput('0')" ng-disabled="!isSelected">
+                                        <h1 style="margin:0px;"><b>0</b></h1>
+                                    </a>
+                                    <a class="btn btn-lg yellow-gold" ng-disabled="!isSelected" ng-click="onTrimDigit()">
+                                        <b><i class="fa  fa-arrow-left"></i></b>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="row" style="padding-top:20px;">
+                                    <div class="col-md-4" style="text-align:left;padding-left:20px;">
+                                        <a class="btn blue btn-lg btn-block" ng-click="prev()" ng-disabled="SL==1">
+                                            <i class="fa  fa-chevron-left"></i> Previous
+                                        </a>
+                                    </div>
+                                    <div class="col-md-4" style="text-align:center;padding-left:20px;padding-right:20px;">
+                                        <a class="btn green btn-lg btn-block" ng-click="submitData()">
+                                            Save
+                                        </a>
+                                    </div>
+
+                                    <div class="col-md-4" style="text-align: right; padding-right: 20px;">
+                                        <a class="btn blue btn-lg btn-block" ng-click="next()" ng-disabled="SL==MAX_SL">
+                                            Next <i class="fa   fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tfoot>
+
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,65 @@
+﻿<fieldset class="custom-fieldset col-md-12" >
+    <legend class="custom-legend">Detail</legend>
+
+
+    <div kendo-grid k-options="$parent.progDtlOptions" k-data-source="$parent.progDtlDataSource"></div>
+
+
+    @*{{$parent.frmClCfProd.$error}}*@
+    @*{{$parent.errors|json}}*@
+
+
+</fieldset>
+
+<fieldset class="custom-fieldset col-md-12" ng-show="Showed==true">
+    <legend class="custom-legend">Yarn Requisition</legend>
+
+    <div kendo-grid k-options="vm.reqGridOptions" k-data-source="vm.reqGridDataSource"></div>
+</fieldset>
+
+<div class="col-md-12" style="padding-top:10px">
+    <div class="form-group" style="text-align:right">
+        <a class="btn btn-xs btn-link" ng-click="Showed= !Showed" ><i class="fa" ng-class="{'fa-chevron-left' : Showed, 'fa-chevron-right' : !Showed }"></i> <b>{{Showed?'Hide':'Show'}} Yarn Requisition List</b></a>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+        <button class="btn btn-sm green" type="button" ng-click="vm.Save()" ng-show="$parent.form.KNT_SCO_CLCF_PRG_H_ID<1"
+                ng-class="{'disabled':$parent.frmClCfProd.$invalid}">
+            Save
+        </button>
+
+        <button class="btn btn-sm yellow-gold" type="button" ng-click="vm.Save()" ng-show="$parent.form.KNT_SCO_CLCF_PRG_H_ID>0"
+                ng-class="{'disabled':$parent.frmClCfProd.$invalid}" ng-disabled="$parent.form.LK_SC_PRG_STATUS_ID==538">
+            Update
+        </button>
+
+        <a class="btn btn-sm blue" href="/Knitting/Knit/CollarCuffOrderReq?a=183/#/clcfOrdReq"
+           @*ng-class="{'disabled':$parent.frmSampleProduction.$invalid||$parent.IS_PROD_SUBMIT=='Y'||$parent.HAS_DATA_PROD_GRID=='N'}"*@>
+            New Program
+        </a>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+        <button type="button" class="btn btn-sm blue" ng-click="vm.printProgram()" ng-disabled="$parent.form.KNT_SCO_CLCF_PRG_H_ID<1">Print</button>
+        <button type="button" class="btn btn-sm blue" ng-click="vm.finalizeProgram()" ng-disabled="$parent.form.KNT_SCO_CLCF_PRG_H_ID<1||$parent.form.LK_SC_PRG_STATUS_ID==538">Finalize</button>
+        <button type="button" class="btn btn-sm blue-hoki" ng-click="vm.cancelProgram()" ng-show="$parent.form.LK_SC_PRG_STATUS_ID>=538"
+                ng-class="{'disabled':$parent.frmClCfProd.$invalid}" ng-disabled="$parent.form.LK_SC_PRG_STATUS_ID==539">
+            Program Cancel
+        </button>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        @*<button type="button" class="btn btn-sm blue" ng-click="vm.openExColourListModal($parent.form.MC_FAB_PROD_ORD_H_ID)" ng-disabled="$parent.form.KNT_SCO_CLCF_PRG_H_ID<1">Make Requsition</button>*@
+        <a class="btn btn-sm blue" href="/Knitting/Knit/KnitPlan/#/JobCardCollarCuffSco?a=185&pMC_FAB_PROD_ORD_H_ID={{$parent.form.MC_FAB_PROD_ORD_H_ID}}&pKNT_SCO_CLCF_PRG_H_ID={{$parent.form.KNT_SCO_CLCF_PRG_H_ID}}&pKNT_YRN_STR_REQ_H_ID={{$parent.form.KNT_YRN_STR_REQ_H_ID}}" ng-disabled="$parent.form.KNT_SCO_CLCF_PRG_H_ID<1||$parent.form.LK_SC_PRG_STATUS_ID!=538">Yarn Requisition</a>
+
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button class="btn btn-sm blue-hoki" type="button" ng-click="vm.back()"
+                @*ng-class="{'disabled':$parent.frmSampleProduction.$invalid||$parent.IS_PROD_SUBMIT=='Y'||$parent.HAS_DATA_PROD_GRID=='N'}"*@>
+            Back
+        </button>
+    </div>
+</div>
+
+
+
+
+
+@*<pre>{{vm.collarCuffProdList|json}}</pre>*@
+
+

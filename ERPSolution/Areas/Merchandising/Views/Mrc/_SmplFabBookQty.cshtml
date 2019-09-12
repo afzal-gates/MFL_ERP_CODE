@@ -1,0 +1,138 @@
+﻿<div class="row" style="padding-top:6px;padding-bottom:3px;">
+
+    <div class="col-md-12">
+        <table class="table table-bordered">
+            <thead>
+                <tr class="row-border">
+                    <th style="width:100px">Style#</th>
+                    <th style="width:250px">Fabric</th>
+                    <th style="width:250px">GMT Part</th>
+                    <th style="width:30px">Dia"</th>   
+                    <th style="width:40px">Type</th> 
+                    <th style="width:20px">Contrast</th>                
+                    @*<th>Remarks</th>*@
+                    <th style="width:100px">Action</th>
+                </tr>
+            </thead>
+
+
+            <tbody>
+                <tr ng-repeat-start="itmDtl in vm.formFabQty" ng-class="{'success':itmDtl.FAB_DETAIL_INDEX==vm.selectedFabQty.FAB_DETAIL_INDEX}" style="border-bottom: 1px solid hsl(0, 0%, 87%);height:auto">
+                    <td style="padding:5px 0px 5px 0px">
+                        <input type="hidden" name="FAB_DETAIL_INDEX" ng-model="itmDtl.FAB_DETAIL_INDEX" ng-bind="itmDtl.FAB_DETAIL_INDEX=$index" />
+                        <input type="text" name="STYLE_NO" ng-model="itmDtl.STYLE_NO" class="form-control" ng-disabled="true" />
+                    </td>
+
+                    <td style="padding: 5px 0px 5px 0px">
+                        <select kendo-drop-down-list k-data-source='itmDtl.MC_STYLE_D_FAB_LIST' k-option-label='"-- Select --"' k-data-text-field='"FABRIC_SNAME"' k-data-value-field='"MC_STYLE_D_FAB_ID"'
+                                ng-model='itmDtl.MC_STYLE_D_FAB_ID' name='MC_STYLE_D_FAB_ID' class="form-control" @*style="width: 350px;"*@ required></select>
+                    </td>
+                    <td style="padding:4px 0px 5px 0px">
+                        <select class="form-control" kendo-multi-select name="RF_GARM_PART_LIST" k-placeholder="'Search...'"
+                                k-data-text-field="'GARM_PART_NAME'" k-data-value-field="'RF_GARM_PART_ID'"
+                                k-data-source="itmDtl.GMT_PART_LIST" ng-model="itmDtl.RF_GARM_PART_LIST"></select>
+                        {{itmDtl.RF_GARM_PART_LST}}
+                    </td>
+                    <td style="padding: 5px 0px 5px 0px">
+                        <input type="text" class="form-control" name="FIN_DIA" ng-model="itmDtl.FIN_DIA" />
+                    </td>
+
+                    <td style="padding: 5px 0px 5px 0px">
+                        <select class="form-control" kendo-drop-down-list name="LK_DIA_TYPE_ID" k-option-label="'Select'"
+                                k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'"
+                                k-data-source="itmDtl.DIA_TYPE_LIST" ng-model="itmDtl.LK_DIA_TYPE_ID" k-on-change="vm.finDiaTypeOnChange(kendoEvent)"></select>
+                    </td>
+
+                    <td style="padding: 5px 0px 5px 0px">
+                        <input type="checkbox" name="IS_CONTRAST" ng-model="itmDtl.IS_CONTRAST" ng-true-value="'Y'" ng-false-value="'N'" />
+                    </td>
+
+                    @*<td style="padding: 5px 0px 5px 0px">
+                <input type="text" class="form-control" name="OTHER_SPEC" ng-model="itmDtl.OTHER_SPEC" />
+            </td>*@
+
+
+                    <td style="padding: 5px 0px 5px 5px">
+                        <a class="btn btn-xs blue" title="Add Row" ng-click="vm.fabQtyAddRow(itmDtl, vm.formFabQty, 'formFabQty')">
+                            <i class="fa fa-plus"></i>
+                        </a>
+                        <a class="btn btn-xs red" title="Remove Item" ng-click="vm.fabQtyRemoveRow($index, vm.formFabQty, true)">
+                            <i class="fa fa-times"></i>
+                        </a>
+                        @*<a class="btn btn-xs green" title="Select Item" ng-click="vm.selectDtlRow($index, vm.formFabQty, true)">
+                    <i class="fa fa-hand-o-left"></i>
+                </a>*@
+
+                        <a class="btn btn-xs purple" ng-click="vm.fabQtySelectRow($index, vm.formFabQty, true, 'formFabQty');vm.fabQtyMakeActive(vm.formFabQty, $index)">
+                            <i class="fa" ng-class="{'fa fa-plus-square':!itmDtl.IS_ACTIVE,'fa fa-minus-square':itmDtl.IS_ACTIVE}"></i>
+                        </a>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td colspan="7" ng-show="itmDtl.IS_ACTIVE" style="padding:0px;">
+                        <table class="table table-hover borderless table-striped" style="margin-bottom:0px; padding-bottom:0px;">
+                            <thead>
+                                <tr style="background-color: #c3b0d6">
+                                    <th style="padding: 2px 0px 2px 20px; border: 1px solid hsl(0, 0%, 87%);">Color</th>
+                                    <th style="padding: 2px 0px 2px 5px; border: 1px solid hsl(0, 0%, 87%);">Rqd. Qty</th>
+                                    <th style="padding: 2px 0px 2px 5px; border: 1px solid hsl(0, 0%, 87%);">Unit</th>
+                                    <th style="padding: 2px 0px 2px 5px; border: 1px solid hsl(0, 0%, 87%);">Color Spec.</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr></tr>
+                                <tr ng-repeat="itmColor in itmDtl.itemsColorQty" ng-class="{'info':itmStyleChild.CHILD_ITEM_INDEX==vm.selectedChildItem.CHILD_ITEM_INDEX}" style="border-bottom: 1px solid hsl(0, 0%, 87%); height: auto;">
+                                    @*background-color: #ecfe8a*@
+                                    <td style="width:20%; padding: 2px 2px 2px 20px; border: none">
+                                        <input type="hidden" name="FAB_DETAIL_INDEX" ng-model="itmColor.FAB_DETAIL_INDEX" ng-bind="itmColor.FAB_DETAIL_INDEX=itmDtl.FAB_DETAIL_INDEX" />
+                                        <input type="hidden" name="MC_STYLE_D_FAB_ID" ng-model="itmColor.MC_STYLE_D_FAB_ID" ng-bind="itmColor.MC_STYLE_D_FAB_ID=itmDtl.MC_STYLE_D_FAB_ID" />
+                                        <input type="hidden" name="RF_GARM_PART_LIST" ng-model="itmColor.RF_GARM_PART_LIST" ng-bind="itmColor.RF_GARM_PART_LIST=itmDtl.RF_GARM_PART_LIST" />                                    
+                                        <input type="hidden" name="FIN_DIA" ng-model="itmColor.FIN_DIA" ng-bind="itmColor.FIN_DIA=itmDtl.FIN_DIA" />
+                                        <input type="hidden" name="LK_DIA_TYPE_ID" ng-model="itmColor.LK_DIA_TYPE_ID" ng-bind="itmColor.FIN_DIA=itmDtl.LK_DIA_TYPE_ID" />
+                                        <input type="hidden" name="IS_CONTRAST" ng-model="itmColor.IS_CONTRAST" ng-bind="itmColor.IS_CONTRAST=itmDtl.IS_CONTRAST" />
+
+                                        <input type="hidden" name="FAB_COLOR_INDEX" ng-model="itmColor.FAB_COLOR_INDEX" ng-bind="itmColor.FAB_COLOR_INDEX=$index" />
+                                        
+                                      
+                                        <select kendo-drop-down-list name="MC_COLOR_ID" class="form-control"
+                                                k-data-source="itmColor.STYLE_COLOR_LIST" ng-model="itmColor.MC_COLOR_ID" k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'MC_COLOR_ID'"></select>
+                                    </td>
+                                    <td style="width:10%; padding: 2px 0px 2px 0px; border: none">
+                                        <input type="text" name="RQD_QTY" ng-model="itmColor.RQD_QTY" class="form-control" />
+                                    </td>
+
+                                    <td style="width:10%; padding: 2px 0px 2px 0px; border: none">
+                                        <select class="form-control" name="QTY_MOU_ID" ng-model="itmColor.QTY_MOU_ID" ng-options="Item.RF_MOU_ID as Item.MOU_CODE for Item in $parent.rfMouList">
+                                            <option value="">-- Select --</option>
+                                        </select>
+                                    </td>
+
+                                    <td style="width:50%; padding: 2px 0px 2px 0px; border: none">
+                                        <input type="text" name="COLOR_SPEC" ng-model="itmColor.COLOR_SPEC" class="form-control" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+
+
+
+                <tr ng-repeat-end></tr>
+
+            </tbody>
+        </table>
+
+        <pre>{{$parent.sampFabQty|json}}</pre>
+        @*<pre>{{vm.formFabQty|json}}</pre>*@
+    </div>
+
+    <div class="col-md-1">
+        <a class="btn btn-xs blue" ng-click="vm.addNew()">
+            <i class="fa fa-plus"></i> Add New
+        </a>
+    </div>
+</div>

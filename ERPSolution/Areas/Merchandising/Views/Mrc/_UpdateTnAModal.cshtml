@@ -1,0 +1,85 @@
+﻿ <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <p style="padding-top:10px;">
+                         Job # : <b>{{Order.JOB_TRAC_NO}}</b>, Style # : <b>{{Order.WORK_STYLE_NO}}</b>,PO. # : <b>{{Order.ORDER_NO}}</b> </b>
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </p>
+
+
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="TaskForm" novalidate ng-submit="save(Task,token,TaskForm.$valid)">
+                    <input id="access_token" data-ng-model="token" type="hidden"
+                           data-ng-init="token='@Session["access_token"]'" />
+                    <div class="form-group">
+                        <label for="inputEmail1" class="col-md-4 control-label">Action Name</label>
+                        <div class="col-md-8" style="padding-top:5px;">
+                            <b>{{Task.TA_TASK_NAME_EN}}</b>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputEmail1" class="col-md-4 control-label">Due On</label>
+                        <div class="col-md-8" style="padding-top:5px;">
+                            <b>{{Task.PLAN_START_DT|date:'dd-MMM-yyyy'}}</b> 
+                            <span class="badge badge-warning" ng-if="Task.IS_UPD_BY_PLND=='Y'" style="color:blueviolet;"> <i class="fa fa-pencil-square-o"></i> <b>byPlaning</b> </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Update Type</label>
+                        <div class="col-md-8">
+                            <div class="radio-list">
+                                <label class="radio-inline" style="margin-left:20px;">
+                                    <input type="radio" ng-model="Task.IS_ONLY_COMMNENT" ng-value="'N'" name="IS_ONLY_COMMNENT"> Date                               
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" ng-model="Task.IS_ONLY_COMMNENT" ng-value="'Y'" name="IS_ONLY_COMMNENT"> Only Comment
+                                </label>
+
+                                <label class="radio-inline">
+                                    <input type="radio" ng-click="Task.REMARKS='N/A'" ng-model="Task.IS_ONLY_COMMNENT" ng-value="'A'" name="IS_ONLY_COMMNENT"> N/A
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-if="Task.IS_ONLY_COMMNENT=='N'">
+                        <label for="inputEmail1" class="col-md-4 control-label">Completed On</label>
+                        <div class="col-md-4">
+                            <input type="text" ng-if="(Task.CRUD_FLAG=='CRUD' || Task.MC_TNA_TASK_ID==20 || Task.MC_TNA_TASK_ID==62)" class="form-control" name="ACT_START_DT" datepicker-popup="{{format}}" ng-model="Task.ACT_START_DT" is-open="ACT_START_DTopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-click="ACT_START_DTopened=true" ng-required="true" close-text="Close" />
+                            <input type="text" ng-if="(Task.CRUD_FLAG!='CRUD' && !(Task.MC_TNA_TASK_ID==20 || Task.MC_TNA_TASK_ID==62))" class="form-control" min-date="Task.MIN_DATE" max-date="Task.MAX_DATE" datepicker-popup="{{format}}" ng-model="Task.ACT_START_DT" is-open="ACT_START_DTopened" datepicker-options="dateOptions" ng-click="ACT_START_DTopened=true" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-if="Task.IS_ONLY_COMMNENT=='Y'">
+                        <label for="inputEmail1" class="col-md-4 control-label">Accepted Date:</label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" name="EXCEPTED_DATE" datepicker-popup="{{format}}" ng-model="Task.EXCEPTED_DATE" is-open="EXCEPTED_DATEopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-click="EXCEPTED_DATEopened=true" close-text="Close" />
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="inputEmail1" class="col-md-4 control-label">Comment</label>
+                        <div class="col-md-8">
+                            <textarea rows="4" class="form-control banglafont" cols="50" ng-model="Task.REMARKS" ng-required="Task.IS_ONLY_COMMNENT=='Y'"></textarea>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group form-actions">
+                        <div class="col-md-offset-4 col-md-4">
+                            <button type="submit" class="btn green btn-sm" ng-class="{'disabled':!TaskForm.$valid}">Save</button>
+                            <button type="button" class="btn btn-default btn-sm" ng-click="cancel()">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+

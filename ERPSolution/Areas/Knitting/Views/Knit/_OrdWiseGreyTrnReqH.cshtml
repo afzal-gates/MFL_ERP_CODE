@@ -1,0 +1,212 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 12px;
+    }
+
+    .k-grid-content {
+        height: 200px;
+    }
+</style>
+
+
+
+
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Knitting</a>
+
+    </li>
+    <li>
+        <a href="#">{{vm.Title}}</a>
+    </li>
+</ul>
+
+
+<div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+    <div class="page-splash">
+        <div class="page-splash-message">
+            <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+        </div>
+    </div>
+</div>
+
+
+<div class="portlet box blue-dark" @*ng-controller="HrReportController as vm"*@>
+
+
+    @*<pre>{{form|json}}</pre>*@
+
+    <div class="portlet-title">
+        <div class="caption" @*ng-bind="vm.Title"*@>
+            {{vm.Title}}&nbsp;<span style="color:#ff4600" ng-show="form.ACTN_STATUS_NAME"><b>[ {{form.ACTN_STATUS_NAME}} ]</b></span>
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <form class="form-horizontal form-body" name="frmOrdWiseGreyFabTrn">
+            <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+
+            <div class="row" style="margin:auto;" ng-show="errors">
+                <div class="alert alert-danger" role="alert">
+                    @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                    <div style="padding: 0px 0px 15px 25px; ">
+                        <b>Please fix the following errors ....</b>
+                    </div>
+                    <ul ng-repeat="field in errors">
+                        <li ng-repeat="error in field" ng-bind="error"></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-12">
+                    <fieldset class="custom-fieldset" style="margin-bottom:5px" ng-disabled="form.RF_ACTN_STATUS_ID>91">
+                        <legend class="custom-legend">Key Information</legend>
+
+                        <input type="hidden" class="form-control" ng-model="vm.form.TRN_REQ_BY" data-ng-init="vm.form.TRN_REQ_BY='@Session["multiLoginEmpId"]'" />
+                        <input type="hidden" class="form-control" ng-model="form.TRN_REQ_BY" data-ng-init="form.TRN_REQ_BY='@Session["multiLoginEmpId"]'" />
+
+                        <div class="form-group">
+                            <label class="control-label col-md-1">
+                                Trans. Ref#
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" name="TRN_REQ_NO" ng-model="vm.form.TRN_REQ_NO" placeholder="[Auto Generate]" readonly />
+                            </div>
+
+                            <label class="control-label col-md-1">
+                                <span aria-required="true" class="required">*</span>Date
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" ng-click="vm.trnDateOpen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                       name="TRN_REQ_DT" ng-model="vm.form.TRN_REQ_DT" is-open="vm.trnDateOpened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                            </div>
+
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>Trans Type
+                            </label>
+                            <div class="col-md-3">
+                                
+                                <select kendo-drop-down-list name="TRN_TYPE_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                        k-data-text-field="'TRN_TYPE_NAME'" k-data-value-field="'TRN_TYPE_ID'"
+                                        k-auto-bind="'true'" k-options="vm.tranTypeOption" k-data-source="vm.tranTypeDataSource" k-ng-delay="vm.tranTypeDataSource"
+                                        ng-model="vm.form.TRN_TYPE_ID" ng-disabled="form.KNT_ORD_TRN_REQ_H_ID>0||form.RF_ACTN_STATUS_ID>91||form.LK_TRN_SRC_ID==726" required></select>
+                                
+
+                                @*<input type="text" class="form-control" name="TRN_REQ_BY_NAME_DUMMY" ng-model="vm.form.TRN_REQ_BY_NAME_DUMMY"
+                                       data-ng-init="vm.form.TRN_REQ_BY_NAME_DUMMY='@Session["multiLoginEmpName"]'" ng-show="vm.form.KNT_ORD_TRN_REQ_H_ID<1" readonly />
+
+                                <input type="text" class="form-control" name="TRN_REQ_BY_NAME" ng-model="vm.form.TRN_REQ_BY_NAME"
+                                       ng-show="vm.form.KNT_ORD_TRN_REQ_H_ID>0" readonly />*@
+                            </div>
+
+
+                            
+                        </div>
+
+                        @*<div class="form-group">
+                            <label class="control-label col-md-1">
+                                Req By
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" name="TRN_REQ_BY_NAME_DUMMY" ng-model="vm.form.TRN_REQ_BY_NAME_DUMMY"
+                                       data-ng-init="vm.form.TRN_REQ_BY_NAME_DUMMY='@Session["multiLoginEmpName"]'" ng-show="vm.form.KNT_ORD_TRN_REQ_H_ID<1" readonly />
+
+                                <input type="text" class="form-control" name="TRN_REQ_BY_NAME" ng-model="vm.form.TRN_REQ_BY_NAME"
+                                       ng-show="vm.form.KNT_ORD_TRN_REQ_H_ID>0" readonly />
+                            </div>
+
+                            <label class="control-label col-md-2 col-md-offset-2">
+                                <span aria-required="true" class="required">*</span>Req To
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" ng-model="vm.form.EMPLOYEE_CODE" placeholder="Search..." 
+                                       typeahead="item.EMPLOYEE_CODE as item.EMPLOYEE_CODE for item in vm.emoloyeeAuto($viewValue)"
+                                       typeahead-on-select="vm.onSelectItem($item)" typeahead-loading="loadingLocations"
+                                       class="form-control" required>
+                                <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+
+                            </div>
+
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" name="TRN_REQ_TO_NAME" ng-model="vm.form.TRN_REQ_TO_NAME"
+                                       ng-show="vm.form.TRN_REQ_TO!=null" readonly />
+                            </div>
+                        </div>*@
+
+                        <div class="form-group">
+                            <label class="control-label col-md-1">Remarks</label>
+                            <div class="col-md-11">
+                                <textarea class="form-control" name="REMARKS" ng-model="vm.form.REMARKS" rows="2"></textarea>
+                            </div>
+                        </div>
+
+                    </fieldset>
+
+                </div>
+
+
+
+                <div class="col-md-12">
+                    <div class="portlet-body" data-ui-view="OrdWiseGreyTrnReqH.Dtl"></div>
+                </div>
+
+            </div>
+
+            
+
+            @*<div class="col-md-12" style="padding-top:10px;padding-left:32px;">
+                    <div class="form-group">
+
+                        <button type="button" class="btn btn-sm green" ng-click="vm.batchSave(token, 'N')" ng-show="vm.form.KNT_SCO_YRN_TR_H_ID<1"
+                                ng-class="{'disabled':!frmScProgTrans.$valid || form.IS_FINALIZED=='Y'}">
+                            Save
+                        </button>
+                        <button type="button" class="btn btn-sm yellow-gold" ng-click="vm.batchSave(token, 'N')" ng-show="vm.form.KNT_SCO_YRN_TR_H_ID>0"
+                                ng-class="{'disabled':!frmScProgTrans.$valid || form.IS_FINALIZED=='Y'}">
+                            Update
+                        </button>
+                        <button type="button" class="btn btn-sm blue" ng-click="vm.cancel()">Cancel</button>
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <button type="button" class="btn btn-sm blue-hoki" ng-click="vm.backToList()">Back to List</button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <button type="button" class="btn btn-sm blue" ng-click="vm.batchSave(token, 'Y')" ng-disabled="vm.form.KNT_SCO_YRN_TR_H_ID<1 || form.IS_FINALIZED=='Y'">Finalize</button>
+                        <button type="button" class="btn btn-sm blue" ng-click="vm.printChallan()" ng-disabled="form.IS_FINALIZED!='Y'">Print</button>
+                    </div>
+                </div>*@
+
+
+        </form>
+
+
+
+    </div>
+
+</div>
+
+
+@*<pre>{{frmScProgTrans|json}}</pre>*@
+@*<pre>{{vm.form|json}}</pre>*@

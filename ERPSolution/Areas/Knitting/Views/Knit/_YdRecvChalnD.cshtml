@@ -1,0 +1,106 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 12px;
+    }
+</style>
+
+<form class="form-horizontal form-body">
+    <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+    @*Session["multiLoginEmpCode"] = obUser.EMPLOYEE_CODE;
+        Session["multiLoginEmpName"] = obUser.EMP_FULL_NAME_EN;*@
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <fieldset class="custom-fieldset" style="margin-bottom:5px" ng-disabled="$parent.form.IS_FINALIZE=='Y'">
+                <legend class="custom-legend">Delevery Detail</legend>
+
+                <div class="row" style="margin:auto;" ng-show="vm.errors">
+                    <div class="alert alert-danger" role="alert">
+                        @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                        <div style="padding: 0px 0px 15px 25px; ">
+                            <b>Please fix the following errors ....</b>
+                        </div>
+                        <ul ng-repeat="field in vm.errors">
+                            <li ng-repeat="error in field" ng-bind="error"></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="form-group">
+
+                    <label class="control-label col-md-1">
+                        Fabric Roll#
+                    </label>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control" id="FAB_ROLL_NO" name="FAB_ROLL_NO" ng-model="vm.form.FAB_ROLL_NO" autocomplete="off"
+                               ng-disabled="$parent.form.SCM_SUPPLIER_ID==null||$parent.form.SCM_SUPPLIER_ID<1" />
+                    </div>
+
+                    <div class="col-md-offset-1 col-md-8">
+
+                        <div class="form-group">
+                            <div class="col-md-12" >
+                                <div style="background-color: black; font-size: 40px;">
+                                    <b><span style="color: yellow;">&nbsp;No of Roll:</span><span style="color: coral;">&nbsp;&nbsp;{{$parent.rollDelvGridDataSource.data().length}}&nbsp;&nbsp;</span> <span style="color: yellow">&nbsp;Roll WT:</span><span style="color: coral;">&nbsp;&nbsp;{{$parent.rollDelvGridDataSource.aggregates().DELV_ROLL_WT.sum.toFixed(2)}}&nbsp;&nbsp;</span></b>
+                                </div>
+                            </div>
+                        </div>
+
+                        @*<div class="row" style="border:1px solid blue;">
+                            <b><span>&nbsp;No of Roll:</span><span style="color:red">&nbsp;&nbsp;1234&nbsp;&nbsp;</span></b>
+                        </div>*@
+                    </div>
+
+                    @*<label class="control-label col-md-1">
+                    Receive By
+                </label>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" data-ng-model="vm.form.RECEIVED_BY" data-ng-init="vm.form.RECEIVED_BY='@Session["multiLoginEmpCode"], @Session["multiLoginEmpName"], @Session["multiLoginEmpDesigName"]'" readonly />
+                </div>*@
+                </div>
+
+                <table class="table table-condensed table-bordered" style="margin-bottom:5px" ng-show="$parent.selectedItem">
+                    <tr>
+                        <td><b>Knit Card#:</b> {{$parent.selectedItem.JOB_CRD_NO}}<br /><b>Roll#:</b> {{$parent.selectedItem.FAB_ROLL_NO}}</td>
+                        <td><b>Buyer:</b> {{$parent.selectedItem.BUYER_SNAME}}<br /><b>Style#: {{$parent.selectedItem.STYLE_NO}}</b></td>
+                        <td><b>Machine#:</b> {{$parent.selectedItem.KNT_MACHINE_NO}}<br /><b>Dia x Gauge:</b> {{$parent.selectedItem.MC_DIA}} x {{$parent.selectedItem.MC_GG}}</td>
+                        <td><b>Operator:</b> {{$parent.selectedItem.EMP_FULL_NAME_EN}}<br /><b>Shift:</b> {{$parent.selectedItem.SCHEDULE_NAME_EN}}</td>
+                        <td><b>Color:</b> {{$parent.selectedItem.COLOR_NAME_EN}}<br /><b>Fab.Type:</b> {{$parent.selectedItem.FAB_TYPE_SNAME}}</td>
+                        <td><b>Fib.Comp.:</b> {{$parent.selectedItem.FIB_COMP_CODE}}<br /><b>Fin.Dia:</b> {{$parent.selectedItem.ACT_FIN_DIA}}" {{$parent.selectedItem.FIN_DIA_TYPE}}</td>
+                        <td><b>Fin.GSM:</b> {{$parent.selectedItem.ACT_FIN_GSM}}<br /><b>Weight(Kg):</b> {{$parent.selectedItem.DELV_ROLL_WT}}</td>
+                        <td><b>Yarn:</b> {{$parent.selectedItem.KNT_YRN_LOT_DESC}}<br /><b>Roll Grade:</b> {{$parent.selectedItem.GRADE_NO}}</td>
+                    </tr>
+                </table>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <div kendo-grid id="delvGrid" k-options="$parent.rollDelvGridOption" k-data-source="$parent.rollDelvGridDataSource"></div>
+                    </div>
+                </div>
+            </fieldset>
+            
+            @*<div class="col-md-12">
+                <div class="form-group">
+                    <div kendo-grid k-options="vm.rollDelvGridOption" k-data-source="vm.rollDelvGridDataSource"></div>
+                </div>
+            </div>*@
+
+            
+
+        </div>
+
+    </div>
+</form>
+
+
+
+
+
+
+

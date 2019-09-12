@@ -1,0 +1,326 @@
+﻿
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Knitting</a>
+
+    </li>
+    <li>
+        <a href="#">Machine Profile</a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">            
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+
+        @*<form class="form-horizontal" role="form" name="BuyerForm" novalidate ng-submit="vm.submitBuyerData(vm.form,token)">*@
+
+        <div class="form-body clearfix">
+            <div class="row" style="margin: auto; padding-left: 0px; padding-right: 0px;">
+
+                <div class="col-md-3" style="padding-left:0px;padding-right:0px;">
+                  
+                    @*<div id="ItemCategTreeview" kendo-tree-view k-options="vm.thingsOptions"
+                         style="height:300px;overflow:scroll;"
+                         k-on-change="selectedItem = dataItem"
+                         k-ng-delay="vm.thingsOptions.dataSource">
+                    </div>
+                    
+                    <br />
+                    <kendo-grid k-options="vm.gridOptions" id="itemGrid"></kendo-grid>*@
+
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend">Machine List</legend>
+
+                        <div class="input-icon right" style="padding-bottom:3px;">
+                            <i class="icon-magnifier"></i>
+                            <input type="text" class="form-control form-control-solid" ng-model="q" placeholder="search..." ng-change="vm.machineListDataSource.filter({logic: 'or', filters: [{ field:'KNT_MACHINE_NO', operator :'contains', value: q },{ field:'FLOOR_DESC_EN', operator :'contains', value: q }]})" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }">
+                        </div>
+
+                        <div kendo-list-view
+                             k-selectable="'single'"
+                             k-data-source="vm.machineListDataSource"
+                             k-on-change=" vm.onChangeMachineList(dataItem)">
+                            <div k-template>
+                                <dd class="k-state-default" style="padding: 5px; border-bottom: solid 1px; border-color: lightgray; ">
+                                    <b>{{dataItem.KNT_MACHINE_NO}}&nbsp;:&nbsp;{{dataItem.FLOOR_DESC_EN}}</b>
+                                </dd>
+                            </div>
+                        </div>
+                        <div kendo-pager k-data-source="vm.machineListDataSource"></div>
+
+                    </fieldset>
+
+                </div>
+
+                <div class="col-md-9">
+
+                    <div class="row" style="margin:auto;" ng-if="vm.errors">
+                        <div class="alert alert-danger" role="alert">
+                            @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                            <div style="padding: 0px 0px 15px 25px; ">
+                                <b>Please fix the following errors ....</b>
+                            </div>
+                            <ul ng-repeat="field in vm.errors">
+                                <li ng-repeat="error in field" ng-bind="error"></li>
+                            </ul>
+                        </div>
+                    </div>
+                    @*<p style="clear:both;padding:0px;margin:0px">&nbsp;</p>*@
+
+                    <form class="form-horizontal" role="form" name="frmMachineProfile" novalidate ng-submit="vm.submitData(vm.form,token)">
+
+                        <input ng-model="vm.CREATED_BY" type="hidden"
+                               data-ng-init="vm.CREATED_BY='@Session["multiScUserId"]'" />
+
+                        <input id="access_token" ng-model="vm.LAST_UPDATED_BY" type="hidden"
+                               ng-init="vm.LAST_UPDATED_BY='@Session["multiScUserId"]'" />
+
+                        <div class="form-body clearfix" style="padding-top:0px;">
+
+                            <div class="row">
+                                                                
+                                <div class="col-md-12" style="padding-left:0px;">
+                                    <fieldset class="custom-fieldset">
+                                        <legend class="custom-legend">Key Information</legend>
+
+                                        
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">
+                                                <span aria-required="true" class="required">*</span>Machine#
+                                            </label>
+                                            <div class="col-md-4">
+                                                <input type="text" class="form-control" name="KNT_MACHINE_NO" ng-model="vm.form.KNT_MACHINE_NO" ng-change="vm.onChangeMcNo()" required />
+                                            </div>
+
+                                            <label class="col-md-2 control-label">
+                                                <span aria-required="true" class="required">*</span>M/C Type
+                                            </label>
+                                            <div class="col-md-4">
+                                                <select kendo-drop-down-list name="KNT_MC_TYPE_ID" class="form-control"
+                                                        k-options="vm.mcTypeOption" k-data-source="vm.mcTypeDataSource" ng-model="vm.form.KNT_MC_TYPE_ID" required></select>
+                                            </div>                                            
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">
+                                                <span aria-required="true" class="required">*</span>Brand
+                                            </label>
+                                            <div class="col-md-4">
+                                                <select kendo-drop-down-list name="RF_BRAND_ID" class="form-control"
+                                                        k-options="vm.brandOption" k-data-source="vm.brandDataSource" ng-model="vm.form.RF_BRAND_ID" required></select>
+                                            </div>
+
+                                            <label class="col-md-2 control-label">
+                                                Model
+                                            </label>
+                                            <div class="col-md-4">
+                                                <input type="text" class="form-control" name="MODEL_NO" ng-model="vm.form.MODEL_NO" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">
+                                                <span aria-required="true" class="required">*</span>Country of Orgin
+                                            </label>
+                                            <div class="col-md-4">
+                                                <select kendo-drop-down-list name="C_ORIGIN_ID" class="form-control"
+                                                        k-options="vm.countryOption" k-data-source="vm.countryDataSource" ng-model="vm.form.C_ORIGIN_ID" required></select>
+                                            </div>
+
+                                            <label class="col-md-2 control-label">
+                                                Serial#
+                                            </label>
+                                            <div class="col-md-4">
+                                                <input type="text" class="form-control" name="MC_SERIAL_NO" ng-model="vm.form.MC_SERIAL_NO" />
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">
+                                                Supported M/C GG
+                                            </label>
+                                            <div class="col-md-4">
+                                                @*{{vm.form.KNT_MC_GG_ID_LIST}}*@
+                                                <select class="form-control" kendo-multi-select name="KNT_MC_GG_ID_LST" k-placeholder="'Search...'" required
+                                                        k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'"
+                                                        k-data-source="vm.mcGgDataSource" ng-model="vm.form.KNT_MC_GG_ID_LIST"
+                                                        k-value-primitive="false"
+                                                        k-auto-bind="'false'" ng-change="vm.onChangeMcGgList()"></select> 
+                                            </div>
+
+                                            <label class="col-md-2 control-label">
+                                                M/C Dia & GG
+                                            </label>
+                                            <div class="col-md-2">
+                                                <select kendo-drop-down-list name="KNT_MC_DIA_ID" class="form-control"
+                                                        k-options="vm.mcDiaOption" k-data-source="vm.mcDiaDataSource" ng-model="vm.form.KNT_MC_DIA_ID"></select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <select kendo-drop-down-list name="DF_MC_GG_ID" class="form-control"
+                                                        k-options="vm.mcDfGgOption" k-data-source="vm.mcDfGgDataSource" ng-model="vm.form.DF_MC_GG_ID"></select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">
+                                                Prod. Capacity(Kg)
+                                            </label>
+                                            <div class="col-md-2">
+                                                <input type="number" class="form-control" name="D_PRD_CAPACITY" ng-model="vm.form.D_PRD_CAPACITY" min="0" maxlength="7" />
+                                            </div>
+
+                                            <label class="col-md-2 col-md-offset-2 control-label">
+                                                RPM
+                                            </label>
+                                            <div class="col-md-2">
+                                                <input type="number" class="form-control" name="MC_RPM" ng-model="vm.form.MC_RPM" min="0" maxlength="3" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">
+                                                # of Feeder
+                                            </label>
+                                            <div class="col-md-2">
+                                                <input type="number" class="form-control" name="NO_FEEDER" ng-model="vm.form.NO_FEEDER" min="0" maxlength="3" />
+                                            </div>
+
+                                            <label class="col-md-2 col-md-offset-2 control-label">
+                                                Effecncy(%)
+                                            </label>
+                                            <div class="col-md-2">
+                                                <input type="number" class="form-control" name="PCT_EFFCNCY" ng-model="vm.form.PCT_EFFCNCY" min="0" max="100" placeholder="" />
+                                            </div>
+                                        </div>
+
+                                        
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">
+                                                <span aria-required="true" class="required">*</span>Prod.Floor
+                                            </label>
+                                            <div class="col-md-4">
+                                                <select kendo-drop-down-list name="HR_PROD_FLR_ID" class="form-control"
+                                                        k-options="vm.mcLocationOption" k-data-source="vm.mcLocationDataSource" ng-model="vm.form.HR_PROD_FLR_ID" required></select>
+                                            </div>
+
+                                            <label class="col-md-2 control-label">
+                                                Mfg. Year
+                                            </label>
+                                            <div class="col-md-2">
+                                                <input type="number" class="form-control" name="MFG_YEAR" ng-model="vm.form.MFG_YEAR" min="1900" maxlength="4" placeholder="YYYY" />
+                                            </div>                                            
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label"></label>
+                                            <div class="col-md-4">
+                                                <label class="checkbox-inline">
+                                                    <input type="checkbox" ng-model="vm.form.IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'">Active?
+                                                </label>
+                                            </div>
+                                            
+                                        </div>                                                                                                                     
+
+
+                                        <div class="form-group">&nbsp;</div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label"></label>
+                                            <div class="col-md-10">
+                                                <button type="button" class="btn btn-sm green" ng-click="vm.Save()" ng-show="vm.form.KNT_MACHINE_ID<1" ng-class="{'disabled':!frmMachineProfile.$valid}">Save</button>
+                                                <button type="button" class="btn btn-sm yellow-gold" ng-click="vm.Save()" ng-show="vm.form.KNT_MACHINE_ID>0" ng-class="{'disabled':!frmMachineProfile.$valid}">Update</button>
+                                                <button type="button" class="btn btn-sm blue" ng-click="vm.reset();">Cancel</button>
+                                            </div>
+
+                                        </div>
+                                       
+                                    </fieldset>
+
+
+                                    
+
+                                    
+
+                                </div>
+
+                                
+
+                            </div>
+
+
+
+                        </div>
+
+                    </form>
+  
+
+                </div>
+
+
+            </div>
+        </div>
+        @*</form>*@
+    </div>
+</div>
+
+
+<style scoped>
+    .k-treeview .k-in {
+        padding: 5px;
+    }
+
+    /*div.k-treeview {
+        overflow: auto;
+    }*/
+
+    #ItemCategTreeview .k-sprite {
+        background-image: url("/Content/assets/global/img/coloricons-sprite.png");
+    }
+
+    .rootfolder {
+        background-position: 0 0;
+    }
+
+    .folder {
+        background-position: 0 -16px;
+    }
+
+    .pdf {
+        background-position: 0 -32px;
+    }
+
+    .html {
+        background-position: 0 -48px;
+    }
+
+    .image {
+        background-position: 0 -64px;
+    }
+
+    .demo-section {
+        float: left;
+        width: 200px;
+        margin: 0 60px 0 0;
+    }
+</style>

@@ -1,0 +1,51 @@
+﻿<style>
+    .k-grid td {
+        padding: 2px;
+        padding-right: 4px;
+        padding-bottom: 0px;
+    }
+
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header {
+        font-size: 13px;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-12" style="padding-right:10px">
+
+        <ng-form name="frmProd" role="form">
+
+            <div class="portlet-body" data-ui-view="SmplProdEntryDtl"></div>
+
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend">Sample Producton & Delivery</legend>
+
+                <div kendo-grid k-options="$parent.smpProdGridOption" k-data-source="$parent.smpProdGridDataSource"></div>
+            </fieldset>
+
+        </ng-form>
+
+        @*{{$parent.HAS_DATA_PROD_GRID}}*@
+        @*{{maxDelvQtyProd}}*@
+        @*{{frmProdEntry.$invalid}}*@
+        @*{{$parent.IS_PROD_SUBMIT}}*@
+        <div style="padding-top:5px;text-align:right">
+
+            @*<button class="btn btn-xs blue" ng-click="vm.addToBatch()" ng-class="{'disabled':frmProdEntry.$invalid||$parent.IS_PROD_SUBMIT=='Y'}">Add To Batch</button>*@
+            <button class="btn btn-xs green" ng-click="vm.submitData(token)" ng-class="{'disabled':$parent.frmSampleProduction.$invalid||$parent.IS_PROD_SUBMIT=='Y'||$parent.HAS_DATA_PROD_GRID=='N'}">Save</button>
+            &nbsp;&nbsp;&nbsp;
+            <button class="btn btn-xs blue" ng-click="vm.sendToInhouse(token)" ng-class="{'disabled':$parent.IS_PROD_SUBMIT=='Y'||$parent.IS_PROD_SAVE=='N'}">Submit</button>
+            @*<button type="button" class="btn btn-sm blue-hoki" ng-click="vm.backToList()">Back to List</button>*@
+
+        </div>
+
+    </div>
+
+</div>
+
+
+

@@ -1,0 +1,274 @@
+﻿        <div class="modal-body">
+            <div class="portlet grey-cascade box">
+                <div class="portlet-title">
+                    <div>
+                        <h3 style="padding-top:10px;margin-top:3px;">
+                            <span class="item"> <span aria-hidden="true" class="icon-settings"></span>&nbsp; Production Plans ==> Line:{{ LINE_CODE }}</span>
+                            <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                        </h3>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <form role="form" class="form-horizontal">
+                        <div style="padding:5px;" class="row">
+                         
+                                <div class="row" style="margin:auto;">
+                                    <div class="col-md-6">
+                                        <table class="table table-condensed table-striped table-bordered" style="margin-bottom: 3px">
+                                            <thead>
+                                                <tr class="site-table-header">
+                                                    <td colspan="9">
+                                                        <div class="portlet-input input-inline input-small">
+                                                            <div class="input-icon right" style="width:300px;">
+                                                                <i class="icon-magnifier"></i>
+                                                                <input type="text" size="50" class="form-control input-circle" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" ng-model="q" placeholder="search...">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th style="width: 5%;">
+                                                        In Trgt?
+                                                    </th>
+                                                    <th style="width: 10%;">
+                                                        Buyer
+                                                    </th>
+                                                    <th style="width: 20%;">
+                                                        Order/Style
+                                                    </th>
+
+                                                    <th style="width: 10%;">
+                                                        Input Date
+                                                    </th>
+                                                    <th style="width: 10%;">
+                                                        Plan Prod Start
+                                                    </th>
+                                                    <th style="width: 10%;">
+                                                        Plan Prod End
+                                                    </th>
+
+                                                    <th style="width: 10%;">
+                                                        Allocation
+                                                    </th>
+                                                    <th style="width: 10%;">
+                                                        Production
+                                                    </th>
+                                                    <th style="width: 10%;">
+                                                        Action
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                        <div slimscroll="{height: 600,allowPageScroll:true,railVisible :true,allowPageScroll :true}">
+                                            <table class="table table-condensed table-striped table-bordered" style="margin-bottom: 3px">
+                                                <tbody>
+                                                    <tr ng-repeat="item in plan_datas|filter:q">
+                                                        <td style="width: 5%;">
+                                                            <div class="checkbox-list">
+                                                                <label class="checkbox-list">
+                                                                    <span><input type="checkbox" ng-model="item.IS_USED_IN_TRGT" ng-true-value="'Y'" ng-false-value="'N'"></span>
+                                                                </label>
+                                                            </div>
+                                                        </td>
+                                                        <td style="width:10%;"> {{ item.BYR_ACC_GRP_NAME_EN }}</td>
+                                                        <td style="width:20%;">
+                                                            {{ item.ORDER_NO }}
+                                                            <span style="display:block;">
+                                                                <small>{{ item.STYLE_NO }}</small>
+                                                            </span>
+                                                            <span style="display:block;">
+                                                                <small> {{ item.ITEM_NAME_EN }} <b style="color:blue;">[SMV: {{ item.SMV }}]</b></small>
+                                                            </span>
+                                                        </td>
+
+                                                        <td style="width:10%;"> {{ item.SEW_IN_DATE|date: 'dd-MMM-yyyy h a' }}</td>
+                                                        <td style="width:10%;"> {{ item.SEW_START_DT |date: 'dd-MMM-yyyy h a' }}</td>
+                                                        <td style="width:10%;"> {{ item.SEW_END_DT |date: 'dd-MMM-yyyy h a' }}</td>
+                                                        <td style="width:10%;"> {{ item.ALLOCATED_QTY }}</td>
+                                                        <td style="width:10%;">
+
+                                                            <span style="display:block;">
+                                                                <small>{{ item.INITIAL_PROD_QTY+ item.TOT_PROD }}</small>
+                                                            </span>
+                                                            <span style="display:block;">
+                                                                <small>{{ (item.INITIAL_PROD_QTY + item.TOT_PROD)/item.ALLOCATED_QTY *100|number:1 }} % <b style="color:coral;">[{{ item.ALLOCATED_QTY - item.INITIAL_PROD_QTY - item.TOT_PROD }}]</b></small>
+                                                            </span>
+                                                        </td>
+                                                        <td style="width:10%;">
+                                                            <a class="btn btn-xs grey-cascade" ng-click="getSummeryData(item.GMT_PLN_LINE_LOAD_ID)">
+                                                                Details
+                                                                <i class="fa fa-arrow-circle-o-right"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="portlet-title">
+                                            <div style="padding-top:2px;">
+                                                <h4 class="title">
+                                                    Style # : <strong>{{data.STYLE_NO}}</strong>&nbsp;&nbsp;Order # : <strong>{{data.ORDER_NO}}</strong>&nbsp;&nbsp;Buyer : <strong>{{data.BYR_ACC_NAME_EN}}</strong>&nbsp;&nbsp;Order Quantity # : <strong>{{data.ORDER_QTY}}</strong>&nbsp;&nbsp;Order Confirm: <strong>{{data.ORD_CONF_DT|date:'dd-MMM-yyyy'}}</strong>&nbsp;&nbsp;
+                                                    Shipment: <strong>{{data.SHIP_DT|date:'dd-MMM-yyyy'}}</strong>
+                                                    <br />
+                                                    Line Load :# <strong style="color: darkblue;">{{data.SEW_START_DT|date:'dd-MMM-yyyy h:mma'}}</strong>&nbsp;Line Un-Load :# <strong style="color:darkblue;">{{data.SEW_END_DT|date:'dd-MMM-yyyy h:mma'}}</strong>&nbsp;
+
+                                                </h4>
+                                            </div>
+                                        </div>
+
+                                        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;">
+                                            <legend class="custom-legend">Allocation Status</legend>
+                                            <table class="table table-condensed table-striped table-bordered">
+                                                <thead>
+                                                    <tr class="site-table-header">
+                                                        <th style="width: 20%">Code</th>
+                                                        <th style="width: 30%">Staus</th>
+                                                        <th style="width: 50%">Hints2Solve</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody style="font-weight:900">
+                                                    <tr ng-repeat="status in data.sts" ng-style="{'color': status.STS_COLOR_CODE }">
+                                                        <td>{{status.PLN_STS_CODE}}</td>
+                                                        <td>
+                                                            {{status.PLN_STS_NAME}}
+                                                        <td>
+                                                            {{status.PLN_STS_AREA_NAME}}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+
+                                            </table>
+
+                                        </fieldset>
+
+
+
+                                        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;">
+                                            <legend class="custom-legend">Line Loading Data</legend>
+
+                                            <table class="table table-condensed table-striped table-bordered">
+                                                <thead>
+
+                                                    <tr class="site-table-header">
+                                                        <th style="width: 3%">Day</th>
+                                                        <th style="width: 10%">Date</th>
+                                                        <th style="width: 2%">WH</th>
+                                                        <th style="width: 5%">OP</th>
+                                                        <th style="width: 5%">HP</th>
+                                                        <th style="width: 5%">OT Hrs</th>
+                                                        <th style="width: 7%">PLanEffi.</th>
+                                                        <th style="width: 7%">Req Effi.</th>
+                                                        <th style="width: 7%">Req Prod</th>
+                                                        <th style="width: 7%">Prod</th>
+                                                        
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="(key,item) in data.details" ng-class="{'warning' : item.STS_FLAG == 'U'}">
+                                                        <td>
+                                                            {{key+1}}
+                                                        </td>
+                                                        <td>
+                                                            {{item.CALENDAR_DT|date:'dd-MMM-yyyy'}}
+                                                            <span style="display:block;" ng-if="$first">{{data.SEW_START_DT|date:'ha'}}</span>
+                                                            <span style="display:block;" ng-if="$last">{{data.SEW_END_DT|date:'ha'}}</span>
+                                                        </td>
+                                                        <td>
+                                                            {{item.EWH}}
+                                                        </td>
+                                                        <td>
+                                                            {{ item.PLAN_OPs }}
+                                                        </td>
+
+                                                        <td>
+                                                            {{ item.PLAN_HP }}
+                                                        </td>
+
+                                                        <td>
+                                                            {{ item.OT_HR }}
+                                                        </td>
+                                                        <td>
+                                                            {{ item.RF_PLAN_EFF }}
+                                                        </td>
+                                                        <td class="has-warning">
+                                                            {{item.REQ_EFF+' %'}}
+                                                        </td>
+
+                                                        <td>
+                                                            <b>{{item.REQ_PROD_QTY}}</b> ({{item.REQ_PROD_HR+'/Hr'}})
+                                                        </td>
+
+                                                        <td>
+                                                            <b>{{item.TOT_PROD}}</b>
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="8" style="text-align:right;">
+                                                            <strong>Total</strong>
+                                                        </td>
+                                                        <td>
+                                                            {{data.TTL_REQ_PROD}}
+                                                        </td>
+
+                                                        <td>
+                                                            {{data.TOT_PROD}}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </fieldset>
+
+                                        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;">
+                                            <legend class="custom-legend">Allocation Summery</legend>
+                                            <table class="table table-condensed table-striped table-bordered">
+                                                <thead>
+                                                    <tr class="site-table-header">
+                                                        <th style="width: 20%">Line</th>
+                                                        <th style="width: 20%">Allocation</th>
+                                                        <th style="width: 20%">Load</th>
+                                                        <th style="width: 20%">Un-Load</th>
+                                                        <th style="width: 10%">Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody style="font-weight:700">
+                                                    <tr ng-repeat="status in data.others_allocations" ng-class="{'success': status.IS_SAME_LINE == 'Y' }">
+                                                        <td>{{status.LINE_CODE}}</td>
+                                                        <td>{{status.ALLOCATED_QTY}}</td>
+                                                        <td>{{status.SEW_START_DT|date:'dd-MMM-yyyy ha'}}</td>
+                                                        <td>{{status.SEW_END_DT|date:'dd-MMM-yyyy ha'}}</td>
+                                                        <td>{{status.PLN_STRIPE_PHASE_NAME}}</td>
+
+                                                    </tr>
+                                                    <tr class="success">
+                                                        <td>{{data.LINE_CODE}} (Current)</td>
+                                                        <td>{{data.ALLOCATED_QTY}}</td>
+                                                        <td>{{data.SEW_START_DT|date:'dd-MMM-yyyy ha'}}</td>
+                                                        <td>{{data.SEW_END_DT|date:'dd-MMM-yyyy ha'}}</td>
+                                                        <td>{{data.PLN_STRIPE_PHASE_NAME}}</td>
+                                                    </tr>
+                                                </tbody>
+                                                <tfoot style="font-weight:900">
+                                                    <tr>
+                                                        <td>Total</td>
+                                                        <td colspan="5">{{data.TTL_ALLOCATED_QTY}} <b style="float:right;">({{ (data.TTL_ALLOCATED_QTY/ data.ORDER_QTY)*100|number:2 }}%)</b> </td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin:auto;">
+                                    <div class="col-md-12">
+                                        <button type="button" class="btn btn-sm green" ng-click="save(plan_datas)">Save</button>
+                                        <button type="button" class="btn btn-sm default" ng-click="cancel()">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                    </form>
+                </div>
+            </div>
+        </div>

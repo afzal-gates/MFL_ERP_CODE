@@ -1,0 +1,255 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Knitting</a>
+
+    </li>
+    <li>
+        <a href="#">{{vm.Title}}</a>
+    </li>
+</ul>
+
+
+<div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+    <div class="page-splash">
+        <div class="page-splash-message">
+            <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+        </div>
+    </div>
+</div>
+
+
+<div class="portlet box blue-dark" >
+    
+    
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">           
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <form class="form-horizontal form-body" name="frmClCfProd">
+            <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    <fieldset class="custom-fieldset" style="margin-bottom:5px" ng-disabled="form.LK_SC_PRG_STATUS_ID==538">
+                        <legend class="custom-legend">Key Information</legend>
+
+                        <div class="row" style="margin:auto;" ng-show="errors">
+                            <div class="alert alert-danger" role="alert">
+                                @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                                <div style="padding: 0px 0px 15px 25px; ">
+                                    <b>Please fix the following errors ....</b>
+                                </div>
+                                <ul ng-repeat="field in errors">
+                                    <li ng-bind="field.error"></li>
+                                </ul>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="control-label col-md-1">
+                                <span aria-required="true" class="required">*</span>Date
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control required" ng-click="vm.SCO_PRG_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                       name="SC_PRG_DT" max-date="vm.today" ng-model="vm.form.SCO_PRG_DT" is-open="vm.SCO_PRG_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close"
+                                       required />
+
+                            </div>
+
+
+                            <label class="control-label col-md-offset-1 col-md-1">
+                                <span aria-required="true" class="required">*</span>Party
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control" kendo-drop-down-list name="SCM_SUPPLIER_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                        k-data-text-field="'SUP_TRD_NAME_EN'" k-data-value-field="'SCM_SUPPLIER_ID'"
+                                        k-auto-bind="'true'" k-options="vm.supplierOption" k-data-source="vm.supplierDataSource" ng-model="vm.form.SCM_SUPPLIER_ID"
+                                        ng-disabled="form.LK_SC_PRG_STATUS_ID==538" required></select>
+                            </div>
+
+
+                            <label class="control-label col-md-1">
+                                Program#
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" ng-model="vm.form.SCO_PRG_NO" placeholder="[Auto Generate]" readonly />
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="control-label col-md-1">
+                                Style(Order)#
+                            </label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" ng-model="vm.form.MC_ORDER_NO_LST" readonly />
+                            </div>
+
+                            <label class="control-label col-md-1">
+                                C.P.I
+                            </label>
+                            <div class="col-md-1">
+                                <input type="number" class="form-control" ng-model="vm.form.CPI" />
+                            </div>
+
+
+                            <label class="control-label col-md-1">
+                                No of Ply
+                            </label>
+                            <div class="col-md-1">
+                                <input type="number" class="form-control" ng-model="vm.form.NO_PLY" />
+                            </div>
+
+                            <label class="control-label col-md-1">
+                                Status
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control" kendo-drop-down-list name="LK_SC_PRG_STATUS_ID" k-option-label="'-- Select Status --'"
+                                        k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'" k-filter="'contains'"
+                                        k-auto-bind="'true'" k-options="vm.progStatusOption" k-data-source="vm.progStatusDataSource" k-ng-delay="vm.progStatusDataSource"
+                                        ng-model="form.LK_SC_PRG_STATUS_ID" @*k-on-change="vm.getDataByOrderColorId(kendoEvent)"*@ ng-disabled="true"></select>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label class="control-label col-md-1">
+                                Remarks
+                            </label>
+                            <div class="col-md-11">
+                                <input type="text" class="form-control" ng-model="vm.form.REMARKS" />
+                            </div>
+
+
+
+                            @*<div class="col-md-1">
+                    <button type="button" class="btn btn-sm blue" ng-click="vm.nextLoad()"
+                            ng-class="{'disabled':vm.form.MC_BYR_ACC_ID==null||(vm.form.MC_STYLE_H_EXT_ID==null||vm.form.MC_STYLE_H_EXT_ID=='')||
+                            (vm.form.MC_COLOR_ID==null||vm.form.MC_COLOR_ID=='')}">
+                        Next
+                    </button>
+                </div>*@
+                        </div>
+
+
+
+                    </fieldset>
+
+                    <fieldset class="custom-fieldset" style="margin-bottom:5px">
+                        <legend class="custom-legend">Assign Rate</legend>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-1">
+                                <span aria-required="true" class="required">*</span>Type
+                            </label>
+                            <div class="col-md-2">
+                                <select class="form-control" kendo-drop-down-list name="RF_FAB_TYPE_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                        k-data-text-field="'FAB_TYPE_NAME'" k-data-value-field="'RF_FAB_TYPE_ID'"
+                                        k-auto-bind="'true'" k-options="vm.fkFabTypeOption" k-data-source="vm.fkFabTypeDataSource" ng-model="vm.form.RF_FAB_TYPE_ID" required></select>
+                            </div>                            
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div kendo-grid k-options="assignRateDtlOptions" k-data-source="assignRateDtlDataSource" id="assignRateGrid"></div>
+                            </div>
+                        </div>
+
+                        @*<table class="table table-striped table-bordered">
+                            <thead>
+                                <tr class="row-border">                                 
+                                    <th style="width: 15%">Part</th>
+                                    <th style="width: 15%">Design</th>
+                                    <th style="width: 60%">Rate Dese</th>
+                                    <th style="width: 10%">Rate</th>                                    
+                                </tr>
+                            </thead>
+                            
+                            <tbody class="">
+                                <tr ng-repeat="itm in vm.form.assignRateDtl" style="border-bottom: 1px solid hsl(0, 0%, 87%);height:auto">
+                                    
+                                    <td style="padding:5px 0px 5px 0px">{{itm.GARM_PART_NAME}}</td>
+                                    <td style="padding:5px 0px 5px 0px">{{itm.FK_DGN_TYP_NAME}}</td>
+                                    <td style="padding: 5px 0px 5px 0px">{{itm.FAB_PROC_NAME}}</td>
+                                    <td style="padding: 5px 0px 5px 0px">{{itm.PROD_RATE}}</td>                                                                   
+                                </tr>                               
+                            </tbody>
+                        </table>*@
+
+
+                        @*<div class="form-group">
+                            <label class="control-label col-md-1">
+                                <span aria-required="true" class="required">*</span>Design
+                            </label>
+                            <div class="col-md-2">
+                                <select class="form-control" kendo-drop-down-list name="LK_FK_DGN_TYP_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                        k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LK_FK_DGN_TYP_ID'"
+                                        k-auto-bind="'true'" k-options="vm.fkDesigTypOption" k-data-source="vm.fkDesigTypDataSource" ng-model="vm.form.LK_FK_DGN_TYP_ID" required></select>
+
+                            </div>
+
+
+                            <label class="control-label col-md-offset-1 col-md-1">
+                                <span aria-required="true" class="required">*</span>Rate Desc
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control" kendo-drop-down-list name="SCM_SC_QUOT_RATE_D_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                        k-data-text-field="'PROD_RATE'" k-data-value-field="'SCM_SC_QUOT_RATE_D_ID'"
+                                        k-auto-bind="'true'" k-options="vm.fabProcRateOption" k-data-source="vm.fabProcRateDataSource" ng-model="vm.form.SCM_SC_QUOT_RATE_D_ID" required></select>                                
+                            </div>
+
+
+                            <label class="control-label col-md-1">
+                                Rate
+                            </label>
+                            <div class="col-md-2">
+                                <input type="number" class="form-control" ng-model="vm.form.PROD_RATE" />
+                            </div>
+                        </div>*@
+
+                    </fieldset>
+
+                    <div class="portlet-body" data-ui-view="ScoCollarCuffProgH.CollarCuffDtl"></div>
+
+                </div>
+
+            </div>
+        </form>
+
+       
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+

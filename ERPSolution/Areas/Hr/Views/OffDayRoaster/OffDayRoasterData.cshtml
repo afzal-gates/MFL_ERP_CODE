@@ -1,0 +1,43 @@
+﻿
+
+<div class="row" style="padding-top:20px; margin-left:7px;margin-right:7px;">
+    <div kendo-grid k-options="vm.gridOptions"
+         k-ng-delay="vm.gridOptions"></div>
+
+    @*<div style="padding-top:20px" align="right">
+        <button type="submit" ng-if="!vm.buttonHide" class="btn yellow-gold" ng-click="vm.submitData()"><i class="fa fa-check"></i> Update</button>
+    </div>*@
+</div>
+<div class="row" style="padding-top:10px; margin-left:7px;margin-right:7px;">
+
+    <form class="form-horizontal col-md-6 col-md-offset-6" role="form">
+        <div class="form-group">
+            <label class="col-md-4 control-label text-align-reverse">
+                Effective From
+            </label>
+            <div class="col-md-4">
+                <div class="input-group">
+                    <input type="text" class="form-control" max-date="vm.toDay" datepicker-popup="{{vm.dtFormat}}" ng-model="vm.form.EFFECTIVE_FROM" is-open="EFFECTIVE_FROMopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" ng-disabled="vm.showExpiredDate" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn-calendar" ng-click="EFFECTIVE_FROMopen($event)" ng-disabled="vm.showExpiredDate"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div ng-click="vm.updateData()" ng-if="!vm.buttonHide" class="btn btn-sm yellow-gold" ng-disabled="!vm.form.EFFECTIVE_FROM">
+                    <span class="hidden-480">
+                        Update
+                    </span>
+                </div>
+
+                @*<div ng-click="vm.saveData()" ng-if="!vm.buttonHide" class="btn btn-sm green" ng-disabled="!vm.form.EFFECTIVE_FROM">
+                        <span class="hidden-480">
+                            Save
+                        </span>
+                    </div>*@
+            </div>
+
+        </div>
+    </form>
+</div>

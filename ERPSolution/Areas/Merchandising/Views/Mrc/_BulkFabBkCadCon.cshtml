@@ -1,0 +1,390 @@
+﻿
+<tabset>
+    @*<tab heading="Consumption" active="vm.itemState" ui-sref="StyleH.Item({MC_STYLE_H_ID:vm.form.MC_STYLE_H_ID,MC_STYLE_D_ITEM_ID:0})">
+        <div data-ui-view="BulkFabBkDtl"></div>
+    </tab>
+
+    <tab heading="Consumption" active="vm.fabState" ui-sref="StyleH.Fab({MC_STYLE_H_ID:vm.form.MC_STYLE_H_ID,MC_STYLE_D_FAB_ID:0})">
+        <div data-ui-view="Fabrication"></div>
+    </tab>*@
+    <tab ng-repeat="tab in vm.tabs" heading="{{tab.title}}" active="tab.active" @*ui-sref="{{tab.url}}"*@ disabled="tab.disabled" ng-click="vm.tabIsActive=true">
+
+        @* =================== Start Process Data ===================== *@
+        <div ng-show="tab.title=='Process Data'">            
+            <div class="row" ng-if="vm.tabIsActive">
+                <div class="col-md-12" style="padding-left:8px;padding-right:8px">
+                    <div id="kGridPro" kendo-grid k-data-source="$parent.processConsData" k-navigatable="true" k-columns="vm.gridProcessColumns"
+                         ng-disabled="$parent.IS_BFB_FINALIZED=='Y'"
+                         @*k-editable="true" k-selectable="true"*@ k-on-change="selected = data" k-height="200" k-filterable="vm.gridDtlFilterable" k-sortable="true"></div>
+                </div>
+            </div>
+        </div>
+        @* =================== Start Process Data ===================== *@
+
+        @* =================== Start Consumption Entry ===================== *@
+        <div ng-show="tab.title=='Consumption Entry'">
+            <ng-form name="bulkFabBkCadCon" data-isolate-form novalidate>
+                <div class="row">
+                    <div class="col-md-6" style="padding-left:8px;padding-right:8px">
+                        <fieldset class="custom-fieldset" ng-disabled="$parent.IS_BFB_FINALIZED=='Y'">
+                            <legend class="custom-legend">Dia wise CAD Consumption</legend>
+                            @*{{vm.formDtl.INV_ITEM_CAT_ID}}*@
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">
+                                    Fab. Category
+                                </label>
+                                <div class="col-md-9">
+                                    <div class="radio-list" style="margin-left:20px">
+                                        <label class="radio-inline" ng-repeat="item in vm.fabCategoryList">
+                                            <span class="checked"><input type="radio" ng-model="vm.formDtl.INV_ITEM_CAT_ID" ng-value="item.INV_ITEM_CAT_ID" ng-change="vm.fabCatOnChange()" required></span>{{item.ITEM_CAT_NAME_EN}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">
+                                    GMT Part
+                                </label>
+                                <div class="col-md-9">
+                                    <select class="form-control" kendo-multi-select name="RF_GARM_PART_LST" k-placeholder="'Search...'"
+                                            k-data-text-field="'GARM_PART_NAME'" k-data-value-field="'RF_GARM_PART_ID'"
+                                            ng-disabled="$parent.IS_BFB_FINALIZED=='Y'"
+                                            k-data-source="vm.gmtPartList" ng-model="vm.formDtl.RF_GARM_PART_LST"></select>
+                                </div>
+                            </div>
+
+                            @*{{vm.formDtl.MC_STYLE_D_FAB_ID}}*@
+                            <div class="form-group" ng-show="vm.formDtl.INV_ITEM_CAT_ID!=7">
+                                <label class="col-md-3 control-label">
+                                    <span aria-required="true" class="required">*</span>Fabric
+                                </label>
+                                <div class="col-md-9">
+                                    <input type="hidden" name="MC_BLK_FAB_REQ_D_ID" ng-model="vm.formDtl.MC_BLK_FAB_REQ_D_ID" />
+                                    <input type="hidden" name="MC_BLK_FAB_REQ_H_ID" ng-model="vm.formDtl.MC_BLK_FAB_REQ_H_ID" />
+                                    @*<input type="hidden" name="MC_STYLE_D_FAB_ID" ng-model="vm.formDtl.MC_STYLE_D_FAB_ID" />*@
+
+                                    @*{{vm.formDtl.MC_STYLE_D_FAB_ID}}*@
+                                    <select class="form-control" kendo-drop-down-list name="MC_STYLE_D_FAB_ID" k-option-label="'-- Select --'" ng-required="vm.formDtl.INV_ITEM_CAT_ID!=7"
+                                            k-data-text-field="'FABRIC_DESC'" k-data-value-field="'MC_STYLE_D_FAB_ID'" style="max-width:400px"
+                                            ng-disabled="$parent.IS_BFB_FINALIZED=='Y'"
+                                            k-data-source="vm.styleWiseFabListData" ng-model="vm.formDtl.MC_STYLE_D_FAB_ID" k-on-select="vm.fabOnChange(kendoEvent)"></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-show="vm.formDtl.INV_ITEM_CAT_ID==7">
+                                <label class="col-md-3 control-label">
+                                    <span aria-required="true" class="required">*</span>Fabric
+                                </label>
+                                <div class="col-md-9">
+                                    <select class="form-control" kendo-drop-down-list name="INV_ITEM_ID" k-option-label="'-- Select --'"
+                                            k-data-text-field="'ITEM_NAME_EN'" k-data-value-field="'INV_ITEM_ID'"
+                                            ng-disabled="$parent.IS_BFB_FINALIZED=='Y'"
+                                            k-data-source="$parent.styleWiseTapeItemListData" ng-model="vm.formDtl.INV_ITEM_ID" ng-required="vm.formDtl.INV_ITEM_CAT_ID==7"></select>
+                                </div>
+                            </div>
+
+                            @*<div class="form-group" ng-if="vm.formDtl.INV_ITEM_CAT_ID==7">
+                <label class="col-md-3 control-label">
+                    <span aria-required="true" class="required">*</span>Fab. Desc.
+                </label>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" name="FABRIC_DESC" ng-model="vm.formDtl.FABRIC_DESC" required />
+                </div>
+            </div>*@
+
+                            <div class="form-group" ng-if="vm.formDtl.IS_FEDER_TYPE=='Y'">
+                                <label class="col-md-3 control-label">
+                                    <span aria-required="true" class="required">*</span>Feeder Type
+                                </label>
+                                <div class="col-md-9">
+                                    <select class="form-control" kendo-drop-down-list name="LK_FEDER_TYPE_ID" k-option-label="'-- Select --'" @*ng-required="vm.formDtl.IS_FEDER_TYPE=='Y'"*@
+                                            k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'"
+                                            ng-disabled="$parent.IS_BFB_FINALIZED=='Y'"
+                                            k-data-source="vm.feederTypeList" ng-model="vm.formDtl.LK_FEDER_TYPE_ID" k-on-change="vm.fabGrpOnChange(kendoEvent)"></select>
+                                </div>
+                            </div>
+
+
+
+                            @*<div class="form-group">
+                <label class="col-md-4 control-label">
+                    Fab. Group
+                </label>
+                <div class="col-md-8">
+                    <select class="form-control" kendo-drop-down-list name="LK_FBR_GRP_ID"
+                            k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'"
+                            k-data-source="vm.fabGrpList" ng-model="vm.formDtl.LK_FBR_GRP_ID" k-on-change="vm.fabGrpOnChange(kendoEvent)"></select>
+                </div>
+            </div>*@
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">
+                                    @*<span aria-required="true" class="required">*</span>*@Finish Dia
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" name="FIN_DIA" ng-model="vm.formDtl.FIN_DIA" />
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-control" kendo-drop-down-list name="DIA_MOU_ID" k-option-label="'-- Select --'"
+                                            k-data-text-field="'MOU_CODE'" k-data-value-field="'RF_MOU_ID'"
+                                            ng-disabled="$parent.IS_BFB_FINALIZED=='Y'"
+                                            k-data-source="vm.mouList" ng-model="vm.formDtl.DIA_MOU_ID" k-on-change="vm.finDiaUnitOnChange(kendoEvent)"></select>
+                                </div>
+
+                                <label class="col-md-1 control-label">
+                                </label>
+                                <div class="col-md-3">
+                                    <select class="form-control" kendo-drop-down-list name="LK_DIA_TYPE_ID" k-option-label="'-- Select --'"
+                                            k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'"
+                                            ng-disabled="$parent.IS_BFB_FINALIZED=='Y'"
+                                            k-data-source="vm.diaTypeList" ng-model="vm.formDtl.LK_DIA_TYPE_ID" k-on-change="vm.finDiaTypeOnChange(kendoEvent)"></select>
+                                </div>
+                            </div>
+                            @*{{vm.formDtl.LK_DIA_TYPE_ID}}*@
+
+                            @*<div class="form-group">
+                <label class="col-md-4 control-label">
+                    <span aria-required="true" class="required">*</span>Cuttable Dia
+                </label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" name="CUT_DIA" ng-model="vm.formDtl.CUT_DIA" required />
+                </div>
+            </div>*@
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">
+                                    <span aria-required="true" class="required">*</span>Cons.
+                                </label>
+
+                                <div class="col-md-2">
+                                    <input type="number" class="form-control" name="CONS_QTY" ng-model="vm.formDtl.CONS_QTY" required />
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-control" kendo-drop-down-list name="CONS_MOU_ID" @*k-option-label="'-- Select --'"*@ required
+                                            k-data-text-field="'MOU_CODE'" k-data-value-field="'RF_MOU_ID'"
+                                            ng-disabled="$parent.IS_BFB_FINALIZED=='Y'"
+                                            k-data-source="vm.mouList" ng-model="vm.formDtl.CONS_MOU_ID" k-on-change="vm.consDozOnChange(kendoEvent)"></select>
+                                </div>
+
+                                <label class="col-md-1 control-label">
+                                    Per
+                                </label>
+                                <div class="col-md-3">
+                                    <select class="form-control" kendo-drop-down-list name="QTY_MOU_ID" @*k-option-label="'-- Select --'"*@ required
+                                            k-data-text-field="'MOU_CODE'" k-data-value-field="'RF_MOU_ID'"
+                                            k-data-source="vm.mouList" ng-model="vm.formDtl.QTY_MOU_ID" k-on-change="vm.qtyMouOnChange(kendoEvent)"></select>
+                                </div>
+                                @*{{vm.formDtl.CONS_DOZ_UNIT_NAME}}*@
+                            </div>
+
+                        </fieldset>
+                    </div>
+
+
+
+                    <div class="col-md-6" style="padding-left:8px;padding-right:8px">
+                        <fieldset class="custom-fieldset" ng-disabled="$parent.IS_BFB_FINALIZED=='Y'">
+                            <legend class="custom-legend">Applicable GMT Qty & Fabric Color</legend>
+
+                            
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">
+                                    Order #
+                                </label>
+                                <div class="col-md-2">
+                                    <label class="control-label checkbox-inline">
+                                        <input type="checkbox" name="IS_ALL_ORDER" ng-model="vm.formDtl.IS_ALL_ORDER" ng-true-value="'Y'" ng-false-value="'N'" ng-change="vm.isAllOrder()" /> All?
+                                    </label>
+                                </div>                              
+                                <div class="col-md-7" ng-show="vm.isEnableMapOrderList">
+                                    <select class="form-control" kendo-multi-select name="MAP_ORDER_H_ID_LST" k-placeholder="'Search...'"
+                                            k-data-text-field="'ORDER_NO'" k-data-value-field="'MC_ORDER_H_ID'"
+                                            k-data-source="$parent.styleWiseOrderList" ng-model="vm.formDtl.MAP_ORDER_H_ID_LST"
+                                            ng-disabled="$parent.IS_BFB_FINALIZED=='Y'"
+                                            @*k-on-close="vm.gmtColorClose()"*@ ng-change="vm.gmtColorClose()"></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">
+                                    <span aria-required="true" class="required">*</span>Item Part
+                                </label>
+                                <div class="col-md-9">
+                                    <select class="form-control" kendo-multi-select name="STYLE_D_ITM_CAT_LST" k-placeholder="'Search...'" required
+                                            k-data-text-field="'ITEM_SNAME'" k-data-value-field="'MC_STYLE_D_ITEM_ID'"
+                                            ng-disabled="$parent.IS_BFB_FINALIZED=='Y'"
+                                            k-data-source="vm.orderWiseItemPartList" ng-model="vm.formDtl.STYLE_D_ITEM_LST" ng-change="vm.itmOnChange()" @*k-on-close="vm.itmOnChange()"*@></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-show="vm.orderWiseComboNoList.length>0">
+                                <label class="col-md-3 control-label">
+                                    Combo #
+                                </label>
+                                <div class="col-md-9">
+                                    <select class="form-control" kendo-multi-select name="COMBO_NO_LST" k-placeholder="'Search...'"
+                                            k-data-text-field="'COMBO_NO'" k-data-value-field="'COMBO_NO'"
+                                            ng-disabled="$parent.IS_BFB_FINALIZED=='Y'"
+                                            k-data-source="vm.orderWiseComboNoList" ng-model="vm.formDtl.COMBO_NO_LST"></select>
+                                </div>
+                            </div>
+
+                            @*{{vm.formDtl.IS_YD}}*@
+                            <div class="form-group" ng-if="vm.formDtl.IS_YD=='Y'">
+                                <label class="col-md-3 control-label">
+                                    <span aria-required="true" class="required">*</span>YD Type
+                                </label>
+                                <div class="col-md-9">
+                                    <select class="form-control" kendo-drop-down-list name="LK_FBR_GRP_ID" k-option-label="'-- Select --'" @*ng-required="vm.formDtl.IS_YD=='Y'"*@
+                                            k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'"
+                                            ng-disabled="$parent.IS_BFB_FINALIZED=='Y'"
+                                            k-data-source="vm.ydTypeList" ng-model="vm.formDtl.LK_YD_TYPE_ID" k-on-change="vm.fabGrpOnChange(kendoEvent)"></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">
+                                    <span aria-required="true" class="required">*</span>GMT Color
+                                </label>
+                                <div class="col-md-2">
+                                    <label class="control-label checkbox-inline">
+                                        <input type="checkbox" name="IS_ALL_COL" ng-model="vm.formDtl.IS_ALL_COL" ng-true-value="'Y'" ng-false-value="'N'" ng-change="vm.isAllGmtColor()" /> All?
+                                    </label>
+                                </div>
+                                <div class="col-md-7">
+                                    <select class="form-control" kendo-multi-select name="MC_COLOR_LST" k-placeholder="'Search...'" required
+                                            k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'MC_COLOR_ID'"
+                                            k-data-source="vm.orderWiseColorList" ng-model="vm.formDtl.MC_COLOR_LST"
+                                            ng-disabled="$parent.IS_BFB_FINALIZED=='Y'"
+                                            @*k-on-close="vm.gmtColorClose()"*@ ng-change="vm.gmtColorClose()"></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">
+                                    <span aria-required="true" class="required">*</span>Size Range
+                                </label>
+                                <div class="col-md-2">
+                                    <label class="control-label checkbox-inline">
+                                        <input type="checkbox" name="IS_ALL_SIZE" ng-model="vm.formDtl.IS_ALL_SIZE" ng-true-value="'Y'" ng-false-value="'N'" ng-change="vm.isAllSize()" /> All?
+                                    </label>
+                                </div>
+                                <div class="col-md-7">
+                                    <select class="form-control" kendo-multi-select name="MC_SIZE_LST" k-placeholder="'Search...'" required
+                                            k-data-text-field="'SIZE_CODE'" k-data-value-field="'MC_SIZE_ID'"
+                                            k-data-source="vm.orderWiseSizeList" ng-model="vm.formDtl.MC_SIZE_LST"
+                                            ng-disabled="$parent.IS_BFB_FINALIZED=='Y'"
+                                            @*k-on-close="vm.gmtSizeClose()"*@ ng-change="vm.gmtSizeClose()"></select>
+                                </div>
+                            </div>
+
+                            @*<div class="form-group">
+                <label class="col-md-3 control-label">
+                    GMT Qty
+                </label>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" name="TOTAL_QTY" ng-model="vm.formDtl.TOTAL_QTY" readonly />
+                </div>
+            </div>*@
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">
+                                    <span aria-required="true" class="required">*</span>Fab. Color
+                                </label>
+                                <div class="col-md-3">
+                                    <label class="control-label checkbox-inline">
+                                        <input type="checkbox" name="IS_SAME_GMT_COL" ng-model="vm.formDtl.IS_SAME_GMT_COL" ng-true-value="'Y'" ng-false-value="'N'" ng-change="vm.isSameAsGmtColor()" /> GMT Color?
+                                    </label>
+                                </div>
+                                <div class="col-md-6">
+                                    @*<select class="form-control" kendo-drop-down-list name="FAB_COLOR_ID" k-option-label="'-- Select --'"
+                    k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'MC_COLOR_ID'"
+                    k-data-source="vm.orderWiseColorList" ng-model="vm.formDtl.FAB_COLOR_LST"></select>*@
+
+                                    <select class="form-control" kendo-multi-select name="FAB_COLOR_LST" k-placeholder="'Search...'" required
+                                            k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'MC_COLOR_ID'"
+                                            k-data-source="vm.buyerColorList" ng-model="vm.formDtl.FAB_COLOR_LST"
+                                            ng-disabled="$parent.IS_BFB_FINALIZED=='Y'"
+                                            @*k-on-close="vm.fabColorClose()"*@ ng-change="vm.fabColorClose()"></select>
+                                </div>
+                                @*{{vm.formDtl.MC_COLOR_LST}}
+                {{vm.formDtl.FAB_COLOR_LST}}*@
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">
+                                    Color Spec.
+                                </label>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" name="COLOR_SPEC" ng-model="vm.formDtl.COLOR_SPEC" />
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="control-label checkbox-inline">
+                                        <input type="checkbox" name="IS_CONTRAST" ng-model="vm.formDtl.IS_CONTRAST" ng-true-value="'Y'" ng-false-value="'N'" ng-change="vm.isContrastOnChange()" /> Contrast?
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">
+                                    <span aria-required="true" class="required">*</span>C. Wastage %
+                                </label>
+                                <div class="col-md-3">
+                                    <input type="number" class="form-control" name="PCUT_WSTG" ng-model="vm.formDtl.PCUT_WSTG" @*ui-percentage-mask ui-percentage-value*@ min="0" max="100" required />
+                                </div>
+
+                                <label class="col-md-3 control-label">
+                                    Display Order
+                                </label>
+                                <div class="col-md-3">
+                                    <input type="number" class="form-control" name="DISPLAY_ORDER" ng-model="vm.formDtl.DISPLAY_ORDER" min="0" max="100" />
+                                </div>
+                            </div>
+
+                            @*<div class="form-group">
+                <label class="col-md-3 control-label">
+                    Labdip Ref#
+                </label>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" name="APRV_LD_REF" ng-model="vm.formDtl.APRV_LD_REF" />
+                </div>
+            </div>*@
+
+                            @*<div class="col-md-12">*@
+                            <div class="form-group">
+                                <label class="col-md-3 control-label"></label>
+                                &nbsp;&nbsp;&nbsp;
+                                <button class="btn btn-xs blue" ng-click="vm.addToGrid()" ng-show="vm.isAddToGrid=='Y'" ng-class="{'disabled':!bulkFabBkCadCon.$valid}">Add to Grid</button>
+                                <button class="btn btn-xs yellow-gold" ng-click="vm.addToGrid()" ng-show="vm.isAddToGrid=='N'" ng-class="{'disabled':!bulkFabBkCadCon.$valid}">Update to Grid</button>
+                                <button class="btn btn-xs btn-default" ng-click="vm.cancelToGrid()" ng-show="vm.isAddToGrid=='N'">Cancel</button>
+                            </div>
+                            @*</div>*@
+
+                        </fieldset>
+
+                    </div>
+
+
+                    <div class="form-group"></div>
+                    <input type="hidden" class="form-control" name="uid" ng-model="vm.formDtl.uid" />
+
+                    @*<kendo-grid k-options="vm.gridOptionsOrder" id="orderGrid"></kendo-grid>*@
+                    <div class="col-md-12" style="padding-left:8px;padding-right:8px" >
+                        <div id="kGrid" kendo-grid k-data-source="$parent.fabReqDtl" k-columns="vm.gridDtlColumns" k-selectable="true" @*k-on-change="selected = data"*@ k-height="200"
+                             k-filterable="vm.gridDtlFilterable" k-sortable="true"></div>
+                    </div>
+
+                    @*</div>*@
+
+            </ng-form>
+        </div>
+        @* =================== End Consumption Entry ===================== *@
+    </tab>
+</tabset>
+
+
+
+
+ 

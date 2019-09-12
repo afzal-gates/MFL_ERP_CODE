@@ -1,0 +1,298 @@
+﻿
+<div class="row" >
+
+    <div class="col-md-12" @*style="padding-left:10px;padding-right:10px;"*@>
+        <fieldset class="custom-fieldset">
+            <legend class="custom-legend"><b>Yarn Receive Challan</b></legend>
+            
+            <table class="table table-condensed table-striped table-bordered" style="margin-bottom:0px">
+                <thead>
+                    <tr class="row-border">
+                        <td style="width: 15%; padding: 5px 0px 5px 0px">
+                            <b>Challan#</b>
+                        </td>
+                        <td style="width: 10%; padding: 5px 0px 5px 0px">
+                            <b>Date</b>
+                        </td>
+                        <td style="width: 25%; padding: 5px 0px 5px 0px">
+                            <b>Store</b>
+                        </td>
+                        <td style="width: 30%; padding: 5px 0px 5px 0px">
+                            <b>Remarks</b>
+                        </td>
+                        
+                        <td style="width: 15%; padding: 5px 0px 5px 0px">
+                            <b>Action</b>
+                        </td>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr class="">
+                        <ng-form name="frmChallanRcv">
+                            <td style="width: 15%; padding: 5px 2px 5px 0px">
+                                <input type="hidden" name="KNT_SC_YRN_RCV_H_ID" ng-model="vm.yrnRcvForm.KNT_SC_YRN_RCV_H_ID" class="form-control" />
+                                <input type="text" name="CHALAN_NO" ng-model="vm.yrnRcvForm.CHALAN_NO" class="form-control" required />
+
+                            </td>
+                            <td style="width: 10%; padding: 5px 2px 5px 0px">
+                                <input type="text" class="form-control required" ng-click="vm.CHALAN_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                       name="CHALAN_DT" max-date="vm.today" ng-model="vm.yrnRcvForm.CHALAN_DT" is-open="vm.CHALAN_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" required />
+                            </td>
+                            <td style="width: 25%; padding: 5px 2px 5px 0px">
+                                <select kendo-drop-down-list name="SCM_STORE_ID" id="SCM_STORE_ID" class="form-control"
+                                        options="vm.storeList" ng-model="vm.yrnRcvForm.SCM_STORE_ID" required></select>
+
+                            </td>
+                            <td style="width: 30%; padding: 5px 0px 5px 0px">
+                                <input type="text" name="REMARKS" ng-model="vm.yrnRcvForm.REMARKS" class="form-control" />
+                            </td>
+                            @*<td style="width: 10%; padding: 5px 0px 5px 0px">
+                                <select class="form-control" kendo-drop-down-list name="IS_FINALIZE"
+                                        k-data-text-field="'LST_NAME'" k-data-value-field="'LST_ID'"
+                                        k-auto-bind="'true'" k-options="vm.yesNoOption" k-data-source="vm.yesNoDataSource"
+                                        ng-model="vm.yrnRcvForm.IS_FINALIZE"></select>
+                            </td>*@
+
+
+                            <td style="width: 15%; padding: 5px 0px 5px 5px;">
+                                <button type="button" class="btn btn-xs blue" ng-click="vm.addChallan(vm.yrnRcvForm)" ng-show="vm.isAddToGrid=='Y'"
+                                        ng-class="{'disabled':vm.yrnRcvForm.CHALAN_NO==''||vm.yrnRcvForm.CHALAN_NO==null||
+                                        vm.yrnRcvForm.CHALAN_DT==''||vm.yrnRcvForm.CHALAN_DT==null||
+                                        vm.yrnRcvForm.SCM_STORE_ID==''||vm.yrnRcvForm.SCM_STORE_ID==null}">
+                                    Add
+                                </button>
+                                <button type="button" class="btn btn-xs yellow-gold" ng-click="vm.updateChallan(vm.yrnRcvForm)" ng-show="vm.isAddToGrid=='N'"
+                                        ng-class="{'disabled':vm.yrnRcvForm.CHALAN_NO==''||vm.yrnRcvForm.CHALAN_NO==null||
+                                        vm.yrnRcvForm.CHALAN_DT==''||vm.yrnRcvForm.CHALAN_DT==null||
+                                        vm.yrnRcvForm.SCM_STORE_ID==''||vm.yrnRcvForm.SCM_STORE_ID==null}">
+                                    Update
+                                </button>
+
+                            </td>
+                        </ng-form>
+                    </tr>
+
+                    @*<pre>{{$parent.challanList|json}}</pre>*@
+
+                    <tr ng-repeat-start="itmChln in $parent.challanList" class="warning" @*ng-class="{'success':itmDtl.DETAIL_INDEX==vm.selectedDtl.DETAIL_INDEX}"*@ style="border-bottom: 1px solid hsl(0, 0%, 87%);height:auto">
+                        <td style="padding:5px 0px 5px 0px">
+                            <input type="hidden" name="KNT_SC_YRN_RCV_H_ID" ng-model="itmChln.KNT_SC_YRN_RCV_H_ID" class="form-control" />
+                            <input type="hidden" name="KNT_SC_PRG_RCV_ID" ng-model="itmChln.KNT_SC_PRG_RCV_ID" class="form-control" />
+                            {{itmChln.CHALAN_NO}}
+                        </td>
+
+                        <td style="padding: 5px 0px 5px 0px">
+                            {{itmChln.CHALAN_DT}}
+                        </td>
+                        <td style="padding:5px 0px 5px 0px">
+                            <input type="hidden" name="SCM_STORE_ID" ng-model="itmChln.SCM_STORE_ID" class="form-control" />
+                            {{itmChln.STORE_NAME_EN}}
+                        </td>
+                        <td style="padding: 5px 0px 5px 0px">
+                            {{itmChln.REMARKS}}
+                        </td>
+                        @*<td style="padding: 5px 0px 5px 0px">
+                            {{itmChln.IS_FINALIZE}}
+                        </td>*@
+
+                        <td style="padding: 5px 0px 5px 5px">
+
+                            <a class="btn btn-xs purple" ng-click="vm.makeActive($parent.challanList, $index)">
+                                <i class="fa" ng-class="{'fa fa-plus-square':!itmChln.IS_ACTIVE,'fa fa-minus-square':itmChln.IS_ACTIVE}"></i>
+                            </a>
+                            <a class="btn btn-xs blue" title="Edit Challan" ng-click="vm.editChallan($index, $parent.challanList)" ng-disabled="itmChln.IS_FINALIZE=='Y'">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            <a class="btn btn-xs red" title="Remove Challan" ng-click="vm.removeChallan($index, $parent.challanList)" ng-disabled="itmChln.IS_FINALIZE=='Y'">
+                                <i class="fa fa-times"></i>
+                            </a>
+                            <a class="btn btn-xs blue" title="Challan Finalize" ng-click="vm.finalizeChallan(itmChln)" ng-disabled="itmChln.KNT_SC_YRN_RCV_H_ID<1 || itmChln.IS_FINALIZE=='Y'" >
+                                Finalize
+                            </a>
+                        </td>
+                    </tr>
+
+
+                    <tr ng-show="itmChln.IS_ACTIVE" style="padding:0px;">
+                        <td colspan="7" ng-show="itmChln.IS_ACTIVE" style="padding:0px 0px 0px 0px;">
+
+                            <table class="table table-hover table-striped table-bordered" style="margin-bottom:0px; padding-bottom:0px;">
+                                <thead>
+                                    <tr class="row-border">
+                                        <th>Order Ref#</th>
+                                        <th>Yarn</th>                                        
+                                        @*<th>Color</th>
+                                        <th>Brand</th>
+                                        <th>Lot</th>*@
+                                        <th>Pac.Qty</th>
+                                        <th>Pac.Unit</th>
+                                        <th>Qty/Pac</th>
+                                        <th>Rcv.Qty</th>
+                                        <th>Rcv.Unit</th>
+                                        <th>Rqd.Qty</th>
+                                        <th>Cu.Qty</th>
+                                        <th>Bal.Qty</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr></tr>
+                                    <tr style="border-bottom: 1px solid hsl(0, 0%, 87%); height: auto;" class="success">
+
+                                        <td style="width: 20%; padding: 5px 2px 5px 0px">
+                                            <select class="form-control" kendo-drop-down-list name="SCM_SC_WO_REF_ID" k-option-label="'--Select--'"
+                                                    ng-model="dataItem.SCM_SC_WO_REF_ID" k-data-text-field="'SC_WO_REF_NO'" k-data-value-field="'SCM_SC_WO_REF_ID'"
+                                                    k-options="vm.scPrgOrdListOption" k-data-source="vm.scPrgOrdListDataSource" k-filter="'contains'" k-auto-bind="'true'"
+                                                    k-on-change="" ng-change="vm.getYrnSummeryData(dataItem, itmChln)" required></select>
+
+                                        </td>
+
+                                        <td style="width: 30%; padding: 5px 2px 5px 0px">
+
+                                            <select class="form-control" kendo-drop-down-list name="YARN_ITEM_ID" id="YARN_ITEM_ID" k-option-label="'-- Select Yarn Item --'"
+                                                    k-data-text-field="'YR_SPEC_DESC'" k-data-value-field="'YARN_ITEM_ID'"
+                                                    k-auto-bind="'true'" k-options="vm.yarnItemOption" k-data-source="vm.yarnItemDataSource" k-filter="'contains'" ng-model="dataItem.YARN_ITEM_ID"
+                                                    ng-change="vm.getYrnSummeryData(dataItem, itmChln)" required></select>
+
+                                        </td>
+                                        @*<td style="width: 10%; padding: 5px 2px 5px 0px">
+                                            <select class="form-control" kendo-drop-down-list name="LK_YRN_COLR_GRP_ID" id="LK_YRN_COLR_GRP_ID" k-option-label="'--Select Color--'"
+                                                    k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'"
+                                                    k-auto-bind="'true'" k-options="vm.colorGrpOption" k-data-source="vm.yarnColorGroupDataSource" k-filter="'contains'" ng-model="dataItem.LK_YRN_COLR_GRP_ID"></select>
+
+                                        </td>
+                                        <td style="width: 20%; padding: 5px 2px 5px 0px">
+                                            <select class="form-control" kendo-drop-down-list name="RF_BRAND_ID" id="RF_BRAND_ID" k-option-label="'-- Select Brand --'"
+                                                    k-data-text-field="'BRAND_NAME_EN'" k-data-value-field="'RF_BRAND_ID'"
+                                                    k-auto-bind="'true'" k-options="vm.catBrandOption" k-data-source="vm.categoryBrandDataSource" k-filter="'contains'" ng-model="dataItem.RF_BRAND_ID"></select>
+
+                                        </td>
+                                        <td style="width: 5%; padding: 5px 0px 5px 0px">
+                                            <input type="text" name="YRN_LOT_NO" ng-model="dataItem.YRN_LOT_NO" class="form-control" />
+
+                                        </td>*@
+
+                                        <td style="width: 5%; padding: 5px 0px 5px 0px">
+                                            <input type="number" name="CTN_RCV_QTY" ng-model="dataItem.CTN_RCV_QTY" ng-change="vm.TotalReceiveQty(dataItem);vm.getYrnBalQty();" class="form-control double" />
+
+                                        </td>
+                                        <td style="width: 8%; padding: 5px 0px 5px 0px">
+                                            <select class="form-control" kendo-drop-down-list name="PACK_MOU_ID" k-option-label="'--UoM--'"
+                                                    k-data-text-field="'MOU_CODE'" k-data-value-field="'RF_MOU_ID'"
+                                                    k-auto-bind="'true'" k-options="vm.packMouOption" k-data-source="vm.packMouDataSource" k-filter="'contains'" ng-model="dataItem.PACK_MOU_ID"></select>
+
+                                        </td>
+
+
+                                        <td style="width: 5%; padding: 5px 0px 5px 0px">
+                                            <input type="number" name="QTY_PER_CTN" ng-model="dataItem.QTY_PER_CTN" ng-change="vm.TotalReceiveQty(dataItem);vm.getYrnBalQty();" class="form-control double" />
+                                            @*{{dataItem.QTY_PER_CTN}}*@
+                                        </td>
+                                        <td style="width: 5%; padding: 5px 0px 5px 0px">
+                                            <input type="number" name="RCV_QTY" ng-model="dataItem.RCV_QTY" @*readonly="readonly"*@ class="form-control double" />
+
+                                        </td>
+                                        <td style="width: 6%; padding: 5px 2px 5px 0px">
+                                            @*<input type="number" name="QTY_MOU_CODE" ng-model="dataItem.QTY_MOU_CODE" readonly="readonly" class="form-control double" />*@
+                                            <select class="form-control" kendo-drop-down-list name="QTY_MOU_ID" k-option-label="'--UoM--'" ng-disabled="true"
+                                                    k-data-text-field="'MOU_CODE'" k-data-value-field="'RF_MOU_ID'"
+                                                    k-auto-bind="'true'" k-options="vm.qtyMouOption" k-data-source="vm.qtyMouDataSource" k-filter="'contains'" ng-model="dataItem.QTY_MOU_ID"></select>
+
+                                        </td>
+
+                                        <td style="width: 5%; padding: 5px 0px 5px 0px">
+                                            <input type="text" name="RQD_FAB_QTY" ng-model="dataItem.RQD_FAB_QTY" class="form-control" readonly style="color:blue" />
+
+                                        </td>
+                                        <td style="width: 5%; padding: 5px 0px 5px 0px">
+                                            <input type="text" name="CUMU_RCV_YRN_QTY" ng-model="dataItem.CUMU_RCV_YRN_QTY" class="form-control" readonly style="color:blue" />
+
+                                        </td>
+                                        <td style="width: 5%; padding: 5px 0px 5px 0px">
+                                            <input type="text" name="BAL_YRN_QTY" ng-model="dataItem.BAL_YRN_QTY" class="form-control" readonly style="color:blue" />
+
+                                        </td>
+
+                                        <td style="width: 6%; padding: 5px 0px 5px 0px;text-align:center">
+                                            <button type="button" class="btn btn-xs blue" title="Add to Grid" ng-click="vm.addYarn(dataItem, itmChln)" ng-show="vm.isYrnAddToGrid=='Y'" ng-disabled="itmChln.IS_FINALIZE=='Y'">Add Yarn</button>
+                                            <button type="button" class="btn btn-xs yellow-gold" ng-click="vm.updateYarn(dataItem, itmChln)" ng-show="vm.isYrnAddToGrid=='N'" ng-disabled="itmChln.IS_FINALIZE=='Y'">Update</button>
+                                        </td>
+                                    </tr>
+
+                                    <tr ng-repeat="itmYrn in itmChln.yarnList" class="success">
+
+                                        <td>{{itmYrn.SC_WO_REF_NO}}</td>
+                                        <td>{{itmYrn.YR_SPEC_DESC}}</td>
+                                        @*<td>{{itmYrn.YRN_COLR_GRP_NAME}}</td>
+                                        <td>{{itmYrn.BRAND_NAME_EN}}</td>
+                                        <td>{{itmYrn.YRN_LOT_NO}}</td>*@
+                                        <td>{{itmYrn.CTN_RCV_QTY}}</td>
+                                        <td>{{itmYrn.PACK_MOU_CODE}}</td>
+                                        <td>{{itmYrn.QTY_PER_CTN}}</td>
+                                        <td>{{itmYrn.RCV_QTY}}</td>
+                                        <td>{{itmYrn.QTY_MOU_CODE}}</td>
+                                        <td>{{itmYrn.RQD_FAB_QTY}}</td>
+                                        <td>{{itmYrn.CUMU_RCV_YRN_QTY}}</td>
+                                        <td>{{itmYrn.BAL_YRN_QTY}}</td>
+                                        <td>
+                                            <a class="btn btn-xs blue" title="Edit Yarn" ng-click="vm.editYarn($index, itmChln.yarnList)" ng-disabled="itmChln.IS_FINALIZE=='Y'">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                            <a class="btn btn-xs red" title="Remove Yarn" ng-click="vm.removeYarn($index, itmChln.yarnList)" ng-disabled="itmChln.IS_FINALIZE=='Y'">
+                                                <i class="fa fa-times"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </td>                        
+                    </tr>
+
+
+                    
+
+
+                    <tr ng-repeat-end></tr>
+                </tbody>
+
+            </table>                       
+           
+        </fieldset>
+
+        
+
+    </div>
+</div>
+
+<br />
+
+<div class="row">
+
+    <div class="col-md-12" style="text-align:right;padding-top:0px;">
+        <div class="form-group">
+
+            <button type="button" class="btn btn-sm green" ng-click="vm.batchSave()" ng-show="$parent.form.KNT_SC_PRG_RCV_ID<1"
+                    ng-class="{'disabled':frmScInHouseChlan.KNT_SC_PRG_RCV_ID.$error.required||frmScInHouseChlan.SCM_SUPPLIER_ID.$error.required}">
+                Save
+            </button>
+            <button type="button" class="btn btn-sm yellow-gold" ng-click="vm.batchSave()" ng-show="$parent.form.KNT_SC_PRG_RCV_ID>0"
+                    ng-class="{'disabled':frmScInHouseChlan.KNT_SC_PRG_RCV_ID.$error.required||frmScInHouseChlan.SCM_SUPPLIER_ID.$error.required}">
+                Update
+            </button>
+            @*<button type="button" class="btn btn-sm blue" ng-click="vm.cancel()">Cancel</button>*@
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            @*<button type="button" class="btn btn-sm blue" ng-click="vm.printLedger()" ng-show="form.KNT_SCO_CHL_RCV_H_ID>0">Print</button>*@
+            @*<button type="button" class="btn btn-sm blue-hoki" ng-click="vm.backToList()">Back to List</button>*@
+        </div>
+    </div>
+
+
+</div>
+
+@*<pre>{{frmScInHouseChlan.$error|json}}</pre>*@
+
+@*<pre>{{$parent.form|json}}</pre>*@

@@ -1,0 +1,299 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Cutting</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption">
+            {{vm.Title}}
+        </div>
+        <div class="tools">
+        </div>
+
+        <div class="actions">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <table class="table table-condensed table-striped table-bordered" style="padding-left: 5px; padding-right: 5px; margin-bottom: 3px;">
+            <tbody>
+                <tr>
+
+                    <td style="width: 15%; padding-bottom: 0px; padding-bottom: 0px;">
+
+                        <form name="StoreRecvAfterPrintEmbrForm" ng-submit="vm.submitData(BARCODE, StoreRecvAfterPrintEmbrForm.$valid)">
+
+                            <div class="form-group" ng-class="{'has-error': StoreRecvAfterPrintEmbrForm.$invalid }">
+                                <input type="text" class="form-control" ng-model="BARCODE" name="BARCODE" style="height:28px;" focus-me="true" placeholder="Bundle Card" ng-maxlength="18" ng-minlength="18">
+
+
+                                <button type="submit" ng-disabled="StoreRecvAfterPrintEmbrForm.BARCODE.$pending" style="display:none;"></button>
+                            </div>
+                        </form>
+                    </td>
+
+
+                    <td style="width: 20%;  border-left: hidden; padding-bottom: 0px;">
+                        <div class="help-block" style="background-color: red; font-size: 13px; color: white; padding: 5px; " ng-if="StoreRecvAfterPrintEmbrForm.BARCODE.$dirty && (StoreRecvAfterPrintEmbrForm.BARCODE.$error.invalid_barcode||StoreRecvAfterPrintEmbrForm.BARCODE.$error.maxlength||StoreRecvAfterPrintEmbrForm.BARCODE.$error.minlength)">
+                            <b>Invalid</b>&nbsp;&nbsp; {{vm.errors}}
+                        </div>
+                    </td>
+
+                    <td style="width: 15%; text-align: right; border-left: hidden; padding-bottom: 0px;">
+
+                        <h4 class="block" style="margin:0px;">
+                            <span class="label label-primary">
+                                <b>{{vm.countData.COUNT_OK}}</b>
+                            </span>
+                            OK
+                            <a class="btn btn-xs blue-soft" ng-click="vm.openRecvChallan()" ng-disabled="vm.countData.COUNT_OK==0">
+                                <i class="fa fa-list-alt"></i> Receive Challan
+                            </a>
+                        </h4>
+                    </td>
+
+
+                    <td style="width: 20%; text-align: right; border-left: hidden; padding-bottom: 0px;">
+
+                        <h4 class="block" style="margin:0px;">
+                            <span class="label label-primary">
+                                <b><b>{{vm.countData.COUNT_NOT_OK}}</b></b>
+                            </span>
+                            Not OK(Reject/Short)
+                            <a class="btn btn-xs blue-soft" ng-click="vm.openRejectShortPrintEmbrModal()" ng-disabled="vm.countData.COUNT_NOT_OK==0">
+                                <i class="fa fa-list-alt"></i> Finalize All
+                            </a>
+                        </h4>
+                    </td>
+
+                    <td style="width: 10%; text-align: right; border-left: hidden; padding-bottom: 0px;">
+                        <h3 class="block" style="margin:0px;">
+                            
+                            <span class="badge bg-blue-sharp"><b><b>{{vm.countData.OK_NEXT_ACT}}</b></b></span>
+                            <a class="btn btn-xs purple-intense" ng-click="vm.openStoreRecvOpt()" ng-disabled="vm.countData.OK_NEXT_ACT==0">
+                                <i class="fa fa-list-alt"></i> Take Action
+                            </a>
+                        </h3>
+
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 5px;">
+            <legend class="custom-legend">Print/Embroidery/HeatSeal Sent&Recv Summary Data</legend>
+
+            <table class="table table-condensed table-striped table-bordered" style="padding:5px;" ng-repeat="item in vm.prtEmbrRecvData">
+
+                <thead>
+                    <tr style="font-size:15px;font-weight:900;">
+                        <th colspan="14" style="color:darkorange;">
+                            Buyer: {{item.BYR_ACC_GRP_NAME_EN}}>> Style: {{item.STYLE_NO}}>> Order: {{item.ORDER_NO}}>> Color: {{item.COLOR_NAME_EN}}>>Cutting No: {{item.CUTNG_NO}}
+                            
+                        </th>
+                        <th style="text-align: right; border-left: hidden;">
+                            <a class="btn btn-xs btn-info" ng-click="vm.openBundleStatusModal(item)">
+                                Bundle Movement Status
+                            </a>
+
+                        </th>
+
+                    </tr>
+                 
+
+                    <tr class="site-table-header">
+
+                        <th style="width:10%;" rowspan="2">
+                            <small>
+                                Supplier
+                            </small>
+                        </th>
+
+                        <th style="width:5%;" rowspan="2">
+                            <small>
+                                Service
+                            </small>
+                        </th>
+
+                        <th style="width:10%;" rowspan="2">
+                            <small>
+                                Part
+                            </small>
+                        </th>
+
+
+                        <th style="width:20%;" rowspan="2">
+                            <small>
+                                Item
+                            </small>
+                        </th>
+
+                        <th style="width:5%;" rowspan="2">
+                            <small>
+                                Country
+                            </small>
+                        </th>
+
+                        <th style="width:5%;" rowspan="2">
+                            <small>
+                                Size
+                            </small>
+                        </th>
+
+                        <th style="width: 15%; border: 1px solid #cecece;" colspan="4">
+                            <small>
+                                # of Bundles
+                            </small>
+                        </th>
+
+                        <th style="width: 15%; border: 1px solid #cecece;" colspan="5">
+                            <small>
+                                Pcs
+                            </small>
+
+                        </th>
+
+
+
+
+                    </tr>
+                    <tr class="site-table-header">
+                        <th style="width:5%;">
+                            <small>
+                                Cutting
+                            </small>
+
+                        </th>
+
+                        <th style="width:5%;">
+                            <small>
+                                Store Recv
+                            </small>
+
+                        </th>
+
+                        <th style="width:5%;">
+                            <small>
+                                Print Sent
+                            </small>
+
+                        </th>
+
+                        <th style="width:5%;">
+                            <small>
+                                Print Recv
+                            </small>
+                        </th>
+
+                        <th style="width:5%;">
+                            <small>
+                                Cut Qty
+                            </small>
+
+                        </th>
+                        <th style="width:5%;">
+                            <small>
+                                Store Recv/Sent
+                            </small>
+
+                        </th>
+                        <th style="width:5%;">
+                            <small>
+                                -/+
+                            </small>
+
+                        </th>
+                        <th style="width:5%;">
+                            <small>
+                                RecvBack Store
+                            </small>
+                        </th>
+                        <th style="width:5%;">
+                            <small>
+                                Reject
+                            </small>
+
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="itm in item.details">
+
+                        <td>
+                            {{itm.SUP_TRD_NAME_EN}}
+                        </td>
+                        <td>
+                            {{itm.SERVICE_NAME}}
+                        </td>
+
+                        <td>
+                            {{itm.PART_NAME_LIST}}
+                        </td>
+                        <td>
+                           {{itm.ITEM_NAME_EN}}
+                        </td>
+
+                        <td>
+                            {{itm.COUNTRY_NAME_EN}}
+                        </td>
+
+                        <td>
+                            {{itm.SIZE_CODE}}
+                        </td>
+                        <td>
+                            {{itm.BNDL_CUTTING}}
+                        </td>
+
+                        <td>
+                            {{itm.BNDL_STORE_RECV}}
+                        </td>
+
+                        <td>
+                            {{itm.BNDL_SENT_QTY}}
+
+                        </td>
+
+                        <td>
+                            {{itm.BNDL_RECV_QTY}}
+                        </td>
+
+                        <td>
+                            {{itm.PCS_CUTTING}}
+                        </td>
+
+                        <td>
+                            {{itm.PCS_STORE_RECV}}
+                        </td>
+
+                        <td>
+                            {{itm.PCS_SHORT_ADDI}}
+                        </td>
+                        <td>
+                            {{itm.PCS_RECV_QTY}}
+                        </td>
+                        <td>
+                            {{itm.PCS_REJECT_QTY}}
+                        </td>
+                    </tr>
+                </tbody>
+                
+            </table>
+        </fieldset>
+
+
+    </div>
+</div>

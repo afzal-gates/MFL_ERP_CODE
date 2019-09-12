@@ -1,0 +1,146 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 13px;
+    }
+</style>
+
+<div class=" form-group">
+
+
+    @*===================== New Entry ==========================*@
+    <fieldset class="custom-fieldset">
+        <legend class="custom-legend"><b>Master Data</b></legend>
+        <div><label id="lblMsg"></label></div>
+        <div class="row" style="padding-left: 5px; padding-right: 5px;">
+
+            <form class="form-horizontal" role="form" name="frmKnitMachinOperatorAssign" novalidate>
+
+                <div class="row">
+                    <div class="form-group">
+
+                        <label class="control-label col-md-3">
+                            <span aria-required="true" class="required">*</span>
+                            Code
+                        </label>
+                        <div class="col-md-3">
+                            <input type="text" name="LC_TYPE_CODE" ng-model="vm.form.LC_TYPE_CODE" class="form-control" readonly />
+
+                            <input type="hidden" name="RF_LC_TYPE_ID" ng-model="vm.form.RF_LC_TYPE_ID" class="form-control" />
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+
+
+                        <label class="control-label col-md-3">
+                            <span aria-required="true" class="required">*</span>
+                            Name(EN)
+                        </label>
+                        <div class="col-md-3">
+
+                            <input type="text" name="LC_TYPE_NAME_EN" ng-model="vm.form.LC_TYPE_NAME_EN" class="form-control required" />
+                            @*ADDRESS_BN*@
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">
+                            <span aria-required="true" class="required"></span>
+                            Name(BN)
+                        </label>
+                        <div class="col-md-3">
+
+                            <input type="text" name="LC_TYPE_NAME_BN" ng-model="vm.form.LC_TYPE_NAME_BN" class="form-control" />
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">
+                            <span aria-required="true" class="required">*</span>
+                            Short Name
+                        </label>
+                        <div class="col-md-3">
+
+                            <input type="text" name="LC_TYPE_SNAME" ng-model="vm.form.LC_TYPE_SNAME" class="form-control required" />
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">
+                            <span aria-required="true" class="required">*</span>
+                            Display Order
+                        </label>
+                        <div class="col-md-3">
+
+                            <input type="number" name="DISPLAY_ORDER" ng-model="vm.form.DISPLAY_ORDER" class="form-control double" min="1" />
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">
+                            <span aria-required="true" class="required"></span>
+                            Is Active?
+                        </label>
+                        <div class="col-md-1">
+
+                            <input type="checkbox" name="IS_ACTIVE" ng-model="vm.form.IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'" class="" />
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-3">
+                        </div>
+                        <div class="col-md-7">
+                            <button type="button" ng-if="vm.form.RF_LC_TYPE_ID>0" class="btn btn-sm yellow-gold" ng-click="vm.submitAll(vm.form);">Update</button>
+                            <button type="button" ng-if="!vm.form.RF_LC_TYPE_ID>0" class="btn btn-sm green" ng-click="vm.submitAll(vm.form);">Save</button>
+                            <button type="button" class="btn btn-sm default" ng-click="vm.clearAll(vm.form);">Cancel</button>
+
+                        </div>
+
+                    </div>
+                </div>
+                
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend"><b>Data List</b></legend>
+
+                    <div class="form-group" style="padding-left:15px;">
+                        <div kendo-grid k-options="vm.gridOptions" k-data-source="vm.NotifyList" style="width:98%"></div>
+
+                    </div>
+
+                </fieldset>
+            </form>
+
+
+        </div>
+    </fieldset>
+
+
+</div>

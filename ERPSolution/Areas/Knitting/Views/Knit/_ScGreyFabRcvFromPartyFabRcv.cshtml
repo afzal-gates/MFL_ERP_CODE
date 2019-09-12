@@ -1,0 +1,252 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 12px;
+    }
+
+    
+</style>
+
+<form class="form-horizontal form-body">
+    <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+    @*Session["multiLoginEmpCode"] = obUser.EMPLOYEE_CODE;
+        Session["multiLoginEmpName"] = obUser.EMP_FULL_NAME_EN;*@
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <fieldset class="custom-fieldset" style="margin-bottom:5px" ng-disabled="$parent.form.IS_FINALIZED=='Y'">
+                <legend class="custom-legend">Search Order List</legend>
+
+                <div class="row" style="margin:auto;" ng-show="vm.errors">
+                    <div class="alert alert-danger" role="alert">
+                        @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                        <div style="padding: 0px 0px 15px 25px; ">
+                            <b>Please fix the following errors ....</b>
+                        </div>
+                        <ul ng-repeat="field in vm.errors">
+                            <li ng-repeat="error in field" ng-bind="error"></li>
+                        </ul>
+                    </div>
+                </div>
+
+                @*<div class="form-group">table-striped</div>*@
+
+                <div class="actions" style="padding-bottom:10px;text-align:right">
+                    <div class="portlet-input input-inline input-small">
+                        <div class="input-icon right">
+                            <i class="icon-magnifier"></i>
+                            <input type="text" class="form-control" ng-model="prgSearch" placeholder="search..." ng-change="vm.onChangePrgSearch(prgSearch)" ng-model-options="{ debounce: { 'default': 1000, 'blur': 0 } }">
+                        </div>
+                    </div>
+                </div>
+
+                <div slimscroll="{height: 200,allowPageScroll:true,railVisible:true,allowPageScroll :true}">
+                    <table class="table table-striped table-bordered" >
+                        <thead>
+                            <tr class="row-border">
+                                @*<th style="width:8%">Program#</th>*@
+                                @*<th style="width:7%">Prg. Date</th>*@
+                                <th style="width:15%">Style#</th>
+                                <th style="width: 11%">Order#</th>
+                                <th style="width: 12%">Color</th>
+                                <th style="width: 5%">Fabric Type</th>
+                                <th style="width: 5%">Gsm</th>
+                                <th style="width: 5%">Finish Dia</th>
+                                <th style="width: 5%">Mc.Dia</th>
+                                <th style="width: 20%">Yarn Detail</th>
+                                <th style="width: 5%">Order Qty</th>
+                                <th style="width: 5%">Receive Qty</th>
+                                <th style="width: 5%">Balance Qty</th>
+                                <th style="width: 4%">Adj. Qty</th>
+                                <th style="width: 3%; padding: 5px 0px 5px 5px"></th>
+
+                            </tr>
+                        </thead>
+
+
+                        <tbody class="">
+                            <tr ng-repeat="itmPrg in $parent.form.prgIssDtl" ng-class="{'info':itmPrg.IS_ACTIVE==true}" style="border-bottom: 1px solid hsl(0, 0%, 87%);height:auto">
+                                @*<td style="padding:5px 0px 5px 0px">{{itmPrg.PRG_ISS_NO}}</td>*@
+                                @*<td style="padding: 5px 0px 5px 0px">{{itmPrg.SC_PRG_DT|date: vm.dtFormat}}</td>*@
+                                <td style="padding:5px 0px 5px 0px">{{itmPrg.STYLE_NO}}</td>
+                                <td style="padding:5px 0px 5px 0px">{{itmPrg.ORDER_NO_LST}}</td>
+                                <td style="padding: 5px 0px 5px 0px">{{itmPrg.COLOR_NAME_EN}}</td>
+                                <td style="padding: 5px 0px 5px 0px">{{itmPrg.FAB_TYPE_SNAME}}</td>
+                                <td style="padding:5px 0px 5px 0px">{{itmPrg.FIN_GSM}}</td>
+                                <td style="padding: 5px 0px 5px 0px">{{itmPrg.ACT_FIN_DIA}}</td>
+                                <td style="padding:5px 0px 5px 0px">{{itmPrg.MC_DIA}}</td>
+                                <td style="padding:5px 0px 5px 0px">{{itmPrg.YARN_DETAILS}}</td>
+                                <td style="padding: 5px 0px 5px 0px">{{itmPrg.NET_GFAB_QTY}}</td>
+                                <td style="padding:5px 0px 5px 0px">{{itmPrg.RCV_ROLL_WT}}</td>
+                                <td style="padding: 5px 0px 5px 0px">{{itmPrg.BAL_QTY}}</td>
+                                <td style="padding:5px 0px 5px 0px">{{itmPrg.ADJ_QTY}}</td>
+                                <td style="padding: 5px 0px 5px 5px">
+                                    <a class="btn btn-xs blue" title="Select" ng-click="vm.makeActive($parent.form.prgIssDtl, $index)">
+                                        <i class="fa fa-hand-o-left"></i>
+                                    </a>
+                                </td>
+                            </tr>
+
+                            @*<tr ng-repeat-end></tr>*@
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </fieldset>
+
+
+            <fieldset class="custom-fieldset" style="margin-bottom:5px" ng-disabled="$parent.form.IS_FINALIZED=='Y'">
+                <legend class="custom-legend">Fabric Receive Detail</legend>
+
+                <table class="table table-hover table-striped table-bordered" style="margin-bottom:0px; padding-bottom:0px;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid hsl(0, 0%, 87%); height: auto;" class="success">
+
+                            <td style="padding: 5px 2px 5px 0px">
+                                <input type="text" class="form-control" name="STYLE_NO" ng-model="vm.fabItem.STYLE_NO" readonly />
+                            </td>
+                            <td style="padding: 5px 2px 5px 0px">
+                                <input type="text" class="form-control" name="ORDER_NO_LST" ng-model="vm.fabItem.ORDER_NO_LST" readonly />
+                            </td>
+                            <td style="padding: 5px 2px 5px 0px">
+                                <input type="text" class="form-control" name="COLOR_NAME_EN" ng-model="vm.fabItem.COLOR_NAME_EN" readonly />
+                            </td>
+                            <td style="padding: 5px 2px 5px 0px">
+                                <input type="text" class="form-control" name="FAB_TYPE_SNAME" ng-model="vm.fabItem.FAB_TYPE_SNAME" readonly />
+                            </td>
+                            <td style="padding: 5px 2px 5px 0px">
+                                <input type="text" class="form-control" name="FIN_GSM" ng-model="vm.fabItem.FIN_GSM" readonly />
+                            </td>
+                            <td style="padding: 5px 2px 5px 0px">
+                                <input type="text" class="form-control" name="ACT_FIN_DIA" ng-model="vm.fabItem.ACT_FIN_DIA" readonly />
+                            </td>
+                            <td style="padding: 5px 2px 5px 0px">
+                                <input type="text" class="form-control" name="MC_DIA" ng-model="vm.fabItem.MC_DIA" readonly />
+                            </td>
+                            <td style="padding: 5px 2px 5px 0px">
+                                <input type="text" class="form-control" name="YARN_DETAILS" ng-model="vm.fabItem.YARN_DETAILS" readonly />
+                            </td>
+
+
+                            <td style="padding: 5px 2px 5px 0px">
+                                <input type="number" class="form-control" name="RCV_NO_ROLL" ng-model="vm.fabItem.RCV_NO_ROLL" />
+                            </td>
+
+
+                            <td style="padding: 5px 0px 5px 0px">
+                                <input type="number" class="form-control" name="RCV_ROLL_WT" ng-model="vm.fabItem.RCV_ROLL_WT" />
+
+                            </td>
+                            <td style="padding: 5px 0px 5px 0px">
+                                <select class="form-control" kendo-drop-down-list name="KNT_QC_STS_TYPE_ID" k-option-label="'-- Select --'"
+                                        k-data-text-field="'QC_STS_TYP_NAME'" k-data-value-field="'KNT_QC_STS_TYPE_ID'"
+                                        k-auto-bind="'true'" k-options="vm.qcStatusTypeOption" k-data-source="vm.qcStatusTypeDS" k-filter="'contains'"
+                                        ng-model="vm.fabItem.KNT_QC_STS_TYPE_ID"></select>
+
+                            </td>
+
+
+                            <td style="padding: 5px 0px 5px 0px;text-align:center">
+                                <button type="button" class="btn btn-xs blue" title="Add to Grid" ng-click="vm.addFabRcv(vm.fabItem)" ng-show="$parent.isFabAddToGrid=='Y'"
+                                        ng-class="{'disabled':!$parent.selectedFabRow.STYLE_NO}">
+                                    Add
+                                </button>
+                                <button type="button" class="btn btn-xs yellow-gold" title="Update to Grid" ng-click="vm.updateFabRcv(vm.fabItem)" ng-show="$parent.isFabAddToGrid=='N'"
+                                        @*ng-class="{'disabled':!$parent.selectedFabRow.STYLE_NO}"*@>
+                                    Update
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="row-border">
+                            <th style="width:10%">Style#</th>
+                            <th style="width: 10%">Order#</th>
+                            <th style="width: 15%">Color</th>
+                            <th style="width: 6%">Fabric Type</th>
+                            <th style="width: 5%">Gsm</th>
+                            <th style="width: 5%">Finish Dia</th>
+                            <th style="width: 5%">Mc.Dia</th>
+                            <th style="width: 15%">Yarn Detail</th>
+                            <th style="width:8%">No of Roll</th>
+                            <th style="width:8%">Roll Wt.</th>
+                            <th style="width:7%">Quality</th>
+
+                            <th style="width:6%">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr></tr>
+
+                        <tr ng-repeat="itmFab in $parent.form.fabRcvDtl">
+                            <input type="hidden" ng-model="itmFab.fabRcvIndex" ng-bind="itmFab.fabRcvIndex=$index" />
+
+                            <td>{{itmFab.STYLE_NO}}</td>
+                            <td>{{itmFab.ORDER_NO_LST}}</td>
+                            <td>{{itmFab.COLOR_NAME_EN}}</td>
+                            <td>{{itmFab.FAB_TYPE_SNAME}}</td>
+                            <td>{{itmFab.FIN_GSM}}</td>
+                            <td>{{itmFab.ACT_FIN_DIA}}</td>
+                            <td>{{itmFab.MC_DIA}}</td>
+                            <td>{{itmFab.YARN_DETAILS}}</td>
+
+                            <td>{{itmFab.RCV_NO_ROLL}}</td>
+                            <td>{{itmFab.RCV_ROLL_WT}}</td>
+                            <td>{{itmFab.QC_STS_TYP_NAME}}</td>
+
+                            <td>
+                                <a class="btn btn-xs blue" title="Edit Row" ng-click="vm.editFabric($index, $parent.form.fabRcvDtl)" @*ng-disabled="vm.form.itemsStyle.length==1?true:false"*@>
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a class="btn btn-xs red" title="Remove Row" ng-click="vm.removeFabric($index, $parent.form.fabRcvDtl)" @*ng-disabled="vm.form.itemsStyle.length==1?true:false"*@>
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </fieldset>
+            
+        </div>
+
+        @*<div class="col-md-12" style="text-align:right;padding-top:0px;padding-right:32px">
+            <div class="form-group">
+
+                <button type="button" class="btn btn-sm green" ng-click="vm.batchSave()" ng-show="$parent.form.KNT_SCO_CHL_RCV_H_ID<1"
+                        ng-class="{'disabled':!frmScOutHouseChlan.$valid}">
+                    Save
+                </button>
+                <button type="button" class="btn btn-sm yellow-gold" ng-click="vm.batchSave()" ng-show="$parent.form.KNT_SCO_CHL_RCV_H_ID>0"
+                        ng-class="{'disabled':!frmScOutHouseChlan.$valid}">
+                    Update
+                </button>
+                <button type="button" class="btn btn-sm blue" ng-click="vm.cancel()">Cancel</button>
+
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" class="btn btn-sm blue" ng-click="vm.printLedger()" ng-show="$parent.form.KNT_SC_PRG_RCV_ID>0">Print</button>
+                <button type="button" class="btn btn-sm blue-hoki" ng-click="vm.backToList()">Back to List</button>
+            </div>
+        </div>*@
+
+    </div>
+</form>
+
+
+@*<pre>{{frmScOutHouseChlan.$error|json}}</pre>*@
+
+@*<pre>{{$parent.selectedFabRow}}</pre>*@
+
+@*<pre>{{$parent.form|json}}</pre>*@
+
+
+
+
+
+
+

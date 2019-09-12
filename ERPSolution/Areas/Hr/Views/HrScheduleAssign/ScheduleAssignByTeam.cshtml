@@ -1,0 +1,267 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Hr</a>
+
+    </li>
+    <li>
+        <a href="#">Assign Schedule By Team</a>
+    </li>
+</ul>
+
+
+@{
+    ViewBag.Title = "Assign Schedule By Team";
+}
+
+@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+<div class="portlet box blue-dark">
+
+    <div class="portlet-title">
+        <div class="caption">
+            @*<i class="fa fa-gift"></i>*@ Assign Schedule By Team
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <form name="frmScheduleAssignTeam" novalidate class="form-horizontal " method="post" ng-class="{ loading:form.submitting }"
+                      ng-submit="vm.submit(frmScheduleAssignTeam.$valid,vm.form,vm.insert)">
+
+
+                    @*{{frmOffice.$error=[]}}*@
+
+
+                    @*@using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-horizontal form-bordered", name="frmOffice" }))
+                        {*@
+                    <div class="form-body">
+                        @*@Html.AntiForgeryToken()*@
+                        <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+                               data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+
+
+                        @*<div class="form-group">
+                                <label class="control-label col-md-3">
+                                    Company
+                                    <span class="required" aria-required="true">*</span>
+                                </label>
+                                <div class="col-md-6">
+                                    <select kendo-drop-down-list id="HR_COMPANY_ID" name="HR_COMPANY_ID" class="form-control"
+                                            options="vm.CompanyListData" ng-model="vm.form.HR_COMPANY_ID"></select>
+
+                                </div>
+                            </div>*@
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">
+                                Office
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-6">
+                                <select kendo-drop-down-list id="HR_OFFICE_ID" name="HR_OFFICE_ID" class="form-control"
+                                        options="vm.OfficeListData" ng-model="vm.form.HR_OFFICE_ID"></select>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">
+                                Shift Plan
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-6">
+                                <select kendo-drop-down-list id="HR_SHIFT_PLAN_ID" name="HR_SHIFT_PLAN_ID" class="form-control"
+                                        options="vm.ShiftPlanListData" ng-model="vm.form.HR_SHIFT_PLAN_ID"></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">
+                            </label>
+                            <div class="col-md-6">
+                                <button type="button" class="btn" ng-if="!vm.scheduleIsChange" ng-click="vm.show()">Show</button>
+                            </div>
+                        </div>
+
+                        <div ng-if="vm.scheduleIsChange">
+                            <div class="col-md-offset-0 col-md-12">
+                                <table id="datatbl1" class="table table-bordered table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Apply
+                                            </th>
+                                            <th>
+                                                Team Name
+                                            </th>
+                                            @*<th>
+                                                    Seq#
+                                                </th>*@
+                                            <th>
+                                                Work Schedule
+                                            </th>
+                                            <th>
+                                                Effective From
+                                            </th>
+                                            @*<th>
+                                                Expired On
+                                            </th>*@
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+
+                                        <tr class="odd gradex" ng-repeat="teamData in vm.teamListdata">
+
+                                            <td class="col-sm-1">
+                                                <label class="checkbox-inline">
+                                                    <input type="checkbox" ng-disabled="teamData.IS_ROLLING=='Y' || teamData.HR_SCHEDULE_ASSIGN_ID>0" ng-model="teamData.IS_ACTIVE" 
+                                                           ng-true-value="'Y'" ng-false-value="'N'">{{teamData.SHIFT_TEAM_CODE}}
+                                                </label>
+                                            </td>
+
+                                            <td class="col-sm-3">
+                                                <input type="hidden" class="form-control" ng-model="teamData.HR_SCHEDULE_H_ID" />
+                                                <input type="hidden" class="form-control" ng-model="teamData.HR_OFFICE_ID" />
+                                                <input type="hidden" class="form-control" ng-model="teamData.SHIFT_TEAM_NAME_EN" />
+                                                <label class="checkbox-inline" style="margin-left:-20px;">
+                                                    {{teamData.SHIFT_TEAM_NAME_EN}}
+                                                </label>
+                                            </td>
+                                            @*<td>
+                                                    <input type="hidden" class="form-control" ng-model="teamData.ROLL_SEQ_NO" />
+                                                    <label class="checkbox-inline">
+                                                        {{teamData.ROLL_SEQ_NO}}
+                                                    </label>
+                                                </td>*@
+
+                                            <td class="col-sm-5">
+                                                <div class="input-group">
+                                                    <select kendo-drop-down-list id="HR_SCHEDULE_H_ID" name="HR_SCHEDULE_H_ID" class="form-control"
+                                                            style="min-width:450px;"
+                                                            options="vm.ScheduleListData" ng-model="teamData.HR_SCHEDULE_H_ID"></select>
+
+                                                </div>
+                                            </td>
+
+                                            <td>
+                                                <div class="input-group">
+                                                    @*ng-init="teamData.EFFECTIVE_FROM=teamData.EFFECTIVE_FROM!=null?teamData.EFFECTIVE_FROM:vm.teamListdata[0].EFFECTIVE_FROM"*@
+                                                    <input type="text" class="form-control" ng-model="teamData.EFFECTIVE_FROM"
+                                                           ng-change="vm.effectiveDateChange($first)"
+                                                           datepicker-popup="{{vm.dtFormat}}" is-open="teamData.EFFECTIVE_FROM_OPEND"
+                                                           @*min-date="vm.today"*@
+                                                           datepicker-options="vm.dateOptions" close-text="Close" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn-calendar" ng-click="vm.EFFECTIVE_FROM_OPEN($event,$index)">
+                                                            <i class="glyphicon glyphicon-calendar"></i>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            @*<td>
+                                                <div class="input-group">
+
+                                                    <input type="text" class="form-control" ng-model="teamData.EXPIRED_ON"
+                                                           ng-change="vm.expireDateChange($first)"
+                                                           datepicker-popup="{{vm.dtFormat}}" is-open="teamData.EXPIRED_ON_OPEND"
+                                                           min-date="vm.today"
+                                                           datepicker-options="vm.dateOptions" close-text="Close" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn-calendar" ng-click="vm.EXPIRED_ON_OPEN($event,$index)">
+                                                            <i class="glyphicon glyphicon-calendar"></i>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </td>*@
+
+                                        </tr>
+
+
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+                            <div class="col-md-offset-7 col-md-4">
+                                <div ng-if="vm.errors">
+                                    <ul class="field-validation-error" ng-repeat="err in vm.errors">
+                                        <li>{{err[0]}}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            @*<ul>
+                                    <li id="errorMessages" class="error" data-ng-repeat="error in vm.errors">{{error}}</li>
+                                </ul>*@
+
+
+
+                            <div class="form-actions">
+                                <div class="row">
+                                    <div class="col-md-offset-3 col-md-6">
+                                        <button type="submit" class="btn green" ng-if="vm.insert"><i class="fa fa-check"></i> Save</button>
+                                        <button type="submit" class="btn yellow-gold" ng-if="!vm.insert"><i class="fa fa-check"></i> Update</button>
+
+                                        <button type="button" class="btn blue" @*ng-if="TRAN_MODE==2" *@ ng-click="vm.TranCancel()">Cancel</button>
+                                        <button type="button" class="btn" ng-click="vm.newAssign()">New Assign</button>
+
+                                    </div>
+                                </div>
+                            </div>
+                            @*}*@
+
+                            <p>&nbsp;</p>
+
+                            <div class="portlet light">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <span class="caption-subject font-green-sharp bold ">Work Schedule Assign History</span>
+                                    </div>
+                                </div>
+                                <div class="">
+                                    @*<kendo-grid id="ScheduleList" name="ScheduleList" k-options="vm.gridOptions"></kendo-grid>*@
+                                    <div kendo-grid id="delvGrid" k-options="vm.gridOptions" k-data-source="vm.gridDataSource"></div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+

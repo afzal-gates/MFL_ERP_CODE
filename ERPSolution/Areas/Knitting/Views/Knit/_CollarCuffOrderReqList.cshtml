@@ -1,0 +1,265 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 12px;
+    }
+
+    
+    .k-grid-header {
+        padding-right: 0 !important;
+    }
+
+       
+</style>
+
+
+
+
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#">Order wise Collar Cuff Requirement</a>
+    </li>
+</ul>
+
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body" id="PORTLET_BODY">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+
+        @*<div class="row" style="padding:5px">
+                <div class="col-md-1">
+                    <a ui-sref="OfficeEntry({MC_BUYER_OFF_ID : null})" class="btn btn-sm blue">
+                        <i class="fa fa-plus"></i> Add Order
+                    </a>
+                </div>
+            </div>*@
+
+        <div class="row">
+            <div class="col-md-12">
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend">Search</legend>
+                    <table class="table-bordered">
+                        <thead>
+                            <tr class="row-border">
+                                <td style="width: 20%; padding: 5px 0px 5px 5px">
+                                    <b>Type</b>
+                                </td>
+                                <td style="width: 20%; padding: 5px 0px 5px 5px">
+                                    <b>Buyer A/C</b>
+                                </td>
+                                <td style="width: 10%; padding: 5px 0px 5px 5px">
+                                    <b>Shipment</b>
+                                </td>
+                                <td style="width: 20%; padding: 5px 0px 5px 5px">
+                                    <b>Work Style</b>
+                                </td>
+
+                                <td style="width: 20%; padding: 5px 0px 5px 5px">
+                                    <b>Order#</b>
+                                </td>
+                                <td style="width: 10%; padding: 5px 0px 5px 5px">
+                                    <b>Action</b>
+                                </td>
+
+                            </tr>
+                        </thead>
+
+                        <tbody class="clsthead">
+
+                            <tr class="clstd">
+                                <td class="clstd">
+                                    <select kendo-drop-down-list name="RF_FAB_PROD_CAT_ID" id="RF_FAB_PROD_CAT_ID" class="form-control"
+                                            options="productionTypeList" ng-model="search.RF_FAB_PROD_CAT_ID"></select>
+
+                                </td>
+                                <td class="clstd">
+                                    @*<select kendo-drop-down-list name="MC_BYR_ACC_ID" class="form-control"
+                                            k-options="buyerAcList" id="MC_BYR_ACC_ID" ng-model="search.MC_BYR_ACC_ID" required></select>*@
+                                    <select kendo-drop-down-list name="MC_BYR_ACC_GRP_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                            k-options="vm.buyerAcGrpList" ng-model="search.MC_BYR_ACC_GRP_ID"
+                                            k-data-text-field="'BYR_ACC_GRP_NAME_EN'" k-data-value-field="'MC_BYR_ACC_GRP_ID'"
+                                            k-auto-bind="'true'"></select>
+                                </td>
+
+                                <td class="clstd">
+                                    @*{{search.MONTHOF}}*@
+                                    <select class="form-control" kendo-drop-down-list name="MONTHOF" k-option-label="'-- Select Month --'"
+                                            k-data-text-field="'MONTHOF'" k-data-value-field="'MONTHOF'" k-filter="'contains'"
+                                            k-auto-bind="'true'" k-data-source="shipMonthList" k-ng-delay="shipMonthList" ng-model="search.MONTHOF"
+                                            k-on-change="onChangeShipMonth(kendoEvent)"></select>
+                                </td>
+
+                                <td class="clstd">
+                                    <select class="form-control" kendo-drop-down-list name="MC_FAB_PROD_ORD_H_ID" k-option-label="'--Style --'"
+                                            k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_FAB_PROD_ORD_H_ID'" k-filter="'Contains'"
+                                            k-template="template" k-value-template="valueTemplate"
+                                            k-auto-bind="'true'" k-data-source="StyleExtDs" ng-model="search.MC_FAB_PROD_ORD_H_ID"
+                                            k-on-change="onFabOrderChange(kendoEvent)" required></select>
+                                </td>
+                                <td class="clstd">
+                                    <select class="form-control" kendo-drop-down-list name="MC_FAB_PROD_ORD_H_ID" k-option-label="'--Order# --'"
+                                            k-data-text-field="'ORDER_NO_LST'" k-data-value-field="'MC_FAB_PROD_ORD_H_ID'" k-filter="'Contains'"
+                                            k-template="templateOh" k-value-template="valueTemplateOh"
+                                            k-auto-bind="'true'" k-data-source="FabOederByOhDs" ng-model="search.MC_FAB_PROD_ORD_H_ID"
+                                            required style="width:100%;"></select>
+
+                                </td>
+
+                                <td class="clstd">
+                                    <button class="btn btn-sm blue" ng-click="vm.getCollarCuffOrdReqList();" title="Search"><i class='fa fa-search'></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+        </div>
+
+        <br />
+
+
+
+        <fieldset class="custom-fieldset">
+            <legend class="custom-legend"><b>Style List</b></legend>
+            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+
+                <div style="padding:2px;">
+                    @*<div kendo-grid k-options="vm.gridOptions" id="IDOrderScmDS"></div>*@
+                    <kendo-grid options="vm.mainCollarCuffOrdReqGridOption" k-data-source="vm.mainCollarCuffOrdReqGridDataSource">
+                        <div k-detail-template ng-init="vm.detailExpand(dataItem);">
+
+                            <div>
+                                <div class="row" style="padding-left: 5px; padding-right: 5px; overflow: scroll;">
+                                    
+                                    <div>
+                                        @*<fieldset class="custom-fieldset">
+                                            <legend class="custom-legend"><b>Collar & Cuff Measurement</b></legend>*@
+                                            <table class="table table-striped" style="border-collapse: collapse; overflow:scroll;">
+                                                <thead @*class="clstheadMtex"*@>
+                                                    <tr style="border: solid 2px lightgray;">
+                                                        <th style="border: solid 2px lightgray;" rowspan="3">Color</th>
+                                                        <th style="border: solid 2px lightgray;" rowspan="3">Part</th>
+                                                        <th ng-repeat="itmSize in dataItem.itemsOrderColor[0].itemsOrderSize" style="border: solid 2px lightgray; text-align: center; ">
+                                                            {{itmSize.MESUREMENT}}
+                                                        </th>
+
+                                                    </tr>
+
+                                                    <tr>
+                                                        @*<th style="border: solid 2px lightgray;"></th>
+                                                        <th style="border: solid 2px lightgray;"></th>*@
+                                                        <th ng-repeat="itmSize in dataItem.itemsOrderColor[0].itemsOrderSize" style="border: solid 2px lightgray; text-align: center; ">
+                                                            {{itmSize.SIZE_CODE}}
+                                                        </th>
+                                                    </tr>
+
+
+                                                    <tr>                                                       
+                                                        <th ng-repeat="itmSize in dataItem.itemsOrderColor[0].itemsOrderSize" style="border: solid 2px lightgray; text-align: center; ">
+                                                            Qty
+                                                            @*<div class="row" style="padding-left: 0px; padding-right: 0px;">
+                                                                <div class="col-md-12" style="padding-left: 0px; padding-right: 0px;">Qty</div>                                                                
+                                                            </div>*@
+                                                        </th>
+                                                    </tr>
+
+                                                </thead>
+
+                                                <tbody class="clstdMtex">
+                                                    <tr ng-repeat="itmColor in dataItem.itemsOrderColor">
+                                                        <td  >
+                                                            {{itmColor.COLOR_NAME_EN}}                                                            
+                                                        </td>
+                                                        <td>
+                                                            {{itmColor.GARM_PART_NAME}}
+                                                        </td>
+                                                        <td ng-repeat="itmSize in itmColor.itemsOrderSize" style="text-align: center;">
+                                                            {{itmSize.RQD_PCS_QTY}}
+                                                            @*<div class="col-md-5" style="padding-left: 0px; padding-right: 0px; border-right: 1px solid hsl(0, 0%, 87%); text-align:center;">{{itmSize.RQD_PC_QTY}}</div>*@
+                                                            @*<div class="col-md-6" style="padding-left: 0px; padding-right: 0px; text-align: center;">{{itmSize.MESUREMENT}}</div>*@
+                                                        </td>
+                                                        
+
+                                                    </tr>
+                                                </tbody>
+
+                                            </table>
+
+                                        @*<pre>{{dataItem.itemsOrderColor}}</pre>*@
+
+
+                                            @*<br />
+                                            <div class="form-group form-actions">
+                                                <div class="col-md-2">
+                                                    <button type="button" class="btn green btn-sm" ng-disabled="dataItem.IS_FINALIZED_CC=='N' && dataItem.IS_FIRST>0" ng-if="dataItem.FINALIZED<1" ng-click=" vm.submitSizeAll(dataItem)">Save</button>
+                                                    <button type="button" class="btn yellow-gold btn-sm" ng-disabled="dataItem.IS_FINALIZED_CC=='Y'" ng-if=" dataItem.FINALIZED<1 && dataItem.IS_FIRST>0" ng-click=" vm.submitSizeAll(dataItem)">Update</button>
+                                                    <button type="button" class="btn green btn-sm" ng-if="dataItem.IS_FIRST>0 && dataItem.FINALIZED>0" ng-click="vm.submitSizeAll(dataItem)">Revise</button>
+
+                                                </div>
+                                                <div class="col-md-4" ng-if="dataItem.IS_FIRST>0 && dataItem.FINALIZED<=0">
+                                                    <label class="col-md-3"><input type="checkbox" id="IS_FINALIZED_CC" name="IS_FINALIZED_CC" ng-model="dataItem.IS_FINALIZED_CC" ng-true-value="'Y'" ng-false-value="'N'" /> Finalize?</label>
+
+                                                </div>
+                                            </div>*@
+                                        @*</fieldset>*@
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </kendo-grid>
+                </div>
+            </div>
+        </fieldset>
+
+
+
+        
+        @*{{vm.dtFormat}}
+            <pre>{{vm.fabReqList}}</pre>*@
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

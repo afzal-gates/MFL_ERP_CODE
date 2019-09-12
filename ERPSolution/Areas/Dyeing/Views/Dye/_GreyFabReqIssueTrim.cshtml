@@ -1,0 +1,157 @@
+﻿<div class="row" style="margin:auto;">
+
+    <table class="table table-condensed table-striped table-bordered" style="padding: 5px;margin-bottom: 5px;">
+        <tbody>
+            <tr style="border:1px;">
+                <th style="width:30%; text-align:center;" colspan="2" >
+                    <small>
+                        Description
+                    </small>
+
+                </th>
+
+                <th style="width: 20%; text-align: center;" colspan="2">
+                    <small>
+                        Requisition
+                    </small>
+
+                </th>
+
+
+                <th style="width: 20%; text-align: center;" colspan="2">
+                    <small>
+                        Issue
+                    </small>
+
+                </th>
+
+
+            </tr>
+            <tr>
+                <th style="width:10%;">
+                    <small>
+                        Category
+                    </small>
+
+                </th>
+
+                <th style="width:30%;">
+                    <small>
+                        Item
+                    </small>
+
+                </th>
+
+                <th style="width:10%;">
+                    <small>
+                        Req/Issued/Pending(YDs)
+                    </small>
+
+                </th>
+
+                <th style="width:10%;">
+                    <small>
+                        Req./Issued/Pending(Kgs)
+                    </small>
+
+                </th>
+
+
+                <th style="width:10%;">
+                    <small>
+                        Issue (YDs)
+                    </small>
+
+                </th>
+
+
+                <th style="width:10%;">
+                    <small>
+                        Issue (Kg)
+                    </small>
+
+                </th>
+
+            </tr>
+        </tbody>
+
+        <tbody>
+            <tr ng-repeat="item in vm.datas">
+                <td>
+                    <b>{{item.ITEM_CAT_NAME_EN}}</b>
+
+                </td>
+
+                <td>
+                    {{item.ITEM_SPEC_AUTO}}
+                </td>
+
+                <td>
+                    <b>{{item.RQD_QTY_YDS}}/</b> 
+                    <label class="label label-info">
+                        {{item.TTL_ISS_QTY_YDS}}
+                    </label>/   
+                    <label class="label label-warning">
+                        {{item.RQD_QTY_YDS-item.TTL_ISS_QTY_YDS}}
+                    </label>   
+                </td>
+
+                <td>
+                    
+                    <b>{{item.RQD_QTY_KG}}/</b>
+                    <label class="label label-info">
+                        {{item.TTL_ISS_QTY}}
+                    </label>/
+                    <label class="label label-warning">
+                        {{item.RQD_QTY_KG-item.TTL_ISS_QTY}}
+                    </label>   
+                </td>
+
+
+                <td>
+                    <input type="number" ng-disabled="($parent.RF_ACTN_STATUS_ID_ISS==43||$parent.RF_ACTN_STATUS_ID_ISS==56)" min="0" ng-change="vm.onChangeIssueYd(vm.datas)" ng-model-options="{ debounce: { 'default': 300, 'blur': 0 } }" class="form-control" ng-model="item.ISS_QTY_YDS" />
+                </td>
+
+                <td>
+                    <input type="number" ng-disabled="($parent.RF_ACTN_STATUS_ID_ISS==43||$parent.RF_ACTN_STATUS_ID_ISS==56)" min="0" ng-change="vm.onChangeIssueKg(vm.datas)" ng-model-options="{ debounce: { 'default': 300, 'blur': 0 } }" class="form-control" ng-model="item.ISS_QTY" />
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="4" style="text-align:right;">
+                    <b>Total</b>
+
+                </td>
+
+
+                <td>
+                    <b>
+                        {{vm.ttl_issue_yd}}
+                    </b>
+
+                </td>
+
+                <td>
+                    <b>
+                        {{vm.ttl_issue_kg}}
+                    </b>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+
+    <div class="row" style="margin:auto;">
+        <div class="col-md-6">
+            <button class="btn btn-sm btn-success" type="button" ng-click="vm.save(vm.datas)" ng-disabled="($parent.RF_ACTN_STATUS_ID_ISS==43||$parent.RF_ACTN_STATUS_ID_ISS==56)">Save</button>
+        </div>
+
+        @*<div class="col-md-6" style="text-align:right;" ng-if="vm.isFinVisible">
+            <button class="btn btn-sm purple" ng-click="vm.onFinalize()" ng-disabled="$parent.RF_ACTN_STATUS_ID==43"><i class="fa fa-check"></i> Finalise Issue</button>
+        </div>*@
+        
+        
+    </div>
+
+    
+</div>

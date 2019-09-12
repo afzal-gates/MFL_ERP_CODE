@@ -1,0 +1,77 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Knitting</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body" id="PORTLET_BODY">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+
+        @*<div class="row" style="padding:5px">
+                <div class="col-md-1">
+                    <a ui-sref="OfficeEntry({MC_BUYER_OFF_ID : null})" class="btn btn-sm blue">
+                        <i class="fa fa-plus"></i> Add Order
+                    </a>
+                </div>
+            </div>*@
+
+        <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+
+        
+        <div class="row" @*ng-if="vm.LIST_FROM=='R'"*@>
+            <div class="col-md-1">
+                <button class="btn btn-sm blue" ng-click="vm.addNew()">Add New</button>
+            </div>
+        </div>
+        
+
+        <br />
+        @*{{vm.width}}*@
+        <div @*style="padding:5px;"*@>
+
+            <kendo-grid k-options="vm.mcOilReq4SubStrListOptions" k-data-source="vm.mcOilReq4SubStrListDataSource" style="padding-top:0px;"></kendo-grid>
+            @*<div kendo-grid id="grid" options="vm.kntScProgGridOption" k-data-source="vm.kntScProgGridDataSource"></div>*@
+        </div>
+        @*{{vm.dtFormat}}
+            <pre>{{vm.fabReqList}}</pre>*@
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

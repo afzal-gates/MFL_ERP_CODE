@@ -1,0 +1,509 @@
+﻿<div class="modal-body">
+    <div class="portlet grey-cascade box">
+        <div class="portlet-title">
+            <div>
+                <h3 style="padding-top:10px;margin-top:3px;">
+                    Job Card Cancel or Unassign Qty [Ref # {{form.JOB_CRD_NO}}]
+                    <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                </h3>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <form class="form-horizontal" role="form" name="UnAssignQtyModalForm" novalidate>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">
+                        Assign Qty
+                    </label>
+                    <div class="col-md-2" style="padding-top:5px;">
+                        <input type="text" class="form-control" ng-model="form.ASIGN_QTY" disabled>
+                    </div>
+                    <label class="col-md-2 control-label">
+                        Production
+                    </label>
+                    <div class="col-md-2" style="padding-top:5px;">
+                        <input type="text" class="form-control" ng-model="form.PROD_QTY" disabled>
+                    </div>
+                    <label class="col-md-2 control-label">
+                        Ttl cancelled Qty
+                    </label>
+                    <div class="col-md-2" style="padding-top:5px;">
+                        <input type="text" class="form-control" ng-model="form.UN_ASIGN_QTY" disabled>
+                    </div>
+
+                </div>
+
+
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label">
+                        +Un Assign Qty
+                    </label>
+                    <div class="col-md-3" style="padding-top:5px;" ng-class="{'has-error': (UnAssignQtyModalForm.UN_ASIGN_QTY_NEW.$touched || UnAssignQtyModalForm.$submitted) && (UnAssignQtyModalForm.UN_ASIGN_QTY_NEW.$error.required||UnAssignQtyModalForm.UN_ASIGN_QTY_NEW.$error.max||UnAssignQtyModalForm.UN_ASIGN_QTY_NEW.$error.min)}">
+                        <input type="number" name="UN_ASIGN_QTY_NEW" class="form-control" min="0" max={{form.UN_ASIGN_QTY_ORI}} ng-model="form.UN_ASIGN_QTY_NEW" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Reason</label>
+                    <div class="col-md-8" style="padding-top:5px;">
+                        <textarea rows="2" name="PLAN_NOTE" class="form-control" cols="50" ng-model="form.REASON_DESC"></textarea>
+                    </div>
+                </div>
+
+                <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 5px;">
+                    <legend class="custom-legend"> Yarn Details</legend>
+
+                    <table class="table table-condensed table-striped table-bordered" style="padding:5px;">
+                        <thead>
+                            <tr class="site-table-header">
+                                <th style="width:20%;">
+                                    <small>
+                                        Yarn
+                                    </small>
+
+                                </th>
+                                <th style="width:10%;">
+                                    <small>
+                                        Brand
+                                    </small>
+
+                                </th>
+
+                                <th style="width:10%;">
+                                    <small>
+                                        Yarn Lot
+                                    </small>
+
+                                </th>
+
+
+                                <th style="width:10%;" ng-if="form.IS_FBP_VISIBLE=='Y'">
+                                    <small>
+                                        Part
+                                    </small>
+
+                                </th>
+                                <th style="width:5%;" @*ng-if="data.IS_FBP_VISIBLE=='Y'"*@>
+                                    <small>
+                                        Ratio(%)
+                                    </small>
+
+                                </th>
+
+                                <th style="width:5%;" ng-if="form.IS_FDR_OPT=='Y'">
+                                    <small>
+                                        NoOfFeeder
+                                    </small>
+
+                                </th>
+
+
+                                <th style="width:10%;">
+                                    <small>
+                                        Stitch Len
+                                    </small>
+
+                                </th>
+
+                                <th style="width:10%;">
+                                    <small>
+                                        Qty(KP)
+                                    </small>
+                                </th>
+                                <th style="width:10%;">
+                                    <small>
+                                        Allocated(KP)
+                                    </small>
+                                </th>
+
+                                <th style="width:10%;">
+                                    <small>
+                                        Qty(JC)
+                                    </small>
+                                </th>
+
+                                <th style="width:10%;">
+                                    <small>
+                                        Unasign Qty
+                                    </small>
+                                </th>
+
+
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr ng-repeat="item in form.details track by $index" ng-if="item.RQD_YRN_QTY_JC > 0">
+
+                                <td>
+                                    {{item.ITEM_NAME_EN}}
+                                </td>
+
+                                <td>
+                                    {{item.BRAND_NAME_EN}}
+                                </td>
+                                <td>
+                                    {{item.YRN_LOT_NO}}
+                                </td>
+
+
+                                <td ng-if="form.IS_FBP_VISIBLE=='Y'">
+                                    {{item.LK_YFAB_PART_NAME}}
+                                </td>
+
+                                <td @*ng-if="data.IS_FBP_VISIBLE=='Y'"*@>
+                                    {{item.RATIO_QTY}}
+
+                                </td>
+
+                                <td ng-if="form.IS_FDR_OPT=='Y'">
+                                    {{item.NO_OF_FDR}}
+                                </td>
+
+                                <td>
+                                    {{item.STITCH_LEN}}
+                                </td>
+
+                                <td>
+                                    {{item.RQD_YRN_QTY_KP}}
+                                </td>
+
+                                <td>
+                                    {{item.ALOC_QTY}}
+                                </td>
+
+                                <td>
+                                    {{item.RQD_YRN_QTY_JC}}
+                                </td>
+                                <td ng-class="{'has-error': (UN_ASIGN_QTY_FORM.UN_ASIGN_QTY.$touched || UnAssignQtyModalForm.$submitted) &&  (UN_ASIGN_QTY_FORM.UN_ASIGN_QTY.$error.required||UN_ASIGN_QTY_FORM.UN_ASIGN_QTY.$error.max||UN_ASIGN_QTY_FORM.UN_ASIGN_QTY.$error.min) }">
+                                    <ng-form name="UN_ASIGN_QTY_FORM">
+                                        <input type="number" name="UN_ASIGN_QTY" class="form-control"  min="0" ng-max="item.RQD_YRN_QTY_JC" ng-model="item.UN_ASIGN_QTY" required />
+                                    </ng-form>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+                <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 5px;" ng-repeat="data in challans">
+                    <div class="row" style="margin:auto;">
+                        <p class="block col-md-4" style="margin: 0px;text-align:left; background-color: rgb(236, 233, 248); padding-left: 2px;">
+                            Requisition Ref#<b>{{data.STR_REQ_NO}}</b>|| Issue Ref# <b>{{data.ISS_CHALAN_NO}}</b>
+                        </p>
+
+       
+
+                        <p class="block col-md-8" style="margin: 0px; font-size: 14px;text-align:right; background-color: rgb(236, 233, 248); padding-left: 2px;">
+                            <div class="radio-list">
+                                <label class="radio-inline">
+                                    <span class="checked"><input type="radio" name="option_hpe{{$index}}" ng-model="data.UNASSIGN_TYPE" ng-value="'I'"></span> Internal Exchange
+                                </label>
+                                <label class="radio-inline">
+                                    <span class="checked"><input type="radio" ng-disabled="data.KNT_YRN_ISS_H_ID < 1" name="option_hpe{{$index}}" ng-model="data.UNASSIGN_TYPE" ng-value="'R'"></span> Return Challan
+                                </label>
+                            </div>
+
+                            <a class="btn btn-xs bg-red-soft" ng-click="deleteReq(data)" ng-if="data.KNT_YRN_ISS_H_ID < 1">Delete</a>
+                        </p>
+                    </div>
+
+
+                    <table class="table table-condensed table-striped table-bordered" style="padding:5px;">
+                        <thead style="font-weight:700">
+                            <tr>
+
+                                <th style="width:20%;">
+                                    <small>
+                                        Yarn
+                                    </small>
+
+                                </th>
+                                <th style="width:10%;">
+                                    <small>
+                                        Brand
+                                    </small>
+
+                                </th>
+
+                                <th style="width:10%;">
+                                    <small>
+                                        Yarn Lot
+                                    </small>
+                                </th>
+
+
+                                <th style="width:5%;">
+                                    <small>
+                                        Required
+                                    </small>
+                                </th>
+
+
+                                <th style="width:5%;">
+                                    <small>
+                                        Reqs Done
+                                    </small>
+                                </th>
+                                <th style="width:5%;">
+                                    <small>
+                                        Issued
+                                    </small>
+                                </th>
+                                <th style="width:5%;">
+                                    <small>
+                                        Issue Return
+                                    </small>
+                                </th>
+
+
+                                <th style="width:5%;" ng-if="data.UNASSIGN_TYPE=='R'">
+                                    <small>
+                                        Return
+                                    </small>
+                                </th>
+
+
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr ng-repeat="item in data.yarn_list track by $index">
+
+                                <td>
+                                    {{item.ITEM_NAME_EN}}
+                                </td>
+
+                                <td>
+                                    {{item.BRAND_NAME_EN}}
+                                </td>
+                                <td>
+                                    {{item.YRN_LOT_NO}}
+                                </td>
+
+                                <td>
+                                    {{item.RQD_YRN_QTY_JC}}
+                                </td>
+
+                                <td>
+                                    {{item.REQ_DN_YRN_QTY_JC}}
+                                </td>
+                                <td>
+                                    {{item.ISSUE_QTY_JC}}
+                                </td>
+
+                                <td>
+                                    {{item.ISSUE_RET_QTY}}
+                                </td>
+
+                                <td ng-if="data.UNASSIGN_TYPE=='R'" ng-class="{'has-error': (RET_QTY_QTY_FORM.RET_QTY.$touched || UnAssignQtyModalForm.$submitted) &&  (RET_QTY_QTY_FORM.RET_QTY.$error.required||RET_QTY_QTY_FORM.RET_QTY.$error.max||RET_QTY_QTY_FORM.RET_QTY.$error.min) }">
+                                    <ng-form name="RET_QTY_QTY_FORM">
+                                        <input type="number" name="RET_QTY" class="form-control" min="0" ng-max="item.ISSUE_QTY_JC-item.ISSUE_RET_QTY" ng-model="item.RET_QTY" required />
+                                    </ng-form>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+
+
+
+                <div class="form-group form-actions" style="padding-top: 5px;">
+                    <div class="col-md-offset-3 col-md-10">
+                        <button type="button" class="btn green btn-sm" ng-click="save(form,UnAssignQtyModalForm.$valid);UnAssignQtyModalForm.$submitted=true;">Save</button>
+                        <button type="button" class="btn btn-default btn-sm" ng-click="cancel()">Cancel</button>
+                    </div>
+                </div>
+            </form>
+
+   
+
+
+            <details>
+                <summary style="color:blue;">Yarn Requisition Details</summary>
+                <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 5px;">
+                    <table class="table table-condensed table-striped table-bordered" style="padding:5px;">
+                        <thead style="font-weight:700">
+                            <tr style="border: 1px solid #cecece;">
+                                <th style="width:20%;" rowspan="2">
+                                    <small>
+                                        Yarn
+                                    </small>
+
+                                </th>
+                                <th style="width:10%;" rowspan="2">
+                                    <small>
+                                        Brand
+                                    </small>
+
+                                </th>
+
+                                <th style="width:10%;" rowspan="2">
+                                    <small>
+                                        Yarn Lot
+                                    </small>
+                                </th>
+
+
+                                <th style="width:10%;" rowspan="2">
+                                    <small>
+                                        Stock
+                                    </small>
+                                </th>
+
+
+                                <th style="width:40%;" colspan="6">
+                                    <small>
+                                        Knitting Program (KP)
+                                    </small>
+                                </th>
+
+
+                                <th style="width:30%;" colspan="4">
+                                    <small>
+                                        this Job Card
+                                    </small>
+                                </th>
+                            </tr>
+
+                            <tr>
+
+                                <th style="width:5%;">
+                                    <small>
+                                        Required
+                                    </small>
+                                </th>
+                                <th style="width:5%;">
+                                    <small>
+                                        Allocated
+                                    </small>
+                                </th>
+
+                                <th style="width:5%;">
+                                    <small>
+                                        Reqs Done
+                                    </small>
+                                </th>
+                                <th style="width:5%;">
+                                    <small>
+                                        Issued
+                                    </small>
+                                </th>
+                                <th style="width:5%;">
+                                    <small>
+                                        Issue Return
+                                    </small>
+                                </th>
+
+                                <th style="width:5%;">
+                                    <small>
+                                        Adv. Issued
+                                    </small>
+                                </th>
+
+
+
+                                <th style="width:5%;">
+                                    <small>
+                                        Required
+                                    </small>
+                                </th>
+
+
+                                <th style="width:5%;">
+                                    <small>
+                                        Reqs Done
+                                    </small>
+                                </th>
+
+                                <th style="width:5%;">
+                                    <small>
+                                        Issued
+                                    </small>
+                                </th>
+                                <th style="width:5%;">
+                                    <small>
+                                        Issue Return
+                                    </small>
+                                </th>
+
+
+
+
+
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr ng-repeat="item in YarnDetails.yarn_details track by $index">
+
+                                <td>
+                                    {{item.ITEM_NAME_EN}}
+                                </td>
+
+                                <td>
+                                    {{item.BRAND_NAME_EN}}
+                                </td>
+                                <td>
+                                    {{item.YRN_LOT_NO}}
+                                </td>
+
+                                <td>
+                                    {{item.YARN_STOCK}}
+                                </td>
+
+
+                                <td>
+                                    {{item.RQD_YRN_QTY_KP}}
+                                </td>
+
+                                <td>
+                                    {{item.ALOC_QTY}}
+                                </td>
+
+                                <td>
+                                    {{item.REQ_DN_YRN_QTY_KP}}
+                                </td>
+
+
+                                <td>
+                                    {{item.ISSUE_QTY_KP}}
+                                </td>
+
+                                <td>
+                                    {{item.ISSUE_RET_QTY_KP}}
+                                </td>
+
+                                <td>
+                                    {{item.ADV_ISSUE_QTY}}
+                                </td>
+
+
+                                <td>
+                                    {{item.RQD_YRN_QTY_JC}}
+                                </td>
+
+                                <td>
+                                    {{item.REQ_DN_YRN_QTY_JC}}
+                                </td>
+                                <td>
+                                    {{item.ISSUE_QTY_JC}}
+                                </td>
+                                <td>
+                                    {{item.ISSUE_RET_QTY_JC}}
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+            </details>
+
+     
+
+            
+
+
+        </div>
+    </div>
+</div>

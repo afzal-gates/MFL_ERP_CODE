@@ -1,0 +1,809 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 13px;
+    }
+</style>
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Commercial</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class=" form-group">
+
+                <div class="col-md-12 form-horizontal">
+
+                    <fieldset class="custom-fieldset">
+                        <div><label id="lblMsg"></label></div>
+                        <form class="form-horizontal" role="form" name="frmImportLC" novalidate>
+                            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                <div class="form-group">
+
+                                    <label class="control-label col-md-3">
+                                        <span aria-required="true" class="required">*</span>
+                                        Select L/C Type
+                                    </label>
+                                    <div class="col-md-3">
+
+                                        <select kendo-drop-down-list name="RF_LC_TYPE_ID" class="form-control required"
+                                                options="vm.lcTypeList" ng-model="vm.form.RF_LC_TYPE_ID"></select>
+
+                                        @*<input type="radio" id="IS_SC_OR_LC_2" name="IS_SC_OR_LC" ng-model="vm.form.IS_SC_OR_LC" value="B" ng-change="vm.DocTitle();"><label for="IS_SC_OR_LC_2"> Back to Back LC&nbsp; &nbsp;</label><input type="radio" name="IS_SC_OR_LC" id="IS_SC_OR_LC_1" ng-model="vm.form.IS_SC_OR_LC" value="C" ng-change="vm.DocTitle();"><label for="IS_SC_OR_LC_1"> Cash LC</label>*@
+                                    </div>
+
+                                </div>
+                            </div>
+                        </form>
+                    </fieldset>
+                    @*===================== New Entry ==========================*@
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend"><b>Master Information</b></legend>
+                        <div class="row" style="padding-left: 5px; padding-right: 5px;">
+
+                            <form class="form-horizontal" role="form" name="frmImportLC" novalidate>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            Applicant
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <select kendo-drop-down-list name="HR_COMPANY_ID" class="form-control"
+                                                    options="vm.companyList" ng-model="vm.form.HR_COMPANY_ID"></select>
+
+                                            <input type="hidden" name="CM_IMP_LC_H_ID" ng-model="vm.form.CM_IMP_LC_H_ID" class="form-control" />
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            {{vm.form.COMPANY_ADDRESS}}
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            Beneficiary/Supplier
+                                        </label>
+                                        <div class="col-md-3">
+                                            <select class="form-control required" kendo-drop-down-list name="SCM_SUPPLIER_ID" id="SCM_SUPPLIER_ID"
+                                                    k-option-label="'-- Select Supplier --'"
+                                                    k-data-text-field="'SUP_TRD_NAME_EN'" k-data-value-field="'SCM_SUPPLIER_ID'"
+                                                    k-auto-bind="'true'" k-data-source="vm.supplierList" k-ng-delay="vm.supplierList" k-filter="'contains'"
+                                                    ng-model="vm.form.SCM_SUPPLIER_ID" k-on-change="vm.getSupplierInfo(kendoEvent);"></select>
+
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            {{vm.form.ADDRESS_DEFA}}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            Export Buyer
+                                        </label>
+                                        <div class="col-md-3">
+                                            <select class="form-control" kendo-drop-down-list name="MC_BUYER_ID" id="MC_BUYER_ID"
+                                                    k-option-label="'-- Select Buyer --'"
+                                                    k-data-text-field="'BUYER_NAME_EN'" k-data-value-field="'MC_BUYER_ID'"
+                                                    k-auto-bind="'true'" k-data-source="vm.buyerList" k-ng-delay="vm.buyerList" k-filter="'contains'"
+                                                    ng-model="vm.form.MC_BUYER_ID" k-on-change="vm.getExportLcByBuyer(kendoEvent);"></select>
+
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <span aria-required="true" class="required"></span>
+                                            Export(Master) LC No
+                                        </label>
+                                        <div class="col-md-3">
+                                            <select kendo-multi-select name="EXP_LC_NO_LST" class="form-control"
+                                                    options="vm.exportLcList" ng-model="vm.form.EXP_LC_NO_LST"></select>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                @*<div class="row">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">
+                                                <span aria-required="true" class="required"></span>
+                                                Export(Master) LC No
+                                            </label>
+                                            <div class="col-md-8">
+                                                <select kendo-multi-select name="EXP_LC_NO_LST" class="form-control"
+                                                        options="vm.exportLcList" ng-model="vm.form.EXP_LC_NO_LST"></select>
+
+                                            </div>
+
+                                        </div>
+                                    </div>*@
+
+                                <div class="row">
+                                    <div class="form-group">
+
+
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required">*</span>
+                                            Import L/C No
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <input type="text" name="IMP_LC_NO" ng-model="vm.form.IMP_LC_NO" class="form-control" />
+
+                                        </div>
+                                        <label class="control-label col-md-2">
+                                            <span aria-required="true" class="required"></span>
+                                            Date of Issue
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <input type="text" name="ISSUE_DT" ng-model="vm.form.ISSUE_DT" class="form-control" max-date="vm.today"
+                                                   ng-click="ISSUE_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}" is-open="ISSUE_DT_LNopened"
+                                                   datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+
+                                <div class="row" ng-if="vm.form.IS_REVISE == true">
+                                    <div class="form-group">
+
+
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required">*</span>
+                                            Revised #
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <input type="text" name="REVISION_NO" ng-model="vm.form.REVISION_NO" class="form-control required" />
+
+                                        </div>
+                                        <label class="control-label col-md-2">
+                                            <span aria-required="true" class="required"></span>
+                                            Revised Date
+                                        </label>
+                                        <div class="col-md-2">
+
+                                            <input type="text" name="REVISION_DT" ng-model="vm.form.REVISION_DT" class="form-control required" max-date="vm.today"
+                                                   ng-click="REVISION_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}" is-open="REVISION_DT_LNopened"
+                                                   datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="row" ng-if="vm.form.IS_REVISE == true">
+                                    <div class="form-group">
+
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required">*</span>
+                                            Reason for Revised
+                                        </label>
+                                        <div class="col-md-8">
+                                            <textarea name="REV_REASON" ng-model="vm.form.REV_REASON" class="form-control required" />
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="form-group">
+
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            Date of Expiry
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <input type="text" name="EXPIRY_DT" ng-model="vm.form.EXPIRY_DT" class="form-control" min-date="vm.today"
+                                                   ng-click="EXPIRY_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}" is-open="EXPIRY_DT_LNopened"
+                                                   datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+
+                                        </div>
+                                        <label class="control-label col-md-2">
+                                            <span aria-required="true" class="required"></span>
+                                            Place of Expiry
+                                        </label>
+                                        <div class="col-md-3">
+                                            <select kendo-drop-down-list name="EXPIRY_PLACE_ID" class="form-control"
+                                                    options="vm.CountryList" ng-model="vm.form.EXPIRY_PLACE_ID"></select>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="form-group">
+
+
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            Currency
+                                        </label>
+                                        <div class="col-md-3">
+                                            <select kendo-drop-down-list name="RF_CURRENCY_ID" class="form-control"
+                                                    options="vm.currencyList" ng-model="vm.form.RF_CURRENCY_ID"></select>
+                                        </div>
+                                        <label class="control-label col-md-2">
+                                            <span aria-required="true" class="required"></span>
+                                            LC Amount
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <input type="text" name="LC_TOT_VAL" ng-model="vm.form.LC_TOT_VAL" class="form-control" />
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            Sender Bank
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <select class="form-control required" kendo-drop-down-list name="SND_BKBR_ID" id="SND_BKBR_ID" k-option-label="'-- Select Bank Branch --'"
+                                                    k-data-text-field="'BANK_BRANCH_NAME_EN'" k-data-value-field="'RF_BANK_BRANCH_ID'"
+                                                    k-auto-bind="'true'" k-data-source="vm.SenderbankBranchList" k-ng-delay="vm.SenderbankBranchList" k-filter="'contains'"
+                                                    ng-model="vm.form.SND_BKBR_ID" k-on-change="vm.newBankBranchAdd(vm.form.SND_BKBR_ID,1,kendoEvent);"></select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            {{vm.form.SND_BANK_AS}}
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="form-group">
+
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            Receiving Bank
+                                        </label>
+                                        <div class="col-md-3">
+                                            <select class="form-control required" kendo-drop-down-list name="RCV_BKBR_ID" id="RCV_BKBR_ID" k-option-label="'-- Select Bank Branch --'"
+                                                    k-data-text-field="'BANK_BRANCH_NAME_EN'" k-data-value-field="'RF_BANK_BRANCH_ID'"
+                                                    k-auto-bind="'true'" k-data-source="vm.RcvbankBranchList" k-ng-delay="vm.RcvbankBranchList" k-filter="'contains'"
+                                                    ng-model="vm.form.RCV_BKBR_ID" k-on-change="vm.newBankBranchAdd(vm.form.RCV_BKBR_ID,2,kendoEvent);"></select>
+
+                                        </div>
+                                        <div class="col-md-3">
+                                            {{vm.form.RCV_BANK_AS}}
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            Lean Bank
+                                        </label>
+                                        <div class="col-md-3">
+                                            <select class="form-control required" kendo-drop-down-list name="LIN_BKBR_ID" id="LIN_BKBR_ID" k-option-label="'-- Select Bank Branch --'"
+                                                    k-data-text-field="'BANK_BRANCH_NAME_EN'" k-data-value-field="'RF_BANK_BRANCH_ID'"
+                                                    k-auto-bind="'true'" k-data-source="vm.LeanbankBranchList" k-ng-delay="vm.LeanbankBranchList" k-filter="'contains'"
+                                                    ng-model="vm.form.LIN_BKBR_ID" k-on-change="vm.newBankBranchAdd(vm.form.LIN_BKBR_ID,3,kendoEvent);"></select>
+
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <input type="checkbox" ng-model="vm.form.SMAE" id="SAME" name="SAME" ng-change="vm.copyReceiverBank();" /><label for="SAME"> Same Receiver Bank?</label>
+
+                                        </div>
+                                        <div class="col-md-3">
+                                            {{vm.form.LEAN_BANK_AS}}
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="form-group">
+
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            Inco Term/ Terms of Delivery
+                                        </label>
+                                        <div class="col-md-1" style="padding-right:0px;">
+
+                                            <select kendo-drop-down-list name="RF_INCO_TERM_ID" class="form-control"
+                                                    options="vm.incoTermList" ng-model="vm.form.RF_INCO_TERM_ID"></select>
+                                        </div>
+                                        <div class="col-md-2">
+
+                                            <select kendo-drop-down-list name="RF_DELV_PLC_ID" class="form-control"
+                                                    options="vm.deliveryPlaceList" ng-model="vm.form.RF_DELV_PLC_ID"></select>
+                                        </div>
+                                        <label class="control-label col-md-2">
+                                            <span aria-required="true" class="required"></span>
+                                            Payment Term
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <select kendo-drop-down-list name="RF_PAYM_TERM_ID" class="form-control"
+                                                    options="vm.paymentTermList" ng-model="vm.form.RF_PAYM_TERM_ID"></select>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        @*<label class="control-label col-md-3">
+                                                <span aria-required="true" class="required"></span>
+                                                Payment Term
+                                            </label>
+                                            <div class="col-md-3">
+
+                                                <select kendo-drop-down-list name="RF_PAYM_TERM_ID" class="form-control"
+                                                        options="vm.paymentTermList" ng-model="vm.form.RF_PAYM_TERM_ID"></select>
+                                            </div>*@
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required">*</span>
+                                            Payment Term Description
+                                        </label>
+                                        <div class="col-md-8">
+
+                                            <textarea name="PAYM_TERM_DESC" ng-model="vm.form.PAYM_TERM_DESC" class="form-control required" />
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            LCA No
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <input type="text" name="LCA_NO" ng-model="vm.form.LCA_NO" class="form-control" />
+
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <span aria-required="true" class="required"></span>
+                                            IRC No
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <input type="text" name="IRC_NO" ng-model="vm.form.IRC_NO" class="form-control" />
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required">*</span>
+                                            Insurance
+                                        </label>
+                                        <div class="col-md-3">
+                                            <select class="form-control required" kendo-drop-down-list name="RF_INSURN_COMP_ID" id="RF_INSURN_COMP_ID"
+                                                    k-option-label="'-- Select Insurance Company --'"
+                                                    k-data-text-field="'INS_COMP_NAME_EN'" k-data-value-field="'RF_INSURN_COMP_ID'"
+                                                    k-auto-bind="'true'" k-data-source="vm.insuranceCompanyList" k-ng-delay="vm.insuranceCompanyList" k-filter="'contains'"
+                                                    ng-model="vm.form.RF_INSURN_COMP_ID" k-on-change="vm.getInsuranceInfo(kendoEvent);"></select>
+
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            {{vm.form.INSUR_CVN_NO}}, {{vm.form.INSUR_DT|date:'dd-MM-yyyy'}}, {{vm.form.INSUR_ADDRESS_EN}}
+                                            @*<textarea name="PAYM_TERM_DESC" ng-model="vm.form.PAYM_TERM_DESC" class="form-control required" />*@
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            % Credit Tollarance
+                                        </label>
+                                        <div class="col-md-1">
+
+                                            <input type="number" name="PCT_TOLR_AMT" ng-model="vm.form.PCT_TOLR_AMT" class="form-control" />
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            Shipment
+                                        </label>
+                                        <div class="col-md-2">
+
+                                            <input type="checkbox" id="IS_PART_SHPM" ng-true-value="'Y'" ng-false-value="'N'" ng-model="vm.form.IS_PART_SHPM" /><label for="IS_PART_SHPM">Partial Shipment</label>
+                                        </div>
+
+
+                                        <div class="col-md-2">
+
+                                            <input type="checkbox" id="IS_TRAN_SHPM" ng-true-value="'Y'" ng-false-value="'N'" ng-model="vm.form.IS_TRAN_SHPM" /><label for="IS_TRAN_SHPM">Trans Shipment</label>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            Port of Loading
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <select kendo-drop-down-list name="LOAD_PORT_ID" class="form-control"
+                                                    options="vm.portList" ng-model="vm.form.LOAD_PORT_ID"></select>
+
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <span aria-required="true" class="required"></span>
+                                            Port of Discharge
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <select kendo-multi-select name="DSG_PORT_LST" class="form-control"
+                                                    options="vm.portList" ng-model="vm.form.DSG_PORT_LST"></select>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            Last Date of Shipment
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <input type="text" name="LTST_SHPMNT_DT" ng-model="vm.form.LTST_SHPMNT_DT" class="form-control" min-date="vm.today"
+                                                   ng-click="LTST_SHPMNT_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}" is-open="LTST_SHPMNT_DT_LNopened"
+                                                   datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <span aria-required="true" class="required"></span>
+                                            L/C Status
+                                        </label>
+                                        <div class="col-md-3">
+                                            <select kendo-drop-down-list name="LK_LC_STS_ID" class="form-control"
+                                                    options="vm.lcStatusList" ng-model="vm.form.LK_LC_STS_ID"></select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="OTHER" class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            Other Info
+                                        </label>
+                                        <div class="col-md-1">
+                                            <input type="checkbox" id="OTHER" ng-model="vm.form.SHOW_OTHER" />
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </fieldset>
+                    <fieldset class="custom-fieldset" ng-if="vm.form.SHOW_OTHER==true">
+                        <legend class="custom-legend"><b>Other Information</b></legend>
+                        <div class="row" style="padding-left: 5px; padding-right: 5px;">
+
+                            <form class="form-horizontal" role="form" name="frmImportLC" novalidate>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            Available With
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <input type="text" name="AVAIL_WITH" ng-model="vm.form.AVAIL_WITH" class="form-control" />
+
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <span aria-required="true" class="required"></span>
+                                            Draft at
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <input type="text" name="DRAFT_AT" ng-model="vm.form.DRAFT_AT" class="form-control" />
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            Drawee
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <input type="text" name="DRAWEE_DESC" ng-model="vm.form.DRAWEE_DESC" class="form-control" />
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <span aria-required="true" class="required"></span>
+                                            Document Required
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <input type="text" name="DOC_REQD" ng-model="vm.form.DOC_REQD" class="form-control" />
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            REMARKS
+                                        </label>
+                                        <div class="col-md-8">
+
+                                            <textarea name="REMARKS" ng-model="vm.form.REMARKS" class="form-control" />
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+
+                    </fieldset>
+
+
+
+                    <fieldset class="custom-fieldset">
+
+                        <form class="form-horizontal" role="form" name="frmImportLC" novalidate>
+
+                            <fieldset class="custom-fieldset" @*ng-if="vm.form.IS_LNK_PI_PO=='PI'"*@>
+                                <legend class="custom-legend"><b>PI & Product Details</b></legend>
+
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required"></span>
+                                            Export L/C No
+                                        </label>
+                                        <div class="col-md-2">
+                                            <select class="form-control" kendo-drop-down-list name="CM_EXP_LC_H_ID" id="CM_EXP_LC_H_ID"
+                                                    k-option-label="'-- Select Export L/C --'" style="max-width:250px;"
+                                                    k-data-text-field="'EXP_LCSC_NO'" k-data-value-field="'CM_EXP_LC_H_ID'"
+                                                    k-auto-bind="'true'" k-data-source="vm.expLcList" k-ng-delay="vm.expLcList" k-filter="'contains'"
+                                                    ng-model="vm.formItem.CM_EXP_LC_H_ID"></select>
+
+                                        </div>
+
+                                        <label class="control-label col-md-1">
+                                            <span aria-required="true" class="required"></span>
+                                            Import PI No
+                                        </label>
+                                        <div class="col-md-2">
+                                            <select class="form-control requiredSub" kendo-drop-down-list name="CM_IMP_PI_H_ID" id="CM_IMP_PI_H_ID"
+                                                    k-option-label="'-- Select Import PI --'" style="max-width:250px;"
+                                                    k-data-text-field="'PI_NO_IMP'" k-data-value-field="'CM_IMP_PI_H_ID'"
+                                                    k-auto-bind="'true'" k-data-source="vm.importPIList" k-ng-delay="vm.importPIList" k-filter="'contains'"
+                                                    ng-model="vm.formItem.CM_IMP_PI_H_ID" k-on-change="vm.getItemDataByPI(kendoEvent);"></select>
+
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <table class="clsTableMtex" style="width:100%">
+                                    <tr style="border: 1px solid black; padding:5px;">
+                                        @*<td style="border: 1px solid black; padding:5px;">Export LC</td>
+                                            <td style="border: 1px solid black; padding:5px;">Import PI</td>*@
+                                        <td style="border: 1px solid black; padding:5px;">Item Description</td>
+                                        <td style="border: 1px solid black; padding:5px;">PI Qty</td>
+                                        <td style="border: 1px solid black; padding:5px;">PI Balance Qty</td>
+                                        <td style="border: 1px solid black; padding:5px;">LC Qty</td>
+                                        <td style="border: 1px solid black; padding:5px;">Unit Price</td>
+                                        <td style="border: 1px solid black; padding:5px;">Total Price</td>
+                                        <td style="border: 1px solid black; padding:5px;">Action</td>
+                                    </tr>
+                                    <tr style="border: 1px solid black; padding:5px;" ng-repeat="item in vm.itemList">
+                                        @*<td style="border: 1px solid black; padding:5px;">
+
+                                                <select class="form-control" kendo-drop-down-list name="CM_EXP_LC_H_ID" id="CM_EXP_LC_H_ID"
+                                                        k-option-label="'-- Select Export L/C --'" style="max-width:250px;"
+                                                        k-data-text-field="'EXP_LCSC_NO'" k-data-value-field="'CM_EXP_LC_H_ID'"
+                                                        k-auto-bind="'true'" k-data-source="vm.expLcList" k-ng-delay="vm.expLcList" k-filter="'contains'"
+                                                        ng-model="vm.formItem.CM_EXP_LC_H_ID"></select>
+
+                                            </td>
+                                            <td style="border: 1px solid black; padding:5px;">
+
+                                                <select class="form-control requiredSub" kendo-drop-down-list name="CM_IMP_PI_H_ID" id="CM_IMP_PI_H_ID"
+                                                        k-option-label="'-- Select Import PI --'" style="max-width:250px;"
+                                                        k-data-text-field="'PI_NO_IMP'" k-data-value-field="'CM_IMP_PI_H_ID'"
+                                                        k-auto-bind="'true'" k-data-source="vm.importPIList" k-ng-delay="vm.importPIList" k-filter="'contains'"
+                                                        ng-model="vm.formItem.CM_IMP_PI_H_ID" k-on-change="vm.getItemDataByPI(kendoEvent);"></select>
+
+                                            </td>*@
+                                        <td style="border: 1px solid black; padding:5px;">
+                                            {{item.ITEM_NAME_EN}}
+                                            <input type="hidden" ng-model="item.INV_ITEM_ID" />
+                                            @*<select class="form-control requiredSub" kendo-drop-down-list name="INV_ITEM_ID" id="INV_ITEM_ID"
+                                                k-option-label="'-- Select Item --'" style="max-width:250px;"
+                                                k-data-text-field="'ITEM_NAME_EN'" k-data-value-field="'INV_ITEM_ID'"
+                                                k-auto-bind="'true'" k-data-source="vm.itemList" k-ng-delay="vm.itemList" k-filter="'contains'"
+                                                ng-model="vm.formItem.INV_ITEM_ID" k-on-change="vm.getPIDtl(kendoEvent);"></select>*@>
+                                        </td>
+                                        <td style="border: 1px solid black; padding:5px;">
+                                            <input type="text" class="control-group" ng-model="item.PI_QTY" style="width:80px;" readonly />
+                                        </td>
+                                        <td style="border: 1px solid black; padding:5px;">
+                                            {{item.PI_QTY-item.LC_QTY}}
+                                        </td>
+                                        <td style="border: 1px solid black; padding:5px;">
+                                            <input type="text" class="control-group" ng-model="item.LC_QTY" max={{item.PI_QTY}} style="width:80px;" />
+                                        </td>
+                                        <td style="border: 1px solid black; padding:5px;">
+                                            <input type="text" class="control-group" ng-model="item.UNIT_PRICE" style="width:80px;" readonly />
+                                        </td>
+                                        <td style="border: 1px solid black; padding:5px;">
+                                            {{((item.LC_QTY||0)*(item.UNIT_PRICE||0))}}
+                                            @*<input type="text" class="control-group" ng-model="vm.formItem.LC_TOTAL_AMT" style="width:80px;" />*@
+                                        </td>
+                                        <td style="border: 1px solid black; padding:5px;">
+                                            <button type="button" class="btn btn-sm red" ng-click="vm.removeRow(item,$index);"><i class="fa fa-remove"> Remove</i></button>
+                                        </td>
+
+                                    </tr>
+                                </table>
+                                <br />
+
+                                <div class="row">
+                                    <div class="form-group">
+
+                                        <div class="col-md-4" style="padding-left:30px;">
+                                            <button type="button" class="btn btn-sm green" ng-click="vm.addToGrid(vm.form);">Add To Grid</button>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="padding-left:15px;">
+                                    <div kendo-grid k-options="vm.gridOptions" k-data-source="vm.IMPortOrderList" style="width:98%"></div>
+
+                                </div>
+                            </fieldset>
+
+                            @*<fieldset class="custom-fieldset" ng-if="vm.form.IS_LNK_PI_PO=='PO'">
+                                    <legend class="custom-legend"><b>PO & Product Details</b></legend>
+
+                                    <div class="form-group" style="padding-left:15px;">
+                                        <div kendo-grid k-options="vm.gridOptions" k-data-source="vm.IMPortOrderList" style="width:98%"></div>
+
+                                    </div>
+
+                                </fieldset>*@
+
+                        </form>
+                    </fieldset>
+                    <br />
+                    <br />
+                    <div class="row">
+                        <div class="form-group">
+                            @*<div class="col-md-1">
+                                </div>*@
+                            <div class="col-md-4" style="padding-left:30px;">
+                                <button type="button" class="btn btn-sm blue" ui-sref="ImpLcList">Back To List</button>
+                                <button type="button" ng-if="vm.form.CM_IMP_LC_H_ID>0 && vm.form.IS_REVISE == true" class="btn btn-sm green" ng-click="vm.reviseAll(vm.form);">Revise</button>
+                                <button type="button" ng-if="vm.form.CM_IMP_LC_H_ID>0 && vm.form.IS_REVISE == false" class="btn btn-sm green" ng-click="vm.updateAll(vm.form);">Update</button>
+                                <button type="button" ng-if="vm.form.CM_IMP_LC_H_ID>0 && vm.form.IS_REVISE == false" class="btn btn-sm yellow-gold" ng-click="vm.submitAll(vm.form);">Submit</button>
+                                <button type="button" ng-if="!vm.form.CM_IMP_LC_H_ID>0 && vm.form.IS_REVISE == false" class="btn btn-sm green" ng-click="vm.submitAll(vm.form);">Save</button>
+                                @*<button type="button" class="btn btn-sm default" ng-click="vm.clearAll(vm.form);">Cancel</button>*@
+                                <button type="button" class="btn btn-sm blue" ui-sref="ImpLc({pCM_IMP_LC_H_ID:0,pREVISE:0})" ui-sref-opts="{inherit: false, reload: true}">Cancel</button>
+
+                            </div>
+                            <label class="control-label col-md-2" style="padding:0px;">
+                                <span aria-required="true" class="required">*</span>
+                                Take Action
+                            </label>
+                            <div class="col-md-2" ng-if="vm.form.RF_ACTN_VIEW>0">
+                                <select kendo-drop-down-list name="RF_ACTN_STATUS_ID" id="RF_ACTN_STATUS_ID" class="form-control" ng-class="{'required': vm.form.DYE_RE_PROC_TYPE_ID<2}"
+                                        options="vm.statusList" ng-model="vm.form.RF_ACTN_STATUS_ID" required></select>
+                            </div>
+
+                            <div class="col-md-2" ng-if="!vm.form.RF_ACTN_VIEW>0">
+
+                                <input type="text" ng-model="vm.form.ACTN_STATUS_NAME" style="width: 100%;" readonly="readonly" />
+                                <input type="hidden" ng-model="vm.form.RF_ACTN_STATUS_ID" />
+
+                            </div>
+
+
+                            <div class="col-md-2" ng-if="!vm.form.RF_ACTN_VIEW>0">
+
+                                <button type="button" class="btn btn-sm blue" ui-sref="LcUD({pCM_UD_H_ID:0,pREVISE:0})" ui-sref-opts="{inherit: false, reload: true}">Go to UD</button>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,117 @@
+﻿<style>
+    #grid tr td {
+        /* this makes the menu visibile */
+        overflow: visible;
+        z-index: 1;
+    }
+
+    #grid .k-grid-header {
+        padding-right: 0 !important;
+        z-index: 1;
+    }
+</style>
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Dyeing</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        <input id="access_token" data-ng-model="token" type="hidden"
+               data-ng-init="token='@Session["access_token"]'" />
+        <input ng-model="vm.form.CREATED_BY" type="hidden"
+               data-ng-init="vm.form.CREATED_BY='@Session["multiScUserId"]'" />
+
+        <input id="access_token" ng-model="vm.form.LAST_UPDATED_BY" type="hidden"
+               ng-init="vm.form.LAST_UPDATED_BY='@Session["multiScUserId"]'" />
+
+        <div style="padding:5px;">
+
+
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend">Search By</legend>
+
+                <form class="form-horizontal" role="form" name="TnAFollowupForm" novalidate
+                      ng-submit="vm.onSearch(vm.form)">
+
+                    <div class="col-md-3" style="padding-left:3px;padding-right:3px; ">
+                        Buyer A/C
+                        <select kendo-drop-down-list name="MC_BYR_ACC_GRP_ID" class="form-control"
+                                k-options="buyerAcGrpList" id="MC_BYR_ACC_GRP_ID" ng-model="vm.form.MC_BYR_ACC_GRP_ID"></select>
+                    </div>
+
+                    <div class="col-md-2" style="padding-left:3px;padding-right:3px;">
+                        Order/Style
+                        <select class="form-control" kendo-drop-down-list id="STYLE_NO" name="MC_STYLE_H_EXT_ID" k-option-label="'-- Select Style --'"
+                                k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_STYLE_H_EXT_ID'" k-filter="'Contains'"
+                                k-template="template" k-value-template="valueTemplate"
+                                k-auto-bind="'true'" k-data-source="StyleExtDs" ng-model="vm.form.MC_STYLE_H_EXT_ID"
+                                required style="width:100%;"></select>
+                    </div>
+
+                    <div class="col-md-2" style="padding-left:3px;padding-right:3px;">
+                        Color
+                        <select class="form-control" kendo-drop-down-list name="MC_COLOR_ID" k-option-label="'-- Color --'"
+                                k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'MC_COLOR_ID'" k-filter="'Contains'"
+                                k-auto-bind="'true'" k-data-source="vm.colorListDS" ng-model="vm.form.MC_COLOR_ID"
+                                required style="width:100%;"></select>
+
+                        @*<select kendo-drop-down-list name="MC_COLOR_ID" class="form-control"
+                                k-options="vm.colorList" id="MC_COLOR_ID" ng-model="vm.form.MC_COLOR_ID"></select>*@
+                    </div>
+
+                    <div class="col-md-2" style="padding-left:3px;padding-right:3px;">
+                        Department
+                        <select kendo-drop-down-list name="RF_RESP_DEPT_ID" class="form-control"
+                                k-options="vm.resDeptList" id="RF_RESP_DEPT_ID" ng-model="vm.form.RF_RESP_DEPT_ID"></select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <br />
+                        <a ng-click="vm.searchData()" class="btn btn-sm blue"><i class="fa fa-search"> Search </i></a>
+                        <a class="btn btn-sm green" ng-click="vm.printHoldList(vm.form,'N')"><i class="fa fa-print"> Print</i></a>
+                        <a class="btn btn-sm yellow-gold" ng-click="vm.printHoldList(vm.form,'Y')"><i class="fa fa-edit"> Excel Print</i></a>
+                    </div>
+                </form>
+            </fieldset>
+
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend"><b>Hold Data</b></legend>
+
+                <div style="padding:5px;">
+                    <kendo-grid k-options="vm.gridOptions" k-data-source="vm.gridOptionsDS" id="grid">
+
+                    </kendo-grid>
+
+                </div>
+
+            </fieldset>
+        </div>
+    </div>
+</div>

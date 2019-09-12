@@ -1,0 +1,433 @@
+﻿@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Hr</a>
+
+    </li>
+    <li>
+        <a href="#">Advance Salary Request</a>
+    </li>
+</ul>
+
+
+
+<div class="portlet box blue-dark">
+
+    <div class="portlet-title">
+        <div class="caption">
+            @*<i class="fa fa-gift"></i>*@ Loan/Advance From Salary
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <input id="antiForgeryToken" data-ng-model="Token" type="hidden"
+               data-ng-init="Token='@GetAntiForgeryToken()'" />
+
+        <form class="form-horizontal" role="form" name="AdvSalForm" novalidate>
+            <div class="form-body clearfix">
+                <div class="row" style="padding-top:10px; padding-left:18px;padding-right:10px;">
+                    <input hidden="hidden" ng-model="SC_MENU_ID" />
+                    <input hidden="hidden" ng-model="vm.form.SC_MENU_ID" />
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Advance Ref. No.@ViewBag.LK_ACTION_TYPE_ID</label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" ng-model="vm.form.ADV_REF_NO" readonly />
+                        </div>
+
+                        <label class="col-md-2 control-label">@*Last Ref. No.*@</label>
+                        <div class="col-md-3">
+                            @*<input type="text" class="form-control" ng-model="vm.form.LAST_ADV_REF" readonly />*@
+                        </div>
+                        <div class="col-md-1"></div>
+
+                    </div>
+                </div>
+
+
+                <div class="row" style="padding:10px;">
+
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend">Applicant Details</legend>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">Applicant</label>
+                            <div class="col-md-3">
+                                <input type="text" name="EMPLOYEE_CODE" ng-model="vm.form.EMPLOYEE_CODE" placeholder="Search..." typeahead-min-length="3" typeahead-wait-ms="1000" typeahead="item.EMPLOYEE_CODE as item.EMPLOYEE_CODE for item in emoloyeeAuto($viewValue,vm.form.HR_LEAVE_TYPE_ID)" typeahead-on-select="onSelectItem($item)" typeahead-loading="loadingLocations" class="form-control" required>
+                                <div ng-messages="AdvSalForm.EMPLOYEE_CODE.$error" ng-if="AdvSalForm.$submitted || AdvSalForm.EMPLOYEE_CODE.$touched">
+                                    <div ng-message="required" class="field-validation-error">Please Select Applicant</div>
+                                </div>
+                            </div>
+                            <div class="col-md-5" align="right">
+                                <a href="#" class="btn btn-sm grey-cascade">
+                                    <i class="fa fa-history"></i> Show History
+                                </a>
+                            </div>
+                            <div class="col-md-1"></div>
+
+                        </div>
+
+
+
+
+                        <div>
+
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Employee Name</label>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" ng-model="vm.form.EMP_FULL_NAME_EN" readonly />
+                                </div>
+
+                                <label class="col-md-2 control-label">Company</label>
+
+
+                                <div class="col-md-3">
+                                    <select class="form-control" ng-model="vm.form.HR_COMPANY_ID" ng-options="item.HR_COMPANY_ID as item.COMP_NAME_EN for item in vm.companyData" disabled></select>
+                                </div>
+                                <div class="col-md-1"></div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Department</label>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" ng-model="vm.form.DEPARTMENT_NAME_EN" readonly />
+                                </div>
+
+                                <label class="col-md-2 control-label">Designation</label>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" ng-model="vm.form.DESIGNATION_NAME_EN" readonly />
+                                </div>
+                                <div class="col-md-1"></div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Date of Joining</label>
+                                <div class="col-md-3">
+                                    <input type="text" ng-model="vm.form.JOINING_DT" class="form-control" value="" readonly />
+                                </div>
+
+                                <label class="col-md-2 control-label">Gross Salary</label>
+
+
+                                <div class="col-md-3">
+                                    <input type="text" ng-model="vm.form.GROSS_SALARY" class="form-control input-small" value="" readonly />
+                                </div>
+                                <div class="col-md-1"></div>
+
+                            </div>
+                        </div>
+                    </fieldset>
+                    <br />
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend">Request Details</legend>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                Advance Type
+                            </label>
+                            <div class="col-md-3" style="width:207px;">
+                                <select class="form-control" name="LK_ADV_TYPE_ID" ng-model="vm.form.LK_ADV_TYPE_ID" ng-options="item.LOOKUP_DATA_ID as item.LK_DATA_NAME_EN for item in vm.advanceType" required></select>
+
+                                <div ng-messages="AdvSalForm.LK_ADV_TYPE_ID.$error" ng-if="AdvSalForm.$submitted || AdvSalForm.LK_ADV_TYPE_ID.$touched">
+                                    <div ng-message="required" class="field-validation-error">Advance Type field is required</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">Requesting Date </label>
+                            <div class="col-md-2 input-group">
+                                <span class="input-group-btn">
+                                    <input type="text" class="form-control" name="ADV_RQST_DATE" datepicker-popup="{{format}}" @*min-date="vm.toDay"*@ ng-model="vm.form.ADV_RQST_DATE" is-open="ADV_RQST_DATEopened" datepicker-options="dateOptions" close-text="Close" required />
+                                    <button type="button" class="btn-calendar" ng-click="ADV_RQST_DATEopen($event)" ng-disabled="vm.RequestDetails"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label"></label>
+                            <div class="col-md-3">
+                                <div ng-messages="AdvSalForm.ADV_RQST_DATE.$error" ng-if="AdvSalForm.$submitted || AdvSalForm.ADV_RQST_DATE.$touched">
+                                    <div ng-message="required" class="field-validation-error">Requesting Date field is required</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">Amount Applied for</label>
+                            <div class="col-md-3" style="width:207px;">
+                                <input type="text" name="ADV_RQST_AMT" ng-model="vm.form.ADV_RQST_AMT" class="form-control" ui-number-mask="0" required/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label"></label>
+                            <div class="col-md-3">
+                                <div ng-messages="AdvSalForm.ADV_RQST_AMT.$error" ng-if="AdvSalForm.$submitted || AdvSalForm.ADV_RQST_AMT.$touched">
+                                    <div ng-message="required" class="field-validation-error">Advance Amount field is required</div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">Reason of Advance</label>
+                            <div class="col-md-7">
+                                <textarea rows="3" class="form-control" cols="50" ng-model="vm.form.REASON_ADV"></textarea>
+                            </div>
+                            <div class="col-md-1"></div>
+
+                        </div>
+
+
+                    </fieldset>
+
+                    <div class="form-group" style="padding:10px;" ng-if="vm.level==1">
+                        <label class="col-md-2 control-label">Remarks</label>
+                        <div class="col-md-7">
+                            <textarea rows="3" class="form-control" cols="50" ng-model="vm.form.REMARKS_APR"></textarea>
+                        </div>
+                        <div class="col-md-1"></div>
+
+                    </div>
+
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend">Approval Entry</legend>
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">Approved Date</label>
+                            <div class="col-md-3 input-group">
+                                <input type="text" class="form-control" name="ADV_APRV_DATE" datepicker-popup="{{format}}" ng-model="vm.form.ADV_APRV_DATE" is-open="ADV_APRV_DATEopened" datepicker-options="dateOptions" close-text="Close" required/>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn-calendar" ng-click="ADV_APRV_DATEopen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-3 col-md-offset-2">
+                                <div ng-messages="AdvSalForm.ADV_APRV_DATE.$error" ng-if="AdvSalForm.$submitted || AdvSalForm.ADV_APRV_DATE.$touched">
+                                    <div ng-message="required" class="field-validation-error">Approved Date field is required</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label"> Approved By </label>
+                            <div class="col-md-3">
+                                <select class="form-control" name="APRV_BY_ID" ng-model="vm.form.APRV_BY_ID" ng-options="item.HR_EMPLOYEE_ID as item.EMP_FULL_NAME_EN for item in vm.getBoardOfDirectors" required></select>
+
+                                <div ng-messages="AdvSalForm.APRV_BY_ID.$error" ng-if="AdvSalForm.$submitted || AdvSalForm.APRV_BY_ID.$touched">
+                                    <div ng-message="required" class="field-validation-error">Please select approver</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">Amount Approved</label>
+                            <div class="col-md-3">
+                                <input type="text" name="ADV_APRV_AMT" ng-model="vm.form.ADV_APRV_AMT" class="form-control" ui-number-mask="0" required />
+
+                                <div ng-messages="AdvSalForm.ADV_APRV_AMT.$error" ng-if="AdvSalForm.$submitted || AdvSalForm.ADV_APRV_AMT.$touched">
+                                    <div ng-message="required" class="field-validation-error">Amount Approved field is required</div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label class="col-md-2 control-label">No. of Installment</label>
+
+
+                            <div class="col-md-2">
+                                <input type="text" name="NO_OF_INSTL" ng-model="vm.form.NO_OF_INSTL" class="form-control" ui-number-mask="0" ng-disabled="vm.form.LK_ADV_STATUS_ID==0" required />
+
+                                <div ng-messages="AdvSalForm.NO_OF_INSTL.$error" ng-if="AdvSalForm.$submitted || AdvSalForm.NO_OF_INSTL.$touched">
+                                    <div ng-message="required" class="field-validation-error">No. of Installment field is required</div>
+                                </div>
+
+                            </div>
+                            <label class="col-md-1 control-label" ng-if="vm.form.HR_SAL_ADVANCE_ID">Slab #</label>
+                            <div class="col-md-1" ng-if="vm.form.HR_SAL_ADVANCE_ID">
+                                <input type="text" name="NO_OF_SLAB" ng-model="vm.form.NO_OF_SLAB" ui-number-mask="0" class="form-control" ng-disabled="vm.form.IS_SLAB>0" />
+                            </div>
+                            <div class="col-md-1" ng-if="vm.form.HR_SAL_ADVANCE_ID">
+                                <a class="btn btn-xs blue" ng-click="openModalForMakingSchedule(vm.form)">
+                                    {{vm.form.IS_SLAB==0?'Make Schedule':'Show Schedule'}}
+                                </a>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label class="col-md-2 control-label">Installment/Month</label>
+
+
+                            <div class="col-md-3">
+                                <input type="text" name="INSTL_AMT" ng-model="vm.form.INSTL_AMT" class="form-control" ui-number-mask="0" readonly />
+                            </div>
+                            <div class="col-md-1"></div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">Deduction Start From </label>
+                            <div class="col-md-3 input-group">
+                                <input type="text" class="form-control" name="DEDU_ST_DT" datepicker-popup="{{format}}" ng-model="vm.form.DEDU_ST_DT" is-open="DEDU_ST_DTopened" datepicker-options="dateOptions" ng-required="true" close-text="Close" ng-disabled="vm.form.LK_ADV_STATUS_ID==0" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn-calendar" ng-click="DEDU_ST_DTopen($event)" ng-disabled="vm.form.LK_ADV_STATUS_ID==0"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-3 col-md-offset-2" ng-messages="AdvSalForm.DEDU_ST_DT.$error" ng-if="AdvSalForm.$submitted || AdvSalForm.DEDU_ST_DT.$touched">
+                                <div ng-message="required" class="field-validation-error">Deduction Start From field is required</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label"> Status </label>
+                            <div class="col-md-3">
+                                <select class="form-control" ng-model="vm.form.LK_ADV_STATUS_ID" ng-options="item.LOOKUP_DATA_ID as item.LK_DATA_NAME_EN for item in vm.AdvStatus"></select>
+                            </div>
+                        </div>
+
+
+
+
+
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">Remarks</label>
+                            <div class="col-md-7">
+                                <textarea rows="3" name="REMARKS" class="form-control" cols="50" ng-model="vm.form.REMARKS" ng-disabled="vm.form.LK_ADV_STATUS_ID==0"></textarea>
+                            </div>
+                            <div class="col-md-1"></div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div class="form-actions">
+                    <div class="col-md-4 col-md-offset-4">
+                        <button type="button" ng-if="vm.form.HR_SAL_ADVANCE_ID" class="btn btn-sm blue" ui-sref="ManualSalaryAdvReq({i:null})">New Entry</button>
+                        <button type="button" ng-if="vm.form.HR_SAL_ADVANCE_ID" ng-click="vm.updateData(vm.form,Token,AdvSalForm.$valid)" class="btn btn-sm yellow-gold">Update</button>
+                        <button type="button" ng-if="!vm.form.HR_SAL_ADVANCE_ID" ng-click="vm.saveData(vm.form,Token,AdvSalForm.$valid)" class="btn btn-sm green" ng-class="{'disabled':!AdvSalForm.$valid}">Save</button>
+                        <button type="button" class="btn btn-sm default" ui-sref="UserDashBoard">Cancel</button>
+                    </div>
+                    <div class="col-md-4" align="center">
+                        <button type="button" ng-if="vm.editMode" class="btn blue" ng-click="vm.submitData(vm.form,Token,AdvSalForm.$valid)">Submit</button>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script type="text/ng-template" id="AdvSalaryModal.html">
+    <div class="modal-header">
+        <h5 class="title">
+            Ref. # {{item.ADV_REF_NO}} <br />
+            {{item.EMP_FULL_NAME_EN}}
+            <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+        </h5>
+    </div>
+    <div class="modal-body">
+        <div class="portlet-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th>
+                                Slab #
+                            </th>
+                            <th>
+                                No. of Installment
+                            </th>
+                            <th>
+                                Installment/Month
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr ng-repeat="itm in item.items" ng-if="!itm.CAN_BE_DEL==1">
+                            <td>
+                                <input type="number" style="width:50px;" ng-model="itm.SLAB_NO" ng-disabled="((itm.NO_OF_INSTL||0)-itm.TOT_INSTL_PAID)==0 && itm.TOT_INSTL_PAID>0" />
+                            </td>
+                            <td>
+                                <input type="number" ng-model="itm.NO_OF_INSTL" ng-disabled="((itm.NO_OF_INSTL||0)-itm.TOT_INSTL_PAID)==0 && itm.TOT_INSTL_PAID>0" />
+                            </td>
+                            <td>
+                                <input type="number" ng-model="itm.INSTL_AMT" ng-disabled="((itm.NO_OF_INSTL||0)-itm.TOT_INSTL_PAID)==0 && itm.TOT_INSTL_PAID>0" />
+                            </td>
+                            <td>
+
+
+                                <a ng-click="remove($index)" class="btn btn-xs red" ng-disabled="((itm.NO_OF_INSTL||0)-itm.TOT_INSTL_PAID)==0||item.items.length==1">
+                                    <i class="fa fa-times"></i> Remv
+                                </a>
+
+                                <a class="btn btn-xs green" ng-click="add()" ng-show="(itm.NO_OF_INSTL-itm.TOT_INSTL_PAID)>0">
+                                    <i class="fa fa-plus"></i> Slab
+                                </a>
+
+                            </td>
+
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>Total</td>
+                            <td><b>{{sumInstl}}</b></td>
+                            <td><b>{{sumAmt}}</b></td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <div class="form-actions" ng-if="item.LK_ADV_TYPE_ID==146">
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-4">
+                        <button type="button" ng-click="save(item)" class="btn btn-sm green" ng-class="{'disabled':disableSave}">Save</button>
+                        <button type="button" class="btn btn-sm default" ng-click="cancel()">Cancel</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+

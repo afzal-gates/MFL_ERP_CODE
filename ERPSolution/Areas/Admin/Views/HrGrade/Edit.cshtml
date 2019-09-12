@@ -1,0 +1,146 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Admin</a>
+
+    </li>
+    <li>
+        <a href="#">HR Grade</a>
+    </li>
+    <li>
+        <a href="#">Edit</a>
+    </li>
+
+</ul>
+
+@model ERP.Model.HrGradeModel
+
+@{
+    ViewBag.Title = "Edit Grade";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption">
+            @*<i class="fa fa-gift"></i>*@Edit Grade
+        </div>
+        <div class="tools">
+            <a href="javascript:;" class="collapse">
+            </a>
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            <a href="javascript:;" class="remove">
+            </a>
+        </div>
+    </div>
+    <div class="portlet-body form">
+        <!-- BEGIN FORM-->
+        @*<form action="/Admin/LookupTables/AddNew" method="post" class="form-horizontal form-bordered">*@
+        @using (Html.BeginForm("Edit", "HrGrade", FormMethod.Post, new { @class = "form-horizontal form-bordered" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-body">
+                @Html.HiddenFor(model => model.HR_GRADE_ID)
+
+                <div class="form-group">
+                    <label class="control-label col-md-3">
+                        @Html.LabelFor(model => model.GRADE_NO_EN)
+                        <span class="required" aria-required="true">*</span>
+                    </label>
+                    <div class="col-md-4">   
+                        @*<input class="input-validation-error form-control" id="GRADE_NO_EN" name="GRADE_NO_EN" placeholder="Input grade# [E]" type="text" value="">*@                     
+                        @Html.TextBoxFor(model => model.GRADE_NO_EN, new { @class = "form-control", placeholder = "Input grade# [E]" })
+                        @Html.ValidationMessageFor(model => model.GRADE_NO_EN)
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3">
+                        @Html.LabelFor(model => model.GRADE_NO_BN)
+                        <span class="required" aria-required="true">*</span>
+                    </label>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(model => model.GRADE_NO_BN, new { @class = "form-control banglafont", placeholder = "‡MÖW bs w`b" })
+                        @Html.ValidationMessageFor(model => model.GRADE_NO_BN)
+
+                        @*<input type="text" class="form-control" maxlength="25" name="defaultconfig" id="maxlength_thresholdconfig">
+                            <span class="help-block">
+                                Maxlength is 25 chars. Do you want the badge to show up when there are 20 chars or less? Use the threshold option: <code>threshold: 20</code>
+                            </span>*@
+                        
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="control-label col-md-3"></label>
+                    <div class="col-md-9">
+                        @*@Html.CheckBox("IS_ACTIVE", true)
+                            @Html.LabelFor(model => model.IS_ACTIVE)
+                            @Html.ValidationMessageFor(model => model.IS_ACTIVE)*@
+
+                        @if (@Model.IS_ACTIVE == "Y")
+                        {
+                            <input type="checkbox" value="N" checked="checked" name="IS_ACTIVE">
+                        }
+                        else
+                        {
+                            <input type="checkbox" value="Y" name="IS_ACTIVE">
+                        }
+                        @Html.LabelFor(model => model.IS_ACTIVE)
+                        @Html.ValidationMessageFor(model => model.IS_ACTIVE)
+                    </div>
+                </div>
+                <!--
+                <div class="form-group">
+                    <label class="control-label col-md-3">Textarea</label>
+                    <div class="col-md-9">
+                        <textarea id="maxlength_textarea" class="form-control" maxlength="225" rows="2" placeholder="This textarea has a limit of 225 chars."></textarea>
+                        <span class="help-block">
+                            Bootstrap maxlength supports textarea as well as inputs. Even on old IE.
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3">Position</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" maxlength="25" name="defaultconfig" id="maxlength_placement">
+                        <span class="help-block">
+                            The field counter can be positioned at the top, bottom, left or right. You can also place the maxlength indicator on the corners: <code>bottom-right</code>, <code>top-right</code>, <code>top-left</code>, <code>bottom-left</code> and <code>centered-right</code>. All you need to do is specify the <code>placement</code> option, with one of those strings.
+                        </span>
+                    </div>
+                </div>
+                -->
+
+            </div>
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button type="submit" class="btn yellow"><i class="fa fa-check"></i> Update</button>
+                        <button type="reset" class="btn blue">Cancel</button>
+                        <a href="@Url.Action("Index", "HrGrade")" class="btn default">Back</a>
+                    </div>
+                </div>
+            </div>
+        }
+        @* </form> *@
+        <!-- END FORM-->
+    </div>
+</div>
+
+
+
+
+
+
+
+
+

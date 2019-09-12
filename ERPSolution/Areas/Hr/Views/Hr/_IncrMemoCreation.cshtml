@@ -1,0 +1,194 @@
+﻿
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Hr</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+
+    <div class="portlet-body form">
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <form class="form-horizontal" role="form" name="frmIncrMemoCreation" novalidate>
+            <div class="form-body clearfix">
+                <div class="row" style="margin:auto">
+                    
+                    <div class="row" style="margin:auto;" ng-show="vm.errors">
+                        <div class="alert alert-danger" role="alert">
+                            @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                            <div style="padding: 0px 0px 15px 25px; ">
+                                <b>Please fix the following errors ....</b>
+                            </div>
+                            <ul ng-repeat="field in vm.errors">
+                                <li ng-repeat="error in field" ng-bind="error"></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend">Increment Memo</legend>
+
+                        <div class="col-md-8">
+                            
+                            <input type="hidden" name="HR_INCR_MEMO_ID" ng-model="vm.form.HR_INCR_MEMO_ID" />
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">
+                                    <span aria-required="true" class="required">*</span>Authorization#
+                                </label>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control banglafont" name="AUTH_NO" ng-model="vm.form.AUTH_NO" readonly />
+                                </div>
+                            </div>                                                     
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">
+                                    <span aria-required="true" class="required">*</span>Incr. Company
+                                </label>
+                                <div class="col-md-6">
+                                    <select class="form-control" kendo-drop-down-list name="HR_COMPANY_ID" required
+                                            k-data-text-field="'COMP_NAME_EN'" k-data-value-field="'HR_COMPANY_ID'" k-option-label="'-- Select --'"
+                                            k-auto-bind="'true'" k-options="vm.compOptions" ng-model="vm.form.HR_COMPANY_ID"
+                                            @*k-on-select="vm.onSelectCompany(kendoEvent)"*@></select>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">
+                                    <span aria-required="true" class="required">*</span>Incr. Period
+                                </label>
+                                <div class="col-md-3">
+                                    <select class="form-control" kendo-drop-down-list name="ACC_PAY_PERIOD_ID" required
+                                            k-data-text-field="'MONTH_YEAR_NAME'" k-data-value-field="'ACC_PAY_PERIOD_ID'" k-option-label="'-- Select --'"
+                                            k-auto-bind="'true'" k-options="vm.compPayPeriodOptions" k-data-source="vm.compPayPeriodDataSource" ng-model="vm.form.ACC_PAY_PERIOD_ID"></select>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">
+                                    <span aria-required="true" class="required">*</span>Incr. Type
+                                </label>
+                                <div class="col-md-6">
+                                    <select class="form-control" kendo-drop-down-list name="RF_INCR_TYPE_ID" required
+                                            k-data-text-field="'INCR_TYPE_NAME_EN'" k-data-value-field="'RF_INCR_TYPE_ID'" k-option-label="'-- Select --'"
+                                            k-auto-bind="'true'" k-data-source="vm.RF_INCR_TYPE_LIST" ng-model="vm.form.RF_INCR_TYPE_ID"
+                                            k-on-change="vm.incrTypeOnChange(kendoEvent)"></select>
+
+                                </div>
+                            </div>
+                           
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">
+                                    <span aria-required="true" class="required">*</span>Memo Date
+                                </label>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" ng-click="vm.memoDateOpen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                           name="MEMO_DT" ng-model="vm.form.MEMO_DT" is-open="vm.memoDateOpened"
+                                           datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" required />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">
+                                    Memo#
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control banglafont" name="MEMO_NO" ng-model="vm.form.MEMO_NO" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">
+                                    Remarks
+                                </label>
+                                <div class="col-md-9">
+                                    <textarea class="form-control" name="REMARKS" ng-model="vm.form.REMARKS" rows="2"> </textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3">&nbsp;</label>
+                                <div class="col-md-5">
+                                    <label class="control-label checkbox-inline">
+                                        <input type="checkbox" name="IS_BY_ADMIN" ng-model="vm.form.IS_BY_ADMIN" ng-true-value="'Y'" ng-false-value="'N'" /> By Admin?
+                                    </label>
+                                </div>
+                            </div>
+
+                            @*<div class="form-group">
+                                <label class="col-md-3">&nbsp;</label>
+                                <div class="col-md-5">
+                                    <label class="control-label checkbox-inline">
+                                        <input type="checkbox" name="IS_FINALIZED" ng-model="vm.form.IS_FINALIZED" ng-true-value="'Y'" ng-false-value="'N'" /> Finalized?
+                                    </label>
+                                </div>
+                            </div>*@
+
+
+                            @*<div kendo-grid id="grid" k-options="vm.apvrGridOption" k-data-source="vm.apvrGridDataSource"></div>*@
+
+                            @*<p>&nbsp;</p>*@
+                            @*{{frmIncrMemoCreation.$invalid}}*@
+                            @*<pre>{{vm.form|json}}</pre>*@
+                            <div class="col-md-offset-3 col-md-12" style="padding-bottom:5px;margin-top:10px;">
+                                <button type="button" class="btn btn-sm green" ng-show="vm.form.HR_INCR_MEMO_ID<1" ng-click="vm.submit()"
+                                        ng-class="{'disabled':frmIncrMemoCreation.$invalid||vm.form.IS_FINALIZED=='Y'}">
+                                    Save
+                                </button>
+                                <button type="button" class="btn btn-sm yellow-gold" ng-show="vm.form.HR_INCR_MEMO_ID>0" ng-click="vm.submit()"
+                                        ng-class="{'disabled':frmIncrMemoCreation.$invalid||vm.form.IS_FINALIZED=='Y'}">
+                                    Update
+                                </button>
+                                <button type="button" class="btn btn-sm blue" ng-click="vm.reset()">Cancel</button>
+                                &nbsp;&nbsp;&nbsp;
+                                <button type="button" class="btn btn-sm blue" ng-click="vm.memoFinalize()" 
+                                        ng-class="{'disabled':vm.form.IS_FINALIZED=='Y'}">Finalize</button>
+                            </div>                            
+
+                            @*<div class="portlet-body" data-ui-view="IncrMemoList"></div>*@
+                        </div>
+                    </fieldset>
+                    
+
+                </div>
+
+                <div class="row" style="margin:auto;padding-top:5px">
+                    <fieldset class="custom-fieldset">
+                        <div kendo-grid id="grid" k-options="vm.incrMemoGridOption" k-data-source="vm.incrMemoGridDataSource"></div>
+                    </fieldset>
+                </div>
+
+            </div>
+        </form>
+
+
+
+    </div>
+
+</div>
+
+

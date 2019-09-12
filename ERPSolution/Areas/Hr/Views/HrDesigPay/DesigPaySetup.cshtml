@@ -1,0 +1,148 @@
+﻿@*@model ERP.Model.HR_SCHEDULE_HModel*@
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>    
+    <li>
+        <a href="#">Hr</a>
+    </li>
+    <li>
+        <a href="#">Designation Pay Setup</a>
+    </li>
+</ul>
+
+
+@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+<div class="portlet box blue-dark" >
+
+    <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+           data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+    <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+        <div class="page-splash">
+            <div class="page-splash-message">
+                <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+            </div>
+        </div>
+    </div>
+
+    <div class="portlet-title">
+        <div class="caption">
+            @*<i class="fa fa-gift"></i>*@ Designation Pay Setup
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+
+        <div class="row">
+
+            <div class="col-md-12">
+
+                @*<div class="col-md-offset-0 col-md-8">*@
+                    <p></p>
+                    <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+                           data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+                    <div class="col-md-12" style="padding-right:5px;" @*style="border:1px solid red"*@>
+                            
+                        <div class="form-group" style="padding-bottom:20px;">
+                            <label class="control-label col-md-1 col-md-offset-1" style="padding-left: 0px;padding-right:0px;">
+                                Pay Element
+                                @*<span class="required" aria-required="true">*</span>*@
+                            </label>
+                            <div class="col-md-3">
+                                <select kendo-drop-down-list id="HR_PAY_ELEMENT_ID" name="HR_PAY_ELEMENT_ID" class="form-control"
+                                        options="vm.payElementData" ng-model="vm.form.HR_PAY_ELEMENT_ID"></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="padding-bottom:20px;">
+                            <label class="control-label col-md-1 col-md-offset-1" style="padding-left: 0px;padding-right:0px;">
+                                Department
+                                @*<span class="required" aria-required="true">*</span>*@
+                            </label>
+                            <div class="col-md-3">
+                                <select kendo-drop-down-list name="HR_DEPARTMENT_ID" options="vm.departmentList" ng-model="vm.form.HR_DEPARTMENT_ID"
+                                        class="form-control"></select>
+                            </div>
+                        </div>
+                            
+                        <div class="form-group" style="padding-bottom:20px;" ng-if="!vm.isDesigPayShow">
+                            <label class="control-label col-md-1 col-md-offset-1" style="padding-left: 0px; padding-right: 0px">
+                            </label>
+                            <div class="col-md-8" style="padding-right:0px;">
+                                <button type="button" class="btn btn-default" ng-click="vm.next()">Next</button>
+                            </div>
+
+                        </div>                        
+
+                        <div class="form-group" style="padding-bottom:20px;" ng-show="vm.isDesigPayShow">
+                            <div class="col-md-7 col-md-offset-1" style="padding-left: 0px; padding-right: 0px">
+                                <div id="desigPayGrid" kendo-grid></div>
+                            </div>
+                        </div>                                                
+
+                        <div class="form-group" style="padding-bottom:20px;" ng-if="vm.isDesigPayShow">
+                            <div class="col-md-6 col-md-offset-1" style="padding-left: 0px; padding-right: 0px">
+                                &nbsp;
+                            </div>
+                        </div> 
+
+                        <div class="form-group" style="padding-bottom:20px;" ng-if="vm.isDesigPayShow">
+                            <div class="col-md-8 col-md-offset-1" style="padding-left: 0px; padding-right: 0px">
+                                <button type="button" class="btn green" ng-click="vm.submit(vm.form,vm.insert)"><i class="fa fa-check"></i> Save</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="padding-bottom:20px;">
+                            <div class="col-md-6 col-md-offset-1" style="padding-left: 0px; padding-right: 0px">
+                                &nbsp;
+                            </div>
+                        </div>
+                        
+
+                    </div>
+
+
+                    
+                    
+
+                @*</div>
+                <div class="col-md-4">
+                </div>*@
+
+            </div>
+
+
+
+
+
+
+            
+
+        </div>
+    </div>
+
+</div>
+

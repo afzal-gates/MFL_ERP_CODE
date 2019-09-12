@@ -1,0 +1,687 @@
+﻿<style>
+
+
+    tbody {
+        height: 1000px; /* Just for the demo          */
+        overflow-y: auto; /* Trigger vertical scroll    */
+        overflow-x: hidden; /* Hide the horizontal scroll */
+    }
+
+    .blue.btn:active, .blue.btn.active {
+        background-image: none;
+        background-color: #5b6e8c;
+    }
+
+
+</style>
+<div class="row">
+    <div class="col-md-12 ">
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <a href="index.html">MultiTex ERP</a>
+
+            </li>
+            <li>
+                <a href="#">Garments</a>
+
+            </li>
+            <li>
+                <a href="#" ng-bind="vm.Title"></a>
+            </li>
+        </ul>
+
+        <!-- BEGIN Portlet PORTLET-->
+        <div class="portlet box blue-dark">
+            <div class="portlet-title">
+                <div class="row" style="padding-top: 10px;font-size:14px;">
+                    <div class="col-md-11">
+
+
+
+                        <div class="btn-group btn-group" ng-click="itm.IS_ACTIVE = !itm.IS_ACTIVE " style="padding:3px;" ng-repeat="itm in FloorList">
+                            <a class="btn default btn-xs" ng-class="{'blue': itm.HR_PROD_FLR_ID == vm.selectedFlr}" ng-click="vm.OnChangeFloor(itm)">
+                                {{itm.FLOOR_DESC_EN}}
+                            </a>
+                        </div>
+
+                        <div class="btn-group btn-group">
+
+                            <a class="btn green-meadow btn-xs" ng-click="vm.refresh()">
+                                <i class="fa fa-refresh"></i> Refresh
+                            </a>
+                        </div>
+
+    
+
+                        <div class="btn-group btn-group">
+                            <a href="/Home/LineLoadPlan?a=164/#/LineLoadPlan?pFLOOR_LIST={{vm.selectedFlr}}" class="btn purple-plum btn-xs">
+                                Line Load Plan
+                            </a>
+                        </div>
+
+                        <div class="btn-group btn-group">
+                            <a href="/Home/HourlyProductionEntry?a=165/#/PartialManpowerEntry?pFLOOR_LIST={{vm.selectedFlr}}" class="btn blue-hoki btn-xs">
+                                Man Minutes Adjustment
+                            </a>
+                        </div>
+
+
+                        <div class="btn-group btn-group">
+                            <a class="btn green-meadow btn-xs" ng-click="vm.printEfficiencyReport(vm.selectedDt,'N')">
+                                <i class="fa fa-refresh"></i>  Efficiency (pdf)
+                            </a>
+                        </div>
+
+                        <div class="btn-group btn-group">
+                            <a class="btn green-meadow btn-xs" ng-click="vm.printEfficiencyReport(vm.selectedDt,'Y')">
+                                <i class="fa fa-refresh"></i>  Efficiency (excel)
+                            </a>
+
+                        </div>
+
+
+                        <div class="btn-group btn-group">
+                            <input type="hidden" class="form-control" datepicker-popup="{{format}}" ng-model="dt" is-open="opened" max-date="minDate" ng-change="vm.onDateSelect(dt)" datepicker-options="dateOptions" close-text="Close" />
+                            <span style="color:white;text-align:right;"><b><i class="glyphicon glyphicon-calendar"></i></b></span>
+                            <span style="color: yellow; text-align: right; border: 1px solid white; ">&nbsp;&nbsp;<b>{{dt|date:'dd-MMM-yyyy'}}</b>&nbsp;&nbsp;</span>
+                            <span style="color: white; cursor: pointer;" ng-click="open($event)"><b>Change</b></span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-md-1" align="right">
+                        <button class="btn btn-xs" ng-click="vm.openConfigModal()">
+                            <span class="item"> <span aria-hidden="true" class="icon-settings"></span>&nbsp; Setting</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="portlet-body">
+                <form name="LineLoadPlanEntry" role="form" novalidate>
+                    <table class="table table-condensed table-bordered table-striped" style="margin-bottom:0px;">
+                        <thead style="text-align:center;" class="site-table-header">
+                            <tr>
+                                <th rowspan="3" width="2%">
+                                    Ln
+                                </th>
+                                <th rowspan="3" width="8%">
+                                    Buyer
+                                </th>
+                                <th rowspan="3" width="8%">
+                                    Order#
+                                </th>
+                                <th rowspan="3" width="1%">
+                                    D'R
+                                </th>
+                                <th colspan="2" rowspan="1" width="6%">
+                                    Used MP
+                                </th>
+                                <th rowspan="3" width="3%">
+                                    T.Effi(%)
+                                </th>
+                                <th rowspan="3" width="1%">
+                                    T'WH
+                                </th>
+
+                                <th colspan="8" width="24%" style="text-align:center;">
+                                    General Hour Production
+                                </th>
+
+
+                                <th colspan="3" width="9%" style="text-align:center;">
+                                    Over Time
+                                </th>
+
+                            </tr>
+                            <tr>
+                                <th width="3%" rowspan="2" style="border-top:1px solid;">
+                                    OP
+                                </th>
+                                <th width="3%" rowspan="2" style="border-top:1px solid;">
+                                    HP
+                                </th>
+
+                                <th width="3%" style="border-top:1px solid;">
+                                    1
+                                </th>
+                                <th width="3%">
+                                    2
+                                </th>
+                                <th width="3%">
+                                    3
+                                </th>
+                                <th width="3%">
+                                    4
+                                </th>
+                                <th width="3%">
+                                    5
+                                </th>
+                                <th width="3%">
+                                    6
+                                </th>
+                                <th width="3%">
+                                    7
+                                </th>
+                                <th width="3%">
+                                    8
+                                </th>
+
+                                <th width="4%" style="border-top:1px solid;">
+                                    Tgt/Hr
+                                </th>
+
+                                <th width="2%">
+                                    Hr
+                                </th>
+
+                                <th width="4%">
+                                    Prod.
+                                </th>
+
+
+                            </tr>
+                            <tr>
+                                @*<th width="3%" style="border-top:1px solid;" colspan="2">
+                                    <div class="checkbox-list" style="padding-bottom: 0px; padding-top: 0px;">
+                                        <label class="checkbox-list" style="padding-bottom: 0px; padding-top: 0px;">
+                                            <span class="col-md-6"><input type="checkbox" ng-model="vm.IS_GH_TGT_LOCK_S" ng-true-value="'Y'" ng-false-value="'N'" ng-change="vm.onChangeGenMPTarget(vm.FloorLineData,vm.IS_GH_TGT_LOCK_S)" ng-disabled="vm.IS_GH_TGT_LOCK"></span>
+                                            <span class="col-md-6" style="text-align:right;"><i class="fa" ng-style="{color: vm.IS_GH_TGT_LOCK?'grey':'white' }" ng-class="{'fa-lock':vm.IS_GH_TGT_LOCK_S=='Y','fa-unlock':vm.IS_GH_TGT_LOCK_S=='N'}"></i></span>
+                                            
+                                        </label>
+                                      
+                                    </div>
+                                   
+                                </th>*@
+                                <th width="3%" style="border-top:1px solid;">
+                                    <div class="checkbox-list" style="padding-bottom: 0px; padding-top: 0px;">
+                                        <label class="checkbox-list" style="padding-bottom: 0px; padding-top: 0px;">
+                                            <span class="col-md-6"><input type="checkbox" ng-model="vm.CHK_GH_PRD_1_S" ng-true-value="'Y'" ng-false-value="'N'" ng-change="vm.onChangeGenProduction(vm.FloorLineData,vm.CHK_GH_PRD_1_S,1)" ng-disabled="vm.CHK_GH_PRD_1"></span>
+                                            <span class="col-md-6" style="text-align:right;"><i class="fa" ng-style="{color: vm.CHK_GH_PRD_1?'grey':'white' }" ng-class="{'fa-lock':vm.CHK_GH_PRD_1_S=='Y','fa-unlock':vm.CHK_GH_PRD_1_S=='N'}" ng-disabled="vm.CHK_GH_PRD_1"></i></span>
+                                        </label>
+                                    </div>
+
+                                </th>
+                                <th width="3%" style="border-top:1px solid;">
+                                    <div class="checkbox-list" style="padding-bottom: 0px; padding-top: 0px;">
+                                        <label class="checkbox-list" style="padding-bottom: 0px; padding-top: 0px;">
+                                            <span class="col-md-6"><input type="checkbox" ng-model="vm.CHK_GH_PRD_2_S" ng-true-value="'Y'" ng-false-value="'N'" ng-change="vm.onChangeGenProduction(vm.FloorLineData,vm.CHK_GH_PRD_2_S,2)" ng-disabled="vm.CHK_GH_PRD_2"></span>
+                                            <span class="col-md-6" style="text-align:right;">
+                                                <i class="fa" ng-style="{color: vm.CHK_GH_PRD_2?'grey':'white' }" ng-class="{'fa-lock':vm.CHK_GH_PRD_2_S=='Y','fa-unlock':vm.CHK_GH_PRD_2_S=='N'}"></i>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </th>
+                                <th width="3%" style="border-top:1px solid;">
+                                    <div class="checkbox-list" style="padding-bottom: 0px; padding-top: 0px;">
+                                        <label class="checkbox-list" style="padding-bottom: 0px; padding-top: 0px;">
+                                            <span class="col-md-6"><input type="checkbox" ng-model="vm.CHK_GH_PRD_3_S" ng-true-value="'Y'" ng-false-value="'N'" ng-change="vm.onChangeGenProduction(vm.FloorLineData,vm.CHK_GH_PRD_3_S,3)" ng-disabled="vm.CHK_GH_PRD_3"></span>
+                                            <span class="col-md-6" style="text-align:right;"><i class="fa" ng-style="{color: vm.CHK_GH_PRD_3?'grey':'white' }" ng-class="{'fa-lock':vm.CHK_GH_PRD_3_S=='Y','fa-unlock':vm.CHK_GH_PRD_3_S=='N'}"></i></span>
+                                        </label>
+                                    </div>
+                                </th>
+                                <th width="3%" style="border-top:1px solid;">
+                                    <div class="checkbox-list" style="padding-bottom: 0px; padding-top: 0px;">
+                                        <label class="checkbox-list" style="padding-bottom: 0px; padding-top: 0px;">
+                                            <span class="col-md-6"><input type="checkbox" ng-model="vm.CHK_GH_PRD_4_S" ng-true-value="'Y'" ng-false-value="'N'" ng-change="vm.onChangeGenProduction(vm.FloorLineData,vm.CHK_GH_PRD_4_S,4)" ng-disabled="vm.CHK_GH_PRD_4"></span>
+                                            <span class="col-md-6" style="text-align:right;"><i class="fa" ng-style="{color: vm.CHK_GH_PRD_4?'grey':'white' }" ng-class="{'fa-lock':vm.CHK_GH_PRD_4_S=='Y','fa-unlock':vm.CHK_GH_PRD_4_S=='N'}"></i></span>
+                                        </label>
+                                    </div>
+                                </th>
+                                <th width="3%" style="border-top:1px solid;">
+                                    <div class="checkbox-list" style="padding-bottom: 0px; padding-top: 0px;">
+                                        <label class="checkbox-list" style="padding-bottom: 0px; padding-top: 0px;">
+                                            <span class="col-md-6"><input type="checkbox" ng-model="vm.CHK_GH_PRD_5_S" ng-true-value="'Y'" ng-false-value="'N'" ng-change="vm.onChangeGenProduction(vm.FloorLineData,vm.CHK_GH_PRD_5_S,5)" ng-disabled="vm.CHK_GH_PRD_5"></span>
+                                            <span class="col-md-6" style="text-align:right;"><i class="fa" ng-style="{color: vm.CHK_GH_PRD_5?'grey':'white' }" ng-class="{'fa-lock':vm.CHK_GH_PRD_5_S=='Y','fa-unlock':vm.CHK_GH_PRD_5_S=='N'}"></i></span>
+                                        </label>
+                                    </div>
+                                </th>
+                                <th width="3%" style="border-top:1px solid;">
+                                    <div class="checkbox-list" style="padding-bottom: 0px; padding-top: 0px;">
+                                        <label class="checkbox-list" style="padding-bottom: 0px; padding-top: 0px;">
+                                            <span class="col-md-6"><input type="checkbox" ng-model="vm.CHK_GH_PRD_6_S" ng-true-value="'Y'" ng-false-value="'N'" ng-change="vm.onChangeGenProduction(vm.FloorLineData,vm.CHK_GH_PRD_6_S,6)" ng-disabled="vm.CHK_GH_PRD_6"></span>
+                                            <span class="col-md-6" style="text-align:right;"><i class="fa" ng-style="{color: vm.CHK_GH_PRD_6?'grey':'white' }" ng-class="{'fa-lock':vm.CHK_GH_PRD_6_S=='Y','fa-unlock':vm.CHK_GH_PRD_6_S=='N'}"></i></span>
+                                        </label>
+                                    </div>
+                                </th>
+                                <th width="3%" style="border-top:1px solid;">
+                                    <div class="checkbox-list" style="padding-bottom: 0px; padding-top: 0px;">
+                                        <label class="checkbox-list" style="padding-bottom: 0px; padding-top: 0px;">
+                                            <span class="col-md-6"><input type="checkbox" ng-model="vm.CHK_GH_PRD_7_S" ng-true-value="'Y'" ng-false-value="'N'" ng-change="vm.onChangeGenProduction(vm.FloorLineData,vm.CHK_GH_PRD_7_S,7)" ng-disabled="vm.CHK_GH_PRD_7"></span>
+                                            <span class="col-md-6" style="text-align:right;"><i class="fa" ng-style="{color: vm.CHK_GH_PRD_7?'grey':'white' }" ng-class="{'fa-lock':vm.CHK_GH_PRD_7_S=='Y','fa-unlock':vm.CHK_GH_PRD_7_S=='N'}"></i></span>
+                                        </label>
+                                    </div>
+                                </th>
+                                <th width="3%" style="border-top:1px solid;">
+                                    <div class="checkbox-list" style="padding-bottom: 0px; padding-top: 0px;">
+                                        <label class="checkbox-list" style="padding-bottom: 0px; padding-top: 0px;">
+                                            <span class="col-md-6"><input type="checkbox" ng-model="vm.CHK_GH_PRD_8_S" ng-true-value="'Y'" ng-false-value="'N'" ng-change="vm.onChangeGenProduction(vm.FloorLineData,vm.CHK_GH_PRD_8_S,8)" ng-disabled="vm.CHK_GH_PRD_8"></span>
+                                            <span class="col-md-6" style="text-align:right;"><i class="fa" ng-style="{color: vm.CHK_GH_PRD_8?'grey':'white' }" ng-class="{'fa-lock':vm.CHK_GH_PRD_8_S=='Y','fa-unlock':vm.CHK_GH_PRD_8_S=='N'}"></i></span>
+                                        </label>
+                                    </div>
+                                </th>
+
+                                <th width="4%" style="border-top:1px solid;">
+                                    <label class="checkbox-list" style="padding-bottom: 0px; padding-top: 0px;">
+                                        <span class="col-md-6"><input type="checkbox" ng-model="vm.IS_OTH_TGT_LOCK_S" ng-true-value="'Y'" ng-false-value="'N'" ng-change="vm.onChangeOTGenMPTarget(vm.FloorLineData,vm.IS_OTH_TGT_LOCK_S)" ng-disabled="vm.IS_OTH_TGT_LOCK"></span>
+                                        <span class="col-md-6" style="text-align:right;"><i class="fa" ng-style="{color: vm.IS_OTH_TGT_LOCK?'grey':'white' }" ng-class="{'fa-lock':vm.IS_OTH_TGT_LOCK_S=='Y','fa-unlock':vm.IS_OTH_TGT_LOCK_S=='N'}"></i></span>
+
+                                    </label>
+                                </th>
+
+                                <th width="6%" colspan="2" style="border-top:1px solid;">
+                                    <label class="checkbox-list" style="padding-bottom: 0px; padding-top: 0px;">
+                                        <span class="col-md-6"><input type="checkbox" ng-model="vm.IS_OT_ACT_LOCK_S" ng-true-value="'Y'" ng-false-value="'N'" ng-change="vm.onChangeACTProduction(vm.FloorLineData,vm.IS_OT_ACT_LOCK_S)" ng-disabled="vm.IS_OT_ACT_LOCK"></span>
+                                        <span class="col-md-6" style="text-align:right;"><i class="fa" ng-style="{color: vm.IS_OT_ACT_LOCK?'grey':'white' }" ng-class="{'fa-lock':vm.IS_OT_ACT_LOCK_S=='Y','fa-unlock':vm.IS_OT_ACT_LOCK_S=='N'}"></i></span>
+
+                                    </label>
+                                </th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="itm in vm.FloorLineData" ng-if="!itm.IS_HIDE">
+                                <td width="2%" rowspan="{{itm.HR_PROD_LINE_ID_SPAN}}" ng-if="itm.HR_PROD_LINE_ID_SL==1">
+                                    {{itm.LINE_CODE}}
+                                </td>
+
+
+                                <td width="6%">
+                                    {{itm.BYR_ACC_NAME_EN}} <br />
+                                    <b><small>{{itm.STYLE_NO}}</small></b>
+
+                                </td>
+                                <td width="11%" style="word-break:normal;">
+                                    {{itm.ORDER_NO}} <br />
+                                    <b>
+                                        <small>{{itm.ITEM_NAME_EN}} <b style="color:blue;">[SMV: {{itm.SMV||0}}]</b> </small>
+                                        <span class="badge badge-danger badge-roundless" style="cursor:pointer;" ng-click="vm.ClosePlan(vm.FloorLineData,$index)" ng-if="itm.HR_PROD_LINE_ID_SPAN>1 && !itm.H1_PRD_QTY && !itm.H2_PRD_QTY && !itm.H3_PRD_QTY && !itm.H4_PRD_QTY && !itm.H5_PRD_QTY && !itm.H6_PRD_QTY && !itm.H7_PRD_QTY && !itm.H8_PRD_QTY">
+                                            Close
+                                        </span>
+
+                                    </b>
+                                    <br />
+                                    <b>
+                                        <span class="badge badge-warning badge-roundless" ng-if="itm.RF_PFLT_RSN_TYPE_ID && itm.RF_PFLT_RSN_TYPE_ID > 0 ">
+                                            {{itm.RSN_TYPE_NAME_EN}}
+                                        </span>
+                                        <span class="badge badge-success badge-roundless" ng-if="!itm.RF_PFLT_RSN_TYPE_ID">
+                                            No Problem
+                                        </span>
+
+                                        <span class="badge badge-default badge-roundless" ng-click="vm.onChangeReason(itm)" style="cursor:pointer;">
+                                            Change
+                                        </span>
+                                    </b>
+
+                                </td>
+                                <td width="1%">
+                                    {{itm.DAYS_RUN}}
+                                </td>
+                                <td width="2%" style="padding-left:0px;padding-right:3px;">
+                                    <input type="number" class="form-control" min="0" tabindex="{{vm.FloorLineData.length*13 + $index+2}}" ng-model="itm.USE_OPERATOR" />
+                                </td>
+                                <td width="2%" style="padding-left:0px;padding-right:3px;">
+                                    <input type="number" class="form-control" min="0" tabindex="{{vm.FloorLineData.length*14 + $index+2}}" ng-model="itm.USE_HELPER" />
+                                </td>
+
+                                <td width="2%" style="padding-left:0px;padding-right:3px;" ng-class="{'has-error': (LineLoadPlanEntry['HRLY_TGT_EFF-'+$index].$touched || LineLoadPlanEntry.$submitted) && (LineLoadPlanEntry['HRLY_TGT_EFF-'+$index].$error.max||LineLoadPlanEntry['HRLY_TGT_EFF-'+$index].$error.min)}">
+                                        <input type="number" class="form-control" name="HRLY_TGT_EFF-{{$index}}" min="0" max="100" tabindex="{{vm.FloorLineData.length*1 + $index+2}}" ng-model="itm.HRLY_TGT_EFF" />
+                                        <br />
+                                        <i class="fa fa-dot-circle-o"></i> {{itm.HRLY_TGT_QTY}}
+
+                                </td>
+                                <td width="1%" style="padding-left:0px;padding-right:3px;" ng-class="{'has-error': (LineLoadPlanEntry['GEN_TGT_HR-'+$index].$touched || LineLoadPlanEntry.$submitted) && (LineLoadPlanEntry['GEN_TGT_HR-'+$index].$error.max||LineLoadPlanEntry['GEN_TGT_HR-'+$index].$error.min)}">
+                                        <input type="number" class="form-control" name="GEN_TGT_HR-{{$index}}" min="0" max="23" tabindex="{{vm.FloorLineData.length*1 + $index+2}}" ng-model="itm.GEN_TGT_HR" />
+                                        <br />
+                                        <i class="fa fa-dot-circle-o"></i> {{itm.DAILY_TGT_QTY}}
+                
+                                </td>
+
+                                <td width="3%" style="padding-left:0px;padding-right:3px;">
+                                    <span ng-if="itm.CHK_GH_PRD_1=='N'">
+                                        <input type="number" class="form-control" tabindex="{{vm.FloorLineData.length*2 + $index+2}}" min="0" ng-model="itm.H1_PRD_QTY" />
+                                    </span>
+                                    <span ng-if="itm.CHK_GH_PRD_1=='Y'">
+                                        {{itm.H1_PRD_QTY}}
+                                    </span>
+
+
+                                </td>
+                                <td width="3%" style="padding-left:0px;padding-right:3px;">
+
+                                    <span ng-if="itm.CHK_GH_PRD_2=='N'">
+                                        <input type="number" class="form-control" tabindex="{{vm.FloorLineData.length*3 + $index+2}}" min="0" ng-disabled="itm.CHK_GH_PRD_2_D=='Y'" ng-model="itm.H2_PRD_QTY" />
+                                    </span>
+                                    <span ng-if="itm.CHK_GH_PRD_2=='Y'">
+                                        {{itm.H2_PRD_QTY}}
+                                    </span>
+
+
+                                </td>
+                                <td width="3%" style="padding-left:0px;padding-right:3px;">
+                                    <span ng-if="itm.CHK_GH_PRD_3=='N'">
+                                        <input type="number" class="form-control" tabindex="{{vm.FloorLineData.length*4 + $index+2}}" min="0" ng-disabled="itm.CHK_GH_PRD_3_D=='Y'" ng-model="itm.H3_PRD_QTY" />
+                                    </span>
+                                    <span ng-if="itm.CHK_GH_PRD_3=='Y'">
+                                        {{itm.H3_PRD_QTY}}
+                                    </span>
+                                </td>
+                                <td width="3%" style="padding-left:0px;padding-right:3px;">
+                                    <span ng-if="itm.CHK_GH_PRD_4=='N'">
+                                        <input type="number" class="form-control" tabindex="{{vm.FloorLineData.length*5 + $index+2}}" min="0" ng-disabled="itm.CHK_GH_PRD_4_D=='Y'" ng-model="itm.H4_PRD_QTY" />
+                                    </span>
+                                    <span ng-if="itm.CHK_GH_PRD_4=='Y'">
+                                        {{itm.H4_PRD_QTY}}
+                                    </span>
+                                </td>
+
+                                <td width="3%" style="padding-left:0px;padding-right:3px;">
+                                    <span ng-if="itm.CHK_GH_PRD_5=='N'">
+                                        <input type="number" class="form-control" tabindex="{{vm.FloorLineData.length*6 + $index+2}}" min="0" ng-disabled="itm.CHK_GH_PRD_5_D=='Y'" ng-model="itm.H5_PRD_QTY" />
+                                    </span>
+                                    <span ng-if="itm.CHK_GH_PRD_5=='Y'">
+                                        {{itm.H5_PRD_QTY}}
+                                    </span>
+                                </td>
+                                <td width="3%" style="padding-left:0px;padding-right:3px;">
+                                    <span ng-if="itm.CHK_GH_PRD_6=='N'">
+                                        <input type="number" class="form-control" tabindex="{{vm.FloorLineData.length*7 + $index+2}}" min="0" ng-disabled="itm.CHK_GH_PRD_6_D=='Y'" ng-model="itm.H6_PRD_QTY" />
+                                    </span>
+                                    <span ng-if="itm.CHK_GH_PRD_6=='Y'">
+                                        {{itm.H6_PRD_QTY}}
+                                    </span>
+                                </td>
+                                <td width="3%" style="padding-left:0px;padding-right:3px;">
+                                    <span ng-if="itm.CHK_GH_PRD_7=='N'">
+                                        <input type="number" class="form-control" min="0" tabindex="{{vm.FloorLineData.length*8 + $index+2}}" ng-disabled="itm.CHK_GH_PRD_7_D=='Y'" ng-model="itm.H7_PRD_QTY" />
+                                    </span>
+                                    <span ng-if="itm.CHK_GH_PRD_7=='Y'">
+                                        {{itm.H7_PRD_QTY}}
+                                    </span>
+                                </td>
+
+                                <td width="3%" style="padding-left:0px;padding-right:3px;">
+                                    <span ng-if="itm.CHK_GH_PRD_8=='N'">
+                                        <input type="number" class="form-control" min="0" tabindex="{{vm.FloorLineData.length*9 + $index+2}}" ng-disabled="itm.CHK_GH_PRD_8_D=='Y'" ng-model="itm.H8_PRD_QTY" />
+                                    </span>
+                                    <span ng-if="itm.CHK_GH_PRD_8=='Y'">
+                                        {{itm.H8_PRD_QTY}}
+                                    </span>
+                                </td>
+
+
+
+
+                                <td width="4%" style="padding-left:0px;padding-right:3px;">
+
+                                    <span ng-if="itm.IS_OTH_TGT_LOCK=='N'">
+                                        <input type="number" class="form-control" tabindex="{{vm.FloorLineData.length*10 + $index+2}}" min="0" ng-model="itm.OT_TGT_QTY" ng-disabled="itm.IS_OTH_TGT_LOCK_D=='Y'" />
+                                    </span>
+                                    <span ng-if="itm.IS_OTH_TGT_LOCK=='Y'">
+                                        {{itm.OT_TGT_QTY}}
+                                    </span>
+
+
+                                </td>
+
+                                <td width="2%" style="padding-left:0px;padding-right:3px;">
+
+                                    <span ng-if="itm.IS_OT_ACT_LOCK=='N'">
+                                        <input type="number" class="form-control" tabindex="{{vm.FloorLineData.length*11 + $index+2}}" min="0" ng-model="itm.OT_TGT_HR" ng-disabled="itm.IS_OT_ACT_LOCK_D=='Y'" />
+                                    </span>
+                                    <span ng-if="itm.IS_OT_ACT_LOCK=='Y'">
+                                        {{itm.OT_TGT_HR}}
+                                    </span>
+                                </td>
+
+
+                                <td width="4%" style="padding-left:0px;padding-right:0px;">
+                                    <span ng-if="itm.IS_OT_ACT_LOCK=='N'">
+                                        <input type="number" class="form-control" tabindex="{{vm.FloorLineData.length*12 + $index+2}}" min="0" ng-model="itm.OT_ACT_PRD_QTY" ng-disabled="itm.IS_OT_ACT_LOCK_D=='Y'" />
+                                    </span>
+                                    <span ng-if="itm.IS_OT_ACT_LOCK=='Y'">
+                                        {{itm.OT_ACT_PRD_QTY}}
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                        <tbody style="font-weight:600;color:blue;background-color:gray;">
+                            <tr>
+
+                                <td width="20%" colspan="4" align="right">
+                                   Total
+                                </td>
+                                <td width="2%" style="padding-left:0px;padding-right:3px;">
+                                    {{vm.USE_OPERATOR_TTL}}
+        
+                                </td>
+                                <td width="2%" style="padding-left:0px;padding-right:3px;">
+                                    {{vm.USE_HELPER_TTL}}
+                                </td>
+
+
+                                <td width="3%" style="padding-left:0px;padding-right:3px;">
+                                    {{vm.HRLY_TGT_QTY_TTL}}
+                                </td>
+
+                                <td width="3%" style="padding-left:0px;padding-right:3px;">
+                                    {{vm.DAILY_TGT_QTY_TTL}}
+
+                                </td>
+
+                                <td width="3%" style="padding-left:0px;padding-right:3px;">
+                                    {{vm.H1_PRD_QTY_TTL}}
+                                </td>
+                                <td width="3%" style="padding-left:0px;padding-right:3px;">
+                                    {{vm.H2_PRD_QTY_TTL}}
+                                </td>
+                                <td width="3%" style="padding-left:0px;padding-right:3px;">
+                                    {{vm.H3_PRD_QTY_TTL}}
+                                </td>
+                                <td width="3%" style="padding-left:0px;padding-right:3px;">
+                                    {{vm.H4_PRD_QTY_TTL}}
+                                </td>
+
+                                <td width="3%" style="padding-left:0px;padding-right:3px;">
+                                    {{vm.H5_PRD_QTY_TTL}}
+                                </td>
+                                <td width="3%" style="padding-left:0px;padding-right:3px;">
+                                    {{vm.H6_PRD_QTY_TTL}}
+                                </td>
+                                <td width="3%" style="padding-left:0px;padding-right:3px;">
+                                    {{vm.H7_PRD_QTY_TTL}}
+                                </td>
+
+                                <td width="3%" style="padding-left:0px;padding-right:3px;">
+                                    {{vm.H8_PRD_QTY_TTL}}
+                                </td>
+
+
+
+
+                                <td width="4%" style="padding-left:0px;padding-right:3px;">
+                                    {{vm.OT_TGT_QTY_TTL}}
+                                </td>
+
+                                <td width="2%" style="padding-left:0px;padding-right:3px;">
+                                    {{vm.OT_TGT_HR_TTL}}
+                                </td>
+
+
+                                <td width="4%" style="padding-left:0px;padding-right:0px;">
+                                    {{vm.OT_ACT_PRD_QTY_TTL}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-sm green" ng-click="vm.save(vm.FloorLineData,LineLoadPlanEntry.$valid);LineLoadPlanEntry.$submitted=true">Save</button>
+                            <button type="button" class="btn btn-sm default" ng-click="vm.cancel()">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- END Portlet PORTLET-->
+        </div>
+    </div>
+</div>
+
+    <script type="text/ng-template" id="HourlyProductionBoardConfigModal.html">
+        <div class="modal-body">
+            <div id="splash-page" data-ng-show="showSplash" class="dissolve-animation">
+                <div class="page-splash">
+                    <div class="page-splash-message">
+                        <b>Please wait ....</b>
+                    </div>
+                </div>
+            </div>
+
+            <div class="portlet grey-cascade box">
+                <div class="portlet-title">
+                    <div>
+                        <h3 style="padding-top:10px;margin-top:3px;">
+                            <span class="item"> <span aria-hidden="true" class="icon-settings"></span>&nbsp;Setting</span>
+                            <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                        </h3>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <form role="form" class="form-horizontal">
+                        <div style="padding:5px;" class="row">
+
+
+                            <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)"><h4 style="margin:0px;">{{alert.msg}}</h4></alert>
+
+                            @*<div class="row" style="padding-bottom:5px;margin:auto;">
+                                    <div class="input-icon right">
+                                        <i class="icon-magnifier" style="margin-top: 6px;"></i>
+                                        <input type="text" class="form-control form-control-solid" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" ng-model="q" placeholder="search...">
+                                    </div>
+                                </div>*@
+
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Option :</label>
+                                <div class="col-md-10">
+                                    <div class="radio-list">
+                                        <label class="radio-inline">
+                                            <span class="checked"><input type="radio" name="option_hpe" ng-model="option_hpe" ng-value="'M'"></span> Multi-Selction
+                                        </label>
+                                        <label class="radio-inline">
+                                            <span class="checked"><input type="radio" name="option_hpe" ng-model="option_hpe" ng-value="'F'"></span> Fixed Floor
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group" ng-show="option_hpe=='F'">
+                                <label class="col-md-5 control-label"></label>
+                                <div class="col-md-5">
+                                    <div class="radio-list">
+                                        <label ng-repeat="itm in FloorList">
+                                            <input type="radio" name="floor" ng-model="$parent.floor_hpe" ng-value="itm.HR_PROD_FLR_ID"> {{itm.FLOOR_DESC_EN}}
+                                        </label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <table class="table table-condensed table-striped table-bordered" style="margin-bottom: 0px" ng-if="option_hpe=='M'">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50%;">
+                                            Floor
+                                        </th>
+                                        <th style="width: 50%;">
+                                            Line
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div slimscroll="{height: 300,allowPageScroll:true,railVisible :true,allowPageScroll :true}" ng-if="option_hpe=='M'">
+                                <table class="table table-condensed table-striped table-bordered" style="margin-bottom: 3px">
+                                    <tbody>
+
+                                        <tr ng-repeat="item in lineList">
+                                            <td style="width: 50%;" rowspan="{{item.LK_FLOOR_ID_SPAN}}" ng-if="item.LK_FLOOR_ID_SL==1">
+                                                <div class="checkbox-list">
+                                                    <label class="checkbox-list">
+                                                        <span><input type="checkbox" ng-model="item.IS_SELECT_FLR" ng-change="FloorChange(item.HR_PROD_FLR_ID,item.IS_SELECT_FLR)"></span> {{item.FLOOR_DESC_EN}}
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td style="width: 50%;">
+                                                <div class="checkbox-list">
+                                                    <label class="checkbox-list">
+                                                        <span><input type="checkbox" ng-model="item.IS_SELECT_LINE"></span> {{item.LINE_CODE}}
+                                                    </label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <div class="row" style="margin:auto;">
+                                <div class="col-md-12">
+                                    <button type="button" class="btn btn-sm green" ng-click="save(lineList)">Save</button>
+                                    <button type="button" class="btn btn-sm default" ng-click="cancel()">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="FaultReasonChangeModal.html">
+        <div class="modal-body">
+
+            <div class="portlet grey-cascade box">
+                <div class="portlet-title">
+                    <div>
+                        <h3 style="padding-top:10px;margin-top:3px;">
+                            <span class="item"> <span aria-hidden="true" class="icon-settings"></span>&nbsp;Status</span>
+                            <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                        </h3>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <form role="form" class="form-horizontal">
+                        <div style="padding:5px;" class="row">
+                            <div class="row" style="margin:auto;">
+                                <div class="col-md-12">
+                                    <select class="form-control" kendo-drop-down-list name="RF_PFLT_RSN_TYPE_ID" k-option-label="'--No Problem --'"
+                                            k-data-text-field="'RSN_TYPE_NAME_EN'" k-data-value-field="'RF_PFLT_RSN_TYPE_ID'" k-filter="'Contains'"
+                                            k-auto-bind="'true'" k-data-source="dataSource" k-on-change="onChangeReason(kendoEvent)" ng-model="form.RF_PFLT_RSN_TYPE_ID"></select>
+                                </div>
+
+                            </div>
+
+                            <div class="row" style="margin:auto;padding-top:3px;" ng-if="form.RF_PFLT_RSN_TYPE_ID==-100">
+                                <div class="col-md-12">
+                                    <textarea rows="3" name="RSN_TYPE_NAME_EN" class="form-control" cols="50" ng-model="form.RSN_TYPE_NAME_EN" placeholder="Reason goes here..."></textarea>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin:auto;padding-top:5px;">
+                                <div class="col-md-12">
+                                    <button type="button" class="btn btn-sm green" ng-click="save(form)">Save</button>
+                                    <button type="button" class="btn btn-sm default" ng-click="cancel()">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </script>

@@ -1,0 +1,95 @@
+﻿@model ERP.Model.LoginModel
+
+
+@{
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+    //Layout = null;
+}
+
+@*<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>*@
+
+
+<div class="content" ng-controller="ScUserController as vm">
+
+    @using (Html.BeginForm())
+    {
+
+        @Html.AntiForgeryToken()
+
+        <div class="form-body">
+            <h3 class="form-title">Log In</h3>
+
+            @Html.ValidationSummary(true)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.LOGIN_ID, new { @class = "control-label visible-ie8 visible-ie9" })
+
+                @Html.TextBoxFor(model => model.LOGIN_ID, new { @class = "form-control", autocomplete = "off", placeholder = "Login ID" })
+                @Html.ValidationMessageFor(model => model.LOGIN_ID)
+
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.PASSWORD_HASH, new { @class = "control-label visible-ie8 visible-ie9" })
+
+                @Html.TextBoxFor(model => model.PASSWORD_HASH, new { @class = "form-control", autocomplete = "off", placeholder = "Password", type = "password" })
+                @Html.ValidationMessageFor(model => model.PASSWORD_HASH)
+
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CAPTCHA_VALUE, new { @class = "control-label visible-ie8 visible-ie9" })
+
+                @Html.TextBoxFor(model => model.CAPTCHA_VALUE, new { @class = "form-control", autocomplete = "off", placeholder = "Please input how much displayed below"@*, Value = "00"*@ })
+                @Html.ValidationMessageFor(model => model.CAPTCHA_VALUE)
+
+            </div>
+
+            <div class="form-group" >
+                @*<div id="divCapcha">
+                        @Html.Partial("_CaptchaImage")
+                    </div>*@
+                <img alt="Captcha" id="captcha" src="@Url.Action("CaptchaImage")" style="" />
+
+
+                @*<div data-ui-view class="shuffle-animation">@Html.Partial("_CaptchaImage")</div>*@
+                
+                
+                <button type="button" class="col-md-offset-3 btn" onclick="changeCaptcha()"><i class='fa fa-refresh'></i>&nbsp;Try Another</button>
+
+            </div>
+            
+
+            @*<a ui-sref="LoginCaptcha">New Week Group</a>*@
+
+
+            @*@Ajax.ActionLink("Refresh", "CaptchaImage", new AjaxOptions() {
+                    HttpMethod = "Get",
+                    UpdateTargetId = "captcha",
+                    InsertionMode = InsertionMode.Replace
+                })*@
+                @*<div id="divCapcha">
+                </div>*@
+
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-success uppercase">Login</button>
+                @*<label class="rememberme check">
+                        <input type="checkbox" name="remember" value="1" />Remember
+                    </label>*@
+                <a href="javascript:;" id="forget-password" class="forget-password">Forgot Password?</a>
+            </div>
+
+        </div>
+    }
+</div>
+
+<script>
+    function changeCaptcha() {
+        $.ajax({ method: 'get', url: '/Security/ScUser/CaptchaImage' });
+
+        var x = document.getElementById('captcha');
+        x.src = '/Security/ScUser/CaptchaImage';
+    };
+</script>

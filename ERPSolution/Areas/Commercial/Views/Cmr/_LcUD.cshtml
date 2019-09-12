@@ -1,0 +1,329 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 13px;
+    }
+</style>
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Commercial</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class=" form-group">
+
+                <div class="col-md-12 form-horizontal">
+
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend"><b>UD Master Information</b></legend>
+                        <div class="row" style="padding-left: 5px; padding-right: 5px;">
+
+                            <form class="form-horizontal" role="form" name="frmImportLC" novalidate>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            UD No
+                                        </label>
+                                        <div class="col-md-3">
+                                            <input type="text" name="UD_NO" ng-model="vm.form.UD_NO" class="form-control" />
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            UD Date
+                                        </label>
+                                        <div class="col-md-2">
+
+                                            <input type="text" class="form-control" ng-click="UD_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                                   name="UD_DT" max-date="vm.today" ng-model="vm.form.UD_DT" is-open="UD_DT_LNopened"
+                                                   datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="row" ng-if="vm.form.CM_UD_H_ID>0 && vm.form.IS_REVISE == true">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            Amendment No
+                                        </label>
+                                        <div class="col-md-3">
+                                            <input type="text" name="AMND_NO" ng-model="vm.form.AMND_NO" class="form-control" />
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            UD Issuing Authority
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <select class="form-control required" kendo-drop-down-list name="RF_GMT_ASN_ID" id="RF_GMT_ASN_ID"
+                                                    k-option-label="'-- Select Authority --'" k-filter="'contains'"
+                                                    k-data-text-field="'GMT_ASN_NAME_EN'" k-data-value-field="'RF_GMT_ASN_ID'"
+                                                    k-auto-bind="'true'" k-data-source="vm.authorityList" k-ng-delay="vm.authorityList"
+                                                    ng-model="vm.form.RF_GMT_ASN_ID" k-on-change="vm.getAuthorityAddress(kendoEvent);"></select>
+
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            {{vm.form.GMT_ASN_ADDRESS}}
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            Company
+                                        </label>
+                                        <div class="col-md-3">
+
+                                            <select class="form-control required" kendo-drop-down-list name="HR_COMPANY_ID" id="HR_COMPANY_ID"
+                                                    k-option-label="'-- Select company --'" k-filter="'contains'"
+                                                    k-data-text-field="'COMP_NAME_EN'" k-data-value-field="'HR_COMPANY_ID'"
+                                                    k-auto-bind="'true'" k-data-source="vm.companyList" k-ng-delay="vm.companyList"
+                                                    ng-model="vm.form.HR_COMPANY_ID" k-on-change="vm.getCompanyAddress(kendoEvent);"></select>
+
+                                            @*<select kendo-drop-down-list name="HR_COMPANY_ID" class="form-control"
+                                                options="vm.companyList" ng-model="vm.form.HR_COMPANY_ID"></select>*@
+
+                                            <input type="hidden" name="CM_UD_H_ID" ng-model="vm.form.CM_UD_H_ID" class="form-control" />
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            {{vm.form.COMPANY_ADDRESS}}
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </fieldset>
+
+
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend"><b>Buyer Details</b></legend>
+
+                        <table class="clsTableMtex" style="width:100%">
+                            <tr style="border: 1px solid gray; padding:5px;">
+                                <td style="border: 1px solid gray; padding: 5px; width: 20%;">Buyer</td>
+                                <td style="border: 1px solid gray; padding: 5px; width: 20%;">Address</td>
+                                <td style="border: 1px solid gray; padding: 5px; width: 20%;">Country</td>
+                                <td style="border: 1px solid gray; padding: 5px; width: 10%;">Phone</td>
+                                <td style="border: 1px solid gray; padding: 5px; width: 10%;">Fax</td>
+                                <td style="border: 1px solid gray; padding: 5px; width: 20%;">E-mail</td>
+                            </tr>
+                            <tr style="border: 1px solid gray; padding:5px;">
+                                <td style="border: 1px solid gray; padding: 5px; width: 20%;">
+
+                                    <select class="form-control required" kendo-drop-down-list name="MC_BUYER_ID" id="MC_BUYER_ID"
+                                            k-option-label="'-- Select Buyer --'"
+                                            k-data-text-field="'BUYER_NAME_EN'" k-data-value-field="'MC_BUYER_ID'"
+                                            k-auto-bind="'true'" k-data-source="vm.buyerList" k-ng-delay="vm.buyerList" k-filter="'contains'"
+                                            ng-model="vm.form.MC_BUYER_ID" k-on-change="vm.getExportLcByBuyer(kendoEvent);"></select>
+
+                                </td>
+                                <td style="border: 1px solid gray; padding: 5px; width: 20%;">
+
+                                    {{vm.form.BUYER_ADDRESS}}
+
+                                </td>
+                                <td style="border: 1px solid gray; padding: 5px; width: 20%;">
+                                    {{vm.form.BUYER_COUNTRY}}
+
+                                </td>
+                                <td style="border: 1px solid gray; padding: 5px; width: 10%;">
+                                    {{vm.form.BUYER_PHONE}}
+                                </td>
+                                <td style="border: 1px solid gray; padding: 5px; width: 10%;">
+                                    {{vm.form.BUYER_FAX}}
+                                </td>
+                                <td style="border: 1px solid gray; padding: 5px; width: 20%;">
+                                    {{vm.form.BUYER_EMAIL}}
+                                </td>
+
+                            </tr>
+                        </table>
+                    </fieldset>
+
+                    <br />
+
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend"><b>Export L/C Details</b></legend>
+
+                        <table class="clsTableMtex" style="width:100%">
+                            <tr style="border: 1px solid gray; padding:5px;">
+                                <td style="border: 1px solid gray; padding:5px;">Export LC</td>
+                                <td style="border: 1px solid gray; padding:5px;">Date</td>
+                                <td style="border: 1px solid gray; padding:5px;">Value</td>
+                                <td style="border: 1px solid gray; padding:5px;">Used Value</td>
+                                <td style="border: 1px solid gray; padding:5px;">Currency</td>
+                                <td style="border: 1px solid gray; padding:5px;">Tolerance %</td>
+                                <td style="border: 1px solid gray; padding:5px;">Shipment Date</td>
+                                <td style="border: 1px solid gray; padding:5px;">Expiry Date</td>
+                                <td style="border: 1px solid gray; padding:5px;">Action</td>
+                            </tr>
+                            <tr style="border: 1px solid gray; padding:5px;">
+                                <td style="border: 1px solid gray; padding:5px;">
+
+                                    <select class="form-control" kendo-drop-down-list name="CM_EXP_LC_H_ID" id="CM_EXP_LC_H_ID"
+                                            k-option-label="'-- Select Export L/C --'" style="max-width:250px;"
+                                            k-data-text-field="'EXP_LCSC_NO'" k-data-value-field="'CM_EXP_LC_H_ID'"
+                                            k-auto-bind="'true'" k-data-source="vm.expLcList" k-ng-delay="vm.expLcList" k-filter="'contains'"
+                                            ng-model="vm.formEL.CM_EXP_LC_H_ID" k-on-change="vm.getExportLcInfo(kendoEvent);"></select>
+
+                                </td>
+                                <td style="border: 1px solid gray; padding:5px;">
+                                    {{vm.formEL.ISSUE_DT|date:'dd-MM-yyyy'}}
+                                </td>
+                                <td style="border: 1px solid gray; padding:5px;">
+                                    {{vm.formEL.LC_VALUE}}
+                                </td>
+                                <td style="border: 1px solid gray; padding:5px;">
+                                    {{vm.formEL.LC_VALUE}}
+                                </td>
+                                <td style="border: 1px solid gray; padding:5px;">                                    
+                                    
+                                    {{vm.formEL.CURR_NAME_EN}}
+                                </td>
+                                <td style="border: 1px solid gray; padding:5px;">
+                                    {{vm.formEL.PCT_TOLR_AMT}} %
+                                </td>
+                                <td style="border: 1px solid gray; padding:5px;">
+                                    {{vm.formEL.ISSUE_DT|date:'dd-MM-yyyy'}}
+                                </td>
+                                <td style="border: 1px solid gray; padding:5px;">
+                                    {{vm.formEL.ISSUE_DT|date:'dd-MM-yyyy'}}
+                                </td>
+                                <td style="border: 1px solid gray; padding:5px;">
+                                    <button type="button" class="btn btn-sm yellow-gold" ng-click="vm.addToExportGrid();">Add to Export Grid</button>
+                                    <button type="button" class="btn btn-sm default" ng-click="vm.clearGrid();">Cancel</button>
+                                </td>
+
+                            </tr>
+                        </table>
+                        <br />
+
+                        <div class="form-group" style="padding-left:15px;">
+                            <div kendo-grid k-options="vm.gridOptionsEXP" k-data-source="vm.exportList" style="width:98%"></div>
+
+                        </div>
+                    </fieldset>
+
+                    <br />
+
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend"><b>Import L/C Details</b></legend>
+
+                        <table class="clsTableMtex" style="width:100%">
+                            <tr style="border: 1px solid gray; padding:5px;">
+                                <td style="border: 1px solid gray; padding:5px;">Import LC</td>
+                                <td style="border: 1px solid gray; padding:5px;">Date</td>
+                                <td style="border: 1px solid gray; padding:5px;">Value</td>
+                                <td style="border: 1px solid gray; padding:5px;">Used Value</td>
+                                <td style="border: 1px solid gray; padding:5px;">Currency</td>
+                                <td style="border: 1px solid gray; padding:5px;">Tolerance %</td>
+                                <td style="border: 1px solid gray; padding:5px;">Action</td>
+                            </tr>
+                            <tr style="border: 1px solid gray; padding:5px;">
+                                <td style="border: 1px solid gray; padding:5px;">
+
+                                    <select class="form-control" kendo-drop-down-list name="CM_IMP_LC_H_ID" id="CM_IMP_LC_H_ID"
+                                            k-option-label="'-- Select Import L/C --'" style="max-width:250px;"
+                                            k-data-text-field="'IMP_LC_NO'" k-data-value-field="'CM_IMP_LC_H_ID'"
+                                            k-auto-bind="'true'" k-data-source="vm.importLcList" k-ng-delay="vm.importLcList" k-filter="'contains'"
+                                            ng-model="vm.formItem.CM_IMP_LC_H_ID" k-on-change="vm.getImportLcInfo(kendoEvent);"></select>
+
+                                </td>
+                                <td style="border: 1px solid gray; padding:5px;">
+                                    {{vm.formIM.ISSUE_DT|date:'dd-MM-yyyy'}}
+                                </td>
+                                <td style="border: 1px solid gray; padding:5px;">
+                                    {{vm.formIM.LC_VALUE}}
+                                </td>
+                                <td style="border: 1px solid gray; padding:5px;">
+                                    {{vm.formIM.LC_VALUE}}
+                                </td>
+                                <td style="border: 1px solid gray; padding: 5px;">
+                                    {{vm.formIM.CURR_NAME_EN}}
+                                </td>
+                                <td style="border: 1px solid gray; padding:5px;">
+                                    {{vm.formIM.PCT_TOLR_AMT}} %
+                                </td>
+
+                                <td style="border: 1px solid gray; padding:5px;">
+                                    <button type="button" class="btn btn-sm yellow-gold" ng-click="vm.addToImportGrid();">Add to Import Grid</button>
+                                    <button type="button" class="btn btn-sm default" ng-click="vm.clearGrid();">Cancel</button>
+                                </td>
+
+                            </tr>
+                        </table>
+                        <br />
+
+                        <div class="form-group" style="padding-left:15px;">
+                            <div kendo-grid k-options="vm.gridOptionsIMP" k-data-source="vm.importList" style="width:98%"></div>
+
+                        </div>
+                    </fieldset>
+
+                    <br />
+                    <br />
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-4" style="padding-left:30px;">
+                                <button type="button" class="btn btn-sm blue" ui-sref="LcUDList">Back To List</button>
+                                <button type="button" ng-if="vm.form.CM_UD_H_ID>0 && vm.form.IS_REVISE == true" class="btn btn-sm green" ng-click="vm.reviseAll(vm.form);">Revise</button>
+                                <button type="button" ng-if="vm.form.CM_UD_H_ID>0 && vm.form.IS_REVISE == false" class="btn btn-sm green" ng-click="vm.updateAll(vm.form,'N');">Update</button>
+                                <button type="button" ng-if="vm.form.CM_UD_H_ID>0 && vm.form.IS_REVISE == false" class="btn btn-sm yellow-gold" ng-click="vm.submitAll(vm.form,'Y');">Finalize</button>
+                                <button type="button" ng-if="!vm.form.CM_UD_H_ID>0 && vm.form.IS_REVISE == false" class="btn btn-sm green" ng-click="vm.submitAll(vm.form,'N');">Save</button>
+
+                                <button type="button" class="btn btn-sm blue" ui-sref="LcUD({pCM_UD_H_ID:0,pREVISE:0})" ui-sref-opts="{inherit: false, reload: true}">Cancel</button>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

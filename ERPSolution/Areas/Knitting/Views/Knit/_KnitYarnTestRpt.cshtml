@@ -1,0 +1,221 @@
+﻿<div class="modal-body" style="border-width:0px;" >
+    <div class="portlet grey-cascade box">
+        <div class="portlet-title">
+            <div>
+                <h3 class="title hidden-print">
+                    Yarn Lot Details
+                    <span class="pull-right"><i class="fa fa-times red" ng-click="cancel([])"></i></span>
+                </h3>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend"><b>Yarn Lot Receive Details</b></legend>
+
+                <table style="width:100%">
+
+                    <tr>
+                        <td style="border: solid 1px black; width: 40%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                            <b>L/C No</b>
+                        </td>
+                        <td style="border: solid 1px black; width: 60%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>{{vm.form.IMP_LC_NO}}</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border: solid 1px black; width: 40%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>Normal Yarn Count</b>
+                        </td>
+
+                        <td style="border: solid 1px black; width: 60%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>{{vm.form.YR_SPEC_DESC}}</b>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td style="border: solid 1px black; width: 40%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>Yarn Lot</b>
+                        </td>
+
+                        <td style="border: solid 1px black; width: 60%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>{{vm.form.YRN_LOT_NO}}</b>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td style="border: solid 1px black; width: 40%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>Lot Qty(Kg)</b>
+                        </td>
+                        <td style="border: solid 1px black; width: 60%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>{{vm.form.RCV_QTY}} Kg</b>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td style="border: solid 1px black; width: 40%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>Yarn Composition</b>
+                        </td>
+                        <td style="border: solid 1px black; width: 60%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>{{vm.form.FIB_COMP_NAME}}</b>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="border: solid 1px black; width: 40%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>Yarn Supplier</b>
+                        </td>
+                        <td style="border: solid 1px black; width: 60%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>{{vm.form.SUP_TRD_NAME_EN}}</b>
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td style="border: solid 1px black; width: 40%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>Fabric Construction</b>
+                        </td>
+                        <td style="border: solid 1px black; width: 60%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>{{vm.form.FAB_TYPE_NAME}}</b>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="border: solid 1px black; width: 40%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>Sample Weight</b>
+                        </td>
+                        <td style="border: solid 1px black; width: 60%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>{{vm.form.RQD_QTY}} Kg</b>
+                        </td>
+                    </tr>
+
+                </table>
+            </fieldset>
+
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend"><b>Yarn Test Report</b></legend>
+
+                <table style="width:100%">
+
+                    <tr ng-repeat="item in vm.YarnTestParamList">
+                        <td style="border: solid 1px black; width: 5%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                            {{$index+1}}
+                        </td>
+                        <td style="border: solid 1px black; width: 45%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                            {{item.TST_PARAM_NAME_EN}}
+                            <input type="hidden" ng-model="item.RF_YRN_TST_PARAM_ID" />
+                        </td>
+
+                        <td style="border: solid 1px black; width: 25%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <input type="text" ng-model="item.TST_PARAM_VAL" ng-init="vm.putDefault(item);" class="" />
+
+                        </td>
+                    </tr>
+
+
+                </table>
+                <div style="padding:10px;"></div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <button type="button" class="btn btn-sm green hidden-print" ng-click="vm.submitAllYT();">Yarn Result Save</button>
+                        <button type="button" class="btn btn-sm default hidden-print" ng-click="cancel([]);">Cancel</button>
+
+                    </div>
+                </div>
+
+            </fieldset>
+
+
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend"><b>Fabric Test Report</b></legend>
+
+                <table style="width:100%">
+
+                    <tr>
+                        <td style="border: solid 1px black; width: 5%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                            <b>SL #</b>
+                        </td>
+                        <td style="border: solid 1px black; width: 45%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                            <b>Parameters</b>
+                        </td>
+                        <td ng-repeat="cg in vm.colorGrpList" style="border: solid 1px black; width: 25%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>{{cg.COLOR_GRP_NAME}}({{cg.COLOR_NAME_EN}})</b>
+
+                        </td>
+
+                    </tr>
+                    <tr ng-repeat="item in vm.defectTypeList">
+                        <td style="border: solid 1px black; width: 5%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                            {{$index+1}}
+                        </td>
+                        <td style="border: solid 1px black; width: 45%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                            {{item.DY_DFCT_TYPE_NAME}}
+                            <input type="hidden" ng-model="item.RF_DY_DFCT_TYPE_ID" />
+                        </td>
+                        <td ng-repeat="col in vm.YarnTestColorList" ng-if="item.RF_DY_DFCT_TYPE_ID==col.RF_DY_DFCT_TYPE_ID" style="border: solid 1px black; width: 25%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <select ng-model="col.COMMENTS" class="form-control requiredSubDDL" style="min-width: 150px; max-width: 150px;"
+                                    id="COLOR_VALUE_{{$index}}_{{col.MC_COLOR_ID}}" ng-options="x for x in vm.resultList">
+                                <option value="">-- Select Type --</option>
+
+                            </select>
+                            @*{{col.COLOR_NAME_EN}}*@
+                            <input type="hidden" ng-model="item.KNT_YRN_LOT_TEST_R2_ID" />
+                            <input type="hidden" ng-model="item.KNT_YRN_LOT_TEST_D11_ID" />
+                            <input type="hidden" ng-model="item.MC_COLOR_ID" />
+
+
+                        </td>
+
+                    </tr>
+
+                </table>
+
+
+                <div style="padding:10px;"></div>
+
+                <table style="width:100%;">
+                    <tr>
+                        <td style="border: solid 1px black; width: 20%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                            <b>Color</b>
+                        </td>
+                        <td style="border: solid 1px black; width: 40%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                            <b>Test Status</b>
+                        </td>
+                        <td style="border: solid 1px black; width: 40%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                            <b>Comments</b>
+                        </td>
+                    </tr>
+                    <tr ng-repeat="cg in vm.colorGrpStatusList">
+                        <td style="border: solid 1px black; width: 20%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>{{cg.COLOR_GRP_NAME}}({{cg.COLOR_NAME_EN}})</b>
+                            <input type="hidden" ng-model="cg.KNT_YRN_LOT_TEST_D11_ID" />
+
+                        </td>
+                        <td style="border: solid 1px black; width: 40%; padding: 5px;">
+
+                            <select kendo-drop-down-list name="LK_YRN_TST_STS_ID_{{$index}}" id="LK_YRN_TST_STS_ID_{{$index}}" class="form-control requiredSub"
+                                    options="vm.statusList" ng-model="cg.LK_YRN_TST_STS_ID"></select>
+
+                        </td>
+                        <td style="border: solid 1px black; width: 40%; padding: 5px;">
+                            <input type="text" name="TEST_NOTE_{{$index}}" id="TEST_NOTE_{{$index}}" ng-model="cg.TEST_NOTE" class="requiredSub" style=" width: 98%;" />
+
+
+                        </td>
+                    </tr>
+
+                </table>
+
+                <div style="padding:10px;"></div>
+
+                <div class="row">
+                    <div class="col-md-4" >
+                        <button type="button" class="btn btn-sm green hidden-print" ng-click="vm.submitAllDF();">Dyeng Finishing Save</button>
+                        <button type="button" class="btn btn-sm default hidden-print" ng-click="cancel([]);">Cancel</button>
+
+                    </div>
+                </div>
+            </fieldset>
+
+        </div>
+    </div>
+</div>

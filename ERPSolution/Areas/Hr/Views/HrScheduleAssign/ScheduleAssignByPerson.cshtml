@@ -1,0 +1,223 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Hr</a>
+
+    </li>
+    <li>
+        <a href="#">Assign Schedule By Person</a>
+    </li>
+</ul>
+
+
+@{
+    ViewBag.Title = "Assign Schedule By Person";
+}
+
+@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+<div class="portlet box blue-dark">
+
+    <div class="portlet-title">
+        <div class="caption">
+            @*<i class="fa fa-gift"></i>*@ Assign Schedule By Person
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div class="row">
+            <div class="col-md-12">
+                
+                <form name="frmScheduleAssignPerson" novalidate class="form-horizontal " method="post" ng-class="{ loading:form.submitting }">
+
+                    <div class="form-body">
+                        @*@Html.AntiForgeryToken()*@
+                        <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+                               data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+                        <fieldset class="custom-fieldset">
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">
+                                    Employee Code
+                                    <span class="required" aria-required="true">*</span>
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" ng-model="vm.myForm.EMPLOYEE_CODE" placeholder="Search..." @*ng-disabled="vm.isEmployee!=true"*@
+                                           typeahead="item.EMPLOYEE_CODE as item.EMPLOYEE_CODE for item in emoloyeeAuto($viewValue)"
+                                           typeahead-min-length="3" typeahead-wait-ms="1000"
+                                           typeahead-on-select="onSelectItem($item)" typeahead-loading="loadingLocationsEmp" class="form-control" />
+                                    <i ng-show="loadingLocationsEmp" class="glyphicon glyphicon-refresh"></i>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="vm.errors.HR_EMPLOYEE_ID">
+                                <div class="col-md-offset-3" style="padding-left:15px;">
+                                    <div class="field-validation-error" ng-repeat="err in vm.errors.HR_EMPLOYEE_ID">
+                                        {{err}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="vm.myForm.EMP_FULL_NAME_EN!=null">
+                                <label class="col-md-3 control-label">&nbsp;</label>
+                                <div class="col-md-8" style="width:auto;">
+                                    <span class="form-control" style="background-color: hsl(0, 0%, 93%)">{{vm.myForm.EMP_FULL_NAME_EN}}&nbsp;</span>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3">
+                                    Shift Plan
+                                    <span class="required" aria-required="true">*</span>
+                                </label>
+                                <div class="col-md-4">
+                                    <select kendo-drop-down-list id="HR_SHIFT_PLAN_ID" name="HR_SHIFT_PLAN_ID" class="form-control"
+                                            options="vm.ShiftPlanListData" ng-model="vm.myForm.HR_SHIFT_PLAN_ID"></select>
+                                </div>                                
+                            </div>
+                            <div class="form-group" ng-if="vm.errors.HR_SHIFT_PLAN_ID">
+                                <div class="col-md-offset-3" style="padding-left:15px;">
+                                    <div class="field-validation-error" ng-repeat="err in vm.errors.HR_SHIFT_PLAN_ID">
+                                        {{err}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3">
+                                    Schedule
+                                    <span class="required" aria-required="true">*</span>
+                                </label>
+                                <div class="col-md-4">
+                                    <select kendo-drop-down-list id="HR_SCHEDULE_H_ID_BY_PERSON" name="HR_SCHEDULE_H_ID" class="form-control"
+                                            options="vm.ScheduleListDataByPerson" ng-model="vm.myForm.HR_SCHEDULE_H_ID"></select>
+                                </div>                                
+                            </div>    
+                            <div class="form-group" ng-if="vm.errors.HR_SCHEDULE_H_ID">
+                                <div class="col-md-offset-3" style="padding-left:15px;">
+                                    <div class="field-validation-error" ng-repeat="err in vm.errors.HR_SCHEDULE_H_ID">
+                                        {{err}}
+                                    </div>
+                                </div>
+                            </div>                        
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3">
+                                    Team
+                                    <span class="required" aria-required="true">*</span>
+                                </label>
+                                <div class="col-md-2">
+                                    <select kendo-drop-down-list id="HR_SHIFT_TEAM_ID_BY_PERSON" name="HR_SHIFT_TEAM_ID" class="form-control"
+                                            options="vm.shiftTeamListData" ng-model="vm.myForm.HR_SHIFT_TEAM_ID"></select>
+                                </div>                                
+                            </div>
+                            <div class="form-group" ng-if="vm.errors.HR_SHIFT_TEAM_ID">
+                                <div class="col-md-offset-3" style="padding-left:15px;">
+                                    <div class="field-validation-error" ng-repeat="err in vm.errors.HR_SHIFT_TEAM_ID">
+                                        {{err}}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">
+                                    Effective From
+                                    <span class="required" aria-required="true">*</span>
+                                </label>
+                                <div class="col-md-2 input-group">
+                                    <input type="text" class="form-control" name="EFFECTIVE_FROM" ng-model="vm.myForm.EFFECTIVE_FROM"
+                                           style="padding-right:0px;"
+                                           datepicker-popup="{{vm.dtFormat}}" is-open="vm.effectPersonDateOpened"
+                                           @*max-date="vm.today"*@
+                                           datepicker-options="vm.dateOptions" close-text="Close" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn-calendar" ng-click="vm.effectPersonDateOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </div>
+                                <div class="col-md-offset-3" style="padding-left:15px;">
+                                    <div ng-if="vm.errors.EFFECTIVE_FROM">
+                                        <div class="field-validation-error" ng-repeat="err in vm.errors.EFFECTIVE_FROM">
+                                            {{err}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Expired On</label>
+                                <div class="col-md-2 input-group">
+                                    <input type="text" class="form-control" name="EXPIRED_ON" ng-model="vm.myForm.EXPIRED_ON"
+                                           style="padding-right:0px;"
+                                           datepicker-popup="{{vm.dtFormat}}" is-open="vm.expirePersonDateOpened"
+                                           @*max-date="vm.today"*@
+                                           datepicker-options="vm.dateOptions" close-text="Close" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn-calendar" ng-click="vm.expirePersonDateOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </div>
+                                <div class="col-md-offset-3" style="padding-left:15px;">
+                                    <div ng-if="vm.errors.EXPIRED_ON">
+                                        <div class="field-validation-error" ng-repeat="err in vm.errors.EXPIRED_ON">
+                                            {{err}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*{{vm.myForm.IS_ACTIVE}}*@
+
+                            <div class="">
+                                <div class="row">
+                                    <div class="col-md-offset-3 col-md-6">
+                                        <button type="button" class="btn green" ng-if="vm.insertByPerson" ng-click="vm.submitByPerson(frmScheduleAssignPerson.$valid,vm.myForm,vm.insertByPerson)"><i class="fa fa-check"></i> Save</button>
+                                        <button type="button" class="btn yellow-gold" ng-if="!vm.insertByPerson" ng-click="vm.submitByPerson(frmScheduleAssignPerson.$valid,vm.myForm,vm.insertByPerson)"><i class="fa fa-check"></i> Update</button>
+
+                                        <button type="button" class="btn default" ng-click="vm.newAssignByPerson()">New Assign</button>
+                                        @*<button type="button" class="btn blue"  ng-click="vm.TranCancel()">Cancel</button>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*@
+                                        
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <p></p>
+                            
+                            <kendo-grid ng-if="vm.myForm.HR_EMPLOYEE_ID!=null" id="scheduleAssignHistByPerson" name="ScheduleList" @*k-options="vm.gridOptionsByPerson"*@></kendo-grid>
+                        </fieldset>
+
+
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+

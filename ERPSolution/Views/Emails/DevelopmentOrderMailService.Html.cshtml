@@ -1,0 +1,263 @@
+﻿Content-Type: text/html; charset=utf-8
+
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style media="all" type="text/css">
+        table td {
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+    <h3><span style="color: #5e9ca0;">TnA Followup for Lindex Development on @DateTime.Now.ToString("dd-MMM-yyyy") &nbsp;&nbsp;</span><span style="background-color: #a1dc96; "><small>on/before Due</small></span><span style="background-color: #cd8169;"><small>Lagged</small></span></h3>    
+
+    <table border="1" cellpadding="0" cellspacing="0" style="width: 1200px; border: solid 1px #8a8a8a;">
+        <tbody>
+            <tr>
+                <td rowspan="2" style="background-color: rgb(0, 51, 51); text-align: center;"><span style="color:#FFFFFF;font-size:13px;"><strong>Buyer/Style#</strong></span></td>
+                @*<td rowspan="2" style="background-color: rgb(0, 0, 51); text-align: center;"><span style="color:#FFFFFF;font-size:13px;"><strong>Style/Order</strong></span></td>*@
+                <td rowspan="2" style="text-align: center; background-color: rgb(0, 51, 51);"><span style="color:#FFFFFF;font-size:13px;"><strong>Style Desc.</strong></span></td>
+
+                <td rowspan="2" style="text-align: center; background-color: rgb(0, 51, 51);"><span style="color:#FFFFFF;font-size:13px;"><strong>&nbsp;</strong></span></td>
+
+                @*<td rowspan="2" style="text-align: center; background-color: rgb(0, 51, 51);"><span style="color:#FFFFFF;font-size:13px;"><strong>Recv Date</strong></span></td>*@
+                @*<td rowspan="2" style="text-align: center; background-color: rgb(0, 51, 51);"><span style="color:#FFFFFF;font-size:13px;"><strong>Yarn Bk</strong></span></td>*@
+
+                <td rowspan="2" style="text-align: center; background-color: rgb(0, 51, 51);"><span style="color:#FFFFFF;font-size:13px;"><strong>Fabric Bk</strong></span></td>
+                <td rowspan="2" style="text-align: center; background-color: rgb(0, 51, 51);"><span style="color:#FFFFFF;font-size:13px;"><strong>Yarn Inhouse</strong></span></td>
+
+                <td colspan="2" style="text-align: center; background-color: rgb(0, 51, 51);"><span style="color:#FFFFFF;font-size:13px;"><strong>Knitting</strong></span></td>
+                <td colspan="2" style="text-align: center; background-color: rgb(0, 51, 51);"><span style="color:#FFFFFF;font-size:13px;"><strong>Dyeing</strong></span></td>
+                
+                <td colspan="2" style="text-align: center; background-color: rgb(0, 51, 51);"><span style="color:#FFFFFF;font-size:13px;"><strong>Dye Finishing</strong></span></td>
+                <td rowspan="2" style="text-align: center; background-color: rgb(0, 51, 51);"><span style="color:#FFFFFF;font-size:13px;"><strong>Pattern Make</strong></span></td>
+                 <td colspan="2" style="text-align: center; background-color: rgb(0, 51, 51);"><span style="color:#FFFFFF;font-size:13px;"><strong>Sample</strong></span></td>
+
+            </tr>
+            <tr>
+                <td style="text-align: center; background-color: rgb(0, 51, 51);"><span style="color:#FFFFFF;font-size:13px;"><strong>Start</strong></span></td>
+                <td style="text-align: center; background-color: rgb(0, 51, 51);"><span style="color:#FFFFFF;font-size:13px;"><strong>End</strong></span></td>
+                <td style="text-align: center; background-color: rgb(0, 51, 51);"><span style="color:#FFFFFF;font-size:13px;"><strong>Start</strong></span></td>
+                <td style="text-align: center; background-color: rgb(0, 51, 51);"><span style="color:#FFFFFF;font-size:13px;"><strong>End</strong></span></td>
+                <td style="text-align: center; background-color: rgb(0, 51, 51);"><span style="color:#FFFFFF;font-size:13px;"><strong>Start</strong></span></td>
+                <td style="text-align: center; background-color: rgb(0, 51, 51);"><span style="color:#FFFFFF;font-size:13px;"><strong>End</strong></span></td>
+                <td style="text-align: center; background-color: rgb(0, 51, 51);"><span style="color:#FFFFFF;font-size:13px;"><strong>Start</strong></span></td>
+                <td style="text-align: center; background-color: rgb(0, 51, 51);"><span style="color:#FFFFFF;font-size:13px;"><strong>End</strong></span></td>
+            </tr>
+
+            @foreach (var item in Model.data)
+            {
+                <tr>
+                    @if (item.IDX == 1)
+                    {
+                        <td rowspan="4" style="border:solid 1px #8a8a8a;font-size:10px;font-weight:700;">
+                            <span style="display:block;"><b>@item.BYR_ACC_NAME_EN</b></span> <br />
+                            <span style="display:block;">Style# : @item.WORK_STYLE_NO</span> <br />
+                            @*<span style="display:block;">Order# :@item.ORDER_NO</span>*@
+                        </td>
+                    }
+
+                    @if (item.IDX == 1)
+                    {
+                        <td rowspan="4" style="border:solid 1px #8a8a8a;font-size:10px;font-weight:700;">@item.STYLE_DESC 
+                            <br />
+                          (@item.LEAD_TIME Days)
+                    </td>
+                        
+                    }
+
+                    <td style="border: solid 1px #8a8a8a;font-size:10px;font-weight:700;">@item.TEXT</td>
+
+                    @*@if (item.IS_P_A == "PA" && System.Text.RegularExpressions.Regex.IsMatch(item.TNA_001, @"^[\-\+]\s*\d+\s*$") && Convert.ToInt32(item.TNA_001) >= 0)
+                        {
+                            <td style="background-color: #a1dc96; border: solid 1px #8a8a8a; font-size: 10px; font-weight: 700;">@item.TNA_001</td>
+                        }
+                        else if (item.IS_P_A == "PA" && System.Text.RegularExpressions.Regex.IsMatch(item.TNA_001, @"^[\-\+]\s*\d+\s*$") && Convert.ToInt32(item.TNA_001) < 0)
+                        {
+                            <td style="background-color: #cd8169; border: solid 1px #8a8a8a;font-size:10px;font-weight:700;">@item.TNA_001</td>
+                        }
+                        else
+                        {
+                            <td style="background-color: white; border: solid 1px #8a8a8a;font-size:10px;font-weight:700;">@item.TNA_001</td>
+                        }*@
+
+                    @*@if (item.IS_P_A == "PA" && System.Text.RegularExpressions.Regex.IsMatch(item.TNA_021, @"^\d+$") && Convert.ToInt32(item.TNA_021) >= 0)
+                    {
+                        <td style="background-color: #a1dc96; border: solid 1px #8a8a8a; font-size: 10px; font-weight: 700;">@item.TNA_021</td>
+                    }
+                    else if (item.IS_P_A == "PA" && System.Text.RegularExpressions.Regex.IsMatch(item.TNA_021, @"^[\-\+]\s*\d+\s*$") && Convert.ToInt32(item.TNA_021) < 0)
+                    {
+                        <td style="background-color: #cd8169; border: solid 1px #8a8a8a; font-size: 10px; font-weight: 700;">@item.TNA_021</td>
+                    }
+                    else
+                    {
+                        <td style="background-color: white; border: solid 1px #8a8a8a;font-size:10px;font-weight:700;">@item.TNA_021</td>
+                    }*@
+
+
+                    @if (item.IS_P_A == "PA" && System.Text.RegularExpressions.Regex.IsMatch(item.TNA_023, @"^\d+$") && Convert.ToInt32(item.TNA_023) >= 0)
+                    {
+                        <td style="background-color: #a1dc96; border: solid 1px #8a8a8a; font-size: 10px; font-weight: 700;">@item.TNA_023</td>
+                    }
+                    else if (item.IS_P_A == "PA" && System.Text.RegularExpressions.Regex.IsMatch(item.TNA_023, @"^[\-\+]\s*\d+\s*$") && Convert.ToInt32(item.TNA_023) < 0)
+                    {
+                        <td style="background-color: #cd8169; border: solid 1px #8a8a8a;font-size:10px;font-weight:700;">@item.TNA_023</td>
+                    }
+                    else
+                    {
+                        <td style="background-color: white; border: solid 1px #8a8a8a;font-size:10px;font-weight:700;">@item.TNA_023</td>
+                    }
+
+
+                    @if (item.IS_P_A == "PA" && System.Text.RegularExpressions.Regex.IsMatch(item.TNA_022, @"^\d+$") && Convert.ToInt32(item.TNA_022) >= 0)
+                    {
+                        <td style="background-color: #a1dc96; border: solid 1px #8a8a8a; font-size: 10px; font-weight: 700;">@item.TNA_022</td>
+                    }
+                    else if (item.IS_P_A == "PA" && System.Text.RegularExpressions.Regex.IsMatch(item.TNA_022, @"^[\-\+]\s*\d+\s*$") && Convert.ToInt32(item.TNA_022) < 0)
+                    {
+                        <td style="background-color: #cd8169; border: solid 1px #8a8a8a;font-size:10px;font-weight:700;">@item.TNA_022</td>
+                    }
+                    else
+                    {
+                        <td style="background-color: white; border: solid 1px #8a8a8a;font-size:10px;font-weight:700;">@item.TNA_022</td>
+                    }
+
+
+
+
+
+                    @if (item.IS_P_A == "PA" && System.Text.RegularExpressions.Regex.IsMatch(item.TNA_024, @"^\d+$") && Convert.ToInt32(item.TNA_024) >= 0)
+                    {
+                        <td style="background-color: #a1dc96; border: solid 1px #8a8a8a; font-size: 10px; font-weight: 700;">@item.TNA_024</td>
+                    }
+                    else if (item.IS_P_A == "PA" && System.Text.RegularExpressions.Regex.IsMatch(item.TNA_024, @"^[\-\+]\s*\d+\s*$") && Convert.ToInt32(item.TNA_024) < 0)
+                    {
+                        <td style="background-color: #cd8169; border: solid 1px #8a8a8a;font-size:10px;font-weight:700;">@item.TNA_024</td>
+                    }
+                    else
+                    {
+                        <td style="background-color: white; border: solid 1px #8a8a8a;font-size:10px;font-weight:700;">@item.TNA_024</td>
+                    }
+
+                    @if (item.IS_P_A == "PA" && System.Text.RegularExpressions.Regex.IsMatch(item.TNA_025, @"^\d+$") && Convert.ToInt32(item.TNA_025) >= 0)
+                    {
+                        <td style="background-color: #a1dc96; border: solid 1px #8a8a8a; font-size: 10px; font-weight: 700;">@item.TNA_025</td>
+                    }
+                    else if (item.IS_P_A == "PA" && System.Text.RegularExpressions.Regex.IsMatch(item.TNA_025, @"^[\-\+]\s*\d+\s*$") && Convert.ToInt32(item.TNA_025) < 0)
+                    {
+                        <td style="background-color: #cd8169; border: solid 1px #8a8a8a;font-size:10px;font-weight:700;">@item.TNA_025</td>
+                    }
+                    else
+                    {
+                        <td style="background-color: white; border: solid 1px #8a8a8a;font-size:10px;font-weight:700;">@item.TNA_025</td>
+                    }
+
+                    @if (item.IS_P_A == "PA" && System.Text.RegularExpressions.Regex.IsMatch(item.TNA_026, @"^\d+$") && Convert.ToInt32(item.TNA_026) >= 0)
+                    {
+                        <td style="background-color: #a1dc96; border: solid 1px #8a8a8a; font-size: 10px; font-weight: 700;">@item.TNA_026</td>
+                    }
+                    else if (item.IS_P_A == "PA" && System.Text.RegularExpressions.Regex.IsMatch(item.TNA_026, @"^[\-\+]\s*\d+\s*$") && Convert.ToInt32(item.TNA_026) < 0)
+                    {
+                        <td style="background-color: #cd8169; border: solid 1px #8a8a8a;font-size:10px;font-weight:700;">@item.TNA_026</td>
+                    }
+                    else
+                    {
+                        <td style="background-color: white; border: solid 1px #8a8a8a;font-size:10px;font-weight:700;">@item.TNA_026</td>
+                    }
+
+                    @if (item.IS_P_A == "PA" && System.Text.RegularExpressions.Regex.IsMatch(item.TNA_027, @"^\d+$") && Convert.ToInt32(item.TNA_027) >= 0)
+                    {
+                        <td style="background-color: #a1dc96; border: solid 1px #8a8a8a; font-size: 10px; font-weight: 700;">@item.TNA_027</td>
+                    }
+                    else if (item.IS_P_A == "PA" && System.Text.RegularExpressions.Regex.IsMatch(item.TNA_027, @"^[\-\+]\s*\d+\s*$") && Convert.ToInt32(item.TNA_027) < 0)
+                    {
+                        <td style="background-color: #cd8169; border: solid 1px #8a8a8a;font-size:10px;font-weight:700;">@item.TNA_027</td>
+                    }
+                    else
+                    {
+                        <td style="background-color: white; border: solid 1px #8a8a8a;font-size:10px;font-weight:700;">@item.TNA_027</td>
+                    }
+
+                   
+
+
+                    @if (item.IS_P_A == "PA" && System.Text.RegularExpressions.Regex.IsMatch(item.TNA_028, @"^\d+$") && Convert.ToInt32(item.TNA_028) >= 0)
+                    {
+                        <td style="background-color: #a1dc96; border: solid 1px #8a8a8a; font-size: 10px; font-weight: 700;">@item.TNA_028</td>
+                    }
+                    else if (item.IS_P_A == "PA" && System.Text.RegularExpressions.Regex.IsMatch(item.TNA_028, @"^[\-\+]\s*\d+\s*$") && Convert.ToInt32(item.TNA_028) < 0)
+                    {
+                        <td style="background-color: #cd8169; border: solid 1px #8a8a8a;font-size:10px;font-weight:700;">@item.TNA_028</td>
+                    }
+                    else
+                    {
+                        <td style="background-color: white; border: solid 1px #8a8a8a;font-size:10px;font-weight:700;">@item.TNA_028</td>
+                    }
+
+                    @if (item.IS_P_A == "PA" && System.Text.RegularExpressions.Regex.IsMatch(item.TNA_029, @"^\d+$") && Convert.ToInt32(item.TNA_029) >= 0)
+                    {
+                        <td style="background-color: #a1dc96; border: solid 1px #8a8a8a; font-size: 10px; font-weight: 700;">@item.TNA_029</td>
+                    }
+                    else if (item.IS_P_A == "PA" && System.Text.RegularExpressions.Regex.IsMatch(item.TNA_029, @"^[\-\+]\s*\d+\s*$") && Convert.ToInt32(item.TNA_029) < 0)
+                    {
+                        <td style="background-color: #cd8169; border: solid 1px #8a8a8a;font-size:10px;font-weight:700;">@item.TNA_029</td>
+                    }
+                    else
+                    {
+                        <td style="background-color: white; border: solid 1px #8a8a8a;font-size:10px;font-weight:700;">@item.TNA_029</td>
+                    }
+
+                    @if (item.IS_P_A == "PA" && System.Text.RegularExpressions.Regex.IsMatch(item.TNA_030, @"^\d+$") && Convert.ToInt32(item.TNA_030) >= 0)
+                    {
+                        <td style="background-color: #a1dc96; border: solid 1px #8a8a8a; font-size: 10px; font-weight: 700;">@item.TNA_030</td>
+                    }
+                    else if (item.IS_P_A == "PA" && System.Text.RegularExpressions.Regex.IsMatch(item.TNA_030, @"^[\-\+]\s*\d+\s*$") && Convert.ToInt32(item.TNA_030) < 0)
+                    {
+                        <td style="background-color: #cd8169; border: solid 1px #8a8a8a;font-size:10px;font-weight:700;">@item.TNA_030</td>
+                    }
+                    else
+                    {
+                        <td style="background-color: white; border: solid 1px #8a8a8a;font-size:10px;font-weight:700;">@item.TNA_030</td>
+                    }
+
+                    @if (item.IS_P_A == "PA" && System.Text.RegularExpressions.Regex.IsMatch(item.TNA_032, @"^\d+$") && Convert.ToInt32(item.TNA_032) >= 0)
+                    {
+                        <td style="background-color: #a1dc96; border: solid 1px #8a8a8a; font-size: 10px; font-weight: 700;">@item.TNA_032</td>
+                    }
+                    else if (item.IS_P_A == "PA" && System.Text.RegularExpressions.Regex.IsMatch(item.TNA_032, @"^[\-\+]\s*\d+\s*$") && Convert.ToInt32(item.TNA_032) < 0)
+                    {
+                        <td style="background-color: #cd8169; border: solid 1px #8a8a8a; font-size: 10px; font-weight: 700;">@item.TNA_032</td>
+                    }
+                    else
+                    {
+                        <td style="background-color: white; border: solid 1px #8a8a8a;font-size:10px;font-weight:700;">@item.TNA_032</td>
+                    }
+
+                    @if (item.IS_P_A == "PA" && System.Text.RegularExpressions.Regex.IsMatch(item.TNA_033, @"^\d+$") && Convert.ToInt32(item.TNA_033) >= 0)
+                    {
+                        <td style="background-color: #a1dc96; border: solid 1px #8a8a8a; font-size: 10px; font-weight: 700;">@item.TNA_033</td>
+                    }
+                    else if (item.IS_P_A == "PA" && System.Text.RegularExpressions.Regex.IsMatch(item.TNA_033, @"^[\-\+]\s*\d+\s*$") && Convert.ToInt32(item.TNA_033) < 0)
+                    {
+                        <td style="background-color: #cd8169; border: solid 1px #8a8a8a;font-size:10px;font-weight:700;">@item.TNA_033</td>
+                    }
+                    else
+                    {
+                        <td style="background-color: white; border: solid 1px #8a8a8a;font-size:10px;font-weight:700;">@item.TNA_033</td>
+                    }
+
+                </tr>
+            }
+        </tbody>
+    </table>
+    <br />
+    <span style="display: block; font-size: 10px; font-style: italic;">
+        N.B: No need to reply. This mail is auto generated from MultiTex ERP server.
+    </span>
+
+</body>
+</html>
+
+

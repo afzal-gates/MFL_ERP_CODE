@@ -1,0 +1,240 @@
+﻿<div class="modal-body">
+    <div class="portlet grey-cascade box">
+        <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+
+        <div class="portlet-title">
+            <div>
+                <h3 style="padding-top:10px;margin-top:3px;">
+                    Search: Delivery Challan
+                    <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                </h3>
+            </div>
+        </div>
+        <div class="portlet-body">
+
+            <table class="table table-condensed table-striped borderless" style="margin-bottom:5px;">
+
+                <thead>
+                    <tr style="border: 1px solid #cecece;">
+
+                        <th style="width:10%">
+                            Date
+                            <input type="text" class="form-control" ng-click="vm.chlnDateOpen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                   name="CHALAN_DT" ng-model="vm.form.CHALAN_DT" is-open="vm.chlnDateOpened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                        </th>
+
+                        <th style="width:10%">
+                            Buyer A/C
+
+                            <select kendo-drop-down-list name="MC_BYR_ACC_GRP_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                    k-options="vm.buyerAcGrpList" ng-model="vm.form.MC_BYR_ACC_GRP_ID"
+                                    k-data-text-field="'BYR_ACC_GRP_NAME_EN'" k-data-value-field="'MC_BYR_ACC_GRP_ID'"
+                                    k-auto-bind="'true'" k-on-change=""></select>
+                        </th>
+                        <th style="width:10%">
+                            Style/Order
+                            <select kendo-drop-down-list name="MC_STYLE_H_EXT_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                    k-template="vm.styleExtTemplate" k-value-template="vm.styleExtValueTemplate"
+                                    k-data-source="vm.styleExtDataSource" k-options="vm.styleExtOption" ng-model="vm.form.MC_ORDER_H_ID"
+                                    k-data-text-field="'ORDER_NO'" k-data-value-field="'MC_ORDER_H_ID'"
+                                    k-auto-bind="'true'"></select>                        
+                        </th>
+                        
+                        <th style="width:20%">
+                            Color
+                            <select kendo-drop-down-list name="MC_COLOR_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                    k-data-source="vm.orderColorListDataSource" ng-model="vm.form.MC_COLOR_ID"
+                                    k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'MC_COLOR_ID'" k-auto-bind="'true'"></select>
+                        </th>
+                        <th style="width:10%">
+                              Service
+                            <select k-filter="'contains'" class="form-control" kendo-drop-down-list
+                                    name="LK_BNDL_MVM_RSN_ID" k-option-label="'--Select --'"
+                                    k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'"
+                                    k-auto-bind="'true'" k-data-source="DsService" ng-model="vm.form.LK_BNDL_MVM_RSN_ID" required></select>                                                                                                  
+                        </th>
+
+                        <th style="width:13%">
+                            DeliveryTo
+                            <select k-filter="'contains'" class="form-control" kendo-drop-down-list
+                                    name="SCM_SUPPLIER_ID" k-option-label="'--Select --'"
+                                    k-data-text-field="'SUP_SNAME'" k-data-value-field="'SCM_SUPPLIER_ID'"
+                                    k-auto-bind="'true'" k-data-source="DsSup" k-ng-delay="DsSup" ng-model="vm.form.SCM_SUPPLIER_ID"></select>
+
+
+                        </th>
+
+
+                        <th style="width:10%">
+                            <div class="checkbox-list">
+                                <label class="checkbox-inline" style="margin-left:20px;margin-top:0px;">
+                                    <span><input type="checkbox" ng-model="vm.form.IS_TAG" ng-true-value="'Y'" ng-false-value="'N'"></span>TagOnly?
+                                </label>
+                            </div>
+
+                        </th>
+                        <th style="width:10%">
+                            <button class="btn btn-sm blue" ng-click="vm.searchChallan()"><i class="fa fa-search"></i> Search</button>
+                        </th>
+                    </tr>
+
+                </thead>
+            </table>
+
+
+            @*<div id="Grid" kendo-grid k-options="gridOptions" k-data-source="gridDs"></div>*@
+
+
+            <table class="table table-condensed table-striped table-bordered" style="padding:5px;">
+
+                <thead>
+                    <tr class="site-table-header">
+                        <th style="width:5%;">
+                            <small>
+                                Challan No
+                            </small>
+
+                        </th>
+
+                        <th style="width:5%;">
+                            <small>
+                                Buyer
+                            </small>
+
+                        </th>
+
+                        <th style="width:7%;">
+                            <small>
+                                Style
+                            </small>
+                        </th>
+
+                        <th style="width:7%;">
+                            <small>
+                                Order
+                            </small>
+                        </th>
+
+                        <th style="width:7%;">
+                            <small>
+                                Item
+                            </small>
+                        </th>
+
+                        <th style="width:10%;">
+                            <small>
+                                Color
+                            </small>
+                        </th>
+                        
+                        <th style="width:5%;">
+                            <small>
+                                Part
+                            </small>
+                        </th>
+
+                        <th style="width:5%;">
+                            <small>
+                                Service
+                            </small>
+                        </th>
+
+                        <th style="width:7%;">
+                            <small>
+                                DeliveryTo
+                            </small>
+                        </th>
+
+
+
+                        <th style="width:5%;">
+                            <small>
+                                # of Bundle
+                            </small>
+
+                        </th>
+
+                        <th style="width:5%;">
+                            <small>
+                                # of Bag
+                            </small>
+
+                        </th>
+
+                        <th style="width:5%;">
+                            <small>
+                                Qty
+                            </small>
+                        </th>
+                        <th style="width:3%;">
+                           <small>Act</small>
+                        </th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="itm in vm.challanList">
+                        <td rowspan="{{itm.CHALLAN_ROW_SPAN}}" ng-show="itm.CHALLAN_ROW_SL==1">
+                            {{itm.CHALAN_NO}}
+                            <br />
+                            <span class="label label-sm label-primary">{{itm.STATUS_NAME}}</span>
+                        </td>
+
+                        <td>
+                            {{itm.BYR_ACC_GRP_NAME_EN}}
+                        </td>
+                        <td>
+                            {{itm.JOB_NO}}
+                        </td>
+                        <td>
+                            {{itm.ORDER_NO}}
+                        </td>
+                        <td>
+                            {{itm.ITEM_SNAME}}
+                        </td>
+                        <td>
+                            {{itm.COLOR_NAME_EN}}
+                        </td>
+                        <td>
+                            {{itm.GMT_PART_NAME}}
+                        </td>
+                        <td>
+                            {{itm.SERVICE_NAME}}
+                        </td>
+                        <td>
+                            {{itm.TO_UNIT}}
+                        </td>
+
+
+                        <td>
+                            {{itm.NO_OF_BNDL_SCANNED}}
+                        </td>
+                        <td>
+                            {{itm.NO_OF_BAG}}
+                        </td>
+                        <td>
+                            {{itm.FINAL_QTY}}
+                        </td>
+
+
+                        <td rowspan="{{itm.CHALLAN_ROW_SPAN}}" ng-show="itm.CHALLAN_ROW_SL==1">
+                            <a class="btn btn-xs bg-grey-cascade" ng-click="vm.selectChallan(itm)" @*href="/Cutting/Cutting/DeliveryChallan?a=416/#/SewDelChallanList?pGMT_CUT_SEW_DLV_CHL_ID={{itm.GMT_CUT_SEW_DLV_CHL_ID}}"*@>
+                                <i class="fa fa-send-o"></i> Select
+                            </a>
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td colspan="9" style="text-align:right"><b>Total</b></td>
+                        <td><b>{{vm.TTL_NO_OF_BNDL_SCANNED}}</b></td>
+                        <td><b>{{vm.TTL_NO_OF_BAG}}</b></td>
+                        <td><b>{{vm.TTL_FINAL_QTY}}</b></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

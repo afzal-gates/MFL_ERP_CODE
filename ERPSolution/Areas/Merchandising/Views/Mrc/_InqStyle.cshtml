@@ -1,0 +1,155 @@
+﻿<br />
+<fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;">
+    <legend class="custom-legend">Style Information</legend>
+    <form class="form-horizontal" role="form" name="StyleForm" novalidate ng-submit="vm.submitData(vm.form,token)">
+        <div class="form-body" style="padding:0px;">
+            <input id="access_token" data-ng-model="token" type="hidden"
+                   data-ng-init="token='@Session["access_token"]'" />
+            <input ng-model="vm.form.CREATED_BY" type="hidden"
+                   data-ng-init="vm.form.CREATED_BY='@Session["multiScUserId"]'" />
+
+            <input id="access_token" ng-model="vm.form.LAST_UPDATED_BY" type="hidden"
+                   ng-init="vm.form.LAST_UPDATED_BY='@Session["multiScUserId"]'" />
+
+
+            <div class="form-group">
+                <div class="col-md-2">
+                    Style/Article #
+                    <input type="text" name="STYLE_NO" ng-model="vm.form.STYLE_NO" class="form-control" required />
+                </div>
+
+                @*<div class="col-md-2">
+                    Style Ref#
+                    <select kendo-drop-down-list name="REF_STYLE_ID" class="form-control"
+                            options="vm.StyleData" id="REF_STYLE_ID" ng-model="vm.form.REF_STYLE_ID"></select>
+                </div>*@
+
+
+                <div class="col-md-1">                                       
+                    Style Ext.#
+                    <input type="text" name="STYL_EXT_NO" ng-model="vm.form.STYL_EXT_NO" class="form-control" />
+
+                </div>
+
+
+
+                <div class="col-md-3">
+                    Style Description
+                    <input type="text" name="STYLE_DESC" ng-model="vm.form.STYLE_DESC" class="form-control"/>
+                </div>
+
+                @*<div class="col-md-1">
+                    #OfItem
+                    <input type="text" name="NO_OF_ITEM" ng-model="vm.form.NO_OF_ITEM" class="form-control" />
+                </div>*@
+
+                <div class="col-md-2">
+                    Size Range
+                    <input type="text" name="SZ_RANGE" ng-model="vm.form.SZ_RANGE" class="form-control"/>
+                </div>
+
+
+
+
+
+
+
+                <div class="col-md-1">
+                    &nbsp;
+                    <div class="checkbox-list">
+                        <label class="checkbox-inline">
+                            <span class="checked"><input type="checkbox" ng-model="vm.form.HAS_SET" ng-true-value="'Y'" ng-false-value="'N'"></span>
+                            Set Item?
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-md-1">
+                    &nbsp;
+                    <div class="checkbox-list">
+                        <label class="checkbox-inline">
+                            <span class="checked"><input type="checkbox" ng-model="vm.form.HAS_COMBO" ng-true-value="'Y'" ng-false-value="'N'"></span>
+                           Combo?
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-md-1">
+                    &nbsp;
+                    <div class="checkbox-list">
+                        <label class="checkbox-inline">
+                            <span class="checked"><input type="checkbox" ng-model="vm.form.HAS_OPTION" ng-true-value="'Y'" ng-false-value="'N'"></span>
+                            Option?
+                        </label>
+                    </div>
+                </div>
+
+
+
+                @*<div class="col-md-1">
+                    &nbsp;
+                    <div class="checkbox-list">
+                        <label class="checkbox-inline">
+                            <span class="checked"><input type="checkbox" ng-model="vm.form.IS_DEVELOPED" ng-true-value="'Y'" ng-false-value="'N'"></span>
+                            Nd.Dev.?
+                        </label>
+                    </div>
+                </div>*@
+
+                <div class="col-md-1">
+                    &nbsp;
+                    <div class="checkbox-list">
+                        <label class="checkbox-inline">
+                            <span class="checked"><input type="checkbox" ng-model="more"></span>
+                            More?
+                        </label>
+                    </div>
+                </div>                              
+            </div>
+
+            <div class="form-group" ng-if="more">
+
+                <div class="col-md-1">
+                    Season
+                    <input type="text" name="SEASON_REF" ng-model="vm.form.SEASON_REF" class="form-control" />
+                </div>
+
+                <div class="col-md-2">
+                    Concept Name
+                    <input type="text" name="CONCEPT_NAME" ng-model="vm.form.CONCEPT_NAME" class="form-control"  />
+                </div>
+                <div class="col-md-2">
+                    Brand Name
+                    <input type="text" name="BRAND_NAME" ng-model="vm.form.BRAND_NAME" class="form-control"  />
+                </div>
+                <div class="col-md-4">
+                    Instruction Note
+                    <textarea rows="3" class="form-control" cols="50" ng-model="vm.form.INSTRUCTION"></textarea>
+                </div>
+            </div>
+
+            <div class="row" style="padding-top:10px;" ng-if="!vm.disableStyleForm">
+                <div class="col-md-4" align="left">
+                    <button type="button" class="btn btn-sm blue" ui-sref="InquiryList">Inquiry List</button>
+                    <button type="submit" ng-if="vm.form.MC_STYLE_ID" class="btn btn-sm yellow-gold" ng-class="{'disabled':!StyleForm.$valid}">Update</button>
+                    <button type="submit" ng-if="!vm.form.MC_STYLE_ID" class="btn btn-sm green" ng-class="{'disabled':!StyleForm.$valid}">Save</button>
+                    <button ng-if="vm.form.MC_STYLE_ID" ui-sref="Inquiry.Style.Item({MC_INQR_H_ID : vm.params.MC_INQR_H_ID,MC_STYLE_ID:vm.params.MC_STYLE_ID, MC_STYLE_ITEM_ID : 0,if:false })" class="btn btn-sm blue">
+                        <i class="fa fa-plus"></i> Item
+                    </button>
+
+                    <button type="button" class="btn btn-sm default" ui-sref="Inquiry.Style({MC_STYLE_ID : 0})" ui-sref-opts="{reload: true}">Cancel</button>
+                </div>
+            </div>
+            <div class="row" style="margin:auto;padding-top:10px;" ng-if="vm.errors">
+                <div class="alert alert-warning" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                    <ul ng-repeat="field in vm.errors">
+                        <li ng-repeat="error in field" ng-bind="error"></li>
+                    </ul>
+                </div>
+            </div>
+            <br />
+        </div>
+    </form>
+</fieldset>
+<div data-ui-view></div>

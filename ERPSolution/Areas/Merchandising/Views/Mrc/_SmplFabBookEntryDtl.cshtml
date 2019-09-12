@@ -1,0 +1,676 @@
+﻿<fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;" @*ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13"*@>
+    <legend class="custom-legend"> List of Style & Sample Type</legend>
+
+    <div class="row" style="margin-top:-20px;padding-bottom:0px">
+        <div class="form-group">
+            @*<label class="col-md-2 control-label">&nbsp;</label>*@
+            <div class="col-md-11" style="text-align:right">
+                <label class="checkbox-inline" @*style="margin-top:-25px;"*@>
+                    <input type="checkbox" name="IS_STYLE_GEN" ng-model="vm.IS_STYLE_GEN" ng-init="IS_STYLE_GEN='N'" ng-true-value="'Y'" ng-false-value="'N'"> <span style="color:red">Style Generate?</span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="padding-bottom:3px;" ng-show="vm.IS_STYLE_GEN=='Y'">
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">
+                Search By
+            </label>
+            <div class="col-md-10">
+                <div class="radio-list" style="margin-left:20px">
+                    <label class="radio-inline" ng-repeat="item in vm.searchTypeList">
+                        <span class="checked"><input type="radio" name="SEARCH_TYPE_ID" ng-model="vm.SEARCH_TYPE_ID" ng-value="item.SEARCH_TYPE_ID"></span>{{item.SEARCH_NAME_EN}}
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">Generate Styles</label>
+            <div class="col-md-8">
+                <select class="form-control" ng-show="vm.SEARCH_TYPE_ID==1"
+                        kendo-multi-select name="GEN_STYLE_H_EXT_LIST" k-placeholder="'Search...'"
+                        k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_STYLE_H_EXT_ID'"
+                        k-data-source="vm.buyerAccWiseStyleList" ng-model="vm.GEN_STYLE_H_EXT_LIST"></select>
+
+                <select class="form-control" ng-show="vm.SEARCH_TYPE_ID==2"
+                        kendo-multi-select name="GEN_STYLE_H_EXT_LIST" k-placeholder="'Search...'"
+                        k-data-text-field="'ORDER_NO'" k-data-value-field="'MC_STYLE_H_EXT_ID'"
+                        k-data-source="vm.buyerAccWiseStyleList" ng-model="vm.GEN_STYLE_H_EXT_LIST"></select>
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-sm blue" @*ng-if="vm.formDtl[vm.selectedDtl.DETAIL_INDEX].HAS_SET=='N'"*@ ng-click="vm.genStyles()"
+                        title="Generate" ng-disabled="vm.GEN_STYLE_H_EXT_LIST==null">
+                    @*{{vm.GEN_STYLE_H_EXT_LIST.length}}*@
+                    <i class="fa fa-send-o"></i>
+                </button>
+            </div>
+
+
+        </div>
+    </div>
+
+
+    
+
+    @*{{vm.params.pLK_STYL_DEV_TYP_ID}}*@
+    <tabset @*ng-show="vm.formDtl.length>0"*@>
+        <tab heading="Item & Color Wise Sample" active="activeTabItemColor" disabled="vm.params.pLK_STYL_DEV_TYP_ID==542" @*active="vm.itemState" ui-sref="SmplFabBookEntry.Dtl.StyleItem({MC_STYLE_H_ID:vm.selectedDtl.MC_STYLE_H_ID})"*@ select="vm.activeTabItemColorFn(true);vm.activeTabFabBookingFn(false)">
+            <form class="form-horizontal" role="form" name="SamFabBookDtl" novalidate @*ng-submit="vm.submitBuyerData(vm.form,token)"*@>
+
+                <div>
+                    <table class="table table-condensed table-striped table-bordered" @*ng-show="vm.formDtl.length>0"*@>
+                        <thead>
+                            <tr class="row-border">
+                                <th style="width:15%">Style#</th>
+                                <th style="width: 15%">Order#</th>
+                                <th style="width: 15%">Sample Type</th>
+                                <th style="width: 10%">Fab. Source</th>
+                                @*<th style="width:100px">Target Date</th>*@
+                                <th style="width: 35%">Remarks</th>
+                                <th style="width: 10%; padding: 5px 0px 5px 5px">
+                                    Action
+                                    @*<a class="btn btn-xs blue" title="Add Row" ng-click="vm.addSmpTyp(vm.formDtl)">
+                                        <i class="fa fa-plus"></i>
+                                    </a>*@
+                                </th>
+                            </tr>
+                        </thead>
+
+
+                        <tbody>
+                            <tr ng-repeat-start="itmDtl in vm.formDtl" ng-class="{'info':itmDtl.IS_ACTIVE==true}" style="border-bottom: 1px solid hsl(0, 0%, 87%);height:auto">
+                                <td style="padding:5px 0px 5px 0px">
+                                    <input type="hidden" name="DETAIL_INDEX" ng-model="itmDtl.DETAIL_INDEX" ng-bind="itmDtl.DETAIL_INDEX=$index+1" />
+                                    <input type="hidden" name="MC_STYLE_H_ID" ng-model="itmDtl.MC_STYLE_H_ID" />
+                                    <input type="hidden" name="HAS_SET" ng-model="itmDtl.HAS_SET" />
+                                    @*{{itmDtl.IS_ACTIVE}}*@
+                                    @*<span ng-if="!itmDtl.edit"*@
+
+                                    @*<select kendo-drop-down-list k-data-source='itmDtl.buyerAccWiseStyleList' k-option-label="'-- Select --'" k-data-text-field='"STYLE_NO"' k-data-value-field='"MC_STYLE_H_EXT_ID"'
+                                    ng-model='itmDtl.MC_STYLE_H_EXT_ID' name='MC_STYLE_H_EXT_ID' class='form-control' k-on-select='vm.styleOnSelect(kendoEvent, $index)' required></select>*@
+                                    @*{{itmDtl.MC_SMP_REQ_D_ID}}*@ {{itmDtl.STYLE_NO}}
+
+
+                                    @*{{itmDtl.MC_STYLE_H_ID}}*@
+                                </td>
+
+                                <td style="padding: 5px 0px 5px 0px">
+                                    @*<select kendo-drop-down-list k-data-source='itmDtl.styleWiseOrderList' k-option-label='"-- Select --"' k-data-text-field='"ORDER_NO"' k-data-value-field='"MC_ORDER_H_ID"'
+                                    ng-model='itmDtl.MC_ORDER_H_ID' name='MC_ORDER_H_ID' class='form-control' required></select>*@
+                                    {{itmDtl.ORDER_NO}}
+                                </td>
+                                <td style="padding:5px 0px 5px 0px">
+                                    <span ng-if="itmDtl.MC_SMP_REQ_D_ID==-1">
+                                        <select kendo-drop-down-list k-data-source='itmDtl.buyerWiseSampleTypeList' k-option-label='"-- Select --"' k-data-text-field='"SMPL_TYPE_NAME"' k-data-value-field='"RF_SMPL_TYPE_ID"'
+                                                ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13"
+                                                ng-model='itmDtl.RF_SMPL_TYPE_ID' name='RF_SMPL_TYPE_ID' class='form-control' k-on-select='vm.sampleTypeOnSelect(kendoEvent, itmDtl)' required></select>
+                                    </span>
+
+                                    <span ng-if="itmDtl.MC_SMP_REQ_D_ID!=-1">{{itmDtl.SMPL_TYPE_NAME}}</span>
+
+                                </td>
+                                <td style="padding:5px 0px 5px 0px">
+                                    @*{{itmDtl.LK_SMPL_SRC_TYPE_ID}}*@
+                                    <select kendo-drop-down-list k-data-source='vm.sampleSourceList' k-option-label='"-- Select --"' k-data-text-field='"LK_DATA_NAME_EN"' k-data-value-field='"LOOKUP_DATA_ID"'
+                                            ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13"
+                                            ng-model='itmDtl.LK_SMPL_SRC_TYPE_ID' name='LK_SMPL_SRC_TYPE_ID' class='form-control' k-on-select='vm.sampleSpurceOnSelect(kendoEvent, $index)' required></select>
+                                </td>
+                                @*<td style="padding: 5px 0px 5px 0px">
+                                    <input type="text" class="form-control" ng-click="vm.targetDateOpen($event, $index)" datepicker-popup="{{vm.dtFormat}}"
+                                           name="TARGET_DT" ng-model="itmDtl.TARGET_DT" is-open="vm.targetDateOpened[$index]" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                                </td>*@
+                                <td style="padding: 5px 0px 5px 0px">
+                                    <input type="text" class="form-control" name="REMARKS" ng-model="itmDtl.REMARKS" ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13" />
+                                </td>
+
+                                <td style="padding: 5px 0px 5px 5px">
+                                    @*<a class="btn btn-xs blue" title="Add Row" ng-click="vm.addRow(itmDtl, vm.formDtl, 'formDtl')">
+                                        <i class="fa fa-plus"></i>
+                                    </a>*@
+                                    <a class="btn btn-xs purple" ng-click="vm.makeActive(vm.formDtl, $index)" ng-show="itmDtl.IS_ASSORT=='N'">
+                                        <i class="fa" ng-class="{'fa fa-plus-square':!itmDtl.IS_ACTIVE,'fa fa-minus-square':itmDtl.IS_ACTIVE}"></i>
+                                    </a>
+                                    <a class="btn btn-xs yellow-gold" ng-click="smpReqAsortModal(vm.formDtl, $index)" ng-show="itmDtl.IS_ASSORT=='Y'">
+                                        <i class="fa fa-bars"></i>
+                                    </a>
+
+
+                                    <a class="btn btn-xs blue" title="Add Row" ng-click="vm.addSmpTypeRow(itmDtl, vm.formDtl, 'formDtl')" ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13">
+                                        <i class="fa fa-plus"></i>
+                                    </a>
+
+                                    <a class="btn btn-xs red" title="Remove Sample Type" ng-if="itmDtl.MC_SMP_REQ_D_ID<1" ng-click="vm.removeRow($index, vm.formDtl, false)" ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                    <a class="btn btn-xs red" title="Remove Sample Type" ng-if="itmDtl.MC_SMP_REQ_D_ID>0 && itmDtl.MC_TNA_TASK_STATUS_ID<=13" ng-click="vm.removeSmpTypeRow($index, vm.formDtl, false, itmDtl, token)" ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+
+                                    @*<a class="btn btn-xs green" title="Select Style" ng-click="vm.selectDtlRow($index, vm.formDtl, true)">
+                                        <i class="fa fa-hand-o-left"></i>
+                                    </a>*@
+
+                                </td>
+                            </tr>
+
+
+
+                            <tr ng-repeat="itmIns in itmDtl.testInstList">
+
+                                <td colspan="7" ng-show="itmDtl.IS_ACTIVE && itmIns.styleItemsList.length>0" style="padding:0px;">
+                                    <input type="hidden" name="TEST_INST_INDEX" ng-model="itmIns.TEST_INST_INDEX" ng-bind="itmIns.TEST_INST_INDEX=$index+1" />
+
+                                    <input type="text" name="TEST_INST_NAME_EN" class="form-control" ng-show="itmDtl.IS_NEED_TEST=='Y'"
+                                           style="background-color: hsl(30, 93%, 91%); font-weight: bold; color: hsl(282, 79%, 47%); "
+                                           ng-model="itmIns.TEST_INST_NAME_EN" readonly />
+
+                                    <table class="table table-hover table-striped table-bordered" style="margin-bottom:0px; padding-bottom:0px;">
+                                        <thead>
+                                            @*<pre>{{vm.formDtl|json}}</pre>*@
+                                            <tr class="row-border">
+                                                <th style="width:200px">Item</th>
+                                                <th style="width: 40px; text-align: center;"><i class="fa fa-info-circle" title="Any color"></i></th>
+                                                <th style="width: 40px; text-align: center;"><i class="fa fa-info-circle" title="All color"></i></th>
+                                                <th style="width:300px">Color</th>
+                                                <th style="width:200px">Size</th>
+                                                <th style="width: 40px; text-align: center;">TBC</th>
+                                                <th style="width:130px">Remarks</th>
+                                                <th style="width:40px">Qty</th>
+                                                <th style="width:60px">Unit</th>
+                                                <th>
+                                                    <span class="col-md-3" style="font-size:12px; padding-top:0px; padding-left:0px;padding-right:0px">Same as</span>
+
+                                                    <span class="col-md-8" style="padding-top: 0px; padding-left: 0px; padding-right: 0px">
+                                                        <select kendo-drop-down-list k-data-source='itmDtl.buyerWiseSampleTypeList' k-option-label='"-- Select --"' k-data-text-field='"SMPL_TYPE_NAME"' k-data-value-field='"RF_SMPL_TYPE_ID"'
+                                                                ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13"
+                                                                ng-model='vm.copySmplItem.RF_SMPL_TYPE_ID' name='RF_SMPL_TYPE_ID' class='form-control' k-on-select='vm.getCopyFromSmplType(kendoEvent, itmDtl)'></select>
+                                                    </span>
+
+                                                    <span class="col-md-1" style="padding-top: 0px; padding-left: 5px; padding-right: 0px">
+                                                        <a class="btn btn-xs blue-hoki" title="Copy Row" ng-click="vm.copyItemFromSmpType(itmDtl, vm.copySmplItem.RF_SMPL_TYPE_ID)" ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13">
+                                                            <i class="fa fa-copy"></i>
+                                                        </a>
+                                                    </span>
+
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr></tr>
+                                            <tr ng-repeat="styItm in itmIns.styleItemsList" style="border-bottom: 1px solid hsl(0, 0%, 87%); height: auto;" class="success">
+
+                                                <td style="padding: 5px 0px 5px 0px;">
+                                                    <input type="hidden" name="DETAIL_INDEX" ng-model="styItm.DETAIL_INDEX" ng-bind="styItm.DETAIL_INDEX=itmDtl.DETAIL_INDEX" />
+                                                    <input type="hidden" name="DETAIL_INDEX_CFG" ng-model="styItm.DETAIL_INDEX_CFG" ng-bind="styItm.DETAIL_INDEX_CFG=$index+1" />
+
+                                                    @*{{styItm.MC_STYLE_D_ITEM_ID}}*@
+                                                    <input type="hidden" ng-model="styItm.MC_SMP_REQ_D_CFG_ID" />
+
+                                                    <span ng-if="styItm.MC_SMP_REQ_D_CFG_ID==-1">
+                                                        <select kendo-drop-down-list k-data-source='styItm.childItemList' k-option-label='"-- Select --"' k-data-text-field='"ITEM_SNAME"' k-data-value-field='"MC_STYLE_D_ITEM_ID"'
+                                                                ng-model='styItm.MC_STYLE_D_ITEM_ID' name='MC_STYLE_D_ITEM_ID' class='form-control' @*k-on-select='vm.itemOnSelect(kendoEvent, styItm)'*@ required></select>
+                                                    </span>
+                                                    <span ng-if="styItm.MC_SMP_REQ_D_CFG_ID!=-1">{{styItm.ITEM_SNAME}}</span>
+
+                                                </td>
+                                                <td style="padding: 5px 0px 5px 1px; text-align: center;">
+                                                    <input type="checkbox" ng-model="styItm.IS_ANY_COL" style="margin-top:7px;" ng-true-value="'Y'" ng-false-value="'N'" ng-change="vm.isAnyStyleColor(styItm)" ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13" />
+                                                </td>
+                                                <td style="padding: 5px 0px 5px 1px; text-align: center;">
+                                                    <input type="checkbox" ng-model="styItm.IS_ALL_COL" style="margin-top:7px;" ng-true-value="'Y'" ng-false-value="'N'" ng-change="vm.isAllStyleColor(styItm)" ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13" />
+                                                </td>
+                                                <td style="padding: 5px 0px 5px 0px;"
+                                                    ng-class="{'has-error':SamFabBookDtl['MC_COLOR_LIST-{{itmDtl.DETAIL_INDEX+'-'+itmIns.TEST_INST_INDEX+'-'+$index}}'].$invalid}">
+                                                    @*{{styItm.IS_ANY_COL}}*@
+                                                    @*{{styItm.MC_COLOR_LIST}}*@
+                                                    @*{{itmDtl.DETAIL_INDEX+'-'+itmIns.TEST_INST_INDEX+'-'+$index}}*@
+                                                    <select class="form-control" kendo-multi-select k-placeholder="'Search Color...'"
+                                                            name="MC_COLOR_LIST-{{itmDtl.DETAIL_INDEX+'-'+itmIns.TEST_INST_INDEX+'-'+$index}}" required
+                                                            k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'MC_COLOR_ID'"
+                                                            k-data-source="styItm.styleWiseColorList" ng-model="styItm.MC_COLOR_LIST"
+                                                            @*k-on-close="vm.gmtColorClose()"*@ ng-change="vm.onChangeGmtColorStylItm(styItm)"
+                                                            ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13"></select>
+                                                </td>
+                                                <td style="padding: 5px 0px 5px 0px;">
+                                                    <select class="form-control" kendo-multi-select k-placeholder="'Search Size...'"
+                                                            k-data-text-field="'SIZE_CODE'" k-data-value-field="'MC_SIZE_ID'"
+                                                            k-data-source="styItm.styleWiseSizeList" ng-model="styItm.MC_SIZE_LIST"
+                                                            @*k-on-close="vm.gmtColorClose()"*@ ng-change="vm.onChangeSize(styItm)"
+                                                            ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13"></select>
+                                                </td>
+                                                <td style="padding: 5px 0px 5px 1px; text-align: center">
+                                                    <input type="checkbox" ng-model="styItm.IS_SZ_TBC" style="margin-top:7px;" ng-true-value="'Y'" ng-false-value="'N'" ng-change="vm.onChangeTBC(styItm)" ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13" />
+                                                </td>
+                                                <td style="padding: 5px 0px 5px 1px;">
+                                                    <input type="text" class="form-control" ng-model="styItm.REMARKS" style="margin-top:1px;" ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13" />
+                                                </td>
+                                                <td style="padding: 5px 0px 5px 1px;">
+                                                    <input type="number" class="form-control" ng-model="styItm.RQD_QTY" style="margin-top:1px;" ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13" required />
+                                                </td>
+                                                <td style="padding: 5px 0px 5px 1px;">
+                                                    <select class="form-control" kendo-drop-down-list name="QTY_MOU_ID" @*k-option-label="'-- Select --'"*@ required
+                                                            k-data-text-field="'MOU_CODE'" k-data-value-field="'RF_MOU_ID'"
+                                                            k-data-source="$parent.rfMouList" ng-model="styItm.QTY_MOU_ID"
+                                                            ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13"></select>
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-xs blue" title="Add Row" ng-click="vm.addItemRow(styItm, itmIns.styleItemsList, itmDtl.MC_STYLE_H_ID)" ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13">
+                                                        <i class="fa fa-plus"></i>
+                                                    </a>
+
+                                                    <a class="btn btn-xs red" title="Remove Item" ng-if="styItm.MC_SMP_REQ_D_CFG_ID<1" ng-click="vm.removeItemTempRow($index, itmIns, false)" ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13">
+                                                        <i class="fa fa-times"></i>
+                                                    </a>
+                                                    <a class="btn btn-xs red" title="Remove Item" ng-if="styItm.MC_SMP_REQ_D_CFG_ID>0" ng-click="vm.removeItemRow($index, itmIns, false, styItm, token)" ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13">
+                                                        <i class="fa fa-times"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td colspan="10">
+                                                    <b>Note:</b> Sample Quantity will be per color per size. If any color then any color per size. But in case of TBC, it will consider total quantity.
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+
+
+                            <tr ng-repeat-end></tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <br />
+
+                @*{{SamFabBookDtl.$invalid}}*@
+            </form>
+
+            @*<pre>{{vm.formDtl|json}}</pre>*@
+            @*<pre>{{vm.MC_STYLE_D_ITEM_ID_LST|json}}</pre>*@
+        </tab>
+
+        <tab heading="Fabrics Booking" active="activeTabFabBooking" @*disabled="true"*@ @*ui-sref-active="active"*@ @*ui-sref="SmplFabBookEntry.FabQty({})"*@ select="vm.activeTabFabBookingFn(true);vm.activeTabItemColorFn(false)">
+            @*<div data-ui-view="SmplFabQty"></div>*@
+            <form class="form-horizontal" role="form" name="frmSmplFabBooking" novalidate ng-submit="vm.submitData(vm.ItemData,token)">
+
+                <details ng-repeat="item in vm.fabBookingData" ng-open="item.STYLE_COLORS.length>0" style="padding-bottom:5px" ng-click="vm.styleQtyChange($index)">
+                    <br />
+                    <summary class="large_bold_black">
+                        <b>{{item.STYLE_NO}}</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        @*<a ng-click='gmtPartModal(item.MC_STYLE_H_ID, $index)' class='btn btn-xs blue' ng-show="vm.showGMTPartDia==item.index"><i class='fa fa-plus'> GMT Part</i></a>*@
+                    </summary>
+                    <input type="hidden" ng-init="item.index=$index" ng-model="item.index" />
+                    <table class="table table-condensed table-striped table-bordered" style="padding:0px;">
+                        <thead>
+                            <tr>
+                                <th style="width:150px">
+                                    <small>
+                                        Fab Color
+                                    </small>
+                                </th>
+                                <th style="width:150px">
+                                    <small>
+                                        YD Type
+                                    </small>
+                                </th>
+                                <th style="width:150px">
+                                    <small>
+                                        Color Spec
+                                    </small>
+                                </th>
+                                <th style="width:50px">
+                                    <small>
+                                        Cont<br />rast?
+                                    </small>
+                                </th>
+                                <th style="width:200px">
+                                    <small>
+                                        GMT Color
+                                    </small>
+                                </th>
+                                <th ng-repeat="itmPart in vm.fabBookingData[item.index].STYLE_COLORS[0].GMT_PARTS">
+                                    @*{{itmPart|json}}*@
+
+                                    <small>
+                                        {{itmPart.FAB_TYPE_DESC}}
+                                        <br />
+                                        <span class="col-md-2" style="padding-left: 0px; padding-right: 0px; border-right: 1px solid hsl(0, 0%, 87%)">
+                                            <input type="text" name="FIN_DIA" ng-model="itmPart.FIN_DIA" class="form-control" placeholder="Dia" ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13" />@*{{itmPart.FIN_DIA_DESC}}*@
+                                        </span>
+                                        <span class="col-md-4" style="padding-left:0px;padding-right:0px;"
+                                              ng-class="{'has-error':frmSmplFabBooking['DIA_MOU_ID-{{item.index+'-'+$index}}'].$invalid}">
+                                            <select kendo-drop-down-list class="form-control" k-option-label="'-- Select --'"
+                                                    name="DIA_MOU_ID-{{item.index+'-'+$index}}" ng-required="(itmPart.FIN_DIA!='')?true:false"
+                                                    ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13"
+                                                    k-data-source="$parent.rfMouList" k-ng-delay="$parent.rfMouList" ng-model="itmPart.DIA_MOU_ID"
+                                                    k-data-text-field="'MOU_CODE'" k-data-value-field="'RF_MOU_ID'" k-on-change="finDiaUnitOnChange(kendoEvent)"></select>
+                                        </span>
+                                        <span class="col-md-5" style="padding-left:0px;padding-right:0px;"
+                                              ng-class="{'has-error':frmSmplFabBooking['LK_DIA_TYPE_ID-{{item.index+'-'+$index}}'].$invalid}">
+                                            <select kendo-drop-down-list class="form-control" k-option-label="'-- Select --'"
+                                                    name="LK_DIA_TYPE_ID-{{item.index+'-'+$index}}" ng-required="(itmPart.FIN_DIA!='')?true:false"
+                                                    ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13"
+                                                    k-data-source="$parent.diaTypeList" k-ng-delay="$parent.diaTypeList" ng-model="itmPart.LK_DIA_TYPE_ID"
+                                                    k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'" k-on-change="finDiaTypeOnChange(kendoEvent)"></select>
+                                        </span>
+                                        <span class="col-md-1" style="padding-left: 0px; padding-right: 0px; border-right: 1px solid hsl(0, 0%, 87%)">
+                                            <a ng-click='vm.addFabricColumn(item.STYLE_COLORS, itmPart)' class='btn btn-xs blue' title="Add Column" ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13"><i class='fa fa-plus'></i></a>
+                                        </span>
+
+                                        <br />
+
+                                        <span class="col-md-12" style="padding-left: 0px; padding-right: 0px; border-right: 1px solid hsl(0, 0%, 87%)"
+                                              ng-class="{'has-error':frmSmplFabBooking['RF_GARM_PART_LST-{{item.index+'-'+$index}}'].$invalid}">
+                                            <select class="form-control" kendo-multi-select k-placeholder="'Search GMT Part...'"
+                                                    name="RF_GARM_PART_LST-{{item.index+'-'+$index}}" required
+                                                    ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13"
+                                                    k-data-text-field="'GARM_PART_NAME'" k-data-value-field="'RF_GARM_PART_ID'"
+                                                    k-data-source="$parent.gmtPartList" k-ng-delay="$parent.gmtPartList" ng-model="itmPart.RF_GARM_PART_ID_LST"></select>
+
+                                            <input type="hidden" class="form-control" ng-model="itmPart.RF_GARM_PART_NAME_LST" />
+                                        </span>
+                                    </small>
+
+                                </th>
+
+                                <th style="width:80px">Action</th>
+                            </tr>
+
+
+                        </thead>
+
+                        @*<pre>{{item.STYLE_COLORS|json}}</pre>*@
+
+                        <tbody>
+                            <tr ng-repeat="itm in item.STYLE_COLORS">
+
+                                <td ng-class="{'has-error':frmSmplFabBooking['MC_COLOR_ID-{{item.index+'-'+$index}}'].$invalid}">
+                                    
+                                    <span ng-if="itm.MC_SMP_REQ_D2_ID!=-1">{{itm.COLOR_NAME_EN}}</span>
+                                    <span ng-if="itm.MC_SMP_REQ_D2_ID<1">
+                                        <select kendo-drop-down-list class="form-control" k-option-label="'-- Select --'"
+                                                name="MC_COLOR_ID-{{item.index+'-'+$index}}" required
+                                                k-data-source="itm.STYLE_COLORS_LIST" ng-model="itm.MC_COLOR_ID"
+                                                k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'MC_COLOR_ID'"
+                                                k-on-change="vm.onChangeFabColor(kendoEvent, itm)" ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13"></select>
+                                    </span>
+
+                                </td>
+
+                                <td>
+                                    <select kendo-drop-down-list class="form-control" k-option-label="'-- Select --'"
+                                            ng-disabled="itm.LK_COL_TYPE_ID!=360||$parent.form.MC_TNA_TASK_STATUS_ID>13"
+                                            name="LK_YD_TYPE_ID-{{item.index+'-'+$index}}"
+                                            k-data-source="$parent.ydTypeList" ng-model="itm.LK_YD_TYPE_ID" k-ng-delay="$parent.ydTypeList"
+                                            k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'"
+                                            ng-required="itm.LK_COL_TYPE_ID==360"></select>
+                                </td>
+
+                                <td>
+                                    <input type="text" name="COLOR_SPEC-{{item.index+'-'+$index}}" ng-model="itm.COLOR_SPEC" class="form-control" ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13" />
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="IS_CONTRAST-{{item.index+'-'+$index}}" ng-model="itm.IS_CONTRAST" ng-true-value="'Y'" ng-false-value="'N'" 
+                                           ng-change="vm.onChangeContrast(itm)" ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13" />
+                                </td>
+                                <td ng-class="{'has-error':frmSmplFabBooking['GMT_COLOR_ID-{{item.index+'-'+$index}}'].$invalid}">
+
+                                    <select class="form-control" kendo-drop-down-list class="form-control" k-option-label="'-- Select --'"
+                                            name="GMT_COLOR_ID-{{item.index+'-'+$index}}" required
+                                            ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13||itm.IS_CONTRAST!='Y'"
+                                            k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'MC_COLOR_ID'"
+                                            k-data-source="itm.STYLE_COLORS_LIST" k-ng-delay="itm.STYLE_COLORS_LIST" ng-model="itm.GMT_COLOR_ID"
+                                            ng-change="vm.onChangeGmtColor4Fab(itm)"></select>
+
+                                    @*<span ng-if="itm.MC_SMP_REQ_D2_ID!=-1">{{itm.GMT_COLOR_NAME_EN}}</span>
+            <span ng-if="itm.MC_SMP_REQ_D2_ID<1">
+                <select kendo-drop-down-list class="form-control" k-option-label="'-- Select --'"
+                        name="GMT_COLOR_ID-{{item.index+'-'+$index}}" required
+                        k-data-source="itm.STYLE_COLORS_LIST" ng-model="itm.GMT_COLOR_ID" k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'MC_COLOR_ID'"
+                        ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13||itm.IS_CONTRAST!='Y'"></select>
+            </span>*@
+
+                                </td>
+                                <td ng-repeat="itmPart in itm.GMT_PARTS">
+                                    @*{{itmPart.GMT_PARTS_QTY|json}}*@
+
+                                    <div ng-repeat="itmQty in itmPart.GMT_PARTS_QTY">
+
+                                        <input type="hidden" name="MC_SMP_REQ_D2_ID-{{itm.index+'-'+$index}}" ng-model="itmQty.MC_SMP_REQ_D2_ID" class="form-control" />
+                                        <span class="col-md-6" style="padding-left:0px;padding-right:0px;">
+                                            <input type="number" name="RQD_QTY-{{itm.index+'-'+$index}}" ng-model="itmQty.RQD_QTY" class="form-control" ng-change="vm.onChangeReqQty()" ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13" />
+                                        </span>
+                                        <ng-form name="frmSmplFabBkQtyDtl">
+                                            <span class="col-md-6" style="padding-left:0px;padding-right:0px;"
+                                                  ng-class="{'has-error':frmSmplFabBkQtyDtl.QTY_MOU_ID.$invalid}">
+                                                <select kendo-drop-down-list class="form-control" k-option-label="'-- Select --'" @*ng-init="itmQty.QTY_MOU_ID==null?itmQty.QTY_MOU_ID=3:itmQty.QTY_MOU_ID=itmQty.QTY_MOU_ID"*@
+                                                        name="QTY_MOU_ID" ng-required="itmQty.RQD_QTY>0?true:false"
+                                                        ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13"
+                                                        k-data-source="$parent.rfMouList" ng-model="itmQty.QTY_MOU_ID" k-ng-delay="$parent.rfMouList" k-data-text-field=" 'MOU_CODE' " k-data-value-field=" 'RF_MOU_ID' "></select>
+
+                                                @*{{itmQty.QTY_MOU_ID}}*@
+                                            </span>
+                                        </ng-form>
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <a class="btn btn-xs blue" title="Add Color" ng-click="vm.addColorRow(itm, item.STYLE_COLORS, 'formDtl')" ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13">
+                                        <i class="fa fa-plus"></i>
+                                    </a>
+
+                                    <a class="btn btn-xs red" title="Remove Color" ng-click="vm.removeColorRow($index, item.STYLE_COLORS, false, item, itm, token)" ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+
+
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+
+                    </table>
+
+
+                </details>
+                <br />
+
+
+            </form>
+
+
+
+        </tab>
+
+</tabset>
+
+@*<pre>{{vm.formDtl|json}}</pre>*@
+@*<pre>{{$parent.form|json}}</pre>*@
+@*<pre>{{$scope.sampFabQty|json}}</pre>*@
+
+</fieldset>
+
+<div class="row">
+    @*{{$parent.form.MC_BYR_ACC_ID_LIST}}*@
+    
+
+    <div class="col-md-12" style="padding-top:10px;">
+        <div class="col-md-6" align="left">
+            @*<button type="button" class="btn btn-sm green" ng-click="vm.submitData(vm.form,token)" >Save</button>*@
+            @*$parent.form.SMP_REQ_ATTN_LIST==null||$parent.form.SMP_REQ_ATTN_LIST.length<1||*@
+            <button type="button" ng-if="$parent.form.MC_SMP_REQ_H_ID<1||$parent.form.MC_SMP_REQ_H_ID==null" class="btn btn-sm green" ng-click="vm.submitData(vm.formDtl,token)"
+                    ng-class="{'disabled':$parent.form.MC_BYR_ACC_ID_LIST==null||$parent.form.MC_BYR_ACC_ID_LIST.length<1||$parent.form.SMP_REQ_DT==null||
+                                          $parent.form.MC_TNA_TASK_STATUS_ID>13}">
+                Save
+            </button>
+            <button type="button" ng-if="$parent.form.MC_SMP_REQ_H_ID>0" class="btn btn-sm yellow-gold" ng-click="vm.submitData(vm.formDtl,token)"
+                    ng-class="{'disabled':$parent.form.MC_BYR_ACC_ID_LIST==null||$parent.form.MC_BYR_ACC_ID_LIST.length<1||$parent.form.SMP_REQ_DT==null||
+                                          $parent.form.MC_TNA_TASK_STATUS_ID>13}">
+                Update
+            </button>
+
+            <button type="button" ng-if="($parent.form.MC_SMP_REQ_H_ID>0 && vm.TOTAL_FAB_QTY>0)" class="btn btn-sm blue"
+                    ng-click="vm.sendToSample(vm.formDtl,token)" ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13">
+                Submit
+            </button>
+
+            @*{{$parent.form.STATUS_ORDER}}*@
+            <button type="button" class="btn btn-sm blue" ng-click="vm.cancelTran()">Cancel</button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="button" class="btn btn-sm blue-hoki" ng-click="vm.lsitView()">Back to List</button>
+            <button type="button" class="btn btn-sm btn-success" ng-click="smpBkRevisionModal()" ng-show="$parent.form.MC_TNA_TASK_STATUS_ID>13"
+                    ng-disabled="$parent.form.MC_SMP_REQ_H_ID<1 || $parent.form.MC_SMP_REQ_H_ID==''||!$parent.form.MC_TNA_TASK_STATUS_ID>13">
+                Revise
+            </button>
+
+        </div>
+
+        <div class="col-md-offset-1 col-md-5">
+            <button type="button" class="btn btn-sm blue" ng-click="vm.cancelTran()">Add New</button>
+            <button type="button" class="btn btn-sm blue" ng-disabled="$parent.form.MC_SMP_REQ_H_ID==null||$parent.form.MC_SMP_REQ_H_ID<1" ng-click="vm.printBookingRecord($parent.form)"><i class='fa fa-print'> Print</i></button>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+@*Start For Cartoon Sample*@
+<script type="text/ng-template" id="SmpReqAsortModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <p style="padding-top:10px;">
+                        Assortment
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </p>
+
+
+
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="SmpReqAsortModal" novalidate @*ng-submit="save(Task,token,TaskForm.$valid)"*@>
+                    <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+
+                    <div kendo-grid k-options="asortGridOption" k-data-source="asortGridDataSource" ></div>
+
+                    @*<div class="form-group">
+                <label for="selectPeriod" class="col-md-4 control-label">Period</label>
+
+                <div class="col-md-8" style="padding-top:5px;">
+                    <select kendo-drop-down-list id="ACC_PAY_PERIOD_ID" name="ACC_PAY_PERIOD_ID" class="form-control"
+                            options="companyOpenPeriodList" ng-model="ACC_PAY_PERIOD_ID"></select>
+                </div>
+            </div>*@
+                    @*<pre>{{ProcessLossModalForm.$valid}}</pre>*@
+
+                    <br />
+                    <div class="form-group form-actions">
+                        <div class="col-md-12">
+                            <button type="button" class="btn blue btn-sm" ng-click="save(token, SmpReqAsortModal.$valid)" @*ng-class="{'disabled':!HrReportModalForm.$valid}" ng-disabled="formInvalid"*@>Ok</button>
+                            <button type="button" class="btn btn-default btn-sm" ng-click="cancel()">Cancel</button>
+                            
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+@*End For Process Model*@
+
+
+@*Start For Booking Revision*@
+<script type="text/ng-template" id="SmplBkRevisionModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <p style="padding-top:10px;">
+                        Sample Program Revision
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </p>
+
+
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="SmplBkRevisionModal" novalidate @*ng-submit="save(Task,token,TaskForm.$valid)"*@>
+                    <input id="access_token" data-ng-model="token" type="hidden"
+                           data-ng-init="token='@Session["access_token"]'" />
+
+                    @*<div kendo-grid k-data-source="asortDataList" k-columns="asortColumns" k-selectable="true" k-on-change="selected = data" k-height="300" k-filterable="true" k-sortable="true"></div>*@
+
+                    @*<div class="form-group">
+                        <label class="col-md-2 control-label"></label>
+                        <div class="col-md-10" style="padding-top:5px;">
+                            <input type="checkbox" name="IS_ITEM_REV" ng-model="IS_ITEM_REV" ng-true-value="'Y'" ng-false-value="'N'" /> Sample Item Revision?
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label"></label>
+                        <div class="col-md-10" style="padding-top:5px;">                            
+                            <input type="checkbox" name="IS_FAB_REV" ng-model="IS_FAB_REV" ng-true-value="'Y'" ng-false-value="'N'" /> Fabric Revision?
+                        </div>
+                    </div>*@
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">
+                            <span aria-required="true" class="required">*</span>Date
+                        </label>
+                        <div class="col-md-5" style="padding-top:5px;">
+                            <input type="text" class="form-control" ng-click="RevisionDate_LNopen($event)" datepicker-popup="{{dtFormat}}"
+                                   name="REVISION_DT" ng-model="REVISION_DT" is-open="RevisionDate_LNopened"
+                                   datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" required />
+                            @*<input type="datetime" kendo-date-time-picker class="form-control datetimepicker"
+                                   ng-model="REVISION_DT" interval="5" format="dd/MMM/yyyy hh:mm tt" required />*@
+                            @*<input kendo-date-time-picker k-ng-model="REVISION_DT" name="REVISION_DT" 
+                                   k-options="datePickerOptions" data-k-format="'dd/MM/yyyy hh:mm tt'" k-interval="5" style="width: 100%;" required />*@
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Reason</label>
+                        <div class="col-md-10" style="padding-top:5px;">
+                            <textarea class="form-control" ng-model="REV_REASON" rows="2"></textarea>
+                        </div>
+                    </div>
+
+                    @*<pre>{{ProcessLossModalForm.$valid}}</pre>*@
+
+                    <br />
+                    <div class="form-group form-actions">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="button" class="btn green btn-sm" ng-click="save(token, SmplBkRevisionModal.$valid)" ng-class="{'disabled':!SmplBkRevisionModal.$valid}">Save</button>
+                            <button type="button" class="btn btn-default btn-sm" ng-click="cancel()">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</script>
+
+@*<script>
+    $(".datetimepicker").kendoDateTimePicker({
+        format: "dd/MMM/yyyy hh:mm tt" //"yyyy/MM/dd hh:mm tt"
+        //parseFormats: ["MMMM yyyy", "HH:mm"] //format also will be added to parseFormats
+    });
+</script>*@
+
+@*End For Booking Revision*@

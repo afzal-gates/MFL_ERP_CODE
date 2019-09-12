@@ -1,0 +1,153 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Hr</a>
+
+    </li>
+    <li>
+        <a href="#">ID Card Print</a>
+    </li>
+</ul>
+
+@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+<div class="portlet box blue-dark" @*ng-controller="HrReportController as vm"*@>
+
+    <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+           data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+    <div class="portlet-title">
+        <div class="caption">
+            @*<i class="fa fa-gift"></i>*@ ID Card Print
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <form name="frmIDCardPrint" class="form-horizontal" action="/Hr/HrReport/PreviewReport" method="post" target="_blank" novalidate>
+
+
+            <div class="form-body">
+
+                <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+                       data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+                <div class="row">
+
+                    <div class="col-md-12">
+
+                        <fieldset class="custom-fieldset col-md-6">
+                            <legend class="custom-legend">Search</legend>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Employee Code</label>
+                                <div class="col-md-4">
+                                    <input type="text" ng-model="vm.form.EMPLOYEE_CODE" placeholder="Search..." @*ng-disabled="vm.isEmployee!=true"*@
+                                           typeahead="item.EMPLOYEE_CODE as item.EMPLOYEE_CODE for item in emoloyeeAuto($viewValue)"
+                                           typeahead-min-length="3" typeahead-wait-ms="1000"
+                                           typeahead-on-select="onSelectItem($item)" typeahead-loading="loadingLocationsEmp" class="form-control" />
+                                    <i ng-show="loadingLocationsEmp" class="glyphicon glyphicon-refresh"></i>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-if="vm.form.EMP_FULL_NAME_EN!=null">
+                                <label class="col-md-4 control-label">&nbsp;</label>
+                                <div class="col-md-8" style="width:auto;">
+                                    <span class="form-control" style="background-color: hsl(0, 0%, 93%)">{{vm.form.EMP_FULL_NAME_EN}}&nbsp;</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-4"></label>
+                                <div class="col-md-8">
+                                    <button type="button" class="btn btn-default" ng-click="vm.add()">Add</button>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="custom-fieldset col-md-3">
+                            <legend class="custom-legend">Print Option</legend>
+
+                            <div class="form-group">
+                                
+                                <div class="col-md-8">                                  
+                                    <div class="radio-list" style="margin-left:20px">
+                                        <label class="radio" ng-repeat="item in vm.cardPrintOptionList">
+                                            <span class="checked"><input type="radio" name="CARD_PRINT_OPTION" ng-model="vm.CARD_PRINT_OPTION" ng-value="item.CARD_PRINT_OPTION_ID" ng-click="vm.onChangeCardPrintOption(item)"></span>{{item.CARD_PRINT_OPTION_NAME}}
+                                        </label>                                        
+                                    </div>
+                                    
+                                </div>
+                            </div>
+
+                        </fieldset>
+                        <div class="col-md-3">&nbsp;</div>
+
+                        
+                        <p style="clear:both"></p>
+                        <div class="form-group" ng-show="vm.empIndex>-1">
+
+                            <input type="hidden" name="REPORT_CODE" value="RPT-1026" />
+                            <input type="hidden" name="TA_FLAG" ng-model="vm.TA_FLAG" value="{{vm.TA_FLAG}}" />
+                            <input type="hidden" name="CARD_PRINT_OPTION_ID" value="{{vm.CARD_PRINT_OPTION_ID}}" />
+                            
+                            <div class="col-md-1">                                
+                                <button type="submit" class="btn btn-xs blue" ng-click="vm.add()"><i class="fa fa-file-text-o"></i> Preview</button>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="control-label checkbox-inline">
+                                    <input type="checkbox" name="IS_SINGLE_PAGE" ng-model="vm.IS_SINGLE_PAGE" value="{{vm.IS_SINGLE_PAGE}}"
+                                           ng-true-value="'Y'" ng-false-value="'N'" ng-init="vm.IS_SINGLE_PAGE='Y'" /> Single employee in a page?
+                                </label>
+                            </div>
+                        </div>
+
+                        @*<div data-ui-view="List@IDCardPrint" class="shuffle-animation"></div>*@
+
+                        @*{{vm.empListData}}
+                        {{vm.TA_FLAG}}*@
+
+                        <div class="form-group" ng-show="vm.empIndex>-1">
+                            <div class="col-md-12">
+                                <div id="IDCardPrintGrid" kendo-grid></div>
+                            </div>
+                        </div>
+
+                        @*{{vm.empListData}}*@
+                        
+                    </div>
+
+
+
+
+                </div>
+
+            </div>
+
+
+            @*}*@
+        </form>
+
+    </div>
+
+</div>

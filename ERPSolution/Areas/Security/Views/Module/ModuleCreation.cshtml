@@ -1,0 +1,308 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Security</a>
+
+    </li>
+    <li>
+        <a href="#">Module Information</a>
+    </li>
+</ul>
+
+@{
+    ViewBag.Title = "ModuleInformation";
+}
+
+
+<div class="portlet box blue-dark" ng-controller="ModuleController as vm">
+    <div class="portlet-title">
+        <div class="caption">
+            @*<i class="fa fa-gift"></i>*@ Module Information
+        </div>
+        <div class="tools">
+            <a href="javascript:;" class="collapse">
+            </a>
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            <a href="javascript:;" class="remove">
+            </a>
+        </div>
+    </div>
+    <div class="portlet-body">
+        @* Start Model Edit *@
+        @*<div id="responsive" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        <h4 class="modal-title">Edit Department</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 300px;">
+                            <div class="scroller" style="height: 300px; overflow: hidden; width: auto;" data-always-visible="1" data-rail-visible1="1" data-initialized="1">
+                                <div class="row">
+                                    <div class="col-md-offset-1 col-md-12">
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">
+                                                Parent Dept.
+                                            </label>
+                                            <div class="col-md-8">
+                                                <input type="hidden" name="PARENT_ID" value="{{selectedItem.HR_DEPARTMENT_ID}}" />
+                                                <input type="text" class="form-control" name="DEPARTMENT_NAME_EN" value="{{selectedItem.text}}" disabled />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">
+                                                Dept. Code
+                                            </label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" name="DEPARTMENT_CODE" disabled />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">
+                                                Dept. Name
+                                            </label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" name="DEPARTMENT_NAME_EN" required data-required-msg="Please input department name" />
+                                                <span class="k-invalid-msg" data-for="DEPARTMENT_NAME_EN"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">
+                                                Description
+                                            </label>
+                                            <div class="col-md-8">
+                                                <textarea class="form-control" name="DEPARTMENT_DESC" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">
+                                                Dept. Prefix
+                                            </label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" name="DEPARTMENT_PREFIX" required data-required-msg="Please input prefix" value="{{selectedItem.DEPARTMENT_CODE}}" />
+                                                <span class="k-invalid-msg" data-for="DEPARTMENT_PREFIX"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">
+                                                Level#
+                                            </label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" name="DEPARTMENT_LEVEL" required data-required-msg="Please input level" value="{{selectedItem.DEPARTMENT_LEVEL + 1}}" disabled />
+                                                <span class="k-invalid-msg" data-for="DEPARTMENT_LEVEL"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">
+                                                Leaf?
+                                            </label>
+                                            <div class="col-md-8">
+                                                <input type="checkbox" class="form-control" name="IS_LEAF" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">
+                                                Active?
+                                            </label>
+                                            <div class="col-md-8">
+                                                <input type="checkbox" class="form-control" name="IS_ACTIVE" checked />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div><div class="slimScrollBar" style="width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 300px; background: rgb(187, 187, 187);"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; opacity: 0.2; z-index: 90; right: 1px; background: rgb(234, 234, 234);"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn default">Close</button>
+                        <button type="button" class="btn green">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+        @* End Model Edit *@
+
+        <div class="row">
+
+            <div class="col-md-3  portlet light" style="border: 1px solid gray; margin-left: 20px;">
+                <p style="color:green">Please select a node for transection</p>
+                <div kendo-tree-view k-options="vm.thingsOptions"
+                     k-on-change="selectedItem = dataItem" k-ng-delay="vm.thingsOptions.dataSource">
+                </div>
+
+            </div>
+            <div class="col-md-7">
+                <form id="frmModuleCreation" name="frmModuleCreation" action="/Security/Module/Save" method="post" class="form-horizontal" kendo-validator="validator">
+
+                    <div class="form-body">
+
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Action Mode</label>
+                            <div class="radio-list" >
+                                <div class="col-md-9">
+                                    <label class="radio-inline"><input type="radio" name="TranMode" id="NewMode" value="1" ng-init="TranMode=1" ng-model="TranMode">New</label>
+                                    <label class="radio-inline"><input type="radio" name="TranMode" id="EditMode" value="2" ng-model="TranMode">Edit</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="TranMode==1">
+                            <label class="control-label col-md-3">
+                                Parent Module
+                            </label>
+                            <div class="col-md-9">
+                                <input type="hidden" name="PARENT_ID" value="{{selectedItem.SC_SYSTEM_MODULE_ID}}" />
+                                <input type="text" class="form-control" name="PARENT_NAME" value="{{selectedItem.text}}" disabled />
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="TranMode==2">
+                            <label class="control-label col-md-3">
+                                Parent Module
+                            </label>
+                            <div class="col-md-9">
+                                <input type="hidden" name="PARENT_ID" value="{{selectedItem.PARENT_ID}}" />
+                                <input type="hidden" name="SC_SYSTEM_MODULE_ID" value="{{selectedItem.SC_SYSTEM_MODULE_ID}}" />
+                                <input type="text" class="form-control" name="PARENT_NAME" value="{{selectedItem.PARENT_NAME}}" disabled />
+                            </div>
+                        </div>
+
+                        @*<div class="form-group">
+                                <label class="control-label col-md-3">
+                                    Sub Module
+                                </label>
+                                <div class="col-md-6">
+                                    <select id="subModuleId" name="subModuleId" kendo-drop-down-list k-options="vm.subModuleList" required data-required-msg="Please select sub module"></select>
+                                </div>
+                            </div>*@
+
+                        <div class="form-group" ng-if="TranMode==1">
+                            <label class="control-label col-md-3">
+                                Module Name
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-9">
+                                <input type="text" id="SYS_MODULE_NAME" name="SYS_MODULE_NAME" class="form-control" required data-required-msg="Please insert module name"></input>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="TranMode==2">
+                            <label class="control-label col-md-3">
+                                Module Name
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-9">
+                                <input type="text" id="SYS_MODULE_NAME" name="SYS_MODULE_NAME" class="form-control" value="{{selectedItem.SYS_MODULE_NAME}}" required data-required-msg="Please insert module name"></input>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group" ng-if="TranMode==1">
+                            <label class="control-label col-md-3">
+                                Module Level
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" id="MODULE_LEVEL" name="MODULE_LEVEL" class="form-control" value="{{selectedItem.MODULE_LEVEL + 1}}" readonly required data-required-msg="Please insert module level"></input>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="TranMode==2">
+                            <label class="control-label col-md-3">
+                                Module Level
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" id="MODULE_LEVEL" name="MODULE_LEVEL" class="form-control" value="{{selectedItem.MODULE_LEVEL}}" disabled></input>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group" ng-if="TranMode==1">
+                            <label class="control-label col-md-3">                                
+                            </label>
+                            <div class="col-md-1">
+                                <input type="checkbox" name="IS_ACTIVE" checked required data-required-msg="Please checked IsActive" />
+                                <span class="k-invalid-msg" data-for="IS_ACTIVE"></span>
+                            </div>
+                            Active?
+                        </div>
+                        <div class="form-group" ng-if="TranMode==2">
+                            <label class="control-label col-md-3">
+                            </label>
+                            <div class="col-md-1">
+                                <input type="checkbox" name="IS_ACTIVE" checked ng-if="selectedItem.IS_ACTIVE=='Y'" />
+                                <input type="checkbox" name="IS_ACTIVE" ng-if="selectedItem.IS_ACTIVE=='N'" />
+                                <input type="checkbox" name="IS_ACTIVE" ng-if="selectedItem==null" />
+                            </div>
+                            Active?
+                        </div>
+
+
+
+
+                        <div class="form-actions" ng-if="TranMode==1">
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-6">
+                                    <button type="submit" class="btn green" ng-if="selectedItem!=null"><i class="fa fa-check"></i> Save</button>
+                                    <button type="submit" class="btn green" ng-if="selectedItem==null" disabled><i class="fa fa-check"></i> Save</button>
+                                    <button type="reset" class="btn blue">Cancel</button>
+                                    @*<a href="@Url.Action("Index","LookupTables")" class="btn default">Back</a>*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-actions" ng-if="TranMode==2">
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-6">
+                                    <button type="submit" class="btn yellow" ng-if="selectedItem!=null"><i class="fa fa-check"></i> Update</button>
+                                    <button type="submit" class="btn yellow" ng-if="selectedItem==null" disabled><i class="fa fa-check"></i> Update</button>
+                                    <button type="reset" class="btn blue">Cancel</button>
+                                    @*<a href="@Url.Action("Index","LookupTables")" class="btn default">Back</a>*@
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+
+
+                    @*<div class="form-group">
+                            <div class="col-md-4">
+                                <div ng-show="selectedItem">
+                                    <h4>Selected: {{selectedItem.HR_DEPARTMENT_ID}}</h4>
+                                    <button class="k-button" ng-click="addAfter(selectedItem)">Add item below</button>
+                                    <button class="k-button" ng-click="addBelow(selectedItem)">Add child item</button>
+                                    <button class="k-button" ng-click="remove(selectedItem)">Delete</button>
+                                </div>
+                            </div>
+                        </div>*@
+                </form>
+
+            </div>
+
+
+        </div>
+
+
+
+
+
+
+        @*<div style="border:1px solid green" class="col-md-8">*@
+
+    </div>
+</div>
+
+
+<style scoped>
+    .k-treeview .k-in {
+        padding: 5px;
+    }
+</style>

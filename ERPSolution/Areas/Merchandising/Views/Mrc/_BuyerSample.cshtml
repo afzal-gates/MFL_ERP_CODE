@@ -1,0 +1,193 @@
+﻿<style>
+    .dropdown-header {
+        border-width: 0 0 1px 0;
+        text-transform: uppercase;
+    }
+
+        .dropdown-header > span {
+            display: inline-block;
+            padding: 10px;
+        }
+
+            .dropdown-header > span:first-child {
+                width: 50px;
+            }
+
+    .selected-value {
+        display: inline-block;
+        vertical-align: middle;
+        width: 24px;
+        height: 24px;
+        background-size: 100%;
+        margin-right: 5px;
+        border-radius: 50%;
+    }
+
+    #customers-list .k-item {
+        line-height: 1em;
+        min-width: 300px;
+    }
+
+    /* Material Theme padding adjustment*/
+
+    .k-material #customers-list .k-item,
+    .k-material #customers-list .k-item.k-state-hover,
+    .k-materialblack #customers-list .k-item,
+    .k-materialblack #customers-list .k-item.k-state-hover {
+        padding-left: 5px;
+        border-left: 0;
+    }
+
+    #customers-list .k-item > span {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        display: inline-block;
+        vertical-align: top;
+        margin: 20px 10px 10px 5px;
+    }
+
+        #customers-list .k-item > span:first-child {
+            -moz-box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            -webkit-box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            margin: 10px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+
+    #customers-list h3 {
+        font-size: 0.7em;
+        font-weight: normal;
+        margin: 0 0 1px 0;
+        padding: 0;
+    }
+
+    #customers-list p {
+        margin: 0;
+        padding: 0;
+        font-size: .8em;
+    }
+
+    .employee.k-state-selected .employee-wrapper {
+        border-top: 1px solid #6abd2d;
+        border-bottom: 1px solid #6abd2d;
+    }
+</style>
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <form class="form-horizontal" role="form" name="BuyerSampleForm" novalidate ng-submit="vm.getSampleListByBuyer(vm.form.MC_BUYER_ID)">
+            <br />
+            <input id="access_token" data-ng-model="token" type="hidden"
+                   data-ng-init="token='@Session["access_token"]'" />
+
+            <div class="row" style="margin:auto;">
+                <div class="col-md-12">
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend">Search By</legend>
+                        <label class="col-md-1 control-label">
+                            Buyer
+                        </label>
+                        <div class="col-md-3">
+                            <select kendo-drop-down-list name="MC_BUYER_ID" class="form-control"
+                                    options="vm.buyerList" id="MC_BUYER_ID" ng-model="vm.form.MC_BUYER_ID" required></select>
+                        </div>
+
+                        <div class="col-md-1">
+                            <button type="submit" class="btn btn-sm blue" ng-disabled="!vm.form.MC_BUYER_ID">
+                                Load
+                            </button>
+                        </div>
+                    </fieldset>
+                </div>
+                
+          </div>
+
+
+
+            <br />
+            <div class="row" style="margin:auto;">
+
+                <div class="col-md-3">
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend">Mapped Buyer List</legend>
+
+
+                        <div>
+                            <div class="input-icon right" style="padding-bottom:3px;">
+                                <i class="icon-magnifier"></i>
+                                <input type="text" class="form-control form-control-solid" ng-model="q" placeholder="search..." ng-change="vm.dataSource.filter( { field:'BUYER_NAME_EN', operator :'contains', value: q })" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }">
+                            </div>
+
+                            <div kendo-list-view
+                                 k-selectable="'single'"
+                                 k-data-source="vm.dataSource"
+                                 k-on-change="vm.getSampleListByBuyer(dataItem.MC_BUYER_ID);vm.form.MC_BUYER_ID=dataItem.MC_BUYER_ID">
+                                <div k-template>
+                                    <dd class="k-state-default" style="padding: 5px; border-bottom: solid 1px; border-color: lightgray; ">
+                                        <h6 style="padding-left:5px;margin:0px;"><b>{{dataItem.BUYER_NAME_EN}}</b></h6>
+                                    </dd>
+                                </div>
+                            </div>
+                            <div kendo-pager k-data-source="vm.dataSource"></div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div class="col-md-9">
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend">Sample Type List</legend>
+
+                        <kendo-grid k-options="vm.gridOptions" id="kendoGrid"></kendo-grid>
+
+
+                        <div class="col-md-4" style="padding-top:10px; padding-bottom:10px;">
+                            <button type="button" class="btn btn-sm green" ng-click="vm.saveGridData(vm.form.MC_BUYER_ID,token)" ng-disabled="!vm.form.MC_BUYER_ID || BuyerSampleForm.$invalid">Save</button>
+                            <button type="button" class="btn btn-sm default" ng-click="vm.getSampleListByBuyer(vm.form.MC_BUYER_ID)" ng-disabled="!vm.form.MC_BUYER_ID">Cancel</button>
+                        </div>
+
+                    </fieldset>
+                </div>
+
+            </div>
+
+        </form>
+    </div>
+</div>
+

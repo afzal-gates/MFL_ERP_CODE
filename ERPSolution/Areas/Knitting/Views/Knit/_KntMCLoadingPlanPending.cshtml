@@ -1,0 +1,302 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption">
+            {{vm.Title}}
+        </div>
+        <div class="tools">
+        </div>
+        <div class="actions">
+            <a ui-sref="KntMCLoadingPlan(vm.params)" class="btn blue-dark btn-sm">
+                M/C Loading Plan  <i class="fa fa-share"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="portlet-body">
+        <div class="row" style="margin:auto;padding-top:8px;">
+            <div class="col-md-6">
+                <div class="row">
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend">Pending Knit Cards to be Load</legend>
+
+                        <div class="radio-list" style="margin-left:20px">
+                            <label class="radio-inline" ng-repeat="item in vm.floorList">
+                                <span class="checked"><input type="radio" name="HR_PROD_FLR_ID" ng-model="vm.form.HR_PROD_FLR_ID" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" ng-value="item.HR_PROD_FLR_ID" ng-change="vm.onChangeFloor(vm.form.HR_PROD_FLR_ID)"></span>  {{item.FLOOR_DESC_EN}}
+                            </label>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-5">
+
+                                <div class="checkbox-list">
+                                    <label class="checkbox-inline" style="margin-left:20px">
+                                        <input type="checkbox" ng-model="vm.form.pOption" ng-true-value="3001" ng-false-value="3000" ng-change="vm.onChangeOption(vm.form)" /> SC-Inhouse?
+                                    </label>
+
+                                    <label class="checkbox-inline" style="margin-left:20px">
+                                        <input type="checkbox" ng-model="vm.form.LK_COL_TYPE_ID" ng-true-value="360" ng-false-value="-1" ng-change="vm.onChangeOption(vm.form)" /> Y/D?
+                                    </label>
+
+                                    <label class="checkbox-inline" style="margin-left:20px">
+                                        <input type="checkbox" ng-model="vm.form.IS_RIB" ng-true-value="'Y'" ng-false-value="'M'" ng-change="vm.onChangeOption(vm.form)" /> RIB?
+                                    </label>
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-2 control-label">
+                                        Dia
+                                    </div>
+
+                                    <div class="col-md-10">
+                                        <select class="form-control" kendo-drop-down-list name="ACT_MC_DIA_ID" k-option-label="'All'" k-filter="'Contains'"
+                                                k-data-text-field="'MC_DIA'" k-data-value-field="'KNT_MC_DIA_ID'"
+                                                k-auto-bind="'true'" k-data-source="vm.machineDiaDs"
+                                                ng-model="vm.form.ACT_MC_DIA_ID" k-on-change="vm.onChangeMcDia(kendoEvent)"></select>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-icon right" style="padding-bottom:3px;">
+                                    <i class="icon-magnifier"></i>
+                                    <input type="text" class="form-control form-control-static" ng-model="vm.form.WORK_STYLE_NO" placeholder="Knit Card#/Style/Order..." ng-change="vm.onChangeStyleOrderChange(vm.form)" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }">
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <kendo-grid k-options="vm.pendingKnitCardOpt" k-data-source="vm.pendingKnitCardDs" id="pendingKnitCard" style="float: left"></kendo-grid>
+                    
+                    </fieldset>
+
+                </div>
+                <div class="row" style="margin-top:5px;">
+                    <div class="col-md-12" align="right">
+                        <button type="button" class="btn btn-sm" ng-click="vm.pendingKnitCardList()"><i class="fa fa-file-pdf-o"></i> Date Wise Knit Card List</button>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="col-md-6">
+
+                <form class="form-horizontal" role="form" name="KnittingPendingForm" novalidate>
+                    <p class="block" style="margin: 0px; font-size: 14px; background-color: #ece9f8;padding-left:2px;" ng-if="vm.data">
+                        Knit Card# :
+                        <b>{{vm.data.JOB_CRD_NO}}</b>
+
+                        &nbsp;
+                        Buyer Acc# :
+                        <b>{{vm.data.BYR_ACC_NAME_EN}}</b>
+
+                        &nbsp;
+                        Order# :
+                        <b>{{vm.data.ORDER_NO_LIST}}</b>
+
+                        &nbsp;
+
+
+
+                        Fabric Type # :
+                        <b>{{vm.data.FAB_TYPE_NAME}}</b>
+
+                        &nbsp;
+
+                        Fabric Desc. :
+                        <b>{{vm.data.FABRIC_SNAME}}</b>
+                        &nbsp;
+
+                        M/C DiaxGauge :
+                        <b>{{vm.data.MC_DIA_GG}}</b>
+
+                        &nbsp;
+
+                        Fin Dia :
+                        <b>{{vm.data.FIN_DIA_N_DIA_TYPE}}</b>
+                        &nbsp;
+
+                        Fin GSM :
+                        <b>{{vm.data.FIN_GSM}}</b>
+                        &nbsp;
+                    </p>
+
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend">Knitting M/C Selection</legend>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">
+                                <b>M/C</b>
+
+                            </label>
+                            <div class="col-md-8" ng-class="{'has-error': (KnittingPendingForm.KNT_MACHINE_ID.$touched || KnittingPendingForm.$submitted) && KnittingPendingForm.KNT_MACHINE_ID.$error.required}">
+                                <select class="form-control" kendo-drop-down-list name="KNT_MACHINE_ID" k-option-label="'-- Select M/C--'"
+                                        k-data-text-field="'KNT_MACHINE_NO'" k-data-value-field="'KNT_MACHINE_ID'"
+                                        k-auto-bind="'true'" k-data-source="vm.KnitMachineListDs" k-ng-delay="vm.KnitMachineListDs" ng-model="vm.data.KNT_MACHINE_ID" k-on-change="vm.onMachineChange(kendoEvent)" required></select>
+                            </div>
+           
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="custom-fieldset">
+
+                        <legend class="custom-legend">Knit Card</legend>
+
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">
+                                <b>Assign Qty</b>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="number" class="form-control" ng-init="vm.data.ASIGN_QTY = vm.data.ASIGN_QTY-UN_ASIGN_QTY" name="RQD_PRD_QTY" ng-model="vm.data.ASIGN_QTY" required tabindex="1" readonly />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">
+                                <b>Start</b>
+                            </label>
+                            <div class="col-md-8" ng-class="{'has-error': (KnittingPendingForm.START_DT.$touched || KnittingPendingForm.$submitted) && KnittingPendingForm.START_DT.$error.required}">
+                                <input kendo-date-time-picker k-ng-model="vm.data.START_DT" name="START_DT" k-options="datePickerOptions" data-k-format="'dd/MM/yyyy HH:mm'" k-interval="10" class="form-control" style="width: 100%;" required/>
+                                <span style="display:block;font-style:italic;font-weight:500;font-size:10px;color:red;text-align:right;">
+                                    {{vm.date.START_DT|date:'dd-MMM-yy HH:mm'}}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-4 control-label">
+                                <b>Target/day(24Hr)</b>
+                            </div>
+                            <div class="col-md-4" ng-class="{'has-error': (KnittingPendingForm.TG_D_PROD_QTY.$touched || KnittingPendingForm.$submitted) && KnittingPendingForm.TG_D_PROD_QTY.$error.required}">
+                                <input type="number" class="form-control" min="1" name="TG_D_PROD_QTY" ng-model="vm.data.TG_D_PROD_QTY" required tabindex="0" />
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">
+                                <b>End</b>
+
+                            </label>
+                            <div class="col-md-8" ng-class="{'has-error': (KnittingPendingForm.END_DT.$touched || KnittingPendingForm.$submitted) && KnittingPendingForm.END_DT.$error.required}">
+                                <input kendo-date-time-picker k-ng-model="vm.data.END_DT" name="END_DT"  data-k-format="'dd/MM/yyyy HH:mm'" k-interval="10" class="form-control" k-options="datePickerOptions" style="width: 100%;" required tabindex="2" />
+                                <span style="display:block;font-style:italic;font-weight:500;font-size:10px;color:red;text-align:right;">
+                                    {{vm.date.END_DT|date:'dd-MMM-yy HH:mm'}}
+                                </span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">
+                                <b>Remarks</b>
+
+                            </label>
+                            <div class="col-md-8">
+                                <textarea rows="6" name="REMARKS" class="form-control" cols="50" ng-model="vm.data.REMARKS" disabled></textarea>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group form-actions">
+                            <div class="col-md-offset-4 col-md-8">                            
+                                <button type="button" class="btn btn-sm yellow-gold" ng-click="vm.submitData(vm.data,KnittingPendingForm.$valid);KnittingPendingForm.$submitted=true">Update</button>
+                            </div>
+                        </div>
+
+                    </fieldset>
+
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend">Multiple Knit Card Print</legend>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">
+                                <b>Knit Card#</b>                                
+                            </label>
+                            <div class="col-md-10" >
+                                
+                                <select class="form-control" kendo-multi-select name="KNT_JOB_CRD_LIST" k-placeholder="'Search...'"
+                                        k-data-text-field="'JOB_CRD_NO'" k-data-value-field="'KNT_JOB_CRD_H_ID'"
+                                        k-data-source="vm.multiCardDataSource" ng-model="vm.multiCard.KNT_JOB_CRD_LIST"
+                                        k-value-primitive="false" k-auto-bind="'false'" @*k-on-close="vm.getOrderWiseItemList()"*@></select>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <button type="button" class="btn btn-sm blue" ng-click="vm.printMultiKnitCard()" ng-disabled="!vm.multiCard.KNT_JOB_CRD_LIST">Print</button>
+                            </div>
+                        </div>
+
+                    </fieldset>
+
+                    
+                </form>
+            </div>
+
+        </div>
+    
+     </div>
+</div>
+
+@*Start For Start & End Date MOdal*@
+<script type="text/ng-template" id="StartEndDateModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <p style="padding-top:10px;">
+                        Date Selection
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </p>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="OrderRevisionModal" novalidate>
+                    <div class="form-group">
+                        <label for="selectPeriod" class="col-md-2 control-label">
+                            <span aria-required="true" class="required">*</span>From
+                        </label>
+                        <div class="col-md-4" style="padding-top:5px;">
+                            <input type="text" class="form-control" ng-click="RevisionDate_LNopen($event)" datepicker-popup="{{dtFormat}}"
+                                   name="FROM_DATE" ng-model="form.FROM_DATE" is-open="RevisionDate_LNopened"
+                                   datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" required max-date="today" />
+                        </div>
+                        <label for="selectPeriod" class="col-md-2 control-label">
+                            <span aria-required="true" class="required">*</span>To
+                        </label>
+                        <div class="col-md-4" style="padding-top:5px;">
+                            <input type="text" class="form-control" ng-click="RevisionDate_LNopen2($event)" datepicker-popup="{{dtFormat}}"
+                                   name="TO_DATE" ng-model="form.TO_DATE" is-open="RevisionDate_LNopened2"
+                                   datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" required min-date="form.FROM_DATE" max-date="today" />
+                        </div>
+                    </div>
+                    <div class="form-group form-actions">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="button" class="btn blue-madison btn-sm" ng-click="save(token, OrderRevisionModal.$valid)" ng-class="{'disabled':!OrderRevisionModal.$valid}">Print</button>
+                            <button type="button" class="btn btn-default btn-sm" ng-click="cancel()">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+@*End For Start & End Date Modal*@

@@ -1,0 +1,151 @@
+﻿<style>
+
+    .k-grid {
+        font-size: 12px;
+    }
+
+    #grid tr td {
+        /* this makes the menu visibile */
+        overflow: visible;
+    }
+
+    #grid .k-grid-header {
+        padding-right: 0 !important;
+    }
+</style>
+
+
+
+
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#">{{vm.Title}}</a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body" id="PORTLET_BODY">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+
+        @*<div class="row" style="padding:5px">
+                <div class="col-md-1">
+                    <a ui-sref="OfficeEntry({MC_BUYER_OFF_ID : null})" class="btn btn-sm blue">
+                        <i class="fa fa-plus"></i> Add Order
+                    </a>
+                </div>
+            </div>*@
+
+        <div class="row">
+            <div class="col-md-12">
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend">Search</legend>
+
+                    <table class="clsTable">
+                        <tbody class="clsthead">
+                            <tr class="clstd">
+                                
+                                <td class="clstd">
+                                    <b>Buyer A/C</b>
+                                </td>
+
+                                <td class="clstd">
+                                    <b>Style/Order#</b>
+                                </td>
+                                <td class="clstd">
+                                    <b>Shipment Month</b>
+                                </td>
+                                <td class="clstd">
+                                    <b>Approve From</b>
+                                </td>
+                                <td class="clstd">
+                                    <b>Approve To</b>
+                                </td>
+
+                                <td class="clstd">
+                                    <b>Action</b>
+                                </td>
+                            </tr>
+
+                            <tr class="clstd">
+                                <td class="clstd" width="20%">
+                                    <select kendo-drop-down-list name="MC_BYR_ACC_GRP_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                            k-options="vm.buyerAcGrpList" ng-model="vm.form.MC_BYR_ACC_GRP_ID"
+                                            k-data-text-field="'BYR_ACC_GRP_NAME_EN'" k-data-value-field="'MC_BYR_ACC_GRP_ID'"
+                                            k-auto-bind="'true'"></select>
+                                </td>
+                                <td class="clstd" width="25%">
+                                    <select kendo-drop-down-list name="MC_STYLE_H_EXT_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                            k-template="vm.styleExtTemplate" k-value-template="vm.styleExtValueTemplate"
+                                            k-options="vm.styleExtOption" k-data-source="vm.styleExtDataSource" ng-model="vm.form.MC_STYLE_H_EXT_ID"
+                                            k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_STYLE_H_EXT_ID'"
+                                            k-auto-bind="'true'"></select>
+                                </td>
+                                <td class="clstd" width="15%">
+                                    <select class="form-control" kendo-drop-down-list name="MONTHOF" k-option-label="'-- Select Month --'"
+                                            k-data-text-field="'MONTHOF'" k-data-value-field="'MONTHOF'" k-filter="'contains'"
+                                            k-auto-bind="'true'" k-data-source="vm.shipMonthList" ng-model="vm.form.MONTHOF"
+                                            k-on-change="vm.onChangeShipMonth(vm.form,kendoEvent)"></select>
+                                </td>
+                                <td class="clstd" width="15%">
+                                    <input type="text" class="form-control" ng-click="vm.fromDateOpen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                           name="FROM_DATE" ng-model="vm.form.FROM_DATE" is-open="vm.fromDateOpened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                                </td>
+
+                                <td class="clstd" width="15%">
+                                    <input type="text" class="form-control" ng-click="vm.toDateOpen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                           name="TO_DATE" ng-model="vm.form.TO_DATE" is-open="vm.toDateOpened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                                </td>
+                                
+                                <td class="clstd" width="10%">
+                                    <button type="button" class="btn btn-sm blue" ng-click="vm.getBookingList();"><i class='fa fa-search'></i> Show</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+                    
+                </fieldset>
+            </div>
+        </div>
+
+        <br />
+        @*{{vm.width}}*@
+        <div @*style="padding:5px;"*@>
+            @*<div kendo-grid k-options="vm.gridOptionsFabReq" k-data-source="vm.fabReqDataSource" k-selectable="true" k-on-change="selected = data" k-height="400" k-filterable="true" k-sortable="true"></div>*@
+            <div kendo-grid id="grid" options="vm.gridOptionsFabReq" k-data-source="vm.fabReqDataSource"></div>
+        </div>
+        @*{{vm.dtFormat}}
+            <pre>{{vm.fabReqList}}</pre>*@
+    </div>
+</div>
+
+
+
+
+
+

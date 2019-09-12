@@ -1,0 +1,66 @@
+﻿<div class="modal-body">
+    <div class="portlet grey-cascade box">
+        <div class="portlet-title">
+            <div style="padding-top:2px;">
+                <h4 class="title">
+                    <b>Garment Item Map with {{params.BLDNG_CODE+' || '+params.FLOOR_DESC_EN+' || '+params.LINE_CODE}}</b> 
+                    <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                </h4>
+            </div>
+        </div>
+        <div class="portlet-body">
+
+            <div class="row" style="margin:auto;">
+                <div class="col-md-3" style="padding:2px;margin:auto;" ng-repeat="(idx,item) in datas" ng-if="item.items.length>0">
+                    <table class="table table-condensed table-striped table-bordered">
+
+                        <thead>
+                            <tr>
+                                <th colspan="2" class="col-md-11" style="text-align: center; border-bottom: 1px solid #cecece; background-color: #818181; color: white; ">{{item.ITEM_CAT_NAME_EN}}</th>
+                            </tr>
+
+                            <tr>
+                                <th class="col-md-2" style="padding:0px;">
+                                    <div class="checkbox-list">
+                                        <label class="checkbox-inline" style="margin-left:20px;">
+                                            <input type="checkbox" class="checkbox" ng-model="selectAll" ng-change="onChangeSelectAll(item, selectAll)" ng-true-value="'Y'" ng-false-value="'N'" />  All?
+                                        </label>
+                                    </div>
+                                </th>
+                                <th class="col-md-10" style="padding:0px;">
+                                    Line
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="(id,itm) in item.items">
+                                <td style="padding:0px;">
+                                    <input type="checkbox" class="checkbox" ng-model="itm.IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'" />
+
+                                </td>
+                                <td style="padding:0px;" ng-click="itm.IS_ACTIVE=itm.IS_ACTIVE=='Y'?'N':'Y'">
+                                    {{itm.ITEM_CAT_NAME_EN}}
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+            
+
+
+            <div class="row" style="margin:auto;">
+                <div class="col-md-12">
+                    <button type="button" class="btn btn-sm green" ng-click="submitData(datas)">Save</button>
+                    <button type="button" class="btn btn-sm grey-cascade" ng-click="onCancel()">Reset</button>
+
+                    <button type="button" class="btn btn-sm default" ng-click="cancel()" style="float:right;">Close</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

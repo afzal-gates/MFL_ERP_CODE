@@ -1,0 +1,153 @@
+﻿<div class="modal-body">
+    <div class="portlet grey-mint box">
+        <div class="portlet-title">
+            <div style="padding-top:2px;">
+                <h4 class="title">
+                    Style No:# <strong>{{allocation.STYLE_NO}}</strong>&nbsp;&nbsp;Order # : <strong>{{allocation.ORDER_NO}}</strong>&nbsp;&nbsp;Buyer : <strong>{{allocation.BYR_ACC_NAME_EN}}</strong>&nbsp;&nbsp;Order Quantity # : <strong>{{allocation.ORDER_QTY}}</strong>&nbsp;&nbsp;Order Confirm: <strong>{{allocation.ORD_CONF_DT|date:'dd-MMM-yyyy'}}</strong>&nbsp;&nbsp;
+                    Shipment: <strong>{{allocation.SHIP_DT|date:'dd-MMM-yyyy'}}</strong>&nbsp;&nbsp;Allocation Qty : <strong>{{allocation.ALLOCATED_QTY}}</strong>
+                </h4>
+                <h4>
+                    Line Load :# <strong style="color: darkblue;">{{allocation.SEW_START_DT|date:'dd-MMM-yyyy h:mma'}}</strong>&nbsp;Line Un-Load :# <strong style="color:darkblue;">{{allocation.SEW_END_DT|date:'dd-MMM-yyyy h:mma'}}</strong>&nbsp;
+                    <span class="pull-right" style="cursor:pointer;" ng-click="cancel()"><i class="fa fa-times red"></i>Close</span>
+                </h4>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <form role="form" name="PlanningCriticalPathContrlForm" class="form-horizontal">
+                <div class="row" style="margin:auto;">
+
+                    <table class="table table-condensed table-striped table-bordered" style="padding-left: 5px; padding-right: 5px; margin-bottom: 3px;">
+                        <tbody>
+                            <tr>
+
+                                <td style="width: 20%; text-align: right; border-left: hidden; padding-bottom: 0px;">
+
+                                    <h4 class="block" style="margin:0px;">
+                                        {{summery.TNA_1_NAME}}
+                                        <span class="label label-primary">
+                                            <b>{{summery.TNA_1_VALUE > 0 ? 'D ('+summery.TNA_1_VALUE+')' : 'E ('+summery.TNA_1_VALUE+')' }}</b>
+                                        </span>
+                                    </h4>
+                                </td>
+
+                                <td style="width: 15%; text-align: right; border-left: hidden; padding-bottom: 0px;">
+
+                                    <h4 class="block" style="margin:0px;">
+                                        {{summery.TNA_2_NAME}}
+                                        <span class="label label-primary">
+                                            <b>{{summery.TNA_2_VALUE > 0 ? 'D ('+summery.TNA_2_VALUE+')' : 'E ('+summery.TNA_2_VALUE+')' }}</b>
+                                        </span>
+                                    </h4>
+                                </td>
+
+                                <td style="width: 30%; text-align: right; border-left: hidden; padding-bottom: 0px;">
+
+                                    <h4 class="block" style="margin:0px;">
+                                        {{summery.TNA_3_NAME}}
+                                        <span class="label label-primary">
+                                            <b>{{summery.TNA_3_VALUE+ '%'}}</b>
+                                        </span>
+                                    </h4>
+                                </td>
+
+                                <td style="width: 35%; text-align: right; border-left: hidden; padding-bottom: 0px;">
+
+                                    <h4 class="block" style="margin:0px;">
+
+                                        {{'Pre-Sewing: '+ summery.TNA_4_NAME}}
+                                        <span class="label label-primary">
+                                            <b>{{summery.TNA_4_VALUE > 0 ? 'D ('+summery.TNA_4_VALUE+')' : 'E ('+summery.TNA_4_VALUE+')' }}</b>
+                                        </span>
+
+                                    </h4>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <details>
+                        <summary>Pre-Sewing Activities</summary>
+                        <table class="table table-condensed table-striped table-bordered">
+                            <thead>
+
+                                <tr class="site-table-header">
+                                    <th style="width: 5%">SL#</th>
+                                    <th style="width: 20%">Action Name</th>
+
+                                    <th style="width: 10%">T&A Plan Date</th>
+                                    <th style="width: 5%">S.DaysDiff</th>
+
+                                    <th style="width: 10%">
+                                        Standing Date
+                                        <label class="checkbox-inline" style="margin-left:20px;margin-top:-15px;">
+                                            <span><input type="checkbox" ng-change="onSelectAll(G_IS_SD_RD)" ng-model="G_IS_SD_RD" ng-true-value="'Y'" ng-false-value="'N'"></span>  Select All
+                                        </label>
+                                    </th>
+                                    <th style="width: 10%">Excepted Date</th>
+                                    <th style="width: 20%">Remarks</th>
+                                    <th style="width: 10%">Actual Date</th>
+                                    <th style="width: 5%">+/-</th>
+                                    <th style="width: 5%">Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="(key,item) in data" ng-class="{'danger': (item.DAYS_DELAY_EARLIER <= -2 || item.DAYS_DELAY_EARLIER >= 2)}">
+                                    <td>
+                                        {{key+1}}
+                                    </td>
+                                    <td>
+                                        {{item.TA_TASK_NAME_EN}}
+                                    </td>
+
+                                    <td>
+                                        {{item.REF_PLAN_DATE|date:'dd-MMM-yyyy'}}
+                                    </td>
+
+                                    <td ng-class="{'has-error': (STD_DAYS_FORM.STD_DAYS.$touched || PlanningCriticalPathContrlForm.$submitted) && (STD_DAYS_FORM.STD_DAYS.$error.required || STD_DAYS_FORM.STD_DAYS.$error.min)}">
+                                        <ng-form name="STD_DAYS_FORM">
+                                            <input type="number" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" ng-change="onChangeStdDays(item)" name="STD_DAYS" min="0" ng-model="item.STD_DAYS" class="form-control" required />
+                                        </ng-form>
+                                    </td>
+                                    <td>
+                                        <label class="checkbox-inline" style="margin-left:20px;margin-top:-15px;">
+                                            <span><input type="checkbox" ng-model="item.IS_SD_RD" ng-true-value="'Y'" ng-false-value="'N'"></span>  {{item.REQ_DT_AFTER_DELAY|date:'dd-MMM-yyyy'}}
+                                        </label>
+
+                                    </td>
+
+                                    <td>
+                                        {{item.EXCEPTED_DATE|date:'dd-MMM-yyyy'}}
+                                    </td>
+
+                                    <td>
+                                        {{item.REMARKS}}
+                                    </td>
+
+
+                                    <td>
+                                        {{item.ACTUAL_DT|date:'dd-MMM-yyyy'}}
+                                    </td>
+                                    <td>
+                                        {{item.DAYS_DELAY_EARLIER> 0 ? 'D': 'E'}}  ({{item.DAYS_DELAY_EARLIER}})
+                                    </td>
+                                    <td>
+                                        {{item.TNA_FAIL_SCORE}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    
+                        <div class="row">
+                            <div class="col-md-5">
+                                <button type="button" ng-click="SaveData(data, PlanningCriticalPathContrlForm.$valid )" ng-disabled="!PlanningCriticalPathContrlForm.$valid" class="btn btn-sm yellow-gold">Update</button>
+                                <button type="button" ng-click="cancel()" class="btn btn-sm default">Cancel</button>
+                            </div>
+                        </div>
+
+                    </details>
+</div>
+              
+            </form>
+       </div>
+    </div>
+ </div>

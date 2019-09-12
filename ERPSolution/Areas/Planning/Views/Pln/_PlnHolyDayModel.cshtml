@@ -1,0 +1,144 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Production Planning</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="margin:auto;padding:5px;">
+
+            <div class="col-md-4">
+                <div class="table-scrollable">
+                    <table class="table table-condensed table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="col-md-4">
+                                    Section
+                                </th>
+                                <th class="col-md-8" style="text-align:center;">
+                                    Date & Holyday Type
+                                </th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+
+                            <tr ng-repeat="(key,item) in vm.datas">
+                                <td class="col-md-4">
+                                    <a ng-click="vm.onClickLeft(item)">{{item.DEPT_NAME}}</a>
+
+                                </td>
+                                <td style="padding:0px;" class="col-md-8">
+                                    <table class="table table-condensed table-striped table-bordered" style="padding:0px;margin-bottom:0px;">
+                                        <thead ng-if="key==0">
+                                            <tr>
+                                                <th class="col-md-6" style="border-bottom: solid 1px #f9f9f9;text-align:center;">
+                                                    <small>
+                                                        Date
+                                                    </small>
+                                                </th>
+                                                <th class="col-md-6">
+                                                    <small>
+                                                        Holyday Type
+                                                    </small>
+                                                </th>
+
+                                        </thead>
+
+                                        <tbody>
+                                            <tr ng-repeat="itm in item.items">
+
+                                                <td class="col-md-6">{{itm.start|date:'dd-MMM-yyyy'}}</td>
+                                                <td class="col-md-6">{{itm.text}}</td>
+                                            </tr>
+
+                                        </tbody>
+
+                                    </table>
+                                </td>
+                            </tr>
+
+
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+
+                <div class="form-group">
+                    <label class="col-md-1 control-label">
+                        <span aria-required="true" class="required">*</span>Company
+                    </label>
+                    <div class="col-md-2">
+                        <select class="form-control" kendo-drop-down-list name="HR_COMPANY_ID" required
+                                k-data-text-field="'COMP_NAME_EN'" k-data-value-field="'HR_COMPANY_ID'" k-option-label="'-- Select --'"
+                                k-auto-bind="'true'" k-options="vm.compOptions" ng-model="vm.form.HR_COMPANY_ID"
+                                ></select>
+                    </div>
+
+                    <label class="col-md-1 control-label">
+                        <span aria-required="true" class="required">*</span>Office
+                    </label>
+                    <div class="col-md-3">
+                        <select class="form-control" kendo-drop-down-list name="PROD_UNIT_ID" required
+                                k-data-text-field="'OFFICE_NAME_EN'" k-data-value-field="'HR_OFFICE_ID'" k-option-label="'-- Select --'"
+                                k-auto-bind="'true'" k-options="vm.officeOption" k-data-source="vm.officeDataSource" ng-model="vm.form.HR_OFFICE_ID"></select>
+                    </div>
+
+                    <label class="col-md-1 control-label">
+                        <span aria-required="true" class="required">*</span>Section
+                    </label>
+                    <div class="col-md-3">
+                        <select kendo-drop-down-list id="HR_DEPARTMENT_ID" name="HR_DEPARTMENT_ID" class="form-control"
+                                k-options="vm.sectionOption" ng-model="vm.form.CORE_DEPT_ID" k-data-source="vm.sectionDataSource"></select>
+                    </div>
+                    <div class="col-md-1">
+                        <a class="btn btn-sm blue" ng-disabled="!vm.form.HR_COMPANY_ID||!vm.form.HR_OFFICE_ID||!vm.form.CORE_DEPT_ID" ng-click="vm.loadData(vm.form)">Show</a>
+                    </div>
+
+                </div>
+
+                <br />
+                <div class="space">
+                    <a ng-click="vm.navigate(-1,vm.form)">Previous</a>
+                    |
+                    <a ng-click="vm.navigate(1,vm.form)" ng-disabled="true">Next</a>
+                    <span style="float:right;color:blue;">{{vm.curMon|date:'MMMM-yyyy'}}</span>
+                </div>
+                <daypilot-month id="dp" daypilot-config="config" daypilot-events="events"></daypilot-month>
+            </div>
+        </div>  
+
+
+
+    </div>
+</div>
+
+

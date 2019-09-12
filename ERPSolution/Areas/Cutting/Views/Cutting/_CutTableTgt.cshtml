@@ -1,0 +1,138 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 12px;        
+    }
+   
+    .k-grid-header .k-header {
+        overflow: visible;
+        white-space: normal;
+    }
+</style>
+
+
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Cutting</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+
+<div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+    <div class="page-splash">
+        <div class="page-splash-message">
+            <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+        </div>
+    </div>
+</div>
+
+
+<div class="portlet box blue-dark" >
+
+
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <form class="form-horizontal form-body" name="frmCutTableTarget">
+            <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+
+            <div class="row">
+
+                <div class="row" style="margin:auto;" ng-show="vm.errors">
+                    <div class="alert alert-danger" role="alert">
+                        @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                        <div style="padding: 0px 0px 15px 25px; ">
+                            <b>Please fix the following errors ....</b>
+                        </div>
+                        <ul ng-repeat="field in vm.errors">
+                            <li ng-repeat="error in field" ng-bind="error"></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+
+                    <fieldset class="custom-fieldset" style="margin-bottom:5px">
+                        <legend class="custom-legend">Key Information</legend>
+
+                        @*<input type="number" ng-max='(dataItem.TGT_WORK_HR<(parseInt(dataItem.H9_MP_ADD)+parseInt(dataItem.H10_MP_ADD)+parseInt(dataItem.H11_MP_ADD)+parseInt(dataItem.H12_MP_ADD)+parseInt(dataItem.H13_MP_ADD)+parseInt(dataItem.H14_MP_ADD)+parseInt(dataItem.H15_MP_ADD)+parseInt(dataItem.H15_P_MP_ADD)))?-1:999' />*@
+
+
+                        <div class="form-group">
+
+                            <label class="control-label col-md-2">
+                                Date
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" ng-click="vm.clndrDateOpen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                       name="PROD_DT" ng-model="vm.form.CALENDAR_DT" is-open="vm.clndrDateOpened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" @*ng-required="true"*@ close-text="Close" />
+                            </div>
+                            <div class="col-md-1">
+                                <button type="button" class="btn btn-sm blue" ng-click="vm.showTarget()"
+                                        ng-class="{'disabled':vm.form.CALENDAR_DT==null}">
+                                    Show
+                                </button>
+                            </div>
+                            @*{{vm.GMT_PROD_PLN_CLNDR_ID}}*@
+                        </div>
+
+
+
+                    </fieldset>
+
+
+                    <fieldset class="custom-fieldset" ng-show="vm.isVisible=='Y'">
+                        <legend class="custom-legend">Target List</legend>
+
+                        <div id="cuttingListGrid" kendo-grid k-options="vm.tblTgtGridOption" k-data-source="vm.tblTgtGridDataSource"></div>
+
+                        <div class="form-group" style="padding-top:10px">
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-sm green" ng-click="vm.batchSave()" ng-class="{'disabled':!frmCutTableTarget.$valid}">Save</button>
+                                @*<button type="button" class="btn btn-sm yellow-gold" ng-click="vm.submit()" >Update</button>*@
+
+                                <button type="button" class="btn btn-sm yellow-gold" ng-click="vm.reset()">Reset</button>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                </div>
+
+            </div>
+        </form>
+
+
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,223 @@
+﻿@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+<div class="row">
+
+
+
+    <div class="col-md-6">
+
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">Schedule Pattern Entry</h3>
+            </div>
+            <div class="panel-body">
+                @*{{frmschedule.$valid}}*@
+                <form name="frmSchedule" novalidate class="form-horizontal" @*method="post"*@ ng-class="{ loading:form.submitting }"
+                      ng-submit="vm.submit(frmSchedule.$valid,vm.form,vm.insert)" @*kendo-validator=" validator"*@>
+
+                    <div class="form-body">
+
+                        <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+                               data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+                        @*@Html.AntiForgeryToken()*@
+
+                        @*@Html.ValidationSummary(false)*@
+
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">
+                            </label>
+                            <div class="col-md-3">
+                                <input type="hidden" class="form-control" id="HR_SCHEDULE_H_ID" name="HR_SCHEDULE_H_ID" ng-model="vm.form.HR_SCHEDULE_H_ID" ng-show="" />
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">
+                                Code
+                            </label>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" id="SCHEDULE_CODE" name="SCHEDULE_CODE" ng-model="vm.form.SCHEDULE_CODE" readonly />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">
+                                Name [E]
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="SCHEDULE_NAME_EN" name="SCHEDULE_NAME_EN" ng-model="vm.form.SCHEDULE_NAME_EN" />
+                                <div ng-if="vm.errors.SCHEDULE_NAME_EN">
+                                    <div class="field-validation-error" ng-repeat="err in vm.errors.SCHEDULE_NAME_EN">
+                                        {{err}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">
+                                Name [B]
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control banglafont" id="SCHEDULE_NAME_BN" name="SCHEDULE_NAME_BN" ng-model="vm.form.SCHEDULE_NAME_BN" />
+                                <div ng-if="vm.errors.SCHEDULE_NAME_BN">
+                                    <div class="field-validation-error" ng-repeat="err in vm.errors.SCHEDULE_NAME_BN">
+                                        {{err}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">
+                                Shift Plan
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <select kendo-drop-down-list id="HR_SHIFT_PLAN_ID" name="HR_SHIFT_PLAN_ID" class="form-control"
+                                        options="vm.shiftPlanList" ng-model="vm.form.HR_SHIFT_PLAN_ID"></select>
+                                <div ng-if="vm.errors.HR_SHIFT_PLAN_ID">
+                                    <div class="field-validation-error" ng-repeat="err in vm.errors.HR_SHIFT_PLAN_ID">
+                                        {{err}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">
+                                Shift Type
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <select kendo-drop-down-list id="HR_SHIFT_TYPE_ID" name="HR_SHIFT_TYPE_ID" class="form-control"
+                                        options="vm.shiftTypeList" ng-model="vm.form.HR_SHIFT_TYPE_ID"></select>
+                                <div ng-if="vm.errors.HR_SHIFT_TYPE_ID">
+                                    <div class="field-validation-error" ng-repeat="err in vm.errors.HR_SHIFT_TYPE_ID">
+                                        {{err}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group" ng-show="">
+                            <label class="control-label col-md-3">
+                                Description
+                            </label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" id="SCHEDULE_DESC" name="SCHEDULE_DESC" ng-model="vm.form.SCHEDULE_DESC" rows="3"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">
+                            </label>
+                            <div class="col-md-8">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" id="IS_MULTI_GRP" name="IS_MULTI_GRP" ng-model="vm.form.IS_MULTI_GRP" ng-init="vm.form.IS_MULTI_GRP='N'" ng-true-value="'Y'" ng-false-value="'N'">&nbsp;Multi Group?
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">
+                            </label>
+                            <div class="col-md-8">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" id="IS_ACTIVE" name="IS_ACTIVE" ng-model="vm.form.IS_ACTIVE" ng-init="vm.form.IS_ACTIVE='Y'" ng-true-value="'Y'" ng-false-value="'N'">&nbsp;Active?
+                                </label>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-6">
+                                    <button type="submit" class="btn" ng-if="vm.insert" >Continue</button>
+                                    <button type="submit" class="btn yellow-gold" ng-if="!vm.insert"><i class="fa fa-check"></i> Update</button>
+                                    <button type="button" class="btn" ng-if="!vm.insert" ng-click="vm.newSchedule()" >New Schedule <i class="fa fa-plus"></i></button>
+                                    
+
+                                    @*<button type="button" class="btn blue" ng-click="vm.TranCancel()">Cancel</button>*@
+
+                                </div>
+                            </div>
+                        </div>
+
+                        @*<button type="button" ng-click="vm.test()">Test</button>*@
+                        @*<div ng-if="vm.IsWeekGrpList">
+                            <div kendo-grid id="WeekGrpList" name="WeekGrpList" k-options="vm.gridWeekGrpListOptions"></div>
+                        </div>*@
+
+                        @*<ul>
+                                <li id="errorMessages" class="error" data-ng-repeat="error in vm.errors">{{error}}</li>
+                            </ul>*@
+
+
+
+                    </div>
+                </form>
+
+
+
+            </div>
+
+        </div>
+
+    </div>
+    <div class="col-md-6"> 
+        <div class="portlet light" >
+            <div class="portlet-title" style="margin-top: -10px; min-height:40px;">
+                <div class="caption">
+                    <span class="caption-subject font-green-sharp bold ">Schedule Pattern List</span>                    
+                </div>
+            </div>
+            
+            <div class="">
+                <kendo-grid id="ScheduleList" name="ScheduleList" k-options="vm.gridOptions"></kendo-grid>
+            </div>
+        </div>
+
+            
+
+
+            @*<div class="panel-body">
+                <div class="portlet light">
+                    <div class="portlet-title">
+
+
+                        <div class="inputs">
+                            <div class="portlet-input input-small input-inline">
+                                <div class="input-icon right">
+                                    <i class="icon-magnifier"></i>
+                                    <input type="text" class="form-control form-control-solid" placeholder="search...">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>                   
+
+                </div>
+            </div>*@
+        </div>
+
+    </div>
+
+  <div class="row">
+      <div class="col-md-12">
+          <div data-ui-view="ScheduleClock" class="shuffle-animation"></div>
+      </div>
+  </div>

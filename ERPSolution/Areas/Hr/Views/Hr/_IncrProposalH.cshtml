@@ -1,0 +1,180 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 13px;
+    }
+</style>
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Hr</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+@*<pre>{{form|json}}</pre>*@
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" @*ng-bind="vm.Title"*@>
+            {{vm.Title}}&nbsp;<span style="color:#ff4600" ng-show="form.HR_YR_INCR_H_ID>0"><b>[ {{form.BATCH_APVRL_STATUS}}@*- {{form.USER_LEVEL}}*@ ]</b></span>
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+
+    <div class="portlet-body form">
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <form class="form-horizontal" role="form" name="frmIncrProposal" novalidate>
+            <div class="form-body clearfix">
+                <div class="row" style="margin:auto">
+
+                    <div class="row" style="margin:auto;" ng-show="vm.errors">
+                        <div class="alert alert-danger" role="alert">
+                            @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                            <div style="padding: 0px 0px 15px 25px; ">
+                                <b>Please fix the following errors ....</b>
+                            </div>
+                            <ul ng-repeat="field in vm.errors">
+                                <li ng-repeat="error in field" ng-bind="error"></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8" style="padding-left:0px;padding-right:0px;">
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend"><span aria-required="true" class="required" style="color:red">*</span>Incriment Memo</legend>
+
+                            <div kendo-grid id="incrMemoGrid" k-options="vm.incrMemoGridOption" k-data-source="vm.incrMemoGridDataSource"></div>
+
+                            @*<div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        <span aria-required="true" class="required">*</span>Authorization#
+                                    </label>
+                                    <select class="form-control" kendo-drop-down-list name="AUTH_NO" required
+                                            k-data-text-field="'AUTH_NO'" k-data-value-field="'HR_INCR_MEMO_ID'" k-option-label="'-- Select --'"
+                                            k-auto-bind="'true'" k-options="vm.memoListOption" k-data-source="vm.memoListDataSource" ng-model="vm.form.HR_INCR_MEMO_ID"></select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label">Company</label>
+                                    <input type="text" class="form-control" name="COMP_NAME_EN" ng-model="vm.form.COMP_NAME_EN" readonly />
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label">Increment Type</label>
+                                    <input type="text" class="form-control" name="INCR_TYPE_NAME_EN" ng-model="vm.form.INCR_TYPE_NAME_EN" readonly />
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label">Memo#</label>
+                                    <input type="text" class="form-control" name="MEMO_NO" ng-model="vm.form.MEMO_NO" readonly />
+                                </div>
+                            </div>*@
+
+                        </fieldset>
+                    </div>
+                    
+                    <div class="col-md-4" style="padding-right:0px">
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend">Search</legend>
+
+                            @*<div class="form-group">
+                                <label class="control-label col-md-3" style="padding-left: 0px; padding-right: 0px">
+                                    <span aria-required="true" class="required">*</span>Department
+                                </label>
+                                <div class="col-md-9">
+                                    <select kendo-drop-down-list name="CORE_DEPT_ID" class="form-control"
+                                            options="vm.parentDepartmentListData" ng-model="vm.form.CORE_DEPT_ID"></select>
+                                </div>
+                            </div>*@
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3" style="padding-left: 0px; padding-right: 0px">
+                                    <span aria-required="true" class="required">*</span>Section
+                                </label>
+                                <div class="col-md-9">
+                                    <select kendo-drop-down-list class="form-control" name="HR_DEPARTMENT_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                            k-data-text-field="'DEPARTMENT_NAME_EN'" k-data-value-field="'HR_DEPARTMENT_ID'"
+                                            k-auto-bind="'true'" k-options="vm.subdepartmentOption" k-data-source="vm.subdepartmentDataSource" ng-model="vm.form.HR_DEPARTMENT_ID"
+                                            k-on-data-bound="vm.onSectionDataBound(kendoEvent)"></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3">
+                                    Floor
+                                </label>
+                                <div class="col-md-5" style="padding-right: 0px;">
+                                    @*<select kendo-drop-down-list name="LK_FLOOR_ID" class="form-control"
+                                            options="vm.floorListData" ng-model="vm.form.LK_FLOOR_ID"></select>*@
+                                    <select kendo-drop-down-list class="form-control" name="LK_FLOOR_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                            k-data-text-field="'FLOOR_DESC_EN'" k-data-value-field="'LK_FLOOR_ID'"
+                                            k-auto-bind="'true'" k-options="vm.prodFloorOption" k-data-source="vm.prodFloorDataSource" ng-model="vm.form.LK_FLOOR_ID"
+                                            k-on-data-bound="vm.onFloorDataBound(kendoEvent)"></select>
+
+                                </div>
+                                @*<div class="col-md-3">
+                                    <button type="button" class="btn btn-sm blue" ng-click="vm.empLoad()"
+                                            ng-class="{'disabled':vm.form.HR_INCR_MEMO_ID==null||(vm.form.HR_DEPARTMENT_ID==null||vm.form.HR_DEPARTMENT_ID=='')}">
+                                        Load
+                                    </button>
+                                </div>*@
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-offset-3 col-md-3">
+                                    <button type="button" class="btn btn-sm blue" ng-click="vm.empLoad()"
+                                            ng-class="{'disabled':vm.form.HR_INCR_MEMO_ID==null||(vm.form.HR_DEPARTMENT_ID==null||vm.form.HR_DEPARTMENT_ID=='')}">
+                                        Load
+                                    </button>
+                                </div>
+                            </div>
+
+
+                        </fieldset>
+                    </div>                
+                </div>
+
+                @*<pre>{{vm.form|json}}</pre>*@
+                @*<pre>{{form|json}}</pre>*@
+                
+                @*{{vm.IS_NEXT}}*@
+                <div class="portlet-body" data-ui-view="IncrimentProposalH@Dtl" @*ng-if="vm.IS_NEXT=='Y'"*@ ></div>
+               
+            </div>
+        </form>
+
+
+
+    </div>
+
+</div>
+
+

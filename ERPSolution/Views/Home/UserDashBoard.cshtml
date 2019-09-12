@@ -1,0 +1,1597 @@
+﻿@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+
+<style>
+    
+    .k-grid {
+        font-size: 12px;
+    }
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 12px;
+    }
+    .k-grid-content {
+        height: 200px;
+    }
+
+
+    #grid .k-grid-content, #grid tr td {
+        /* this makes the menu visibile */
+        overflow: visible;
+    }
+
+    #grid .k-grid-header {
+        padding-right: 0 !important;
+    }
+
+    #blkFbReqGrid tr td {
+        /* this makes the menu visibile */
+        overflow: visible;
+    }
+
+    #blkFbReqGrid .k-grid-header {
+        padding-right: 0 !important;
+    }    
+
+    #smpBookingGrid tr td {
+        /* this makes the menu visibile */
+        overflow: visible;
+    }
+
+    #smpBookingGrid .k-grid-header {
+        padding-right: 0 !important;
+    }
+
+    #TrimAccessoriesPO tr td {
+        /* this makes the menu visibile */
+        overflow: visible;
+    }
+
+
+    /*#TrimAccessoriesPO .k-grid-header {
+        padding-right: 0 !important;
+    }*/
+
+
+
+    /*#smpBookingGrid .k-grid td {
+        padding: 2px;
+        padding-right: 4px;
+        padding-bottom: 0px;
+    }*/
+    
+</style>
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Dashboard </a>
+
+    </li>
+    @*<li>
+            <a href="#">Module Information</a>
+        </li>*@
+</ul>
+
+
+<!-- BEGIN SPLASH -->
+<div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+    <div class="page-splash">
+        <div class="page-splash-message">
+            <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+        </div>
+    </div>
+</div>
+<!-- END SPLASH -->
+
+
+<!-- BEGIN CONTENT -->
+<!-- BEGIN DASHBOARD STATS -->
+<div class="row">
+    <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+        <div class="page-splash">
+            <div class="page-splash-message">
+                <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+            </div>
+        </div>
+    </div>
+
+    <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+
+    
+
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="dashboard-stat blue-madison" ng-click="vm.showDialog()">
+            <div class="visual">
+                <i class="fa fa-comments"></i>
+            </div>
+            
+            <div class="details">
+                <div class="number">
+                    HR & Payroll
+                </div>                
+                <div class="desc">
+                    My Job Card                    
+                </div>
+            </div>
+
+            <a class="more" ng-click="vm.jobCardPrevMonth('Y')">
+                Previous Month <i class="m-icon-swapright m-icon-white"></i>
+            </a>
+            <a class="more" ng-click="vm.jobCardPrevMonth('N')">
+                Current Month <i class="m-icon-swapright m-icon-white"></i>
+            </a>         
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="dashboard-stat red-intense">
+            <div class="visual">
+                <i class="fa fa-bar-chart-o"></i>
+            </div>
+            <div class="details">
+                <div class="number">
+                    HR & Payroll
+                </div>
+                <div class="desc">
+                    My Pay Slip                    
+                </div>
+            </div>
+
+            <a class="more" href="#" ng-click="openReportParamModal('RPT-1021')">
+                Pay Slip &nbsp; <i class="m-icon-swapright m-icon-white"></i>
+            </a>
+            
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="dashboard-stat green-haze">
+            <div class="visual">
+                <i class="fa fa-shopping-cart"></i>
+            </div>
+            <div class="details">
+                <div class="number">
+                    Sewing
+                </div>
+                <div class="desc">
+                    Operator/Helper Status
+                </div>
+            </div>
+            <a class="more" href="#" ng-click="vm.hrReportPrint('RPT-1049')">
+                Preview <i class="m-icon-swapright m-icon-white"></i>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="dashboard-stat purple-plum">
+            <div class="visual">
+                <i class="fa fa-globe"></i>
+            </div>
+            <div class="details">
+                <div class="number">
+                    Garments
+                </div>
+                <div class="desc">
+                    Quick Links
+                </div>
+            </div>
+            <a class="more" href="/Home/GmtProductionBoard?a=164/#/GmtProductionBoard">
+                Hourly Prod Board <i class="m-icon-swapright m-icon-white"></i>
+            </a>
+            <a class="more" ng-click="openCapacityBookingRpt()">
+                Order Booking Status <i class="m-icon-swapright m-icon-white"></i>
+            </a>
+
+        </div>
+    </div>
+</div>
+<!-- END DASHBOARD STATS -->
+
+<div class="clearfix">
+</div>
+<div class="row ">
+    <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+           data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+    <!-- Leave/Loan-->
+    <div class="col-md-6 col-sm-6" ng-if="vm.SalaryAdvApproverNotif.length>0||vm.OnlineLeaveApproverNotif.length>0||vm.SalaryAdvReqesterNotif.length>0||vm.OnlineLeaveReqesterNotif.length>0">
+        <!-- BEGIN PORTLET-->
+        <div class="portlet box blue-hoki">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-globe theme-font-color hide"></i>
+                    <span class="caption-subject theme-font-color bold">Leave & Loan Status</span>
+                </div>
+
+                <div class="tools">
+                    <a href="javascript:;" class="collapse" data-original-title="" title="">
+                    </a>
+                    <a href="javascript:;" class="fullscreen" data-original-title="" title="">
+                    </a>
+                    <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title="">
+                    </a>
+                    <a href="javascript:;" class="reload" data-original-title="" title="">
+                    </a>
+                </div>
+
+                <div class="actions">
+                    <div class="portlet-input input-inline input-small">
+                        <div class="input-icon right">
+                            <i class="icon-magnifier"></i>
+                            <input type="text" class="form-control input-circle" ng-model="q" placeholder="search...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="portlet-body">
+                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 350px;">
+                    <div class="scroller" style="height: 250px; overflow: hidden; width: auto;" data-always-visible="1" data-rail-visible1="0" data-handle-color="#D7DCE2" data-initialized="1" slimscroll="{height: 250,alwaysVisible:true,allowPageScroll:true}">
+                        <ul class="feeds">
+                            <li ng-repeat="SalaryAdvApproverNotif in vm.SalaryAdvApproverNotif|filter:q" ng-hide="SalaryAdvApproverNotif.IS_VISIBLE=='N' && SalaryAdvApproverNotif.APROVER_LVL_NO!=4">
+                                <div class="col1">
+                                    <div class="cont">
+                                        <div class="cont-col1" style="padding-top:8px;">
+                                            <div class="label label-sm label-success">
+                                                <i class="fa fa-bell-o"></i>
+                                            </div>
+                                        </div>
+                                        <div class="cont-col2">
+                                            <div class="desc" popover=" Amount Requested : {{SalaryAdvApproverNotif.ADV_RQST_AMT}}, No. of Installment: {{SalaryAdvApproverNotif.NO_OF_INSTL}} , Installment Amount: {{SalaryAdvApproverNotif.INSTL_AMT}} , Deduction Start: {{SalaryAdvApproverNotif.DEDU_ST_DT}} , Reason: {{SalaryAdvApproverNotif.REASON_ADV}} , Remarks : {{SalaryAdvApproverNotif.REMARKS}}" popover-trigger="mouseenter" popover-append-to-body="true">
+                                                {{SalaryAdvApproverNotif.LK_ADV_TYPE}} Request
+                                                ref #  {{SalaryAdvApproverNotif.ADV_REF_NO}} by <b>{{SalaryAdvApproverNotif.EMP_FULL_NAME_EN}}</b> {{' ,'+SalaryAdvApproverNotif.DESIGNATION_NAME_EN+' ,'+SalaryAdvApproverNotif.DEPARTMENT_NAME_EN}} : {{SalaryAdvApproverNotif.LK_ADV_STATUS}}
+
+                                                <div ng-if="SalaryAdvApproverNotif.APROVER_LVL_NO==1">
+                                                    <span class="label label-sm label-info" ng-click="openSalAdvModal(SalaryAdvApproverNotif)">
+                                                        View History <i class="fa fa-history"></i>
+                                                    </span>
+                                                    &nbsp;
+                                                    <a ng-click="vm.advApprove(SalaryAdvApproverNotif.ADV_REF_NO, SalaryAdvApproverNotif, vm.antiForgeryToken, 'recomend', SalaryAdvApproverNotif.LK_ADV_TYPE,151)">
+                                                        <span class="label label-sm label-success">
+                                                            Recomend <i class="fa fa-paper-plane"></i>
+                                                        </span>
+                                                    </a>
+                                                    &nbsp;
+                                                    <a ng-click="vm.advApprove(SalaryAdvApproverNotif.ADV_REF_NO, SalaryAdvApproverNotif, vm.antiForgeryToken, 'reject', SalaryAdvApproverNotif.LK_ADV_TYPE,118)">
+                                                        <span class="label label-sm label-warning">
+                                                            Reject <i class="fa fa-ban"></i>
+                                                        </span>
+                                                    </a>
+                                                    &nbsp;
+                                                    <a href="/Hr/HrSalAdvance?a=46#/Req?i={{SalaryAdvApproverNotif.HR_SAL_ADVANCE_ID}}&l={{SalaryAdvApproverNotif.APROVER_LVL_NO}}&a={{SalaryAdvApproverNotif.HR_SAL_ADV_APRVL_ID}}&m={{SalaryAdvApproverNotif.LK_ADV_STATUS_ID}}">
+                                                        <span class="label label-sm label-info">
+                                                            More <i class="fa fa-share"></i>
+                                                        </span>
+                                                    </a>
+
+                                                </div>
+
+                                                <div ng-if="SalaryAdvApproverNotif.APROVER_LVL_NO==2">
+                                                    <span class="label label-sm label-info" ng-click="openSalAdvModal(SalaryAdvApproverNotif)">
+                                                        View History <i class="fa fa-history"></i>
+                                                    </span>
+                                                    &nbsp;
+
+                                                    <a ng-click="vm.advApprove(SalaryAdvApproverNotif.ADV_REF_NO, SalaryAdvApproverNotif, vm.antiForgeryToken, 'verify and forward', SalaryAdvApproverNotif.LK_ADV_TYPE,119)">
+                                                        <span class="label label-sm label-success">
+                                                            Verified & Forward  <i class="fa fa-paper-plane"></i>
+                                                        </span>
+                                                    </a>
+                                                    &nbsp;
+
+                                                    <a href="/Hr/HrSalAdvance?a=46#/Req?i={{SalaryAdvApproverNotif.HR_SAL_ADVANCE_ID}}&l={{SalaryAdvApproverNotif.APROVER_LVL_NO}}&a={{SalaryAdvApproverNotif.HR_SAL_ADV_APRVL_ID}}&m={{SalaryAdvApproverNotif.LK_ADV_STATUS_ID}}">
+                                                        <span class="label label-sm label-info">
+                                                            More <i class="fa fa-share"></i>
+                                                        </span>
+                                                    </a>
+
+                                                </div>
+
+
+                                                <div ng-if="SalaryAdvApproverNotif.APROVER_LVL_NO==3">
+                                                    <span class="label label-sm label-info" ng-click="openSalAdvModal(SalaryAdvApproverNotif)">
+                                                        View History <i class="fa fa-history"></i>
+                                                    </span>
+                                                    &nbsp;
+                                                    <a ng-click="vm.advApprove(SalaryAdvApproverNotif.ADV_REF_NO, SalaryAdvApproverNotif, vm.antiForgeryToken, 'approve', SalaryAdvApproverNotif.LK_ADV_TYPE,123)">
+                                                        <span class="label label-sm label-success">
+                                                            Approve  <i class="fa fa-paper-plane"></i>
+                                                        </span>
+                                                    </a>
+                                                    &nbsp;
+
+                                                    <a ng-click="vm.advApprove(SalaryAdvApproverNotif.ADV_REF_NO, SalaryAdvApproverNotif, vm.antiForgeryToken, 'reject', SalaryAdvApproverNotif.LK_ADV_TYPE,118)">
+                                                        <span class="label label-sm label-warning">
+                                                            Reject <i class="fa fa-ban"></i>
+                                                        </span>
+                                                    </a>
+
+                                                    &nbsp;
+                                                    <a href="/Hr/HrSalAdvance?a=46#/Req?i={{SalaryAdvApproverNotif.HR_SAL_ADVANCE_ID}}&l={{SalaryAdvApproverNotif.APROVER_LVL_NO}}&a={{SalaryAdvApproverNotif.HR_SAL_ADV_APRVL_ID}}&m={{SalaryAdvApproverNotif.LK_ADV_STATUS_ID}}">
+                                                        <span class="label label-sm label-info">
+                                                            More <i class="fa fa-share"></i>
+                                                        </span>
+                                                    </a>
+
+                                                </div>
+
+
+                                                <div ng-if="SalaryAdvApproverNotif.APROVER_LVL_NO==4">
+                                                    <span class="label label-sm label-info" ng-click="openSalAdvModal(SalaryAdvApproverNotif)">
+                                                        View History <i class="fa fa-history"></i>
+                                                    </span>
+                                                    &nbsp;
+
+                                                    <a href="/Hr/HrSalAdvance?a=46#/Req?i={{SalaryAdvApproverNotif.HR_SAL_ADVANCE_ID}}&l={{SalaryAdvApproverNotif.APROVER_LVL_NO}}&a={{SalaryAdvApproverNotif.HR_SAL_ADV_APRVL_ID}}&m={{SalaryAdvApproverNotif.LK_ADV_STATUS_ID}}">
+                                                        <span class="label label-sm label-info">
+                                                            Take Action <i class="fa fa-share"></i>
+                                                        </span>
+                                                    </a>
+                                                    &nbsp;
+                                                    <span class="label label-sm label-warning" ng-click="vm.clearFromDashboard('/Hr/HrSalAdvance/ClearFromDashboard',SalaryAdvApproverNotif.LK_ADV_TYPE,SalaryAdvApproverNotif.ADV_REF_NO,SalaryAdvApproverNotif,vm.antiForgeryToken,2005)">
+                                                        Clear <i class="fa fa-times"></i>
+                                                    </span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col2">
+                                    <div class="date">
+                                        {{SalaryAdvApproverNotif.CREATION_DT_FRM_NW}}
+                                    </div>
+                                </div>
+                            </li>
+                            <li ng-repeat="OnlineLeaveApproverNotif in vm.OnlineLeaveApproverNotif|filter:q" ng-hide="OnlineLeaveApproverNotif.IS_VISIBLE=='N' && OnlineLeaveApproverNotif.APROVER_LVL_NO!=4">
+                                <div class="col1">
+                                    <div class="cont">
+                                        <div class="cont-col1" style="padding-top:8px;">
+                                            <div class="label label-sm label-success">
+                                                <i class="fa fa-bell-o"></i>
+                                            </div>
+                                        </div>
+                                        <div class="cont-col2" popover="{{'Applied for :'+ OnlineLeaveApproverNotif.LV_TYPE_NAME_EN+' ,'+OnlineLeaveApproverNotif.NO_DAYS_APPL+' Day(s) ('+ OnlineLeaveApproverNotif.FROM_DATE+' - '+ OnlineLeaveApproverNotif.TO_DATE+') Reason :'+ OnlineLeaveApproverNotif.REASON_DESC_EN}}" popover-trigger="mouseenter" popover-append-to-body="true" popover-title="{{ 'CL:'+OnlineLeaveApproverNotif.CL_BAL_DAY+', SL :'+ OnlineLeaveApproverNotif.SL_BAL_DAY+', OL : '+OnlineLeaveApproverNotif.OL_BAL_DAY+', EL : '+OnlineLeaveApproverNotif.EL_BAL_DAY+' Last Leave Enjoyed: '+OnlineLeaveApproverNotif.LAST_LV_ENJOY+' ('+OnlineLeaveApproverNotif.LAST_LV_FROM_DATE+ ' - '+OnlineLeaveApproverNotif.LAST_LV_TO_DATE+')' }}">
+
+
+                                            <div class="desc">
+                                                Leave Request
+                                                ref #  {{OnlineLeaveApproverNotif.LEAVE_REF_NO}} by <b>{{OnlineLeaveApproverNotif.EMP_FULL_NAME_EN}}</b> {{' ,'+OnlineLeaveApproverNotif.DESIGNATION_NAME_EN+' ,'+OnlineLeaveApproverNotif.DEPARTMENT_NAME_EN}} : {{OnlineLeaveApproverNotif.LK_LV_STATUS}}
+                                                <div ng-if="OnlineLeaveApproverNotif.APROVER_LVL_NO==1">
+                                                    <a ng-click="vm.recomend2(OnlineLeaveApproverNotif.EMP_FULL_NAME_EN,OnlineLeaveApproverNotif,vm.antiForgeryToken,179,'recomend')">
+                                                        <span class="label label-sm label-success">
+                                                            Recomend <i class="fa fa-paper-plane"></i>
+                                                        </span>
+                                                    </a>
+                                                    &nbsp;
+                                                    <a ng-click="vm.recomend2(OnlineLeaveApproverNotif.EMP_FULL_NAME_EN,OnlineLeaveApproverNotif,vm.antiForgeryToken,152,'resend request')">
+                                                        <span class="label label-sm label-primary">
+                                                            Resend <i class="fa fa-exchange"></i>
+                                                        </span>
+                                                    </a>
+                                                    &nbsp;
+                                                    <a href="/Hr/Hrleavetrans?a=49#/eLeave?i={{OnlineLeaveApproverNotif.HR_LEAVE_TRANS_ID}}&l={{OnlineLeaveApproverNotif.APROVER_LVL_NO}}&a={{OnlineLeaveApproverNotif.HR_LEAVE_APRVL_ID}}&m={{OnlineLeaveApproverNotif.LK_LV_STATUS_ID}}">
+                                                        <span class="label label-sm label-info">
+                                                            More <i class="fa fa-share"></i>
+                                                        </span>
+                                                    </a>
+
+                                                </div>
+
+                                                <div ng-if="OnlineLeaveApproverNotif.APROVER_LVL_NO==2||OnlineLeaveApproverNotif.APROVER_LVL_NO==3">
+                                                    <a ng-click="vm.recomend2(OnlineLeaveApproverNotif.EMP_FULL_NAME_EN,OnlineLeaveApproverNotif,vm.antiForgeryToken,180,'recomend')">
+                                                        <span class="label label-sm label-success">
+                                                            Recomend <i class="fa fa-paper-plane"></i>
+                                                        </span>
+                                                    </a>
+                                                    &nbsp;
+                                                    <a ng-click="vm.recomend2(OnlineLeaveApproverNotif.EMP_FULL_NAME_EN,OnlineLeaveApproverNotif,vm.antiForgeryToken,152,'resend request')">
+                                                        <span class="label label-sm label-primary">
+                                                            Resend Request <i class="fa fa-exchange"></i>
+                                                        </span>
+                                                    </a>
+                                                    &nbsp;
+                                                    <a ng-click="vm.recomend2(OnlineLeaveApproverNotif.EMP_FULL_NAME_EN,OnlineLeaveApproverNotif,vm.antiForgeryToken,71,'reject')">
+                                                        <span class="label label-sm label-warning">
+                                                            Reject <i class="fa fa-ban"></i>
+                                                        </span>
+                                                    </a>
+                                                    &nbsp;
+                                                    <span class="label label-sm label-info" ng-click="open(OnlineLeaveApproverNotif)">
+                                                        View History <i class="fa fa-history"></i>
+                                                    </span>
+                                                    &nbsp;
+                                                    <a href="/Hr/Hrleavetrans?a=49#/eLeave?i={{OnlineLeaveApproverNotif.HR_LEAVE_TRANS_ID}}&l={{OnlineLeaveApproverNotif.APROVER_LVL_NO}}&a={{OnlineLeaveApproverNotif.HR_LEAVE_APRVL_ID}}&m={{OnlineLeaveApproverNotif.LK_LV_STATUS_ID}}">
+                                                        <span class="label label-sm label-info">
+                                                            More <i class="fa fa-share"></i>
+                                                        </span>
+                                                    </a>
+
+                                                </div>
+
+                                                <div ng-if="OnlineLeaveApproverNotif.APROVER_LVL_NO==4">
+                                                    <a href="/Hr/Hrleavetrans?a=49#/eLeave?i={{OnlineLeaveApproverNotif.HR_LEAVE_TRANS_ID}}&l={{OnlineLeaveApproverNotif.APROVER_LVL_NO}}&a={{OnlineLeaveApproverNotif.HR_LEAVE_APRVL_ID}}&m={{OnlineLeaveApproverNotif.LK_LV_STATUS_ID}}">
+                                                        <span class="label label-sm label-info">
+                                                            More <i class="fa fa-share"></i>
+                                                        </span>
+                                                    </a>
+                                                    &nbsp;
+                                                    <a ng-click="vm.approve4(OnlineLeaveApproverNotif.EMP_FULL_NAME_EN,OnlineLeaveApproverNotif,vm.antiForgeryToken,70,' approve')">
+                                                        <span class="label label-sm label-success" ng-hide="OnlineLeaveApproverNotif.LK_LV_STATUS_ID==70||OnlineLeaveApproverNotif.LK_LV_STATUS_ID==71||OnlineLeaveApproverNotif.LK_LV_STATUS_ID==153">
+                                                            Approve <i class="fa fa-paper-plane"></i>
+                                                        </span>
+                                                    </a>
+                                                    &nbsp;
+                                                    <a ng-click="vm.approve4(OnlineLeaveApproverNotif.EMP_FULL_NAME_EN,OnlineLeaveApproverNotif,vm.antiForgeryToken,71,' reject')">
+                                                        <span class="label label-sm label-warning" ng-hide="OnlineLeaveApproverNotif.LK_LV_STATUS_ID==70||OnlineLeaveApproverNotif.LK_LV_STATUS_ID==71||OnlineLeaveApproverNotif.LK_LV_STATUS_ID==153">
+                                                            Reject <i class="fa fa-ban"></i>
+                                                        </span>
+                                                    </a>
+                                                    &nbsp;
+                                                    <span class="label label-sm label-info" ng-click="open(OnlineLeaveApproverNotif)">
+                                                        View History <i class="fa fa-history"></i>
+                                                    </span>
+                                                    &nbsp;
+                                                    <span class="label label-sm label-warning" ng-click="vm.clearFromDashboard('/Hr/HrLeaveTrans/ClearFromDashboard','leave request',OnlineLeaveApproverNotif.LEAVE_REF_NO,OnlineLeaveApproverNotif,vm.antiForgeryToken,2002)" ng-if="OnlineLeaveApproverNotif.LK_LV_STATUS_ID==70">
+                                                        Clear <i class="fa fa-times"></i>
+                                                    </span>
+
+
+                                                </div>
+
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col2">
+                                    <div class="date">
+                                        {{OnlineLeaveApproverNotif.CREATION_DATE_FRM_NOW}}
+                                    </div>
+                                </div>
+                            </li>
+                            <li ng-repeat="SalaryAdvReqesterNotif in vm.SalaryAdvReqesterNotif|filter:q">
+                                <div ng-if="SalaryAdvReqesterNotif.LK_ADV_STATUS_ID==0">
+                                    <div class="col1">
+                                        <div class="cont">
+                                            <div class="cont-col1" style="padding-top:8px;">
+                                                <div class="label label-sm label-success">
+                                                    <i class="fa fa-bell-o"></i>
+                                                </div>
+                                            </div>
+                                            <div class="cont-col2">
+                                                <div class="desc">
+                                                    You have created {{SalaryAdvReqesterNotif.LK_ADV_TYPE}} request Ref : <b>{{SalaryAdvReqesterNotif.ADV_REF_NO}}</b>
+                                                    <a href="/Hr/HrSalAdvance?a=46#/Req?i={{SalaryAdvReqesterNotif.HR_SAL_ADVANCE_ID}}">
+                                                        <span class="label label-sm label-info">
+                                                            Take action <i class="fa fa-share"></i>
+                                                        </span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col2">
+                                        <div class="date">
+                                            Just now
+                                        </div>
+                                    </div>
+                                </div>
+
+                          
+
+
+                                <div ng-if="SalaryAdvReqesterNotif.LK_ADV_STATUS_ID!=0">
+                                    <div class="col1">
+                                        <div class="cont">
+                                            <div class="cont-col1" style="padding-top:8px;">
+                                                <div class="label label-sm label-success">
+                                                    <i class="fa fa-bell-o"></i>
+                                                </div>
+                                            </div>
+                                            <div class="cont-col2">
+                                                <div class="desc">
+                                                    <b>{{SalaryAdvReqesterNotif.LK_ADV_TYPE}}</b> request  ref # <b>{{SalaryAdvReqesterNotif.ADV_REF_NO}}</b>: {{SalaryAdvReqesterNotif.LK_ADV_STATUS+' '+SalaryAdvReqesterNotif.APPROVED_BY}}
+
+                                                    <a href="/Hr/HrSalAdvance?a=46#/Req?i={{SalaryAdvReqesterNotif.HR_SAL_ADVANCE_ID}}&l=5&m=0" ng-if="SalaryAdvReqesterNotif.LK_ADV_STATUS_ID==123">
+                                                        <span class="label label-sm label-info">
+                                                            Request Details <i class="fa fa-share"></i>
+                                                        </span>
+                                                    </a>
+                                                    &nbsp;
+                                                    <span class="label label-sm label-info" ng-click="openSalAdvModal(SalaryAdvReqesterNotif)">
+                                                        View History <i class="fa fa-history"></i>
+                                                    </span>
+
+                                                    &nbsp;
+                                                    <span class="label label-sm label-warning" ng-click="vm.clearFromDashboard('/Hr/HrSalAdvance/ClearFromDashboard',SalaryAdvReqesterNotif.LK_ADV_TYPE,SalaryAdvReqesterNotif.ADV_REF_NO,SalaryAdvReqesterNotif,vm.antiForgeryToken,2004)" ng-if="SalaryAdvReqesterNotif.LK_ADV_STATUS_ID==123">
+                                                        Clear <i class="fa fa-times"></i>
+                                                    </span>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col2">
+                                        <div class="date">
+                                            {{SalaryAdvReqesterNotif.LAST_UPDATE_DATE}}
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </li>
+                            <li ng-repeat="OnlineLeaveReqesterNotif in vm.OnlineLeaveReqesterNotif|filter:q">
+                                <div ng-if="OnlineLeaveReqesterNotif.LK_LV_STATUS_ID!=0">
+                                    <div class="col1">
+                                        <div class="cont">
+                                            <div class="cont-col1" style="padding-top:8px;">
+                                                <div class="label label-sm label-success">
+                                                    <i class="fa fa-bell-o"></i>
+                                                </div>
+                                            </div>
+                                            <div class="cont-col2">
+                                                <div class="desc">
+                                                    Online leave request ref# <b>{{OnlineLeaveReqesterNotif.LEAVE_REF_NO}}</b>: {{OnlineLeaveReqesterNotif.LK_LV_STATUS}} {{OnlineLeaveReqesterNotif.APPROVED_BY}}
+
+                                                    <a href="/Hr/Hrleavetrans?a=49#/eLeave?i={{OnlineLeaveReqesterNotif.HR_LEAVE_TRANS_ID}}&l=5&m=0" ng-if="OnlineLeaveReqesterNotif.LK_LV_STATUS_ID==70">
+                                                        <span class="label label-sm label-info">
+                                                            Request Details <i class="fa fa-share"></i>
+                                                        </span>
+                                                    </a>
+                                                    &nbsp;
+                                                    <span class="label label-sm label-info" ng-click="open(OnlineLeaveReqesterNotif)">
+                                                        View History <i class="fa fa-history"></i>
+                                                    </span>
+                                                    &nbsp;
+                                                    <span class="label label-sm label-warning" ng-click="vm.clearFromDashboard('/Hr/HrLeaveTrans/ClearFromDashboard','leave request',OnlineLeaveReqesterNotif.LEAVE_REF_NO,OnlineLeaveReqesterNotif,vm.antiForgeryToken,2001)" ng-if="OnlineLeaveReqesterNotif.LK_LV_STATUS_ID==70||OnlineLeaveReqesterNotif.LK_LV_STATUS_ID==71">
+                                                        Clear <i class="fa fa-times"></i>
+                                                    </span>
+                                                    &nbsp;
+                                                    <a href="/Hr/Hrleavetrans?a=49#/eLeave?i={{OnlineLeaveReqesterNotif.HR_LEAVE_TRANS_ID}}&m={{OnlineLeaveReqesterNotif.LK_LV_STATUS_ID}}" ng-if="OnlineLeaveReqesterNotif.LK_LV_STATUS_ID==152">
+                                                        <span class="label label-sm label-info">
+                                                            Take action <i class="fa fa-share"></i>
+                                                        </span>
+                                                    </a>
+
+
+                                                    <a ng-if="OnlineLeaveReqesterNotif.LK_LV_STATUS_ID==71">
+                                                        <span class="label label-sm label-info" ng-click="vm.reApply(OnlineLeaveReqesterNotif.LEAVE_REF_NO,OnlineLeaveReqesterNotif.HR_LEAVE_TRANS_ID,vm.antiForgeryToken)">
+                                                            re-apply<i class="fa fa-share"></i>
+                                                        </span>
+                                                    </a>
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col2">
+                                        <div class="date">
+                                            {{OnlineLeaveReqesterNotif.LAST_UPDATE_DATE}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-if="OnlineLeaveReqesterNotif.LK_LV_STATUS_ID==0">
+                                    <div class="col1">
+                                        <div class="cont">
+                                            <div class="cont-col1" style="padding-top:8px;">
+                                                <div class="label label-sm label-success">
+                                                    <i class="fa fa-bell-o"></i>
+                                                </div>
+                                            </div>
+                                            <div class="cont-col2">
+                                                <div class="desc">
+                                                    You have created a leave request Ref : <b>{{OnlineLeaveReqesterNotif.LEAVE_REF_NO}}</b>
+                                                    <a href="/Hr/Hrleavetrans?a=49#/eLeave?i={{OnlineLeaveReqesterNotif.HR_LEAVE_TRANS_ID}}">
+                                                        <span class="label label-sm label-info">
+                                                            Take action <i class="fa fa-share"></i>
+                                                        </span>
+                                                    </a>
+                                                    &nbsp;
+                                                    <a ng-click="vm.deleteDraft(OnlineLeaveReqesterNotif.LEAVE_REF_NO,OnlineLeaveReqesterNotif.HR_LEAVE_TRANS_ID,vm.antiForgeryToken)">
+                                                        <span class="label label-sm label-warning">
+                                                            Delete <i class="fa fa-share"></i>
+                                                        </span>
+                                                    </a>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col2">
+                                        <div class="date">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="slimScrollBar" style="width: 7px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px; height: 187.717355371901px; background: rgb(215, 220, 226);"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; opacity: 0.2; z-index: 90; right: 1px; background: rgb(234, 234, 234);"></div>
+                </div>
+            </div>
+        </div>
+        <!-- END PORTLET-->
+    </div>
+    <!-- Lapdib Followup-->
+    <div class="col-md-6 col-sm-6" ng-if="vm.labdipFollowupDataLen>0">
+
+        <!-- BEGIN PORTLET-->
+        <div class="portlet box blue-hoki">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-globe theme-font-color hide"></i>
+                    <span class="caption-subject theme-font-color bold">Lapdip Followup </span>
+                </div>
+
+                <div class="tools">
+                    <a href="javascript:;" class="collapse" data-original-title="" title="">
+                    </a>
+                    <a href="javascript:;" class="fullscreen" data-original-title="" title="">
+                    </a>
+                    <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title="">
+                    </a>
+                    <a href="javascript:;" class="reload" data-original-title="" title="">
+                    </a>
+                </div>
+
+                <div class="actions">
+                    <div class="portlet-input input-inline input-small">
+                        <div class="input-icon right">
+                            <i class="icon-magnifier"></i>
+                            <input type="text" class="form-control input-circle" ng-model="LdSearchParams" placeholder="search..." ng-change="vm.OnLapdipSearch(LdSearchParams)" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="portlet-body">
+
+                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 250px;">
+                    <div class="scroller" style="height: 250px; overflow: hidden; width: auto;" data-always-visible="1" data-rail-visible1="0" data-handle-color="#D7DCE2" data-initialized="1" slimscroll="{height: 250,alwaysVisible:true,allowPageScroll:true}">
+                        <div class="table-scrollable table-scrollable-borderless">
+                            <table class="table table-cell">
+                                <thead>
+                                    <tr class=" uppercase">
+                                        <th style="padding-right:0px;padding-left:2px;">
+                                            <small>
+                                                Date
+                                                &nbsp;
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            </small>
+                                        </th>
+                                        <th style="padding-right:0px;padding-left:2px;">
+
+                                            <small>Buyer A/C</small>
+                                        </th>
+                                        @*<th>
+
+                                                <small> Program #</small>
+                                            </th>*@
+
+                                        <th style="padding-right:0px;padding-left:2px;">
+
+                                            <small>Style #</small>
+                                        </th>
+                                        <th style="padding-right:0px;padding-left:2px;">
+
+                                            <small>Status</small>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in vm.LabdipRequestProgramNotifStyleWise">
+                                        <td>
+                                            <small><b>{{item.CREATION_DATE}}</b></small>
+
+                                        </td>
+                                        <td style="padding-right:0px;padding-left:2px;">
+                                            {{item.BYR_ACC_NAME_EN}}
+
+                                        </td>
+                                        @*<td>
+                                                <small>{{item.LD_REQ_NO}}</small>
+
+                                            </td>*@
+
+                                        <td style="padding-right:0px;padding-left:2px;">
+                                            {{item.STYLE_NO}}
+
+                                        </td>
+                                        <td style="padding-right:0px;padding-left:2px;">
+                                            <span class="text-primary">{{item.TASK_STATUS_NAME}}</span>
+                                            <span ng-if="item.approved_lds.length>0">
+                                                + Labdip recipe =>
+                                                [<span ng-repeat="itm in item.approved_lds"><a ng-href="/Dyeing/Dye/LabdipRecipeList?a=109/#/LabdipRecipe/0/0?pMC_LD_REQ_D_ID={{itm.MC_LD_REQ_D_ID}}" target="_blank">{{itm.COLOR_NAME_EN}}</a>&nbsp;|&nbsp;</span>]
+
+                                            </span>
+
+                                            <a ng-click="vm.UpdateLDReqStatus(item.MC_LD_REQ_H_ID,4,'You are going to accept this request',item.MC_STYLE_H_ID)" ng-if="item.MC_TNA_TASK_STATUS_ID==2 && item.IS_ACT_ACTIVE=='Y'">
+                                                <span class="label label-sm label-info">
+                                                    <small>Accept</small>
+                                                </span>
+                                            </a>
+
+                                            &nbsp;
+                                            <a ng-click="vm.UpdateLDReqStatus(item.MC_LD_REQ_H_ID,7,'You are going to send this request to Buyer',item.MC_STYLE_H_ID)" ng-if="(item.MC_TNA_TASK_STATUS_ID==5 || item.MC_TNA_TASK_STATUS_ID==9) && item.IS_ACT_ACTIVE=='Y'">
+                                                <span class="label label-sm label-info">
+                                                    <small>Send to Buyer</small>
+                                                </span>
+                                            </a>
+
+                                            &nbsp;
+
+                                            <a ng-click="vm.navigateLabdip(item)">
+                                                <span class="label label-sm label-info">
+                                                    <small>Detail</small>
+                                                </span>
+                                            </a>
+
+                                            &nbsp;
+
+                                            <a ng-click="vm.GotoLabdipStatus(item.MC_LD_REQ_H_ID, item.MC_STYLE_H_ID,item.LD_REQ_TO,item.LD_REQ_BY,item.MC_BYR_ACC_ID)" ng-if="(item.MC_TNA_TASK_STATUS_ID==4||item.MC_TNA_TASK_STATUS_ID==7||item.MC_TNA_TASK_STATUS_ID==8) && item.IS_ACT_ACTIVE=='Y'">
+                                                <span class="label label-sm label-info">
+                                                    <small>Take Action</small>
+
+                                                </span>
+                                            </a>
+
+                                            &nbsp;
+                                            <a ng-click="vm.UpdateLDReqStatus(item.MC_LD_REQ_H_ID,2,'You are going to send this request to lab',item.MC_STYLE_H_ID)" ng-if="item.MC_TNA_TASK_STATUS_ID==1 && item.IS_ACT_ACTIVE=='Y'">
+                                                <span class="label label-sm label-info">
+                                                    <small>Send to Lab</small>
+                                                </span>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="slimScrollBar" style="width: 7px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px; height: 187.717355371901px; background: rgb(215, 220, 226);"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; opacity: 0.2; z-index: 90; right: 1px; background: rgb(234, 234, 234);"></div>
+                </div>
+
+                @*<div class="scroller" style="height: 250px; overflow: hidden; width: auto;" data-always-visible="1" data-rail-visible1="0" data-handle-color="#D7DCE2" data-initialized="1" slimscroll="{height: 250,alwaysVisible:true,allowPageScroll:true}">
+                            <ul class="feeds">
+                                <li ng-repeat="LabdipRequestProgramNotif in vm.LabdipRequestProgramNotif|filter:sampleFollowup">
+                                    <div class="col1">
+                                        <div class="cont">
+                                            <div class="cont-col1" style="padding-top:8px;">
+                                                <div class="label label-sm label-success">
+                                                    <i class="fa fa-bell-o"></i>
+                                                </div>
+                                            </div>
+                                            <div class="cont-col2">
+                                                <div class="desc">
+                                                    {{LabdipRequestProgramNotif.TASK_STATUS_NAME}}
+
+                                                    <div ng-if="LabdipRequestProgramNotif.IS_LD_REQ_BY=='N'">
+
+                                                        <a href="/Merchandising/Mrc/LabdipInfo?a=86/#/LabdipEntry?ID={{LabdipRequestProgramNotif.MC_LD_REQ_H_ID}}">
+                                                            <span class="label label-sm label-info">
+                                                                Detail <i class="fa fa-share"></i>
+                                                            </span>
+                                                        </a>
+                                                        &nbsp;
+                                                        <a ng-click="vm.UpdateLDReqStatus(LabdipRequestProgramNotif.MC_LD_REQ_H_ID,4,'You are going to accept this request')" ng-if="LabdipRequestProgramNotif.MC_TNA_TASK_STATUS_ID==3">
+                                                            <span class="label label-sm label-info">
+                                                                Accept <i class="fa fa-share"></i>
+                                                            </span>
+                                                        </a>
+                                                    </div>
+
+                                                    <div ng-if="LabdipRequestProgramNotif.IS_LD_REQ_BY=='Y'">
+                                                        <a href="/Merchandising/Mrc/LabdipInfo?a=86/#/LabdipEntry?ID={{LabdipRequestProgramNotif.MC_LD_REQ_H_ID}}">
+                                                            <span class="label label-sm label-info">
+                                                                Detail <i class="fa fa-share"></i>
+                                                            </span>
+                                                        </a>
+
+
+
+                                                        &nbsp;
+                                                        <a ng-click="vm.UpdateLDReqStatus(LabdipRequestProgramNotif.MC_LD_REQ_H_ID,2,'You are going to send this request to lab',null)" ng-if="LabdipRequestProgramNotif.MC_TNA_TASK_STATUS_ID==1">
+                                                            <span class="label label-sm label-info">
+                                                                Send to Lab<i class="fa fa-share"></i>
+                                                            </span>
+                                                        </a>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col2">
+                                        <div class="date">
+                                            {{LabdipRequestProgramNotif.ACTION_DATE}}
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li ng-repeat="LabdipRequestProgramNotif in vm.LabdipRequestProgramNotifStyleWise|filter:sampleFollowup">
+                                    <div class="col1">
+                                        <div class="cont">
+                                            <div class="cont-col1" style="padding-top:8px;">
+                                                <div class="label label-sm label-success">
+                                                    <i class="fa fa-bell-o"></i>
+                                                </div>
+                                            </div>
+                                            <div class="cont-col2">
+                                                <div class="desc">
+                                                    {{LabdipRequestProgramNotif.TASK_STATUS_NAME}}
+
+                                                    <div ng-if="LabdipRequestProgramNotif.IS_LD_REQ_BY=='N'">
+                                                        <a href="/Merchandising/Mrc/LabdipInfo?a=86/#/LabdipEntry?ID={{LabdipRequestProgramNotif.MC_LD_REQ_H_ID}}" ng-if="LabdipRequestProgramNotif.MC_TNA_TASK_STATUS_ID!=10">
+                                                            <span class="label label-sm label-info">
+                                                                Detail <i class="fa fa-share"></i>
+                                                            </span>
+                                                        </a>
+
+                                                        <a ng-click="vm.GotoLabdipStatus(LabdipRequestProgramNotif.MC_LD_REQ_H_ID, LabdipRequestProgramNotif.STYLE_NO,LabdipRequestProgramNotif.LD_REQ_TO,LabdipRequestProgramNotif.LD_REQ_BY,LabdipRequestProgramNotif.MC_BYR_ACC_ID)" ng-if="LabdipRequestProgramNotif.MC_TNA_TASK_STATUS_ID==10">
+                                                            <span class="label label-sm label-info">
+                                                                Detail <i class="fa fa-share"></i>
+                                                            </span>
+                                                        </a>
+                                                        &nbsp;
+
+                                                        <a ng-click="vm.GotoLabdipStatus(LabdipRequestProgramNotif.MC_LD_REQ_H_ID, LabdipRequestProgramNotif.STYLE_NO,LabdipRequestProgramNotif.LD_REQ_TO,LabdipRequestProgramNotif.LD_REQ_BY,LabdipRequestProgramNotif.MC_BYR_ACC_ID)" ng-if="LabdipRequestProgramNotif.MC_TNA_TASK_STATUS_ID==4">
+                                                            <span class="label label-sm label-info">
+                                                                Take Action <i class="fa fa-share"></i>
+                                                            </span>
+                                                        </a>
+
+                                                    </div>
+
+                                                    <div ng-if="LabdipRequestProgramNotif.IS_LD_REQ_BY=='Y'">
+                                                        <a ng-click="vm.GotoLabdipStatus(LabdipRequestProgramNotif.MC_LD_REQ_H_ID, LabdipRequestProgramNotif.STYLE_NO,LabdipRequestProgramNotif.LD_REQ_TO,LabdipRequestProgramNotif.LD_REQ_BY,LabdipRequestProgramNotif.MC_BYR_ACC_ID)">
+                                                            <span class="label label-sm label-info">
+                                                                Detail <i class="fa fa-share"></i>
+                                                            </span>
+                                                        </a>
+                                                        &nbsp;
+                                                        <a ng-click="vm.UpdateLDReqStatus(LabdipRequestProgramNotif.MC_LD_REQ_H_ID,7,'You are going to send this request to Buyer',LabdipRequestProgramNotif.MC_LD_REQ_D_ID)" ng-if="LabdipRequestProgramNotif.MC_TNA_TASK_STATUS_ID==6 || LabdipRequestProgramNotif.MC_TNA_TASK_STATUS_ID==8">
+                                                            <span class="label label-sm label-info">
+                                                                Send to Buyer <i class="fa fa-share"></i>
+                                                            </span>
+                                                        </a>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col2">
+                                        <div class="date">
+                                            {{LabdipRequestProgramNotif.ACTION_DATE}}
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="slimScrollBar" style="width: 7px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px; height: 187.717355371901px; background: rgb(215, 220, 226);"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; opacity: 0.2; z-index: 90; right: 1px; background: rgb(234, 234, 234);"></div>
+                    </div>*@
+            </div>
+        </div>
+        <!-- END PORTLET-->
+    </div>
+
+    <!-- Start Sample Followup-->
+    <div class="col-md-6 col-sm-6" ng-if="vm.SmpProgNotifLength>0">
+
+        <!-- BEGIN PORTLET-->
+        <div class="portlet box blue-hoki" >
+            <div class="portlet-title" >
+                <div class="caption">
+                    <i class="icon-globe theme-font-color hide"></i>
+                    <span class="caption-subject theme-font-color bold">Sample Program Followup </span>
+                </div>
+
+                <div class="tools">
+                    <a href="javascript:;" class="collapse" data-original-title="" title="">
+                    </a>
+                    <a href="javascript:;" class="fullscreen" data-original-title="" title="" ng-click="vm.resizeGrid('smpBookingGrid', (!vm.isSmplFbMaximize?500:200), true, 400, 150, 800,600); vm.isSmplFbMaximize = !vm.isSmplFbMaximize;">
+                    </a>
+                    <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title="">
+                    </a>
+                    <a href="javascript:;" class="reload" data-original-title="" title="">
+                    </a>
+                </div>
+
+                <div class="actions">
+                    <div class="portlet-input input-inline input-small">
+                        <div class="input-icon right">
+                            <i class="icon-magnifier"></i>
+                            <input type="text" class="form-control input-circle" ng-model="vm.SmplProgSearchTerm" ng-model-options="{ debounce: { 'default': 1000, 'blur': 0 } }"
+                                   ng-change="vm.searchSmplProg(vm.SmplProgSearchTerm)" placeholder="search...">
+                        </div>
+                    </div>
+                </div>
+
+                @*<div class="actions">
+                <div class="portlet-input input-inline input-small">
+                    <div class="input-icon right">
+                        <i class="icon-magnifier"></i>
+                        <input type="text" class="form-control input-circle" ng-model="sampleFollowup" placeholder="search...">
+                    </div>
+                </div>
+            </div>*@
+            </div>
+
+            <div class="portlet-body">
+
+                <kendo-grid id="smpBookingGrid" k-options="vm.mainSmplReqGridOption" k-data-source="vm.smpReqDataSource">
+                    <div k-detail-template>
+                        <kendo-grid k-options="vm.detailSmplReqGridOption(dataItem)">
+                        </kendo-grid>
+                    </div>
+                </kendo-grid>
+
+                <div style="padding-top:5px">&nbsp;</div>
+            </div>
+        </div>
+        <!-- END PORTLET-->
+    </div>
+    <!-- End Sample Followup-->
+
+    <!-- Start Bulk Budget Verification-->
+    <div class="col-md-6 col-sm-6" ng-if="vm.BfbkBudgetNotifLength>0">
+
+        <!-- BEGIN PORTLET-->
+        <div class="portlet box blue-hoki" >
+            <div class="portlet-title" >
+                <div class="caption">
+                    <i class="icon-globe theme-font-color hide"></i>
+                    <span class="caption-subject theme-font-color bold">Fabric Booking & Budget Verification</span>
+                </div>
+
+                <div class="tools">
+                    <a href="javascript:;" class="collapse" data-original-title="" title="">
+                    </a>
+                    <a href="javascript:;" class="fullscreen" data-original-title="" title="" ng-click="vm.resizeGrid('blkFbReqGrid', (!vm.isBlkFbMaximize?500:200), true, 400, 150, 800,600); vm.isBlkFbMaximize = !vm.isBlkFbMaximize;">
+                    </a>
+                    <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title="">
+                    </a>
+                    <a href="javascript:;" class="reload" data-original-title="" title="">
+                    </a>
+                </div>
+
+                <div class="actions">
+                    <div class="portlet-input input-inline input-small">
+                        <div class="input-icon right">
+                            <i class="icon-magnifier"></i>
+                            @*<input type="text" class="form-control input-circle" ng-model="searchBulkFollowup" placeholder="search...">*@
+                            <input type="text" class="form-control input-circle" ng-model="vm.bulkProgSearchTerm" ng-model-options="{ debounce: { 'default': 1000, 'blur': 0 } }"
+                                   ng-change="vm.searchBulkProg(vm.bulkProgSearchTerm)" placeholder="search...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="portlet-body">
+
+
+                @*<div id="blkFbReqGrid" kendo-grid k-options="vm.blkFbReqGridOption" k-data-source="vm.blkFbReqDataSource"></div>*@
+                <kendo-grid id="blkFbReqGrid" k-options="vm.blkFbReqGridOption" k-data-source="vm.blkFbReqDataSource"></kendo-grid>
+
+
+                @*<kendo-grid k-options="vm.mainSmplReqGridOption" k-data-source="vm.smpReqDataSource">
+                    <div k-detail-template>
+                        <div kendo-grid k-options="vm.detailSmplReqGridOption(dataItem)"></div>
+                    </div>
+                </kendo-grid>*@
+                @*<pre>{{vm.empLevelData|json}}</pre>*@
+
+                <div class="row" style="margin:auto;" ng-show="vm.blkBookingResendAlerts.length>0">
+                    <div class="alert alert-danger" role="alert" style="margin-bottom:5px;padding-top:5px;padding-bottom:5px;">
+                        @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                        @*<div style="padding: 0px 0px 15px 25px; ">
+                    <b>Please fix the following errors ....</b>
+                </div>*@
+                        <ul ng-repeat="field in vm.blkBookingResendAlerts">
+                            <li ng-bind="field.msg"></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-9" style="padding-top:5px;padding-bottom:1px">
+                        <button type="button" ng-if="vm.empLevelData.STATUS_ORDER==2" class="btn btn-xs green" ng-click="vm.aprvlProcess(token,33)">Recomend</button>
+                        <button type="button" ng-if="vm.empLevelData.STATUS_ORDER==5" class="btn btn-xs green" ng-click="vm.aprvlProcess(token,36)">Approve</button>
+                        @*<button type="button" ng-if="vm.empLevelData.STATUS_ORDER==5" class="btn btn-xs green" ng-click="vm.aprvlProcess1(token,36)">Approve1</button>*@
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <button type="button" ng-if="(vm.empLevelData.STATUS_ORDER==1||vm.empLevelData.STATUS_ORDER==5)" class="btn btn-xs green" ng-click="vm.aprvlProcess(token,0)">Clear from List</button>
+
+                    </div>
+                        
+                    <div class="col-md-3" style="text-align: right; padding-top: 5px; padding-bottom: 1px">
+                        <button type="button" ng-if="vm.empLevelData.STATUS_ORDER==2||vm.empLevelData.STATUS_ORDER==5" class="btn btn-xs blue" ng-click="vm.aprvlProcess(token,35)">Resend</button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <!-- END PORTLET-->
+    </div>
+    <!-- End Bulk Budget Verification-->
+
+
+    <!-- Start REQUISITION & ISSUES FOLLOWUP-->
+    <div class="col-md-6 col-sm-6" ng-if="vm.reqPendingCountDataLen>0">
+
+        <!-- BEGIN REQUISITION & ISSUES FOLLOWUP-->
+        <div class="portlet box blue-hoki">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-globe theme-font-color hide"></i>
+                    <span class="caption-subject theme-font-color bold">Requisition & Issue Followup </span>
+                </div>
+
+                <div class="tools">
+                    <a href="javascript:;" class="collapse" data-original-title="" title="">
+                    </a>
+                    <a href="javascript:;" class="fullscreen" data-original-title="" title="">
+                    </a>
+                    <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title="">
+                    </a>
+                    <a href="javascript:;" class="reload" ng-click="vm.onRefReqPendingCount()" data-original-title="" title="">
+                    </a>
+                </div>
+
+            </div>
+
+            <div class="portlet-body">
+
+                <kendo-grid id="smpBookingGrid" k-options="vm.reqPendingCountHOpt" k-data-source="vm.reqPendingCountHDs">
+                    <div k-detail-template>
+                        <kendo-grid k-options="vm.reqPendingCountHDOpt(dataItem)">
+                        </kendo-grid>
+                    </div>
+                </kendo-grid>
+
+            </div>
+        </div>
+        <!-- END PORTLET-->
+    </div>
+    <!-- End BEGIN REQUISITION & ISSUES FOLLOWUP-->
+        
+    <!-- Start TnA Followup-->
+    <div class="col-md-6 col-sm-6" ng-if="vm.tnaFollowupDataLen>0">
+        <!-- BEGIN PORTLET-->
+        <div class="portlet box blue-hoki">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-globe theme-font-color hide"></i>
+                    <span class="caption-subject theme-font-color bold">T&A Followup </span>
+                </div>
+
+                <div class="tools">
+                    <a href="javascript:;" class="collapse" data-original-title="" title="">
+                    </a>
+                    <a href="javascript:;" class="fullscreen" data-original-title="" title="">
+                    </a>
+                    <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title="">
+                    </a>
+                    <a href="javascript:;" class="reload" data-original-title="" title="">
+                    </a>
+                </div>
+
+                <div class="actions">
+                    <div class="portlet-input input-inline input-small">
+                        <div class="input-icon right">
+                            <i class="icon-magnifier"></i>
+                            <input type="text" class="form-control input-circle" ng-model="vm.TnASearchTerm" ng-model-options="{ debounce: { 'default': 1000, 'blur': 0 } }" ng-change="vm.searchTnaTask(vm.TnASearchTerm)" placeholder="search...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="portlet-body">
+                <kendo-grid k-options="vm.PO_LIST_OPTIONS_TASK" id="PO_LIST_TASK" k-data-source="vm.PO_LIST_OPTIONS_TASK_DS"></kendo-grid>
+            </div>
+        </div>
+        <!-- END PORTLET-->
+    </div>
+    <!-- End TnA Followup-->
+
+    <!-- Start TnA Followup-->
+    <div class="col-md-6 col-sm-6" ng-if="vm.BookingPoHrdDsLength>0">
+        <!-- BEGIN PORTLET-->
+        <div class="portlet box blue-hoki">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-globe theme-font-color hide"></i>
+                    <span class="caption-subject theme-font-color bold">Trim & Accessories PO Approval </span>
+                </div>
+
+                <div class="tools">
+                    <a href="javascript:;" class="collapse" data-original-title="" title="">
+                    </a>
+                    <a href="javascript:;" class="fullscreen" data-original-title="" title="">
+                    </a>
+                    <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title="">
+                    </a>
+                    <a href="javascript:;" class="reload" data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+
+            <div class="portlet-body">
+                <div id="TrimAccessoriesPO" kendo-grid k-options="vm.taBookingPoHrdOpt" k-data-source="vm.taBookingPoHrdDs"></div>
+                <div class="row" style="padding-top:3px;">
+                    <div class="col-md-5">
+                        <button type="button" ng-click="vm.saveTAAccessoriesPo()" class="btn btn-xs green">Save</button>
+                        <button type="button" class="btn btn-xs default" ng-click="vm.taBookingPoHrdDs.read();vm.IS_ALL_APPROVED=false;vm.IS_ALL_RESEND=false;vm.IS_ALL_REJECT=false;">Cancel</button>
+                    </div>
+                    <div class="col-md-7" align="right">
+                        <div class="checkbox-list">
+                            <label class="checkbox-inline" style="color: green; margin-left: 0px; padding-left: 5px;">
+                                <small>Approve</small>
+                            </label>
+                            <label class="checkbox-inline" style="color: powderblue; margin-left: 0px; padding-left: 5px; ">
+                                <small>Resend</small>
+                            </label>
+                            <label class="checkbox-inline" style="color:red;margin-left:0px;padding-left:5px;">
+                                <small>Reject</small>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END PORTLET-->
+    </div>
+    <!-- End TnA Followup-->
+    
+    <!-- Start Purchase Plan-->
+    <div class="col-md-6 col-sm-6" ng-if="vm.PurchaseRequisitionListlength>0">
+        @*<div class="col-md-6 col-sm-6" ng-if="'@Session["multiScUserId"]'==75">*@
+
+        <!-- BEGIN PORTLET-->
+        <div class="portlet box blue-hoki">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-globe theme-font-color hide"></i>
+                    <span class="caption-subject theme-font-color bold">Purchase Requisition </span>
+                </div>
+
+                <div class="tools">
+                    <a href="javascript:;" class="collapse" data-original-title="" title="">
+                    </a>
+                    <a href="javascript:;" class="fullscreen" data-original-title="" title="">
+                    </a>
+                    <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title="">
+                    </a>
+                    <a href="javascript:;" class="reload" data-original-title="" title="">
+                    </a>
+                </div>
+
+                <div class="actions">
+                    <div class="portlet-input input-inline input-small">
+                        <div class="input-icon right">
+                            <i class="icon-magnifier"></i>
+                            <input type="text" class="form-control input-circle" ng-model="vm.TnASearchTerm" ng-model-options="{ debounce: { 'default': 1000, 'blur': 0 } }" ng-change="vm.searchTnaTask(vm.TnASearchTerm)" placeholder="search...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="portlet-body">
+                <kendo-grid k-options="vm.gridPurchaseRequisition" id="PUR_REQ_LST" k-data-source="vm.PurchaseRequisitionList"></kendo-grid>
+            </div>
+        </div>
+        <!-- END PORTLET-->
+    </div>
+        <!-- End Purchase Plan-->
+
+    </div>
+@*Start For Leave History Modal Model*@
+<script type="text/ng-template" id="leaveHistoryModal.html">
+    @*<div class="modal-header">
+            <h3 class="modal-title">I'm a modal!</h3>
+        </div>*@
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h3 class="title">
+                        Leave Ref. # {{item.LEAVE_REF_NO}}
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </h3>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Date & Time
+                                </th>
+                                <th>
+                                    Staus
+                                </th>
+                                <th>
+                                    Desk
+                                </th>
+                                <th>
+                                    Comments
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td>
+                                        {{item.CREATION_DATE}}    
+                                </td>
+                                <td>
+                                    <span class="label label-sm label-info">
+                                        Request Created
+                                    </span>
+                                </td>
+                                <td></td>
+
+                                <td></td>
+                            </tr>
+
+                            <tr ng-if="!notifications[0].LK_LV_STATUS">
+                                <td> 
+                                        {{item.CREATION_DATE}}
+                                </td>
+                                <td>
+                                    <span class="label label-sm label-warning">
+                                        {{item.LK_LV_STATUS}}
+                                    </span>
+                                </td>
+                                <td>
+                                    {{notifications[0].APPROVED_BY}}
+                                </td>
+                            </tr>
+
+                            <tr ng-repeat="item in notifications">
+                                <td>
+                                        {{item.ACTION_DATE}}
+                                </td>
+                                <td>
+                                    <span class="label label-sm label-success" ng-if="item.IS_VISIBLE=='N'">
+                                        {{item.LK_LV_STATUS}}
+                                    </span>
+                                    <span class="label label-sm label-warning" ng-if="item.IS_VISIBLE=='Y'">
+                                        {{item.LK_LV_STATUS}}
+                                    </span>
+                                </td>
+                                <td>
+                                    {{item.APPROVED_BY}}
+                                </td>
+                                <td>
+                                    {{item.REMARKS}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+@*Start For Salary Advance Modal*@
+<script type="text/ng-template" id="SalAdvHistoryModal.html">
+    @*<div class="modal-header">
+            <h3 class="modal-title">I'm a modal!</h3>
+        </div>*@
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    @*<i class="fa fa-cogs"></i>*@
+                    <h3 class="title">
+                        Ref. # {{item.ADV_REF_NO}}
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </h3>
+
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered table-striped table-condensed">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Date & Time
+                                </th>
+                                <th>
+                                    Staus
+                                </th>
+                                <th>
+                                    Desk
+                                </th>
+                                <th>
+                                    Comments
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td>
+                                        <span>
+                                            {{item.CREATION_DATE}}
+                                        </span>
+                                </td>
+                                <td>
+                                    <span class="label label-sm label-warning">
+                                        Request Created
+                                    </span>
+                                </td>
+                                <td></td>
+                                <td></td>
+
+                            </tr>
+                            <tr ng-repeat="item in notifications">
+                                <td>
+                                        <span>
+                                            {{item.ACTION_DATE}}
+                                        </span>
+                                </td>
+                                <td>
+                                    <span class="label label-sm" ng-class="item.IS_VISIBLE=='Y'?'label-warning':'label-success'">
+                                        {{item.LK_ADV_STATUS}}
+                                    </span>
+                                </td>
+                                <td>
+                                    {{item.APPROVED_BY}}
+                                </td>
+                                <td>
+                                    {{item.REMARKS}}
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+@*Start For Hr Report Model*@
+<script type="text/ng-template" id="HrReportModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <p style="padding-top:10px;">
+                        Report Parameter
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </p>
+
+
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="HrReportModalForm" novalidate @*ng-submit="save(Task,token,TaskForm.$valid)"*@>
+                    <input id="access_token" data-ng-model="token" type="hidden"
+                           data-ng-init="token='@Session["access_token"]'" />
+
+                    <input ng-model="HR_COMPANY_ID" type="hidden"
+                           data-ng-init="HR_COMPANY_ID='@Session["multiLoginEmpCompId"]'" />
+                    @*{{HR_COMPANY_ID}}*@
+
+                    <input ng-model="HR_EMPLOYEE_ID" type="hidden"
+                           data-ng-init="HR_EMPLOYEE_ID='@Session["multiLoginEmpId"]'" />
+                    @*{{HR_EMPLOYEE_ID}}*@
+
+                    <div class="form-group">
+                        <label for="selectPeriod" class="col-md-4 control-label">Period</label>
+                        @*{{REPORT_CODE}}*@
+                        <div class="col-md-8" style="padding-top:5px;">
+                            <select kendo-drop-down-list id="ACC_PAY_PERIOD_ID" name="ACC_PAY_PERIOD_ID" class="form-control"
+                                    options="companyOpenPeriodList" ng-model="ACC_PAY_PERIOD_ID"></select>
+                        </div>
+                        @*{{ACC_PAY_PERIOD_ID}}*@
+                    </div>
+                    
+                    <div class="form-group form-actions">
+                        <div class="col-md-offset-4 col-md-4">
+                            <button type="button" class="btn green btn-sm" ng-click="reportPrint()" @*ng-class="{'disabled':!HrReportModalForm.$valid}" ng-disabled="formInvalid"*@>Preview</button>
+                            <button type="button" class="btn btn-default btn-sm" ng-click="cancel()">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+@*End For Hr Report Model*@
+
+
+@*Start For Sample Buyer Feedback Model*@
+<script type="text/ng-template" id="SmplByrFeedbackModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <p style="padding-top:10px;">
+                        Buyer Feedback
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </p>
+
+
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="SmplByrFeedbackForm" novalidate @*ng-submit="save(Task,token,TaskForm.$valid)"*@>
+                    <input id="access_token" data-ng-model="token" type="hidden"
+                           data-ng-init="token='@Session["access_token"]'" />
+
+                    <kendo-grid id="smplFeedbackGrid" k-options="smplFeedbackGridOption" k-data-source="smplFeedbackGridDataSource"></kendo-grid>
+
+                    
+                    <div class="form-group form-actions">
+                        <div class="col-md-4" style="padding-top:5px;padding-bottom:5px">                            
+                            <button type="button" class="btn btn-sm blue" ng-click="cancel()">Ok</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+
+@*End For Sample Buyer Feedback Model*@
+
+
+@*Start For TaBookingPOApprovalModal*@
+<script type="text/ng-template" id="TaBookingPOApprovalModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h4 style="padding-top:4px;">
+                        You are going to save Trim & Accessories PO data. Are you sure? 
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </h4>
+
+
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="SmplByrFeedbackForm" novalidate @*ng-submit="save(Task,token,TaskForm.$valid)"*@>
+                    <div class="form-group" ng-if="data.IS_RESEND">
+                        <label class="col-md-3 control-label">
+                            Resend Reason
+                        </label>
+                        <div class="col-md-9">
+
+                            <textarea rows="3" name="REASON_OF_RESEND" placeholder="Reason" class="form-control" cols="50" ng-model="form.REASON_OF_RESEND"></textarea>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-if="data.IS_REJECT">
+                        <label class="col-md-3 control-label">
+                            Reject Reason
+                        </label>
+                        <div class="col-md-9">
+
+                            <textarea rows="3" name="REASON_OF_REJECT" placeholder="Reason" class="form-control" cols="50" ng-model="form.REASON_OF_REJECT"></textarea>
+
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="col-md-4 col-md-offset-3">
+                            <h4 style="padding-top:3px;margin:0px;">Click <b>Yes</b> to proceed.</h4>
+                        </div>
+                        <div class="col-md-5" align="right">
+                            <button type="button" class="btn btn-sm blue" ng-click="save()">Yes</button>
+                            <button type="button" class="btn btn-sm default" ng-click="cancel()">No</button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+
+@*End For TaBookingPOApprovalModal*@
+
+@*Start For Planning Reprot Modal*@
+<script type="text/ng-template" id="PlanningReportModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <p style="padding-top:10px;">
+                        Report Parameter
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </p>
+
+
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="HrReportModalForm" novalidate>
+                    <div class="form-group">
+                        <label for="selectPeriod" class="col-md-4 control-label">From Month:</label>
+                        <div class="col-md-8" style="padding-top:5px;">
+                            <input type="text" class="form-control" datepicker-popup="MMM/yyyy" ng-click="FROM_MONTH_OPEN($event)" datepicker-options="{minMode: 'month', timezone: 'utc'}"
+                                   name="FROM_MONTH" ng-model="form.FROM_MONTH" datepicker-mode="'month'" is-open="FROM_MONTH_OPENED"
+                                   required close-text="Close" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="selectPeriod" class="col-md-4 control-label">To Month:</label>
+                        <div class="col-md-8" style="padding-top:5px;">
+                            <input type="text" class="form-control" min-date="form.FROM_MONTH" datepicker-popup="MMM/yyyy" ng-click="TO_MONTH_OPEN($event)" datepicker-options="{minMode: 'month', timezone: 'utc'}"
+                                   name="TO_MONTH" ng-model="form.TO_MONTH" datepicker-mode="'month'" is-open="TO_MONTH_OPENED"
+                                   required close-text="Close" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="selectPeriod" class="col-md-4 control-label">Company:</label>
+                        <div class="col-md-8" style="padding-top:5px;">
+                            <select class="form-control" kendo-drop-down-list name="HR_COMPANY_ID" required
+                                    k-data-text-field="'COMP_NAME_EN'" k-data-value-field="'HR_COMPANY_ID'" k-option-label="'-- Select --'"
+                                    k-auto-bind="'true'" k-options="compOptions" ng-model="form.HR_COMPANY_ID"></select>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="selectPeriod" class="col-md-4 control-label">Office</label>
+                        <div class="col-md-8" style="padding-top:5px;">
+                            <select class="form-control" kendo-drop-down-list name="PROD_UNIT_ID" required
+                                    k-data-text-field="'OFFICE_NAME_EN'" k-data-value-field="'HR_OFFICE_ID'" k-option-label="'-- Select --'"
+                                    k-auto-bind="'true'" k-options="officeOption" k-data-source="officeDataSource" ng-model="form.HR_OFFICE_ID"></select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="selectPeriod" class="col-md-4 control-label"></label>
+                        <div class="col-md-8" style="padding-top:5px;">
+                            <div class="checkbox-list">
+                                <label class="checkbox-inline" style="margin-left:20px;margin-top:-15px;">
+                                    <span><input type="checkbox" ng-model="form.IS_EXCEL_FORMAT" ng-true-value="'Y'" ng-false-value="'N'"></span> Excel?
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+               
+
+
+                    <div class="form-group form-actions">
+                        <div class="col-md-offset-4 col-md-4">
+                            <button type="button" class="btn green btn-sm" ng-click="reportPrint()">Preview</button>
+                            <button type="button" class="btn btn-default btn-sm" ng-click="cancel()">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+@*End For Hr Report Model*@
+
+
+
+

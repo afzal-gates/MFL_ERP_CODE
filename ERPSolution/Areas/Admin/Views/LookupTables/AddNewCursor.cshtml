@@ -1,0 +1,86 @@
+﻿@model IEnumerable<ERP.Model.LookupTablesModel>
+
+@{
+    ViewBag.Title = "AddNewCursor";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row">
+
+    <div class="four wide column">
+
+
+        <h2>AddNewCursor</h2>
+
+        <p>
+            @Html.ActionLink("Create New", "Create")
+        </p>
+
+        @using (Html.BeginForm("AddNewCursor", "LookupTables", FormMethod.Post))
+        {
+            <table class="table">
+                @*
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LOOKUP_TABLE_ID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LK_TABLE_CODE)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LK_TABLE_NAME)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.IS_ACTIVE)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ENTRY_DATE)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SC_USER_ACCOUNT_ID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.VERSION_NO)
+                        </th>
+                        <th></th>
+                    </tr>
+                *@
+
+                @for (var i = 0; i < Model.Count(); )
+                {
+                    i = i + 1;
+                    <tr>
+                        <td>
+                            <input type="text" name="item[@i].LOOKUP_TABLE_ID" value="">
+                        </td>
+                        <td>
+                            <input type="text" name="item[@i].LK_TABLE_COD" value="">
+                        </td>
+
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+
+                        </td>
+                    </tr>
+                }
+
+                <tr>
+                    <td> <input type="submit" value="Save List" /></td>
+
+                </tr>
+            </table>
+
+            <p></p>
+        }
+
+    </div>  
+    <div class="twelve wide column  ">
+        <p>
+            This is form
+
+        </p>
+    </div>
+</div>

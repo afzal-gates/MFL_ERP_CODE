@@ -1,0 +1,279 @@
+﻿<style>
+    .k-grid .k-grid-header .k-header {
+        white-space: normal;
+    }
+</style>
+
+<div kendo-grid k-options="vm.gridOptions" k-data-source="vm.gridOptionsDS"></div>
+
+<div class="row" style="padding-top:3px;">
+    <div class="col-md-12">
+        <button class="btn btn-xs blue-chambray" style="float:right;" type="button" ng-click="vm.onPrint()" ng-disabled="vm.params.pMC_BYR_ACC_ID<1 || !vm.params.pMONTHOF"><i class="fa fa-print"></i> Print</button>
+    </div>
+</div>
+
+<script type="text/x-kendo-template" id="PmsToolbarTemplate">
+    <div class="toolbar">
+        <div class="actions">
+
+            <form class="form-horizontal" role="form" name="PmsToolbar" novalidate
+                  ng-submit="vm.onSearch(vm.form)">
+
+                <div class="col-md-3">
+                    <div class="radio-list">
+
+                        <label class="radio-inline" style="margin-left:20px;">
+                            <span class="checked"><input type="radio" ng-model="vm.form.RF_FAB_PROD_CAT_ID" ng-change="vm.onChangeCat(vm.form.RF_FAB_PROD_CAT_ID)" ng-value="null"></span> All
+                        </label>
+
+                        <label class="radio-inline" style="margin-left:20px;">
+                            <span class="checked"><input type="radio" ng-model="vm.form.RF_FAB_PROD_CAT_ID" ng-change="vm.onChangeCat(vm.form.RF_FAB_PROD_CAT_ID)" ng-value="2"></span> Bulk
+                        </label>
+                        <label class="radio-inline" style="margin-left:20px;">
+                            <span class="checked"><input type="radio" ng-model="vm.form.RF_FAB_PROD_CAT_ID" ng-change="vm.onChangeCat(vm.form.RF_FAB_PROD_CAT_ID)" ng-value="1"></span> Sample
+                        </label>
+                        <label class="radio-inline" style="margin-left:20px;">
+                            <span class="checked"><input type="radio" ng-model="vm.form.RF_FAB_PROD_CAT_ID" ng-change="vm.onChangeCat(vm.form.RF_FAB_PROD_CAT_ID)" ng-value="3"></span> Dev
+                        </label>
+                    </div>
+                </div>
+
+                <label class="col-md-1 control-label" style="padding-left: 0px; padding-right: 0px;">
+                    Style/Order
+                </label>
+                <div class="col-md-4" style="padding-left:5px;padding-right:0px;">
+                    <span style="padding-left:0px;padding-right:3px;" class="col-md-12">
+                        <select class="form-control" kendo-multi-select name="MC_ORDER_H_ID" k-option-label="'--Order --'"
+                                k-data-text-field="'ORDER_NO'" k-data-value-field="'MC_ORDER_H_ID'" k-filter="'Contains'"
+                                k-template="template" k-value-template="valueTemplate"
+                                k-auto-bind="'true'" k-data-source="vm.oderListDs" ng-model="vm.form.MC_ORDER_H_ID_LST"
+                                required style="width:100%;border-bottom-width:1px;"></select>
+                    </span>
+
+                    @*<span style="padding-left:0px;padding-right:0px;" class="col-md-1">
+                            <button type="submit" class="btn btn-sm primary">
+                                <i class="fa fa-search-plus"></i>
+                                Search
+                            </button>
+                        </span>*@
+                </div>
+
+
+                <label class="col-md-1 control-label" style="padding-left: 0px; padding-right: 0px;">
+                    Style/Order/
+                </label>
+                <div class="col-md-2">
+                    <span style="padding-left:0px;padding-right:7px;" class="col-md-10">
+                        <input type="text" class="form-control" name="STYLE_ORDER_NO" ng-model="vm.form.STYLE_ORDER_NO" placeholder="Contains search....." autocomplete="off" />
+
+                        @*<input type="text" ng-model="vm.form.STYLE_ORDER_NO" placeholder="Contains search..."
+                                   typeahead="item.STYLE_ORDER_NO as item.STYLE_ORDER_NO for item in styleOrderAuto($viewValue)"
+                                   typeahead-on-select="onSelectStyleOrder($item)" typeahead-loading="loadingLocationsStyleOrder" class="form-control" />
+                            <i ng-show="loadingLocationsStyleOrder" class="glyphicon glyphicon-refresh"></i>*@
+                    </span>
+
+                    <span style="padding-left:0px;padding-right:0px;" class="col-md-1">
+                        <button type="submit" class="btn btn-sm primary">
+                            <i class="fa fa-search-plus"></i>
+                            Search
+                        </button>
+                    </span>
+
+                </div>
+
+
+            </form>
+
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="StyleItemImageStyleG.html">
+    <div class="modal-body">
+        <div class="portlet">
+            <div class="portlet-body">
+                <div class="tiles">
+                    <div class="tile image big" style="height: 450px;">
+                        <div class="tile-body">
+                            <img data-ng-src="data:image/png;base64,{{image}}">
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-xs btn-warning" style="float:right;" ng-click="cancel()"> <i class="fa fa-times"></i> Close</button>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="KnitProdOrderFabDtl.html">
+    <div class="modal-body">
+        <div class="portlet">
+            <div class="portlet-body">
+
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend"><b>Fabric Details</b></legend>
+
+                    <table style="width:100%">
+                        <tr ng-repeat="item in ItemList">
+                            <td style="padding:5px;border:solid 1px black;width:15%;">
+                                {{item.FABRIC_DESC}}
+
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+                <br />
+                <button class="btn btn-xs btn-warning" style="float:right;" ng-click="cancel()"> <i class="fa fa-times"></i> Close</button>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="SampleStatusByOrder.html">
+    <div class="modal-body">
+        <div class="portlet">
+            <div class="portlet-body">
+
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend"><b>Sample Status</b></legend>
+                    <p class="text-primary text-center" ng-if="ItemList.length==0">
+                        No data found.
+                    </p>
+
+                    <table class="table table-condensed table-bordered" ng-if="ItemList.length>0">
+                        <thead>
+                            <tr>
+                                <th style="width:4%" rowspan="2">
+                                    #
+                                </th>
+                                <th style="width:40%;text-align:center;" rowspan="2">
+                                    Sample Type
+                                </th>
+                                @*<th style="width: 30%; text-align: center;" colspan="2">
+                                        Plan
+                                    </th>*@
+                                <th style="width: 46%; text-align: center;" colspan="2">
+                                    Actual Date from TNA
+                                </th>
+                                <th style="width: 10%; text-align: center;" rowspan="2">
+                                    Remarks
+                                </th>
+                            </tr>
+
+                            <tr>
+                                <th style="border-top: 1px solid #ddd;width:23%;">
+                                    Sent to Buyer
+                                </th>
+                                <th style="border-top: 1px solid #ddd; width: 23%;">
+                                    Approved
+                                </th>
+                                @*<th style="border-top: 1px solid #ddd;">
+                                        Send
+                                    </th>
+                                    <th style="border-top: 1px solid #ddd;">
+                                        Approval
+
+                                    </th>*@
+
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in ItemList">
+                                <td>
+                                    {{$index+1}}
+                                </td>
+                                <td>
+                                    {{item.TA_TASK_NAME_EN}}
+                                </td>
+
+                                <td>
+                                    {{item.ACT_START_DT|date:'dd-MMM-yyyy'}}
+                                </td>
+                                <td>
+                                    {{item.ACT_END_DT|date:'dd-MMM-yyyy'}}
+                                </td>
+                                <td>
+                                    {{item.REMARKS}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend"><b>Strike-off Status</b></legend>
+
+                    <p class="text-primary text-center" ng-if="StrikeOffs.length==0">
+                        No data found.
+                    </p>
+                    <table class="table table-condensed table-bordered" ng-if="StrikeOffs.length>0">
+                        <thead>
+                            <tr>
+                                <th style="width:4%" rowspan="2">
+                                    #
+                                </th>
+                                <th style="width:40%;text-align:center;" rowspan="2">
+                                    Strike-off
+                                </th>
+                                @*<th style="width: 30%; text-align: center;" colspan="2">
+                                        Plan
+                                    </th>*@
+                                <th style="width: 46%; text-align: center;" colspan="2">
+                                    Actual Date from TNA
+                                </th>
+                                <th style="width: 10%; text-align: center;" rowspan="2">
+                                    Remarks
+                                </th>
+                            </tr>
+
+                            <tr>
+                                <th style="border-top: 1px solid #ddd;width:23%;">
+                                    Sent to Buyer
+                                </th>
+                                <th style="border-top: 1px solid #ddd; width: 23%;">
+                                    Approved
+                                </th>
+                                @*<th style="border-top: 1px solid #ddd;">
+                                        Send
+                                    </th>
+                                    <th style="border-top: 1px solid #ddd;">
+                                        Approval
+
+                                    </th>*@
+
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in StrikeOffs">
+                                <td>
+                                    {{$index+1}}
+                                </td>
+                                <td>
+                                    {{item.TA_TASK_NAME_EN}}
+                                </td>
+
+                                <td>
+                                    {{item.ACT_START_DT|date:'dd-MMM-yyyy'}}
+                                </td>
+                                <td>
+                                    {{item.ACT_END_DT|date:'dd-MMM-yyyy'}}
+                                </td>
+                                <td>
+                                    {{item.REMARKS}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+
+                <br />
+                <button class="btn btn-xs btn-warning" style="float:right;" ng-click="cancel()"> <i class="fa fa-times"></i> Close</button>
+            </div>
+        </div>
+    </div>
+</script>
+
+

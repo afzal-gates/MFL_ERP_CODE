@@ -1,0 +1,393 @@
+﻿<style>
+    /*.k-grid .k-header {
+        display: none;
+    }*/
+
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header {
+        font-size: 13px;
+    }
+</style>
+
+
+<fieldset class="custom-fieldset" ng-disabled="$parent.form.RF_ACTN_STATUS_ID==73">
+    <legend class="custom-legend"><b>Fabric Detail</b></legend>
+
+    <div class="form-group">        
+
+        <label class="control-label col-md-1"><span aria-required="true" class="required">*</span>Color</label>
+        <div class="col-md-3">
+            <select class="form-control" kendo-drop-down-list name="FAB_COLOR_ID" k-option-label="'--Select--'"
+                    ng-model="vm.fabOrder.FAB_COLOR_ID" k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'MC_COLOR_ID'"
+                    k-options="vm.colorListOption" k-data-source="vm.colorListDataSource" k-filter="'contains'" k-auto-bind="'true'"
+                    k-on-change=""></select>
+        </div>
+
+        <label class="control-label col-md-1">Fabric</label>
+        <div class="col-md-7">
+            <select class="form-control" kendo-drop-down-list name="MC_STYLE_D_FAB_ID" k-option-label="'--Select--'"
+                    ng-model="vm.fabOrder.MC_STYLE_D_FAB_ID" k-data-text-field="'FABRIC_DESC'" k-data-value-field="'MC_STYLE_D_FAB_ID'"
+                    k-options="$parent.styleFabricOption" k-data-source="$parent.styleFabricDataSource" k-filter="'contains'" k-auto-bind="'true'"
+                    k-on-change="vm.fabOnChange(kendoEvent)"></select>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        
+        <label class="control-label col-md-1"><span aria-required="true" class="required">*</span>Fib.Comp.</label>
+        <div class="col-md-3">
+            <select class="form-control" kendo-drop-down-list id="RF_FIB_COMP_ID" name="RF_FIB_COMP_ID" k-option-label="'--Select--'"
+                    ng-model="vm.fabOrder.RF_FIB_COMP_ID" k-data-text-field="'FIB_COMP_NAME'" k-data-value-field="'RF_FIB_COMP_ID'"
+                    k-options="vm.fibCompOption" k-data-source="vm.fibCompDataSource" k-filter="'contains'" k-auto-bind="'true'"
+                    k-on-change="" @*ng-disabled="true"*@></select>
+        </div>
+
+
+        <label class="control-label col-md-1"><span aria-required="true" class="required">*</span>Fab.Type</label>
+        <div class="col-md-3">
+            <select class="form-control" kendo-drop-down-list name="RF_FAB_TYPE_ID" k-option-label="'--Select--'"
+                    ng-model="vm.fabOrder.RF_FAB_TYPE_ID" k-data-text-field="'FAB_TYPE_NAME'" k-data-value-field="'RF_FAB_TYPE_ID'"
+                    k-options="vm.fabTypeOption" k-data-source="vm.fabTypeDataSource" k-filter="'contains'" k-auto-bind="'true'"
+                    k-on-change="" @*ng-disabled="true"*@></select>
+        </div>
+
+        
+        <label class="control-label col-md-1"><span aria-required="true" class="required">*</span>F.Gsm</label>
+        <div class="col-md-1">
+            <input type="text" class="form-control" name="FIN_GSM" ng-model="vm.fabOrder.FIN_GSM" ng-change="vm.onChangeFinGsm()" @*ng-disabled="true"*@ />
+        </div>
+    </div>
+
+
+    <div class="form-group">                
+        <div class="col-md-offset-1 col-md-1">
+            <label class="control-label checkbox-inline">
+                <input type="checkbox" name="IS_SLUB" ng-model="vm.fabOrder.IS_SLUB" ng-true-value="'Y'" ng-false-value="'N'" ng-change="vm.onChangeIsSlub()" /> Slub?
+            </label>
+        </div>   
+        <div class="col-md-2">
+            <label class="control-label checkbox-inline">
+                <input type="checkbox" name="IS_MELLANGE" ng-model="vm.fabOrder.IS_MELLANGE" ng-true-value="'Y'" ng-false-value="'N'" ng-change="vm.onChangeIsMellange()" /> Mellange?
+            </label>
+        </div>  
+
+        <label class="control-label col-md-1">SP Instruc.</label>
+        <div class="col-md-7">
+            <input type="text" class="form-control" name="SP_INSTRUCTION" ng-model="vm.fabOrder.SP_INSTRUCTION" />
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        
+
+        <label class="control-label col-md-1">Finish Dia</label>
+        <div class="col-md-1">
+            <input type="text" class="form-control" name="FIN_DIA" ng-model="vm.fabOrder.FIN_DIA" ng-change="vm.onChangeFinDia()" />
+        </div>
+
+        <div class="col-md-1">
+            <select class="form-control" kendo-drop-down-list name="DIA_MOU_ID" k-option-label="'--Select--'"
+                    ng-model="vm.fabOrder.DIA_MOU_ID" k-data-text-field="'MOU_CODE'" k-data-value-field="'RF_MOU_ID'"
+                    k-options="vm.diaMouOption" k-data-source="vm.diaMouDataSource" k-filter="'contains'" k-auto-bind="'true'"
+                    k-on-change="" ng-change="vm.onChangeFinDia()"></select>
+        </div>
+        <div class="col-md-1">
+            <select class="form-control" kendo-drop-down-list name="LK_DIA_TYPE_ID" k-option-label="'--Select--'"
+                    ng-model="vm.fabOrder.LK_DIA_TYPE_ID" k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'"
+                    k-options="vm.diaTypeOption" k-data-source="vm.diaTypeDataSource" k-filter="'contains'" k-auto-bind="'true'"
+                    k-on-change="" ng-change="vm.onChangeFinDia()"></select>
+        </div>
+
+        
+        <label class="control-label col-md-1"><span aria-required="true" class="required">*</span>Fab.Qty(Kg)</label>
+        <div class="col-md-1">
+            <input type="number" class="form-control" name="RQD_FAB_QTY" ng-model="vm.fabOrder.RQD_FAB_QTY" min="1" ng-change="vm.onChangeNetFfQty()" />
+        </div>
+
+        <div class="col-md-4">
+            <button type='button' class='btn btn-xs blue' ng-click='vm.addRow(vm.fabOrder)' ng-show="vm.isAddToGrid == 'Y'"
+                    ng-disabled="!vm.fabOrder.FAB_COLOR_ID||!vm.fabOrder.RF_FAB_TYPE_ID||!vm.fabOrder.RF_FIB_COMP_ID||!vm.fabOrder.RQD_FAB_QTY||vm.fabOrder.RQD_FAB_QTY<1">
+                Add To Grid
+            </button>
+            <button type='button' class='btn btn-xs yellow-gold' ng-click='vm.updateFabOrder(vm.fabOrder)' ng-show="vm.isAddToGrid == 'N'"
+                    ng-disabled="!vm.fabOrder.FAB_COLOR_ID||!vm.fabOrder.RF_FAB_TYPE_ID||!vm.fabOrder.RF_FIB_COMP_ID||!vm.fabOrder.RQD_FAB_QTY||vm.fabOrder.RQD_FAB_QTY<1">
+                Update To Grid
+            </button>
+            <button class="btn btn-xs blue" ng-click="vm.cancelToGrid()" ng-show="vm.isAddToGrid=='N'">Cancel</button>
+        </div>
+
+    </div>
+
+
+    
+
+    @*<pre>{{vm.fabOrder|json}}</pre>*@
+
+    <div class="form-group">
+        <div class="col-md-12">
+            <kendo-grid k-options="vm.fabOrderGridOption" k-data-source="vm.fabOrderGridDataSource" style="padding-top:0px;"></kendo-grid>
+        </div>
+    </div>
+
+</fieldset>
+
+
+@*<pre>{{$parent.form|json}}</pre>*@
+
+<div class="col-md-12" style="padding-top:5px">
+    <div class="form-group">
+
+        <button type="button" class="btn btn-sm green" ng-click="vm.batchSave('N')" ng-show="$parent.form.KNT_GEN_FAB_REQ_H_ID<1"
+                ng-class="{'disabled':!$parent.frmFabBk4Labdip.$valid || vm.fabOrderGridDataSource.data().length<1}">
+            Save
+        </button>
+        <button type="button" class="btn btn-sm yellow-gold" ng-click="vm.batchSave('N')" ng-show="$parent.form.KNT_GEN_FAB_REQ_H_ID>0"
+                ng-class="{'disabled':!$parent.frmFabBk4Labdip.$valid||$parent.form.RF_ACTN_STATUS_ID==73}">
+            Update
+        </button>
+
+        @*<button type="button" class="btn btn-sm blue" ng-click="vm.cancel()">Cancel</button>*@
+        <a class="btn btn-sm blue" href="/Knitting/Knit/FabBk4Labdip?a=365/#/fabBk4Labdip/0/dtl">Cancel</a>
+
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="button" class="btn btn-sm blue-hoki" ng-click="vm.backToList()">Back to List</button>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        @*<button type="button" class="btn btn-sm blue" ng-click="vm.printBill()" ng-disabled="$parent.form.KNT_GEN_FAB_REQ_H_ID<1">Print</button>*@
+        <button type="button" class="btn btn-sm blue" ng-click="vm.batchSave('Y')" ng-show="$parent.form.KNT_GEN_FAB_REQ_H_ID>0" ng-disabled="$parent.form.RF_ACTN_STATUS_ID==73">Finalize</button>
+       
+    </div>
+</div>
+
+
+
+<script type="text/ng-template" id="NewColourEntryModal.html">
+    <input id="access_token" data-ng-model="token" type="hidden"
+           data-ng-init="token='@Session["access_token"]'" />
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h3 class="title">
+                        New Colour Entry
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel(vm.form)"></i></span>
+                    </h3>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="ColourMasterForm" novalidate>
+
+                    <div class="form-body clearfix">
+                        <div class="row" style="margin:auto;padding-top:10px;">
+
+
+                            <input id="access_token" data-ng-model="token" type="hidden"
+                                   data-ng-init="token='@Session["access_token"]'" />
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">
+                                    Colour Code
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" name="COLOR_CODE" ng-model="vm.form.COLOR_CODE" class="form-control" readonly />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">
+                                    <span aria-required="true" class="required">*</span>
+                                    Colour Type
+                                </label>
+                                <div class="col-md-2">
+                                    <select kendo-drop-down-list name="LK_COL_TYPE_ID" class="form-control"
+                                            options="vm.ColourTypelist" id="LK_COL_TYPE_ID" ng-model="vm.form.LK_COL_TYPE_ID" required></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-5 col-md-offset-4">
+                                    <div ng-messages="ColourMasterForm.LK_COL_TYPE_ID.$error" ng-if="ColourMasterForm.$submitted || ColourMasterForm.LK_COL_TYPE_ID.$touched">
+                                        <div ng-message="required" class="field-validation-error">Please select Colour Type.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-if="vm.form.LK_COL_TYPE_ID==361">
+                                <label class="col-md-4 control-label">
+                                    <span aria-required="true" class="required">*</span>
+                                    AOP Base Colour
+                                </label>
+                                <div class="col-md-5">
+                                    <select kendo-drop-down-list name="AOP_BASE_COL_ID" class="form-control"
+                                            options="vm.AllColourlist" id="AOP_BASE_COL_ID" ng-model="vm.form.AOP_BASE_COL_ID" required></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-if="vm.form.LK_COL_TYPE_ID==361">
+                                <div class="col-md-5 col-md-offset-4">
+                                    <div ng-messages="ColourMasterForm.AOP_BASE_COL_ID.$error" ng-if="ColourMasterForm.$submitted || ColourMasterForm.AOP_BASE_COL_ID.$touched">
+                                        <div ng-message="required" class="field-validation-error">Please select  AOP Base Colour.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-if="vm.form.LK_COL_TYPE_ID==361">
+                                <label class="col-md-4 control-label">
+                                    AOP Print Colour
+                                </label>
+                                <div class="col-md-7">
+                                    <oi-select oi-options="item.COLOR_NAME_EN for item in vm.ColourList track by item.MC_COLOR_ID"
+                                               ng-model="vm.form.AOP_PRNT_COL_LST"
+                                               name="AOP_PRNT_COL_LST"
+                                               style="border: 1px solid #898383;"
+                                               multiple
+                                               placeholder="Search...">
+                                    </oi-select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-if="vm.form.LK_COL_TYPE_ID==360 || vm.form.LK_COL_TYPE_ID == 432">
+                                <label class="col-md-4 control-label">
+                                    <span aria-required="true" class="required">*</span>
+                                    {{vm.form.LK_COL_TYPE_ID==360?'Y/D':'Mixed'}} Colour
+                                </label>
+                                <div class="col-md-7">
+                                    <oi-select oi-options="item.COLOR_NAME_EN for item in vm.ColourList track by item.MC_COLOR_ID"
+                                               ng-model="vm.form.YD_COL_LST"
+                                               name="YD_COL_LST"
+                                               style="border: 1px solid #898383;"
+                                               multiple
+                                               placeholder="Search..." required>
+                                    </oi-select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">
+                                    <span aria-required="true" class="required">*</span>
+                                    Colour Name(En)
+                                </label>
+                                <div class="col-md-7">
+                                    <input type="text" name="COLOR_NAME_EN" ng-minlength="3" ng-model="vm.form.COLOR_NAME_EN" class="form-control" required />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-5 col-md-offset-4">
+                                    <div ng-messages="ColourMasterForm.COLOR_NAME_EN.$error" ng-if="ColourMasterForm.$submitted || ColourMasterForm.COLOR_NAME_EN.$touched">
+                                        <div ng-message="required" class="field-validation-error">The field Colour Name(En) is required</div>
+                                        <div ng-message="minlength" class="field-validation-error">The field Colour Name(En) can't be shorter than 3 characters</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">
+                                    Colour Group
+                                </label>
+                                <div class="col-md-4">
+                                    <select kendo-drop-down-list name="MC_COLOR_GRP_ID" class="form-control"
+                                            options="vm.ColourGroupList" id="MC_COLOR_GRP_ID" ng-model="vm.form.MC_COLOR_GRP_ID"></select>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">
+                                    Panton #
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" name="PANTON_NO" ng-model="vm.form.PANTON_NO" class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">
+                                    Colour Ref#
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" name="COLOR_REF" ng-model="vm.form.COLOR_REF" class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" style="padding-top: 8px;">
+                                    Swatch Provided ?
+                                </label>
+                                <div class="col-md-1">
+                                    <div class="checkbox-list">
+                                        <label class="checkbox-inline" style="margin-left:20px;">
+                                            <span><input type="checkbox" style="margin-top:0px;" ng-model="vm.form.IS_SWATCH" ng-true-value="'Y'" ng-false-value="'N'"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-if="vm.form.IS_SWATCH=='Y'">
+                                <label class="col-md-4 control-label" style="padding-top: 8px;">
+                                    Swatch Image
+                                </label>
+
+                                <div class="col-md-2" style="padding-top:3px;">
+
+                                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                                        <div class="input-group">
+
+                                            <div class="form-control uneditable-input span2" data-trigger="fileinput" style="padding-top: 0px;padding-bottom: 0px;height: 26px;width:30px;">
+                                                <i class="fa fa-file fileinput-exists"></i>&nbsp; <span class="fileinput-filename"></span>
+                                            </div>
+                                            <span class="input-group-addon btn default btn-file" style="padding-bottom: 0px;padding-top: 0px;">
+                                                <span class="fileinput-new btn-circle">
+                                                    <i class="fa fa-paperclip"></i>
+                                                </span>
+                                                <span class="fileinput-exists">
+                                                    <i class="fa fa-exchange"></i>
+                                                </span>
+                                                <input type="hidden" value="" name="..."><input type="file" name="" accept="image/*" data-ak-file-model="vm.form.ATT_FILE">
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" style="padding-top: 8px;">
+                                    Is Active ?
+                                </label>
+                                <div class="col-md-1">
+                                    <div class="checkbox-list">
+                                        <label class="checkbox-inline" style="margin-left:20px;">
+                                            <span><input type="checkbox" style="margin-top:0px;" ng-model="vm.form.IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-5 col-md-offset-4">
+                                <button type="button" ng-if="vm.form.MC_COLOR_ID" ng-click="vm.submitData(vm.form,token)" class="btn btn-sm yellow-gold" ng-class="{'disabled':!ColourMasterForm.$valid}">Update</button>
+                                <button type="button" ng-if="!vm.form.MC_COLOR_ID" ng-click="vm.submitData(vm.form,token)" class="btn btn-sm green" ng-class="{'disabled':!ColourMasterForm.$valid}">Save</button>
+                                <button type="button" class="btn btn-sm default" ng-click="cancel(vm.form)">Cancel</button>
+                            </div>
+
+                        </div>
+
+                        <div class="row" style="margin:auto;padding-top:10px;" ng-if="vm.errors">
+                            <div class="alert alert-warning" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                                <ul ng-repeat="field in vm.errors">
+                                    <li ng-repeat="error in field" ng-bind="error"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>

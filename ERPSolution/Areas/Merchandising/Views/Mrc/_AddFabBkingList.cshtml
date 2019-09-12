@@ -1,0 +1,99 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 12px;
+    }
+
+    .k-grid-content {
+        height: 200px;
+    }
+</style>
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Knitting</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" >
+            <div class="col-md-12">
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend"></legend>
+                    <div class="form-group">
+                        <label class="control-label col-md-1">
+                            Buyer A/C
+                        </label>
+                        <div class="col-md-3">
+                            @*<select kendo-drop-down-list name="MC_BYR_ACC_GRP_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                    k-options="vm.buyerAcGrpList" ng-model="vm.form.MC_BYR_ACC_GRP_ID"
+                                    k-data-text-field="'BYR_ACC_GRP_NAME_EN'" k-data-value-field="'MC_BYR_ACC_GRP_ID'"
+                                    k-auto-bind="'true'"></select>*@
+
+                            <select kendo-drop-down-list name="MC_BYR_ACC_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                    k-options="vm.buyerAcList" ng-model="vm.form.MC_BYR_ACC_ID"
+                                    k-data-text-field="'BYR_ACC_NAME_EN'" k-data-value-field="'MC_BYR_ACC_ID'"
+                                    k-auto-bind="'true'" ></select>
+                        </div>
+
+                        <label class="control-label col-md-1">
+                            <span aria-required="true" class="required">*</span>Style/Ord#
+                        </label>
+                        <div class="col-md-3" style="padding-right:0px">
+                            <select kendo-drop-down-list name="MC_STYLE_H_EXT_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                    k-template="vm.styleExtTemplate" k-value-template="vm.styleExtValueTemplate"
+                                    k-options="vm.styleExtOption" k-data-source="vm.styleExtDataSource" ng-model="vm.form.MC_STYLE_H_EXT_ID"
+                                    k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_STYLE_H_EXT_ID'"
+                                    k-auto-bind="'true'"></select>
+                        </div>
+
+
+                        <div class="col-md-1">
+                            <button class="btn btn-sm blue" ng-click="vm.getAdditionalBkingList()" @*ng-disabled="vm.form.MC_BYR_ACC_ID==null||vm.form.MC_BYR_ACC_ID==''"*@>Show</button>
+                        </div>
+
+                        <div class="col-md-2" ng-show="vm.isVisableAddBtn=='Y'">
+                            <a class="btn btn-sm blue" href="/Merchandising/Mrc/AddFabBking?a=360/#/addFabBkingH/0/dtl"><i class="fa fa-plus"></i> Add New</a>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            
+            <div class="col-md-12" style="padding-top:5px;">                
+                <div kendo-grid k-options="vm.additionalBkingGridOption" k-data-source="vm.additionalBkingGridDataSource"></div>
+            </div>
+        </div>
+        <br />
+    </div>
+</div>
+

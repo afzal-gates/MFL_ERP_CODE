@@ -1,0 +1,151 @@
+﻿@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Hr</a>
+
+    </li>
+    <li>
+        <a href="#">Employee Search</a>
+    </li>
+</ul>
+
+
+<div class="portlet box blue-dark">
+
+    <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+           data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+    <div class="portlet-title">
+        <div class="caption">
+            @*<i class="fa fa-gift"></i>*@ Employee Search
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body form" >
+        <div style="padding:10px;">
+            <div class="row">
+                <div class="form-group">
+
+                    <div class="col-md-11">
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend">Search</legend>
+
+                            <label class="control-label col-md-1 col-md-offset-0" style="padding-right:0px;">
+                                Section
+                            </label>
+                            <div class="col-md-3">
+                                <select kendo-drop-down-list name="HR_DEPARTMENT_ID" class="form-control"
+                                        options="vm.sectionListData" ng-model="vm.form.HR_DEPARTMENT_ID"></select>
+                                @*<select class="form-control" name="HR_DEPARTMENT_ID" ng-model="vm.form.HR_DEPARTMENT_ID"
+                                ng-options="Item.HR_DEPARTMENT_ID as Item.DEPARTMENT_NAME_EN for Item in vm.departmentListData"></select>*@
+                            </div>
+
+                            <label class="control-label col-md-1 col-md-offset-0" style="padding-right:0px;">
+                                Status
+                            </label>
+                            <div class="col-md-2" style="padding-left:0px;">
+                                <select class="form-control" name="LK_JOB_STATUS_ID" ng-model="vm.form.LK_JOB_STATUS_ID"
+                                        ng-options="Item.LOOKUP_DATA_ID as Item.LK_DATA_NAME_EN for Item in vm.jobStatusListData"></select>
+                            </div>
+
+                            <label class="control-label col-md-2 col-md-offset-0" style="padding-right:0px;">
+                                Employee Code
+                            </label>
+                            <div class="col-md-2" style="padding-left:0px;padding-right:0px;">
+                                @*<input type="text" class="form-control" ng-model="vm.form.EMPLOYEE_CODE" />*@
+                                <input type="text" ng-model="vm.form.EMPLOYEE_CODE" placeholder="Search..."
+                                       typeahead="item.EMPLOYEE_CODE as item.EMPLOYEE_CODE for item in emoloyeeAuto($viewValue)"
+                                       typeahead-min-length="3" typeahead-wait-ms="1000"
+                                       @*typeahead-on-select="onSelectItem($item)"*@ typeahead-loading="loadingLocations" class="form-control">
+                                <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+
+                            </div>
+
+                            <div class="col-md-1" style="padding-left:0px;">
+                                <button class="btn-calendar" ng-click="vm.employeeCodeSearch()">Search</button>
+                            </div>
+
+                            @*<label class="control-label col-md-1 col-md-offset-0" style="padding-right:0px;">
+                                Old Code
+                            </label>
+                            <div class="col-md-1" style="padding-left:0px;padding-right:0px;">
+                                <input type="text" class="form-control" ng-model="vm.form.OLD_EMP_CODE" />
+                            </div>
+
+                            <div class="col-md-1" style="padding-left:0px;">
+                                <button class="btn-calendar" ng-click="vm.employeeOldCodeSearch()">Search</button>
+                            </div>*@
+
+                        </fieldset>
+
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-1" style="padding-left:0px;">
+                    <a id="sample_editable_1_new" class="btn green" ng-click="vm.addNew()">
+                        Add <i class="fa fa-plus"></i>
+                    </a>
+                </div>
+
+                @*<div class="form-group" >
+
+                </div>*@
+
+
+            </div>
+
+            <p></p>
+            <div ui-view class="shuffle-animation"></div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+<div style="padding:10px;">
+    
+    
+    
+    
+    @*<div class="form-group">
+        <a id="sample_editable_1_new" class="btn green" ng-click="vm.addNew()">
+            Add New <i class="fa fa-plus"></i>
+        </a>
+    </div>*@
+    
+    
+
+    
+
+    @*<kendo-grid id="EMP_GRID" options="vm.gridOptions"></kendo-grid>*@
+    @*<div id="EMP_GRID" kendo-grid k-options="vm.gridOptions"
+         k-ng-delay="vm.gridOptions"></div>*@
+</div>
+

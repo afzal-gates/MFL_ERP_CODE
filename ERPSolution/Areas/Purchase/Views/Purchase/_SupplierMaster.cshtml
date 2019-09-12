@@ -1,0 +1,879 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Purchase</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+    <form name="formData" style="background-color: white;">
+        <div class="portlet-body">
+            <tabset>
+                <tab heading="Master Data" active="">
+
+                    <div class="row" style="margin:auto;">
+                        <div class="col-md-12" style="padding-left:5px;">
+
+                            <div class="col-md-6" style="padding-left:5px;">
+                                <fieldset class="custom-fieldset">
+                                    <legend class="custom-legend"><b>Master Data</b></legend>
+
+                                    <div class="row" style="padding-left: 5px; padding-right: 5px;">
+
+                                        <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" style="text-align: right;">
+                                                    <span aria-required="true" class="required"></span>
+                                                    Supplier Code
+                                                </label>
+                                                <div class="col-md-8" style="padding-left:15px;">
+                                                    <input type="text" style="width: 100px;" name="SUP_CODE" readonly="readonly" ng-model="vm.form.SUP_CODE" class="form-control" tabindex="1" />
+                                                    <input type="hidden" style="width: 100px;" name="SCM_SUPPLIER_ID" ng-model="vm.form.SCM_SUPPLIER_ID" class="form-control" />
+                                                    <input type="hidden" style="width: 100px;" name="ADDRESS_DEFA" ng-model="vm.form.ADDRESS_DEFA" class="form-control" />
+                                                    <input type="hidden" style="width: 100px;" name="CP_DEFA" ng-model="vm.form.CP_DEFA" class="form-control" />
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div style="padding:3px;">
+                                        </div>
+                                        <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" style="text-align: right;">
+                                                    <span aria-required="true" class="required">*</span>
+                                                    Trade Name(EN)
+                                                </label>
+                                                <div class="col-md-8" style="padding-left: 15px;">
+                                                    <input type="text" id="SUP_TRD_NAME_EN" ng-model="vm.form.SUP_TRD_NAME_EN" ng-change="vm.SupplierOfficeName();" class="form-control required" required tabindex="2" />
+                                                    <div ng-messages="fromData.SUP_TRD_NAME_EN.$error" ng-if="fromData.$submitted || fromData.SUP_TRD_NAME_EN.$touched">
+                                                        <div ng-message="required" class="field-validation-error">The field supplier trade name is required</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        @*<div style="padding:3px;">
+                                            </div>
+                                            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label" style="text-align: right;">
+                                                        <span aria-required="true" class="required"></span>
+                                                        Supplier Trade Name (BN)
+                                                    </label>
+                                                    <div class="col-md-8" style="padding-left: 15px;">
+                                                        <input type="text" name="SUP_TRD_NAME_BN" ng-model="vm.form.SUP_TRD_NAME_BN" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>*@
+
+                                        <div style="padding:3px;">
+                                        </div>
+                                        <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" style="text-align: right;">
+                                                    <span aria-required="true" class="required">*</span>
+                                                    Owner Name
+                                                </label>
+                                                <div class="col-md-8" style="padding-left: 15px;">
+                                                    <input type="text" name="SUP_OWNER_NAME" ng-model="vm.form.SUP_OWNER_NAME" class="form-control required" tabindex="3" required />
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div style="padding:3px;">
+                                        </div>
+                                        <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" style=" text-align: right;">
+                                                    <span aria-required="true" class="required">*</span>
+                                                    Short Name
+                                                </label>
+                                                <div class="col-md-8" style="padding-left: 15px;">
+                                                    <input type="text" name="SUP_SNAME" ng-model="vm.form.SUP_SNAME" class="form-control required" tabindex="4" required />
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div style="padding:3px;">
+                                        </div>
+                                        <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" style=" text-align: right;">
+                                                    <span aria-required="true" class="required">*</span>
+                                                    Supplier Group
+                                                </label>
+                                                <div class="col-md-8" style="padding-left: 15px;">
+                                                    <select kendo-drop-down-list name="LK_SUP_TYPE_ID" id="LK_SUP_TYPE_ID" class="form-control required"
+                                                            options="vm.supplierTypeList" ng-model="vm.form.LK_SUP_TYPE_ID" tabindex="5" required></select>
+                                                    <div ng-messages="formData.LK_SUP_TYPE_ID.$error" ng-if="formData.$submitted || formData.LK_SUP_TYPE_ID.$touched">
+                                                        <div ng-message="required" class="field-validation-error">Please select type</div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div style="padding:3px;">
+                                        </div>
+                                        <div class="row" style="padding-left: 5px; padding-right: 5px; height: auto;">
+                                            <div class="form-group" style="height:auto;">
+                                                <label class="col-md-4 control-label" style="text-align: right;">
+                                                    <span aria-required="true" class="required">*</span>
+                                                    Supplier Type
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <div class="radio-list" style="margin-left:20px">
+                                                        <label class="radio-inline" ng-repeat="item in vm.officeType">
+                                                            <span class="checked"><input type="radio" ng-model="vm.form.IS_LOCAL" name="IS_LOCAL" ng-value="item.LOCAL_ID" tabindex="6" ng-click="vm.CountryAssign();" required></span>{{item.TYPE}}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="padding:3px;">
+                                        </div>
+                                        <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" style="text-align: right;">
+                                                    <span aria-required="true" class="required">*</span>
+                                                    Country of Origin
+                                                </label>
+                                                <div class="col-md-8" style=" padding-left:15px;">
+
+                                                    <select kendo-drop-down-list name="HR_COUNTRY_ID" id="HR_COUNTRY_ID" class="form-control required"
+                                                            options="vm.CountryList" ng-model="vm.form.HR_COUNTRY_ID" k-on-change="vm.HRCOUNTRYID();" tabindex="7" required></select>
+                                                    <div ng-messages="formData.HR_COUNTRY_ID.$error" ng-if="formData.$submitted || formData.HR_COUNTRY_ID.$touched">
+                                                        <div ng-message="required" class="field-validation-error">Please select Country</div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div style="padding:3px;">
+                                        </div>
+                                        <div class="row" style="padding-left: 5px; padding-right: 5px; height: auto;">
+                                            <div class="form-group" style="height:auto;">
+                                                <label class="col-md-4 control-label" style="text-align: right;">
+                                                    VAT Reg #
+                                                </label>
+                                                <div class="col-md-4" style="padding-left:15px;">
+                                                    <input type="text" name="VAT_REG_NO" ng-model="vm.form.VAT_REG_NO" class="form-control" tabindex="8" />
+                                                </div>
+
+                                                <label class="col-md-1 control-label" style="text-align: right;">
+                                                    TIN#
+                                                </label>
+                                                <div class="col-md-3" style="padding-left:15px; text-align:left; height:auto;">
+                                                    <input type="text" name="TIN_NO" ng-model="vm.form.TIN_NO" class="form-control" tabindex="9" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div style="padding:3px;">
+                                        </div>
+                                        <div class="row" style="padding-left: 5px; padding-right: 5px; height: auto;">
+                                            <div class="form-group" style="height:auto;">
+                                                <label class="col-md-4 control-label" style="text-align: right;">
+                                                    IRC#
+                                                </label>
+                                                <div class="col-md-4" style="padding-left:15px;">
+                                                    <input type="text" name="IRC_NO" ng-model="vm.form.IRC_NO" class="form-control" tabindex="10" />
+                                                </div>
+
+                                                <label class="col-md-1 control-label" style="text-align: right;">
+                                                    ERC#
+                                                </label>
+                                                <div class="col-md-3" style="padding-left:15px; text-align:left; height:auto;">
+                                                    <input type="text" name="ERC_NO" ng-model="vm.form.ERC_NO" class="form-control" tabindex="11" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div style="padding:3px;">
+                                        </div>
+                                        <div class="row" style="padding-left: 5px; padding-right: 5px; height: auto;">
+                                            <div class="form-group" style="height:auto;">
+                                                <label class="col-md-4 control-label" style="text-align: right;">
+                                                    Insurence Coverage #
+                                                </label>
+                                                <div class="col-md-8" style="padding-left:15px;">
+                                                    <input type="text" name="INSR_COVG_NO" ng-model="vm.form.INSR_COVG_NO" class="form-control" tabindex="12" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div style="padding:3px;">
+                                        </div>
+                                        <div class="row" style="padding-left: 5px; padding-right: 5px; height: auto;">
+                                            <div class="form-group" style="height:auto;">
+                                                <label class="col-md-4 control-label" style="text-align: right;">
+                                                    Credit Limit(%)
+                                                </label>
+                                                <div class="col-md-4" style="padding-left:15px;">
+                                                    <input type="number" name="PCT_CREDIT_LMT" ng-model="vm.form.PCT_CREDIT_LMT" min="0" class="form-control" tabindex="13" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @*<div style="padding:3px;">
+                                            </div>
+                                            <div class="row" style="padding-left: 5px; padding-right: 5px; height: auto;">
+                                                <div class="form-group" style="height:auto;">
+                                                    <label class="col-md-4 control-label" style="text-align: right;">
+                                                        <span aria-required="true" class="required">*</span>
+                                                        Goods/Services
+                                                    </label>
+                                                    <div class="col-md-8" style="padding-left:15px; text-align:left; height:auto;">
+                                                        <select kendo-multi-select options='vm.itemCategoryList' id="INV_ITEM_CAT_ID_LST" style="border: 1px solid #898383;" ng-model='vm.form.INV_ITEM_CAT_ID_LST' class='required'></select>
+
+                                                    </div>
+                                                </div>
+                                            </div>*@
+                                        <div style="padding:3px;">
+                                        </div>
+
+                                    </div>
+                                </fieldset>
+
+                                <fieldset class="custom-fieldset">
+                                    <legend class="custom-legend"><b>Contact Person</b></legend>
+                                    <div><label id="lblMsgSub2"></label></div>
+                                    <div class="row" style="padding-left: 5px; padding-right: 5px;">
+
+                                        <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" style="text-align: right;">
+                                                    <span aria-required="true" class="required">*</span>
+                                                    Contact Type
+                                                </label>
+                                                <div class="col-md-8" style="padding-left:15px;">
+                                                    <select kendo-drop-down-list name="LK_CP_TYPE_ID" id="LK_CP_TYPE_ID" class="form-control requiredSub2"
+                                                            options="vm.contactTypeList" ng-model="vm.contact.LK_CP_TYPE_ID" tabindex="29"></select>
+                                                    <input type="hidden" name="SCM_SUP_CP_ID" ng-model="vm.contact.SCM_SUP_CP_ID" class="form-control" />
+                                                    <input type="hidden" name="SCM_SUP_ADDRESS_ID" ng-model="vm.contact.SCM_SUP_ADDRESS_ID" class="form-control" />
+                                                    <input type="hidden" id="SCM_SUP_OFFICE" ng-model="vm.contact.SCM_SUP_OFFICE" class="form-control" />
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div style="padding:3px;">
+                                        </div>
+                                        <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" style="text-align: right;">
+                                                    <span aria-required="true" class="required">*</span>
+                                                    Contact Name (EN)
+                                                </label>
+                                                <div class="col-md-8" style="padding-left:15px;">
+                                                    <input type="text" name="CP_NAME_EN" ng-model="vm.contact.CP_NAME_EN" class="form-control requiredSub2" tabindex="30" />
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div style="padding:3px;">
+                                        </div>
+                                        <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" style="text-align: right;">
+                                                    <span aria-required="true" class="required"></span>
+                                                    Designation
+                                                </label>
+                                                <div class="col-md-8" style="padding-left:15px;">
+                                                    <input type="text" name="CP_DESIG" ng-model="vm.contact.CP_DESIG" class="form-control" tabindex="31" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div style="padding:3px;">
+                                        </div>
+                                        <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" style="text-align: right;">
+                                                    <span aria-required="true" class="required"></span>
+                                                    Land Phone
+                                                </label>
+                                                <div class="col-md-8" style="padding-left:15px;">
+                                                    <input type="text" id="CP_WORK_PHONE" ng-model="vm.contact.CP_WORK_PHONE" class="form-control" tabindex="32" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div style="padding:3px;">
+                                        </div>
+                                        <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" style="text-align: right;">
+                                                    <span aria-required="true" class="required"></span>
+                                                    Cell Phone
+                                                </label>
+                                                <div class="col-md-8" style="padding-left:15px;">
+                                                    <input type="text" id="CP_MOB_PHONE" ng-model="vm.contact.CP_MOB_PHONE" class="form-control" tabindex="33" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div style="padding:3px;">
+                                        </div>
+                                        <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" style="text-align: right;">
+                                                    <span aria-required="true" class="required"></span>
+                                                    E-mail ID
+                                                </label>
+                                                <div class="col-md-8" style="padding-left:15px;">
+                                                    <input type="email" name="CP_EMAIL_ID" ng-model="vm.contact.CP_EMAIL_ID" class="form-control" tabindex="34" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="padding:3px;">
+                                        </div>
+
+                                        <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" style="text-align: right;">
+                                                    <span aria-required="true" class="required"></span>
+                                                    Is Default?
+                                                </label>
+                                                <div class="col-md-1" style="padding-left:15px; text-align:left;">
+                                                    <input type="checkbox" name="IS_DEFAULT" ng-model="vm.contact.IS_DEFAULT" ng-true-value="'Y'" ng-false-value="'N'" class="" tabindex="35" />
+                                                </div>
+
+                                                <label class="col-md-4 control-label" style="text-align: right;">
+                                                    <span aria-required="true" class="required"></span>
+                                                    Is Active?
+                                                </label>
+                                                <div class="col-md-1" style="padding-left:15px; text-align:left;">
+                                                    <input type="checkbox" name="IS_ACTIVE" ng-model="vm.contact.IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'" class="" tabindex="36" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="padding-left: 5px; padding-right: 5px; padding-top:5px; text-align:center;">
+                                            <button type="button" ng-if="vm.contact.uid" class="btn btn-sm yellow" tabindex="37" ng-click="vm.submitContactData(formContact.$valid)">Update to Grid</button>
+                                            <button type="button" ng-if="!vm.contact.uid" class="btn btn-sm green" tabindex="37" ng-click="vm.submitContactData(formContact.$valid)">Add to Grid</button>
+                                            <button type="button" class="btn btn-sm default" tabindex="38" ng-click="vm.resetContact()">Clear</button>
+                                        </div>
+                                        <div style="padding:3px;">
+                                        </div>
+                                        <div style="padding:2px;">
+                                            <div kendo-grid k-options="vm.gridOptionsContact" style="border-color:black;" id="IDHeaderContact" k-data-source="vm.contactList"></div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+
+
+                            </div>
+                            <div class="col-md-6" style="padding-left:5px;">
+                                <ng-form name="formAddress">
+                                    <fieldset class="custom-fieldset">
+                                        <legend class="custom-legend"><b>Address Info</b></legend>
+                                        <div><label id="lblMsgSub"></label></div>
+                                        <div class="row" style="padding-left: 5px; padding-right: 5px;">
+
+                                            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label" style="text-align: right;">
+                                                        <span aria-required="true" class="required">*</span>
+                                                        Office Name
+                                                    </label>
+                                                    <div class="col-md-8" style="padding-left:15px;">
+                                                        <input type="text" id="SUP_OFFICE_NAME" ng-model="vm.address.SUP_OFFICE_NAME" class="form-control requiredSub" ng-change="vm.OfficeNameContact();" tabindex="14" />
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div style="padding:3px;">
+                                            </div>
+                                            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label" style="text-align: right;">
+                                                        <span aria-required="true" class="required">*</span>
+                                                        Address (EN)
+                                                    </label>
+                                                    <div class="col-md-8" style="padding-left:15px;">
+                                                        <textarea name="ADDRESS_EN" ng-model="vm.address.ADDRESS_EN" class="form-control requiredSub" tabindex="15" />
+                                                        <input type="hidden" name="SCM_SUP_ADDRESS_ID" ng-model="vm.contact.SCM_SUP_ADDRESS_ID" class="form-control" />
+                                                        <input type="hidden" name="SCM_SUPPLIER_ID" ng-model="vm.contact.SCM_SUPPLIER_ID" class="form-control" />
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div style="padding:3px;">
+                                            </div>
+                                            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label" style="text-align: right;">
+                                                        <span aria-required="true" class="requiredSub"></span>
+                                                        City/Town
+                                                    </label>
+                                                    <div class="col-md-8" style="padding-left:15px;">
+                                                        <input type="text" name="CITY_NAME" ng-model="vm.address.CITY_NAME" class="form-control" tabindex="16" />
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div style="padding:3px;">
+                                            </div>
+                                            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label" style="text-align: right;">
+                                                        <span aria-required="true" class="required"></span>
+                                                        Zip/Postal Code
+                                                    </label>
+                                                    <div class="col-md-8" style="padding-left:15px;">
+                                                        <input type="text" name="POST_CODE" ng-model="vm.address.POST_CODE" class="form-control" tabindex="17" />
+                                                        @*<div ng-messages="formAddress.POST_CODE.$error" ng-if="formAddress.$submitted || formAddress.POST_CODE.$touched">
+                                                                <div ng-message="required" class="field-validation-error">Please select Zip/Postal Code</div>
+                                                            </div>*@
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div style="padding:3px;">
+                                            </div>
+                                            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label" style="text-align: right;">
+                                                        <span aria-required="true" class="required">*</span>
+                                                        Country
+                                                    </label>
+                                                    <div class="col-md-3" style="padding-left:15px;">
+                                                        <select kendo-drop-down-list name="HR_COUNTRY_ID" id="HR_COUNTRY_ID" class="form-control requiredSub"
+                                                                options="vm.CountryList" k-ng-delay="vm.CountryList" ng-model="vm.address.HR_COUNTRY_ID" tabindex="18"></select>
+                                                        <div ng-messages="formAddress.HR_COUNTRY_ID.$error" ng-if="formAddress.$submitted || formAddress.HR_COUNTRY_ID.$touched">
+                                                            <div ng-message="required" class="field-validation-error">Please select Country</div>
+                                                        </div>
+                                                    </div>
+
+                                                    @*</div>
+                                                        </div>
+                                                        <div style="padding:3px;">
+                                                        </div>
+                                                        <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                                            <div class="form-group">*@
+                                                    <label class="col-md-2 control-label" style="text-align: right; padding-left: 0px; padding-right:5px;">
+                                                        <span aria-required="true" class="required">*</span>
+                                                        Office Type
+                                                    </label>
+                                                    <div class="col-md-3" style="padding-left:0px;">
+                                                        <select kendo-drop-down-list name="LK_OFF_TYPE_ID" id="LK_OFF_TYPE_ID" class="form-control requiredSub"
+                                                                options="vm.supplierOfficeTypeList" ng-model="vm.address.LK_OFF_TYPE_ID" tabindex="19"></select>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div style="padding:3px;">
+                                            </div>
+                                            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label" style="text-align: right;">
+                                                        <span aria-required="true" class="required"></span>
+                                                        Land Phone
+                                                    </label>
+                                                    <div class="col-md-3" style="padding-left:15px;">
+                                                        <input type="text" name="WORK_PHONE" id="WORK_PHONE" ng-model="vm.address.WORK_PHONE" ng-change="vm.WORKPHONE()" class="form-control" tabindex="20" />
+                                                    </div>
+                                                    @*</div>
+                                                        </div>
+
+                                                        <div style="padding:3px;">
+                                                        </div>
+                                                        <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                                            <div class="form-group">*@
+                                                    <label class="col-md-2 control-label" style="text-align: right; padding-left: 0px; padding-right: 5px;">
+                                                        <span aria-required="true" class="required"></span>
+                                                        Cell Phone
+                                                    </label>
+                                                    <div class="col-md-3" style="padding-left:0px;">
+                                                        <input type="text" name="MOB_PHONE" id="MOB_PHONE" ng-model="vm.address.MOB_PHONE" ng-change="vm.MOBPHONE()" class="form-control" tabindex="21" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div style="padding:3px;">
+                                            </div>
+                                            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label" style="text-align: right;">
+                                                        <span aria-required="true" class="required"></span>
+                                                        Fax
+                                                    </label>
+                                                    <div class="col-md-8" style="padding-left:15px;">
+                                                        <input type="text" name="FAX_NO" ng-model="vm.address.FAX_NO" class="form-control" tabindex="22" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div style="padding:3px;">
+                                            </div>
+                                            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label" style="text-align: right;">
+                                                        <span aria-required="true" class="required"></span>
+                                                        E-mail ID
+                                                    </label>
+                                                    <div class="col-md-8" style="padding-left:15px;">
+                                                        <input type="email" name="EMAIL_ID" ng-model="vm.address.EMAIL_ID" class="form-control" tabindex="23" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div style="padding:3px;">
+                                            </div>
+                                            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label" style="text-align: right;">
+                                                        <span aria-required="true" class="required"></span>
+                                                        Web
+                                                    </label>
+                                                    <div class="col-md-8" style="padding-left:15px;">
+                                                        <input type="text" name="SUP_SNAME" ng-model="vm.address.SUP_SNAME" class="form-control" tabindex="24" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div style="padding:3px;">
+                                            </div>
+                                            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label" style="text-align: right;">
+                                                        <span aria-required="true" class="required"></span>
+                                                        Is Default?
+                                                    </label>
+                                                    <div class="col-md-1" style="padding-left:15px; text-align:left;">
+                                                        <input type="checkbox" name="IS_DEFAULT" ng-model="vm.address.IS_DEFAULT" ng-true-value="'Y'" ng-false-value="'N'" class="" tabindex="25" />
+                                                    </div>
+
+                                                    <label class="col-md-4 control-label" style="text-align: right;">
+                                                        <span aria-required="true" class="required"></span>
+                                                        Is Active?
+                                                    </label>
+                                                    <div class="col-md-1" style="padding-left:15px; text-align:left;">
+                                                        <input type="checkbox" name="IS_ACTIVE" ng-model="vm.address.IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'" class="" tabindex="26" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="padding-left: 5px; padding-right: 5px; padding-top:5px; text-align:center;">
+                                                <button type="button" ng-if="vm.address.uid" class="btn btn-sm yellow" tabindex="27" ng-click="vm.submitAddressData(formAddress.$valid)">Update to Grid</button>
+                                                <button type="button" ng-if="!vm.address.uid" class="btn btn-sm green" tabindex="27" ng-click="vm.submitAddressData(formAddress.$valid)">Add to Grid</button>
+
+                                                <button type="button" class="btn btn-sm default" tabindex="28" ng-click="vm.resetAddress()">Clear</button>
+                                            </div>
+
+                                            <div style="padding:3px;">
+                                            </div>
+                                            <div style="padding:2px;">
+                                                <div kendo-grid k-options="vm.gridOptions" id="IDAddressDS" k-data-source="vm.addressList"></div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+
+                                    <fieldset class="custom-fieldset">
+                                        <legend class="custom-legend"><b>Item & Brand Mapping</b></legend>
+                                        @*<div><label id="lblMsgSub4"></label></div>*@
+                                        <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                                <div class="form-group">
+                                                    <label class="col-md-6 control-label" style="text-align: left;">
+                                                        <span aria-required="true" class="required"></span>
+                                                        Item Category
+                                                    </label>
+                                                    <label class="col-md-6 control-label" style="text-align: left;">
+                                                        <span aria-required="true" class="required"></span>
+                                                        Brand Name
+                                                    </label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-md-6" style="padding-left:15px;">
+                                                        <select class="form-control requiredSub4" kendo-drop-down-list name="INV_ITEM_CAT_ID" id="INV_ITEM_CAT_ID" k-option-label="'-- Select Item Category--'"
+                                                                k-data-text-field="'ITEM_CAT_NAME_EN'" k-data-value-field="'INV_ITEM_CAT_ID'"
+                                                                k-auto-bind="'true'" k-data-source="vm.itemCategoryList" k-filter="'contains'" ng-model="vm.brand.INV_ITEM_CAT_ID" k-on-change="vm.getBrandListByCategory(kendoEvent)" tabindex="39"></select>
+
+                                                        <input type="hidden" ng-model="vm.brand.SCM_SUP_BRAND_ID" />
+                                                        <input type="hidden" ng-model="vm.brand.SCM_SUPPLIER_ID" />
+                                                    </div>
+
+                                                    <div class="col-md-6" style="padding-left:15px;">
+                                                        <select class="form-control requiredSub4" kendo-drop-down-list name="RF_BRAND_ID" id="RF_BRAND_ID" k-option-label="'-- Select Item Brand--'"
+                                                                k-data-text-field="'BRAND_NAME_EN'" k-data-value-field="'RF_BRAND_ID'"
+                                                                k-auto-bind="'true'" k-data-source="vm.categoryBrandList" k-filter="'contains'" ng-model="vm.brand.RF_BRAND_ID" k-on-change="vm.newBrandEntry(kendoEvent)" tabindex="40"></select>
+
+
+                                                        @*<select kendo-drop-down-list name="RF_BRAND_ID" class="form-control"
+                                                            options="vm.categoryBrandList" id="RF_BRAND_ID" ng-model="vm.brand.RF_BRAND_ID" required></select>*@
+
+                                                        @*<select class="form-control" kendo-drop-down-list name="RF_BRAND_ID" k-option-label="'-- Select Brand --'"
+                                                            k-data-text-field="'BRAND_NAME_EN'" k-data-value-field="'RF_BRAND_ID'"
+                                                            k-auto-bind="'true'" k-data-source="vm.categoryBrandList" k-filter="'contains'" ng-model="vm.brand.RF_BRAND_ID" tabindex="40"></select>*@
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div style="padding:3px;">
+                                            </div>
+
+
+                                            <div class="row" style="padding-left: 5px; padding-right: 5px; padding-top:5px; text-align:center;">
+                                                <button type="button" ng-if="vm.brand.uid" class="btn btn-sm yellow" tabindex="41" ng-click="vm.submitBrandData(formBrand.$valid)">Update to Grid</button>
+                                                <button type="button" ng-if="!vm.brand.uid" class="btn btn-sm green" tabindex="41" ng-click="vm.submitBrandData(formBrand.$valid)">Add to Grid</button>
+
+                                                <button type="button" class="btn btn-sm default" tabindex="42" ng-click="vm.resetBrand()">Clear</button>
+                                            </div>
+
+                                            <div style="padding:3px;">
+                                            </div>
+                                            <div style="padding:2px;">
+                                                <div kendo-grid k-options="vm.gridOptionsBrand" id="IDBrandDS" k-data-source="vm.brandList"></div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </ng-form>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div style="padding:3px;">
+                    </div>
+                    <div class="row" style="margin:auto;padding:5px;">
+                        <div class="col-md-12 " align="left">
+                            <button type="button" class="btn btn-sm blue" tabindex="45" ui-sref="SupplierList">Back To List</button>
+                            <button type="submit" ng-if="vm.form.SCM_SUPPLIER_ID>0" class="btn btn-sm yellow-gold" tabindex="43" ng-click="vm.submitAll(vm.form,formData.$valid);">Update</button>
+                            <button type="submit" ng-if="!vm.form.SCM_SUPPLIER_ID>0" class="btn btn-sm green" tabindex="43" ng-click="vm.submitAll(vm.form,formData.$valid);">Save</button>
+                            <button type="button" ng-if="!vm.form.SCM_SUPPLIER_ID>0" class="btn btn-sm default" tabindex="44" ng-click="vm.reset()">Cancel</button>
+                            <button type="button" ng-if="vm.form.SCM_SUPPLIER_ID>0" class="btn btn-sm default" tabindex="44" ng-click="vm.reset()">Add New Supplier</button>
+                        </div>
+                    </div>
+                </tab>
+
+                <tab heading="Bank Link" active="" ng-if="vm.form.SCM_SUPPLIER_ID>0">
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend">Bank Data</legend>
+                        <div><label id="lblMsgSub3"></label></div>
+                        <div class="row" style="padding-left: 5px; padding-right: 5px;">
+
+                            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" style="text-align: right;">
+                                        <span aria-required="true" class="required">*</span>
+                                        Bank Name
+                                    </label>
+                                    <div class="col-md-4" style="padding-left:15px;">
+
+                                        <select class="form-control requiredSub3" kendo-drop-down-list name="RF_BANK_ID" id="RF_BANK_ID" k-option-label="'-- Select Bank --'"
+                                                k-data-text-field="'BANK_NAME_EN'" k-data-value-field="'RF_BANK_ID'"
+                                                k-auto-bind="'true'" k-data-source="vm.bankListData" k-delay="vm.bankListData" k-filter="'contains'" ng-model="vm.bankInfo.RF_BANK_ID" k-on-change="vm.selectBranch(kendoEvent)"></select>
+
+
+                                    </div>
+                                    <div class="col-md-1" style="padding-left:1px;">
+                                        <button type="button" class="btn btn-sm green" style="padding:5px;" ng-click="vm.newBankAdd()">Add Bank</button>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <div style="padding:3px;">
+                            </div>
+                            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" style="text-align: right;">
+                                        <span aria-required="true" class="required">*</span>
+                                        Branch Name
+                                    </label>
+                                    <div class="col-md-4" style="padding-left:15px;">
+
+                                        <select class="form-control requiredSub3" kendo-drop-down-list name="RF_BANK_BRANCH_ID" id="RF_BANK_BRANCH_ID" k-option-label="'-- Select Bank Branch --'"
+                                                k-data-text-field="'BANK_BRANCH_NAME_EN'" k-data-value-field="'RF_BANK_BRANCH_ID'" ng-disabled="vm.bankInfo.RF_BANK_ID<1"
+                                                k-auto-bind="'true'" k-data-source="vm.branchListData" k-filter="'contains'" ng-model="vm.bankInfo.RF_BANK_BRANCH_ID" k-on-change="vm.selectBranchAddress(kendoEvent)"></select>
+
+                                        <input type="hidden" name="SCM_SUP_ADDRESS_ID" ng-model="vm.bankInfo.SCM_SUP_ADDRESS_ID" class="form-control" />
+                                        <input type="hidden" name="SCM_SUPPLIER_ID" ng-model="vm.bankInfo.SCM_SUPPLIER_ID" class="form-control" />
+
+                                    </div>
+                                    <div class="col-md-1" style="padding-left:1px;">
+                                        <button type="button" class="btn btn-sm green" style="padding:5px;" ng-click="vm.newBankBranchAdd(vm.bankInfo.RF_BANK_ID)">Add Branch</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="padding:3px;">
+                            </div>
+                            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" style="text-align: right;">
+                                        <span aria-required="true" class="requiredSub3"></span>
+                                        Address Details
+                                    </label>
+                                    <div class="col-md-5" style="padding-left:15px;">
+                                        <textarea name="ADDRESS_EN" ng-model="vm.bankInfo.BRANCH_ADDRESS_EN" readonly="readonly" class="form-control" />
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="padding:3px;">
+                            </div>
+                            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" style="text-align: right;">
+                                        <span aria-required="true" class="required">*</span>
+                                        Branch Swift Code
+                                    </label>
+                                    <div class="col-md-3" style="padding-left:15px;">
+                                        <input type="text" name="SWIFT_CODE" ng-model="vm.bankInfo.SWIFT_CODE" readonly="readonly" class="form-control" />
+
+                                    </div>
+
+                                    <label class="col-md-1 control-label" style="text-align: right; padding:5px;">
+                                        <span aria-required="true" class="required">*</span>
+                                        Ext. #
+                                    </label>
+                                    <div class="col-md-1" style="padding-left:2px;">
+                                        <input type="text" name="SWIFT_CODE_EXT" ng-model="vm.bankInfo.SWIFT_CODE_EXT" readonly="readonly" class="form-control" />
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div style="padding:3px;">
+                            </div>
+                            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" style="text-align: right;">
+                                        <span aria-required="true" class="required">*</span>
+                                        Routing #
+                                    </label>
+                                    <div class="col-md-5" style="padding-left:15px;">
+                                        <input type="text" name="ROUTING_NO" ng-model="vm.bankInfo.ROUTING_NO" readonly="readonly" class="form-control" />
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div style="padding:3px;">
+                            </div>
+                            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" style="text-align: right;">
+                                        <span aria-required="true" class="required">*</span>
+                                        Bank A/C No
+                                    </label>
+                                    <div class="col-md-3" style="padding-left:15px;">
+                                        <input type="text" name="BK_ACC_NO" ng-model="vm.bankInfo.BK_ACC_NO" class="form-control requiredSub3" />
+
+
+                                    </div>
+
+                                    <div class="col-md-2" style="padding-left:15px;">
+                                        <input type="checkbox" name="IS_AC_PAYABLE" ng-model="vm.bankInfo.IS_AC_PAYABLE" ng-true-value="'Y'" ng-false-value="'N'" />A/C Payable
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div style="padding:3px;">
+                            </div>
+                            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" style="text-align: right;">
+                                        <span aria-required="true" class="required"></span>
+                                        A/C Title
+                                    </label>
+                                    <div class="col-md-5" style="padding-left:15px;">
+                                        <input type="text" name="BK_ACC_TITLE" id="BK_ACC_TITLE" ng-model="vm.bankInfo.BK_ACC_TITLE" class="form-control requiredSub" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="padding:3px;">
+                            </div>
+                            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" style="text-align: right;">
+                                        <span aria-required="true" class="required"></span>
+                                        A/C Currency
+                                    </label>
+                                    <div class="col-md-2" style="padding-left:15px;padding-right:0px;">
+                                        <select kendo-drop-down-list id="RF_CURRENCY_ID" name="RF_CURRENCY_ID" class="form-control" @*ng-disabled="vm.isManagementType!=true"*@
+                                                options="vm.currencyList" ng-model="vm.bankInfo.RF_CURRENCY_ID"></select>
+                                    </div>
+
+                                    <label class="col-md-1 control-label" style="text-align: right;padding:0px;">
+                                        <span aria-required="true" class="required"></span>
+                                        A/C Type
+                                    </label>
+                                    <div class="col-md-2" style="padding-left:5px;">
+                                        <select kendo-drop-down-list id="LK_ACC_TYPE_ID" name="LK_ACC_TYPE_ID" class="form-control" @*ng-disabled="vm.isManagementType!=true"*@
+                                                options="vm.bankAcTypeList" ng-model="vm.bankInfo.LK_ACC_TYPE_ID"></select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="padding:3px;">
+                            </div>
+                            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" style="text-align: right;">
+                                        <span aria-required="true" class="required"></span>
+                                        Is Default?
+                                    </label>
+                                    <div class="col-md-1" style="padding-left:15px; text-align:left;">
+                                        <input type="checkbox" name="IS_DEFAULT" ng-model="vm.bankInfo.IS_DEFAULT" ng-true-value="'Y'" ng-false-value="'N'" class="" />
+                                    </div>
+
+                                    <label class="col-md-2 control-label" style="text-align: right;">
+                                        <span aria-required="true" class="required"></span>
+                                        Is Active?
+                                    </label>
+                                    <div class="col-md-1" style="padding-left:15px; text-align:left;">
+                                        <input type="checkbox" name="IS_ACTIVE" ng-model="vm.bankInfo.IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'" class="" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3">
+                                </div>
+                                <div class="col-lg-5">
+                                    <button type="button" ng-if="vm.bankInfo.uid" class="btn btn-sm yellow" ng-click="vm.submitBankData(vm.bankInfo)">Update</button>
+                                    <button type="button" ng-if="!vm.bankInfo.uid" class="btn btn-sm green" ng-click="vm.submitBankData(vm.bankInfo)">Save</button>
+
+                                    <button type="button" class="btn btn-sm default" ng-click="vm.resetBankData()">Clear</button>
+                                </div>
+                            </div>
+
+                            <div style="padding:3px;">
+                            </div>
+                            <div style="padding:2px;">
+                                <div kendo-grid k-options="vm.gridOptionsBank" id="IDBankInfoDS" k-data-source="vm.bankInfoList"></div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </tab>
+            </tabset>
+    </form>
+</div>

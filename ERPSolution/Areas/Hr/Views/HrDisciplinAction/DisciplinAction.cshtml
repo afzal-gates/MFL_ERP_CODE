@@ -1,0 +1,369 @@
+﻿@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+@*<script src="~/Client/app/directives/gm.datepickerMultiSelect.min.js"></script>*@
+
+<form name="frmDiciplinAction" novalidate class="form-horizontal" ng-submit="vm.submit(frmDiciplinAction.$valid,vm.form,vm.insert)">
+
+    <div class="form-body">
+        @*@Html.AntiForgeryToken()*@
+        <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+               data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row" style="margin:auto;" ng-show="vm.errors">
+                    <div class="alert alert-danger" role="alert">
+                        @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                        <div style="padding: 0px 0px 15px 25px; ">
+                            <b>Please fix the following errors ....</b>
+                        </div>
+                        <ul ng-repeat="field in vm.errors">
+                            <li ng-repeat="error in field" ng-bind="error"></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <fieldset class="custom-fieldset">
+                    
+                    @*<input type="text" name="HR_EMPLOYEE_ID" ng-model="vm.form.HR_EMPLOYEE_ID" />
+                    <input type="text" name="HR_COMPANY_ID" ng-model="vm.form.HR_COMPANY_ID" />
+                    <input type="text" name="RF_FISCAL_YEAR_ID" ng-model="vm.form.RF_FISCAL_YEAR_ID" />
+                    <input type="text" name="ACTION_BY_ID" ng-model="vm.form.ACTION_BY_ID" />
+                    <input type="text" name="ABSENT_DAYS" ng-model="vm.form.ABSENT_DAYS" />*@
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Action Ref. No</label>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" name="DISP_ACT_REF_NO" ng-model="vm.form.DISP_ACT_REF_NO" readonly style="background-color:blanchedalmond" />
+                                </div>
+                            </div>
+                                                        
+                            @*{{vm.form.IS_DEDUCT_SALARY4FS}}*@
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Employee Code</label>
+                                <div class="col-md-2">                                    
+                                    <input type="text" id="EMPLOYEE_CODE" ng-model="vm.form.EMPLOYEE_CODE" placeholder="Search..." @*ng-disabled="vm.isEmployee!=true"*@
+                                           typeahead="item.EMPLOYEE_CODE as item.EMPLOYEE_CODE for item in emoloyeeAuto($viewValue)"
+                                           typeahead-min-length="3" typeahead-wait-ms="1000"
+                                           typeahead-on-select="onSelectItem($item)" typeahead-loading="loadingLocationsEmp" class="form-control" />
+                                    <i ng-show="loadingLocationsEmp" class="glyphicon glyphicon-refresh"></i>
+                                </div>
+                            </div>
+                            @*<div class="form-group" ng-if="vm.errors.HR_EMPLOYEE_ID">
+                                <div class="col-md-offset-3" style="padding-left:15px;">
+                                    <div class="field-validation-error" ng-repeat="err in vm.errors.HR_EMPLOYEE_ID">
+                                        {{err}}
+                                    </div>
+                                </div>
+                            </div>*@                            
+                            <div class="form-group" ng-if="vm.form.EMP_FULL_NAME_EN!=null">
+                                <label class="col-md-3 control-label">&nbsp;</label>
+                                <div class="col-md-8" style="width:auto;">
+                                    <span class="form-control" style="background-color: hsl(0, 0%, 93%)">{{vm.form.EMP_FULL_NAME_EN}}&nbsp;</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-if="vm.form.HR_COMPANY_ID!=null">
+                                <label class="col-md-3 control-label">Effective Period</label>
+                                <div class="col-md-2">
+                                    <select kendo-drop-down-list name="RF_FISCAL_YEAR_ID" class="form-control"
+                                            options="vm.openPeriodListData" ng-model="vm.form.RF_FISCAL_YEAR_ID"></select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Effective Date</label>
+                                <div class="col-md-2 input-group">
+                                    <input type="text" class="form-control" name="EFFECTIVE_DT" ng-model="vm.form.EFFECTIVE_DT"
+                                           style="padding-right:0px;"
+                                           datepicker-popup="{{vm.dtFormat}}" is-open="vm.effectDateOpened"
+                                           max-date="vm.today"
+                                           datepicker-options="vm.dateOptions" close-text="Close" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn-calendar" ng-click="vm.effectDateOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </div>
+                               
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Action Date</label>
+                                <div class="col-md-2 input-group">
+                                    <input type="text" class="form-control" name="PROPOSED_DT" ng-model="vm.form.PROPOSED_DT"
+                                           style="padding-right:0px;"
+                                           datepicker-popup="{{vm.dtFormat}}" is-open="vm.proposeDateOpened"
+                                           max-date="vm.today"
+                                           datepicker-options="vm.dateOptions" close-text="Close" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn-calendar" ng-click="vm.proposeDateOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </div>
+                                @*{{vm.form.PROPOSED_DT}}*@
+                                @*<div class="col-md-offset-3" style="padding-left:15px;">
+                                    <div ng-if="vm.errors.PROPOSED_DT">
+                                        <div class="field-validation-error" ng-repeat="err in vm.errors.PROPOSED_DT">
+                                            {{err}}
+                                        </div>
+                                    </div>
+                                </div>*@
+                            </div>
+
+                            
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Action By</label>
+                                <div class="col-md-2">
+                                    @*<input type="text" name="ACTION_BY_ID" ng-model="vm.form.ACTION_BY_ID" />*@
+                                    <input type="text" ng-model="vm.form.PROPOSED_EMPLOYEE_CODE" placeholder="Search..." @*ng-disabled="vm.isEmployee!=true"*@
+                                           typeahead="item.EMPLOYEE_CODE as item.EMPLOYEE_CODE for item in emoloyeeAuto($viewValue)"
+                                           typeahead-min-length="3" typeahead-wait-ms="1000"
+                                           typeahead-on-select="onSelectProposeBy($item)" typeahead-loading="loadingLocations" class="form-control" />
+                                    <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>                                    
+                                </div>                                                                                                
+                            </div>                              
+                            @*<div class="form-group" ng-if="vm.errors.ACTION_BY_ID"> 
+                                <div class="col-md-offset-3" style="padding-left:15px;">
+                                    <div class="field-validation-error" ng-repeat="err in vm.errors.ACTION_BY_ID">
+                                        {{err}}
+                                    </div>
+                                </div>         
+                            </div>*@ 
+                            <div class="form-group" ng-if="vm.form.PROPOSED_EMP_FULL_NAME_EN!=null">
+                                <label class="col-md-3 control-label">&nbsp;</label>
+                                <div class="col-md-8" style="width:auto;">
+                                    <span class="form-control" style="background-color: hsl(0, 0%, 93%)">{{vm.form.PROPOSED_EMP_FULL_NAME_EN}}&nbsp;</span>
+                                </div>
+                            </div>                            
+
+                        </div>                        
+                    </div>                                        
+
+                </fieldset>
+
+            </div>
+
+        </div>
+        
+
+        <div class="row" @*ng-if="vm.form.HR_EMPLOYEE_ID!=null"*@>
+            <div class="col-md-12">
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend">Disciplinary Action Detail</legend>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Action Type</label>
+                                <div class="col-md-4">
+                                    <select kendo-drop-down-list name="HR_DSPLN_ACT_TYPE_ID" class="form-control"
+                                            options="vm.actionTypeListData" ng-model="vm.form.HR_DSPLN_ACT_TYPE_ID"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Action Description</label>
+                                <div class="col-md-6">
+                                    <textarea class="form-control" name="ACTION_DESC_EN" ng-model="vm.form.ACTION_DESC_EN" rows="2"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Reason</label>
+                                <div class="col-md-4">
+                                    <select kendo-drop-down-list name="LK_DPA_REASON_TYPE_ID" class="form-control"
+                                            options="vm.reasonTypeListData" ng-model="vm.form.LK_DPA_REASON_TYPE_ID"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Reason Description</label>
+                                <div class="col-md-6">
+                                    <textarea class="form-control" name="REASON_DESC_EN" ng-model="vm.form.REASON_DESC_EN" rows="2"></textarea>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </fieldset>
+            </div>
+
+        </div>
+        
+        <div class="row" ng-if="vm.isEffectSalaryFine==true && vm.form.hr_employee_id!=''">
+            <div class="col-md-12">
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend">Fine Deduction</legend>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            
+                            @*<div class="form-group" ng-if="vm.errors.RF_FISCAL_YEAR_ID">
+                                <div class="col-md-offset-3" style="padding-left:15px;">
+                                    <div class="field-validation-error" ng-repeat="err in vm.errors.RF_FISCAL_YEAR_ID">
+                                        {{err}}
+                                    </div>
+                                </div>
+                            </div>*@
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Deduction On</label>
+                                <div class="col-md-2">
+                                    <select kendo-drop-down-list name="IS_B_OR_G" class="form-control"
+                                            options="vm.deductionOnListData" ng-model="vm.form.IS_B_OR_G"></select>
+                                </div>
+                            </div>
+                            @*<div class="form-group" ng-if="vm.errors.IS_B_OR_G">
+                                <div class="col-md-offset-3" style="padding-left:15px;">
+                                    <div class="field-validation-error" ng-repeat="err in vm.errors.IS_B_OR_G">
+                                        {{err}}
+                                    </div>
+                                </div>
+                            </div>*@
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Based On</label>
+                                <div class="col-md-2">
+                                    <select kendo-drop-down-list name="IS_DAY_OR_AMT" class="form-control"
+                                            options="vm.deductionBaseListData" ng-model="vm.form.IS_DAY_OR_AMT"></select>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="vm.isTotalFineDisable==true">
+                                <label class="col-md-3 control-label">No of Days</label>
+                                <div class="col-md-1">
+                                    <input type="text" ui-number-mask="0" class="form-control" name="NO_DAYS" ng-model="vm.form.NO_DAYS" />
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="vm.isTotalFineDisable==true">
+                                <label class="col-md-3 control-label">&nbsp;</label>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-default" ng-click="vm.amountCalculate()">Calculate</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Total Fine Amount</label>
+                                <div class="col-md-2">
+                                    <input type="text" ui-number-mask="2" class="form-control" name="DEDU_AMT" ng-model="vm.form.DEDU_AMT" ng-disabled="vm.isTotalFineDisable==true" />
+                                </div>
+                            </div>
+                            @*<div class="form-group" ng-if="vm.errors.DEDU_AMT">
+                                <div class="col-md-offset-3" style="padding-left:15px;">
+                                    <div class="field-validation-error" ng-repeat="err in vm.errors.DEDU_AMT">
+                                        {{err}}
+                                    </div>
+                                </div>
+                            </div>*@
+
+                        </div>
+
+                    </div>
+
+                </fieldset>
+            </div>
+
+        </div>
+
+
+        <div class="row" ng-if="vm.isEffectSalaryAtten==true && vm.form.hr_employee_id!=''">
+            <div class="col-md-12">
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend">Attendance Deduction</legend>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            @*<div class="form-group">
+                                <label class="col-md-3 control-label">Effective Period</label>
+                                <div class="col-md-2 input-group">
+                                    <select kendo-drop-down-list name="RF_FISCAL_YEAR_ID" class="form-control"
+                                            options="vm.openPeriodListData" ng-model="vm.form.RF_FISCAL_YEAR_ID"></select>
+                                </div>
+                            </div>*@
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Based On</label>
+                                <div class="col-md-2">
+                                    <select kendo-drop-down-list name="IS_B_OR_G" class="form-control"
+                                            options="vm.deductionOnListData" ng-model="vm.form.IS_B_OR_G"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Days to be Absent</label>
+                                <div class="col-md-2">                                    
+                                    <datepicker multi-select='vm.selectedDates' select-range='false' name="ABSENT_DAYS" ng-model="ABSENT_DAYS"></datepicker>
+                                    @*<input type="hidden" ng-init="vm.form.ABSENT_DAYS=vm.selectedDates" ng-model="vm.form.ABSENT_DAYS" />*@
+                                    
+                                </div>
+                            </div>
+
+                            @*<pre>{{vm.selectedDates}}</pre>
+                            <pre>{{vm.form.ABSENT_DAYS}}</pre>*@
+
+                            <div class="form-group" ng-if="vm.isTotalFineDisable==true">
+                                <label class="col-md-3 control-label">&nbsp;</label>
+                                <div class="col-md-3">
+                                    <button type="button" class="btn btn-default" ng-click="vm.amountCalculate()">Calculate</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Total Fine Amount</label>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" name="DEDU_AMT" ng-model="vm.form.DEDU_AMT" readonly />
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+                </fieldset>
+            </div>
+
+        </div>              
+
+        
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-actions">
+                            @*<div class="col-md-10" style="padding-left:10px;">*@
+                                <div class="col-md-offset-3 col-md-8" >
+
+                                    <button type="submit" class="btn green" ng-if="vm.insert"><i class="fa fa-check"></i> Save</button>
+                                    <button type="submit" class="btn yellow-gold" ng-if="!vm.insert"><i class="fa fa-check"></i> Update</button>
+
+                                    <button type="button" class="btn blue" @*ng-if="TRAN_MODE==2" *@ ng-click="vm.TranCancel()">Cancel</button>
+
+                                    
+                                    @*<div class="col-md-offset-1"></div>*@
+                                    <button type="button" class="col-md-offset-1 btn btn-default" ng-click="vm.backToList()">Back To List</button>
+                                    @*<button type="button" class="btn btn-default" ng-click="vm.addNew()">Add New</button>*@
+                                </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    @*}*@
+</form>
+

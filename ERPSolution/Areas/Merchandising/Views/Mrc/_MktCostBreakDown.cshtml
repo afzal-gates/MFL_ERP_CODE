@@ -1,0 +1,210 @@
+﻿
+
+
+<div class="table-scrollable">
+    <input id="access_token" data-ng-model="token" type="hidden"
+           data-ng-init="token='@Session["access_token"]'" />
+
+    <table class="table table-condensed">
+        @*<thead>
+            <tr>
+                <th>
+                    Cost Head
+                </th>
+                <th>
+                    <table class="table table-condensed" style="padding:0px;">
+
+                        <thead>
+                            <tr>
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Otto
+                                </th>
+                                <th>
+                                    makr124
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </th>
+
+            </tr>
+        </thead>*@
+        <tbody>
+            <tr ng-repeat="item in vm.mktCostDatas" style="padding:0px;">
+                <td class="col-md-1" style="padding-top:1px;padding-bottom:1px;">
+                    {{item.COST_NAME_EN}}
+                    <input type="hidden" ng-value="item.index=$index" />
+                </td>
+                <td class="col-md-1" style="padding-top:1px;padding-bottom:1px;">
+                    <input type="checkbox" ng-model="item.Dtl" ng-change="vm.changeDetails(item)" ng-disabled="(item.items.length==0||item.items.length==1) && !item.Dtl" />
+                    <span ng-hide="(item.items.length==0||item.items.length==1) && !item.Dtl">Avg?</span>
+                </td>
+
+                <td class="col-md-10">
+                        <table class="table table-condensed" style="padding:0px;">
+                            <thead ng-if="item.index==0" style="padding:0px;">
+                                <tr style="padding:0px;">
+                                    <td class="col-md-2">
+                                        Name
+                                    </td>
+                                    <td class="col-md-1">
+                                        IsPCT?
+                                    </td>
+
+                                    <td class="col-md-1">
+                                        Cons.
+                                    </td>
+                                    <td class="col-md-1">
+                                        Cons.Unt
+                                    </td>
+
+                                    <td class="col-md-1">
+                                        Rate
+                                    </td>
+
+                                    <td class="col-md-1">
+                                        Pur.Unt
+                                    </td>
+
+                                    <td class="col-md-1">
+                                        % Cost
+                                    </td>
+                                    <td class="col-md-2">
+                                        Amount
+                                    </td>
+                                    <td class="col-md-2">
+                                        Remarks
+                                    </td>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                   <tr ng-repeat="itm in item.items" style="padding:0px;">
+                                        <td class="col-md-2" style="padding-top:1px;padding-bottom:1px;">
+                                            {{itm.COST_NAME_EN}}
+                                        </td>
+                                        <td class="col-md-1" style="padding-top:1px;padding-bottom:1px;">
+                                            <input type="checkbox" ng-model="itm.IS_PCT" ng-true-value="'Y'" ng-false-value="'N'" ng-disabled="itm.PARENT_ID!=2" />
+                                        </td>
+                                        <td class="col-md-1" style="padding-top:1px;padding-bottom:1px;">
+                                            <input type="number" class="form-control" min="0" ng-model="itm.QTY_CONS"/>
+                                        </td>
+                                        <td class="col-md-1" style="padding-top:1px;padding-bottom:1px;">
+                                            <select kendo-drop-down-list
+                                                    options="vm.MOUList" ng-model="itm.CONS_MOU_ID" class="form-control"></select>
+                                        </td>
+
+                                        <td class="col-md-1" style="padding-top:1px;padding-bottom:1px;">
+                                            <input type="number" class="form-control" min="0" ng-model="itm.RATE_CONS" />
+                                        </td>
+
+                                        <td class="col-md-1" style="padding-top:1px;padding-bottom:1px;">
+
+                                            <select kendo-drop-down-list
+                                                    options="vm.MOUList" ng-model="itm.PURCH_MOU_ID" class="form-control"></select>
+
+                                        </td>
+
+                                        <td class="col-md-1" style="padding-top:1px;padding-bottom:1px;">
+
+                                            <input type="number" class="form-control" min="0" ng-model="itm.PCT_COST" ng-disabled="itm.PARENT_ID!=2" />
+                                        </td>
+                                       <td class="col-md-2" style="padding-top:1px;padding-bottom:1px;">
+
+                                           <input type="number" class="form-control" min="0" ng-model="itm.HEAD_COST" readonly />
+                                       </td>
+                                        <td class="col-md-2" style="padding-top:1px;padding-bottom:1px;">
+
+                                            <input type="text" class="form-control" min="0" ng-model="itm.REMARKS" />
+                                        </td>
+                                 </tr>
+
+                                <tr ng-if="item.items.length==0" style="padding:0px;">
+                                    <td class="col-md-2" style="padding-top:1px;padding-bottom:1px;"></td>
+                                    <td class="col-md-1" style="padding-top:1px;padding-bottom:1px;">
+                                        <input type="checkbox" ng-model="item.IS_PCT" ng-true-value="'Y'" ng-false-value="'N'" ng-disabled="item.PARENT_ID!=2" />
+                                    </td>
+                                    <td class="col-md-1" style="padding-top:1px;padding-bottom:1px;">
+                                        <input type="number" class="form-control" min="0" ng-model="item.QTY_CONS" ng-disabled="item.IS_PCT=='Y'" />
+                                    </td>
+                                    <td class="col-md-1" style="padding-top:1px;padding-bottom:1px;">
+                                        <select kendo-drop-down-list
+                                                options="vm.MOUList" ng-model="item.CONS_MOU_ID" class="form-control" ng-disabled="item.IS_PCT=='Y'"></select>
+
+
+
+                                    </td>
+
+                                    <td class="col-md-1" style="padding-top:1px;padding-bottom:1px;">
+                                        <input type="number" class="form-control" min="0" ng-model="item.RATE_CONS" ng-disabled="item.IS_PCT=='Y'" />
+                                    </td>
+
+                                    <td class="col-md-1" style="padding-top:1px;padding-bottom:1px;">
+
+                                        <select kendo-drop-down-list
+                                                options="vm.MOUList" ng-model="item.PURCH_MOU_ID" class="form-control" ng-disabled="item.IS_PCT=='Y'"></select>
+
+                                    </td>
+
+                                    <td class="col-md-1" style="padding-top:1px;padding-bottom:1px;">
+
+                                        <input type="number" class="form-control" min="0" ng-model="item.PCT_COST" ng-disabled="item.PARENT_ID!=2 || item.IS_PCT==='N'" />
+                                    </td>
+                                    <td class="col-md-2" style="padding-top:1px;padding-bottom:1px;">
+
+                                        <input type="number" class="form-control" min="0" ng-model="item.HEAD_COST" readonly />
+                                    </td>
+                                    <td class="col-md-2" style="padding-top:1px;padding-bottom:1px;">
+
+                                        <input type="text" class="form-control" min="0" ng-model="item.REMARKS" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tbody ng-if="$last">
+                                <tr style="padding:0px;">
+                                    <td class="col-md-2" style="padding-top:1px;padding-bottom:1px;"></td>
+                                    <td class="col-md-1" colspan="6" style="padding-top:1px;padding-bottom:1px;" align="right" >
+                                        <b> FOB/{{vm.MKT_CAL_MOU_NAME}}</b>
+                                       
+                                    </td>
+                                    <td class="col-md-2" style="padding-top:1px;padding-bottom:1px;">
+
+                                        <input type="number" class="form-control" ng-model="vm.TOT_COST" readonly />
+                                    </td>
+                                    <td class="col-md-2" style="padding-top:1px;padding-bottom:1px;"></td>
+                                </tr>
+                            </tbody>
+
+                            <tbody ng-if="$last">
+                                <tr style="padding:0px;">
+                                    <td class="col-md-2" style="padding-top:1px;padding-bottom:1px;"></td>
+                                    <td class="col-md-1" colspan="6" style="padding-top:1px;padding-bottom:1px;" align="right">
+                                        <b> FOB/Pc</b>
+
+                                    </td>
+                                    <td class="col-md-2" style="padding-top:1px;padding-bottom:1px;">
+
+                                        <input type="number" class="form-control" ng-model="vm.COST_PER_PC" readonly />
+                                    </td>
+                                    <td class="col-md-2" style="padding-top:1px;padding-bottom:1px;"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="row">
+        <div class="col-md-6" style="padding-left:20px;">
+            <button type="button" ng-if="vm.form.MC_ORDER_H_ID" class="btn btn-sm yellow-gold" ng-class="{'disabled':!OrderConfirmationForm.$valid}">Update</button>
+            <button type="button" ng-if="!vm.form.MC_ORDER_H_ID" ng-click="vm.submitData(vm.mktCostDatas,token)" class="btn btn-sm green">Save</button>
+            <button type="button" class="btn btn-sm default" ui-sref="OrderCon.Dtl({MC_STYLE_H_ID: vm.param.MC_STYLE_H_ID||0,MC_ORDER_H_ID:vm.param.MC_ORDER_H_ID||0})" ui-sref-opts="{reload : true}">Cancel</button>
+        </div>
+    </div>
+    <br />
+</div>

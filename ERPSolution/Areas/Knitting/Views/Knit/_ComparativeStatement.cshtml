@@ -1,0 +1,452 @@
+﻿<style>
+    .dropdown-header {
+        border-width: 0 0 1px 0;
+        text-transform: uppercase;
+    }
+
+        .dropdown-header > span {
+            display: inline-block;
+            padding: 10px;
+        }
+
+            .dropdown-header > span:first-child {
+                width: 10px;
+            }
+
+    .selected-value {
+        display: inline-block;
+        vertical-align: middle;
+        width: 24px;
+        height: 24px;
+        background-size: 100%;
+        margin-right: 5px;
+        border-radius: 50%;
+    }
+
+    .customers-list .k-item {
+        line-height: 1em;
+        min-width: 300px;
+    }
+
+    /* Material Theme padding adjustment*/
+
+    .k-material .customers-list .k-item,
+    .k-material .customers-list .k-item.k-state-hover,
+    .k-materialblack .customers-list .k-item,
+    .k-materialblack .customers-list .k-item.k-state-hover {
+        padding-left: 5px;
+        border-left: 0;
+    }
+
+    .customers-list .k-item > span {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        display: inline-block;
+        vertical-align: top;
+        margin: 20px 10px 10px 5px;
+    }
+
+        .customers-list .k-item > span:first-child {
+            -moz-box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            -webkit-box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            margin: 5px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+
+    .customers-list h3 {
+        font-size: 1.2em;
+        font-weight: normal;
+        margin: 0 0 1px 0;
+        padding: 0;
+    }
+
+    .customers-list p {
+        margin: 0;
+        padding: 0;
+        font-size: .8em;
+    }
+
+
+    /*///////////////////////*/
+    .k-treeview .k-in {
+        padding: 5px;
+    }
+
+    #ItemCategTreeview .k-sprite {
+        background-image: url("/Content/assets/global/img/coloricons-sprite.png");
+    }
+
+    .rootfolder {
+        background-position: 0 0;
+    }
+
+    .folder {
+        background-position: 0 -16px;
+    }
+
+    .pdf {
+        background-position: 0 -32px;
+    }
+
+    .html {
+        background-position: 0 -48px;
+    }
+
+    .image {
+        background-position: 0 -64px;
+    }
+
+    .clstbl {
+        border: solid 1px black;
+        width: 10%;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    /*.demo-section {
+        float: left;
+        width: 200px;
+        margin: 0 60px 0 0;
+    }*/
+
+    .tooltipafzal {
+        /*position: fixed;
+        display: block;
+        border-bottom: 1px dotted black;
+
+
+        color: red;*/
+        position: relative;
+    }
+
+        .tooltipafzal .tooltipafzaltext {
+            visibility: hidden;
+            display: none;
+            /*width: 120px;*/
+            background-color: black;
+            color: red;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 1;
+            bottom: 60%;
+            left: 65%;
+            margin-left: -60px;
+        }
+
+            .tooltipafzal .tooltipafzaltext::after {
+                content: "";
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                color: red;
+                margin-left: -5px;
+                border-width: 5px;
+                border-style: solid;
+                border-color: black transparent transparent transparent;
+            }
+
+        .tooltipafzal:hover .tooltipafzaltext {
+            visibility: visible;
+            color: red;
+            display: block;
+            padding: 5px;
+        }
+</style>
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Knitting</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+    <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+        <div class="page-splash">
+            <div class="page-splash-message">
+                <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+            </div>
+        </div>
+    </div>
+    <form name="formData" class="form-horizontal" style="background-color: white;">
+        <div class="portlet-body">
+
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend"><b>Master Data</b></legend>
+                <div><label id="lblMsgSub"></label></div>
+                <div class="row" style="padding-left: 5px; padding-right: 5px;">
+
+                    <div class="row">
+                        <div class="form-group">
+
+                            <div class="col-md-1">
+                            </div>
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required"></span>
+                                Requisition No
+                            </label>
+                            <div class="col-md-3">
+                                @*<input type="text" name="PURC_REQ_NO" placeholder="[Auto Gen]" ng-model="vm.form.PURC_REQ_NO" readonly="readonly" class="form-control" />*@
+                                @*<input type="hidden" id="SCM_PURC_REQ_H_ID" name="SCM_PURC_REQ_H_ID" ng-model="vm.form.SCM_PURC_REQ_H_ID" />*@
+
+                                <select class="form-control requiredSub" kendo-drop-down-list name="SCM_PURC_REQ_H_ID" id="SCM_PURC_REQ_H_ID"
+                                        k-option-label="'-- Select Purchase Plan --'" k-data-text-field="'PURC_REQ_NO'" k-data-value-field="'SCM_PURC_REQ_H_ID'"
+                                        k-auto-bind="'true'" k-data-source="vm.planList" k-delay="vm.planList"
+                                        k-filter="'contains'" ng-model="vm.form.SCM_PURC_REQ_H_ID" k-on-change="vm.getRequisitionDtl(kendoEvent)"></select>
+                            </div>
+
+                            <label class="col-md-2 control-label">
+                                <span aria-required="true" class="required">*</span>
+                                Date of Requisition
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control required" ng-click="PURC_REQ_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                       name="PURC_REQ_DT" max-date="vm.today" ng-model="vm.form.PURC_REQ_DT" is-open="PURC_REQ_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close"
+                                       required />
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </fieldset>
+
+
+            <fieldset class="custom-fieldset" style="background-color:white;">
+                <legend class="custom-legend"><b>Details Data</b></legend>
+                <div style="overflow-x:scroll;">
+                    <table>
+                        <tr style="font-size:small;text-align:center;">
+                            <td class="clstbl" rowspan="2" style="width:10%;">
+                                <b>Yarn Item</b>
+                            </td>
+                            <td class="clstbl" colspan="3" style="width:8%;">
+                                <b>Require</b>
+                            </td>
+                            <td class="clstbl" rowspan="2" style="width:5%;">
+                                <b>Present Stock</b>
+                            </td>
+                            <td class="clstbl" rowspan="2" style="width:5%;">
+                                <b>L/C Open Pipe Line</b>
+                            </td>
+                            <td class="clstbl" colspan="3" style="text-align: center; width: 10%;">
+                                <b>TOTAL</b>
+                            </td>
+                            <td class="clstbl" rowspan="2" style="width:5%;">
+                                <b>Booking Price/Kg</b>
+                            </td>
+                            <td class="clstbl" rowspan="2" style="width:10%;">
+                                <b>Buyer Name</b>
+                            </td>
+                            <td class="clstbl" colspan="{{vm.form.LOCAL_SUP}}" style="width:20%;">
+                                <b>Offered Price (Local)</b>
+                            </td>
+                            <td class="clstbl" style="width:10px;" rowspan="2">
+                                <a class="btn" ng-click="vm.addLocalSupplier();"><i class="fa fa-plus"></i></a>
+                            </td>
+                            <td class="clstbl" colspan="{{vm.form.IMPORT_SUP}}" style="width:20%;">
+                                <b>Offered Price (Import)</b>
+                            </td>
+                            <td class="clstbl" style="width:10px;" rowspan="2">
+                                <a class="btn" ng-click="vm.addImportSupplier();"><i class="fa fa-plus"></i></a>
+                            </td>
+                            <td class="clstbl" colspan="3" style="width:8%;">
+                                <b>Finalized With</b>
+                            </td>
+                            <td class="clstbl" rowspan="2" style="width:7%;">
+                                <b>Remarks</b>
+                            </td>
+                            <td class="clstbl" rowspan="2" style="width:2%;">
+                                <b>Copy</b>
+                            </td>
+                            <td class="clstbl" rowspan="2" style="width:2%;">
+                                <b>Delete</b>
+                            </td>
+                        </tr>
+                        <tr style="font-size:small;text-align:center;">
+                            <td class="clstbl">
+                                <b>Local</b>
+                            </td>
+                            <td class="clstbl">
+                                <b>Import</b>
+                            </td>
+                            <td class="clstbl">
+                                <b>Total</b>
+                            </td>
+                            <td class="clstbl">
+                                <b>Qty in Kg</b>
+                            </td>
+                            <td class="clstbl">
+                                <b>Kntg Start Date</b>
+                            </td>
+                            <td class="clstbl">
+                                <b>Ship Date</b>
+                            </td>
+                            <td ng-repeat="loc in vm.localSupplierList" class="clstbl">
+
+                                <select kendo-drop-down-list style="min-width: 70px; max-width: 70px; font-size: x-small;"
+                                        name="SCM_SUPPLIER_ID_L_{{$index}}" id="SCM_SUPPLIER_ID_L_{{$index}}" class="form-control"
+                                        options="vm.SupplierLocalList" ng-model="loc.SCM_SUPPLIER_ID" ng-change="vm.checkSupplier($index,loc,0);"></select>
+
+                            </td>
+                            <td ng-repeat="impt in vm.importSupplierList" class="clstbl">
+
+                                <select kendo-drop-down-list style="min-width: 70px; max-width: 70px; font-size:x-small;"
+                                        name="SCM_SUPPLIER_ID_I_{{$index}}" id="SCM_SUPPLIER_ID_I_{{$index}}" class="form-control"
+                                        options="vm.SupplierImportList" ng-model="impt.SCM_SUPPLIER_ID" ng-change="vm.checkSupplier($index,impt,1);"></select>
+                            </td>
+
+                            <td class="clstbl" style="width:10px;">
+                                <b>Conf. Qty</b>
+                            </td>
+                            <td class="clstbl" style="width:10px;">
+                                <b>Price</b>
+                            </td>
+                            <td class="clstbl">
+                                <b>Spinner</b>
+                            </td>
+                            @*<td class="clstbl" style="width: 7%;">
+                                    <b>Dlv Dt</b>
+                                </td>*@
+                        </tr>
+
+
+                        <tr class="clstbl tooltipafzal" ng-repeat="item in vm.RequisitionItemList">
+                            <td class="clstbl" style="min-width:150px;">
+                                {{item.ITEM_NAME_EN}}
+                                <input type="hidden" ng-model="item.INV_ITEM_ID" />
+
+                            </td>
+                            <td class="clstbl">
+                                {{item.LK_LOC_SRC_TYPE_ID==452?item.RQD_QTY:0}}
+
+                            </td>
+                            <td class="clstbl">
+                                {{item.LK_LOC_SRC_TYPE_ID!=452?item.RQD_QTY:0}}
+                            </td>
+                            <td class="clstbl">
+                                {{item.RQD_QTY}}
+                            </td>
+                            <td class="clstbl">
+                                {{item.STK_QTY}}
+                            </td>
+                            <td class="clstbl">
+                                {{item.LC_QTY}}
+                            </td>
+
+                            <td class="clstbl">
+                                {{0}}
+                            </td>
+                            <td class="clstbl">
+                                {{item.KNT_DT|date:'dd.MM.yy'}}
+                            </td>
+
+                            <td class="clstbl">
+                                {{item.SHIP_DT|date:'dd.MM.yy'}}
+                            </td>
+                            <td class="clstbl">
+                                {{item.MKT_RATE}}
+                            </td>
+                            <td class="clstbl" style="min-width:120px;">
+                                {{item.ORDER_DTL}}
+                            </td>
+                            <td class="clstbl" style="width:10%;" ng-repeat="local in item.LOCAL_SUP_LST">
+                                <input type="number" ng-model="local.QUOTE_RATE"
+                                       style="max-width: 50px;" ng-change="vm.setImportSupplier(local,$index,0);" /><input type="checkbox" id="IS_FINALIZED_{{$index}}_{{item.INV_ITEM_ID}}"
+                                                                                                                           name="IS_FINALIZED_{{$index}}_{{item.INV_ITEM_ID}}"
+                                                                                                                           ng-model="local.IS_FINALIZED" ng-true-value="'Y'" ng-false-value="'N'"
+                                                                                                                           ng-click="vm.confirmSupplier(local,item,0);" />
+                                <span class="tooltipafzaltext">{{item.ITEM_NAME_EN}} ({{item.RQD_QTY}} Kg)</span>
+                            </td>
+                            <td class="clstbl">
+                                <a class="btn" ng-click="vm.addLocalSupplier();"><i class="fa fa-plus"></i></a>
+                            </td>
+
+                            <td class="clstbl" ng-repeat="import in item.IMPORT_SUP_LST">
+                                <input type="number" ng-model="import.QUOTE_RATE"
+                                       style="max-width: 50px;" ng-change="vm.setImportSupplier(import,$index,1);" /><input type="checkbox" id="IS_FINALIZED_{{$index}}_{{item.INV_ITEM_ID}}" name="IS_FINALIZED_{{$index}}_{{item.INV_ITEM_ID}}"
+                                                                                                                            ng-model="import.IS_FINALIZED" ng-true-value="'Y'" ng-false-value="'N'"
+                                                                                                                            ng-click="vm.confirmSupplier(import,item,1);" />
+                                @*<span class="tooltipafzaltext">{{item.ITEM_NAME_EN}} ({{item.RQD_QTY}})</span>*@
+                            </td>
+                            <td class="clstbl">
+                                <a class="btn" ng-click="vm.addImportSupplier();"><i class="fa fa-plus"></i></a>
+                            </td>
+
+                            <td class="clstbl">
+                                <input type="number" ng-model="item.CONF_QTY" style="max-width: 50px;" />
+                            </td>
+
+                            <td class="clstbl">
+                                <input type="number" ng-model="item.CONF_RATE" style="max-width: 50px;" />
+                            </td>
+
+                            <td class="clstbl">
+
+                                <select kendo-drop-down-list style="min-width: 50px; max-width: 80px; font-size: x-small;"
+                                        name="SCM_SUPPLIER_ID_{{$index}}" id="SCM_SUPPLIER_ID_{{$index}}" class="form-control"
+                                        options="vm.supplierList" ng-model="item.SCM_SUPPLIER_ID" @*ng-change="vm.changeLocalSupplier($index,item);"*@></select>
+
+                            </td>
+                            @*<td class="clstbl" style="width:7%;">
+                                    <input type="text" class="form-control" ng-click="DELIVERY_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}" style="min-width:60px; max-width:60px; font-size:x-small;"
+                                           name="DELIVERY_DT_{{$index}}" id="DELIVERY_DT_{{$index}}" max-date="vm.today" ng-model="item.DELIVERY_DT" is-open="DELIVERY_DT_LNopened"
+                                           datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close"
+                                           required /><a ng-click="vm.addDuplicateItem($index,item);"><i class="fa fa-plus"></i></a>
+                                </td>*@
+                            <td class="clstbl">
+                                <textarea ng-model="item.REMARKS" style="max-width:50px;" />
+                            </td>
+                            <td class="clstbl">
+                                <a ng-click="vm.addDuplicateItem($index,item);"><i class="fa fa-copy"></i></a>
+                            </td>
+                            <td class="clstbl">
+                                <input type="checkbox" ng-true-value="'Y'" ng-false-value="'N'" ng-model="item.IS_DELETED" />
+                            </td>
+
+                        </tr>
+                    </table>
+                </div>
+            </fieldset>
+        </div>
+        <div style="padding:3px;">
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <a class="btn btn-sm blue" ng-click="vm.goDashboard();">Back To List</a>
+                <a ng-if="vm.form.SCM_YRN_PURC_REQ_H_ID>0" class="btn btn-sm yellow-gold" ng-click="vm.submitAll(vm.form);">Update</a>
+                <a ng-if="!vm.form.SCM_YRN_PURC_REQ_H_ID>0" class="btn btn-sm green" ng-click="vm.submitAll(vm.form);">Save</a>
+                <a class="btn btn-sm default" ui-sref="AdvPurReq({pSCM_PURC_REQ_H_ID : 0})" ui-sref-opts="{reload: true}">Cancel</a>
+
+            </div>
+            <div class="col-md-2">
+                <a class="btn btn-sm blue" ng-click="vm.printRequisition(vm.form);"><i class="fa fa-download"></i> Excel View</a>
+
+            </div>
+        </div>
+        <div style="padding:3px;">
+        </div>
+    </form>
+</div>

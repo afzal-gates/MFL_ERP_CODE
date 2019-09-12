@@ -1,0 +1,170 @@
+﻿
+<style type="text/css">
+    .clsTable {
+        width: 100%;
+        padding-left: 20px;
+        /*padding-right: 30px;*/
+    }
+
+    .clsthead {
+        padding: 15px;
+        width: 100%;
+    }
+
+    .clstd {
+        padding: 5px;
+        border: solid 1px #cecece;
+    }
+</style>
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Dyeing</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+    <form name="formData" class="form-horizontal" style="background-color: white;">
+        <div class="portlet-body">
+
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend"><b>Master Data</b></legend>
+                <div><label id="lblMsgSub"></label></div>
+
+                <div class="form-group">
+
+                    <div class="col-md-1">
+                    </div>
+                    <label class="col-md-1">
+                        <span aria-required="true" class="required">*</span>
+                        OB Date
+                    </label>
+                    
+                    <div class="col-md-2">
+                        <input type="text" class="form-control required" ng-click="OP_BAL_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                               name="OP_BAL_DT" max-date="vm.today" ng-model="vm.form.OP_BAL_DT" is-open="OP_BAL_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close"
+                               required />
+                    </div>
+                </div>
+
+            </fieldset>
+
+
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend"><b>Details Data</b></legend>
+
+                <table class="clsTable">
+
+                    <tr>
+                        <td class="clstd" style="width: 15%;">
+                            <b>Supplier Name</b>
+                        </td>
+                        <td class="clstd" style="width: 15%;">
+                            <b>Category</b>
+                        </td>
+                        <td class="clstd" style="width: 15%;">
+                            <b>Dyes/Chemical</b>
+                        </td>
+
+                        <td class="clstd" style="width: 5%;">
+                            <b>Loan Received</b>
+                        </td>
+
+                        <td class="clstd" style="width: 5%;">
+                            <b>Loan Issued</b>
+                        </td>
+                        <td class="clstd" style="width: 5%;">
+                            <b>Is Final</b>
+                        </td>
+                        
+                        <td class="clstd" style="width: 10%;">
+                            <b>Action</b>
+                        </td>
+
+                    </tr>
+
+                    <tr class="">
+                        <td class="clstd" style="width: 15%;">
+                            <select class="form-control required" kendo-drop-down-list name="SCM_SUPPLIER_ID" id="SCM_SUPPLIER_ID" k-option-label="'-- Select Supplier --'"
+                                    k-data-text-field="'SUP_TRD_NAME_EN'" k-data-value-field="'SCM_SUPPLIER_ID'"
+                                    k-auto-bind="'true'" k-data-source="vm.supplierList" k-delay="vm.supplierList" k-filter="'contains'"
+                                    ng-model="vm.form.SCM_SUPPLIER_ID" k-on-change="vm.getOpeningBlance(kendoEvent)"></select>
+
+                        </td>
+                        <td class="clstd" style="width: 15%;">
+
+                            <select class="form-control required" kendo-drop-down-list name="INV_ITEM_CAT_ID" id="INV_ITEM_CAT_ID" k-option-label="'-- Select Category --'"
+                                    k-data-text-field="'ITEM_CAT_NAME_EN'" k-data-value-field="'INV_ITEM_CAT_ID'"
+                                    k-auto-bind="'true'" k-data-source="vm.itemCategoryList" k-delay="vm.itemCategoryList"
+                                    k-filter="'contains'" ng-model="vm.form.INV_ITEM_CAT_ID" k-on-change="vm.getItemDataByCategory(kendoEvent)"></select>
+                        </td>
+
+                        <td class="clstd" style="width: 15%;">
+                            <select class="form-control required" style="min-width: 50px; max-width: 250px;" kendo-drop-down-list name="DC_ITEM_ID" k-option-label="'-- Select Dyes/Chemical Item --'"
+                                    k-data-text-field="'ITEM_NAME_EN'" k-data-value-field="'INV_ITEM_ID'" ng-disabled="vm.form.uid"
+                                    k-auto-bind="'true'" k-data-source="vm.DyItemList" k-ng-delay="vm.DyItemList" k-filter="'contains'" ng-model="vm.form.DC_ITEM_ID"></select>
+
+                            <input type="hidden" name="DYE_SUP_LN_OB_ID" ng-model="vm.form.DYE_SUP_LN_OB_ID" class="form-control" />
+                            
+                        </td>
+
+                        <td class="clstd" style="width: 5%;">
+                            <input type="number" name="LN_RCV_QTY" ng-model="vm.form.LN_RCV_QTY" class="form-control" />
+                        </td>
+
+                        <td class="clstd" style="width: 5%;">
+                            <input type="number" name="LN_ISS_QTY" ng-model="vm.form.LN_ISS_QTY"  class="form-control" />
+
+                        </td>
+                        
+                        <td class="clstd" style="width: 5%; text-align:center; ">
+                            <input type="checkbox" name="IS_FINALIZED" ng-model="vm.form.IS_FINALIZED" ng-true-value="'Y'" ng-false-value="'N'" class="" />
+
+                        </td>
+                        
+                        <td class="clstd" style="width: 10%;">
+
+                            <div class="row">
+
+                                <div class="col-md-12">
+                                    <button type="button" ng-if="vm.form.uid" class="btn btn-sm yellow" ng-click="vm.submitAll(vm.form)">Update</button>
+                                    <button type="button" ng-if="!vm.form.uid" class="btn btn-sm green" ng-click="vm.submitAll(vm.form)">Save</button>
+                                    <button type="button" class="btn btn-sm" ng-click="vm.reset()">Clear</button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+
+
+                <div style="padding:3px;">
+                </div>
+
+                <div style="padding:3px;">
+                </div>
+
+                <div style="padding:2px;">
+                    <div kendo-grid k-options="vm.gridOptionsItem" id="IDRequisitionDS" k-data-source="vm.ReceiveItemList"></div>
+                </div>
+
+            </fieldset>
+        </div>
+        <div style="padding:3px;">
+        </div>
+    </form>
+</div>

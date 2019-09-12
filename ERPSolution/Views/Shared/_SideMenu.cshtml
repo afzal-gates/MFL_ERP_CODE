@@ -1,0 +1,154 @@
+﻿<div class="page-sidebar-wrapper" ng-controller="ActiveLinkController as vm">
+
+    @*<div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    MultiTex ERP
+                </div>
+            </div>
+        </div>*@
+
+    <div class="page-sidebar navbar-collapse collapse">
+        <!-- BEGIN SIDEBAR MENU -->
+        <!-- DOC: Apply "page-sidebar-menu-light" class right after "page-sidebar-menu" to enable light sidebar menu style(without borders) -->
+        <!-- DOC: Apply "page-sidebar-menu-hover-submenu" class right after "page-sidebar-menu" to enable hoverable(hover vs accordion) sub menu mode -->
+        <!-- DOC: Apply "page-sidebar-menu-closed" class right after "page-sidebar-menu" to collapse("page-sidebar-closed" class must be applied to the body element) the sidebar sub menu mode -->
+        <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+        <!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
+        <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+        <ul class="page-sidebar-menu page-sidebar-menu-closed" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+            <!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->
+            <li class="sidebar-toggler-wrapper">
+                <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+                <div class="sidebar-toggler">
+                </div>
+                <!-- END SIDEBAR TOGGLER BUTTON -->
+            </li>
+            <!-- DOC: To remove the search box from the sidebar you just need to completely remove the below "sidebar-search-wrapper" LI element -->
+            <li class="sidebar-search-wrapper">
+                <!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->
+                <!-- DOC: Apply "sidebar-search-bordered" class the below search form to have bordered search box -->
+                <!-- DOC: Apply "sidebar-search-bordered sidebar-search-solid" class the below search form to have bordered & solid search box -->
+                <form class="sidebar-search " action="extra_search.html" method="POST">
+                    <a href="javascript:;" class="remove">
+                        <i class="icon-close"></i>
+                    </a>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search...">
+                        <span class="input-group-btn">
+                            <a href="javascript:;" class="btn submit"><i class="icon-magnifier"></i></a>
+                        </span>
+                    </div>
+                </form>
+                <!-- END RESPONSIVE QUICK SEARCH FORM -->
+            </li>
+            <li class="start open">
+                <a href="/">
+                    <i class="icon-home"></i>
+                    <span class="title">
+                        Dashboard
+                    </span>
+                    <span class="selected"></span>
+                    @*<span class="arrow open"></span>*@
+                </a>
+            </li>
+
+            @foreach (var item in ViewData["sideMenuList"] as IEnumerable<ERP.Model.ScMenuModel>)
+            {
+                <li ng-class="{'active':levels[0]==@item.SC_MENU_ID}">
+                    <a href="@item.MENU_URL" ng-click="vm.clicked(@item.SC_MENU_ID,0,0)">
+                        <i class="icon-home">
+                        </i>
+                        <span class="title">@item.MENU_NAME_EN</span>
+                        @if (item.items.Count > 0)
+                        {
+                            <span class="arrow" ng-class="{'open':levels[0]==@item.SC_MENU_ID}"></span>
+                        }
+                    </a>
+
+                    @if (item.items.Count > 0)
+                    {
+                        <ul class="sub-menu">
+                            @foreach (var item1 in item.items)
+                            {
+                                <li ng-class="{'active':levels[1]==@item1.SC_MENU_ID}">
+                                    <a href="@item1.MENU_URL" ng-click="vm.clicked(@item.SC_MENU_ID,@item1.SC_MENU_ID,0)">
+                                        <span class="tile">@item1.MENU_NAME_EN</span>
+                                        @if (item1.items.Count > 0)
+                                        {
+                                            <span class="arrow " ng-class="{'open':levels[1]==@item1.SC_MENU_ID}"></span>
+                                        }
+                                    </a>
+                                    @if (item1.items.Count > 0)
+                                    {
+                                        <ul class="sub-menu">
+                                            @foreach (var item2 in item1.items)
+                                            {
+
+                                                <li ng-class="{'active':levels[2]==@item2.SC_MENU_ID}">
+
+                                                    <a href="@item2.MENU_URL" ng-click="vm.clicked(@item.SC_MENU_ID,@item1.SC_MENU_ID,@item2.SC_MENU_ID)">
+                                                        <span class="tile">@item2.MENU_NAME_EN</span>
+                                                        @if (item2.items.Count > 0)
+                                                        {
+                                                            <span class="arrow " ng-class="{'open':levels[2]==@item2.SC_MENU_ID}"></span>
+                                                        }
+                                                    </a>
+                                                    @if (item2.items.Count > 0)
+                                                    {
+                                                        <ul class="sub-menu">
+                                                            @foreach (var item3 in item2.items)
+                                                            {
+                                                                <li>
+                                                                    <a href="@item3.MENU_URL">
+                                                                        <span class="tile">@item3.MENU_NAME_EN</span>
+                                                                        @if (item3.items.Count > 0)
+                                                                        {
+                                                                            <span class="arrow"></span>
+                                                                        }
+                                                                    </a>
+                                                                </li>
+                                                            }
+                                                        </ul>
+                                                    }
+                                                </li>
+                                            }
+                                        </ul>
+                                    }
+                                </li>
+                            }
+                        </ul>
+                    }
+                </li>
+            }
+
+        </ul>
+        <!-- END SIDEBAR MENU -->
+    </div>
+</div>
+
+
+<script type="text/ng-template" id="PasswordPrompt.html" style="background-color: #eceef1;">
+    <style>
+        .field-icon {
+            float: right;
+            margin-left: -30px;
+            margin-top: -20px;
+            position: relative;
+            z-index: 2;
+        }
+    </style>
+    <div>
+
+        <div class="form-group">
+            <label class="control-label">User Name:</label>
+            <input autofocus type="text" ng-model="userName" id="userName" class="form-control" />
+
+            <label class="control-label">Password:</label>
+            <input autofocus ng-change="textChange()" type="password" ng-attr-type="{{ showPassword ? 'text':'password'}}"
+                   ng-model="passCode" id="input-name" class="form-control" />
+            <span ng-click="toggleShowPassword()" class="field-icon" ng-class="{'fa fa-eye': showPassword,'fa fa-eye-slash': !showPassword}" style="cursor: pointer;"></span>
+        </div>
+
+    </div>
+</script>

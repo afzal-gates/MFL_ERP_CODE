@@ -1,0 +1,173 @@
+﻿
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Garments</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">            
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <form class="form-horizontal" role="form" name="frmProdCapctyMnList" novalidate>
+            <div class="form-body clearfix" style="padding-top:5px;">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend">Search</legend>
+                            
+                            <div class="form-group">
+
+                                <label class="col-md-1 control-label">
+                                    <span aria-required="true" class="required">*</span>Company
+                                </label>
+
+
+                                <div class="col-md-2">
+                                    <select class="form-control" kendo-drop-down-list name="HR_COMPANY_ID" required
+                                            k-data-text-field="'COMP_NAME_EN'" k-data-value-field="'HR_COMPANY_ID'" k-option-label="'-- Select --'"
+                                            k-auto-bind="'true'" k-options="vm.companyOpt" ng-model="vm.form.HR_COMPANY_ID"></select>
+                                </div>
+
+                                <label class="col-md-1 control-label">
+                                    <span aria-required="true" class="required">*</span>Office
+                                </label>
+                                <div class="col-md-2">
+                                    <select class="form-control" kendo-drop-down-list name="PROD_UNIT_ID" required
+                                            k-data-text-field="'OFFICE_NAME_EN'" k-data-value-field="'HR_OFFICE_ID'" k-option-label="'-- Select --'"
+                                            k-auto-bind="'true'" k-options="vm.officeOpt" k-data-source="vm.officeDs" ng-model="vm.form.PROD_UNIT_ID"></select>
+                                </div>
+
+                                <label class="col-md-1 control-label">
+                                    Prod Type
+                                </label>
+                                <div class="col-md-1">
+                                    <select class="form-control" kendo-drop-down-list 
+                                            k-auto-bind="'true'" k-options="vm.prodTypeOption" k-data-source="vm.prodTypeDataSource" ng-model="vm.form.GMT_PRODUCT_TYP_ID"
+                                            @*k-on-select="vm.onSelectCompany(kendoEvent)"*@></select>
+                                </div>
+
+                                <label class="col-md-1 control-label">
+                                    <span aria-required="true" class="required">*</span>Year
+                                </label>
+                                <div class="col-md-1">
+                                    <select class="form-control" kendo-drop-down-list name="RF_FISCAL_YEAR_ID" required
+                                            k-data-text-field="'FY_NAME_EN'" k-data-value-field="'RF_FISCAL_YEAR_ID'" k-option-label="'-- Select --'"
+                                            k-auto-bind="'true'" k-options="vm.clndrYearOption" k-data-source="vm.clndrYearDataSource" ng-model="vm.form.RF_FISCAL_YEAR_ID"
+                                            @*k-on-select="vm.onSelectCompany(kendoEvent)"*@></select>
+                                </div>    
+                                
+                                <div class="col-md-1">
+                                    <button type="button" class="btn btn-sm blue" ng-click="vm.show()"
+                                            ng-disabled="(vm.form.PROD_UNIT_ID==null||vm.form.PROD_UNIT_ID=='')||(vm.form.RF_FISCAL_YEAR_ID==null||vm.form.RF_FISCAL_YEAR_ID=='')">
+                                        Show
+                                    </button>                                    
+                                </div>  
+
+                                <div class="col-md-1">
+                                    <button type="button" class="btn btn-sm blue" ng-click="vm.addNew()">Add New</button>
+                                </div>
+                                                   
+                            </div>
+                          
+                        </fieldset>
+
+                        
+                        <div class="col-md-12" style="padding-left:0px;padding-right:0px;">
+                            
+                            <fieldset class="custom-fieldset">
+                                <legend class="custom-legend">Month wise Capacity</legend>
+
+                                <kendo-grid id="desigGrpGrid" k-options="vm.prodCapctyMnOption" k-data-source="vm.prodCapctyMnDataSource"></kendo-grid>
+
+                            </fieldset>
+                            
+                        </div>
+
+                        
+
+                       
+                        @*<div class="col-md-12" style="padding-left:0px;padding-top:5px;">
+                            <div class="form-group">
+                                <div class="col-md-7">
+                                    <button type="button" class="btn btn-sm green" ng-click="vm.save()" ng-class="{'disabled':!frmProdCapctyMN.$valid}" ng-show="vm.form.GMT_CAPACITY_MN_ID<1">Save</button>
+                                    <button type="button" class="btn btn-sm yellow-gold" ng-click="vm.save()" ng-class="{'disabled':!frmProdCapctyMN.$valid}" ng-show="vm.form.GMT_CAPACITY_MN_ID>0">Update</button>
+                                    <button type="button" class="btn btn-sm blue" ng-click="vm.reset();">Cancel</button>
+                                </div>
+                            </div>
+                        </div>*@
+
+                    </div>
+                </div>
+            </div>
+        </form>
+        
+
+        
+       
+    </div>
+</div>
+
+
+<style scoped>
+    .k-treeview .k-in {
+        padding: 5px;
+    }
+
+    /*div.k-treeview {
+        overflow: auto;
+    }*/
+
+    #ItemCategTreeview .k-sprite {
+        background-image: url("/Content/assets/global/img/coloricons-sprite.png");
+    }
+
+    .rootfolder {
+        background-position: 0 0;
+    }
+
+    .folder {
+        background-position: 0 -16px;
+    }
+
+    .pdf {
+        background-position: 0 -32px;
+    }
+
+    .html {
+        background-position: 0 -48px;
+    }
+
+    .image {
+        background-position: 0 -64px;
+    }
+
+    .demo-section {
+        float: left;
+        width: 200px;
+        margin: 0 60px 0 0;
+    }
+</style>

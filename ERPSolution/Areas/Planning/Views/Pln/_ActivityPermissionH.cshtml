@@ -1,0 +1,99 @@
+﻿
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Garments</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">            
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <form class="form-horizontal" role="form" name="frmItemPartMap" novalidate>
+            <div class="form-body clearfix" style="padding-top:5px;">
+                <div class="row">
+                    <div class="col-md-12" >
+                        
+                            <div class="form-group">
+                                
+                                <div class="col-md-3">
+                                    <fieldset class="custom-fieldset">
+                                        <legend class="custom-legend">User List</legend>
+                                        @*<label class="form-control-solid" style="background-color: hsl(208, 56%, 46%); color: hsl(0, 0%, 100%); font-weight: bold; width: 100%; padding-top: 5px; padding-bottom: 5px;">&nbsp;Garments Part</label>*@
+
+                                        <div class="input-icon right" style="padding-bottom:3px;">
+                                            <i class="icon-magnifier"></i>
+                                            <input type="text" class="form-control form-control-solid" ng-model="q" placeholder="Search..." ng-change="vm.userDataSource.filter({logic: 'or', filters: [{ field:'LOGIN_ID', operator :'contains', value: q }, { field:'EMPLOYEE_CODE', operator :'contains', value: q }, { field:'EMP_FULL_NAME_EN', operator :'contains', value: q }]})"
+                                                   ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }">
+                                        </div>
+                                        <div kendo-list-view k-selectable="'single'" k-data-source="vm.userDataSource" k-on-change="vm.onChangeUser(dataItem)"
+                                             k-on-data-bound="vm.onDataBoundUser(kendoEvent)" style="max-height:450px;overflow:auto;">
+                                            <div k-template>
+                                                <dd class="k-state-default" style="padding: 5px; border-bottom: solid 1px; border-color: lightgray; ">
+                                                    <b>{{dataItem.LOGIN_ID+' : '}}</b>{{dataItem.EMPLOYEE_CODE +'-'+dataItem.EMP_FULL_NAME_EN}}
+                                                </dd>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+
+                                <div class="col-md-9">
+                                    <div class="form-body clearfix" style="padding-left:0px;">
+                                        <tabset>
+                                            <tab heading="Event Access" active="vm.eventAccessState" ui-sref="ActivityPermissionH.EventAccess">
+                                                <div data-ui-view="ActivityPermissionH.EventAccess"></div>
+                                            </tab>
+
+                                            <tab heading="Resource Access" active="vm.resourceAccessState" ui-sref="ActivityPermissionH.ResourceAccess">
+                                                <div data-ui-view="ActivityPermissionH.ResourceAccess"></div>
+                                            </tab>
+
+                                            <tab heading="Order Access" active="vm.orderAccessState" ui-sref="ActivityPermissionH.OrderAccess">
+                                                <div data-ui-view="ActivityPermissionH.OrderAccess"></div>
+                                            </tab>
+                                        </tabset>
+                                    </div>
+                                </div>
+                            </div>
+
+                        
+
+                    </div>
+
+                    
+                    
+                </div>
+            </div>
+        </form>
+        
+
+        
+       
+    </div>
+</div>
+
+
+
+

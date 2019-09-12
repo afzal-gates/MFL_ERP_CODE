@@ -1,0 +1,417 @@
+﻿
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+    </li>
+    <li>
+        <a href="#">Labdip Submission and Feedback</a>
+    </li>
+</ul>
+<style>
+    .col-md-offset-3 {
+        margin-left: 26% !important;
+    }
+    .k-grid-header th.k-header {
+        text-align: center !important;
+    }
+    .k-grid-header th.k-header, .k-filter-row th {
+        white-space: pre-wrap !important;
+    }
+</style>
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+    <div class="portlet-body">
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <div kendo-notification="kNotification" style="display: none" k-position="msgPosition" k-auto-hide-after="8000" k-button="true" k-height="'auto'" k-width="'400px'" k-animation="{open:{ effects: 'slideIn:left'},close:{effects: 'slideIn:left',reverse:true}}" k-stacking="'down'"> </div>
+
+        <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+
+        <form class="form-horizontal" role="form" name="LabSubForm" novalidate @*ng-submit="vm.submitLabSubData(vm.form,token)"*@>
+            <input type="hidden" name="MC_LD_SUBMIT_ID" ng-model="vm.form.MC_LD_SUBMIT_ID" class="form-control" />
+            <div class="row">
+                <input ng-model="vm.form.CREATED_BY" type="hidden" data-ng-init="vm.form.CREATED_BY='@Session["multiScUserId"]'" />
+                <input id="access_token" ng-model="vm.form.LAST_UPDATED_BY" type="hidden" ng-init="vm.form.LAST_UPDATED_BY='@Session["multiScUserId"]'" />
+
+                <div class="col-md-12">
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend">Search</legend>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label class="col-md-3">
+                                    Buyer Account
+                                </label>
+                                <div class="col-md-5">
+                                    @*<select kendo-drop-down-list name="MC_BUYER_ID" class="form-control" options="vm.buyerList" ng-model="vm.form.MC_BUYER_ID"></select>*@
+                                    <select kendo-drop-down-list name="MC_BYR_ACC_ID" class="form-control" options="vm.buyerAccList" ng-model="vm.form.MC_BYR_ACC_ID"></select>
+                                </div>
+                                <div class="col-md-1">
+                                    <button class="btn btn-sm" ng-click="vm.showLabdip()" ng-class="{'disabled':!vm.form.MC_BYR_ACC_ID}">Show</button>
+                                </div>
+                                @*<label id="lblErrormessage" style="font-weight:bold;" class="col-md-3"></label>*@
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+
+            <br />
+            <div>
+                <kendo-grid k-options="vm.gridOptionsLabdip" id="labdipGrid"></kendo-grid>
+            </div>
+            <div id="divLabSubTech" style="display:none;">
+                <div style="margin-top:20px;">
+                    <kendo-grid k-options="vm.gridOptionsLabSubTech" id="labSubGridTech"></kendo-grid>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" style="padding-top:10px;">
+                        <div class="col-md-6" align="left">
+                            <button type="button" ng-disabled="vm.hideSubmitInHouse" id="btnSave" class="btn btn-sm green" ng-click="vm.saveData(token,CREATED_BY)">Save</button>
+                            <button type="button" ng-disabled="vm.hideSubmitInHouse" id="btnSubmitInHouse" class="btn btn-sm blue" ng-click="vm.submitData(token,CREATED_BY)">Submit-inhouse</button>
+                        </div>
+
+                        <div class="col-md-6" align="right">
+                            <button type="button" class="btn btn-sm blue" ng-if="vm.MC_LD_REQ_H_ID" ng-click="vm.printLapDipReport({MC_LD_REQ_H_ID:vm.MC_LD_REQ_H_ID})"><i class="fa fa-print"></i> Report</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div id="divLabSubMerch" style="display:none;">
+                <div style="margin-top:20px;">
+                    <kendo-grid k-options="vm.gridOptionsLabSubMerch" id="labSubGridMerch"></kendo-grid>
+                    <br />
+                    <button type="button" class="btn btn-sm green" ng-click="vm.FeedbackData(token,CREATED_BY)" ng-disabled="vm.hideFeedBackBtn">Feedback</button>
+                </div>
+            </div>
+            @*<div id="divLabSubStatus" style="margin-top:20px; display:none;">
+                <p style="font-size: 20px;">Update History </p>
+                <kendo-grid k-options="vm.gridOptionsLabStatus" id="labStatusGrid"></kendo-grid>
+            </div>*@
+        </form>
+
+    </div>
+</div>
+
+
+
+<script type="text/ng-template" id="FabricCompositionGeneration.html">
+    <input id="access_token" data-ng-model="token" type="hidden"
+           data-ng-init="token='@Session["access_token"]'" />
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h3 class="title">
+                        New Fiber Composition
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="vm.cancel(vm.form)"></i></span>
+                    </h3>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="FiberComposition" novalidate>
+
+                    <div class="form-body clearfix">
+                        <div class="row" style="margin:auto;padding-top:10px;">
+
+
+                            <input id="access_token" data-ng-model="token" type="hidden"
+                                   data-ng-init="token='@Session["access_token"]'" />
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">
+                                    <span aria-required="true" class="required">*</span>
+                                    Fiber Comp. Group
+                                </label>
+                                <div class="col-md-4">
+                                    <select kendo-drop-down-list name="RF_FIB_COMP_GRP_ID" class="form-control" ng-model="vm.form.RF_FIB_COMP_GRP_ID"
+                                            options="vm.FeederTypeList" id="RF_FIB_COMP_GRP_ID" required></select>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">
+                                    <span aria-required="true" class="required">*</span>
+                                    Fiber Type
+                                </label>
+                                <div class="col-md-4">
+                                    <oi-select oi-options="item.LK_DATA_NAME_EN for item in vm.FiberCompositionTypeList track by item.LOOKUP_DATA_ID"
+                                                    ng-model="vm.form.LK_FIB_TYPE_LST"
+                                                    name="LK_FIB_TYPE_LST"
+                                                    style="border: 1px solid #898383;"
+                                                    multiple
+                                                    placeholder="Search..."
+                                                    required>
+                                    </oi-select>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group" ng-repeat="itm in vm.form.LK_FIB_TYPE_LST">
+                                <label class="col-md-4 control-label">
+                                    <span aria-required="true" class="required">*</span>
+                                    <span>
+                                        {{itm.LK_DATA_NAME_EN}} <b>(%)</b>
+                                    </span>
+
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="number" min="1" max="100" name="PERCENT{{$index}}" ng-model="itm.PERCENT" class="form-control" required />
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">
+
+                                    Composition Desc.
+                                </label>
+                                <div class="col-md-5">
+                                    <input type="text" name="FIB_COMP_NAME" ng-minlength="3" ng-model="vm.form.FIB_COMP_NAME" class="form-control" readonly />
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-5 col-md-offset-4">
+                                <button type="button" ng-if="vm.form.RF_FIB_COMP_ID" ng-click="vm.submitData(vm.form,token)" class="btn btn-sm yellow-gold" ng-class="{'disabled':!FiberComposition.$valid || vm.formDisabled}">Update</button>
+                                <button type="button" ng-if="!vm.form.RF_FIB_COMP_ID" ng-click="vm.submitData(vm.form,token)" class="btn btn-sm green" ng-class="{'disabled':!FiberComposition.$valid||vm.formDisabled}">Save</button>
+                                <button type="button" class="btn btn-sm default" ng-click="vm.cancel(vm.form)">Cancel</button>
+                            </div>
+
+                        </div>
+
+                        <div class="row" style="margin:auto;padding-top:10px;" ng-if="vm.errors.length>0">
+                            <div class="alert alert-warning" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                                <ul ng-repeat="field in vm.errors">
+                                    <li ng-repeat="error in field" ng-bind="error"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+
+
+
+<script id="template" type="text/x-kendo-tmpl">
+    #
+    if (data.disabled != null) {#
+    <span class="tbd"> ${data.EVENT_NAME}</span>
+    # } else { #
+    <span>${data.EVENT_NAME}</span> #
+    }#
+</script>
+
+
+<script type="text/ng-template" id="RepeatModal.html">
+    <input id="access_token" data-ng-model="token" type="hidden"
+           data-ng-init="token='@Session["access_token"]'" />
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h4 class="title">
+                        Lapdip Apporved Reference # Entry
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel(null)"></i></span>
+                    </h4>
+                </div>
+            </div>
+            <div class="portlet-body">
+
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">
+                            LD Ref #
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" name="APRV_LD_REF" class="form-control" ng-model="item.APRV_LD_REF">
+
+                        </div>
+                        <div class="col-md-2" style="padding:2px;">
+                            <div class="checkbox-list">
+                                <label class="checkbox-inline" style="margin-left:20px">
+                                    <span><input type="checkbox" style="margin-top:2px;" ng-model="ByStyleSearch">  By Style?</span>
+                                </label>
+                            </div>
+
+                        </div>
+                        <div class="col-md-4" ng-if="ByStyleSearch">
+                            <input type="text" ng-model="STYLE_NO" placeholder="Search..." typeahead="item.STYLE_NO as item.STYLE_NO for item in styleSearchAuto($viewValue)" typeahead-on-select="onSelectItem($item)" typeahead-wait-ms="1000" typeahead-loading="'Loading Style'" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-md-offset-2">
+                            <button type="button" class="btn btn-sm green" ng-disabled="!item.APRV_LD_REF" ng-click="save(APRV_LD_REF)">OK</button>
+                            <button type="button" class="btn btn-sm default" ng-click="cancel()">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+           </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="LDOptionModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h4 class="title">
+                        Labdip Reference 
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel(null)"></i></span>
+                    </h4>
+                </div>
+            </div>
+            <div class="portlet-body">
+
+                <form class="form-horizontal" role="form" name="ld_ref">
+                    <div class="row" style="margin:auto;">
+                        <table class="table table-condensed table-hover">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        #
+                                    </th>
+                                    <th>
+                                        Option
+                                    </th>
+                                    <th>
+                                        Ref# 
+                                    </th>
+                                    <th>
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="(key,item) in ld_ref_list">
+                                    <td>
+                                        {{$index+1}}
+                                    </td>
+                                    <td ng-class="{'has-error': (OPTION_FROM.OPTION_NO.$touched || ld_ref.$submitted) && OPTION_FROM.OPTION_NO.$error.required}">
+                                        <ng-form name="OPTION_FROM">
+                                            <input type="text" class="form-control" tabindex="{{ld_ref_list.length*1 + $index+2}}" name="OPTION_NO" ng-init="item.OPTION_NO=incrementChar($index,item.OPTION_NO)" ng-model="item.OPTION_NO" required />
+                                        </ng-form>
+
+                                    </td>
+                                    <td ng-class="{'has-error': (LD_REF_FROM.LD_REF.$touched || ld_ref.$submitted) && LD_REF_FROM.LD_REF.$error.required}">
+                                        <ng-form name="LD_REF_FROM">
+                                            <input type="text" class="form-control" tabindex="{{ld_ref_list.length*2 + $index+2}}" name="LD_REF" ng-model="item.LD_REF" required />
+                                        </ng-form>
+
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-xs blue" ng-if="$last" ng-click="add()"><i class=" fa fa-plus"></i>Add</a>
+                                        <a class="btn btn-xs red" ng-if="key>2" ng-click="remove($index)"><i class="fa fa-times"></i>Del</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row" style="margin:auto;">
+                        <div class="col-md-4">
+                            <button type="button" class="btn btn-sm green" ng-click="ld_ref.$submitted=true;save(ld_ref_list,ld_ref.$valid)">Save</button>
+                            <button type="button" class="btn btn-sm default" ng-click="cancel()">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+
+
+<script type="text/ng-template" id="LabDipSubModal">
+    <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+    <input ng-model="CREATED_BY" type="hidden" data-ng-init="CREATED_BY='@Session["multiScUserId"]'" />
+
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h3 class="title">
+                        Feedback from Buyer
+                    </h3>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="form-group">
+                    <label class="col-md-3 control-label">
+                        Color
+                    </label>
+                    <div class="col-md-6">
+                        {{COLOR_NAME_EN}}
+                    </div>
+                    <label class="col-md-3 control-label"></label>
+                </div><br />
+                <div class="form-group" style="clear: both;">
+                    <label class="col-md-3 control-label">
+                        Status
+                    </label>
+                    <div class="col-md-6">
+                        <select kendo-drop-down-list name="RF_ACTN_STATUS_ID" class="form-control" options="vm.statusList" ng-model="vm.form.RF_ACTN_STATUS_ID"></select>
+                    </div>
+                    <label class="col-md-3 control-label"></label>
+                </div><br />
+                <div class="form-group" style="clear: both;">
+                    <label class="col-md-3 control-label">
+                        Comment Date
+                    </label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" ng-model="vm.form.COMMENTS_DT" ng-click="COMMENTS_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                               name="COMMENTS_DT" is-open="COMMENTS_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                    </div>
+                    <label class="col-md-5 control-label"></label>
+                </div><br />
+                <div class="form-group" style="clear: both;">
+                    <label class="col-md-3 control-label">
+                        Approved Ref #
+                    </label>
+                    <div class="col-md-6">
+                        <input type="radio" name="LD_REF1" ng-model="vm.form.APRV_LD_REF" ng-value="{{LD_REF1}}">{{LD_REF1}}
+                        <input type="radio" name="LD_REF2" ng-model="vm.form.APRV_LD_REF" ng-value="{{LD_REF2}}">{{LD_REF2}}
+                        <input type="radio" name="LD_REF3" ng-model="vm.form.APRV_LD_REF" ng-value="{{LD_REF3}}">{{LD_REF3}}
+                    </div>
+                    <label class="col-md-3 control-label"></label>
+                </div> <br />
+                <div class="form-group" style="clear: both;">
+                    <label class="col-md-3 control-label">
+                        Comments
+                    </label>
+                    <div class="col-md-9">
+                        <textarea rows="2" class="form-control" name="COMMENTS" ng-model="vm.form.COMMENTS" />
+                    </div>
+                </div><br /><br /><br />
+                <div class="row">
+                    <div class="col-md-4 col-md-offset-3">
+                        <button type="button" class="btn btn-sm green" ng-click="save(token,CREATED_BY, vm.form.RF_ACTN_STATUS_ID, vm.form.APRV_LD_REF, vm.form.COMMENTS_DT, vm.form.COMMENTS)">Save</button>
+                        <button type="button" class="btn btn-sm default" ng-click="cancel()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

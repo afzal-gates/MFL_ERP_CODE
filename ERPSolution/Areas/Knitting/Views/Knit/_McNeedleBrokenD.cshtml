@@ -1,0 +1,127 @@
+﻿
+<div class="row">
+
+    <div class="col-md-12" @*style="padding-left:10px;padding-right:10px;"*@>
+        <fieldset class="custom-fieldset" ng-disabled="$parent.form.IS_FINALIZED=='Y'">
+            <legend class="custom-legend"><b>Details Data</b></legend>
+
+            
+            <table style="width:100%">
+
+                <tr>
+                    <td style="border: solid 1px black; width: 10%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                        <b><span aria-required="true" class="required" style="color:red">*</span>M/C#</b>
+                    </td>
+
+                    <td style="padding:5px;border:solid 1px black;width: 10%;">
+                        <b>M/C Dia</b>
+                    </td>
+
+                    <td style="padding:5px;border:solid 1px black;width: 25%;">                            
+                        <b><span aria-required="true" class="required" style="color:red">*</span>Operator</b>
+                    </td>
+
+                    <td style="padding:5px;border:solid 1px black;width: 20%;">
+                        <b><span aria-required="true" class="required" style="color:red">*</span>Item</b>
+                    </td>
+
+                    @*<td style="border: solid 1px black; width: 10%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                        <b>Stock Qty</b>
+                    </td>*@
+                    <td style="padding:5px;border:solid 1px black;width: 10%;">
+                        <b><span aria-required="true" class="required" style="color:red">*</span>Qty.(pcs)</b>
+                    </td>
+                    <td style="padding:5px;border:solid 1px black;width: 10%;">
+                        <b><span aria-required="true" class="required" style="color:red">*</span>Cost</b>
+                    </td>
+
+                    <td style="border: solid 1px black; width: 15%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                        <b>Action</b>
+                    </td>
+
+                </tr>
+                <tr class="">
+
+                    <td style="padding:5px;border:solid 1px black;width:10%;">
+
+                        <select class="form-control" kendo-drop-down-list name="KNT_MACHINE_ID" k-option-label="'-- Select M/C --'"
+                                k-data-text-field="'KNT_MACHINE_NO'" k-data-value-field="'KNT_MACHINE_ID'" k-filter="'contains'"
+                                k-auto-bind="'true'" k-options="vm.machineOption" k-data-source="$parent.machineDataSource" @*k-ng-delay="vm.styleList"*@
+                                ng-model="vm.formItem.KNT_MACHINE_ID"></select>
+
+                    </td>
+
+                    <td style="padding:5px;border:solid 1px black;width: 10%;">
+                        <input type="text" name="MC_DIA" ng-model="vm.formItem.MC_DIA" class="form-control" readonly="readonly" />
+                    </td>
+
+                    <td style="padding:5px;border:solid 1px black;width:25%;">
+
+                        <select class="form-control" kendo-drop-down-list name="OPERATOR_ID" k-option-label="'-- Select Operator --'"
+                                k-data-text-field="'EMP_FULL_NAME_EN'" k-data-value-field="'HR_EMPLOYEE_ID'" k-filter="'contains'"
+                                k-auto-bind="'true'" k-options="vm.mcOperatorOption" k-data-source="vm.mcOperatorDataSource" @*k-ng-delay="vm.styleList"*@
+                                ng-model="vm.formItem.OPERATOR_ID" ></select>
+
+                    </td>
+
+                    <td style="padding:5px;border:solid 1px black;width:20%;">
+
+                        <select class="form-control" kendo-drop-down-list name="INV_ITEM_ID" k-option-label="'-- Select Item --'"
+                                k-data-text-field="'ITEM_NAME_EN'" k-data-value-field="'INV_ITEM_ID'" k-filter="'contains'"
+                                k-auto-bind="'true'" k-options="vm.itemOptions" k-data-source="vm.itemDataSource" @*k-ng-delay="vm.styleList"*@
+                                ng-model="vm.formItem.INV_ITEM_ID" ></select>
+
+                    </td>
+
+
+                    @*<td style="padding:5px;border:solid 1px black;width: 10%;">
+                        <input type="text" name="STOCK_QTY" ng-model="vm.formItem.STOCK_QTY" class="form-control" readonly="readonly" />
+                    </td>*@
+                    <td style="padding:5px;border:solid 1px black;width: 10%;">
+                        <input type="text" name="BRK_QTY_PCS" ng-model="vm.formItem.BRK_QTY_PCS" class="form-control"  />
+                    </td>
+                    <td style="padding:5px;border:solid 1px black;width: 10%;">
+                        <input type="text" name="COST_PRICE" ng-model="vm.formItem.COST_PRICE" class="form-control" />
+                    </td>
+
+
+                    <td style="padding:5px;border:solid 1px black;width: 15%; text-align:center;">
+                        <button type="button" ng-if="vm.formItem.uid" class="btn btn-sm yellow-gold" ng-click="vm.updateRow(vm.formItem)"
+                                ng-class="{'disabled':vm.formItem.KNT_MACHINE_ID==null||vm.formItem.KNT_MACHINE_ID==''||
+                                            vm.formItem.OPERATOR_ID==null||vm.formItem.OPERATOR_ID==''||
+                                            vm.formItem.INV_ITEM_ID==null||vm.formItem.INV_ITEM_ID==''||
+                                            vm.formItem.BRK_QTY_PCS==null||vm.formItem.BRK_QTY_PCS==''||
+                                            vm.formItem.COST_PRICE==null||vm.formItem.COST_PRICE==''}">
+                            Update
+                        </button>
+                        <button type="button" ng-if="!vm.formItem.uid" class="btn btn-sm blue" ng-click="vm.addToGrid()"
+                                ng-class="{'disabled':vm.formItem.KNT_MACHINE_ID==null||vm.formItem.KNT_MACHINE_ID==''||
+                                            vm.formItem.OPERATOR_ID==null||vm.formItem.OPERATOR_ID==''||
+                                            vm.formItem.INV_ITEM_ID==null||vm.formItem.INV_ITEM_ID==''||
+                                            vm.formItem.BRK_QTY_PCS==null||vm.formItem.BRK_QTY_PCS==''||
+                                            vm.formItem.COST_PRICE==null||vm.formItem.COST_PRICE==''}">
+                            Add
+                        </button>
+                        <button type="button" class="btn btn-sm" ng-click="vm.resetRow()">Cancel</button>
+                    </td>
+                </tr>
+            </table>
+            
+
+            @*<div style="padding:3px;">
+            </div>*@
+
+            <div style="padding:2px;">
+                <div kendo-grid k-options="$parent.mcNdlBrknDtlOptions" k-data-source="$parent.mcNdlBrknDtlDataSource"></div>
+            </div>
+
+        </fieldset>
+
+        
+
+    </div>
+</div>
+
+
+@*<pre>{{vm.yrnItem|json}}</pre>
+<pre>{{$parent.form|json}}</pre>*@

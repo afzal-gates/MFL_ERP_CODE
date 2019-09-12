@@ -1,0 +1,65 @@
+﻿<fieldset class="custom-fieldset" >
+    <legend class="custom-legend">Resource Permission</legend>
+
+    <form class="form-horizontal" role="form" name="frmResourceAccess" novalidate>
+
+        <div class="row" style="margin:auto;">
+
+            <div class="col-md-2" style="padding:2px;margin:auto;" ng-repeat="(idx,item) in vm.floorList">
+                <table class="table table-condensed table-striped table-bordered">
+
+                    <thead>
+                        <tr>
+                            <th colspan="2" class="col-md-11" style="text-align: center; border-bottom: 1px solid #cecece; background-color: #818181; color: white; ">{{item.BLDNG_CODE +' | '+ item.FLOOR_CODE}}</th>
+                            @*<th class="col-md-1" style="text-align: center; border-bottom: 1px solid #cecece; background-color: #818181; color: white;"><i style="cursor:pointer;" class="fa fa-times" ng-click="vm.onDeleteTemp(vm.items.templates,idx)" ng-disabled="$first"></i></th>*@
+                        </tr>
+                       
+                        <tr>
+                            <th class="col-md-1" style="text-align:center;"></th>
+                            <th class="col-md-8" style="text-align:center;">Line</th>                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="(id,itm) in item.items">
+                            <td style="padding:2px;padding-left:5px;">
+                                <input type="checkbox" name="IS_ACTIVE" ng-model="itm.IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'" />
+                                @*<label class="control-label checkbox-inline">
+                                    <input type="checkbox" name="IS_ACTIVE" ng-model="itm.IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'" />
+                                </label>*@
+                            </td>
+                            <td style="padding: 2px; padding-left: 5px;">{{itm.LINE_CODE}}</td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <button type="button" class="btn btn-sm green" ng-click="vm.save()" 
+                        @*ng-disabled="(vm.srtReason.RF_SFAB_RSN_TYPE_ID==''||vm.srtReason.RF_SFAB_RSN_TYPE_ID==null||$parent.form.RF_ACTN_STATUS_ID>58)"*@>
+                    Save
+                </button>
+                @*<button type="button" class="btn btn-sm yellow-gold" ng-click="vm.updateRow(vm.srtReason)" ng-show="vm.formEvent.GMT_PLN_EVNT_ACCESS_ID>0">
+                    Update
+                </button>*@
+                <button type="button" class="btn btn-sm blue" ng-click="vm.cancel()">Cancel</button>
+
+            </div>
+        </div>
+
+    </form>
+</fieldset>
+
+@*<div class="row" style="padding-top:5px;padding-bottom:5px">
+
+    </div>*@
+
+@*<div style="padding-top:5px;">
+        <kendo-grid k-options="vm.reasonGridOption" k-data-source="vm.reasonGridDataSource"></kendo-grid>
+    </div>*@
+
+
+@*<pre>{{vm.form|json}}</pre>*@

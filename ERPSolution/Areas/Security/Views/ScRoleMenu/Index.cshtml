@@ -1,0 +1,305 @@
+﻿@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Security</a>
+
+    </li>
+    <li>
+        <a href="#">Assign Menu To Role</a>
+    </li>
+</ul>
+
+
+@model ERP.Model.SC_ROLE_MENUModel
+
+@{
+    //Layout = null;
+    ViewBag.Title = "Assign Menu To Role";
+}
+
+
+<div class="portlet box blue-dark" ng-controller="ScRoleMenuController as vm">
+
+    <div class="portlet-title">
+        <div class="caption">
+            @*<i class="fa fa-gift"></i>*@ Assign Menu To Role
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+        @*<div class="actions">
+            <div class="btn-group">
+                <a class="btn default yellow-stripe dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
+                    <i class="fa fa-share"></i> Tools <i class="fa fa-angle-down"></i>
+                </a>
+                <ul class="dropdown-menu pull-right">
+                    <li>
+                        <a href="#">
+                            Export to Excel
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            Export to CSV
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            Export to XML
+                        </a>
+                    </li>
+                    <li class="divider">
+                    </li>
+                    <li>
+                        <a href="#">
+                            Print Invoices
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>*@
+    </div>
+
+
+    <div class="portlet-body form">
+
+        <div class="row">
+
+            <div class="col-md-12">
+
+
+
+                <form class="form-horizontal" name="frmRoleMenu" ng-submit="vm.submit(frmRoleMenu.$valid, vm.isInsert, vm.myForm)" novalidate>
+                    <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+                           data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+                    <div class="form-body">
+
+                        @Html.ValidationSummary(true)
+
+                        @*<p id="result">No nodes checked.</p>*@
+                        <input type="hidden" name="SC_ROLE_MENU_ID" ng-model="vm.myForm.SC_ROLE_MENU_ID" />
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">
+                                Role
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-5">
+                                @*<input type="hidden" class="form-control" name="SC_ROLE_ID" ng-model="vm.myForm.SC_ROLE_ID" />*@
+                                <select kendo-drop-down-list name="SC_ROLE_ID" class="form-control" @*ng-init="vm.myForm.SC_ROLE_ID=vm.shiftPlanId.HR_SHIFT_PLAN_ID"*@
+                                        ng-change="vm.RoleSelect()"
+                                        options="vm.RoleListData" ng-model="vm.myForm.SC_ROLE_ID" ng-init="vm.myForm.SC_ROLE_ID=''" required></select>
+
+                                
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @*@Html.LabelFor(model => model.ROLE_NAME_EN, new { @class = "control-label col-md-3" })*@
+                            <label class="control-label col-md-3">
+                                Module
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+
+
+                            <div class="col-md-5">
+                                <select kendo-drop-down-list name="SC_SYSTEM_MODULE_ID" class="form-control" @*ng-init="vm.myForm.SC_MENU_ID=vm.shiftPlanId.HR_SHIFT_PLAN_ID"*@
+                                        @*onclick="vm.ModuleSelect()"*@
+                                        @*k-on-change="selectedItem = dataItem"*@
+                                        ng-change="vm.ModuleSelect()"
+                                        options="vm.ModuleListData" ng-model="vm.myForm.SC_SYSTEM_MODULE_ID" ng-init="vm.myForm.SC_SYSTEM_MODULE_ID=''" required></select>
+
+                                <br />
+                                
+                                <button type="button" class="btn btn-sm blue" ng-click="vm.getMenuTreeData(vm.myForm)" ng-disabled="vm.SC_ROLE_ID<1 || vm.SC_SYSTEM_MODULE_ID<1">Menu Assign</button>
+                                <button type="button" class="btn btn-sm purple" ng-click="rptPermissionModal()" ng-disabled="vm.SC_ROLE_ID<1">Report Assign</button>
+                                
+                                @*@Html.TextBoxFor(model => model.ROLE_NAME_EN, new { @class = "form-control" })*@
+                                @*@Html.ValidationMessageFor(model => model.ROLE_NAME_EN)*@
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group" ng-if="vm.IsChange">
+                            <label class="control-label col-md-3">
+                                Menu
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-5">
+                                <div kendo-tree-view="treeWidget" id="menuTreeview" k-options="vm.menuOptions"
+                                     @*ng-model="vm.MenuTree"*@
+                                     @*ng-click="vm.TestClick(selectedItem)"*@
+                                     @*k-on-change="selectedItem = dataItem"*@ k-ng-delay="vm.menuOptions.dataSource">
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        @*<div class="form-group" ng-if="vm.IsChange">
+                            <div class="col-md-offset-1 col-md-10">
+                                <div id="reportGrid" kendo-grid></div>
+                            </div>
+                        </div>*@
+                                               
+
+                    </div>
+                    
+
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-3 col-md-6">
+                                <button type="submit" class="btn btn-sm green" ng-disabled="vm.IsChange==false" ng-show="vm.SC_ROLE_ID>0 && vm.SC_SYSTEM_MODULE_ID>0"><i class="fa fa-check"></i> Save</button>
+                                
+                                @*<button type="submit" class="btn yellow-gold" ng-if="!vm.isInsert"><i class="fa fa-check"></i> Update</button>*@
+
+                                @*<button type="submit" class="btn blue" ng-click="vm.TranCancel(vm.myForm)">Cancel</button>*@
+
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+
+
+
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+@*Start For Process Model*@
+<script type="text/ng-template" id="RptPermissionModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <p style="padding-top:10px;">
+                        Assign Report To Rele
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </p>
+
+
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="RptPermissionModal" novalidate @*ng-submit="save(Task,token,TaskForm.$valid)"*@>
+                    @*<input id="access_token" data-ng-model="token" type="hidden"
+                           data-ng-init="token='@Session["access_token"]'" />*@
+                    <input id="antiForgeryToken" data-ng-model="antiForgeryToken" type="hidden"
+                           data-ng-init="antiForgeryToken='@GetAntiForgeryToken()'" />
+
+                    <div kendo-grid id="rptGrpGrid" k-data-source="rptGrpDataList" k-columns="rptGrpColumns" k-selectable="true" k-editable="false" k-on-change="rptGrpOnChange(data)"                         
+                         k-height="150" k-filterable="gridFilterable" k-sortable="true" style="margin-bottom:10px"></div>
+
+
+
+                    <div kendo-grid id="kendoGrid" k-data-source="rptDataList" k-columns="rptColumns" k-selectable="true" k-editable="false" k-on-change="selectedRpt = data"
+                         k-height="250" k-filterable="gridFilterable" k-sortable="true"></div>
+
+
+                    @*{{selectedGrp}}*@
+                    @*<div class="form-group">
+                <label for="selectPeriod" class="col-md-4 control-label">Period</label>
+
+                <div class="col-md-8" style="padding-top:5px;">
+                    <select kendo-drop-down-list id="ACC_PAY_PERIOD_ID" name="ACC_PAY_PERIOD_ID" class="form-control"
+                            options="companyOpenPeriodList" ng-model="ACC_PAY_PERIOD_ID"></select>
+                </div>
+            </div>*@
+                    @*<pre>{{ProcessLossModalForm.$valid}}</pre>*@
+
+                    <br />
+                    <div class="form-group form-actions">
+                        <div class="col-md-12">
+                            <button type="button" class="btn green btn-sm" ng-click="save()" @*ng-class="{'disabled':!HrReportModalForm.$valid}" ng-disabled="formInvalid"*@>Save</button>
+                            <button type="button" class="btn btn-default btn-sm" ng-click="cancel()">Cancel</button>
+                            
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+@*End For Process Model*@
+
+
+
+
+
+
+
+
+
+
+
+
+<style scoped>
+    .k-treeview .k-in {
+        padding: 5px;
+    }
+
+    #menuTreeview .k-sprite {
+        background-image: url("/Content/assets/global/img/coloricons-sprite.png");
+    }
+
+    .rootfolder {
+        background-position: 0 0;
+    }
+
+    .folder {
+        background-position: 0 -16px;
+    }
+
+    .pdf {
+        background-position: 0 -32px;
+    }
+
+    .html {
+        background-position: 0 -48px;
+    }
+
+    .image {
+        background-position: 0 -64px;
+    }
+
+    .demo-section {
+        float: left;
+        width: 200px;
+        margin: 0 60px 0 0;
+    }
+</style>

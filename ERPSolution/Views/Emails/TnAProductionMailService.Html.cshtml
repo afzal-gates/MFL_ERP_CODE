@@ -1,0 +1,149 @@
+﻿Content-Type: text/html; charset=utf-8
+
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style media="all" type="text/css">
+        table td {
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+    <h4 style="margin:5px;"><span style="color: #5e9ca0;">As on @DateTime.Now.ToString("dd-MMM-yyyy") &nbsp;&nbsp;</span></h4>        
+    @foreach (var data in Model.data)
+    {
+      if (data.items.Count > 0)
+      {
+                <table  border="1" cellpadding="0" cellspacing="0" style="width: 900px; border: solid 1px #8a8a8a;">
+         <caption style="text-align: left; color: #5738b5; padding-top: 10px; padding-bottom: 5px;">@data.MONTH_NAME : @data.BYR_ACC_NAME_EN</caption>
+        <tbody>
+            <tr>
+                <td style=" text-align: left;"><span style="color:black;font-size:14px;width:200px;"><strong>Style No</strong></span></td>
+                <td style="text-align: left; "><span style="color: black; font-size: 14px; width: 200px;"><strong>Order No</strong></span></td>
+                <td style="text-align: left; "><span style="color: black; font-size: 14px; width: 100px;"><strong>Order Qty</strong></span></td>
+                <td style="text-align: left; "><span style="color: black; font-size: 14px; width: 100px;"><strong>T&A Task</strong></span></td>
+                <td style="text-align: left; "><span style="color: black; font-size: 14px; width: 100px;"><strong>T&A Fin DT </strong></span></td>
+                <td style="text-align: left; "><span style="color: black; font-size: 14px; width: 100px;"><strong>Req Qty</strong></span></td>
+                <td style="text-align: left; "><span style="color: black; font-size: 14px; width: 100px;"><strong>Prod.</strong></span></td>
+                <td style="text-align: left; "><span style="color: black; font-size: 14px; width: 100px;"><strong>% Done</strong></span></td>
+                <td style="text-align: left; "><span style="color: black; font-size: 14px; width: 100px;"><strong>D2G</strong></span></td>
+
+            </tr>
+
+
+            @for (var i = 0; i < data.items.Count; i++)
+{
+    var item = data.items[i];
+                
+                
+                if (i % 2 == 0) { 
+                    <tr style="background-color: #e5e5e5;">
+
+        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+            @item.WORK_STYLE_NO 
+            <br />
+            <small style="font-style:italic;">
+                @item.STYLE_DESC
+            </small>
+        </td>
+
+        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+            @item.MC_ORDER_NO_LST
+            <br />
+            <small style="font-style:italic;">
+                @item.ORD_CONF_DT.ToString("dd-MMM-yyyy") - @item.SHIP_DT.ToString("dd-MMM-yyyy") ( @item.LEAD_TIME  Days)
+            </small>
+        </td>
+
+        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+            @item.TOT_ORD_QTY
+        </td>
+
+        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+            @item.TA_TASK_NAME_EN
+        </td>
+        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+            @item.PLAN_END_DT.ToString("dd-MMM-yyyy")
+        </td>
+        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+            @item.NET_GFAB_QTY
+        </td>
+        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+            @item.PROD_QC_PASS_QTY
+        </td>
+        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+            @item.PCT_COMPLETE %
+        </td>
+        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+            @item.DAYS_2_GO
+        </td>
+
+
+    </tr>
+                } else {
+                    <tr style="background-color:white;">
+                        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+
+
+                            @item.WORK_STYLE_NO
+                            <br />
+                            <small style="font-style:italic;">
+                               @item.STYLE_DESC
+                            </small>
+                        </td>
+
+                        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+                            @item.MC_ORDER_NO_LST
+                            <br />
+                            <small style="font-style:italic;">
+                                @item.ORD_CONF_DT.ToString("dd-MMM-yyyy") - @item.SHIP_DT.ToString("dd-MMM-yyyy") ( @item.LEAD_TIME  Days)
+                            </small>
+                        </td>
+
+                        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+                            @item.TOT_ORD_QTY
+                        </td>
+
+                        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+                            @item.TA_TASK_NAME_EN
+                        </td>
+                        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+                            @item.PLAN_END_DT.ToString("dd-MMM-yyyy")
+                        </td>
+                        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+                            @item.NET_GFAB_QTY
+                        </td>
+                        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+                            @item.PROD_QC_PASS_QTY
+                        </td>
+                        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+                            @item.PCT_COMPLETE %
+                        </td>
+                        <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">
+                            @item.DAYS_2_GO
+                        </td>
+
+    </tr>
+                
+                }
+}
+
+        </tbody>
+    </table>    
+          
+      }
+    
+        
+    }
+        
+
+    <span style="display: block; font-size: 10px; font-style: italic;">
+        N.B: No need to reply. This mail is auto generated from MultiTex ERP server.
+    </span>
+   
+</body>
+</html>
+
+

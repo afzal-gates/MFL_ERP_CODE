@@ -1,0 +1,190 @@
+﻿@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+<div class="row">
+    <form class="form-horizontal" role="form">
+        <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+               data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+        <div class="form-group">
+            <label class="col-md-3 control-label">
+                Company
+                <span class="required" aria-required="true">
+                    *
+                </span>
+            </label>
+            <div class="col-md-4">
+                <select kendo-drop-down-list name="HR_COMPANY_ID" class="form-control"
+                        options="vm.companyList" ng-model="vm.form.HR_COMPANY_ID" readonly></select>
+                <span class="field-validation-error" ng-repeat="err in vm.errors.HR_COMPANY_ID">
+                    {{err}}
+                </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-3 control-label">
+                Office
+                <span class="required" aria-required="true">
+                    *
+                </span>
+            </label>
+            <div class="col-md-4">
+                <select kendo-drop-down-list name="HR_OFFICE_ID" options="vm.getOfficeList" ng-model="vm.form.HR_OFFICE_ID" class="form-control" readonly></select>
+                <span class="field-validation-error" ng-repeat="err in vm.errors.HR_OFFICE_ID">
+                    {{err}}
+                </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-3 control-label">
+                Department
+                <span class="required" aria-required="true">
+                    *
+                </span>
+            </label>
+            <div class="col-md-4">
+                <select kendo-drop-down-list name="HR_DEPARTMENT_ID" options="vm.departmentList" ng-model="vm.form.HR_DEPARTMENT_ID" class="form-control" readonly></select>
+
+                <span class="field-validation-error" ng-repeat="err in vm.errors.HR_DEPARTMENT_ID">
+                    {{err}}
+                </span>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="control-label col-md-3">
+                Section
+            </label>
+            <div class="col-md-4">
+                <select kendo-drop-down-list id="SECTION_ID" name="SECTION_ID" class="form-control"
+                        options="vm.subdepartmentListData" ng-model="vm.form.SECTION_ID"></select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-3 control-label">Desig Order</label>
+            <div class="col-md-2">
+                <input type="text" min="0" class="form-control" ng-model="vm.form.DESIG_ORDER_LOW" readonly>
+            </div>
+            <div class="col-md-2">
+                <input type="text" min="0" class="form-control" ng-model="vm.form.DESIG_ORDER_HIGH" readonly>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-3 control-label">Employee Code</label>
+            <div class="col-md-2">
+                <input type="text" class="form-control" ng-model="vm.form.EMPLOYEE_CODE" readonly>
+            </div>
+        </div>
+
+        <div class="form-group" style="padding:20px;">
+            <table class="table table-bordered table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th>
+                            Add
+                        </th>
+                        <th>
+                            Level
+                        </th>
+                        @*<th>
+                            Act Msg
+                        </th>*@
+                        <th>
+                            Company
+                        </th>
+                        @*<th>
+                            Office
+                        </th>*@
+                        <th>
+                            Department
+                        </th>
+                        <th>
+                            Approver
+                        </th>
+                        <th>
+                            Exe By
+                        </th>
+                        <th>
+                           Alt Aprvr
+                        </th>
+
+                        <th>
+                            eMail?
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in vm.lvlDatas">
+                        <td>
+                            {{item.RF_ACTION_CFG_D11_ID}}
+                            <input type="checkbox" ng-init="item.ADD=item.RF_ACTION_CFG_D11_ID?true:false" ng-model="item.ADD" />
+                            <input type="hidden" ng-init="item.RF_ACTION_CFG_D1_ID=vm.form.RF_ACTION_CFG_D1_ID" ng-model="item.RF_ACTION_CFG_D1_ID" />
+                            <input type="hidden" ng-init="item.RF_ACTION_CFG_H_ID=vm.form.RF_ACTION_CFG_H_ID" ng-model="item.RF_ACTION_CFG_H_ID" />
+                        </td>
+                        <td>
+                            {{item.APROVER_LVL_NO}}
+                        </td>
+
+                        @*<td>
+                            {{item.LK_ACTION_STATUS}}
+                        </td>*@
+                        <td>
+                            
+                            <input type="text" style="width:120px;" value="{{item.COMP_NAME_EN}}" readonly/>
+                        </td>
+                        @*<td>
+                            <input type="text" style="width:120px;" value="{{item.OFFICE_NAME_EN}}" readonly />
+                        </td>*@
+                        <td>
+                            
+                            <input type="text" style="width:150px;" value="{{item.DEPARTMENT_NAME_EN}}" readonly />
+                        </td>
+                        <td>
+                       
+                            <input type="text" ng-model="item.APPROVER_CODE" placeholder="Search..." typeahead="item.EMPLOYEE_CODE as item.EMPLOYEE_CODE for item in emoloyeeAuto($viewValue)" typeahead-on-select="onSelectItem1($item,item,$index)" typeahead-loading="loadingLocations" class="form-control">
+                            <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+                        </td>
+                        <td>                         
+                            <input type="text" ng-model="item.EXEC_BY_CODE" placeholder="Search..." typeahead="item.EMPLOYEE_CODE as item.EMPLOYEE_CODE for item in emoloyeeAuto($viewValue)" typeahead-on-select="onSelectItem2($item,item,$index)" typeahead-loading="loadingLocations" class="form-control">
+                            <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+                        </td>
+
+                        <td>    
+                            <input type="text" ng-model="item.ALT_APPROVER_CODE" placeholder="Search..." typeahead="item.EMPLOYEE_CODE as item.EMPLOYEE_CODE for item in emoloyeeAuto($viewValue)" typeahead-on-select="onSelectItem3($item,item,$index)" typeahead-loading="loadingLocations" class="form-control">
+                            <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+                        </td>
+                        <td>
+                            <input type="checkbox" ng-model="item.IS_NOTIFY_EMAIL"  ng-true-value="'Y'" ng-false-value="'N'"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="form-actions">
+            <div class="row">
+                <div class="col-md-offset-3 col-md-9">
+                    @*<button ng-if="vm.form.RF_ACTION_CFG_LVL_ID" type="button" ng-click="vm.SubmitLvl(vm.form,'/Hr/Admin/ActionConfig/LvlUpdate',vm.antiForgeryToken,true)" class="btn yellow-gold btn-sm">Update</button>*@
+
+                    <button type="button" ng-click="vm.submitLvlData(vm.lvlDatas)" class="btn green btn-sm">Submit</button>
+
+                    <button type="button" class="btn default btn-sm" ui-sref="ActionType({RF_ACTION_CFG_H_ID:vm.form.RF_ACTION_CFG_H_ID})">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+

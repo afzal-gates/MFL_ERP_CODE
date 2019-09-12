@@ -1,0 +1,606 @@
+﻿<div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+    <div class="page-splash">
+        <div class="page-splash-message">
+            <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+        </div>
+    </div>
+</div>
+
+
+<form class="form-horizontal" role="form" name="StyleItemForm" novalidate>
+    <div class="form-body" style="padding:0px;">
+        <input id="access_token" data-ng-model="token" type="hidden"
+               data-ng-init="token='@Session["access_token"]'" />
+        <table class="table table-condensed table-bordered" style=" margin-bottom: 0px;">
+            <tbody>
+
+                <tr>
+                    <td colspan="2" style="border-right:none;">
+                        <a class="btn btn-xs blue" ui-sref="StyleH.Item({MC_STYLE_H_ID:vm.params.MC_STYLE_H_ID,MC_STYLE_D_ITEM_ID:0})" ui-sref-opts="{reload: true}">
+                            <i class="fa fa-plus"></i> Add New
+                        </a>
+
+                        <a class="btn btn-xs blue" ng-click="vm.showItemList(vm.params.MC_STYLE_H_ID)">
+                            <i class="fa fa-list"></i> Item List
+                        </a>
+                    </td>
+
+                    <td class="text-right" ng-if="vm.StyleData.HAS_SET=='Y'">
+                        <a class="btn btn-xs blue" ng-click="vm.previous()" ng-disabled="!vm.params.PARENT_ID"><i class="fa fa-angle-left dp-nav-left"></i> Previous </a>
+                        <a class="btn btn-xs blue" ng-click="vm.next()" ng-disabled="!vm.params.PARENT_ID"> Next <i class="fa fa-angle-right dp-nav-right"></i></a>
+                    </td>
+
+                    <td class="text-right" ng-if="vm.StyleData.HAS_SET=='N'">
+                        <a class="btn btn-xs blue" ng-click="vm.previousNonSet()"><i class="fa fa-angle-left dp-nav-left"></i> Previous </a>
+                        <a class="btn btn-xs blue" ng-click="vm.nextNonSet()"> Next <i class="fa fa-angle-right dp-nav-right"></i></a>
+                    </td>
+
+                </tr>
+
+                <tr ng-if="vm.StyleData.HAS_SET=='Y'" class="warning">
+                    <td class="col-md-1 text-right" style="border-right:none;">
+
+                        <label class="control-label">
+                            Set Item
+                        </label>
+
+                    </td>
+
+                    <td class="col-md-2">
+                        <p>
+                            <select kendo-drop-down-list name="PARENT_ID" class="form-control"
+                                    options="vm.ParentItemsList" id="PARENT_ID_ITEM" ng-model="vm.form.PARENT_ID" ng-required="vm.StyleData.HAS_SET=='Y'"></select>
+                        </p>
+
+                    </td>
+
+
+                    <td class="col-md-3 text-right">
+                    </td>
+
+
+                </tr>
+
+                <tr>
+                    <td class="col-md-1 text-right" style="border-right:none;">
+                        <label class="control-label">
+                            <span aria-required="true" class="required" ng-if="vm.StyleData.HAS_COMBO=='Y'||vm.StyleData.HAS_MODEL=='Y'">*</span>
+                            {{vm.StyleData.HAS_COMBO=='Y'?'Combo No':(vm.StyleData.HAS_MODEL=='Y'?'Model No':'Combo/Model No')}}
+                        </label>
+                    </td>
+                    <td class="col-md-2">
+
+                        <span class="col-md-3" style="padding-left:0px;padding-right:3px;">
+                            <input type="text" name="MODEL_NO" ng-model="vm.form.MODEL_NO" class="form-control" ng-if="vm.StyleData.HAS_MODEL=='Y' && vm.StyleData.HAS_COMBO=='N'" required/>
+
+                            <input type="text" name="COMBO_NO" ng-init="vm.form.COMBO_NO=vm.StyleData.HAS_SET=='Y'?vm.StyleData.items[0].COMBO_NO:vm.form.COMBO_NO" ng-model="vm.form.COMBO_NO" class="form-control" pattern="^[,\w]+$" required ng-if="vm.StyleData.HAS_MODEL=='N' && vm.StyleData.HAS_COMBO=='Y'" placeholder="X,X,X" ng-disabled="vm.StyleData.HAS_SET=='Y'" />
+
+                            <input type="text" class="form-control" ng-if="vm.StyleData.HAS_COMBO=='N' && vm.StyleData.HAS_MODEL=='N'" readonly/>
+
+                           
+
+                        </span>
+
+                        <span class="col-md-3" style="padding-left: 5px; padding-right: 5px;">
+                            <label class="control-label" style="float:right;" ng-if="vm.params.MC_STYLE_D_ITEM_ID==0">
+                                Same as
+                            </label>
+                        </span>
+
+                        <span class="col-md-6" style="padding-left: 0px; padding-right: 0px;">
+                            <select kendo-drop-down-list class="form-control"
+                                    options="vm.existingItemList" ng-if="vm.params.MC_STYLE_D_ITEM_ID==0"></select>
+                        </span>
+
+                        <p ng-show="StyleItemForm.COMBO_NO.$invalid && !StyleItemForm.COMBO_NO.$pristine" class="help-block" style="color:red;">Please input valid Combo # eg. A,B,C.</p>
+                        <p ng-show="StyleItemForm.MODEL_NO.$invalid && !StyleItemForm.MODEL_NO.$pristine" class="help-block" style="color:red;">Please input Model No.</p>
+
+
+
+                    </td>
+
+                    <td class="col-md-3" rowspan="6">
+                        <span class="col-md-6">
+
+                            <div class="thumbnail" style="height: 135px;">
+                                <img id="Key" data-ng-src="data:image/png;base64,{{vm.form.STYL_KEY_IMG}}" alt="No Image Selected" style="height: 130px;">
+
+                                <p style="padding-top: 3px;">
+                                    <a class="btn btn-xs red" ng-click="vm.removeKeyImage()" style="float:right;margin-right:0px;">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                </p>
+
+                                <input type="file" id="STYL_KEY_IMG_FILE" accept="image/*" base-sixty-four-input ng-model="vm.form.STYL_KEY_IMG_FILE">
+                                <p class="help-block">
+                                    Key Image
+                                </p>
+                            </div>
+                        </span>
+
+                        <span class="col-md-6">
+                            <div class="thumbnail" style="height: 135px;">
+                                <img id="Alt" data-ng-src="data:image/png;base64,{{vm.form.STYL_ALT_IMG}}" alt="No Image Selected" style="height: 130px;">
+
+                                <p style="padding-top: 3px;">
+                                    <a class="btn btn-xs red" ng-click="vm.removeAltImage()" style="float:right;margin-right:0px;">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                </p>
+
+                                <input type="file" id="STYL_ALT_IMG_FILE" accept="image/*" base-sixty-four-input ng-model="vm.form.STYL_ALT_IMG_FILE">
+                                <p class="help-block">
+                                    2nd Image
+                                </p>
+                            </div>
+                        </span>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="col-md-1 text-right" style="border-right:none;">
+                       
+                        <label class="control-label">
+                           
+                            Item Group/ <span aria-required="true" class="required">*</span> Type
+                          
+                        </label>
+                    </td>
+                    <td class="col-md-1">
+
+                        <span class="col-md-6" style="padding-left:0px;padding-right:3px;">
+                            <select kendo-drop-down-list name="LK_GARM_GRP_ID" class="form-control"
+                                    options="vm.GmtItemGroupList" id="ITEM_GRP_ID" ng-model="vm.form.ITEM_GRP_ID"></select>
+                        </span>
+
+                        <span class="col-md-6" style="padding-left: 0px; padding-right: 0px;">
+                            <select kendo-drop-down-list options="vm.AllItemCategoryList" name="INV_ITEM_CAT_ID" class="form-control" id="INV_ITEM_CAT_ID" ng-model="vm.form.INV_ITEM_CAT_ID" required></select>
+                        </span>
+
+
+
+                    </td>
+
+
+
+                </tr>
+                <tr>
+                    <td class="col-md-1 text-right" style="border-right:none;">
+                        <span aria-required="true" class="required" style="color:red;">*</span>
+                        <label class="control-label">
+                            Division
+                        </label>
+                    </td>
+                    <td class="col-md-1">
+                        <select kendo-drop-down-list name="LK_GARM_DEPT_ID" class="form-control"
+                                options="vm.GmtDeptList" id="LK_GARM_DEPT_ID" ng-model="vm.form.LK_GARM_DEPT_ID" required></select>
+                        <p ng-show="StyleItemForm.LK_GARM_DEPT_ID.$invalid && !StyleItemForm.LK_GARM_DEPT_ID.$pristine" class="help-block" style="color:red;">Please select Division.</p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-1 text-right" style="border-right:none;">
+                        <label class="control-label">
+                            Neck Type
+                        </label>
+                    </td>
+
+                    <td>
+
+                        <select kendo-drop-down-list name="LK_NECK_TYPE_ID" class="form-control"
+                                options="vm.NeckTypeList" id="LK_NECK_TYPE_ID" ng-model="vm.form.LK_NECK_TYPE_ID" ng-disabled="vm.disableNeckSlv"></select>
+                    </td>
+
+                </tr>
+
+
+
+                <tr>
+                    <td class="col-md-1 text-right" style="border-right:none;">
+                        <label class="control-label">
+                            Sleeve Type
+                        </label>
+                    </td>
+                    <td class="col-md-1">
+                        <select kendo-drop-down-list name="LK_SLV_TYPE_ID" class="form-control"
+                                options="vm.SlvTypeList" id="LK_SLV_TYPE_ID" ng-model="vm.form.LK_SLV_TYPE_ID" ng-disabled="vm.disableNeckSlv"></select>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="col-md-1 text-right" style="border-right:none;">
+                        <label class="control-label">
+                            <span aria-required="true" class="required">*</span>
+                            Item Name(Short)
+                        </label>
+                    </td>
+                    <td class="col-md-1">
+                        <input type="text" name="ITEM_SNAME" ng-model="vm.form.ITEM_SNAME" class="form-control" ng-maxlength="40" required />
+                        <p ng-show="StyleItemForm.ITEM_SNAME.$invalid && !StyleItemForm.ITEM_SNAME.$pristine" class="help-block" style="color:red;">Please input Item Name(Short).</p>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="col-md-1 text-right" style="border-right:none;">
+                        <label class="control-label">
+                            <span aria-required="true" class="required">*</span>
+                            Item Name (Full)
+                        </label>
+                    </td>
+                    <td class="col-md-1">
+
+                        <textarea rows="2" name="ITEM_NAME_EN" class="form-control" cols="50" ng-model="vm.form.ITEM_NAME_EN" required></textarea>
+                        <p ng-show="StyleItemForm.ITEM_NAME_EN.$invalid && !StyleItemForm.ITEM_NAME_EN.$pristine" class="help-block" style="color:red;">Please input Item Name(Full).</p>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-1 text-right" style="border-right:none;">
+                        <label class="control-label">
+                            Service Type
+                        </label>
+                    </td>
+                    <td class="col-md-1">
+                        <div class="checkbox-list">
+                            <label class="checkbox-inline" style="margin-left:20px">
+                                <span><input type="checkbox" ng-change="vm.form.IS_YD = (vm.form.IS_SOLID == 'Y') ? 'N': 'Y'" ng-model="vm.form.IS_SOLID" ng-true-value="'Y'" ng-false-value="'N'"> <small> Solid?</small></span>
+                            </label>
+
+                            <label class="checkbox-inline" style="margin-left: 20px;padding-left: 0px;">
+                                <span><input type="checkbox" ng-change="vm.form.IS_SOLID = (vm.form.IS_YD == 'Y') ? 'N': 'Y'" ng-model="vm.form.IS_YD" ng-true-value="'Y'" ng-false-value="'N'"> <small> Y/D?</small></span>
+                            </label>
+                        </div>
+
+                    </td>
+
+                    <td class="col-md-3" rowspan="3">
+                        <textarea rows="4" name="TECH_SPEC" class="form-control" cols="50" ng-model="vm.form.TECH_SPEC" placeholder="Technical Specification"></textarea>
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-1 text-right" style="border-right:none;">
+                        <label class="control-label">
+                            Services
+                        </label>
+                    </td>
+                    <td class="col-md-1">
+                        <div class="checkbox-list">
+                            <label class="checkbox-inline" style="margin-left: 20px;padding-left: 0px;">
+                                <span><input type="checkbox" ng-model="vm.form.IS_AOP" ng-true-value="'Y'" ng-false-value="'N'"> <small>AOP?</small> </span>
+                            </label>
+
+                            <label class="checkbox-inline" style="margin-left: 20px; padding-left: 0px;">
+                                <span><input type="checkbox" ng-model="vm.form.IS_EMB" ng-true-value="'Y'" ng-false-value="'N'"><small>Embr. ?</small> </span>
+                            </label>
+
+                            <label class="checkbox-inline" style="margin-left: 20px; padding-left: 0px;">
+                                <span><input type="checkbox" ng-model="vm.form.IS_PRINT" ng-true-value="'Y'" ng-false-value="'N'"><small>Print?</small></span>
+                            </label>
+
+                            <label class="checkbox-inline" style="margin-left: 20px; padding-left: 0px;">
+                                <span><input type="checkbox" ng-model="vm.form.IS_GMT_WASH" ng-true-value="'Y'" ng-false-value="'N'"><small>Gmt Wash?</small></span>
+                            </label>
+
+                            <label class="checkbox-inline" style="margin-left: 20px; padding-left: 0px;">
+                                <span><input type="checkbox" ng-model="vm.form.IS_HS_SINZING" ng-true-value="'Y'" ng-false-value="'N'"><small> H.Set/Sinzing?</small></span>
+                            </label>
+
+
+
+                        </div>
+
+                    </td>
+                </tr>
+
+                <tr ng-if="vm.form.IS_YD=='Y'">
+                    <td class="col-md-1 text-right" style="border-right:none;">
+                        <label class="control-label">
+                            Y/D Type
+                        </label>
+                    </td>
+                    <td class="col-md-1">
+                        <select kendo-drop-down-list name="LK_YD_TYPE_ID" class="form-control"
+                                options="vm.YDTypelist" id="LK_YD_TYPE_ID" ng-model="vm.form.LK_YD_TYPE_ID"></select>
+                        <p ng-show="StyleItemForm.LK_YD_TYPE_ID.$invalid && !StyleItemForm.LK_YD_TYPE_ID.$pristine" class="help-block" style="color:red;">Please select Y/D Type.</p>
+                    </td>
+                </tr>
+
+
+
+                <tr ng-if="vm.form.IS_AOP=='Y'">
+                    <td class="col-md-1 text-right" style="border-right:none;">
+                        <label class="control-label">
+                            AOP Type
+                        </label>
+                    </td>
+                    <td class="col-md-1">
+                        
+                      
+                        <oi-select oi-options="item.LK_DATA_NAME_EN for item in vm.AopTypelist track by item.LOOKUP_DATA_ID"
+                                           ng-model="vm.form.LK_AOP_TYPE_ID"
+                                           name="LK_AOP_TYPE_ID"
+                                           style="border: 1px solid #898383;"
+                                           multiple
+                                           placeholder="Search...">
+                        </oi-select>
+                        <p ng-show="StyleItemForm.LK_AOP_TYPE_ID.$invalid && !StyleItemForm.LK_AOP_TYPE_ID.$pristine" class="help-block" style="color:red;">Please select AOP Type.</p>
+                    </td>
+                </tr>
+
+
+
+
+                <tr ng-if="vm.form.IS_EMB=='Y'">
+                    <td class="col-md-1 text-right" style="border-right:none;">
+                        <label class="control-label">
+                            Embroidery Type
+                        </label>
+
+                    </td>
+                    <td class="col-md-1">
+                        <oi-select oi-options="item.LK_DATA_NAME_EN for item in vm.EmbrTypelist track by item.LOOKUP_DATA_ID"
+                                   ng-model="vm.form.LK_EMB_TYPE_ID"
+                                   name="LK_EMB_TYPE_ID"
+                                   style="border: 1px solid #898383;"
+                                   multiple
+                                   placeholder="Search...">
+                        </oi-select>
+                        <p ng-show="StyleItemForm.LK_EMB_TYPE_ID.$invalid && !StyleItemForm.LK_EMB_TYPE_ID.$pristine" class="help-block" style="color:red;">Please select Embroidery Type.</p>
+
+                    </td>
+                </tr>
+
+
+                <tr ng-if="vm.form.IS_PRINT=='Y'">
+                    <td class="col-md-1 text-right" style="border-right:none;">
+
+                        <label class="control-label">
+                            Print Type
+                        </label>
+                    </td>
+                    <td class="col-md-1">
+                        <oi-select oi-options="item.LK_DATA_NAME_EN for item in vm.PrintTypelist track by item.LOOKUP_DATA_ID"
+                                   ng-model="vm.form.LK_PRN_TYPE_ID"
+                                   name="LK_PRN_TYPE_ID"
+                                   style="border: 1px solid #898383;"
+                                   multiple
+                                   placeholder="Search...">
+                        </oi-select>
+                        <p ng-show="StyleItemForm.LK_PRN_TYPE_ID.$invalid && !StyleItemForm.LK_PRN_TYPE_ID.$pristine" class="help-block" style="color:red;">Please select Print Type.</p>
+                    </td>
+                </tr>
+
+                <tr ng-if="vm.form.IS_GMT_WASH=='Y'">
+                    <td class="col-md-1 text-right" style="border-right:none;">
+
+                        <label class="control-label">
+                            <span aria-required="true" class="required">*</span>
+                            Gmt Wash Type
+                        </label>
+
+                    </td>
+                    <td class="col-md-1">
+                        <oi-select oi-options="item.LK_DATA_NAME_EN for item in vm.GmtWashTypelist track by item.LOOKUP_DATA_ID"
+                                   ng-model="vm.form.LK_GMT_WASH_TYPE_ID"
+                                   name="LK_GMT_WASH_TYPE_ID"
+                                   style="border: 1px solid #898383;"
+                                   multiple
+                                   placeholder="Search..." required="required">
+                        </oi-select>
+                        <p ng-show="StyleItemForm.LK_GMT_WASH_TYPE_ID.$invalid && !StyleItemForm.LK_GMT_WASH_TYPE_ID.$pristine" class="help-block" style="color:red;">Please select Gmt Wash Type.</p>
+
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="col-md-1 text-right" style="border-right:none;">
+                        <label class="control-label">
+                            <span aria-required="true" class="required">*</span>
+                            Nature of Work
+                        </label>
+                    </td>
+                    <td class="col-md-1">
+
+                        <span class="col-md-6" style="padding-left:0px;padding-right:3px;">
+                            <select kendo-drop-down-list name="LK_GARM_TYPE_ID" class="form-control"
+                                    options="vm.NatureOfWorkList" id="LK_GARM_TYPE_ID" ng-model="vm.form.LK_GARM_TYPE_ID" required></select>
+                            <p ng-show="StyleItemForm.LK_GARM_TYPE_ID.$invalid && !StyleItemForm.LK_GARM_TYPE_ID.$pristine" class="help-block" style="color:red;">Please select this</p>
+                        </span>
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-1 text-right" style="border-right:none;">
+                        <label class="control-label">
+                            No. Of M/C
+                        </label>
+                    </td>
+                    <td class="col-md-1">
+                        <span class="col-md-6" style="padding-left:0px;padding-right:3px;">
+                            <input type="number" min="0" max="99" name="NO_MACHINE" ng-model="vm.form.NO_MACHINE" class="form-control" />
+                        </span>
+                    </td>
+
+
+                    <td class="col-md-3" rowspan="3">
+                        <textarea rows="4" name="SP_INSTRUCTION" class="form-control" cols="50" ng-model="vm.form.SP_INSTRUCTION" placeholder="Special Instruction"></textarea>
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-1 text-right" style="border-right:none;">
+                        <label class="control-label">
+                            Exp. Prod./Hr
+                        </label>
+                    </td>
+                    <td class="col-md-1">
+
+                        <span class="col-md-6" style="padding-left:0px;padding-right:3px;">
+                            <input type="number" min="0" name="EST_PROD_CAPACTY_HR" ng-model="vm.form.EST_PROD_CAPACTY_HR" class="form-control" />
+                        </span>
+
+                    </td>
+                </tr>
+
+
+
+                @*<tr>
+                    <td class="col-md-1 text-right" style="border-right:none;">
+                       
+                        <label class="control-label">
+                            <span aria-required="true" class="required">*</span>
+                            Status
+                        </label>
+
+                    </td>
+                    <td class="col-md-1">
+                        <span class="col-md-6" style="padding-left:0px;padding-right:3px;">
+                            <select kendo-drop-down-list name="LK_ITEM_STATUS_ID" class="form-control"
+                                    options="vm.RmgItemStatusList" id="LK_ITEM_STATUS_ID" ng-model="vm.form.LK_ITEM_STATUS_ID" required></select>
+                        </span>
+
+
+                    </td>
+
+                </tr>*@
+
+                <tr>
+                    <td class="col-md-1 text-right" style="border-right: none; border-left: none;"></td>
+                    <td class="col-md-1" style="border-right: none; border-left: none;" colspan="2">
+                        @*<a class="btn btn-sm blue" ui-sref="StyleList">Style Gallery</a>
+                        <a class="btn btn-sm blue" ui-sref="OrderEntry({pOrderObj:{MC_STYLE_H_ID:vm.params.MC_STYLE_H_ID,MC_BYR_ACC_ID:vm.StyleData.MC_BYR_ACC_ID,MC_BUYER_ID:vm.StyleData.MC_BUYER_ID,itemsStyle:[]}})"<i class="fa fa-plus"></i> Order Detail</a>*@
+                        <span class="badge badge-danger" ng-if="vm.form.IS_USED=='Y'">[Locked]</span>
+                        <button type="button" ng-if="vm.form.MC_STYLE_D_ITEM_ID" class="btn btn-sm yellow-gold" ng-class="{'disabled': (!StyleItemForm.$valid || vm.form.IS_USED=='Y')}" ng-click="vm.submitData(vm.form,token)">Update</button>
+                        <button type="button" ng-if="!vm.form.MC_STYLE_D_ITEM_ID" class="btn btn-sm green" ng-class="{'disabled':!StyleItemForm.$valid}" ng-click="vm.submitData(vm.form,token)">Save</button>
+                        <button type="button" class="btn btn-sm default" ui-sref="StyleH.Item({MC_STYLE_H_ID:vm.params.MC_STYLE_H_ID,MC_STYLE_D_ITEM_ID:0})" ui-sref-opts="{reload: 'StyleH.Item'}">Cancel</button>
+                    
+                        <button type="button" ng-if="vm.form.MC_STYLE_D_ITEM_ID > 0" ng-click="vm.makeActiveToggle(vm.form,token )" title="Diable/Enable" ng-class="{'blue-hoki':vm.form.LK_ITEM_STATUS_ID == 258, 'bg-grey-cascade': vm.form.LK_ITEM_STATUS_ID == 256}" class="btn btn-sm" style="float:none;"> {{vm.form.LK_ITEM_STATUS_ID == 258? 'Disable': 'Enable'}}</button>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <div class="row" style="margin:auto;padding-top:10px;" ng-if="vm.errors">
+            <div class="alert alert-warning" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                <ul ng-repeat="field in vm.errors">
+                    <li ng-repeat="error in field" ng-bind="error"></li>
+                </ul>
+            </div>
+        </div>
+
+        <br />
+    </div>
+</form>
+
+
+<script type="text/ng-template" id="ItemList.html">
+    <input id="access_token" data-ng-model="token" type="hidden"
+           data-ng-init="token='@Session["access_token"]'" />
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h3 class="title">
+                       Item List
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel([])"></i></span>
+                    </h3>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <table class="table table-condensed table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                #
+                            </th>
+                            <th>
+                                Item Name
+                            </th>
+
+                            <th>
+                                Model #
+                            </th>
+
+                            <th>
+                                Combo #
+                            </th>
+
+
+                            <th>
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat-start="item in ItemList">
+                            <td class="col-md-1">
+                                {{$index+1}}
+                            </td>
+
+                            <td class="col-md-3">
+                                {{item.ITEM_NAME_EN}}
+                            </td>
+
+                            <td class="col-md-2">
+                                {{item.MODEL_NO}}
+                            </td>
+
+                            <td class="col-md-2">
+                                {{item.COMBO_NO}}
+                            </td>
+
+                            <td class="col-md-1">
+                                <a class="btn btn-xs blue" ng-disabled="item.CHILD_ITEMS.length>0" ng-click="cancel(item)">
+                                    <i class="fa fa-edit">Edit</i>
+
+                                </a>
+                            </td>
+                        </tr>
+
+                        <tr ng-if="item.CHILD_ITEMS.length>0">
+                            <td class="col-md-1"></td>
+
+                            <td class="col-md-3" colspan="4" style="padding:0px;">
+                                <table class="table table-condensed table-bordered table-striped" style="padding:0px;">
+                                    <tbody>
+                                        <tr ng-repeat="itm in item.CHILD_ITEMS">
+
+                                            <td class="col-md-3">
+                                                {{itm.ITEM_NAME_EN}}
+                                            </td>
+
+                                            <td class="col-md-2">
+                                                {{itm.MODEL_NO}}
+                                            </td>
+
+                                            <td class="col-md-2">
+                                                {{itm.COMBO_NO}}
+                                            </td>
+
+                                            <td class="col-md-1">
+                                                <a class="btn btn-xs blue" ng-click="cancel(itm)">
+                                                    <i class="fa fa-edit">Edit</i>
+
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr ng-repeat-end></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</script>

@@ -1,0 +1,227 @@
+﻿@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+
+
+
+
+
+            <div class="row">
+                <form class="form-horizontal" role="form">
+                    <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+                           data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            Company
+                            <span class="required" aria-required="true">
+                                *
+                            </span>
+                        </label>
+                        <div class="col-md-4">
+                            <select kendo-drop-down-list name="HR_COMPANY_ID" class="form-control"
+                                    options="vm.companyList" ng-model="vm.form.HR_COMPANY_ID"></select>
+                            <span class="field-validation-error" ng-repeat="err in vm.errors.HR_COMPANY_ID">
+                                {{err}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            Office
+                            <span class="required" aria-required="true">
+                                *
+                            </span>
+                        </label>
+                        <div class="col-md-4">
+                            <select kendo-drop-down-list name="HR_OFFICE_ID" options="vm.getOfficeList" ng-model="vm.form.HR_OFFICE_ID" class="form-control"></select>
+                            <span class="field-validation-error" ng-repeat="err in vm.errors.HR_OFFICE_ID">
+                                {{err}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            Department
+                            <span class="required" aria-required="true">
+                                *
+                            </span>
+                        </label>
+                        <div class="col-md-4">
+                            <select kendo-drop-down-list name="HR_DEPARTMENT_ID" options="vm.departmentList" ng-model="vm.form.HR_DEPARTMENT_ID"  class="form-control"></select>
+
+                            <span class="field-validation-error" ng-repeat="err in vm.errors.HR_DEPARTMENT_ID">
+                                {{err}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3">
+                            Section
+                        </label>
+                        <div class="col-md-4">
+                            <select kendo-drop-down-list id="SECTION_ID" name="SECTION_ID" class="form-control"
+                                    options="vm.subdepartmentListData" ng-model="vm.form.SECTION_ID"></select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            Floor
+                        </label>
+                        <div class="col-md-4">
+                            <select kendo-drop-down-list name="LK_FLOOR_ID" class="form-control"
+                                    options="vm.floorListData" ng-model="vm.form.LK_FLOOR_ID"></select>
+                            <span class="field-validation-error" ng-repeat="err in vm.errors.LK_FLOOR_ID">
+                                {{err}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            Line
+                        </label>
+                        <div class="col-md-4">
+                            <select kendo-drop-down-list name="LINE_NO" class="form-control"
+                                    options="vm.lineListData" ng-model="vm.form.LINE_NO"></select>
+                            <span class="field-validation-error" ng-repeat="err in vm.errors.LINE_NO">
+                                {{err}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            Action Status
+                            <span class="required" aria-required="true">
+                                *
+                            </span>
+                        </label>
+                        <div class="col-md-6">
+                            <select kendo-drop-down-list name="LK_ACTION_STATUS_ID" class="form-control"
+                                    options="vm.actionStatusData" ng-model="vm.form.LK_ACTION_STATUS_ID"></select>
+                            <span class="field-validation-error" ng-repeat="err in vm.errors.LK_ACTION_STATUS_ID">
+                                {{err}}
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Setting</label>
+                        <div class="col-md-6">
+                            <div class="radio-list" style="margin-left:20px" ng-init="vm.form.ADD_SETTING=vm.form.HR_EMPLOYEE_ID>0?'Y':'N'">
+                                <label class="radio-inline">
+                                    <span class="checked"><input type="radio" ng-model="vm.form.ADD_SETTING" name="optionsRadios" ng-value="'N'" checked=""></span>By Desig Order
+                                </label>
+                                <label class="radio-inline">
+                                    <span class=""><input type="radio" ng-model="vm.form.ADD_SETTING" name="optionsRadios" ng-value="'Y'" checked=""></span>By Employee
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group" ng-if="vm.form.ADD_SETTING=='N'">
+                        <label class="col-md-3 control-label">Desig Order</label>
+                        <div class="col-md-2">
+                            <input type="text" min="0" class="form-control" ng-model="vm.form.DESIG_ORDER_LOW" ui-number-mask="0" placeholder="High">
+                            <span class="field-validation-error" ng-repeat="err in vm.errors.DESIG_ORDER_LOW">
+                                {{err}}
+                            </span>
+                        </div>
+
+                        <div class="col-md-2">
+                            <input type="text" min="0" class="form-control" ng-model="vm.form.DESIG_ORDER_HIGH" ui-number-mask="0" placeholder="Low">
+                            <span class="field-validation-error" ng-repeat="err in vm.errors.DESIG_ORDER_HIGH">
+                                {{err}}
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group" ng-if="vm.form.ADD_SETTING=='Y'">
+                        <label class="col-md-3 control-label">Employee Code</label>
+                        <div class="col-md-4">
+                            <input type="text" ng-model="vm.form.EMPLOYEE_CODE" placeholder="Search..." typeahead="item.EMPLOYEE_CODE as item.EMPLOYEE_CODE for item in emoloyeeAuto($viewValue)" typeahead-on-select="onSelectItem($item)" typeahead-loading="loadingLocations" class="form-control">
+                            <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+                        </div>
+                    </div>
+
+
+                    <div ng-if="vm.showEmployeeInfo">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label"></label>
+                            <div class="col-md-6">
+                                <span class="help-block">{{vm.employee.EMP_FULL_NAME_EN}},{{vm.employee.DESIGNATION_NAME_EN}},{{vm.employee.DEPARTMENT_NAME_EN}}</span>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" style="padding-top: 12px;">
+                            Is Multi level?
+                        </label>
+                        <div class="col-md-1">
+                            <div class="checkbox-list" ng-init="vm.form.IS_MULTI_LEVEL='Y'">
+                                <label class="checkbox-inline" style="margin-left:20px">
+                                    <span><input type="checkbox" ng-model="vm.form.IS_MULTI_LEVEL" ng-true-value="'Y'" ng-false-value="'N'"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <label class="col-md-3 control-label" style="padding-top: 12px;">
+                            Email Noti?
+                        </label>
+                        <div class="col-md-1">
+                            <div class="checkbox-list" ng-init="vm.form.IS_NOTIFY_EMAIL='N'">
+                                <label class="checkbox-inline" style="margin-left:20px">
+                                    <span><input type="checkbox" ng-model="vm.form.IS_NOTIFY_EMAIL" ng-true-value="'Y'" ng-false-value="'N'"></span>
+                                </label>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="form-group" ng-if="vm.form.IS_NOTIFY_EMAIL=='Y'">
+                        <label class="col-md-3 control-label">
+                            Approver Email List
+                        </label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" ng-model="vm.form.APRV_EMAIL_LIST">
+                            <span class="field-validation-error" ng-repeat="err in vm.errors.APRV_EMAIL_LIST">
+                                {{err}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-3 col-md-9">
+                                <button ng-if="vm.form.RF_ACTION_CFG_D1_ID" type="button" ng-click="vm.saveData(vm.form,'/Hr/Admin/ActionConfig/Update',vm.antiForgeryToken,true)" class="btn yellow-gold btn-sm">Update</button>
+
+                                <button ng-if="!vm.form.RF_ACTION_CFG_D1_ID" type="button" ng-click="vm.saveData(vm.form,'/Hr/Admin/ActionConfig/Save',vm.antiForgeryToken,false)" class="btn green btn-sm">Save</button>
+
+                                <button type="button" class="btn default btn-sm" ui-sref="ActionType({RF_ACTION_CFG_H_ID:vm.form.RF_ACTION_CFG_H_ID})">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+

@@ -1,0 +1,373 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+
+        <form role="form" name="PoHeader" class="form-horizontal">
+            @*<fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;" ng-disabled="form.IS_FRM_EDITABLE=='N'">
+                    <legend class="custom-legend">&nbsp; <input type="checkbox" name="IS_PROG_PARAM" ng-model="vm.IS_PROG_PARAM" ng-init="vm.IS_PROG_PARAM='Y'" ng-true-value="'Y'" ng-false-value="'N'"> PO Parameter</legend>
+
+                    <div class="form-group" ng-show="vm.IS_PROG_PARAM=='Y'">
+                        <label class="col-md-2">
+                            Subject of PO (<span aria-required="true" class="custom-required">*</span>)
+                        </label>
+                        <div class="col-md-4" ng-class="{'has-error': (PoHeader.ACCS_PO_SUB.$touched || PoHeader.$submitted) && PoHeader.ACCS_PO_SUB.$error.required}">
+                            <textarea rows="2" name="ACCS_PO_SUB" class="form-control" cols="50" ng-model="form.ACCS_PO_SUB" required></textarea>
+                        </div>
+
+                        <label class="col-md-offset-1 col-md-2">
+                            PO#
+                        </label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" name="ACCS_PO_NO" ng-model="form.ACCS_PO_NO" disabled />
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-show="vm.IS_PROG_PARAM=='Y'">
+                        <label class="col-md-2">
+                            Delivery Date (<span aria-required="true" class="custom-required">*</span>)
+                        </label>
+                        <div class="col-md-4" ng-class="{'has-error': (PoHeader.ACCS_DELV_DT.$touched || PoHeader.$submitted) && PoHeader.ACCS_DELV_DT.$error.required}">
+                            <input type="text" class="form-control" ng-click="vm.ACCS_DELV_DT_OPEN($event)" datepicker-popup="{{vm.dtFormat}}"
+                                   name="ACCS_DELV_DT" ng-model="form.ACCS_DELV_DT" is-open="vm.ACCS_DELV_DT_OPENED" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" required close-text="Close" />
+                        </div>
+
+                        <label class="col-md-offset-1 col-md-2">
+                            Delivery Place (<span aria-required="true" class="custom-required">*</span>)
+                        </label>
+                        <div class="col-md-3" ng-class="{'has-error': (PoHeader.SCM_STORE_ID.$touched || PoHeader.$submitted) && PoHeader.SCM_STORE_ID.$error.required}">
+                            <select kendo-drop-down-list name="SCM_STORE_ID" class="form-control"
+                                    options="vm.warehouseData" id="SCM_STORE_ID" ng-model="form.SCM_STORE_ID" required></select>
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-show="vm.IS_PROG_PARAM=='Y'">
+                        <label class="col-md-2">
+                            Purchase Type (<span aria-required="true" class="custom-required">*</span>)
+                        </label>
+                        <div class="col-md-4" ng-class="{'has-error': (PoHeader.LK_PURCH_TYPE_ID.$touched || PoHeader.$submitted) && PoHeader.LK_PURCH_TYPE_ID.$error.required}">
+                            <select kendo-drop-down-list name="LK_PURCH_TYPE_ID" class="form-control"
+                                    options="vm.PurchaseTypeList" id="LK_PURCH_TYPE_ID" ng-model="form.LK_PURCH_TYPE_ID" required></select>
+                        </div>
+
+                        <label class="col-md-offset-1 col-md-2">
+                            PO Date
+                        </label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" name="ACCS_PO_DT" ng-model="form.ACCS_PO_DT" readonly />
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-show="vm.IS_PROG_PARAM=='Y'">
+                        <label class="col-md-2">
+                            Requested By
+                        </label>
+                        <div class="col-md-4">
+                            <textarea rows="2" ng-model="form.EMPLOYEE_PROFILE" rows="1" class="form-control"
+                                      data-ng-init="form.EMPLOYEE_PROFILE='@Session["multiLoginEmpName"]' + ', '+'@Session["multiLoginEmpDesigName"]'+', '+'@Session["multiLoginEmpCoreDeptName"]'" ng-disabled="true" />
+                        </div>
+
+                        <label class="col-md-offset-1 col-md-2">
+                        </label>
+                        <div class="col-md-3">
+                            <div class="checkbox-list">
+                                <label class="checkbox-inline" style="margin-left:20px;margin-top:-15px;">
+                                    <span><input type="checkbox" ng-model="form.IS_SUPP_ONLINE" ng-true-value="'Y'" ng-false-value="'N'"></span> Is Online?
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-show="vm.IS_PROG_PARAM=='Y'">
+                        <label class="col-md-2">
+                        </label>
+                        <div class="col-md-3">
+                            <div class="checkbox-list">
+                                <label class="checkbox-inline" style="margin-left:20px;margin-top:-15px;">
+                                    <span><input type="checkbox" ng-model="form.IS_SP_INSTRUCTION" ng-true-value="'Y'" ng-false-value="'N'"></span> Special Instruction
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-show="vm.IS_PROG_PARAM=='Y' && form.IS_SP_INSTRUCTION=='Y'">
+                        <label class="col-md-2">
+                            Special Instruction
+                        </label>
+                        <div class="col-md-7">
+                            <textarea rows="3" name="SP_INSTRUCTION" class="form-control" cols="50" ng-model="form.SP_INSTRUCTION"></textarea>
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group" ng-show="vm.IS_PROG_PARAM=='Y'">
+                        <label class="col-md-2">
+                        </label>
+                        <div class="col-md-3">
+                            <div class="checkbox-list">
+                                <label class="checkbox-inline" style="margin-left:20px;margin-top:-15px;">
+                                    <span><input type="checkbox" ng-model="form.IS_ACC_PO_NOTE" ng-true-value="'Y'" ng-false-value="'N'"></span> Note
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+                    <div class="form-group" ng-show="vm.IS_PROG_PARAM=='Y' && form.IS_ACC_PO_NOTE=='Y' ">
+                        <label class="col-md-2">
+                            Note
+                        </label>
+                        <div class="col-md-7">
+                            <textarea rows="3" name="ACC_PO_NOTE" class="form-control" cols="50" ng-model="form.ACC_PO_NOTE"></textarea>
+                        </div>
+                    </div>
+
+                </fieldset>*@
+
+            <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;">
+                <legend class="custom-legend">&nbsp;  Supplier Selection</legend>
+                <!-- ng-if="form.IS_SUP_RT_UPD=='Y'"-->
+                @*<div class="form-group" ng-class="{'has-error': (PoHeader.SCM_SUPPLIER_ID.$touched || PoHeader.$submitted) && PoHeader.SCM_SUPPLIER_ID.$error.required}">
+
+                        <div class="col-md-1"></div>
+                         <label class="col-md-2">
+                            Supplier (<span aria-required="true" class="custom-required">*</span>)
+                        </label>
+                        <div class="col-md-4">
+                        </div>
+                    </div>*@
+
+
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-1">
+                        </div>
+                        <label class="control-label col-md-2">
+                            <span aria-required="true" class="required">*</span>
+                            Requisition Type
+                        </label>
+                        <div class="col-md-3">
+                            <select kendo-drop-down-list name="RF_REQ_TYPE_ID" id="RF_REQ_TYPE_ID" class="form-control required"
+                                    options="vm.reqTypeList" ng-model="form.RF_REQ_TYPE_ID" ng-init="form.RF_REQ_TYPE_ID=30" required></select>
+
+                        </div>
+
+                        <label class="control-label col-md-2">
+                            <span aria-required="true" class="required">*</span>
+                            Sourcing Type
+                        </label>
+                        <div class="col-md-3">
+
+                            <select kendo-drop-down-list name="LK_LOC_SRC_TYPE_ID" id="LK_LOC_SRC_TYPE_ID" class="form-control"
+                                    options="vm.sourceTypeList" ng-model="form.LK_LOC_SRC_TYPE_ID"></select>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-1">
+                        </div>
+                        <label class="control-label col-md-2">
+                            <span aria-required="true" class="required"></span>
+                            Requisition No
+                        </label>
+                        <div class="col-md-2">
+                            <input type="text" name="PURC_REQ_NO" placeholder="[Auto Gen]" ng-model="form.PURC_REQ_NO" readonly="readonly" class="form-control" />
+                            <input type="hidden" id="SCM_PURC_REQ_H_ID" name="SCM_PURC_REQ_H_ID" ng-model="form.SCM_PURC_REQ_H_ID" />
+                        </div>
+
+                        <div class="col-md-1">
+                        </div>
+                        <label class="col-md-2 control-label">
+                            <span aria-required="true" class="required">*</span>
+                            Date of Requisition
+                        </label>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" ng-init="form.PURC_REQ_DT=vm.today" ng-click="vm.ACCS_DELV_DT_OPEN($event)" datepicker-popup="{{vm.dtFormat}}"
+                                   name="PURC_REQ_DT" ng-model="form.PURC_REQ_DT" is-open="vm.ACCS_DELV_DT_OPENED" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" required close-text="Close" />
+
+                            @*<input type="text" class="form-control required" ng-click="PURC_REQ_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                name="PURC_REQ_DT" max-date="vm.today" ng-model="form.PURC_REQ_DT" is-open="PURC_REQ_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close"
+                                required />*@
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+
+                        <div class="col-md-1">
+                        </div>
+                        <label class="control-label col-md-2 ">
+                            <span aria-required="true" class="required">*</span>
+                            Source of Stock
+                        </label>
+                        <div class="col-md-3">
+                            <select kendo-drop-down-list name="RF_REQ_SRC_ID" id="RF_REQ_SRC_ID" class="form-control required"
+                                    options="vm.reqSourceList" ng-model="form.RF_REQ_SRC_ID" required></select>
+                        </div>
+
+                        <label class="control-label col-md-2">
+                            <span aria-required="true" class="required">*</span>
+                            Delivery To
+                        </label>
+                        <div class="col-md-3">
+                            <select kendo-drop-down-list name="SCM_STORE_ID" id="SCM_STORE_ID" class="form-control required"
+                                    options="vm.storeList" ng-model="form.SCM_STORE_ID" required></select>
+
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+
+                        <div class="col-md-1"></div>
+
+                        <label class="col-md-2 control-label">
+                            <span aria-required="true" class="required">*</span>
+                            Priority
+                        </label>
+                        <div class="col-md-2">
+                            <select kendo-drop-down-list name="LK_PRIORITY_ID" id="LK_PRIORITY_ID" class="form-control"
+                                    options="vm.PriorityList" ng-model="form.LK_PRIORITY_ID" required></select>
+                        </div>
+                        <div class="col-md-1"></div>
+                        <label class="control-label col-md-2 ">
+                            <span aria-required="true" class="required">*</span>
+                            Currency
+                        </label>
+                        <div class="col-md-2">
+                            <select kendo-drop-down-list id="RF_CURRENCY_ID" name="RF_CURRENCY_ID" class="form-control requiredSub"
+                                    options="vm.currencyList" ng-model="form.RF_CURRENCY_ID"></select>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-1">
+                        </div>
+                        <label class="control-label col-md-2 ">
+                            <span aria-required="true" class="required">*</span>
+                            Department
+                        </label>
+                        <div class="col-md-3">
+                            <select kendo-drop-down-list name="HR_DEPARTMENT_ID" id="HR_DEPARTMENT_ID" class="form-control required"
+                                    ng-init="form.HR_DEPARTMENT_ID='@Session["multiLoginEmpCoreDeptId"]'" options="vm.departmentList" ng-model="form.HR_DEPARTMENT_ID" required></select>
+                        </div>
+
+                        <label class="control-label col-md-2">
+                            <span aria-required="true" class="required">*</span>
+                            Company/Importer
+                        </label>
+                        <div class="col-md-3">
+                            <select kendo-drop-down-list name="HR_COMPANY_ID" id="HR_COMPANY_ID" class="form-control required"
+                                    ng-init="vm.form.HR_COMPANY_ID='@Session["multiLoginEmpCompId"]'" options="vm.companyList" ng-model="form.HR_COMPANY_ID" required></select>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="form-group">
+
+                        <div class="col-md-1">
+                        </div>
+                        <label class="control-label col-md-2 ">
+                            <span aria-required="true" class="required">*</span>
+                            Requisitioned By
+                        </label>
+                        <div class="col-md-3">
+                            <select id="PURC_REQ_BY" ng-init="form.PURC_REQ_BY='@Session["multiScUserId"]'" kendo-drop-down-list options="vm.userList" ng-model="form.PURC_REQ_BY" class="form-control customers" style="width:100%;"></select>
+                        </div>
+
+                        <label class="control-label col-md-2">
+                            <span aria-required="true" class="required">*</span>
+                            Requisition To
+                        </label>
+                        <div class="col-md-3">
+                            <select id="PURC_REQ_TO" kendo-drop-down-list options="vm.userList" ng-model="form.PURC_REQ_TO" class="form-control customers required " style="width:100%;"></select>
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+                <div class="row">
+                    <div class="form-group">
+
+                        <div class="col-md-1">
+                        </div>
+                        <label class="control-label col-md-2 ">
+                            <span aria-required="true" class="required">*</span>
+                            Action Status
+                        </label>
+                        <div class="col-md-3" ng-if="form.RF_ACTN_VIEW>0">
+                            <select kendo-drop-down-list name="RF_ACTN_STATUS_ID" id="RF_ACTN_STATUS_ID" class="form-control"
+                                    options="vm.statusList" ng-model="form.RF_ACTN_STATUS_ID" required></select>
+                        </div>
+
+                        <div class="col-md-3" ng-if="!form.RF_ACTN_VIEW>0">
+
+                            <input type="text" ng-model="form.ACTN_STATUS_NAME" style="width: 100%;" readonly="readonly" />
+                            <input type="hidden" ng-model="form.RF_ACTN_STATUS_ID" />
+
+                        </div>
+
+
+                    </div>
+                </div>
+                
+            </fieldset>
+
+        </form>
+        <br />
+
+        <div class="row" style="margin:auto;">
+            <tabset>
+                <tab ng-repeat="tab in tabs" deselect="tab.IS_TAB_ACT=false" select="tab.IS_TAB_ACT=true" heading="{{tab.ITEM_NAME_EN}}" active="tab.IS_TAB_ACT">
+                    <div data-ui-view="TabInside{{tab.IS_TAB_ACT?'':0}}"></div>
+                </tab>
+            </tabset>
+        </div>
+    </div>
+
+
+
+

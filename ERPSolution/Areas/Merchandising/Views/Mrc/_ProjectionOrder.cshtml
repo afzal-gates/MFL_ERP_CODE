@@ -1,0 +1,821 @@
+﻿<style>
+    .dropdown-header {
+        border-width: 0 0 1px 0;
+        text-transform: uppercase;
+    }
+
+        .dropdown-header > span {
+            display: inline-block;
+            padding: 10px;
+        }
+
+            .dropdown-header > span:first-child {
+                width: 10px;
+            }
+
+    .selected-value {
+        display: inline-block;
+        vertical-align: middle;
+        width: 24px;
+        height: 24px;
+        background-size: 100%;
+        margin-right: 5px;
+        border-radius: 50%;
+    }
+
+    #customers-list .k-item {
+        line-height: 1em;
+        min-width: 300px;
+    }
+
+    /* Material Theme padding adjustment*/
+
+    .k-material #customers-list .k-item,
+    .k-material #customers-list .k-item.k-state-hover,
+    .k-materialblack #customers-list .k-item,
+    .k-materialblack #customers-list .k-item.k-state-hover {
+        padding-left: 5px;
+        border-left: 0;
+    }
+
+    #customers-list .k-item > span {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        display: inline-block;
+        vertical-align: top;
+        margin: 20px 10px 10px 5px;
+    }
+
+        #customers-list .k-item > span:first-child {
+            -moz-box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            -webkit-box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            margin: 5px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+
+    #customers-list h3 {
+        font-size: 1.2em;
+        font-weight: normal;
+        margin: 0 0 1px 0;
+        padding: 0;
+    }
+
+    #customers-list p {
+        margin: 0;
+        padding: 0;
+        font-size: .8em;
+    }
+
+
+    /*///////////////////////*/
+    .k-treeview .k-in {
+        padding: 5px;
+    }
+
+    #ItemCategTreeview .k-sprite {
+        background-image: url("/Content/assets/global/img/coloricons-sprite.png");
+    }
+
+    .rootfolder {
+        background-position: 0 0;
+    }
+
+    .folder {
+        background-position: 0 -16px;
+    }
+
+    .pdf {
+        background-position: 0 -32px;
+    }
+
+    .html {
+        background-position: 0 -48px;
+    }
+
+    .image {
+        background-position: 0 -64px;
+    }
+
+    /*.demo-section {
+        float: left;
+        width: 200px;
+        margin: 0 60px 0 0;
+    }*/
+</style>
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#"> Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+    <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+        <div class="page-splash">
+            <div class="page-splash-message">
+                <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+            </div>
+        </div>
+    </div>
+    <form name="formData" class="form-horizontal" style="background-color: white;">
+        <div class="portlet-body">
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <fieldset class="custom-fieldset" style="">
+                        <legend class="custom-legend"><b>Booking Order Master Info</b></legend>
+                        <div class="form-group">
+                            <div class="col-md-1"></div>
+                            <label class="col-md-2 control-label">
+                                Projection Booking #
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" name="PROV_FAB_BK_NO" ng-model="vm.form.PROV_FAB_BK_NO" placeholder="[Auto Generate]" class="form-control" ng-disabled="true">
+
+                            </div>
+                            <div class="col-md-1"></div>
+                            <label class="col-md-2 control-label">
+                                Booking Date
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control required" ng-click="PROV_FAB_BK_DT_LNopen($event)" ng-focus="PROV_FAB_BK_DT_LNopen($event)"
+                                       datepicker-popup="{{vm.dtFormat}}" name="PROV_FAB_BK_DT" id="PROV_FAB_BK_DT" max-date="vm.today" ng-model="vm.form.PROV_FAB_BK_DT"
+                                       is-open="PROV_FAB_BK_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-1"></div>
+                            <label class="col-md-2 control-label">
+                                Revision #
+                            </label>
+                            <div class="col-md-1">
+                                <input type="text" name="REVISION_NO" ng-model="vm.form.REVISION_NO" class="form-control" ng-disabled="true">
+
+                            </div>
+                            <div class="col-md-2"></div>
+                            <label class="col-md-2 control-label">
+                                Revision Date
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" ng-class="{'required':(vm.form.REVISION_NO||0)>0}" ng-click="REVISION_DT_LNopen($event)" ng-focus="REVISION_DT_LNopen($event)"
+                                       datepicker-popup="{{vm.dtFormat}}" name="REVISION_DT" id="REVISION_DT" max-date="vm.today" ng-model="vm.form.REVISION_DT"
+                                       is-open="REVISION_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-1"></div>
+                            <label class="col-md-2 control-label">
+                                Revision Reason
+                            </label>
+                            <div class="col-md-7">
+                                <textarea name="REV_REASON" ng-model="vm.form.REV_REASON" class="form-control"></textarea>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-1"></div>
+                            <label class="col-md-2 control-label">
+                                <span aria-required="true" class="required"></span>
+                                Booking By
+                            </label>
+                            <div class="col-md-3">
+                                <select id="customers" kendo-drop-down-list options="vm.userList" ng-model="vm.form.PROV_FAB_BK_BY" class="form-control required" style="width:100%;"></select>
+
+                            </div>
+
+                            <label class="col-md-2 control-label">
+                                <span aria-required="true" class="required"></span>
+                                Booking To
+                            </label>
+                            <div class="col-md-3">
+                                <select id="customers" kendo-drop-down-list options="vm.userList" ng-model="vm.form.PROV_FAB_BK_TO" class="form-control required" style="width:100%;"></select>
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-1"></div>
+                            <label class="col-md-2 control-label">
+                                <span aria-required="true" class="required"></span>
+                                Remarks
+                            </label>
+                            <div class="col-md-8">
+                                <textarea ng-model="vm.form.REMARKS" class="form-control"></textarea>
+
+                            </div>
+
+
+                        </div>
+
+                    </fieldset>
+                </div>
+                <div class="col-md-12">
+                    <div class="col-md-6">
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend"><b>Style Info</b></legend>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">
+                                    Buyer A/C
+                                </label>
+                                <div class="col-md-8">
+                                    <div class="col-md-8" style="padding-left:0px;padding-right:3px;">
+                                        <select kendo-drop-down-list name="MC_BYR_ACC_ID" class="form-control"
+                                                options="vm.buyerAccList" id="MC_BYR_ACC_ID" ng-model="vm.form.MC_BYR_ACC_ID" required></select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">
+                                    Buyer
+                                </label>
+                                <div class="col-md-8">
+                                    <select class="form-control" kendo-drop-down-list name="MC_BUYER_ID" id="MC_BUYER_ID" k-option-label="'-- Select Buyer --'"
+                                            k-data-text-field="'BUYER_NAME_EN'" k-data-value-field="'MC_BUYER_ID'"
+                                            k-auto-bind="'true'" k-data-source="vm.buyerList" k-ng-delay="vm.buyerList"
+                                            k-filter="'contains'" ng-model="vm.form.MC_BUYER_ID" k-on-change="vm.getStyleList(kendoEvent)"></select>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-if="vm.form.LK_ORD_TYPE_ID==174">
+                                <label class="col-md-4 control-label">
+                                    Style #
+                                </label>
+                                <div class="col-md-6">
+                                    <select class="form-control" kendo-drop-down-list name="MC_STYLE_H_ID" id="MC_STYLE_H_ID" k-option-label="'-- Select Style --'"
+                                            k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_STYLE_H_ID'"
+                                            k-auto-bind="'true'" k-data-source="vm.styleList" k-ng-delay="vm.styleList"
+                                            k-filter="'contains'" ng-model="vm.form.MC_STYLE_H_ID" k-on-change="vm.getStyleColorList(kendoEvent)"
+                                            k-on-data-bound="vm.onDataBoundStyleDropDown(kendoEvent)"></select>
+                                    <input type="hidden" ng-model="vm.form.STYLE_NO" />
+                                </div>
+                                <div class="col-md-2">
+                                    <a class="btn btn-sm blue" ng-disabled="!vm.form.MC_STYLE_H_ID" ng-click="vm.onRefreshProjectionOrderList(vm.form.MC_STYLE_H_ID)">
+                                        <i class="fa fa-refresh"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="custom-fieldset">
+                            <a ng-if="vm.form.MC_STYLE_H_ID" href="/Merchandising/Mrc/OrderCon?a=90/#/Style/{{vm.form.MC_STYLE_H_ID}}/Order/0" target="_blank" class="btn btn-sm btn-block blue">+ New Projection/Call-off Order</a>
+                            <legend class="custom-legend"><b>Call-Off Order List</b></legend>
+                            <table class="table table-condensed table-striped table-bordered" style="margin-bottom:3px;">
+                                <thead>
+                                    <tr class="site-table-header">
+                                        <th style="padding-top: 3px; padding-bottom: 3px">Style Ext</th>
+                                        <th style="padding-top: 3px; padding-bottom: 3px">Order</th>
+                                        <th style="padding-top: 3px; padding-bottom: 3px">Call-off Date</th>
+                                        <th style="padding-top: 3px; padding-bottom: 3px">Ship</th>
+
+                                        <th style="padding-top: 3px; padding-bottom: 3px">Order Qty</th>
+
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="itm in vm.ProvisionalOrderList">
+                                        <td style="padding:0px;width:20%">{{itm.WORK_STYLE_NO}}</td>
+                                        <td style="padding: 0px; width: 20%">
+                                            {{itm.ORDER_NO}}
+                                        </td>
+                                        <td style="padding: 0px; width: 20%">
+                                            {{itm.TGT_ORD_DOC_RCV_DT|date:'dd-MMM-yyyy'}}
+                                        </td>
+                                        <td style="padding: 0px; width: 15%">
+                                            {{itm.SHIP_DT|date:'dd-MMM-yyyy'}}
+                                        </td>
+                                        <td style="padding: 0px; width: 15%">{{itm.TOT_ORD_QTY+' '+itm.MOU_CODE}}</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot ng-if="vm.ProvisionalOrderList.length>0" style="font-weight:700;">
+                                    <tr>
+                                        <td style="padding: 0px; width: 15%;text-align:right;" colspan="4">
+                                            Total
+                                        </td>
+                                        <td style="padding: 0px; width: 15%">{{vm.TTL_TOT_ORD_QTY+' '+vm.ProvisionalOrderList[0].MOU_CODE}}</td>
+                                    </tr>
+                                </tfoot>
+
+                            </table>
+                        </fieldset>
+
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend"><b>Call-Off Order List:Fabric Booking</b></legend>
+                            <table class="table table-condensed table-striped table-bordered" style="margin-bottom:3px;">
+                                <thead>
+                                    <tr class="site-table-header">
+                                        <th style="padding-top: 3px; padding-bottom: 3px">Style Ext</th>
+                                        <th style="padding-top: 3px; padding-bottom: 3px">Order</th>
+                                        <th style="padding-top: 3px; padding-bottom: 3px">Ship</th>
+                                        <th style="padding-top: 3px; padding-bottom: 3px">Order Qty</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="itm in vm.ProvisionalOrderListBk">
+                                        <td style="padding:0px;width:20%">{{itm.WORK_STYLE_NO}}</td>
+                                        <td style="padding: 0px; width: 20%">
+                                            {{itm.ORDER_NO}}
+                                        </td>
+                                        <td style="padding: 0px; width: 15%">
+                                            {{itm.SHIP_DT|date:'dd-MMM-yyyy'}}
+                                        </td>
+                                        <td style="padding: 0px; width: 15%">{{itm.TOT_ORD_QTY+' '+itm.MOU_CODE}}</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot ng-if="vm.ProvisionalOrderList.length>0" style="font-weight:700;">
+                                    <tr>
+                                        <td style="padding: 0px; width: 15%;text-align:right;" colspan="3">
+                                            Total
+                                        </td>
+                                        <td style="padding: 0px; width: 15%">{{vm.TTL_TOT_ORD_QTY_BK+' '+vm.ProvisionalOrderListBk[0].MOU_CODE}}</td>
+                                    </tr>
+                                </tfoot>
+
+                            </table>
+                        </fieldset>
+
+                        <h5 class="title" style="text-align:right;font-weight:800;">Additional Projection Qty: {{vm.TTL_TOT_ORD_QTY-vm.TTL_TOT_ORD_QTY_BK}}</h5>
+                        <h5 class="title" style="text-align:right;font-weight:800;color:red;" ng-show="(vm.TTL_TOT_ORD_QTY-vm.TTL_TOT_ORD_QTY_BK) < 1 && (vm.form.MC_PROV_FAB_BK_H_ID||0) < 1"> No Projected Qty available.</h5>
+
+                    </div>
+                    <div class="col-md-6">
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend"><b>Order Info</b></legend>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">
+                                    Job #
+                                </label>
+                                <div class="col-md-6">
+                                    <input type="text" name="JOB_TRAC_NO" ng-model="vm.form.JOB_TRAC_NO" class="form-control" style="background-color:hsl(0, 0%, 87%);font-weight:bold" readonly />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">
+                                    Working Style #
+                                </label>
+                                <div class="col-md-6">
+                                    <div ng-if="vm.isWorkStyleDropdown">
+                                        <select kendo-drop-down-list name="MC_STYLE_H_EXT_ID" class="form-control"
+                                                options="vm.styleList" id="MC_STYLE_H_EXT_ID" ng-model="vm.form.MC_STYLE_H_EXT_ID_ORD" required></select>
+                                    </div>
+                                    <input type="text" name="WORK_STYLE_NO" ng-model="vm.form.WORK_STYLE_NO" class="form-control" />
+
+                                    @*<div class="col-md-9" style="padding-left:0px;">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <span>-PRO</span>
+                                        </div>*@
+
+                                </div>
+
+                                <div class="col-md-1">
+                                    <div class="checkbox-list">
+                                        <label class="checkbox-inline" style="margin-left:20px">
+                                            <span><input type="checkbox" ng-model="EXTENTION_AUTO" ng-change="vm.generateExtionNumber(EXTENTION_AUTO)">  Auto?</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">
+                                    Style Dev. Type
+                                </label>
+                                <div class="col-md-6">
+                                    <select kendo-drop-down-list name="LK_STYL_DEV_TYP_ID" class="form-control"
+                                            options="vm.styleDevTypeList" id="LK_STYL_DEV_TYP_ID" ng-model="vm.form.LK_STYL_DEV_TYP_ID" required></select>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">
+                                    PO #
+                                </label>
+                                <div class="col-md-6">
+                                    <input type="text" name="ORDER_NO" ng-model="vm.form.ORDER_NO" class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">
+                                    <span aria-required="true" class="required">*</span>
+
+                                    {{ vm.StyleData.LK_ORD_TYPE_ID==311 ? 'Quantity' : 'Order Quantity' }}
+                                </label>
+                                <div class="col-md-3">
+                                    <input type="number" min="1" name="TOT_ORD_QTY" ng-model="vm.form.TOT_ORD_QTY" class="form-control" required />
+                                    <p ng-show="OrderConfirmationForm.TOT_ORD_QTY.$invalid && !OrderConfirmationForm.TOT_ORD_QTY.$pristine" class="help-block error">Please input Order Qty</p>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <select kendo-drop-down-list name="QTY_MOU_ID" class="form-control"
+                                            options="vm.MOUList" id="QTY_MOU_ID" ng-model="vm.form.QTY_MOU_ID" required></select>
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">
+                                    Is Provisinoal
+                                </label>
+                                <div class="col-md-3">
+                                    <input type="checkbox" name="IS_PROV" ng-true-value="'Y'" ng-false-value="'N'" ng-model="vm.form.IS_PROV" />
+
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">
+                                    Delivery Plan Start Date
+                                </label>
+                                <div class="col-md-3">
+
+                                    <input type="text" class="form-control required" ng-click="ORD_CONF_DT_LNopen($event)" ng-focus="ORD_CONF_DT_LNopen($event)"
+                                           datepicker-popup="{{vm.dtFormat}}" name="ORD_CONF_DT" min-date="vm.today" ng-model="vm.form.ORD_CONF_DT"
+                                           is-open="ORD_CONF_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+
+                                <label class="col-md-4 control-label">
+                                    Delivery Plan End Date
+                                </label>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control required" ng-click="ORD_SHIP_DT_LNopen($event)" ng-focus="ORD_SHIP_DT_LNopen($event)"
+                                           datepicker-popup="{{vm.dtFormat}}" name="SHIP_DT" min-date="vm.today" ng-model="vm.form.SHIP_DT"
+                                           is-open="ORD_SHIP_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)"
+                                           ng-change="vm.calculateLeadTime();" close-text="Close" />
+                                </div>
+                            </div>
+
+                            @*<div class="form-group">
+
+                                    <label class="col-md-4 control-label">
+                                        Lead Time (Days)
+                                    </label>
+                                    <div class="col-md-3">
+                                        <input type="number" name="LEAD_TIME" ng-model="vm.form.LEAD_TIME" readonly class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+
+                                    <label class="col-md-4 control-label">
+                                        TNA Template
+                                    </label>
+                                    <div class="col-md-6">
+                                        <select class="form-control" kendo-drop-down-list name="MC_TNA_TMPLT_H_ID" k-option-label="'-- Select Template--'"
+                                                k-data-text-field="'TNA_TMPLT_CODE'" k-data-value-field="'MC_TNA_TMPLT_H_ID'" filter="contains"
+                                                k-auto-bind="'true'" k-data-source="vm.TnaTempList" ng-model="vm.form.MC_TNA_TMPLT_H_ID"
+                                                k-ng-delay="vm.TnaTempList" k-template="vm.template"
+                                                k-on-data-bound="vm.onTnaTemplateDataBound(kendoEvent)"></select>
+                                    </div>
+                                    <div ng-if="vm.form.MC_PROV_FAB_BK_H_ID>0">
+
+                                        <a ng-click='vm.generateTna(vm.form)' class='btn btn-xs purple' ng-disabled='!vm.form.MC_TNA_TMPLT_H_ID'><i class='fa  fa-square-o'></i> T&A</a>
+
+                                    </div>
+                                </div>*@
+
+                            <br />
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                </div>
+                                <div class="col-md-4">
+                                    <a ng-if="vm.form.MC_PROV_FAB_BK_H_ID > 0 && vm.form.IS_ACTIVE=='Y' && !vm.form.RF_ACTN_STATUS_ID" class="btn btn-sm red" ng-click="vm.CancelAll(vm.form,'Y');"><i class="fa fa-close"></i> Cancel Order</a>
+                                </div>
+                            </div>
+
+
+
+                        </fieldset>
+
+
+                    </div>
+
+
+
+
+
+
+
+
+
+                </div>
+            </div>
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend"><b>Call-Off Order & Booking Data</b></legend>
+                <tabset>
+                    <tab heading="Call-Off Order" active="true">
+                        <div>
+
+                        </div>
+                        <div class="form-group">
+                            <table class="clsTableMtex">
+                                <thead>
+                                    <tr class="clstheadMtex">
+                                        <th>
+                                            Color
+                                        </th>
+
+                                        <th class="clstdMtex">
+                                            Quantities
+                                        </th>
+                                        <th class="clstdMtex">
+                                            Actions
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="clstdMtex">
+                                        <td class="clstdMtex">
+                                            <select class="form-control requiredSub" kendo-drop-down-list name="MC_COLOR_ID" id="MC_COLOR_ID" k-option-label="'-- Select Color --'"
+                                                    k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'MC_COLOR_ID'"
+                                                    k-auto-bind="'true'" k-data-source="vm.colorList" k-ng-delay="vm.colorList"
+                                                    k-filter="'contains'" ng-model="vm.formItem.MC_COLOR_ID"></select>
+                                        </td>
+                                        <td class="clstdMtex">
+                                            <input type="number" ng-model="vm.formItem.ORDER_QTY" id="ORDER_QTY" class="form-control doubleSub" />
+                                        </td>
+                                        <td class="clstdMtex">
+                                            <a ng-click="vm.addToGrid(vm.formItem);" ng-if="!vm.formItem.uid" ng-disabled="!vm.formItem.MC_COLOR_ID||!vm.formItem.ORDER_QTY" class="btn fa fa-plus green"> Add</a>
+                                            <a ng-click="vm.updateToGrid(vm.formItem);" ng-if="vm.formItem.uid" class="btn fa fa-recycle yellow-gold"> Update</a>
+
+                                            <a ng-click="vm.clearCallOff(vm.formItem);" class="btn fa fa-refresh default"> Clear</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div style="padding:2px;">
+                                <div kendo-grid k-options="vm.gridOptions" id="callofforder" k-data-source="vm.callOffOrderList"></div>
+                            </div>
+                        </div>
+
+                    </tab>
+
+                    <tab heading="Booking" ng-click="vm.getStyleFab();">
+
+                        <form class="form-horizontal" role="form" name="frmSmplFabBooking" novalidate ng-submit="vm.submitData(vm.ItemData,token)">
+
+                            <div ng-repeat="item in vm.fabBookingData" @*ng-open="item.STYLE_COLORS.length>0"*@ style="padding-bottom:5px">
+                                <br />
+                                <summary class="large_bold_black">
+                                    <b>{{item.ITEM_NAME_EN}}</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </summary>
+                                <input type="hidden" ng-init="item.index=$index" ng-model="item.index" />
+                                <table class="table table-condensed table-striped table-bordered" style="padding:0px;">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:200px">
+                                                <small>
+                                                    Fab. Color
+                                                </small>
+
+                                            </th>
+                                            <th style="width:150px" ng-show="vm.IS_HIDE==false">
+                                                <small>
+                                                    YD Type
+                                                </small>
+                                            </th>
+                                            <th style="width:200px" ng-show="vm.IS_HIDE==false">
+                                                <small>
+                                                    Color Spec
+                                                </small>
+                                            </th>
+                                            <th style="width:200px" ng-show="vm.IS_HIDE==false">
+                                                <small>
+                                                    Instruction
+                                                </small>
+                                            </th>
+                                            <th style="width:50px" ng-show="vm.IS_HIDE==false">
+                                                <small>
+                                                    Cont<br />rast?
+                                                </small>
+                                            </th>
+                                            <th ng-repeat="itmPart in vm.fabBookingData[item.index].STYLE_COLORS[0].GMT_PARTS">
+
+                                                <small>
+                                                    {{itmPart.FAB_TYPE_DESC}} <span>
+                                                        <a class="btn btn-xs blue" title="Add Dia" ng-click="vm.addDiaRow($index, itmPart, vm.fabBookingData[item.index].STYLE_COLORS[0].GMT_PARTS)">
+                                                            <i class="fa fa-plus"></i>
+                                                        </a>
+
+                                                                                  <a class="btn btn-xs red" title="Remove Color" ng-if="itmPart.MC_PROV_FAB_BK_D_ID<0" ng-click="vm.removeDiaRow(itmPart, vm.fabBookingData[item.index].STYLE_COLORS[0].GMT_PARTS)">
+                                                                                      <i class="fa fa-times"></i>
+                                                                                  </a>
+                                                    </span>
+                                                    <br />
+                                                    <span class="col-md-2" style="padding-left: 0px; padding-right: 0px; border-right: 1px solid hsl(0, 0%, 87%)">
+                                                        <input type="text" name="FIN_DIA" ng-model="itmPart.FIN_DIA" class="form-control" placeholder="Dia" />@*{{itmPart.FIN_DIA_DESC}}*@
+                                                    </span>
+                                                    <span class="col-md-5" style="padding-left:0px;padding-right:0px;"
+                                                          ng-class="{'has-error':frmSmplFabBooking['DIA_MOU_ID-{{item.index+'-'+$index}}'].$invalid}">
+                                                        <select kendo-drop-down-list class="form-control" k-option-label="'-- Select --'"
+                                                                name="DIA_MOU_ID-{{item.index+'-'+$index}}" ng-required="(itmPart.FIN_DIA!='')?true:false"
+                                                                ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13"
+                                                                k-data-source="$parent.rfMouList" k-ng-delay="$parent.rfMouList" ng-model="itmPart.DIA_MOU_ID"
+                                                                k-data-text-field="'MOU_CODE'" k-data-value-field="'RF_MOU_ID'" k-on-change="finDiaUnitOnChange(kendoEvent)"></select>
+                                                    </span>
+                                                    <span class="col-md-5" style="padding-left:0px;padding-right:0px;"
+                                                          ng-class="{'has-error':frmSmplFabBooking['LK_DIA_TYPE_ID-{{item.index+'-'+$index}}'].$invalid}">
+                                                        <select kendo-drop-down-list class="form-control" k-option-label="'-- Select --'"
+                                                                name="LK_DIA_TYPE_ID-{{item.index+'-'+$index}}" ng-required="(itmPart.FIN_DIA!='')?true:false"
+                                                                ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13"
+                                                                k-data-source="$parent.diaTypeList" k-ng-delay="$parent.diaTypeList" ng-model="itmPart.LK_DIA_TYPE_ID"
+                                                                k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'" k-on-change="finDiaTypeOnChange(kendoEvent)"></select>
+                                                    </span>
+                                                    <br />
+
+                                                    <span class="col-md-12" style="padding-left: 0px; padding-right: 0px; border-right: 1px solid hsl(0, 0%, 87%)"
+                                                          ng-class="{'has-error':frmSmplFabBooking['RF_GARM_PART_LST-{{item.index+'-'+$index}}'].$invalid}">
+                                                        <select class="form-control" kendo-multi-select k-placeholder="'Search GMT Part...'"
+                                                                name="RF_GARM_PART_LST-{{item.index+'-'+$index}}" required
+                                                                ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13"
+                                                                k-data-text-field="'GARM_PART_NAME'" k-data-value-field="'RF_GARM_PART_ID'"
+                                                                k-data-source="$parent.gmtPartList" k-ng-delay="$parent.gmtPartList" ng-model="itmPart.RF_GARM_PART_ID_LST"></select>
+
+                                                        <input type="hidden" class="form-control" ng-model="itmPart.RF_GARM_PART_NAME_LST" />
+                                                    </span>
+                                                </small>
+
+                                            </th>
+
+                                            <th style="width:80px">Action</th>
+                                            @*<th style="width:80px">
+                                                    <input type="checkbox" ng-model="vm.IS_HIDE" ng-click="vm.collapsFields()" />
+                                                    <label for="vm.IS_HIDE">Collapse?</label>
+                                                </th>*@
+
+                                        </tr>
+
+
+                                    </thead>
+
+                                    <tbody>
+                                        <tr ng-repeat="itm in item.STYLE_COLORS">
+
+                                            <td ng-class="{'has-error':frmSmplFabBooking['MC_COLOR_ID-{{item.index+'-'+$index}}'].$invalid}">
+
+                                                <span ng-if="itm.MC_PROV_FAB_BK_D_ID>0">{{itm.COLOR_NAME_EN}}</span>
+                                                <span ng-if="itm.MC_PROV_FAB_BK_D_ID<1">
+                                                    <select kendo-drop-down-list class="form-control" k-option-label="'-- Select --'"
+                                                            name="MC_COLOR_ID-{{item.index+'-'+$index}}" required
+                                                            k-data-source="itm.STYLE_COLORS_LIST" ng-model="itm.MC_COLOR_ID" k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'MC_COLOR_ID'"></select>
+                                                </span>
+
+                                            </td>
+
+                                            <td ng-show="vm.IS_HIDE==false">
+                                                <select kendo-drop-down-list class="form-control" k-option-label="'-- Select --'"
+                                                        ng-disabled="itm.LK_COL_TYPE_ID!=360||$parent.form.MC_TNA_TASK_STATUS_ID>13"
+                                                        name="LK_COL_TYPE_ID-{{item.index+'-'+$index}}"
+                                                        k-data-source="$parent.ydTypeList" ng-model="itm.LK_YD_TYPE_ID" k-ng-delay="$parent.ydTypeList" k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'"></select>
+                                            </td>
+
+                                            <td ng-show="vm.IS_HIDE==false">
+                                                <input type="text" name="COLOR_SPEC-{{item.index+'-'+$index}}" ng-model="itm.COLOR_SPEC" class="form-control" />
+                                            </td>
+
+                                            <td ng-show="vm.IS_HIDE==false">
+                                                <textarea name="SP_INSTRUCTION-{{item.index+'-'+$index}}" ng-model="itm.SP_INSTRUCTION" class="form-control" />
+                                            </td>
+                                            <td ng-show="vm.IS_HIDE==false">
+                                                <input type="checkbox" name="IS_CONTRAST-{{item.index+'-'+$index}}" ng-model="itm.IS_CONTRAST" ng-true-value="'Y'" ng-false-value="'N'" ng-change="vm.onChangeContrast(itm)" />
+                                            </td>
+                                            <td ng-repeat="itmPart in itm.GMT_PARTS">
+
+                                                <div ng-repeat="itmQty in itmPart.GMT_PARTS_QTY">
+
+                                                    <input type="hidden" name="MC_STYLE_D_FAB_ID-{{itm.index+'-'+$index}}" ng-model="itmQty.MC_STYLE_D_FAB_ID" class="form-control" />
+                                                    <input type="hidden" name="MC_PROV_FAB_BK_D_ID-{{itm.index+'-'+$index}}" ng-model="itmQty.MC_PROV_FAB_BK_D_ID" class="form-control" />
+
+                                                    <span class="col-md-6" style="padding-left:0px;padding-right:0px;">
+                                                        <input type="number" name="RQD_QTY-{{itm.index+'-'+$index}}" ng-model="itmQty.RQD_QTY" class="form-control" ng-change="vm.onChangeReqQty()" />
+                                                    </span>
+                                                    <ng-form name="frmSmplFabBkQtyDtl">
+                                                        <span class="col-md-6" style="padding-left:0px;padding-right:0px;"
+                                                              ng-class="{'has-error':frmSmplFabBkQtyDtl.QTY_MOU_ID.$invalid}">
+                                                            <select kendo-drop-down-list class="form-control" k-option-label="'-- Select --'"
+                                                                    name="QTY_MOU_ID" ng-required="itmQty.RQD_QTY>0?true:false"
+                                                                    ng-disabled="$parent.form.MC_TNA_TASK_STATUS_ID>13"
+                                                                    k-data-source="$parent.rfMouList" ng-model="itmQty.QTY_MOU_ID" k-ng-delay="$parent.rfMouList"
+                                                                    k-data-text-field=" 'MOU_CODE' " k-data-value-field=" 'RF_MOU_ID' "></select>
+
+                                                        </span>
+                                                    </ng-form>
+
+                                                </div>
+                                            </td>
+
+                                            <td>
+                                                <a class="btn btn-xs blue" title="Add Color" ng-click="vm.addColorRow(itm, item.STYLE_COLORS, 'formDtl')">
+                                                    <i class="fa fa-plus"></i>
+                                                </a>
+
+                                                <a class="btn btn-xs red" title="Remove Color" ng-click="vm.removeColorRow($index, item.STYLE_COLORS, false, item, itm, token)" @*ng-disabled="vm.form.itemsStyle.length==1?true:false"*@>
+                                                    <i class="fa fa-times"></i>
+                                                </a>
+
+
+
+                                            </td>
+
+                                        </tr>
+
+                                    </tbody>
+
+
+                                </table>
+
+
+                            </div>
+                            <br />
+
+
+                        </form>
+
+                    </tab>
+                </tabset>
+
+            </fieldset>
+
+
+            <div style="padding:3px;">
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-sm blue" ui-sref="ProjectionOrderList">Back To List</button>
+                    <button type="button" ng-if="vm.form.MC_PROV_FAB_BK_H_ID>0" ng-disabled="!vm.form.RF_ACTN_STATUS_ID>0" class="btn btn-sm green" ng-click="vm.submitAll(vm.form,'N');">Submit</button>
+                    <button type="submit" ng-if="vm.form.MC_PROV_FAB_BK_H_ID>0" ng-disabled="!vm.form.RF_ACTN_STATUS_ID>0" class="btn btn-sm yellow-gold" ng-click="vm.submitAll(vm.form,'Y');">Update</button>
+                    <button type="submit" ng-if="vm.form.MC_PROV_FAB_BK_H_ID < 1" class="btn btn-sm green" ng-click="vm.submitAll(vm.form,'N');">Save</button>
+                    <button type="submit" ng-if="vm.form.MC_PROV_FAB_BK_H_ID > 0" class="btn btn-sm blue" ng-click="vm.printPO(vm.form);">Print</button>
+                    <button type="button" class="btn btn-sm default" ui-sref="ProjectionOrder({pMC_PROV_FAB_BK_H_ID:0})" ui-sref-opts="{reload: true}">Cancel</button>
+
+                </div>
+                <label class="control-label col-md-2">
+                    <span aria-required="true" class="required">*</span>
+                    Take Action
+                </label>
+                <div class="col-md-2" ng-if="vm.form.RF_ACTN_VIEW>0">
+                    <select kendo-drop-down-list name="RF_ACTN_STATUS_ID" id="RF_ACTN_STATUS_ID" class="form-control required"
+                            options="vm.statusList" ng-model="vm.form.RF_ACTN_STATUS_ID" required></select>
+                </div>
+
+                <div class="col-md-2" ng-if="!vm.form.RF_ACTN_VIEW>0">
+
+                    <input type="text" ng-model="vm.form.ACTN_STATUS_NAME" style="width: 100%;" readonly="readonly" />
+                    <input type="hidden" ng-model="vm.form.RF_ACTN_STATUS_ID" />
+
+                </div>
+                @*<div class="col-md-6">
+
+                        <button type="submit" ng-if="vm.form.MC_PROV_FAB_BK_H_ID>0" class="btn btn-sm yellow-gold" ng-click="vm.FinalizeAll(vm.form);">Finalize</button>
+
+                    </div>*@
+            </div>
+            <div style="padding:3px;">
+            </div>
+
+        </div>
+    </form>
+</div>

@@ -1,0 +1,62 @@
+﻿
+<div class="modal-body">
+    <div class="portlet grey-cascade box">
+        <div class="portlet-title">
+            <div>
+                <h3 class="title">
+                    Dye Machine
+                    <span class="pull-right"><i class="fa fa-times red" ng-click="vm.cancel([])"></i></span>
+                </h3>
+            </div>
+        </div>
+        <div class="portlet-body">
+
+            <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+                <div class="page-splash">
+                    <div class="page-splash-message">
+                        <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                    </div>
+                </div>
+            </div>
+            <input id="access_token" data-ng-model="token" type="hidden"
+                   data-ng-init="token='@Session["access_token"]'" />
+
+            <form class="form-horizontal" role="form" name="form">
+
+                <div class="form-body clearfix">
+                    <div class="row" style="margin:auto;padding-top:10px;">
+
+                        <input ng-model="vm.form.CREATED_BY" type="hidden"
+                               data-ng-init="vm.form.CREATED_BY='@Session["multiScUserId"]'" />
+
+                        <input id="access_token" ng-model="vm.form.LAST_UPDATED_BY" type="hidden"
+                               ng-init="vm.form.LAST_UPDATED_BY='@Session["multiScUserId"]'" />
+
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+
+                            <fieldset class="custom-fieldset">
+                                <legend class="custom-legend"><b>Dye Machine Status</b></legend>
+
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div kendo-grid="vm.webapiGrid" k-data-source="vm.machineList" k-options=" vm.gridOptions"></div>
+                                    </div>
+                                </div>
+
+                            </fieldset>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+            </form>
+        </div>
+    </div>
+</div>
+
+

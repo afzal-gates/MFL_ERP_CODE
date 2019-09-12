@@ -1,0 +1,307 @@
+﻿<style>
+    .hideMaster {
+        display: none;
+    }
+</style>
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Dyeing</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="caption">
+
+        </div>
+    </div>
+
+
+    <div class="portlet-body form">
+        <form name="formData" class="form-horizontal" style="background-color: white;">
+            <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+                <div class="page-splash">
+                    <div class="page-splash-message">
+                        <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-body clearfix">
+                <div class="form-group">
+                    <div class="col-md-12">
+
+                        <fieldset class="custom-fieldset" ng-hide="collepsMaster">
+                            <legend class="custom-legend"><b>Search & Print</b></legend>
+                            <div><label id="lblMsg"></label></div>
+
+                            <div class="form-group">
+
+                                <label class="control-label col-md-2 ">
+                                    <span aria-required="true" class="required">*</span>
+                                    Batch No
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" name="DYE_BATCH_NO" id="DYE_BATCH_NO" placeholder="Scan Barcode" ng-model="vm.form.DYE_BATCH_NO" tabindex="1" ng-keyup="vm.searchBatchInfo(vm.form.DYE_BATCH_NO);" auto-focus class="form-control" />
+                                </div>
+                                <div class="col-md-1">
+                                    <a class="btn btn-sm yellow-gold" ng-click="vm.searchBatchInfo(vm.form.DYE_BATCH_NO);"><i class="fa fa-search"> Find</i></a>
+                                </div>
+                                <label class="control-label col-md-1" style="padding:0px;">
+                                    <span aria-required="true" class="required">*</span>
+                                    DIA Type
+                                </label>
+                                <div class="col-md-1">
+
+                                    <select kendo-drop-down-list name="LK_DIA_TYPE_ID" id="LK_DIA_TYPE_ID" class="form-control required"
+                                            options="vm.DiaTypeList" ng-model="vm.form.LK_DIA_TYPE_ID" required></select>
+                                </div>
+
+                                <div class="col-md-2">
+
+                                    <select kendo-multi-select name="LK_FBR_GRP_LST" class="form-control"
+                                            options="vm.FabGroupList" ng-model="vm.form.LK_FBR_GRP_LST" style="width:200px; height:30px;"></select>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="checkbox" ng-model="vm.form.IS_DUPLICATE" id="IS_DUPLICATE" /><label for="IS_DUPLICATE">Is Duplicate</label>
+                                    <a class="btn btn-sm green" ng-click="vm.printDupBatchCard(vm.form,'Y');"><i class="fa fa-print"> Print Together</i></a>
+                                    <a class="btn btn-sm yellow-gold" ng-click="vm.printDupBatchCard(vm.form,'N');"><i class="fa fa-print"> Print</i></a>
+                                </div>
+                            </div>
+
+
+                            <table style="width:100%; display:none;">
+
+                                <tr>
+                                    <td style="border: solid 1px black; width: 20%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                                        <b>Barch No</b>
+                                    </td>
+
+                                    <td style="border: solid 1px black; width: 10%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                                        <b>Qty</b>
+                                    </td>
+
+                                    <td style="border: solid 1px black; width: 10%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                                        <b>Action</b>
+                                    </td>
+
+                                </tr>
+                                <tr class="">
+                                    <td style="padding:5px;border:solid 1px black;width:15%;">
+
+                                        <select class="form-control requiredSub " kendo-drop-down-list name="DYE_BT_CARD_H_ID" id="DYE_BT_CARD_H_ID" k-option-label="'-- Batch No --'"
+                                                k-data-text-field="'DYE_BATCH_NO'" k-data-value-field="'DYE_BT_CARD_H_ID'"
+                                                k-auto-bind="'true'" k-data-source="vm.batchList" k-ng-delay="vm.batchList" k-filter="'contains'"
+                                                ng-model="vm.formItem.DYE_BT_CARD_H_ID" k-on-change="vm.getBatchDetails(kendoEvent)"></select>
+                                    </td>
+
+                                    <td style="padding:5px;border:solid 1px black;width: 10%;">
+                                        <input type="text" name="ACT_BATCH_QTY" ng-model="vm.formItem.ACT_BATCH_QTY" class="form-control doubleSub" />
+                                    </td>
+
+                                    @*<td style="padding:5px;border:solid 1px black;width: 10%; text-align:center;">
+                                            <button type="button" ng-if="vm.formItem.uid" class="btn btn-sm yellow" ng-click="vm.addToGrid(vm.formItem)">Update to Grid</button>
+                                            <button type="button" ng-if="!vm.formItem.uid" class="btn btn-sm green" ng-click="vm.addToGrid(vm.formItem)">Add to Grid</button>
+                                        </td>*@
+                                </tr>
+                            </table>
+
+                        </fieldset>
+
+
+                        <fieldset class="custom-fieldset" ng-hide="collepsMaster">
+                            <legend class="custom-legend"><b>Batch Info</b></legend>
+                            <div class="form-group">
+
+                                <label class="control-label col-md-2 ">
+                                    <span aria-required="true" class="required">*</span>
+                                    Req No
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" name="STR_REQ_NO" placeholder="[Auto Gen]" ng-model="vm.form.STR_REQ_NO" readonly="readonly" class="form-control" />
+                                    <input type="hidden" name="DYE_STR_REQ_H_ID" ng-model="vm.form.DYE_STR_REQ_H_ID" />
+                                    <input type="hidden" name="LOAD_TIME" ng-model="vm.form.LOAD_TIME" />
+                                    <input type="hidden" name="UN_LOAD_TIME" ng-model="vm.form.UN_LOAD_TIME" />
+                                    <input type="hidden" name="DYE_STR_REQ_H_ID" ng-model="vm.form.DYE_STR_REQ_H_ID" />
+                                </div>
+
+                                <label class="control-label col-md-2" style="padding:0px;">
+                                    <span aria-required="true" class="required">*</span>
+                                    Req Date
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control required" ng-click="STR_REQ_DT_LNopen($event)" ng-focus="STR_REQ_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                           name="STR_REQ_DT" max-date="vm.today" ng-model="vm.form.STR_REQ_DT" is-open="STR_REQ_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close"
+                                           required />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+
+                                <label class="control-label col-md-2">
+                                    <span aria-required="true" class="required">*</span>
+                                    Batch No
+                                </label>
+                                <div class="col-md-3" style="padding-right:5px;">
+                                    <input type="text" name="DYE_BATCH_NO_LST" ng-model="vm.form.DYE_BATCH_NO_LST" readonly="readonly" class="form-control" />
+
+                                </div>
+                                <div class="col-md-1" style="padding:0px;">
+                                    <select class="form-control required" kendo-drop-down-list name="DYE_STR_REQ_H_ID" k-option-label="'Lot'"
+                                            k-data-text-field="'DYE_LOT_NO'" k-data-value-field="'DYE_STR_REQ_H_ID'"
+                                            k-auto-bind="'true'" k-data-source="vm.dyeBatchLot" k-ng-delay="vm.dyeBatchLot" k-filter="'contains'"
+                                            ng-model="vm.form.DYE_STR_REQ_H_ID_LOT" k-on-change="vm.searchBatchInfoBySubLot(kendoEvent);"></select>
+                                </div>
+                                <label class="control-label col-md-2" style="padding:0px;">
+                                    Weights
+                                </label>
+                                <div class="col-md-3">
+                                    <input type="text" name="ACT_BATCH_QTY_LST" ng-model="vm.form.ACT_BATCH_QTY_LST" readonly="readonly" class="form-control" />
+
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+
+                                <label class="control-label col-md-2">
+                                    <span aria-required="true" class="required">*</span>
+                                    M/C No
+                                </label>
+                                <div class="col-md-4">
+                                    <select class="form-control required" kendo-drop-down-list name="DYE_MACHINE_ID" k-option-label="'-- Select Machine --'"
+                                            k-data-text-field="'DYE_MACHINE_NO'" k-data-value-field="'DYE_MACHINE_ID'"
+                                            k-auto-bind="'true'" k-data-source="vm.machineList" k-ng-delay="vm.machineList" k-filter="'contains'"
+                                            ng-model="vm.form.DYE_MACHINE_ID" k-on-change="vm.checkMachineCapacity(kendoEvent);"></select>
+                                </div>
+                                <label class="control-label col-md-2" style="padding:0px;">
+                                    <span aria-required="true" class="required">*</span>
+                                    Shift
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" name="DYE_SHIFT" ng-model="vm.form.DYE_SHIFT" readonly="readonly" class="form-control" />
+
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label class="control-label col-md-2">
+                                    <span aria-required="true" class="required">*</span>
+                                    Color
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" name="COLOR_NAME_EN" ng-model="vm.form.COLOR_NAME_EN" readonly="readonly" class="form-control" />
+                                    <input type="hidden" name="MC_COLOR_ID" ng-model="vm.form.MC_COLOR_ID" />
+
+                                </div>
+                                <label class="control-label col-md-2" style="padding:0px;">
+                                    Color Group
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" name="COLOR_GRP_NAME_EN" ng-model="vm.form.COLOR_GRP_NAME_EN" readonly="readonly" class="form-control" />
+
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label class="control-label col-md-2">
+                                    <span aria-required="true" class="required">*</span>
+                                    Buyer
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" name="BUYER_NAME_EN" ng-model="vm.form.BUYER_NAME_EN" readonly="readonly" class="form-control" />
+                                    <input type="hidden" name="MC_BYR_ACC_GRP_ID" ng-model="vm.form.MC_BYR_ACC_GRP_ID" />
+
+                                </div>
+                                <label class="control-label col-md-2" style="padding:0px;">
+                                    <span aria-required="true" class="required">*</span>
+                                    Style #
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" name="STYLE_NO" ng-model="vm.form.STYLE_NO" readonly="readonly" class="form-control" />
+
+                                    <input type="hidden" name="MC_STYLE_H_ID" ng-model="vm.form.MC_STYLE_H_ID" />
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label class="control-label col-md-2">
+                                    <span aria-required="true" class="required">*</span>
+                                    Order #
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" name="ORDER_NO" ng-model="vm.form.ORDER_NO" readonly="readonly" class="form-control" />
+
+                                </div>
+                                <label class="control-label col-md-2" style="padding:0px;">
+                                    <span aria-required="true" class="required">*</span>
+                                    Lab-dip #
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" name="LD_RECIPE_NO" ng-model="vm.form.LD_RECIPE_NO" readonly="readonly" class="form-control requiredSub" />
+                                    <input type="hidden" name="MC_LD_RECIPE_H_ID" ng-model="vm.form.MC_LD_RECIPE_H_ID" />
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+
+                                <label class="control-label col-md-2">
+                                    D Method
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" name="DYE_MTHD_NAME" ng-model="vm.form.DYE_MTHD_NAME" readonly="readonly" class="form-control" />
+
+                                </div>
+                                <label class="control-label col-md-2" style="padding:0px;">
+                                    <span aria-required="true" class="required">*</span>
+                                    Liqur Ratio
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" name="LQR_RATIO" ng-model="vm.form.LQR_RATIO" readonly="readonly" class="form-control requiredSub" />
+
+                                </div>
+                            </div>
+
+
+
+                        </fieldset>
+
+
+                        <fieldset class="custom-fieldset" ng-hide="collepsMaster">
+                            <legend class="custom-legend"><b>Fabrics Details</b></legend>
+                            <div class="form-group" style="margin:auto;">
+
+                                <div class="form-body clearfix">
+
+                                    <div kendo-grid k-options="vm.gridOptionsFabric" id="IDBatchFabricDS" k-data-source="vm.BatchFabricList"></div>
+
+                                </div>
+                            </div>
+
+                        </fieldset>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+</div>

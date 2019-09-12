@@ -1,0 +1,261 @@
+﻿<style type="text/css">
+    .scheduler_default_rowheader {
+        background: -webkit-gradient(linear, left top, left bottom, from(#eeeeee), to(#dddddd));
+        background: -moz-linear-gradient(top, #eeeeee 0%, #dddddd);
+        background: -ms-linear-gradient(top, #eeeeee 0%, #dddddd);
+        background: -webkit-linear-gradient(top, #eeeeee 0%, #dddddd);
+        background: linear-gradient(top, #eeeeee 0%, #dddddd);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorStr="#eeeeee", endColorStr="#dddddd");
+    }
+
+    .scheduler_default_rowheader_inner {
+        border-right: 1px solid #ccc;
+    }
+
+    .scheduler_default_rowheadercol2 {
+        background: #ffffff;
+    }
+
+    <a href="~/Areas/Dyeing/Views/Dye/_DyeBatchPlan.cshtml" > ~ /Areas/Dyeing/Views/Dye/_DyeBatchPlan.cshtml</a > .status_dirty.scheduler_default_rowheadercol2 .scheduler_default_rowheader_inner {
+        border-left: 5px solid #ea3624; /* status: "dirty", red color */
+    }
+
+    .status_cleanup.scheduler_default_rowheadercol2 .scheduler_default_rowheader_inner {
+        border-left: 5px solid #f9ba25; /* status: "cleanup", orange color */
+    }
+</style>
+<style>
+    #scheduler .scheduler_default_selected .scheduler_default_event_inner {
+        background-color: #d4cfcf;
+        background-image: -webkit-gradient(linear, 0 100%, 100% 0,color-stop(.25, rgba(255, 255, 255, .2)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .2)), color-stop(.75, rgba(255, 255, 255, .2)), color-stop(.75, transparent), to(transparent));
+        background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+        background-image: -moz-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+        background-image: -ms-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+        background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+        background-image: linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+        -webkit-background-size: 20px 20px;
+        -moz-background-size: 20px 20px;
+        background-size: 20px 20px;
+    }
+</style>
+
+<style>
+    .scheduler_default_cellparent, .scheduler_default_cell.scheduler_default_cell_business.scheduler_default_cellparent {
+        background: #ddd;
+    }
+</style>
+
+
+<div class="row" style="margin:auto;">
+    <form class="form-horizontal" novalidate ng-submit="onSearchEvent(qEvt)">
+        <div class="form-group" style="margin:auto;">
+
+            <div class="col-md-1" style="padding-left: 0px; padding-right: 0px; padding-top: 23px;">
+                <button class="btn btn-xs" style="margin-right: 5px;" ng-click="vm.move(-1)" title="Print Schedule"><i class="fa fa-arrow-circle-left"></i> Move</button>
+            </div>
+
+            <div class="col-md-3" style="padding-left:0px;padding-right:5px;">
+                <label class="control-label" style="text-align:left;">
+                    Search Plan
+                </label>
+                <select class="form-control" kendo-drop-down-list name="DYE_BATCH_SCDL_ID" options="vm.SchedulePlanData" ng-model="vm.DYE_BATCH_SCDL_ID"></select>
+
+            </div>
+
+            @*<div class="col-md-2" style="padding-left:0px;padding-right:10px;">
+                <label class="control-label" style="text-align:left;">
+                    Batch Card
+                </label>
+                <div class="input-group">
+                    <input type="text" style="height:28px;" class="form-control" ng-model="qEvt" placeholder="Search...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-sm" type="submit"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
+            </div>*@
+
+            <div class="col-md-2" style="padding-left:0px;padding-right:5px;">
+                <label class="control-label" style="text-align:left;">
+                   Company/Party
+                </label>
+                <select class="form-control" kendo-drop-down-list k-data-text-field="'COMP_NAME_EN'" k-option-label="'All'" k-data-value-field="'HR_COMPANY_ID'"
+                        k-auto-bind="'false'" k-data-source="vm.companyDs" ng-model="HR_COMPANY_ID" k-on-data-bound="vm.onCompanyDataBound(kendoEvent)" k-on-change="vm.onChange1(kendoEvent)"></select>
+
+            </div>
+
+            <div class="col-md-1" style="padding-left:0px;padding-right:5px;">
+                <label class="control-label" style="text-align:left;">
+                    S/B
+                </label>
+
+                <select class="form-control" kendo-drop-down-list k-data-text-field="'text'" k-data-value-field="'id'" k-option-label="'--Select--'"
+                        k-auto-bind="'false'" k-data-source="vm.Ds3" ng-model="IS_SMP_BLK" k-on-change="vm.onChange2(kendoEvent)"></select>
+
+            </div>
+
+
+            <div class="col-md-1" style="padding-left:0px;padding-right:5px;">
+                <label class="control-label" style="text-align:left;">
+                    Scale
+                </label>
+
+                <select class="form-control" kendo-drop-down-list k-data-text-field="'text'" k-data-value-field="'id'" k-option-label="'--Select--'"
+                        k-auto-bind="'false'" k-data-source="vm.Ds2" ng-model="scale" ng-change="schedulerConfig.cellDuration=scale"></select>
+
+            </div>
+
+
+            <div class="col-md-1" style="padding-left:0px;padding-right:5px;">
+                <label class="control-label" style="text-align:left;">
+                    Cell Width(%)
+                </label>
+                <input type="number" ng-init="cellWidth=schedulerConfig.cellWidth" class="form-control" step="5" min="1" max="45" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" ng-model="cellWidth" ng-change="schedulerConfig.cellWidth=cellWidth" />
+            </div>
+            <div class="col-md-2" style="padding-left: 0px; padding-right: 10px; text-align: right;padding-top:23px;">
+                <button class="btn blue-hoki btn-xs" style="margin-right: 5px;" ng-click="vm.openBatchPlanModal({DYE_BATCH_SCDL_ID:-1, PRE_BC_END_DT : vm.PRE_BC_END_DT, START_DT:vm.PRE_BC_END_DT, IS_FINALIZED:'N'  })" title="Add Plan"><i class="fa fa-plus"></i> New Plan</button>
+                <button class="btn blue-hoki btn-xs" style="margin-right: 5px;" ng-if="vm.EditPlanData.DYE_BATCH_SCDL_ID" ng-click="vm.openBatchPlanModal(vm.EditPlanData)" title="Edit Plan"><i class="fa fa-pencil"></i> Edit Plan</button>
+
+                @*<button class="btn btn-xs" style="margin-right: 5px;" ng-click="vm.print()" title="Print Schedule"><i class="fa fa-print"></i> Board</button>*@
+
+                <button class="btn btn-xs" style="margin-right: 5px;" ng-disabled="!HR_COMPANY_ID" ng-click="vm.OpenReportDyeingBatchProg()" title="Print M/C Progam"><i class="fa fa-print"></i>Program</button>
+
+
+            </div>
+
+            <div class="col-md-1" style="padding-left: 0px; padding-right: 0px; padding-top: 23px;text-align:right;">
+                <button class="btn btn-xs" style="margin-right: 5px;" ng-click="vm.move(1)" title="Print Schedule"> Move <i class="fa fa-arrow-circle-right"></i> </button>
+            </div>
+
+
+        </div>
+    </form>
+
+</div>
+<div class="row" style="margin:auto;" click-anywhere-but-here="clearSelection()">
+    <daypilot-scheduler id="scheduler" daypilot-config="schedulerConfig" daypilot-events="events"></daypilot-scheduler>
+</div>
+
+<script type="text/ng-template" id="EditProgramEntry.html">
+
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+
+            <div class="portlet-title">
+                <div>
+                    <h3 style="padding-top:10px;margin-top:3px;">
+                        Edit Program
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </h3>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="row" style="margin:auto;">
+                    <form class="form-horizontal" role="form" name="DyeingBatchPlan" novalidate>
+                        <div class="form-group" style="margin:auto;">
+                            <p class="block" style="margin: 0px; font-size: 14px; background-color: rgb(236, 233, 248); padding-left: 2px;">
+                                Buyer A/C :
+                                <b>{{form.BYR_ACC_NAME_EN}}</b>
+
+                                &nbsp;
+                                Style :
+                                <b>{{form.STYLE_NO}}</b>
+
+                                &nbsp;
+
+                                Order # :
+                                <b>{{form.ORDER_NO_LIST}}</b>
+
+                                &nbsp;
+
+                                Color Name :
+                                <b>{{form.COLOR_NAME_EN}}</b>
+                                &nbsp;
+                                Fabric Type :
+                                <b>{{form.FAB_TYPE_NAME}}</b>
+                            </p>
+                        </div>
+                        <br />
+                        <div style="border: 1px solid #333333; padding: 3px;">
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">
+                                    <b>Dye Method</b>
+                                </label>
+                                <div class="col-md-8" ng-class="{'has-error': (DyeingBatchPlan.LK_DYE_MTHD_ID.$touched || DyeingBatchPlan.$submitted) && DyeingBatchPlan.LK_DYE_MTHD_ID.$error.required}">
+                                    <select class="form-control" kendo-drop-down-list name="LK_DYE_MTHD_ID" k-option-label="'-- Dyeing Method--'"
+                                            k-data-text-field="'DYE_MTHD_NAME'" k-data-value-field="'LK_DYE_MTHD_ID'"
+                                            k-auto-bind="'true'" k-data-source="DyeingMthdDs" ng-model="form.LK_DYE_MTHD_ID" required></select>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">
+                                    <b>Dye Machine No</b>
+                                </label>
+                                <div class="col-md-8" ng-class="{'has-error': (DyeingBatchPlan.DYE_MACHINE_ID.$touched || DyeingBatchPlan.$submitted) && DyeingBatchPlan.DYE_MACHINE_ID.$error.required}">
+                                    <select class="form-control" kendo-drop-down-list name="DYE_MACHINE_ID" k-option-label="'-- Dyeing M/C --'"
+                                            k-data-text-field="'DYE_MACHINE_NO'" k-data-value-field="'DYE_MACHINE_ID'"
+                                            k-auto-bind="'true'" k-data-source="machineListDs" k-ng-delay="machineListDs" ng-model="form.DYE_MACHINE_ID" required></select>
+
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">
+                                    <b>Load Time</b>
+                                </label>
+                                <div class="col-md-8" ng-class="{'has-error': (DyeingBatchPlan.LOAD_TIME.$touched || DyeingBatchPlan.$submitted) && DyeingBatchPlan.LOAD_TIME.$error.required}">
+                                    <input kendo-date-time-picker k-ng-model="form.LOAD_TIME" data-k-change="onChangeDate(form.LOAD_TIME,form.UN_LOAD_TIME)" name="LOAD_TIME" k-min="form.START_DT" k-options="datePickerOptions" data-k-format="'dd/MM/yyyy HH:mm'" k-interval="10" class="form-control" style="width: 100%;" required />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-4 control-label">
+                                    <b>Production Hr</b>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="number" class="form-control" min="1" name="DURATION" ng-blur="onChangeDuration(form.DURATION,form.LOAD_TIME)" ng-model="form.DURATION" required />
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">
+                                    <b>Unload Time</b>
+
+                                </label>
+                                <div class="col-md-8" ng-class="{'has-error': (DyeingBatchPlan.UN_LOAD_TIME.$touched || DyeingBatchPlan.$submitted) && DyeingBatchPlan.UN_LOAD_TIME.$error.required}">
+                                    <input kendo-date-time-picker k-ng-model="form.UN_LOAD_TIME" name="UN_LOAD_TIME" k-min="form.LOAD_TIME" k-rebind="form.LOAD_TIME" data-k-format="'dd/MM/yyyy HH:mm'" k-interval="10" class="form-control" k-options="datePickerOptions" style="width: 100%;" required />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">
+                                    <b>Quantity(Kg)</b>
+                                </label>
+                                <div class="col-md-8" ng-class="{'has-error': (DyeingBatchPlan.RQD_PRD_QTY.$touched || DyeingBatchPlan.$submitted) && (DyeingBatchPlan.RQD_PRD_QTY.$error.required||DyeingBatchPlan.RQD_PRD_QTY.$error.min)}">
+                                    <input type="number" class="form-control" min="1" name="RQD_PRD_QTY" ng-model="form.RQD_PRD_QTY" required />
+                                </div>
+                            </div>
+
+
+                            <div class="form-group form-actions">
+                                <div class="col-md-offset-4 col-md-8">
+                                    <button type="button" ng-if="form.DYE_BATCH_PLAN_ID<0" class="btn green btn-sm" ng-click="save(form,DyeingBatchPlan.$valid);DyeingBatchPlan.$submitted=true" ng-class="{'disabled':!form.MC_FAB_PROD_ORD_H_ID}"> Save</button>
+                                    <button type="button" ng-if="form.DYE_BATCH_PLAN_ID>0" class="btn btn-sm yellow-gold" ng-click="save(form,DyeingBatchPlan.$valid);DyeingBatchPlan.$submitted=true">Update</button>
+                                    <button type="button" class="btn btn-default btn-sm" ng-click="cancel()">Close</button>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+

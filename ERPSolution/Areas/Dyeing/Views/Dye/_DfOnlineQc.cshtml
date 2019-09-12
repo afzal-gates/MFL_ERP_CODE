@@ -1,0 +1,532 @@
+﻿<style>
+    #customers-list .k-item {
+        line-height: 1em;
+        min-width: 300px;
+    }
+
+    /* Material Theme padding adjustment*/
+
+    .k-material #customers-list .k-item,
+    .k-material #customers-list .k-item.k-state-hover,
+    .k-materialblack #customers-list .k-item,
+    .k-materialblack #customers-list .k-item.k-state-hover {
+        padding-left: 5px;
+        border-left: 0;
+    }
+
+    #customers-list .k-item > span {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        display: inline-block;
+        vertical-align: top;
+        margin: 20px 10px 10px 5px;
+    }
+
+        #customers-list .k-item > span:first-child {
+            -moz-box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            -webkit-box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            margin: 5px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+
+    #customers-list h3 {
+        font-size: 1.2em;
+        font-weight: normal;
+        margin: 0 0 1px 0;
+        padding: 0;
+    }
+
+    #customers-list p {
+        margin: 0;
+        padding: 0;
+        font-size: .8em;
+    }
+</style>
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Dyeing Finishing</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+    <form name="formData" class="form-horizontal" style="background-color: white;">
+        <div class="portlet-body">
+
+            <fieldset class="custom-fieldset">
+
+                <fieldset class="custom-fieldset col-md-8" style="width: 65%;">
+                    <legend class="custom-legend"><b>Master Data</b></legend>
+
+
+                    <div class="form-group" style="padding-left:20px;">
+
+                        <label class="control-label col-md-2">
+                            <span aria-required="true" class="required"></span>
+                            Batch No :
+                        </label>
+                        <div class="col-md-3">
+                            <input type="text" name="DYE_BATCH_NO" style="cursor:text;text-align:left;" placeholder="Scan Batch Card Barcode" ng-model="vm.form.DYE_BATCH_NO" auto-focus class="form-control btn required" />
+                        </div>
+                        <div class="col-md-1">
+                            <a class="btn btn-sm yellow-gold" ng-click="vm.searchBatchInfo(1)">Load</a>
+                        </div>
+
+                        <label class="control-label col-md-2">
+                            <span aria-required="true" class="required"></span>
+                            Factory :
+                        </label>
+                        <div class="col-md-3">
+
+                            <select kendo-drop-down-list name="HR_COMPANY_ID" id="HR_COMPANY_ID" class="form-control required"
+                                    options="vm.companyList" ng-model="vm.form.HR_COMPANY_ID"></select>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group" style="padding-left:20px;">
+
+
+                        <label class="control-label col-md-2" for="IS_SELF_QC">
+                            <span aria-required="true" class="required"></span>
+                            <b>Self Check</b>
+                        </label>
+                        <div class="col-md-1">
+
+                            <input type="checkbox" id="IS_SELF_QC" ng-model="vm.form.IS_SELF_QC" class="form-control" ng-true-value=" 'Y' " ng-false-value=" 'N' " />
+                        </div>
+
+                        <div class="col-md-3">
+
+                            QC Ok?
+                            <input type="radio" id="IS_QC_YES" value="Y" style="border: 0px; width: 10%; height: 1.5em;" ng-model="vm.form.IS_QC_OK" ng-change="vm.changeQC(vm.form.IS_QC_OK);" /><label for="IS_QC_YES"> <b>Yes</b></label>&nbsp; &nbsp;&nbsp;
+                            <input type="radio" id="IS_QC_NO" value="N" style="border: 0px; width: 10%; height: 1.5em;" ng-model="vm.form.IS_QC_OK" ng-change="vm.changeQC(vm.form.IS_QC_OK);" /><label for="IS_QC_NO"> <b>No</b>&nbsp; &nbsp;&nbsp;</label>
+                            @*<input type="checkbox" id="IS_QC" ng-model="vm.form.IS_QC" ng-true-value="'Y'" ng-false-value="'N'" />*@
+                        </div>
+
+                        <label class="control-label col-md-2">
+                            <span aria-required="true" class="required"></span>
+                            Cur. Status
+                        </label>
+                        <div class="col-md-4">
+
+                            <input type="text" ng-model="vm.form.BT_STS_TYP_NAME" style="width: 100%;" readonly="readonly" />
+
+                        </div>
+
+                    </div>
+                    <br />
+                </fieldset>
+                <fieldset class="custom-fieldset col-md-4" style="width: 34%;">
+                    <legend class="custom-legend"><b>Batch Info</b></legend>
+
+
+                    <div class="form-group">
+
+                        <label class="control-label col-md-11" style="text-align:left;">
+                            <span aria-required="true" class="required"></span>
+                            <b>Buyer:</b> {{vm.form.BUYER_NAME_EN}}
+                        </label>
+
+                        <input type="hidden" name="MC_BYR_ACC_GRP_ID" ng-model="vm.form.MC_BYR_ACC_GRP_ID" />
+
+                        <input type="hidden" ng-model="vm.form.RF_FB_DFCT_TYPE_ID" />
+                        <input type="hidden" ng-model="vm.form.LAST_DF_PROC_TYPE_ID" />
+
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-6" style="text-align:left;">
+                            <b>Style #</b> {{vm.form.STYLE_NO}}
+                        </label>
+
+                        <label class="control-label col-md-6" style="text-align:left;">
+                            <span aria-required="true" class="required"></span>
+                            <b>Order #</b> {{vm.form.ORDER_NO}}
+                        </label>
+
+                    </div>
+
+                    <div class="form-group">
+
+
+                        <label class="control-label col-md-6" style="text-align:left;">
+                            <span aria-required="true" class="required"></span>
+                            <b>Color:</b> {{vm.form.COLOR_NAME_EN}} (<b>Lot: {{vm.form.DYE_LOT_NO}}</b>)
+                        </label>
+
+
+                        <label class="control-label col-md-6" style="text-align:left;">
+                            <b>Color Group:</b> {{vm.form.COLOR_NAME_EN}}
+                        </label>
+
+                    </div>
+                </fieldset>
+
+
+            </fieldset>
+
+            <fieldset class="custom-fieldset" ng-hide="collepsMaster">
+                <legend class="custom-legend"><b>Fabrics Details</b></legend>
+                <div class="form-group" style="margin:auto;">
+
+                    <div class="form-body clearfix">
+
+                        <div kendo-grid k-options="vm.gridOptionsFabric" k-data-source="vm.BatchFabricList"></div>
+
+                    </div>
+                    <div>
+                        <span style="font-size: x-large; background-color: #ffeb3b; color: #ff0000; font-family: monospace; "> Total Fabric Qty: <b>{{vm.form.BATCH_RP_QTY}} Kg</b></span>
+                    </div>
+                </div>
+
+            </fieldset>
+
+
+            <fieldset class="custom-fieldset">
+
+                <legend class="custom-legend"><b>QC Data</b></legend>
+
+
+                <div class="form-group" style="padding-left:20px;">
+
+                    <label class="control-label col-md-2">
+                        <span aria-required="true" class="required"></span>
+                        Insp. Date :
+                    </label>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control required" ng-click="QC_DT_LNopen($event)" ng-focus="QC_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                               name="QC_DT" max-date="vm.today" ng-model="vm.form.QC_DT" is-open="QC_DT_LNopened" style="width:60%;"
+                               datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                    </div>
+
+                    <div class="col-md-1">
+                    </div>
+
+                    <label class="control-label col-md-2">
+                        <span aria-required="true" class="required"></span>
+                        Shift :
+                    </label>
+                    <div class="col-md-3">
+                        <select class="form-control requiredDDL btn" style="width: 100%; height: 32px; " ng-model="vm.form.HR_SCHEDULE_H_ID" ng-options="item.HR_SCHEDULE_H_ID as item.SCHEDULE_NAME_EN for item in vm.shiftList"></select>
+                        <span class="field-validation-error" ng-repeat="err in vm.errors.HR_SCHEDULE_H_ID">
+                            {{err}}
+                        </span>
+                    </div>
+                </div>
+
+
+                <div class="form-group" style="padding-left:20px;">
+
+
+                    <label class="control-label col-md-2">
+                        <span aria-required="true" class="required"></span>
+                        Insp. Name :
+                    </label>
+                    <div class="col-md-3">
+
+                        <select class="form-control requiredDDL btn" style="width: 100%; height: 32px;" ng-model="vm.form.QC_BY"
+                                ng-options="item.HR_EMPLOYEE_ID as item.EMP_FULL_NAME_EN for item in vm.userInspList"></select>
+                        <span class="field-validation-error" ng-repeat="err in vm.errors.HR_EMPLOYEE_ID">
+                            {{err}}
+                        </span>
+                    </div>
+
+                    <div class="col-md-1">
+                    </div>
+
+                    <label class="control-label col-md-2">
+                        <span aria-required="true" class="required"></span>
+                        Shift In-Charge :
+                    </label>
+                    <div class="col-md-3">
+                        <select class="form-control requiredDDL btn" style="width: 100%; height: 32px; " ng-model="vm.form.SHFT_IN_CHRGE" ng-options="item.HR_EMPLOYEE_ID as item.EMP_FULL_NAME_EN for item in vm.userList"></select>
+                        <span class="field-validation-error" ng-repeat="err in vm.errors.HR_EMPLOYEE_ID">
+                            {{err}}
+                        </span>
+                    </div>
+                </div>
+
+
+                <div class="form-group" style="padding-left:20px;">
+
+
+                    <label class="control-label col-md-2">
+                        <span aria-required="true" class="required"></span>
+                        QC Status :
+                    </label>
+                    <div ng-repeat="obj in vm.qcStatusList" class="col-md-2">
+                        <input type="radio" style="border: 0px; width: 10%; height: 1.5em;" id="KNT_QC_STS_TYPE_ID_{{$index}}" value="{{obj.KNT_QC_STS_TYPE_ID}}" ng-model="vm.form.KNT_QC_STS_TYPE_ID" /><label for="KNT_QC_STS_TYPE_ID_{{$index}}"> <b>{{obj.QC_STS_TYP_NAME}}</b>&nbsp; &nbsp;&nbsp;</label>
+                    </div>
+
+                    @*<div class="col-md-3">
+
+                            <select kendo-drop-down-list name="KNT_QC_STS_TYPE_ID" id="KNT_QC_STS_TYPE_ID" class="form-control"
+                                    options="vm.qcStatusList" ng-model="vm.form.KNT_QC_STS_TYPE_ID"></select>
+                        </div>*@
+
+                </div>
+
+
+                <div class="form-group" style="padding-left:20px;" ng-if="vm.form.IS_QC_OK=='N'">
+
+
+                    <label class="control-label col-md-2">
+                        <span aria-required="true" class="required"></span>
+                        Back/To Dpt :
+                    </label>
+                    <div class="col-md-3">
+
+                        <select kendo-drop-down-list name="LK_RP_RTN_TYPE_ID" id="LK_RP_RTN_TYPE_ID" class="form-control"
+                                options="vm.qcReturnList" ng-model="vm.form.LK_RP_RTN_TYPE_ID" ng-change="vm.loadReProcessType();"></select>
+                    </div>
+
+
+                    @*<div class="col-md-1">
+                        </div>
+                        <label class="control-label col-md-2">
+                            <span aria-required="true" class="required"></span>
+                            Reprocess Type :
+                        </label>
+                        <div class="col-md-3">
+                            <select class="form-control " kendo-drop-down-list name="RE_PROC_TYPE_ID" id="RE_PROC_TYPE_ID"
+                                    k-data-text-field="'RE_PROC_TYPE_NAME'" k-data-value-field="'DYE_RE_PROC_TYPE_ID'" k-filter="'contains'"
+                                    k-auto-bind="'true'" k-data-source="vm.dfReprocessTypeList" k-delay="vm.dfReprocessTypeList"
+                                    k-option-label="'-- Select Re-Process Type --'" ng-model="vm.form.RE_PROC_TYPE_ID"></select>
+
+                        </div>*@
+                </div>
+
+            </fieldset>
+
+
+
+            <fieldset class="custom-fieldset" ng-if="vm.form.IS_QC_OK=='N'">
+                <legend class="custom-legend"><b>Mark Defects</b></legend>
+
+
+                <table class="table table-condensed table-bordered">
+                    <thead>
+                        <tr>
+                            <th style="width:20%">
+                                <button type="button" ng-click="expandAll(allExpanded = !allExpanded)">
+                                    <span ng-bind="allExpanded ? '-' : '+'"></span>
+                                </button> All
+                            </th>
+                            <th style="width:80%">Details</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @*<tr ng-repeat-start="(key, value) in vm.defectList | groupBy: 'RESP_DEPT_NAME'">*@
+                        <tr ng-repeat-start="value in vm.defectList">
+                            <td style="width:20%">
+                                <button ng-click="expanded = !expanded" expand>
+                                    <span ng-bind="expanded ? '-' : '+'"></span>
+                                </button>
+                                {{value[0].RESP_DEPT_NAME}}
+                            </td>
+                            <td style="width:80%"></td>
+                        </tr>
+                        <tr ng-repeat-end ng-show="expanded">
+                            <td style="width:10%"></td>
+                            <td style="width:90%">
+                                <table style="width:100%">
+                                    <tbody>
+                                        <tr ng-repeat="item in value">
+                                            <td style="padding-top: 5px;">
+                                                <div class="col-md-1" style="padding:0px;">
+                                                    <input type="checkbox" class="form-control"
+                                                           id="RF_FB_DFCT_TYPE_ID_{{item.RF_RESP_DEPT_ID_OLD}}_{{$index}}"
+                                                           name="RF_FB_DFCT_TYPE_ID_{{item.RF_RESP_DEPT_ID_OLD}}_{{$index}}"
+                                                           ng-model="item.LAST_UPDATED_BY" ng-true-value="'1'"
+                                                           ng-false-value="'0'" ng-change="vm.getMultipleDept(item,value[0].RESP_DEPT_NAME);" />
+                                                </div>
+
+                                                <div class="col-md-4" style="padding:0px;">
+                                                    <label for="RF_FB_DFCT_TYPE_ID_{{item.RF_RESP_DEPT_ID_OLD}}_{{$index}}">{{item.FB_DFCT_TYPE_NAME}}</label>
+                                                </div>
+                                                <input type="hidden" ng-model="item.RF_RESP_DEPT_ID_OLD" />
+
+                                                <div class="col-md-4" style="padding:0px;">
+                                                    <select class="form-control " kendo-drop-down-list name="RF_RESP_DEPT_ID-{{$index}}" id="RF_RESP_DEPT_ID-{{$index}}"
+                                                            k-data-text-field="'RESP_DEPT_NAME'" k-data-value-field="'RF_RESP_DEPT_ID'" style="max-width:350px;"
+                                                            k-auto-bind="'true'" k-data-source="item.resDeptList" k-delay="item.resDeptList" k-option-label="'-- Select Dept --'"
+                                                            k-filter="'contains'" ng-model="item.RF_RESP_DEPT_ID" ng-show="item.LAST_UPDATED_BY>0"></select>
+
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                @*<table style="width:100%">
+                        <tr>
+                            <td style="width:33%">
+                                <table style="width:100%">
+                                    <tr ng-if="item.DISPLAY_ORDER<=3" ng-repeat="item in vm.defectList">
+                                        <td style="padding-top: 5px;">
+                                            <div class="col-md-2" style="padding:0px;">
+                                                <input type="checkbox" class="form-control"
+                                                       id="RF_FB_DFCT_TYPE_ID_{{$index}}" name="RF_FB_DFCT_TYPE_ID_{{$index}}" ng-model="item.LAST_UPDATED_BY" ng-true-value="'1'"
+                                                       ng-false-value="'0'" ng-change="vm.getMultipleDept(item);" />
+                                            </div>
+                                            <div class="col-md-5" style="padding:0px;">
+                                                <label for="RF_FB_DFCT_TYPE_ID_{{$index}}">{{item.FB_DFCT_TYPE_NAME}}</label>
+                                            </div>
+                                            <input type="hidden" ng-model="item.RF_RESP_DEPT_ID_OLD" />
+
+                                            <div class="col-md-5" style="padding:0px;">
+                                                <select class="form-control " kendo-drop-down-list name="RF_RESP_DEPT_ID-{{$index}}" id="RF_RESP_DEPT_ID-{{$index}}"
+                                                        k-data-text-field="'RESP_DEPT_NAME'" k-data-value-field="'RF_RESP_DEPT_ID'" style="max-width:350px;"
+                                                        k-auto-bind="'true'" k-data-source="item.resDeptList" k-delay="item.resDeptList" k-option-label="'-- Select Dept --'"
+                                                        k-filter="'contains'" ng-model="item.RF_RESP_DEPT_ID" ng-show="item.LAST_UPDATED_BY>0"></select>
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td style="width:33%">
+                                <table style="width:100%">
+                                    <tr ng-if="item.DISPLAY_ORDER>=4 && item.DISPLAY_ORDER<=6" ng-repeat="item in vm.defectList">
+                                        <td style="padding-top: 5px;">
+                                            <div class="col-md-2" style="padding:0px;">
+                                                <input type="checkbox" class="form-control"
+                                                       id="RF_FB_DFCT_TYPE_ID_{{$index}}" name="RF_FB_DFCT_TYPE_ID_{{$index}}" ng-model="item.LAST_UPDATED_BY" ng-true-value="'1'"
+                                                       ng-false-value="'0'" ng-change="vm.getMultipleDept(item);" />
+                                            </div>
+                                            <div class="col-md-5" style="padding:0px;">
+                                                <label for="RF_FB_DFCT_TYPE_ID_{{$index}}">{{item.FB_DFCT_TYPE_NAME}}</label>
+                                            </div>
+                                            <input type="hidden" ng-model="item.RF_RESP_DEPT_ID_OLD" />
+                                            <div class="col-md-5" style="padding:0px;">
+                                                <select class="form-control " kendo-drop-down-list name="RF_RESP_DEPT_ID-{{$index}}" id="RF_RESP_DEPT_ID-{{$index}}"
+                                                        k-data-text-field="'RESP_DEPT_NAME'" k-data-value-field="'RF_RESP_DEPT_ID'" style="max-width:350px;"
+                                                        k-auto-bind="'true'" k-data-source="item.resDeptList" k-delay="item.resDeptList" k-option-label="'-- Select Dept --'"
+                                                        k-filter="'contains'" ng-model="item.RF_RESP_DEPT_ID" ng-show="item.LAST_UPDATED_BY>0"></select>
+
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td style="width:33%">
+                                <table style="width:100%">
+                                    <tr ng-if="item.DISPLAY_ORDER>=7" ng-repeat="item in vm.defectList">
+                                        <td style="padding-top: 5px;">
+                                            <div class="col-md-2" style="padding:0px;">
+                                                <input type="checkbox" class="form-control"
+                                                       id="RF_FB_DFCT_TYPE_ID_{{$index}}" name="RF_FB_DFCT_TYPE_ID_{{$index}}" ng-model="item.LAST_UPDATED_BY" ng-true-value="'1'"
+                                                       ng-false-value="'0'" ng-change="vm.getMultipleDept(item);" />
+                                            </div>
+
+                                            <div class="col-md-5" style="padding:0px;">
+                                                <label for="RF_FB_DFCT_TYPE_ID_{{$index}}">{{item.FB_DFCT_TYPE_NAME}}</label>
+                                            </div>
+                                            <input type="hidden" ng-model="item.RF_RESP_DEPT_ID_OLD" />
+
+                                            <div class="col-md-5" style="padding:0px;">
+                                                <select class="form-control " kendo-drop-down-list name="RF_RESP_DEPT_ID-{{$index}}" id="RF_RESP_DEPT_ID-{{$index}}"
+                                                        k-data-text-field="'RESP_DEPT_NAME'" k-data-value-field="'RF_RESP_DEPT_ID'" style="max-width:350px;"
+                                                        k-auto-bind="'true'" k-data-source="item.resDeptList" k-delay="item.resDeptList" k-option-label="'-- Select Dept --'"
+                                                        k-filter="'contains'" ng-model="item.RF_RESP_DEPT_ID" ng-show="item.LAST_UPDATED_BY>0" ></select>
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>*@
+
+                <br />
+
+                <div class="form-group">
+
+                    <label class="control-label col-md-2" style="padding:0px;">
+                        Major Defect Type:
+                    </label>
+                    <div class="col-md-8">
+                        <select class="form-control required" kendo-drop-down-list name="MAJ_DFCT_TYPE_ID" id="MAJ_DFCT_TYPE_ID"
+                                k-data-text-field="'FB_DFCT_TYPE_NAME'" k-data-value-field="'RF_FB_DFCT_TYPE_ID'" style="max-width:350px;"
+                                k-auto-bind="'true'" k-data-source="vm.majorDfctList" k-delay="vm.majorDfctList" k-option-label="'-- Select Major Defect --'"
+                                k-filter="'contains'" ng-model="vm.form.MAJ_DFCT_TYPE_ID"></select>
+
+                    </div>
+
+                </div>
+                <div class="form-group">
+
+                    <label class="control-label col-md-2" style="padding:0px;">
+                        QC Remarks :
+                    </label>
+                    <div class="col-md-8">
+
+                        <textarea rows="4" name="REMARKS" class="form-control" ng-model="vm.form.QC_NOTE" cols="50"></textarea>
+                        <br />
+
+                    </div>
+
+
+                </div>
+
+            </fieldset>
+
+            <div style="padding:3px;">
+            </div>
+            <div class="row">
+                <div class="col-md-3" style="padding-left:20px;">
+                    <button type="button" class="btn btn-sm blue" ui-sref="DfOnlineQcList">Back To List</button>
+                    <a class="btn btn-sm green" ng-if="!vm.form.DF_PROC_QC_RPT_H_ID>0" ng-click="vm.submitAll(vm.form)">Save</a>
+                    <a class="btn btn-sm yellow" ng-if="vm.form.DF_PROC_QC_RPT_H_ID>0" ng-disabled="vm.form.LAST_UPDATED_BY>0" ng-click="vm.submitAll(vm.form)">Submit</a>
+                    <button type="button" class="btn btn-sm default" ui-sref="DfOnlineQc({pDF_PROC_QC_RPT_H_ID : 0})" ui-sref-opts="{reload: true}">Cancel</button>
+                </div>
+
+                @*<label class="control-label col-md-2" style="padding:0px;">
+                        <span aria-required="true" class="required">*</span>
+                        Take Action
+                    </label>
+                    <div class="col-md-2" ng-if="vm.form.RF_ACTN_VIEW>0">
+                        <select kendo-drop-down-list name="RF_ACTN_STATUS_ID" id="RF_ACTN_STATUS_ID" class="form-control" ng-class="{'required': vm.form.DYE_RE_PROC_TYPE_ID<2}"
+                                options="vm.statusList" ng-model="vm.form.RF_ACTN_STATUS_ID" required></select>
+                    </div>
+
+                    <div class="col-md-2" ng-if="!vm.form.RF_ACTN_VIEW>0">
+
+                        <input type="text" ng-model="vm.form.ACTN_STATUS_NAME" style="width: 100%;" readonly="readonly" />
+                        <input type="hidden" ng-model="vm.form.RF_ACTN_STATUS_ID" />
+
+                    </div>*@
+            </div>
+            <div style="padding:3px;">
+            </div>
+
+        </div>
+
+    </form>
+</div>

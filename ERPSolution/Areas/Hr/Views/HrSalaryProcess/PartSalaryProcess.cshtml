@@ -1,0 +1,332 @@
+﻿@*@model ERP.Model.HR_SCHEDULE_HModel*@
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Hr</a>
+
+    </li>
+    <li>
+        <a href="#">Payroll</a>
+    </li>
+    <li>
+        <a href="#">Partial Salary Process</a>
+    </li>
+</ul>
+
+
+@{
+    ViewBag.Title = "Partial Salary Process";
+}
+
+@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+<div class="portlet box blue-dark" @*ng-controller="HrSalaryProcessController as vm"*@>
+
+    <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+           data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+    <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+        <div class="page-splash">
+            <div class="page-splash-message">
+                <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+            </div>
+        </div>
+    </div>
+
+    <div class="portlet-title">
+        <div class="caption">
+            @*<i class="fa fa-gift"></i>*@ Partial Salary Process
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <input type="hidden" ng-model="vm.PERIOD_TYPE_ID" ng-init="vm.PERIOD_TYPE_ID=null" />
+
+        <div class="row">
+
+            <div class="col-md-12">
+
+                <div class="col-md-offset-0 col-md-9">
+                    <p></p>
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend">Selection of Parameters</legend>
+                        
+                        <p></p>
+                        <div class="col-md-5" style="padding-left:0px;">
+                            <div class="form-group">
+                                @*<fieldset class=" custom-fieldset">*@
+                                    <div class="col-md-12 col-md-offset-0">
+                                        @*<div id="desigGrpGrid" kendo-grid></div>*@
+                                        <kendo-grid id="desigGrpGrid" k-options="gridOptions" k-data-source="vm.desigGroupGridDataSource" k-rebind="gridOptions"></kendo-grid>
+                                    </div>
+                                @*</fieldset>*@
+                            </div>                                                                                  
+                        </div>
+
+                       
+
+                        <div class="col-md-7" style="padding-right:5px;" @*style="border:1px solid red"*@>
+
+                            <div class="form-group">
+                                <fieldset class=" custom-fieldset">
+                                    <div class="radio-list">
+                                        <label class="radio" style="padding-left:30px;"><input type="radio" ng-value="1" ng-model="SELECTION_TYPE">All Employees</label>
+                                        <label class="radio" style="padding-left:30px;"><input type="radio" ng-value="2" ng-model="SELECTION_TYPE">Specific Department</label>
+                                        <label class="radio" style="padding-left:30px;"><input type="radio" ng-value="3" ng-model="SELECTION_TYPE">Specific Team</label>
+                                        <label class="radio" style="padding-left:30px;"><input type="radio" ng-value="4" ng-model="SELECTION_TYPE">Specific Floor</label>
+                                        <label class="radio" style="padding-left:30px;"><input type="radio" ng-value="5" ng-model="SELECTION_TYPE">Specific Employee Type</label>
+                                        <label class="radio" style="padding-left:30px;"><input type="radio" ng-value="6" ng-model="SELECTION_TYPE">Specific Employee</label>
+                                        <label class="radio" style="padding-left:30px;"><input type="radio" ng-value="7" ng-model="SELECTION_TYPE">Specific Religion</label>
+                                    </div>
+                                </fieldset>
+                            </div>
+                           
+                            <div class="form-group" style="padding-bottom:25px;">
+                                <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                    Company
+                                </label>
+                                <div class="col-md-8" style="padding-right:0px;">
+                                    <select kendo-drop-down-list id="HR_COMPANY_ID" name="HR_COMPANY_ID" class="form-control" @*ng-disabled="vm.isManagementType!=true"*@
+                                            options="vm.companyList" ng-model="vm.form.HR_COMPANY_ID"></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="padding-bottom:25px;">
+                                <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Pay Period</label>
+                                <div class="col-md-8" style="padding-right:0px;">
+                                    <select kendo-drop-down-list id="ACC_PAY_PERIOD_ID" name="ACC_PAY_PERIOD_ID" class="form-control"
+                                            options="vm.openPeriodListData" ng-model="vm.form.ACC_PAY_PERIOD_ID"></select>
+                                </div>
+                                @*{{vm.form.ACC_PAY_PERIOD_ID}}*@
+                            </div>
+
+                            <div class="form-group" style="padding-bottom:25px;">
+                                <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Office</label>
+                                <div class="col-md-8" style="padding-right:0px;">
+                                    <select kendo-drop-down-list id="HR_OFFICE_ID" name="HR_OFFICE_ID" class="form-control"
+                                            options="vm.officeListData" ng-model="vm.form.HR_OFFICE_ID"></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="padding-bottom:25px;" ng-show="vm.isSubDepartment">
+                                <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                    Department
+                                </label>
+                                <div class="col-md-8" style="padding-right:0px;">
+                                    <select kendo-drop-down-list name="CORE_DEPT_ID" class="form-control"
+                                            options="vm.parentDepartmentListData" ng-model="vm.form.CORE_DEPT_ID"></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="padding-bottom:25px;" ng-show="vm.isSubDepartment">
+                                <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                    Section
+                                </label>
+                                <div class="col-md-8" style="padding-right:0px;">
+                                    <select kendo-drop-down-list id="HR_DEPARTMENT_ID" name="HR_DEPARTMENT_ID" class="form-control" @*ng-disabled="vm.isManagementType!=true"*@
+                                            options="vm.subdepartmentListData" ng-model="vm.form.HR_DEPARTMENT_ID"></select>
+                                </div>
+                            </div>
+
+                            @*<div class="form-group" style="padding-bottom: 22px;">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Shift Plan
+                                    </label>
+                                    <div class="col-md-8" style="padding-right:0px;">
+                                        <select kendo-drop-down-list name="HR_SHIFT_PLAN_ID" class="form-control"
+                                                options="vm.shiftPlanListData" ng-model="vm.form.HR_SHIFT_PLAN_ID">
+                                        </select>
+                                    </div>
+                                </div>*@
+
+                            <div class="form-group" style="padding-bottom:25px;" ng-show="vm.isTeam">
+                                <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                    Team
+                                </label>
+                                <div class="col-md-8" style="padding-right:0px;">
+                                    <select kendo-drop-down-list name="HR_SHIFT_TEAM_ID" class="form-control" @*ng-disabled="vm.isManagementType!=true"*@
+                                            options="vm.shiftTeamListData" ng-model="vm.form.HR_SHIFT_TEAM_ID"></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="padding-bottom:25px;" ng-show="vm.isFloor">
+                                <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                    Floor & Line
+                                </label>
+                                <div class="col-md-4" style="padding-right:0px;">
+                                    <select kendo-drop-down-list name="LK_FLOOR_ID" class="form-control" @*ng-disabled="vm.isManagementType!=true"*@
+                                            options="vm.floorListData" ng-model="vm.form.LK_FLOOR_ID"></select>
+
+                                </div>
+                                <div class="col-md-4" style="padding-right:0px;">
+                                    @*<input type="text" class="form-control" name="LINE_NO" ng-model="vm.form.LINE_NO" ng-disabled="vm.isFloor!=true" />*@
+                                    <select kendo-drop-down-list name="LINE_NO" class="form-control" @*ng-disabled="vm.isManagementType!=true"*@
+                                            options="vm.lineListData" ng-model="vm.form.LINE_NO"></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="padding-bottom:25px;" ng-show="vm.isReligion">
+                                <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                    Religion
+                                </label>
+                                <div class="col-md-8" style="padding-right:0px;">
+                                    <select kendo-drop-down-list name="LK_RELIGION_ID" class="form-control" ng-disabled="vm.isReligion!=true"
+                                            options="vm.religionListData" ng-model="vm.form.LK_RELIGION_ID"></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="padding-bottom:25px;" ng-show="vm.isManagementType">
+                                <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                    Employee Type
+                                </label>
+                                <div class="col-md-8" style="padding-right:0px;">
+                                    <select kendo-drop-down-list name="HR_MANAGEMENT_TYPE_ID" class="form-control" ng-disabled="vm.isManagementType!=true"
+                                            options="vm.managementTypeList" ng-model="vm.form.HR_MANAGEMENT_TYPE_ID"></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="padding-bottom:25px;" ng-show="vm.isEmployee">
+                                <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                    Employee
+                                </label>
+                                <div class="col-md-8" style="padding-right:0px;">
+                                    <input type="text" ng-model="vm.form.EMPLOYEE_CODE" placeholder="Search..." ng-disabled="vm.isEmployee!=true"
+                                           typeahead="item.EMPLOYEE_CODE as item.EMPLOYEE_CODE for item in emoloyeeAuto($viewValue)"
+                                           typeahead-min-length="3" typeahead-wait-ms="1000"
+                                           typeahead-on-select="onSelectItem($item)" typeahead-loading="loadingLocations" class="form-control">
+                                    <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+
+                                    @*<select kendo-drop-down-list name="HR_EMPLOYEE_ID" class="form-control" ng-disabled="vm.isEmployee!=true"
+                                    options="vm.EmployeeDataList" ng-model="vm.form.HR_EMPLOYEE_ID"></select>*@
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="padding-bottom:25px;">
+                                <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px"># of Days</label>
+                                <div class="col-md-2" style="padding-right:0px;">
+                                    <input type="text" name="NO_OF_DAYS" ng-model="vm.form.NO_OF_DAYS" class="form-control" ng-disabled="true" />
+                                </div>
+
+                                <label class="control-label col-md-offset-1 col-md-3" style="padding-left: 0px; padding-right: 0px"># of Additional Days</label>
+                                <div class="col-md-2" style="padding-right:0px;">
+                                    <input type="text" name="ADDL_PRE_DAYS" ng-model="vm.form.ADDL_PRE_DAYS" class="form-control"  />
+                                </div>
+                            </div>
+
+
+                            <div class="form-group" style="padding-bottom:25px;">
+                                <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Round 
+                                    <span class="radio-list" style="margin-left:20px">
+                                        <label class="radio-inline" ng-repeat="item in vm.roundTypeList">
+                                            <span class="checked"><input type="radio" name="ROUND_TYPE_NAME" ng-model="vm.form.ROUND_TYPE_ID" ng-value="item.ROUND_TYPE_ID" ></span>{{item.ROUND_TYPE_NAME}}
+                                        </label>
+                                    </span>
+                                </label>
+                                <div class="col-md-2" style="padding-right:0px;">
+                                    <input type="text" name="ROUND_AMOUNT" ng-model="vm.form.ROUND_AMOUNT" class="form-control" />
+                                </div>
+                            </div>
+                           
+
+                            <div class="form-group" style="padding-bottom:15px;">                                
+                                <div class="col-md-8 col-md-offset-4" style="padding-right: 0px;">
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" name="IS_INCLUDE_OT" ng-model="vm.form.IS_INCLUDE_OT" ng-init="vm.form.IS_INCLUDE_OT='N'" ng-true-value="'Y'" ng-false-value="'N'">Include OT?
+                                    </label>
+                                </div>
+                            </div>
+                            
+
+                            <div class="form-group" style="padding-bottom:15px;" ng-show="vm.form.IS_INCLUDE_OT=='Y'">
+                                <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">OT Date From</label>
+                                <div class="col-md-3" style="padding-right:0px;">
+                                    <input type="text" class="form-control" ng-click="vm.OT_START_DTDateOpen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                           name="OT_START_DT" ng-model="vm.form.OT_START_DT" is-open="vm.OT_START_DTDateOpened" datepicker-options="dateOptions"
+                                           date-disabled="disabled(date, mode)" @*ng-required="true"*@ close-text="Close" />
+                                </div>
+
+                                <label class="control-label col-md-offset-1 col-md-1">To</label>
+
+                                <div class="col-md-3" style="padding-right:0px;">
+                                    <input type="text" class="form-control" ng-click="vm.OT_END_DTDateOpen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                           name="OT_END_DT" ng-model="vm.form.OT_END_DT" is-open="vm.OT_END_DTDateOpened" datepicker-options="dateOptions"
+                                           date-disabled="disabled(date, mode)" @*ng-required="true"*@ close-text="Close" />
+                                </div>
+                            </div>
+
+                            
+
+                            <div class="form-group" style="padding-bottom:25px;">                                
+                                <div class="col-md-8 col-md-offset-4" style="padding-right: 0px; padding-bottom: 25px; ">
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" name="IS_INCLUDE_ADVANCE" ng-model="vm.form.IS_INCLUDE_ADVANCE" ng-init="vm.form.IS_INCLUDE_ADVANCE='Y'" ng-true-value="'Y'" ng-false-value="'N'">All Advance Deduction?
+                                    </label>
+                                </div>
+                            </div>
+                            
+
+                            <div class="form-group">
+                                <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                </label>
+                                <div class="col-md-8" style="padding-right:0px;">
+                                    <button type="button" class="btn blue button-next" ng-click="vm.partSalaryProcess(vm.form,vm.insert); model.center().open()" ng-disabled="vm.form.ACC_PAY_PERIOD_ID==null||vm.form.ACC_PAY_PERIOD_ID==''">Process</button>
+                                    @*<div kendo-window="model" id="processDiv"
+                                        k-width="300"
+                                        k-height="50"
+                                        k-visible="false"
+                                        k-pinned="true"
+                                        k-modal="true"
+                                        k-resizable="false"></div>*@     
+                                    <form class="btn" action="/Hr/HrReport/PreviewReport" method="post" target="_blank">
+                                        <input type="hidden" name="REPORT_CODE" value="RPT-1010" />
+
+                                        <button type="submit" class="btn default"><i class="fa fa-file-text-o"></i> Preview</button>
+                                    </form>                              
+
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+
+
+
+                        
+                    </fieldset>
+                    <p>&nbsp;</p>
+
+                </div>
+                <div class="col-md-4">
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+

@@ -1,0 +1,225 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 12px;
+    }
+</style>
+
+<form class="form-horizontal form-body">
+    <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+    @*Session["multiLoginEmpCode"] = obUser.EMPLOYEE_CODE;
+        Session["multiLoginEmpName"] = obUser.EMP_FULL_NAME_EN;*@
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <fieldset class="custom-fieldset" style="margin-bottom:5px" ng-disabled="$parent.form.IS_FINALIZED=='Y'">
+                <legend class="custom-legend">Order List</legend>
+
+                <div class="row" style="margin:auto;" ng-show="vm.errors">
+                    <div class="alert alert-danger" role="alert">
+                        @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                        <div style="padding: 0px 0px 15px 25px; ">
+                            <b>Please fix the following errors ....</b>
+                        </div>
+                        <ul ng-repeat="field in vm.errors">
+                            <li ng-repeat="error in field" ng-bind="error"></li>
+                        </ul>
+                    </div>
+                </div>
+
+                @*<div class="form-group"></div>*@
+
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr class="row-border">
+                            @*<th style="width:8%">Program#</th>*@
+                            @*<th style="width:7%">Prg. Date</th>*@
+                            <th style="width:15%">Style#</th>
+                            <th style="width: 11%">Order#</th>
+                            <th style="width: 12%">Color</th>
+                            <th style="width: 5%">Fabric Type</th>
+                            <th style="width: 5%">Gsm</th>
+                            <th style="width: 5%">Finish Dia</th>
+                            <th style="width: 5%">Mc.Dia</th>
+                            <th style="width: 20%">Yarn Detail</th>
+                            <th style="width: 5%">Reject Qty</th>
+
+                            <th style="width: 3%; padding: 5px 0px 5px 5px"></th>
+
+                        </tr>
+                    </thead>
+
+
+                    <tbody>
+                        <tr ng-repeat="itmPrg in $parent.form.rejFabDtl" ng-class="{'info':itmPrg.IS_ACTIVE==true}" style="border-bottom: 1px solid hsl(0, 0%, 87%);height:auto">
+
+                            <td style="padding:5px 0px 5px 0px">{{itmPrg.STYLE_NO}}</td>
+                            <td style="padding:5px 0px 5px 0px">{{itmPrg.ORDER_NO_LST}}</td>
+                            <td style="padding: 5px 0px 5px 0px">{{itmPrg.COLOR_NAME_EN}}</td>
+                            <td style="padding: 5px 0px 5px 0px">{{itmPrg.FAB_TYPE_SNAME}}</td>
+                            <td style="padding:5px 0px 5px 0px">{{itmPrg.FIN_GSM}}</td>
+                            <td style="padding: 5px 0px 5px 0px">{{itmPrg.ACT_FIN_DIA}}</td>
+                            <td style="padding:5px 0px 5px 0px">{{itmPrg.MC_DIA}}</td>
+                            <td style="padding:5px 0px 5px 0px">{{itmPrg.YARN_DETAILS}}</td>
+                            <td style="padding: 5px 0px 5px 0px">{{itmPrg.REJ_ROLL_WT}}</td>
+
+                            <td style="padding: 5px 0px 5px 5px">
+                                <a class="btn btn-xs blue" title="Select" ng-click="vm.makeActive($parent.form.rejFabDtl, $index)">
+                                    <i class="fa fa-hand-o-left"></i>
+                                </a>
+                            </td>
+                        </tr>
+
+                        @*<tr ng-repeat-end></tr>*@
+
+                    </tbody>
+                </table>
+
+            </fieldset>
+
+
+            <fieldset class="custom-fieldset" style="margin-bottom:5px" ng-disabled="$parent.form.IS_FINALIZED=='Y'">
+                <legend class="custom-legend">Fabric Return Detail</legend>
+
+                <table class="table table-hover table-striped table-bordered" style="margin-bottom:0px; padding-bottom:0px;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid hsl(0, 0%, 87%); height: auto;" class="success">
+
+                            <td style="padding: 5px 2px 5px 0px">                                
+                                <input type="text" class="form-control" name="STYLE_NO" ng-model="vm.fabItem.STYLE_NO" readonly />
+                            </td>
+                            <td style="padding: 5px 2px 5px 0px">
+                                <input type="text" class="form-control" name="ORDER_NO_LST" ng-model="vm.fabItem.ORDER_NO_LST" readonly />
+                            </td>
+                            <td style="padding: 5px 2px 5px 0px">
+                                <input type="text" class="form-control" name="COLOR_NAME_EN" ng-model="vm.fabItem.COLOR_NAME_EN" readonly />
+                            </td>
+                            <td style="padding: 5px 2px 5px 0px">
+                                <input type="text" class="form-control" name="FAB_TYPE_SNAME" ng-model="vm.fabItem.FAB_TYPE_SNAME" readonly />
+                            </td>
+                            <td style="padding: 5px 2px 5px 0px">
+                                <input type="text" class="form-control" name="FIN_GSM" ng-model="vm.fabItem.FIN_GSM" readonly />
+                            </td>
+                            <td style="padding: 5px 2px 5px 0px">
+                                <input type="text" class="form-control" name="ACT_FIN_DIA" ng-model="vm.fabItem.ACT_FIN_DIA" readonly />
+                            </td>
+                            <td style="padding: 5px 2px 5px 0px">
+                                <input type="text" class="form-control" name="MC_DIA" ng-model="vm.fabItem.MC_DIA" readonly />
+                            </td>
+                            <td style="padding: 5px 2px 5px 0px">
+                                <input type="text" class="form-control" name="YARN_DETAILS" ng-model="vm.fabItem.YARN_DETAILS" readonly />
+                            </td>
+
+
+                            <td style="padding: 5px 0px 5px 0px">
+                                <input type="number" class="form-control" name="RET_GFAB_QTY" ng-model="vm.fabItem.RET_GFAB_QTY" min="1" />
+
+                            </td>
+
+                            <td style="padding: 5px 0px 5px 0px">
+                                <input type="number" class="form-control" name="PROD_RATE" ng-model="vm.fabItem.PROD_RATE" min="1" />
+
+                            </td>
+
+
+
+                            <td style="padding: 5px 0px 5px 0px;text-align:center">
+                                <button type="button" class="btn btn-xs blue" title="Add to Grid" ng-click="vm.addFabRcv(vm.fabItem)" ng-show="$parent.isFabAddToGrid=='Y'"
+                                        ng-class="{'disabled':(!$parent.selectedFabRow.STYLE_NO||vm.fabItem.RET_GFAB_QTY==null||vm.fabItem.PROD_RATE==null)}">
+                                    Add
+                                </button>
+                                <button type="button" class="btn btn-xs yellow-gold" title="Update to Grid" ng-click="vm.updateFabRcv(vm.fabItem)" ng-show="$parent.isFabAddToGrid=='N'"
+                                        ng-class="{'disabled':(vm.fabItem.RET_GFAB_QTY==null||vm.fabItem.PROD_RATE==null)}">                                   
+                                    Update
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="row-border">
+                            <th style="width:10%">Style#</th>
+                            <th style="width: 10%">Order#</th>
+                            <th style="width: 15%">Color</th>
+                            <th style="width: 6%">Fabric Type</th>
+                            <th style="width: 5%">Gsm</th>
+                            <th style="width: 5%">Finish Dia</th>
+                            <th style="width: 5%">Mc.Dia</th>
+                            <th style="width: 12%">Yarn Detail</th>
+                            <th style="width:6%">Roll Wt.</th>
+                            <th style="width:5%">Rate/Kg</th>
+
+                            <th style="width:6%">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr></tr>
+
+                        <tr ng-repeat="itmFab in $parent.form.fabRtnDtl">
+                            <input type="hidden" ng-model="itmFab.FAB_RTN_INDEX" ng-bind="itmFab.FAB_RTN_INDEX=$index" />
+
+                            <td>@*{{itmFab.KNT_SCO_GFAB_RET_D_ID}}*@{{itmFab.STYLE_NO}}</td>
+                            <td>{{itmFab.ORDER_NO_LST}}</td>
+                            <td>{{itmFab.COLOR_NAME_EN}}</td>
+                            <td>{{itmFab.FAB_TYPE_SNAME}}</td>
+                            <td>{{itmFab.FIN_GSM}}</td>
+                            <td>{{itmFab.ACT_FIN_DIA}}</td>
+                            <td>{{itmFab.MC_DIA}}</td>
+                            <td>{{itmFab.YARN_DETAILS}}</td>
+                            <td>{{itmFab.RET_GFAB_QTY}}</td>
+                            <td>{{itmFab.PROD_RATE}}</td>
+
+                            <td>
+                                <a class="btn btn-xs blue" title="Edit Row" ng-click="vm.editFabric($index, $parent.form.fabRtnDtl)" @*ng-disabled="vm.form.itemsStyle.length==1?true:false"*@>
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a class="btn btn-xs red" title="Remove Row" ng-click="vm.removeFabric($index, $parent.form.fabRtnDtl)" @*ng-disabled="vm.form.itemsStyle.length==1?true:false"*@>
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </fieldset>
+            
+        </div>
+
+        @*<div class="col-md-12" style="text-align:right;padding-top:0px;padding-right:32px">
+            <div class="form-group">
+
+                <button type="button" class="btn btn-sm green" ng-click="vm.batchSave()" ng-show="$parent.form.KNT_SCO_CHL_RCV_H_ID<1"
+                        ng-class="{'disabled':!frmScOutHouseChlan.$valid}">
+                    Save
+                </button>
+                <button type="button" class="btn btn-sm yellow-gold" ng-click="vm.batchSave()" ng-show="$parent.form.KNT_SCO_CHL_RCV_H_ID>0"
+                        ng-class="{'disabled':!frmScOutHouseChlan.$valid}">
+                    Update
+                </button>
+                <button type="button" class="btn btn-sm blue" ng-click="vm.cancel()">Cancel</button>
+
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" class="btn btn-sm blue" ng-click="vm.printLedger()" ng-show="$parent.form.KNT_SC_PRG_RCV_ID>0">Print</button>
+                <button type="button" class="btn btn-sm blue-hoki" ng-click="vm.backToList()">Back to List</button>
+            </div>
+        </div>*@
+
+    </div>
+</form>
+
+
+@*<pre>{{frmScOutHouseChlan.$error|json}}</pre>*@
+
+@*<pre>{{$parent.selectedFabRow}}</pre>*@
+
+@*<pre>{{$parent.form|json}}</pre>*@
+
+
+
+
+
+
+

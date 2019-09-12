@@ -1,0 +1,232 @@
+﻿@{
+    ViewBag.Title = "Collar & Cuff Management";
+}
+
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+    <form name="form" style="background-color: white;">
+        <div class="portlet-body">
+            <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+                <div class="page-splash">
+                    <div class="page-splash-message">
+                        <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="padding:20px;">
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend">Search</legend>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-1">
+                            </div>
+                            <label class="col-md-2">
+                                Buyer Account
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control" kendo-drop-down-list name="MC_BYR_ACC_ID" k-option-label="'-- Select Buyer A/C --'"
+                                        k-data-text-field="'BYR_ACC_NAME_EN'" k-data-value-field="'MC_BYR_ACC_ID'" k-filter="'contains'"
+                                        k-auto-bind="'true'" k-data-source="vm.buyerAccList" k-ng-delay="vm.buyerAccList"
+                                        ng-model="vm.form.MC_BYR_ACC_ID"></select>
+                            </div>
+                            <label class="col-md-1">
+                                Style #
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" name="STYLE_NO" class="form-control" ng-model="vm.form.STYLE_NO" />
+                            </div>
+                            <div class="col-md-1">
+                                <button class="btn btn-sm" ng-click="vm.showStyle()">Search</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend"><b>Style List</b></legend>
+                    <div class="row" style="padding-left: 5px; padding-right: 5px;">
+
+                        <div style="padding:2px;">
+                            @*<div kendo-grid k-options="vm.gridOptions" id="IDOrderScmDS"></div>*@
+                            <kendo-grid options="vm.gridOptions" id="IDOrderScmDS" k-data-source="vm.OrderScmList">
+                                <div k-detail-template ng-init="vm.detailExpand(dataItem);">
+                                    <div>
+                                        <div class="row" style="padding-left: 5px; padding-right: 5px; overflow: scroll;">
+                                            <input type="hidden" id="MC_STYLE_H_ID" name="MC_STYLE_H_ID" ng-model="dataItem.MC_STYLE_H_ID" />
+                                            <div>
+                                                <fieldset class="custom-fieldset">
+                                                    <legend class="custom-legend"><b>Collar & Cuff Measurement</b></legend>
+                                                    <table class="table table-striped clsTableMtex" style="border-collapse: collapse; overflow:scroll;">
+                                                        <thead class="clstheadMtex">
+                                                            <tr style="border: solid 2px lightgray;">
+                                                                <th style="border: solid 2px lightgray; " rowspan="2">Part</th>
+                                                                <th ng-repeat="itmSize in dataItem.uniqueOrderSize" style="border: solid 2px lightgray; text-align: center; ">
+                                                                    {{itmSize.SIZE_CODE}}
+                                                                </th>
+
+                                                            </tr>
+
+                                                        </thead>
+
+                                                        <tbody class="clstdMtex">
+                                                            <tr ng-repeat="itmGmtPart in dataItem.GMTPart" style="border: solid 2px lightgray; ">
+
+                                                                <td style="width:50px;">
+                                                                    {{itmGmtPart.GARM_PART_NAME}}
+                                                                </td>
+
+                                                                <td ng-repeat="itmSize in dataItem.itmGmtPart[$index]" style="padding-left:0px;padding-right:0px;">
+                                                                    <div class="=row">
+                                                                        <div class="col-md-3" style="padding:2px;">
+                                                                            <input type="text" min="0" max="999" placeholder="Length" class="form-control"
+                                                                                   name="MEAS_LENGTH" ng-model="itmSize.MEAS_LENGTH" ng-disabled="dataItem.IS_FINALIZED_CC=='Y'" ng-keyup="vm.checkDataTypeL(itmSize);" />
+                                                                        </div>
+
+                                                                        <label class="col-md-1">X</label>
+                                                                        <div class="col-md-3" style="padding:2px;">
+                                                                            <input type="text" min="0" max="999" placeholder="Width" class="form-control" name="MEAS_WIDTH"
+                                                                                   ng-model="itmSize.MEAS_WIDTH" ng-disabled="dataItem.IS_FINALIZED_CC=='Y'" ng-keyup="vm.checkDataTypeW(itmSize);" />
+                                                                        </div>
+
+                                                                        <input type="hidden" name="RF_GARM_PART_ID" ng-model="itmSize.RF_GARM_PART_ID" />
+                                                                        <input type="hidden" name="MC_SIZE_ID" ng-model="itmSize.MC_SIZE_ID" />
+                                                                        <input type="hidden" name="MC_STYL_CLCF_MEAS_ID" ng-model="itmSize.MC_STYL_CLCF_MEAS_ID" />
+
+                                                                        <input type="hidden" name="MC_STYLE_H_ID" ng-model="itmSize.MC_STYLE_H_ID" />
+
+                                                                    </div>
+
+
+                                                                </td>
+
+                                                            </tr>
+                                                        </tbody>
+
+                                                    </table>
+
+
+                                                    <br />
+                                                    <div class="form-group form-actions">
+                                                        <div class="col-md-2">
+                                                            <button type="button" class="btn green btn-sm" ng-disabled="dataItem.IS_FINALIZED_CC=='N' && dataItem.IS_FIRST>0" ng-if="dataItem.FINALIZED<1" ng-click=" vm.submitSizeAll(dataItem)">Save</button>
+                                                            <button type="button" class="btn yellow-gold btn-sm" ng-disabled="dataItem.IS_FINALIZED_CC=='Y'" ng-if=" dataItem.FINALIZED<1 && dataItem.IS_FIRST>0" ng-click=" vm.submitSizeAll(dataItem)">Update</button>
+                                                            <button type="button" class="btn green btn-sm" ng-if="dataItem.IS_FIRST>0 && dataItem.FINALIZED>0" ng-click="vm.submitSizeAll(dataItem)">Revise</button>
+
+                                                        </div>
+                                                        <div class="col-md-4" ng-if="dataItem.IS_FIRST>0 && dataItem.FINALIZED<=0">
+                                                            <label class="col-md-3"><input type="checkbox" id="IS_FINALIZED_CC" name="IS_FINALIZED_CC" ng-model="dataItem.IS_FINALIZED_CC" ng-true-value="'Y'" ng-false-value="'N'" /> Finalize?</label>
+
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </kendo-grid>
+                        </div>
+                    </div>
+                </fieldset>
+
+                @*<div class="row" style="padding-left: 5px; padding-right: 5px;">
+                        <script type="text/x-kendo-template" style="background-color:greenyellow;" id="templateCC">
+
+                            <input type="hidden" id="MC_STYLE_H_ID" name="MC_STYLE_H_ID" ng-model="dataItem.MC_STYLE_H_ID" />
+
+                            <div>
+                                <fieldset class="custom-fieldset">
+                                    <legend class="custom-legend"><b>Collar & Cuff Measurement</b></legend>
+                                    <table class="table table-striped" style="border-collapse: collapse;">
+                                        <thead>
+                                            <tr style="border: solid 2px lightgray; ">
+                                                <th style="border: solid 2px lightgray; " rowspan="2">Part</th>
+                                                <th ng-repeat="itmSize in dataItem.uniqueOrderSize" style="border: solid 2px lightgray; text-align: center; ">
+                                                    {{itmSize.SIZE_CODE}}
+                                                </th>
+
+                                            </tr>
+
+                                        </thead>
+
+                                        <tbody>
+                                            <tr ng-repeat="itmGmtPart in dataItem.GMTPart" style="border: solid 2px lightgray; ">
+
+                                                <td style="width:50px;">
+                                                    {{itmGmtPart.GARM_PART_NAME}}
+                                                </td>
+
+                                                <td ng-repeat="itmSize in dataItem.itmGmtPart[$index]" style="padding-left:0px;padding-right:0px;">
+                                                    <div class="=row">
+                                                        <div class="col-md-4" style="padding:2px;">
+                                                            <input type="number" min="0" max="999" placeholder="Length" class="form-control" style="min-width:50px;max-width:80px;" name="MEAS_LENGTH" ng-model="itmSize.MEAS_LENGTH" />
+                                                        </div>
+
+                                                        <label class="col-md-1" style="padding:5px;">X</label>
+                                                        <div class="col-md-4" style="padding:2px;">
+                                                            <input type="number" min="0" max="999" placeholder="Width" style="min-width:50px;max-width:80px;" class="form-control" name="MEAS_WIDTH" ng-model="itmSize.MEAS_WIDTH" />
+                                                        </div>
+
+                                                        <input type="hidden" name="RF_GARM_PART_ID" ng-model="itmSize.RF_GARM_PART_ID" />
+                                                        <input type="hidden" name="MC_SIZE_ID" ng-model="itmSize.MC_SIZE_ID" />
+                                                        <input type="hidden" name="MC_STYL_CLCF_MEAS_ID" ng-model="itmSize.MC_STYL_CLCF_MEAS_ID" />
+
+                                                        <input type="hidden" name="MC_STYLE_H_ID" ng-model="itmSize.MC_STYLE_H_ID" />
+
+                                                    </div>
+
+
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+
+
+                                    <br />
+                                    <div class="form-group form-actions">
+                                        <div class="col-md-2">
+                                            <button type="button" class="btn green btn-sm" ng-disabled="dataItem.IS_FINALIZED_CC=='N' && dataItem.IS_FIRST>0" ng-if="dataItem.FINALIZED<1" ng-click=" vm.submitSizeAll(dataItem)">Save</button>
+                                            <button type="button" class="btn yellow-gold btn-sm" ng-disabled="dataItem.IS_FINALIZED_CC=='Y'" ng-if=" dataItem.FINALIZED<1 && dataItem.IS_FIRST>0" ng-click=" vm.submitSizeAll(dataItem)">Update</button>
+                                            <button type="button" class="btn green btn-sm" ng-if="dataItem.IS_FIRST>0 && dataItem.FINALIZED>0" ng-click="vm.submitSizeAll(dataItem)">Revise</button>
+
+                                        </div>
+                                        <div class="col-md-4" ng-if="dataItem.IS_FIRST>0 && dataItem.FINALIZED<=0">
+                                            <label class="col-md-3"><input type="checkbox" id="IS_FINALIZED_CC" name="IS_FINALIZED_CC" ng-model="dataItem.IS_FINALIZED_CC" ng-true-value="'Y'" ng-false-value="'N'" /> Finalize?</label>
+
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </script>
+
+                    </div>*@
+            </div>
+        </div>
+        <div id="details"></div>
+    </form>
+</div>

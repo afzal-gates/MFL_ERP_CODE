@@ -1,0 +1,47 @@
+﻿<style>
+    .k-grid td {
+        padding: 2px;
+        padding-right: 4px;
+        padding-bottom: 0px;
+    }
+    .k-grid {
+        font-size: 12px;
+    }
+    
+    .k-grid-header th.k-header {
+        font-size: 12px;
+    }
+
+    
+
+</style>
+
+<div class="row">
+    <div class="col-md-12" style="padding-right:15px;" >
+       
+        <ng-form name="frmProdEntry" role="form">
+
+            <fieldset class="custom-fieldset" ng-disabled="$parent.IS_BFB_FINALIZED=='Y'">
+                <legend class="custom-legend">Sample Producton Entry</legend>
+
+                <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+
+                <div kendo-grid k-options="vm.entryGridOption" k-data-source="vm.entryGridDataSource"></div>
+                
+            </fieldset>
+
+            <div style="padding-top:5px;text-align:right">
+                <button class="btn btn-xs blue" ng-click="vm.addToBatch()" ng-class="{'disabled':frmProdEntry.$invalid||$parent.IS_PROD_SUBMIT=='Y'}">Add To Batch</button>
+            </div>
+
+        </ng-form>
+        
+    </div>
+
+    
+
+</div>
+
+
+
+ 

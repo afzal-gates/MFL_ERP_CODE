@@ -1,0 +1,151 @@
+﻿@{
+    ViewBag.Title = "List of Confirmed Order & Development";
+}
+
+<div class="portlet-body" data-ui-view>
+
+
+    <ul class="page-breadcrumb breadcrumb">
+        <li>
+            <a href="index.html">MultiTex ERP</a>
+
+        </li>
+        <li>
+            <a href="#">Merchandising</a>
+
+        </li>
+        <li>
+            <a href="#" ng-bind="vm.Title"></a>
+        </li>
+    </ul>
+
+    <div class="portlet box blue-dark">
+        <div class="portlet-title">
+            <div class="caption" ng-bind="vm.Title">
+            </div>
+            <div class="tools">
+            </div>
+        </div>
+        <form name="form" style="background-color: white;">
+            <div class="portlet-body">
+                <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+                    <div class="page-splash">
+                        <div class="page-splash-message">
+                            <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="padding:20px;">
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend"><b>Development of Trims & Accessories</b></legend>
+                        <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                            <fieldset class="custom-fieldset">
+                                <legend class="custom-legend"><b></b></legend>
+                                <table class="clsTable">
+                                    <tbody class="clsthead">
+                                        <tr class="clstd">
+
+                                            <td class="clstd">
+                                                Buyer A/C
+                                            </td>
+                                            <td class="clstd">
+                                                Work Style
+                                            </td>
+                                            <td class="clstd">
+                                                Order #
+                                            </td>
+                                            <td class="clstd">
+                                                Order Type
+                                            </td>
+                                            @*<td class="clstd">
+                                                    Nature
+                                                </td>*@
+                                            <td class="clstd">
+                                                Shipment
+                                            </td>
+                                            <td class="clstd">
+                                                Action
+                                            </td>
+                                        </tr>
+                                        <tr class="clstd">
+
+                                            <td class="clstd">
+                                                <select class="form-control" kendo-drop-down-list name="MC_BYR_ACC_ID" k-option-label="'-- Select Style --'"
+                                                        k-data-text-field="'BYR_ACC_NAME_EN'" k-data-value-field="'MC_BYR_ACC_ID'" k-filter="'contains'"
+                                                        k-auto-bind="'true'" k-data-source="vm.buyerAccList" k-ng-delay="vm.buyerAccList" ng-model="vm.form.MC_BYR_ACC_ID"
+                                                        k-on-change="vm.styleListByBuyerAC(vm.form.MC_BYR_ACC_ID)" required></select>
+                                                @*<select kendo-drop-down-list name="MC_BYR_ACC_ID" id="MC_BYR_ACC_ID" class="form-control"
+                                                    options="vm.buyerAccList" ng-model="vm.form.MC_BYR_ACC_ID" ng-change="vm.styleListByBuyerAC(vm.form.MC_BYR_ACC_ID);"></select>*@
+
+                                            </td>
+                                            <td class="clstd">
+                                                <select class="form-control" kendo-drop-down-list name="STYLE_NO" k-option-label="'-- Select Style --'"
+                                                        k-data-text-field="'STYLE_NO'" k-data-value-field="'STYLE_NO'" k-filter="'contains'"
+                                                        k-auto-bind="'true'" k-data-source="vm.styleList" k-ng-delay="vm.styleList" ng-model="vm.form.STYLE_NO"
+                                                        k-on-change="vm.getDataByStyleId(kendoEvent)" required></select>
+                                            </td>
+                                            <td class="clstd">
+                                                <input type="text" name="ORDER_NO" ng-model="vm.form.ORDER_NO" class="form-control" />
+
+                                            </td>
+                                            <td class="clstd">
+                                                <select kendo-drop-down-list name="ORDER_TYPE" id="ORDER_TYPE" class="form-control"
+                                                        options="vm.OrderTypeList" ng-model="vm.form.ORDER_TYPE"></select>
+
+                                                @*<select kendo-drop-down-list name="ORDER_TYPE" id="ORDER_TYPE" class="form-control"
+                                                    options="vm.OrderTypeList" ng-model="vm.form.ORDER_TYPE"></select>*@
+
+                                            </td>
+                                            @*<td class="clstd">
+                                                    <input type="text" name="NATURE_OF_ORDER" ng-model="vm.form.NATURE_OF_ORDER" class="form-control" />
+
+                                                </td>*@
+                                            <td class="clstd">
+                                                <select class="form-control" kendo-drop-down-list name="MONTHOF" k-option-label="'-- Select Month --'"
+                                                        k-data-text-field="'MONTHOF'" k-data-value-field="'MONTHOF'" k-filter="'contains'"
+                                                        k-auto-bind="'true'" k-data-source="vm.shipMonthList" k-ng-delay="vm.shipMonthList" ng-model="vm.form.MONTHOF"></select>
+
+                                            </td>
+                                            <td class="clstd">
+                                                <button class="btn btn-sm" ng-click="vm.showOrderScmList();"><i class='fa fa-search'></i></button>
+                                                <button class="btn btn-sm" ng-click="vm.clearSearch();"><i class='fa fa-remove'>Clear</i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                            <div style="padding:5px;">
+                                <kendo-grid k-options="vm.gridOptions" @* k-data-source="vm.gridOptionsDS" *@ id="grid">
+
+                                </kendo-grid>
+
+                            </div>
+                        </div>
+                    </fieldset>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script type="text/x-kendo-template" id="template">
+    <div class="tabstrip">
+
+        <ul>
+            <li class="k-state-active" style="width:30%; border-radius:2px;">BOM</li>
+            <li style="width: 30%; border-radius:2px;">Purchase Order</li>
+        </ul>
+        <div style="border-color:white;">
+            <div class="orders">
+            </div>
+        </div>
+        <div style="border-color:white;">
+            <div class="PO_HEADER">
+            </div>
+        </div>
+
+    </div>
+</script>

@@ -1,0 +1,227 @@
+﻿<div class="row" style="margin:auto;">
+
+    <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+        <div class="page-splash">
+            <div class="page-splash-message">
+                <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+            </div>
+        </div>
+    </div>
+
+    <fieldset class="custom-fieldset" ng-disabled="true">
+        <legend class="custom-legend">Trim & Accessories Details</legend>
+        <h5 class="text-justify">
+            <b>Buyer A/C : </b> {{vm.params.itemObj.BYR_ACC_NAME_EN}} <b> &nbsp;  Style # : </b> {{vm.params.itemObj.STYLE_NO}} &nbsp; <b>Style Desc #: </b> {{vm.params.itemObj.STYLE_DESC}}&nbsp;
+
+            &nbsp;<b>Order Qty :</b>   {{vm.params.itemObj.TOT_ORD_QTY +' '+vm.params.itemObj.ORD_MOU_CODE}}
+
+        </h5>
+        <table class="table table-condensed table-striped table-bordered" style="padding:5px;">
+            <thead>
+                <tr>
+                    <th class="col-md-2">
+                        <small>
+                            Trim & Accessories
+                        </small>
+
+                    </th>
+                    <th class="col-md-2">
+                        <small>
+                            Quantity(Inc. addi %)
+                        </small>
+
+                    </th>
+
+
+                    <th class="col-md-1">
+                        <small>
+                            Accounting Ut.
+                        </small>
+                    </th>
+
+
+                    <th class="col-md-1">
+                        <small>
+                            Addi.(%)
+                        </small>
+
+                    </th>
+
+
+                    <th class="col-md-1">
+                        <small>
+                            Rate
+                        </small>
+                    </th>
+
+                    <th class="col-md-1">
+                        <small>
+                            Purchase Ut
+                        </small>
+                    </th>
+                    <th class="col-md-2">
+                        <small>Remarks</small>
+                    </th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>
+                        <input type="text" ng-model="vm.params.itemObj.ITEM_NAME_EN" class="form-control" />
+                    </td>
+                    <td>
+                        <input type="text" style="font-size:14px;font-style:italic; font-weight:bold;" ng-model="vm.params.itemObj.RQD_QTY" class="form-control" />
+                    </td>
+
+                    <td>
+                        <input type="text" ng-model="vm.params.itemObj.ACCT_MOU_NAME" class="form-control" />
+                    </td>
+
+
+                    <td>
+                        <input type="text" ng-model="vm.params.itemObj.ADDL_QTY" class="form-control" />
+                    </td>
+
+
+                    <td>
+                        <input type="number" ng-model="vm.params.itemObj.BGT_RATE" class="form-control" />
+                    </td>
+
+                    <td>
+                        <input type="text" ng-model="vm.params.itemObj.PURCH_MOU_NAME" class="form-control" />
+                    </td>
+                    <td>
+                        <input type="text" ng-model="vm.params.itemObj.REMARKS" class="form-control" />
+
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+    </fieldset>
+</div>
+<hr />
+
+<form name="myForm" class="form-horizontal" role="form">
+    <div class="row" style="margin:auto;">
+        <fieldset class="custom-fieldset">
+            <table class="table table-condensed table-striped table-bordered" style="padding:5px;">
+                <thead>
+                    <tr>
+                        <th>Gmt. Color</th>
+                        <th>Gmt. Size</th>
+                        <th>Prod Color <span><a class="btn btn-xs yellow-gold" ng-click="vm.copyAll(1);"><i class="fa fa-copy"></i></a></span></th>
+                        <th>Prod Size <span><a class="btn btn-xs yellow-gold" ng-click="vm.copyAll(2);"><i class="fa fa-copy"></i></a></span></th>
+                        <th>Specification <span><a class="btn btn-xs yellow-gold" ng-click="vm.copyAll(3);"><i class="fa fa-copy"></i></a></span></th>
+                        <th>Code <span><a class="btn btn-xs yellow-gold" ng-click="vm.copyAll(4);"><i class="fa fa-copy"></i></a></span></th>
+                        <th>Other Particulars <span><a class="btn btn-xs yellow-gold" ng-click="vm.copyAll(5);"><i class="fa fa-copy"></i></a></span></th>
+                        <th>Unit</th>
+                        <th>Bk Qty</th>
+                        <th>PO Qty</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in vm.params.itemObj.bomItemList">
+                        <td style="width:10%;">
+                            {{item.COLOR_NAME_EN}}
+                            <input type="hidden" ng-model="item.MC_FAB_PROD_D_BOM_ID" />
+                            <input type="hidden" ng-model="item.MC_FAB_PROD_H_BOM_ID" />
+                            <input type="hidden" ng-model="item.GMT_COLOR_ID" />
+                            <input type="hidden" ng-model="item.GMT_SIZE_ID" />
+                            <input type="hidden" ng-model="item.CONS_MOU_ID" />
+                            <input type="hidden" ng-model="item.PURCH_MOU_ID" />
+                            <input type="hidden" ng-model="item.INV_ITEM_ID" />
+                            <input type="hidden" ng-model="item.MC_FAB_PROD_ORD_H_ID" />
+
+                        </td>
+                        <td style="width:6%;">
+                            {{item.SIZE_CODE}}
+                        </td>
+                        <td style="width:10%;">
+                            <input type="text" ng-model="item.PROD_COLOR_NAME_EN" class="form-control" />
+                            @*<table style="width:100%;">
+                                    <tr>
+                                        <td style="width:90%;"><input type="text" ng-model="item.PROD_COLOR_NAME_EN" class="form-control" /></td>
+                                        <td style="width:10%; padding-left:2px;"><a class="btn btn-xs yellow-gold"><i class="fa fa-download"></i></a></td>
+                                    </tr>
+                                </table>*@
+                        </td>
+                        <td style="width:8%;">
+                            <input type="text" ng-model="item.PROD_SIZE_CODE" class="form-control" />
+                        </td>
+                        <td style="width:15%;">
+                            <textarea ng-model="item.ITEM_SPEC_AUTO" class="form-control"></textarea>
+                        </td>
+                        <td style="width:10%;">
+                            <input type="text" ng-model="item.ITEM_CODE" class="form-control" />
+                        </td>
+                        <td style="width:26%;">
+                            <table style="width:100%;">
+                                <tr ng-repeat="obj in item.PARTICULARS_LST">
+                                    <td style="width:40%; padding-right:5px;">
+                                        <select kendo-drop-down-list name="CNTRL_NAME" id="CNTRL_NAME" class="form-control"
+                                                options="vm.controlList" ng-model="obj.CNTRL_NAME"></select>
+                                    </td>
+                                    <td style="width:40%;">
+                                        <input type="text" ng-model="obj.COL_VAL" />
+                                    </td>
+                                    <td style="width: 20%; padding-left:2px;">
+                                        <a class="btn btn-xs blue" ng-click="vm.addCtrl($index,item.PARTICULARS_LST)"><i class="fa fa-plus"></i></a>
+                                        <a class="btn btn-xs red" ng-click="vm.delCtrl($index,item.PARTICULARS_LST)" ng-if="$index>0"><i class="fa fa-remove"></i></a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td style="width:3%;">
+                            {{item.MOU_CODE}}
+                        </td>
+                        <td style="width:5%;">
+                            {{item.CONS_QTY}}
+                        </td>
+                        <td style="width:7%;">
+                            <input type="number" ng-model="item.NET_BOOK_QTY" class="form-control" />
+                        </td>
+                        @*MC_FAB_PROD_D_BOM_ID, MC_FAB_PROD_H_BOM_ID,
+                            GMT_COLOR_ID, GMT_SIZE_ID, ORDER_QTY, PCT_ALLOW_QTY, BOOK_QTY, REV_QTY, CONS_MOU_ID, PURCH_MOU_ID, PO_QTY, RCV_QTY, ISSUE_QTY*@
+                    </tr>
+                </tbody>
+
+            </table>
+        </fieldset>
+    </div>
+</form>
+<br />
+<div class="row">
+    <div class="col-md-5">
+        <button type="button" ui-sref="AccessoriesBooking()" class="btn btn-sm blue">Back To List</button>
+        <button type="button" ng-disabled="vm.params.pSCM_PURC_REQ_H_ID<1" ng-click="vm.openReportPo(vm.params.pSCM_PURC_REQ_H_ID)" class="btn btn-sm blue-chambray">Purchase Order</button>
+        <button type="button" class="btn btn-sm green" ng-if="vm.params.pSCM_PURC_REQ_H_ID==0" ng-click="vm.submit(myForm.$valid,'N');">Save</button>
+        <button type="button" class="btn btn-sm green" ng-if="vm.params.pSCM_PURC_REQ_H_ID>0" ng-click="vm.submit(myForm.$valid,'N');">Submit SCM</button>
+        <button type="button" class="btn btn-sm yellow-gold" ng-if="vm.params.pSCM_PURC_REQ_H_ID>0" ng-click="vm.submit(myForm.$valid,'Y');">Update</button>
+        <a class="btn btn-sm blue" ng-click="vm.printRequisition(vm.params)" ng-disabled="vm.params.pSCM_PURC_REQ_H_ID<1"><i class="fa fa-file-pdf-o"></i> Print</i></a>
+        <button type="button" class="btn btn-sm default">Cancel</button>
+    </div>
+
+
+    <div class="col-md-7" align="right">
+        @*<button type="button" class="btn btn-sm btn-transparent" ng-if="$parent.form.MC_TNA_TASK_STATUS_ID"><h5>Option :</h5></button>
+
+            <div class="dropdown btn-group" ng-if="$parent.form.MC_TNA_TASK_STATUS_ID">
+
+                <button class="btn btn-sm grey-cascade dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    --Select--
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+                    <li ng-repeat="item in vm.buttonDropDwnList"><a data-value="{{item.MC_TNA_TASK_STATUS_ID}}">{{item.EVENT_NAME}}</a></li>
+                </ul>
+            </div>*@
+
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </div>
+</div>
+
+
+

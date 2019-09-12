@@ -1,0 +1,76 @@
+﻿<form class="form-horizontal" role="form" name="SamFabBookDtl" novalidate @*ng-submit="vm.submitBuyerData(vm.form,token)"*@>
+
+    @*<kendo-grid k-data-source="vm.dataSource" k-filterable="true" k-selectable="false" k-height="400"
+        k-sortable="true" k-pageable="false" k-columns="vm.gridColumns"></kendo-grid>*@
+
+    <div>
+        <table class="table table-condensed table-striped table-bordered">
+            <thead>
+                <tr class="row-border">
+                    <th>Style#</th>
+                    <th>Order#</th>
+                    <th>Sample Type</th>
+                    <th>Target Date</th>
+                    <th>Remarks</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+
+            <tbody>
+                <tr ng-repeat-start="itmDtl in vm.formDtl" ng-class="{'success':itmDtl.DETAIL_INDEX==vm.selectedDtl.DETAIL_INDEX}" style="border-bottom: 1px solid hsl(0, 0%, 87%);height:auto">
+                    <td style="width:20%; padding:5px 0px 5px 0px">
+
+                        <input type="hidden" name="DETAIL_INDEX" ng-model="itmDtl.DETAIL_INDEX" ng-bind="itmDtl.DETAIL_INDEX=$index" />
+                        <select kendo-drop-down-list k-data-source='vm.buyerAccWiseStyleList' k-option-label="'-- Select --'" k-data-text-field='"STYLE_NO"' k-data-value-field='"MC_STYLE_H_EXT_ID"'
+                                ng-model='itmDtl.MC_STYLE_H_EXT_ID' name='MC_STYLE_H_EXT_ID' class='form-control' k-on-select='vm.styleOnSelect(kendoEvent)' required></select>
+                    </td>
+
+                    <td style="width: 15%;padding: 5px 0px 5px 0px">
+                        <select kendo-drop-down-list k-data-source='vm.styleWiseOrderList' k-option-label='"-- Select --"' k-data-text-field='"ORDER_NO"' k-data-value-field='"MC_ORDER_H_ID"'
+                                ng-model='itmDtl.MC_ORDER_H_ID' name='MC_ORDER_H_ID' class='form-control' required></select>
+                    </td>
+                    <td style="width: 15%; padding:5px 0px 5px 0px">
+                        <select kendo-drop-down-list k-data-source='vm.buyerWiseSampleTypeList' k-option-label='"-- Select --"' k-data-text-field='"SMPL_TYPE_NAME"' k-data-value-field='"RF_SMPL_TYPE_ID"'
+                                ng-model='itmDtl.RF_SMPL_TYPE_ID' name='RF_SMPL_TYPE_ID' class='form-control' required></select>
+                    </td>
+                    <td style="width: 10%; padding: 5px 0px 5px 0px">
+                        <input type="text" class="form-control" ng-click="vm.targetDateOpen($event, $index)" datepicker-popup="{{vm.dtFormat}}"
+                               ng-init="itmDtl.TARGET_DT=vm.today"
+                               name="TARGET_DT" ng-model="itmDtl.TARGET_DT" is-open="vm.targetDateOpened[$index]" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                    </td>
+                    <td style="width: 30%; padding: 5px 0px 5px 0px">
+                        <input type="text" class="form-control" name="REMARKS" ng-model="itmDtl.REMARKS" />
+                    </td>
+
+                    <td style="width: 10%; padding: 5px 0px 5px 5px">
+                        <a class="btn btn-xs blue" title="Add Row" ng-click="vm.addRow(itmDtl, vm.formDtl, 'formDtl')">
+                            <i class="fa fa-plus"></i>
+                        </a>
+                        <a class="btn btn-xs red" title="Remove Item" ng-click="vm.removeRow($index, vm.formDtl, true)" @*ng-disabled="vm.form.itemsStyle.length==1?true:false"*@>
+                            <i class="fa fa-times"></i>
+                        </a>
+                        <a class="btn btn-xs green" title="Select Item" ng-click="vm.selectRow($index, vm.formDtl, true)">
+                            <i class="fa fa-hand-o-left"></i>
+                        </a>
+
+                    </td>
+                </tr>
+
+
+
+                <tr ng-repeat-end></tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <br />
+
+    @*<div class="row">
+            <div class="col-md-4">
+                <button type="button" class="btn btn-sm green" ng-click="save(token)" ng-class="{'disabled':!ColourDetails.$valid}">Save</button>
+                <button type="button" class="btn btn-sm default" ng-click="cancel()" ng-class="{'disabled':ColourDetails.$valid}">Cancel</button>
+            </div>
+        </div>*@
+</form>

@@ -1,0 +1,36 @@
+﻿@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+
+
+<form novalidate class="form-horizontal "  >
+
+    
+    <div class="form-body">
+        @*@Html.AntiForgeryToken()*@
+        <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+               data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+        <div class="row">
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend">Employee Punch Data</legend>
+                <div class="col-md-12">
+
+                    <p></p>
+                    <kendo-grid k-options="vm.PunchDataList"></kendo-grid>
+
+                </div>
+            </fieldset>
+        </div>
+
+    </div>
+
+    
+    @*}*@
+</form>

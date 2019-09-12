@@ -1,0 +1,180 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#">Inquiry</a>
+    </li>
+</ul>
+
+
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption">
+            Inquiry for Price Quotation 
+        </div>
+        <div class="tools">
+            <a href="" class="collapse" data-original-title="" title="">
+            </a>
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;">
+            <legend class="custom-legend">Inquiry Information
+            </legend>
+            <form class="form-horizontal" role="form" name="InquiryForm" novalidate ng-submit="vm.submitData(vm.form,token)">
+
+                <div class="form-body" style="padding:0px;">
+
+
+                    <input id="access_token" data-ng-model="token" type="hidden"
+                           data-ng-init="token='@Session["access_token"]'" />
+                    <input ng-model="vm.form.CREATED_BY" type="hidden"
+                           data-ng-init="vm.form.CREATED_BY='@Session["multiScUserId"]'" />
+
+                    <input id="access_token" ng-model="vm.form.LAST_UPDATED_BY" type="hidden"
+                           ng-init="vm.form.LAST_UPDATED_BY='@Session["multiScUserId"]'" />
+
+
+                    <div class="form-group">
+                        <div class="col-md-2">
+                            Inquiry #
+                            <input type="text" name="INQR_NO" ng-model="vm.form.INQR_NO" class="form-control" required />
+                        </div>
+                        <div class="col-md-2">
+                            Buyer
+                            <select kendo-drop-down-list name="MC_BUYER_ID" class="form-control"
+                                    options="vm.buyerList" id="MC_BUYER_ID" ng-model="vm.form.MC_BUYER_ID" required></select>
+                        </div>
+
+                        <div class="col-md-1">
+                            IncoTerm
+                            <select kendo-drop-down-list name="LK_INCOTERM_ID" class="form-control"
+                                    options="vm.tradeTermList" id="LK_INCOTERM_ID" ng-model="vm.form.LK_INCOTERM_ID" required></select>
+                        </div>
+
+                        <div class="col-md-2">
+                            LC Term
+                            <select kendo-drop-down-list name="LK_LCTERM_ID" class="form-control"
+                                    options="vm.lcTermList" id="LK_LCTERM_ID" ng-model="vm.form.LK_LCTERM_ID" required></select>
+                        </div>
+                        <div class="col-md-1">
+                            Cons.Unit
+                            <select kendo-drop-down-list name="CONS_MOU_ID" class="form-control"
+                                    options="vm.MOUList" id="CONS_MOU_ID" ng-model="vm.form.CONS_MOU_ID" required ng-disabled="vm.disableInqForm"></select>
+                        </div>
+
+                        <div class="col-md-1">
+                            Calc.Unit
+                            <select kendo-drop-down-list name="QTY_MOU_ID" class="form-control"
+                                    options="vm.MOUList" id="QTY_MOU_ID" ng-model="vm.form.QTY_MOU_ID" required ng-disabled="vm.disableInqForm"></select>
+                        </div>
+
+                        <div class="col-md-1" ng-if="vm.form.QTY_MOU_ID==2||vm.form.QTY_MOU_ID==12">
+                            PcPerUnit?
+                            <input type="text" name="PCS_PER_PACK" ng-model="vm.form.PCS_PER_PACK" class="form-control"  />
+                        </div>
+                        <div class="col-md-1">
+                            Currency
+                            <select kendo-drop-down-list name="RF_CURRENCY_ID" class="form-control"
+                                    options="vm.CurrencyList" id="RF_CURRENCY_ID" ng-model="vm.form.RF_CURRENCY_ID" required></select>
+                        </div>
+
+                        <div class="col-md-1">
+                            ExchRt
+                            <input type="text" name="CURR_CONV_TK" ng-model="vm.form.CURR_CONV_TK" class="form-control" />
+                        </div>
+
+                        @*<div class="col-md-1">
+                            Wt.Unit
+                            <select kendo-drop-down-list name="WT_MOU_ID" class="form-control"
+                                    options="vm.MOUList" id="WT_MOU_ID" ng-model="vm.form.WT_MOU_ID" required></select>
+                        </div>*@
+
+                        <div class="col-md-1">
+                            &nbsp;
+                            <div class="checkbox-list">
+                                <label class="checkbox-inline">
+                                    <span class="checked"><input type="checkbox" ng-model="more"></span> More?
+                                </label>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="col-md-2" ng-if="more">
+                            LoadingPort
+                            <select kendo-drop-down-list name="MC_LD_PORT_ID" class="form-control"
+                                    options="vm.McLDPortList" id="MC_LD_PORT_ID" ng-model="vm.form.MC_LD_PORT_ID"></select>
+                        </div>
+
+
+
+
+                        <div class="col-md-2" ng-if="more">
+                            Shipment Date
+                            <div class="input-group">
+                                <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="vm.form.SHIPMENT_DT" is-open="SHIPMENT_DTopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn-calendar" ng-click="SHIPMENT_DTopen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2" ng-if="more">
+                            Deadline/OPD
+                            <div class="input-group">
+                                <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="vm.form.OPD_DEAD_LN" is-open="OPD_DEAD_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn-calendar" ng-click="OPD_DEAD_LNopen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top:10px;" ng-if="!vm.disableInqForm">
+                        <div class="col-md-4" align="left">
+                            <button type="button" class="btn btn-sm blue" ui-sref="InquiryList">Inquiry List</button>
+                            <button type="submit" ng-if="vm.form.MC_INQR_H_ID" class="btn btn-sm yellow-gold" ng-class="{'disabled':!InquiryForm.$valid}">Update</button>
+                            <button type="submit" ng-if="!vm.form.MC_INQR_H_ID" class="btn btn-sm green" ng-class="{'disabled':!InquiryForm.$valid}">Save</button>
+                            <button ng-if="vm.form.MC_INQR_H_ID" ui-sref="Inquiry.Style({MC_INQR_H_ID : vm.form.MC_INQR_H_ID, MC_STYLE_ID : 0 })" class="btn btn-sm blue">
+                                <i class="fa fa-plus"></i> Style
+                            </button>
+                            <button type="button" class="btn btn-sm default" ui-sref="Inquiry({MC_INQR_H_ID : 0})" ui-sref-opts="{reload: true}">Cancel</button>
+                        </div>
+                    </div>
+                    <div class="row" style="margin:auto;padding-top:10px;" ng-if="vm.errors">
+                        <div class="alert alert-warning" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                            <ul ng-repeat="field in vm.errors">
+                                <li ng-repeat="error in field" ng-bind="error"></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+            </form>
+        </fieldset>
+        <div data-ui-view></div>
+    </div>
+</div>
+
+

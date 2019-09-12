@@ -1,0 +1,246 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Dyeing</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        <input id="access_token" data-ng-model="token" type="hidden"
+               data-ng-init="token='@Session["access_token"]'" />
+        <input ng-model="vm.form.CREATED_BY" type="hidden"
+               data-ng-init="vm.form.CREATED_BY='@Session["multiScUserId"]'" />
+
+        <input id="access_token" ng-model="vm.form.LAST_UPDATED_BY" type="hidden"
+               ng-init="vm.form.LAST_UPDATED_BY='@Session["multiScUserId"]'" />
+
+        <div class="row" style="padding:5px">
+            <div class="col-md-4">
+                <a ui-sref="FabricInspectionReport({pDF_FAB_QC_RPT_ID : 0})" class="btn btn-sm green">
+                    <i class="fa fa-plus"></i> Add
+                </a>
+            </div>
+        </div>
+
+        <fieldset class="custom-fieldset">
+            <legend class="custom-legend"><b>Searching Data</b></legend>
+            <table class="clsTable" style="width:100%">
+                <tr class="clsthead">
+                    <td class="clstd">
+                        Buyer A/C
+                    </td>
+                    <td class="clstd">
+                        Style/Order #
+                    </td>
+
+                    <td class="clstd">
+                        Color
+                    </td>
+
+                    <td class="clstd">
+                        Batch #
+                    </td>
+
+                    @*<td class="clstd">
+                            QC Status
+                        </td>
+
+                        <td class="clstd">
+                            From Date
+                        </td>
+                        <td class="clstd">
+                            To Date
+                        </td>*@
+                    <td class="clstd">
+                        Action
+                    </td>
+                </tr>
+                <tr class="clstd">
+
+                    <td class="clstd">
+                        <select kendo-drop-down-list name="MC_BYR_ACC_GRP_ID" id="MC_BYR_ACC_GRP_ID" class="form-control requiredSub"
+                                options="vm.buyerAcGrpList" ng-model="vm.form.MC_BYR_ACC_GRP_ID"></select>
+                    </td>
+                    <td class="clstd">
+                        <select class="form-control" kendo-drop-down-list name="MC_FAB_PROD_ORD_H_ID" k-option-label="'--Style --'"
+                                k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_FAB_PROD_ORD_H_ID'" k-filter="'Contains'"
+                                k-template="template" k-value-template="valueTemplate"
+                                k-auto-bind="'true'" k-data-source="vm.StyleExtDs" ng-model="vm.form.MC_FAB_PROD_ORD_H_ID"></select>
+                        @*<input type="text" name="STYLE_ORDER_NO" ng-model="vm.form.STYLE_ORDER_NO" class="form-control" />*@
+                    </td>
+
+                    <td class="clstd">
+
+                        <select kendo-drop-down-list name="MC_COLOR_ID" id="MC_COLOR_ID" class="form-control requiredSub"
+                                options="vm.colorList" ng-model="vm.form.MC_COLOR_ID"></select>
+
+                    </td>
+                    <td class="clstd">
+
+                        <input type="text" name="DYE_BATCH_NO" ng-model="vm.form.DYE_BATCH_NO" class="form-control" />
+
+                    </td>
+
+                    @*<td class="clstd">
+
+                            <select kendo-drop-down-list name="DYE_BT_STS_TYPE_ID" id="DYE_BT_STS_TYPE_ID" class="form-control requiredSub"
+                                    options="vm.statusList" ng-model="vm.form.DYE_BT_STS_TYPE_ID"></select>
+                        </td>
+
+                        <td class="clstd">
+                            <input type="text" class="form-control required" ng-click="FROM_DATE_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                   name="FROM_DATE" max-date="vm.today" ng-model="vm.form.FROM_DATE" is-open="FROM_DATE_LNopened"
+                                   datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                        </td>
+
+                        <td class="clstd">
+                            <input type="text" class="form-control required" ng-click="TO_DATE_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                   name="TO_DATE" max-date="vm.today" ng-model="vm.form.TO_DATE" is-open="TO_DATE_LNopened"
+                                   datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                        </td>*@
+
+                    <td class="clstd">
+
+                        <a title="Load" ng-click="vm.SearchInspectionList()" class="btn btn-sm default"><i class="fa fa-search"> Load</i></a> <a title="Load" ng-click="vm.clearData()" class="btn btn-sm default"><i class="fa fa-remove"> Clear</i></a>
+                    </td>
+
+                </tr>
+            </table>
+
+        </fieldset>
+
+        <fieldset class="custom-fieldset">
+            <legend class="custom-legend"><b>Batch List</b></legend>
+
+
+            <table class="table table-condensed table-bordered">
+                <thead>
+                    <tr class="clstheadMtex">
+                        <th style="width:5%">
+                            <button type="button" ng-click="expandAll(allExpanded = !allExpanded)">
+                                <span ng-bind="allExpanded ? '-' : '+'"></span>
+                            </button> All
+                        </th>
+                        <th style="width:10%">Batch</th>
+                        <th style="width:10%">Lot</th>
+                        <th style="width:10%">Buyer</th>
+                        <th style="width:10%">Style</th>
+                        <th style="width:10%">Order</th>
+                        <th style="width:10%">Color</th>
+                        <th style="width:10%">Batch Qty</th>
+                        <th style="width:10%">Batch Status</th>
+                        <th style="width:10%">Date</th>
+                        <th style="width:5%">Edit</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @*<tr ng-repeat-start="(key, value) in inspectionList | groupBy: 'DYE_BATCH_NO'" style="background-color:#f3f3f3;">*@
+                    <tr ng-repeat-start="value in inspectionList" style="background-color:#f3f3f3;">
+                        <td style="width:5%">
+                            <button ng-click="expanded = !expanded" expand>
+                                <span ng-bind="expanded ? '-' : '+'"></span>
+                            </button>
+
+                        </td>
+
+                        <td style="width:10%">
+                            {{value[0].DYE_BATCH_NO}}
+                        </td>
+                        <td style="width:10%">{{value[0].DYE_LOT_NO}}</td>
+                        <td style="width:10%">{{value[0].BYR_ACC_GRP_NAME_EN}}</td>
+                        <td style="width:10%">{{value[0].STYLE_NO}}</td>
+                        <td style="width:10%">{{value[0].MC_ORDER_NO_LST}}</td>
+                        <td style="width:10%">{{value[0].COLOR_NAME_EN}}</td>
+                        <td style="width:10%">{{value[0].ACT_BATCH_QTY}}</td>
+                        <td style="width:10%">{{value[0].BATCH_STATUS}}</td>
+                        <td style="width:10%">{{value[0].QC_DT|date:'dd-MM-yyyy'}}</td>
+                        <td>
+                            <a ui-sref="FabricInspectionReport({pDF_FAB_QC_RPT_ID:value[0].DF_FAB_QC_RPT_ID})" class="btn btn-xs blue"><i class="fa fa-edit"> QC Report</i></a>
+                        </td>
+                    </tr>
+                    <tr ng-repeat-end ng-show="expanded">
+                        <td style="width:5%"></td>
+                        <td style="width:90%" colspan="9">
+                            <table style="width:100%">
+                                <thead>
+                                    <tr class="clstheadMtex">
+                                        <th>Sub-Lot</th>
+                                        <th>Date</th>
+                                        <th>Fabric Group</th>
+                                        <th>F/T</th>
+                                        <th>Dia Type</th>
+                                        <th>Dia Group</th>
+                                        <th>Req GSM</th>
+                                        <th>Lot Qty</th>
+                                        <th>Lot Status</th>
+                                        <th>Q.C By</th>
+                                        <th>Q.C Date</th> 
+                                        <th>Shift</th>
+                                        <th>User</th>                                       
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="clstdMtex" ng-repeat="item in value">
+                                        <td class="clstdMtex" style="padding-top: 5px;">
+                                            {{item.SUB_LOT_NO}}
+                                        </td>
+                                        <td class="clstdMtex" style="padding-top: 5px;">{{item.QC_DT|date:'dd-MM-yyyy'}}</td>
+                                        <td class="clstdMtex" style="padding-top: 5px;">{{item.LK_FBR_GRP_NAME}}</td>
+                                        <td class="clstdMtex" style="padding-top: 5px;">{{item.FAB_TYPE_SNAME}}</td>
+                                        <td class="clstdMtex" style="padding-top: 5px;">{{item.DIA_TYPE_NAME}}</td>
+                                        <td class="clstdMtex" style="padding-top: 5px;">{{item.FIN_DIA}}</td>
+                                        <td class="clstdMtex" style="padding-top: 5px;">{{item.RQD_GSM}}</td>
+                                        <td class="clstdMtex" style="padding-top: 5px;">{{item.LOT_QTY}} Kg</td>
+                                        <td class="clstdMtex" style="padding-top: 5px;">{{item.QC_STS_TYP_NAME}}</td>
+                                        <td class="clstdMtex" style="padding-top: 5px;">{{item.QC_BY_NAME}}</td>
+                                        <td class="clstdMtex" style="padding-top: 5px;">{{item.QC_DT|date:'dd-MM-yyyy'}}</td>
+                                        <td class="clstdMtex" style="padding-top: 5px;">{{item.SCHEDULE_NAME_EN}}</td>
+                                        <td class="clstdMtex" style="padding-top: 5px;">{{item.CREATED_BY_NAME}}</td>
+                                        
+                                        <td class="clstdMtex" style="padding-top: 5px;">
+                                            <a ui-sref="FabricInspectionReport({pDF_FAB_QC_RPT_ID:item.DF_FAB_QC_RPT_ID})" class="btn btn-xs blue"><i class="fa fa-edit"> QC Report</i></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </fieldset>
+
+
+        @*<div style="padding:5px;">
+
+                <kendo-grid id="grid" k-options="vm.gridOptions"></kendo-grid>
+            </div>*@
+    </div>
+</div>

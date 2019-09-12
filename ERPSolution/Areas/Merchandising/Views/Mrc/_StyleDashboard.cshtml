@@ -1,0 +1,131 @@
+﻿<style>
+    #mainStyleGrid tr td {
+        /* this makes the menu visibile */
+        overflow: visible;
+    }
+
+    #mainStyleGrid .k-grid-header {
+        padding-right: 0 !important;
+    }
+</style>
+
+
+
+
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#">Style Dashboard</a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body" id="PORTLET_BODY">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        
+
+        @*<div class="row" style="padding:5px">
+                <div class="col-md-1">
+                    <a ui-sref="OfficeEntry({MC_BUYER_OFF_ID : null})" class="btn btn-sm blue">
+                        <i class="fa fa-plus"></i> Add Order
+                    </a>
+                </div>
+            </div>*@
+
+        <div class="row">
+            <div class="col-md-12">
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend"></legend>
+                    <div class="form-group">
+                        <label class="col-md-1" style="padding-right:0px;">
+                            Buyer A/C
+                        </label>
+                        
+                        <div class="col-md-3">
+                            <select kendo-drop-down-list name="MC_BYR_ACC_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'" required
+                                    @*k-data-source="vm.buyerAcList"*@ k-options="vm.buyerAcList" ng-model="vm.form.MC_BYR_ACC_ID"
+                                    k-data-text-field="'BYR_ACC_NAME_EN'" k-data-value-field="'MC_BYR_ACC_ID'"
+                                    k-auto-bind="'true'" k-on-select="vm.getBuyerAccWiseStyleList(kendoEvent)"></select>
+                        </div>
+
+                        <label class="control-label col-md-1" style="padding-right:0px;">
+                            Style
+                        </label>
+
+                        <div class="col-md-3" >
+                            <input type="hidden" name="MC_STYLE_H_ID" ng-model="vm.form.MC_STYLE_H_ID" />
+
+                            <select kendo-drop-down-list name="MC_STYLE_H_EXT_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'" required
+                                    k-data-source="vm.buyerAccWiseStyleDataSource" ng-model="vm.form.MC_STYLE_H_EXT_ID"
+                                    k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_STYLE_H_EXT_ID'"
+                                    ng-disabled="vm.form.IS_BFB_FINALIZED=='Y'"
+                                    k-auto-bind="'true'" ></select>
+
+                        </div>
+                        
+                        <div class="col-md-1">
+                            <button class="btn btn-sm" ng-click="vm.getBookingList()" ng-disabled="vm.form.MC_BYR_ACC_ID==null||vm.form.MC_BYR_ACC_ID==''">Show</button>
+                        </div>
+
+                        
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+
+        <br />
+        @*{{vm.width}}*@
+        <div >            
+            @*<div kendo-grid id="grid" options="vm.gridOptionsFabReq" k-data-source="vm.fabReqDataSource"></div>*@    
+            
+            <kendo-grid id="mainStyleGrid" k-options="vm.mainStyleGridOption" k-data-source="vm.mainStyleGridDataSource">
+                <div k-detail-template>
+                    <kendo-grid k-options="vm.detailStyleGridOption(dataItem)"></kendo-grid>
+                </div>
+            </kendo-grid>        
+        </div>
+        
+    </div>
+</div>
+
+
+
+<script type="text/ng-template" id="ImageShowup">
+    <div class="modal-body">
+        <div class="thumbnail" style="text-align: center;">
+            <div id="divImgShowImage"><img id="imgShowImage" src="{{STYL_KEY_IMG}}" alt="No Photo" width="350px" height="350px"></div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-4 col-md-offset-10">
+                <button type="button" class="btn btn-sm default" ng-click="cancel()">Cancel</button>
+            </div>
+        </div>
+
+    </div>
+</script>
+
+
+

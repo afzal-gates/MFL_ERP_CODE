@@ -1,0 +1,102 @@
+﻿
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Garments</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">            
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <form class="form-horizontal" role="form" name="frmItemPartMap" novalidate>
+            <div class="form-body clearfix" style="padding-top:5px;">
+                <div class="row">
+                    <div class="col-md-12" >
+                        
+                            <div class="form-group">
+                                
+                                <div class="col-md-3">
+                                    <fieldset class="custom-fieldset">
+                                        <legend class="custom-legend">Garments Part</legend>
+                                        @*<label class="form-control-solid" style="background-color: hsl(208, 56%, 46%); color: hsl(0, 0%, 100%); font-weight: bold; width: 100%; padding-top: 5px; padding-bottom: 5px;">&nbsp;Garments Part</label>*@
+
+                                        <div class="input-icon right" style="padding-bottom:3px;">
+                                            <i class="icon-magnifier"></i>
+                                            <input type="text" class="form-control form-control-solid" ng-model="qGARM_PART_NAME" placeholder="Search..." ng-change="vm.gmtPartDataSource.filter( { field:'GARM_PART_NAME', operator :'contains', value: qGARM_PART_NAME })"
+                                                   ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }">
+                                        </div>
+                                        <div kendo-list-view k-selectable="'single'" k-data-source="vm.gmtPartDataSource" k-on-change="vm.onChangeGmtPart(dataItem)"
+                                             k-on-data-bound="vm.onDataBoundGmtPart(kendoEvent)" style="max-height:415px;overflow:auto;">
+                                            <div k-template>
+                                                <dd class="k-state-default" style="padding: 5px; border-bottom: solid 1px; border-color: lightgray; ">
+                                                    <b>{{dataItem.GARM_PART_NAME}}</b>
+                                                </dd>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <fieldset class="custom-fieldset">
+                                        <legend class="custom-legend">Process Spec</legend>
+                                        
+                                        <div class="form-group">
+                                            <div class="col-md-12">                                                
+                                                <kendo-grid id="procSpecGrid" k-options="vm.procSpecOption" k-data-source="vm.procSpecDataSource"></kendo-grid>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <button type="button" class="btn btn-sm green" ng-click="vm.save()" ng-class="{'disabled':!frmItemPartMap.$valid}">Save</button>
+                                                <button type="button" class="btn btn-sm blue" ng-click="vm.newGmtPart()"><i class="fa fa-plus"></i> New Part</button>
+                                                @*<button type="button" class="btn btn-sm blue" ng-click="vm.reset();">Cancel</button>*@
+                                            </div>
+                                        </div>
+
+                                    </fieldset>
+                                </div>
+                            </div>
+
+                        
+
+                    </div>
+
+                    
+                    
+                </div>
+            </div>
+        </form>
+        
+
+        
+       
+    </div>
+</div>
+
+
+
+

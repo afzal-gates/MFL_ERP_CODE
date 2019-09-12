@@ -1,0 +1,257 @@
+﻿<style>
+    .k-grid-header {
+        display: none;
+    }
+</style>
+
+
+<div class="row" style="margin:auto;" ng-show="$parent.errors">
+    <div class="alert alert-danger" role="alert">
+        @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+        <div style="padding: 0px 0px 15px 25px; ">
+            <b>Please fix the following errors ....</b>
+        </div>
+        <ul ng-repeat="field in $parent.errors">
+            <li @*ng-repeat="error in field" ng-bind="error"*@>{{field.error}}</li>
+        </ul>
+    </div>
+    @*{{$parent.errors}}*@
+</div>
+
+@*<pre>{{$parent.form|json}}</pre>*@
+
+<kendo-grid options="vm.mainCollarCuffOrdReqGridOption" k-data-source="vm.mainCollarCuffOrdReqGridDataSource">
+    <div k-detail-template ng-init="vm.detailExpand(dataItem);">
+        
+        <div>
+            <div class="row" style="padding-left: 5px; padding-right: 5px; overflow: scroll;">
+
+                <div>
+                    @*<fieldset class="custom-fieldset">
+                        <legend class="custom-legend"><b>Collar & Cuff Measurement</b></legend>*@
+                    <table class="table table-striped" style="border-collapse: collapse; overflow:scroll;">
+                        <thead @*class="clstheadMtex"*@>
+
+                            <tr style="border: solid 2px lightgray;">
+                                <th style="border: solid 2px lightgray;" rowspan="2" colspan="2">MC No</th>
+
+                                <th ng-class="{'warning':itmSize.RF_GARM_PART_ID==12}" ng-repeat="itmSize in dataItem.collarCuffProdList[0].ordSizeList" style="border: solid 2px lightgray; text-align: center;">
+                                    <span>{{itmSize.MESUREMENT}}@*{{itmSize.RF_GARM_PART_ID}}*@</span>
+                                </th>
+
+                                <th style="border: solid 2px lightgray; text-align: center;" rowspan="2"><b>Total</b></th>
+                            </tr>
+
+
+                            <tr>                                
+                                <th ng-class="{'warning':itmSize.RF_GARM_PART_ID==12}" ng-repeat="itmSize in dataItem.collarCuffProdList[0]['ordSizeList']" style="border: solid 2px lightgray; text-align: center; ">
+                                    {{itmSize.SIZE_CODE}}
+                                </th>
+                            </tr>
+
+                            <tr>
+                                <th style="border: solid 2px lightgray;">Req.(Pcs)</th>
+                                <th style="border: solid 2px lightgray;">Yarn</th>
+
+                                <th ng-class="{'warning':itmSize.RF_GARM_PART_ID==12}" ng-repeat="itmSize in dataItem.collarCuffProdList[0]['ordSizeList']" style="border: solid 2px lightgray; text-align: center; ">
+                                    {{itmSize.RQD_PCS_QTY}}&nbsp;<span style="padding-bottom: 0px;padding-top: 0px;padding-bottom: 0px;display:block" class="badge badge-warning" ng-show="itmSize.IS_ACTIVE=='N'">Inactive</span>
+                                </th>
+                                <th style="border: solid 2px lightgray; text-align: center;">
+                                    {{vm.reqRowTotCollarQty}}@*<span ng-show="vm.collarCuffProdList[0].MC_ROW_SPAN==2">|{{vm.reqRowTotCollarQty*vm.collarCuffProdList[0].MC_ROW_SPAN}}</span>*@
+                                </th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody class="clstdMtex">
+
+                            <tr ng-repeat="itmDate in dataItem.collarCuffProdList">
+
+                                <td rowspan="{{itmDate.MC_ROW_SPAN}}" ng-show="itmDate.IS_MC_GRP=='Y'" style="border: solid 2px lightgray;"
+                                    @*ng-class="{'has-error': $parent.frmClCfProd.KNT_MACHINE_ID-{{$index}}.$error.required}"*@>
+
+                                    <span ng-show="itmDate.IS_MC_SAVE=='Y'">
+                                        {{itmDate.KNT_MACHINE_NO}}
+                                    </span>
+                                    <span ng-show="itmDate.IS_MC_SAVE=='N'">
+                                        <select class="form-control" kendo-drop-down-list name="KNT_MACHINE_ID-{{$index}}" k-option-label="'- M/C -'"
+                                                k-data-text-field="'KNT_MACHINE_NO'" k-data-value-field="'KNT_MACHINE_ID'" k-filter="'contains'"
+                                                k-auto-bind="'true'" k-options="$parent.machineOption" k-data-source="$parent.machineDataSource" k-ng-delay="$parent.machineDataSource"
+                                                ng-model="itmDate.KNT_MACHINE_ID" required></select>
+                                    </span>
+
+
+                                    <a class="label label-sm label-primary" ng-click="vm.newDate($index, itmDate)" ng-show="vm.collarCuffProdList[0].ordSizeList[0].IS_FINALIZED=='N'"><i class="fa fa-plus"></i> More...</a>
+                                </td>
+
+                                <td rowspan="{{itmDate.MC_ROW_SPAN}}" ng-show="itmDate.IS_MC_GRP=='Y'" style="border: solid 2px lightgray;"> @*Yarn*@
+
+                                    <span ng-show="itmDate.IS_MC_SAVE=='Y'">
+                                        {{itmDate.KNT_YRN_LOT_LST}}
+                                    </span>
+                                    <span ng-show="itmDate.IS_MC_SAVE=='N'">
+                                        <select class="form-control" kendo-drop-down-list name="KNT_PLAN_D_ID-{{$index}}" k-option-label="'- Yarn -'"
+                                                k-data-text-field="'KNT_YRN_LOT_LST'" k-data-value-field="'KNT_PLAN_D_ID'" k-filter="'contains'"
+                                                k-auto-bind="'true'" k-options="vm.yarnListOption" k-data-source="vm.yarnListDataSource" k-ng-delay="vm.yarnListDataSource"
+                                                ng-model="itmDate.KNT_PLAN_D_ID" k-on-select="vm.onSelectClcfYarn(kendoEvent)" required></select>
+                                    </span>
+                                </td>
+
+                            
+                                <td ng-class="{'warning':itmSize.RF_GARM_PART_ID==12}" ng-repeat="itmSize in itmDate['ordSizeList']" style="border: solid 2px lightgray;padding-left:0px;padding-right:0px; ">
+                                    @*{{itmSize.IS_FINALIZED}}*@
+                                    <input type="number" class='form-control' ng-style="{'background-color':itmSize.RF_GARM_PART_ID==12?'hsl(50, 81%, 94%)':''}" ng-model="itmSize.PRD_QTY" min="0"
+                                           ng-disabled="itmSize.IS_ACTIVE=='N'||vm.collarCuffProdList[0].ordSizeList[0].IS_FINALIZED=='Y'"
+                                           ng-change="itmDate.ROW_TOTAL_QTY=vm.rowTotalQty(itmDate);vm.grandTotalCollarSumQty();" style="text-align: center;">
+                                </td>
+                                <td style="padding-left: 0px; padding-right: 0px;">
+                                    <input type="text" class="form-control" name="ROW_TOTAL_QTY" ng-model="itmDate.ROW_TOTAL_QTY" style="text-align: center;" readonly />
+                                </td>
+                            </tr>
+
+
+
+
+                            <tr @*class="info"*@>
+                                <td colspan="2"><b>Today Production</b></td>
+                                <td ng-repeat="itmSize in dataItem.collarCuffProdList[0]['ordSizeList']" style="border: solid 2px lightgray; text-align: center; ">
+                                    <b>{{vm.sizeWiseCollarSumQty(itmSize)}}@*<span ng-show="vm.collarCuffProdList[0].MC_ROW_SPAN==2">|{{vm.sizeWiseCuffSumQty(itmSize)}}</span>*@</b>
+                                </td>
+                                <td style="border: solid 2px lightgray; text-align: center; ">
+                                    <b>{{vm.grandTotalCollarQty}}@*<span ng-show="vm.collarCuffProdList[0].MC_ROW_SPAN==2">|{{vm.grandTotalCuffQty}}</span>*@</b>
+                                </td>
+                            </tr>
+
+
+                            <tr class="success">
+                                <td colspan="2"><b>Total Production</b></td>
+                                <td ng-repeat="itmSize in dataItem.collarCuffProdList[0]['ordSizeList']" style="border: solid 2px lightgray; text-align: center; ">
+                                    <b>{{vm.sizeWiseCollarAlreadyProdSumQty(itmSize)}}@*<span ng-show="vm.collarCuffProdList[0].MC_ROW_SPAN==2">|{{vm.sizeWiseCuffAlreadyProdSumQty(itmSize)}}</span>*@</b>
+                                </td>
+                                <td style="border: solid 2px lightgray; text-align: center; ">
+                                    <b>{{vm.grandTotalProdCollarQty}}@*<span ng-show="vm.collarCuffProdList[0].MC_ROW_SPAN==2">|{{vm.grandTotalProdCuffQty}}</span>*@</b>
+                                </td>
+                            </tr>
+
+                            <tr class="danger">
+                                <td colspan="2"><b>Production Due</b></td>
+                                <td ng-repeat="itmSize in dataItem.collarCuffProdList[0]['ordSizeList']" style="border: solid 2px lightgray; text-align: center; ">
+                                    <b>{{vm.sizeWiseCollarBalSumQty(itmSize)}}@*<span ng-show="vm.collarCuffProdList[0].MC_ROW_SPAN==2">|{{vm.sizeWiseCuffBalSumQty(itmSize)}}</span>*@</b>
+                                </td>
+                                <td style="border: solid 2px lightgray; text-align: center; ">
+                                    <b>{{vm.grandTotalBalCollarQty}}@*<span ng-show="vm.collarCuffProdList[0].MC_ROW_SPAN==2">|{{vm.grandTotalBalCuffQty}}</span>*@</b>
+                                </td>
+                            </tr>
+
+                            <tr class="info">
+                                <td colspan="2"><b>Total Delivery</b></td>
+                                <td ng-repeat="itmSize in dataItem.collarCuffProdList[0]['ordSizeList']" style="border: solid 2px lightgray; text-align: center; ">
+                                    <b>{{vm.sizeWiseAlreadyDelvSumQty(itmSize)}}@*<span ng-show="vm.collarCuffProdList[0].MC_ROW_SPAN==2">|{{vm.sizeWiseCuffBalSumQty(itmSize)}}</span>*@</b>
+                                </td>
+                                <td style="border: solid 2px lightgray; text-align: center; ">
+                                    <b>{{vm.grandTotalDelvQty}}@*<span ng-show="vm.collarCuffProdList[0].MC_ROW_SPAN==2">|{{vm.grandTotalBalCuffQty}}</span>*@</b>
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                    @*<pre>{{dataItem|json}}</pre>*@
+                    @*<pre>{{dataItem.itemsOrderColor}}</pre>*@
+
+
+                    @*<br />
+                        <div class="form-group form-actions">
+                            <div class="col-md-2">
+                                <button type="button" class="btn green btn-sm" ng-disabled="dataItem.IS_FINALIZED_CC=='N' && dataItem.IS_FIRST>0" ng-if="dataItem.FINALIZED<1" ng-click=" vm.submitSizeAll(dataItem)">Save</button>
+                                <button type="button" class="btn yellow-gold btn-sm" ng-disabled="dataItem.IS_FINALIZED_CC=='Y'" ng-if=" dataItem.FINALIZED<1 && dataItem.IS_FIRST>0" ng-click=" vm.submitSizeAll(dataItem)">Update</button>
+                                <button type="button" class="btn green btn-sm" ng-if="dataItem.IS_FIRST>0 && dataItem.FINALIZED>0" ng-click="vm.submitSizeAll(dataItem)">Revise</button>
+
+                            </div>
+                            <div class="col-md-4" ng-if="dataItem.IS_FIRST>0 && dataItem.FINALIZED<=0">
+                                <label class="col-md-3"><input type="checkbox" id="IS_FINALIZED_CC" name="IS_FINALIZED_CC" ng-model="dataItem.IS_FINALIZED_CC" ng-true-value="'Y'" ng-false-value="'N'" /> Finalize?</label>
+
+                            </div>
+                        </div>*@
+                    @*</fieldset>*@
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</kendo-grid>
+
+<div class="col-md-12" style="padding-top:5px">
+    <div class="form-group" style="text-align:right">
+        <button class="btn btn-sm green" type="button" ng-click="vm.Save()" ng-show="vm.collarCuffProdList[0].IS_DT_SAVE=='N'"
+                ng-class="{'disabled': $parent.frmClCfProd.$invalid||$parent.IS_NEXT != 'Y'||vm.collarCuffProdList[0].ordSizeList[0].IS_FINALIZED=='Y'}">
+            Save
+        </button>
+
+        <button class="btn btn-sm yellow-gold" type="button" ng-click="vm.Save()" ng-show="vm.collarCuffProdList[0].IS_DT_SAVE=='Y'"
+                ng-class="{'disabled': $parent.IS_NEXT != 'Y'||vm.collarCuffProdList[0].ordSizeList[0].IS_FINALIZED=='Y'}">
+            Update
+        </button>
+
+        <button class="btn btn-sm blue" type="button" ng-click="vm.cancel()"
+                @*ng-class="{'disabled':$parent.frmSampleProduction.$invalid||$parent.IS_PROD_SUBMIT=='Y'||$parent.HAS_DATA_PROD_GRID=='N'}"*@>
+            Cancel
+        </button>
+
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <button class="btn btn-sm blue" type="button" ng-click="vm.dataFinalize()" ng-show="vm.collarCuffProdList[0].IS_DT_SAVE=='Y'"
+                ng-class="{'disabled': $parent.IS_NEXT != 'Y'||vm.collarCuffProdList[0].ordSizeList[0].IS_FINALIZED=='Y'}">
+            Finalize
+        </button>
+
+        
+        @*<button type="button" class="btn btn-sm blue" ng-click="vm.printProduction()">Print</button>*@
+        <div class="btn-group" dropdown>
+            @*<button id="split-button" type="button" class="btn btn-sm blue" ng-click="vm.printBookingRecord(vm.form.REVISION_NO)" ng-disabled="vm.form.MC_BLK_FAB_REQ_H_ID<1 || vm.form.HAS_PLOSS=='N'">Print</button>*@
+            <button type="button" class="btn btn-sm blue" dropdown-toggle title="Print List">
+                <i class="fa fa-print"></i> Print
+                <span class="caret"></span>
+                <span class="sr-only">Split button!</span>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="split-button">
+                <li role="menuitem" ng-repeat="itm in vm.printButtonList">
+                    <a ng-click="vm.printProduction(itm)">{{itm.BTN_NAME}}</a>
+                </li>
+            </ul>
+        </div>
+
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button class="btn btn-sm blue-hoki" type="button" ng-click="vm.back()"
+                @*ng-class="{'disabled':$parent.frmSampleProduction.$invalid||$parent.IS_PROD_SUBMIT=='Y'||$parent.HAS_DATA_PROD_GRID=='N'}"*@>
+            Back
+        </button>
+    </div>
+</div>
+
+
+
+<div class="row" style="margin:auto;" ng-show="$parent.errors">
+    <div class="alert alert-danger" role="alert">
+        @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+        <div style="padding: 0px 0px 15px 25px; ">
+            <b>Please fix the following errors ....</b>
+        </div>
+        <ul ng-repeat="field in $parent.errors">
+            <li @*ng-repeat="error in field" ng-bind="error"*@>{{field.error}}</li>
+        </ul>
+    </div>
+    @*{{$parent.errors}}*@
+</div>
+
+
+
+
+
+
+
+
+
+

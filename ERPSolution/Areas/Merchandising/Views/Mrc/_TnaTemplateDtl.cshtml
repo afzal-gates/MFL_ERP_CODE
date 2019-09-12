@@ -1,0 +1,150 @@
+﻿<div class="row" style="margin:auto;">
+    <fieldset class="custom-fieldset">
+        <legend class="custom-legend">Task in TNA Template</legend>
+        <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 250px;">
+            <div class="scroller" style="height: 350px; overflow: hidden; width: auto;" data-always-visible="1" data-rail-visible1="0" data-handle-color="#D7DCE2" data-initialized="1" slimscroll="{height: 400,alwaysVisible:true,allowPageScroll:true}">
+
+
+                <form class="form-horizontal" role="form" name="TnATemplateForm" novalidate ng-submit="vm.submitData(vm.templateDatas,token)">
+                    <input id="access_token" data-ng-model="token" type="hidden"
+                           data-ng-init="token='@Session["access_token"]'" />
+
+                    <div class="table-scrollable">
+                        <table class="table table-condensed table-striped table-bordered" style="padding:0px;">
+                            <thead>
+                                <tr>
+                                    <th class="col-md-1">
+                                        <small>
+                                            SL
+                                        </small>
+                                    </th>
+
+                                    <th class="col-md-4">
+                                        <small>
+                                            Task Name
+                                        </small>
+
+                                    </th>
+
+                                    <th class="col-md-2">
+                                        <small>
+                                            Std.Days - Before/After -Frm Base
+                                        </small>
+                                    </th>
+
+                                    <th class="col-md-4">
+                                        <small>Base Task</small>
+                                    </th>
+                                    <th class="col-md-1">
+
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr ng-repeat="item in vm.templateDatas">
+                                    <td>
+                                        {{$index+1}}
+                
+                                        <input type="hidden" ng-value="item.TASK_ORD_NO=($index+1)" ng-model="item.TASK_ORD_NO" />
+
+                                    </td>
+                                    <td>
+                                        <span class="col-md-2">
+                                            <div class="radio-list" style="padding-left:10px;" ng-if="item.IS_PRODUCTION_N==='Y'">
+                                                <label class="radio-inline">
+                                                    <span class="checked"><input type="radio" ng-model="item.IS_ST_END" ng-value="'S'" required></span>Start
+                                                </label>
+                                            </div>
+                                        </span>
+                                        <span class="col-md-8" style="padding-left:0px;padding-right:8px;">
+                                            {{item.MC_TNA_TASK_ID}}
+                                            <select kendo-drop-down-list name="MC_TNA_TASK_ID" class="form-control"
+                                                    options="vm.TaskGroupList" id="MC_TNA_TASK_ID" ng-model="item.MC_TNA_TASK_ID" ng-change="vm.onTaskChange(item,false)" required></select>
+                                        </span>
+                                        <span class="col-md-2" style="padding-right:3px;">
+                                            <div class="radio-list" style="padding-left:-3px;" ng-if="item.IS_PRODUCTION_N==='Y'">
+                                                <label class="radio-inline">
+                                                    <span class="checked"><input type="radio" ng-model="item.IS_ST_END" ng-value="'E'" required></span>End
+                                                </label>
+                                            </div>
+
+                                        </span>
+
+                                    </td>
+                                    <td>
+                                        <span class="col-md-4" style="padding-left:0px;padding-right:5px;">
+                                            <input type="number" name="STD_DAYS-{{$index}}" min="0" ng-model="item.STD_DAYS" class="form-control" required />
+                                        </span>
+                                        <span class="col-md-8" style="padding-left: 0px; padding-right: 0px;">
+                                            <div class="radio-list" style="padding-left:20px;">
+                                                <label class="radio-inline">
+                                                    <span class="checked"><input type="radio" ng-model="item.DayMulTi" ng-value="1" ng-required="item.IS_START_TASK==='N' && item.IS_END_TASK==='N'"></span>After
+                                                </label>
+                                                <label class="radio-inline" style="padding-left:8px;">
+                                                    <span class="checked"><input type="radio" ng-model="item.DayMulTi" ng-value="-1" ng-required="item.IS_START_TASK==='N' && item.IS_END_TASK==='N'"></span>Before
+                                                </label>
+                                            </div>
+                                        </span>
+
+                                    </td>
+
+                                    <td>
+                                        <span class="col-md-2">
+                                            <div class="radio-list" style="padding-left:10px;" ng-if="item.IS_PRODUCTION_B==='Y'">
+                                                <label class="radio-inline">
+                                                    <span class="checked"><input type="radio" ng-model="item.IS_ST_END_BASE" ng-value="'S'" required></span>Start
+                                                </label>
+                                            </div>
+
+                                        </span>
+                                        <span class="col-md-8" style="padding-left:0px;padding-right:8px;">
+                                             {{item.PARENT_TASK_ID}}
+                                            <select kendo-drop-down-list options="vm.parentTasksList" name="PARENT_TASK_ID" class="form-control" id="PARENT_TASK_ID" ng-model="item.PARENT_TASK_ID" ng-change="vm.onTaskChange(item,true)" ng-required="item.IS_START_TASK==='N' && item.IS_END_TASK==='N'"></select>
+
+                                        </span>
+                                        <span class="col-md-2" style="padding-right:3px;">
+                                            <div class="radio-list" style="padding-left:-3px;" ng-if="item.IS_PRODUCTION_B==='Y'">
+                                                <label class="radio-inline">
+                                                    <span class="checked"><input type="radio" ng-model="item.IS_ST_END_BASE" ng-value="'E'" required></span> End
+                                                </label>
+                                            </div>
+
+                                        </span>
+
+                                    </td>
+                                    <td>
+                                        <a ng-click='vm.remove($index)' class='btn btn-xs red'><i class='fa fa-times'> </i></a>
+                                        <a class="btn btn-xs default" ng-click="Up($index)" ng-disabled="OrderCopy.IS_TNA_FINALIZED=='Y'"><i class="fa fa-chevron-up"></i>  </a><a class="btn btn-xs default" ng-click="Down($index)" ng-disabled="OrderCopy.IS_TNA_FINALIZED=='Y'"><i class="fa fa-chevron-down"></i> </a>                                     
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4">
+                                    </td>
+
+                                    <td colspan="1">
+                                        <a ng-click='vm.add()' class='btn btn-xs blue'><i class='fa fa-plus' style="float:right;"> </i></a>
+                                    </td>
+                                </tr>                                 
+                            </tfoot>   
+
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <button type="button" class="btn btn-sm blue" ui-sref="TnaTemplateList">Back To List</button>
+                            <button type="submit" class="btn btn-sm green" ng-class="{'disabled':TnATemplateForm.$invalid || $parent.TnaTemplateForm.$invalid}">Save</button>
+                            <button type="button" class="btn btn-sm default" ng-click="vm.cancel()">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </fieldset>
+</div>
+
+  
+
+

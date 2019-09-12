@@ -1,0 +1,545 @@
+﻿<div class="modal-body">
+    <div class="portlet grey-cascade box">
+        <div class="portlet-title">
+            <div style="padding-top:2px;">
+                <h4 class="title">
+                    Manual Line Loading => Style # : <strong>{{data.STYLE_NO}}</strong>&nbsp;&nbsp;Order # : <strong>{{data.ORDER_NO}}</strong>&nbsp;&nbsp;Buyer : <strong>{{data.BYR_ACC_NAME_EN}}</strong>&nbsp;&nbsp;Order Quantity # : <strong>{{data.ORDER_QTY}}</strong>&nbsp;&nbsp;Order Confirm: <strong>{{data.ORD_CONF_DT|date:'dd-MMM-yyyy'}}</strong>&nbsp;&nbsp;
+                    Shipment: <strong>{{data.SHIP_DT|date:'dd-MMM-yyyy'}}</strong>
+                    <br />
+                    Line Load :# <strong style="color: darkblue;">{{data.SEW_START_DT|date:'dd-MMM-yyyy h:mma'}}</strong>&nbsp;Line Un-Load :# <strong style="color:darkblue;">{{data.SEW_END_DT|date:'dd-MMM-yyyy h:mma'}}</strong>&nbsp;
+                    <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                </h4>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div class="row">
+                <div id="splash-page" data-ng-show="showSplash" class="dissolve-animation">
+                    <div class="page-splash">
+                        <div class="page-splash-message">
+                            <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                        </div>
+                    </div>
+                </div>
+
+                <form role="form" name="GmtPlanAllocationTuningForm" class="form-horizontal">
+
+                    <div class="col-md-4">
+
+                        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;">
+                            <legend class="custom-legend">Line Loading Data</legend>
+                            <div class="form-body clearfix">
+                                <div class="row" style="margin:auto;padding-top:10px;">
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            Item Name
+
+                                        </label>
+                                        <div class="col-md-5">
+                                            <h4 class="form-control-static">{{data.ITEM_NAME_EN}}</h4>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            SMV
+                                        </label>
+                                        <div class="col-md-5">
+                                            <h4 class="form-control-static">{{data.SMV}}</h4>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            Line
+                                        </label>
+                                        <div class="col-md-5">
+                                            <select class="form-control" kendo-drop-down-list name="HR_PROD_LINE_ID" k-option-label="'-- Select --'"
+                                                    k-data-text-field="'name'" k-data-value-field="'HR_PROD_LINE_ID'"
+                                                    k-auto-bind="'true'" k-data-source="resourceDs" k-ng-delay="resourceDs" ng-model="data.HR_PROD_LINE_ID"
+                                                    k-template="template" k-value-template="valueTemplate" k-filter="'contains'"></select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            Merged With:
+                                        </label>
+                                        <div class="col-md-5" ng-if="data.merges.length > 0">
+                                            <table class="table table-condensed table-bordered">
+                                                <tr ng-repeat="(k,itm) in data.merges">
+                                                    <td>
+                                                        <select class="form-control" kendo-drop-down-list name="HR_PROD_LINE_ID" k-option-label="'-- Select --'"
+                                                                k-data-text-field="'name'" k-data-value-field="'HR_PROD_LINE_ID'"
+                                                                k-auto-bind="'true'" k-data-source="resourceDs" k-ng-delay="resourceDs" ng-model="itm.MRG_PROD_LINE_ID"
+                                                                k-template="template" k-value-template="valueTemplate" k-filter="'contains'"></select>
+                                                    </td>
+                                                    <td>
+                                                        <a class="btn btn-xs green" ng-click="data.merges.push({ GMT_PLN_LINE_LD_MRG_ID : -1})">
+                                                            <i class="fa fa-plus"></i>
+                                                        </a>
+                                                    </td>
+
+                                                    <td>
+                                                        <a class="btn btn-xs red" ng-click="data.merges.splice(k,1)">
+                                                            <i class="fa fa-ban"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="col-md-5" ng-if="data.merges.length == 0">
+                                            <a class="btn btn-xs green" ng-click="data.merges.push({ GMT_PLN_LINE_LD_MRG_ID : -1})">
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                        </div>
+
+                                    </div>
+
+
+
+
+
+                                    <div class="form-group" ng-class="{'has-error': (GmtPlanAllocationTuningForm.ALLOCATED_QTY.$touched || GmtPlanAllocationTuningForm.$submitted) &&
+                                         (GmtPlanAllocationTuningForm.ALLOCATED_QTY.$error.required||GmtPlanAllocationTuningForm.ALLOCATED_QTY.$error.max||GmtPlanAllocationTuningForm.ALLOCATED_QTY.$error.min)}">
+                                        <label class="col-md-4 control-label">
+                                            Allocated Qty
+                                        </label>
+                                        <div class="col-md-5">
+                                            <input type="number" ng-min="data.TOT_PROD" ng-change="IS_REFRESH_DISABLED=true;" id="ALLOCATED_QTY" name="ALLOCATED_QTY" ng-model="data.ALLOCATED_QTY" class="form-control" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" ng-class="{'has-error': (GmtPlanAllocationTuningForm.INITIAL_PROD_QTY.$touched || GmtPlanAllocationTuningForm.$submitted) && GmtPlanAllocationTuningForm.INITIAL_PROD_QTY.$error.required}">
+                                        <label class="col-md-4 control-label">
+                                            OutOfPlan Prod
+                                        </label>
+                                        <div class="col-md-5">
+                                            <input type="number" min="0" id="INITIAL_PROD_QTY" name="INITIAL_PROD_QTY" ng-model="data.INITIAL_PROD_QTY" readonly="readonly" class="form-control" required />
+
+                                            <span class="text-danger" ng-if="data.OUT_OF_PLAN_PROD_REC">{{ data.OUT_OF_PLAN_PROD_REC }}</span>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            Produced  Qty
+                                        </label>
+                                        <div class="col-md-5">
+                                            <h4 class="form-control-static">{{data.TOT_PROD}}</h4>
+                                        </div>
+                                    </div>
+
+                                    @*<div class="form-group" ng-class="{'has-error': (GmtPlanAllocationTuningForm.DE_ALLOCATED_QTY.$touched || GmtPlanAllocationTuningForm.$submitted) &&
+                         (GmtPlanAllocationTuningForm.DE_ALLOCATED_QTY.$error.required||GmtPlanAllocationTuningForm.DE_ALLOCATED_QTY.$error.max||GmtPlanAllocationTuningForm.DE_ALLOCATED_QTY.$error.min)}">
+                        <label class="col-md-4 control-label">
+                            De-Allocated Qty
+                        </label>
+                        <div class="col-md-5">
+                            <input type="number" ng-max="data.ALLOCATED_QTY-data.TOT_PROD" min="0" id="DE_ALLOCATED_QTY" name="DE_ALLOCATED_QTY" ng-model="data.DE_ALLOCATED_QTY" class="form-control" required />
+                        </div>
+                    </div>*@
+
+
+                                    <div class="form-group" ng-class="{'has-error': (GmtPlanAllocationTuningForm.PLAN_OP.$touched || GmtPlanAllocationTuningForm.$submitted) && (GmtPlanAllocationTuningForm.PLAN_OP.$error.required || GmtPlanAllocationTuningForm.PLAN_OP.$error.min)}">
+                                        <label class="col-md-4 control-label">
+                                            Plan Operator
+                                        </label>
+                                        <div class="col-md-5">
+                                            <input type="number" min="10" ng-change="IS_REFRESH_DISABLED=true;" id="PLAN_OP" name="PLAN_OP" ng-model="data.PLAN_OP" class="form-control" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" ng-class="{'has-error': (GmtPlanAllocationTuningForm.PLAN_HP.$touched || GmtPlanAllocationTuningForm.$submitted) && (GmtPlanAllocationTuningForm.PLAN_HP.$error.required || GmtPlanAllocationTuningForm.PLAN_HP.$error.min)}">
+                                        <label class="col-md-4 control-label">
+                                            Plan Helper
+                                        </label>
+                                        <div class="col-md-5">
+                                            <input type="number" min="0" ng-change="IS_REFRESH_DISABLED=true;" id="PLAN_HP" name="PLAN_HP" ng-model="data.PLAN_HP" class="form-control" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" ng-class="{'has-error': (GmtPlanAllocationTuningForm.PLAN_WH.$touched || GmtPlanAllocationTuningForm.$submitted) && (GmtPlanAllocationTuningForm.PLAN_WH.$error.required||GmtPlanAllocationTuningForm.PLAN_WH.$error.min||GmtPlanAllocationTuningForm.PLAN_WH.$error.max)}">
+                                        <label class="col-md-4 control-label">
+                                            Plan WH
+                                        </label>
+                                        <div class="col-md-5">
+                                            <input type="number" min="8" ng-change="IS_REFRESH_DISABLED=true;" max="23" id="PLAN_WH" name="PLAN_WH" ng-model="data.PLAN_WH" class="form-control" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" ng-class="{'has-error': (GmtPlanAllocationTuningForm.PLAN_EFFICIENCY.$touched || GmtPlanAllocationTuningForm.$submitted) && (GmtPlanAllocationTuningForm.PLAN_EFFICIENCY.$error.required||GmtPlanAllocationTuningForm.PLAN_EFFICIENCY.$error.min||GmtPlanAllocationTuningForm.PLAN_EFFICIENCY.$error.max)}">
+                                        <label class="col-md-4 control-label">
+                                            Plan Efficiency
+                                        </label>
+                                        <div class="col-md-5">
+                                            <input type="number" ng-change="IS_REFRESH_DISABLED=true;" min="10" max="100" id="PLAN_EFFICIENCY" name="PLAN_EFFICIENCY" ng-model="data.PLAN_EFFICIENCY" class="form-control" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" ng-class="{'has-error': (GmtPlanAllocationTuningForm.PLAN_WH.$touched || GmtPlanAllocationTuningForm.$submitted) && GmtPlanAllocationTuningForm.PLAN_WH.$error.required}">
+                                        <label class="col-md-4 control-label">
+                                            Loaded
+                                        </label>
+                                        <div class="col-md-6">
+                                            <input kendo-date-time-picker ng-disabled="data.IS_PAST" k-on-change="data.is_hide = true" k-ng-model="data.SEW_START_DT" name="SEW_START_DT" @*k-min="today"*@ k-options="datePickerOptions" data-k-format="'dd/MM/yyyy hh tt'" k-interval="60" class="form-control" style="width: 100%;" required />
+
+                                        </div>
+                                        <div class="col-md-2" ng-if="!data.is_hide">
+                                            <a ng-disabled="IS_REFRESH_DISABLED"  ng-disabled="data.IS_PAST" ng-click="findSewingEndDate2(data)" class="btn btn-sm bg-green-sharp"><i class="fa fa-refresh"></i> </a>
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="form-group" ng-class="{'has-error': (GmtPlanAllocationTuningForm.PLAN_WH.$touched || GmtPlanAllocationTuningForm.$submitted) && GmtPlanAllocationTuningForm.PLAN_WH.$error.required}">
+                                        <label class="col-md-4 control-label">
+                                            Unloaded
+                                        </label>
+                                        <div class="col-md-6">
+                                            <input kendo-date-time-picker k-ng-model="data.SEW_END_DT" k-on-change="data.is_hide = true" name="SEW_END_DT" @*k-min="data.SEW_START_DT" k-rebind="data.SEW_START_DT"*@ data-k-format="'dd/MM/yyyy hh tt'" k-interval="60" class="form-control" k-options="datePickerOptions" style="width: 100%;" required tabindex="2" />
+                                        </div>
+                                        <div class="col-md-2" ng-if="!data.is_hide">
+                                            <a ng-disabled="IS_REFRESH_DISABLED" ng-click="findSewingEndDate(data)" class="btn btn-sm bg-green-sharp"><i class="fa fa-refresh"></i> </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+
+                                        </label>
+                                        <div class="col-md-5">
+                                            <div class="checkbox-list">
+                                                <label class="checkbox-inline" style="margin-left:20px">
+                                                    <span><input type="checkbox" ng-model="data.IS_LRN_CRV_APP" ng-true-value="'Y'" ng-false-value="'N'">Is Learning Curve Apply?</span>
+                                                </label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="from-group">
+                                        <textarea rows="4" placeholder="Entry Comments here" ng-model="data.REMARKS" cols="8" class="form-control" />
+                                    </div>
+
+                                    <div class="from-group">
+
+                                        <div class="checkbox-list">
+                                            <label class="checkbox-inline" style="margin-left:20px">
+                                                Remarks Update At
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <span><input type="checkbox" ng-disabled="true" ng-model="data.IS_COMMENTS_UPT_ALLOC" ng-true-value="'Y'" ng-false-value="'N'"></span>
+                                                This
+                                            </label>
+
+                                            <label class="checkbox-inline">
+                                                <span><input type="checkbox" ng-change="data.IS_COMMENTS_UPT_ORDER = 'N'" ng-model="data.IS_COMMENTS_UPT_ITEM" ng-true-value="'Y'" ng-false-value="'N'"></span>
+                                                Allocs\Item
+                                            </label>
+
+                                            <label class="checkbox-inline">
+                                                <span><input type="checkbox" ng-change="data.IS_COMMENTS_UPT_ITEM = 'N'" ng-model="data.IS_COMMENTS_UPT_ORDER" ng-true-value="'Y'" ng-false-value="'N'"></span>
+                                                Allocs\Order
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+
+                                @*<div class="form-group">
+                                    <label class="col-md-4 control-label">
+                                    </label>
+                                    <div class="col-md-2">
+
+                                        <div class="checkbox-list">
+                                            <label class="checkbox-inline" style="margin-left:20px">
+                                                <span><input type="checkbox" ng-model="data.IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'">Active?</span>
+                                            </label>
+                                        </div>
+
+                                    </div>
+
+                                </div>*@
+
+                                </div>
+
+                                <br />
+                                <div class="row" style="margin:auto;">
+                                    <span class="badge badge-danger" ng-if="data.GMT_PLN_STRIPE_PHASE_ID==2 || data.GMT_PLN_STRIPE_PHASE_ID==5">Locked</span>
+                                    <button ng-disabled="data.GMT_PLN_STRIPE_PHASE_ID==2 || data.GMT_PLN_STRIPE_PHASE_ID==5" type="button" ng-click="SaveData(data, GmtPlanAllocationTuningForm.$valid );GmtPlanAllocationTuningForm.$submitted = true" ng-if="data.GMT_PLN_LINE_LOAD_ID>0" class="btn btn-sm yellow-gold">Update</button>
+                                    <button type="button" ng-click="cancel()" class="btn btn-sm default">Cancel</button>
+
+                                    <button style="float:right;" ng-if="data.GMT_PLN_STRIPE_PHASE_ID==2" type="button" ng-click="UpdateComments(data );" class="btn btn-sm grey-cascade">Update Comments</button>
+                                </div>
+
+                            </div>
+                        </fieldset>
+
+                
+
+
+                    </div>
+                    <div class="col-md-8">
+                        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;">
+                            <legend class="custom-legend">Allocation Summery</legend>
+                            <table class="table table-condensed table-striped table-bordered">
+                                <thead>
+                                    <tr class="site-table-header">
+                                        <th style="width: 5%">Line</th>
+                                        <th style="width: 10%">Load</th>
+                                        <th style="width: 10%">Un-Load</th>
+                                        <th style="width: 7%">Allocation</th>
+                                        <th style="width: 7%">Production</th>
+                                        <th style="width: 7%">Wait2Prod</th>
+
+                                        <th style="width: 7%">ShipE/D</th>
+                                        <th style="width: 15%">Status</th>
+                                        <th style="width: 7%">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody style="font-weight:700">
+                                    <tr ng-repeat="status in data.others_allocations" ng-class="{'success': status.IS_SAME_LINE == 'Y' }">
+                                        <td>{{status.LINE_CODE}}</td>
+                                        
+                                        <td>{{status.SEW_START_DT|date:'dd-MMM-yyyy ha'}}</td>
+                                        <td>{{status.SEW_END_DT|date:'dd-MMM-yyyy ha'}}</td>
+                                        <td>{{status.ALLOCATED_QTY}}</td>
+                                        <td><b>{{status.TOT_PROD}}</b> <small style="display:block;">{{(status.TOT_PROD/status.ALLOCATED_QTY)*100|number:1}}%</small></td>
+                                        <td><b>{{status.ALLOCATED_QTY-status.TOT_PROD}}</b> <small style="display:block;">{{((status.ALLOCATED_QTY-status.TOT_PROD)/status.ALLOCATED_QTY)*100|number:1}}%</small></td>
+                                        <td>{{status.SHIP_DE}}</td>
+                                        
+                                        <td>
+                                            <span ng-repeat="sts in status.sts" ng-style="{'color': sts.STS_COLOR_CODE }">
+                                                {{sts.PLN_STS_CODE}}
+                                            </span>
+                                            <a class="btn btn-xs red" ng-if="status.GMT_PLN_STRIPE_PHASE_ID == 1 && status.TOT_PROD == 0" ng-click="deletePlanData(status, false)">
+                                                <i class="fa fa-times"></i>
+                                            </a>
+
+                                       </td>
+
+                                        <td> 
+                                            <a class="btn btn-xs green" ng-click="tuning(status.GMT_PLN_LINE_LOAD_ID)">
+                                                <i class="fa fa-list"></i> Tune
+                                            </a>
+
+                                        
+                                        </td>
+                                    </tr>
+                                    <tr class="success">
+                                        <td>{{data.LINE_CODE}} (Current)</td>
+                                       
+                                        <td>{{data.SEW_START_DT|date:'dd-MMM-yyyy ha'}}</td>
+                                        <td>{{data.SEW_END_DT|date:'dd-MMM-yyyy ha'}}</td>
+                                        <td>{{data.ALLOCATED_QTY}}</td>
+
+                                        <td><b>{{data.TOT_PROD}}</b> <small style="display:block;">({{(data.TOT_PROD/data.ALLOCATED_QTY)*100|number:1}}%)</small></td>
+                                        <td><b>{{data.ALLOCATED_QTY-data.TOT_PROD}}</b> <small style="display:block;">({{((data.ALLOCATED_QTY-data.TOT_PROD)/data.ALLOCATED_QTY)*100|number:1}}%)</small> </td>
+
+
+                                        <td>{{data.SHIP_DE}}</td>
+
+                                        <td>
+                                            <span ng-repeat="sts in data.sts" ng-style="{'color': sts.STS_COLOR_CODE }">
+                                                {{sts.PLN_STS_CODE}}
+                                            </span>
+                                            <a class="btn btn-xs red" ng-if="data.GMT_PLN_STRIPE_PHASE_ID == 1 && data.TOT_PROD == 0" ng-click="deletePlanData(data, true)">
+                                                <i class="fa fa-times"></i>
+                                            </a>
+
+                                        </td>
+
+
+                                        <td>
+                            
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot style="font-weight:900">
+                                    <tr>
+                                        <td colspan="3">Total</td>
+                                        <td>{{data.TTL_ALLOCATED_QTY}} <b style="display: block; font-size: 10px;">({{ (data.TTL_ALLOCATED_QTY/ data.ORDER_QTY)*100|number:2 }}%)</b> </td>
+                                        <td>{{data.TTL_PROD}} <b style="display: block; font-size: 10px;">({{ (data.TTL_PROD/data.TTL_ALLOCATED_QTY)*100|number:2 }}%)</b> </td>
+                                        <td>{{data.TTL_ALLOCATED_QTY-data.TTL_PROD}} <b style="display: block; font-size: 10px;">({{ ((data.TTL_ALLOCATED_QTY-data.TTL_PROD)/data.TTL_ALLOCATED_QTY)*100|number:2 }}%)</b> </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </fieldset>
+
+
+                        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;">
+                            <legend class="custom-legend">Allocation Status</legend>
+                            <table class="table table-condensed table-striped table-bordered">
+                                <thead>
+                                    <tr class="site-table-header">
+                                        <th style="width: 20%">Code</th>
+                                        <th style="width: 30%">Staus</th>
+                                        <th style="width: 50%">Hints2Solve</th>
+                                    </tr>
+                                </thead>
+                                <tbody style="font-weight:900">
+                                    <tr ng-repeat="status in data.sts" ng-style="{'color': status.STS_COLOR_CODE }">
+                                        <td>{{status.PLN_STS_CODE}}</td>
+                                        <td>
+                                            {{status.PLN_STS_NAME}}
+                                        <td>
+                                            {{status.PLN_STS_AREA_NAME}}
+                                            <span class="badge badge-primary" style="cursor:pointer;" ng-if="status.LK_PLN_STS_GRP_ID==615" ng-click="openTNATasks(data)">More...</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+
+                        </fieldset>
+
+                        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;">
+                            <legend class="custom-legend">Line Loading Data</legend>
+                            <table class="table table-condensed table-striped table-bordered">
+                                <thead>
+
+                                    <tr class="site-table-header">
+                                        <th style="width: 3%">Day</th>
+                                        <th style="width: 10%">Date</th>
+                                        <th style="width: 2%">WH</th>
+                                        <th style="width: 5%">OP</th>
+                                        <th style="width: 5%">HP</th>
+                                        <th style="width: 5%">OT Hrs</th>
+                                        <th style="width: 15%">Dept.</th>
+                                        <th style="width: 15%">Reason Of EOT</th>
+                                        <th style="width: 7%">PLanEffi.</th>
+                                        <th style="width: 7%">Req Effi.</th>
+                                        <th style="width: 7%">Req Prod</th>
+                                        <th style="width: 7%">Act Prod</th>
+                                    </tr>
+
+
+
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="(key,item) in data.details" ng-class="{'warning' :  item.STS_FLAG === 'P'}">
+                                        <td>
+                                            {{key+1}}
+                                        </td>
+                                        <td>
+                                            {{item.CALENDAR_DT|date:'dd-MMM-yyyy'}}
+                                            <span style="display:block;" ng-if="$first">{{data.SEW_START_DT|date:'ha'}}</span>
+                                            <span style="display:block;" ng-if="$last">{{data.SEW_END_DT|date:'ha'}}</span>
+                                        </td>
+                                        <td>
+                                            {{item.EWH}}
+                                        </td>
+                                        <td ng-class="{'has-error': (PLAN_OP_FORM.PLAN_OP.$touched || GmtPlanAllocationTuningForm.$submitted) && PLAN_OP_FORM.PLAN_OP.$error.required}">
+                                            <ng-form name="PLAN_OP_FORM">
+                                                <input style="width:100%" type="number" ng-change="item.IS_INDIV_CHANGE = 'Y';IS_REFRESH_DISABLED=true;" ng-disabled="item.STS_FLAG=='P'" tabindex="{{data.details.length*1 + key}}" ng-model="item.PLAN_OP" required />
+                                            </ng-form>
+                                            <i ng-if="item.IS_INDIV_CHANGE == 'Y'" style="color:lightgray;" class="fa fa-pencil" title="Manually Changed"></i>
+                                        </td>
+
+                                        <td ng-class="{'has-error': (PLAN_HP_FORM.PLAN_HP.$touched || GmtPlanAllocationTuningForm.$submitted) && PLAN_HP_FORM.PLAN_HP.$error.required}">
+                                            <ng-form name="PLAN_HP_FORM">
+                                                <input style="width:100%" type="number" ng-change="item.IS_INDIV_CHANGE = 'Y';IS_REFRESH_DISABLED=true;" ng-disabled="item.STS_FLAG=='P'" tabindex="{{data.details.length*1 + key}}" ng-model="item.PLAN_HP" required />
+                                            </ng-form>
+
+                                            <i ng-if="item.IS_INDIV_CHANGE == 'Y'" style="color:lightgray;" class="fa fa-pencil" title="Manually Changed"></i>
+                                        </td>
+
+                                        <td ng-class="{'has-error': (OT_HR_FORM.OT_HR.$touched || GmtPlanAllocationTuningForm.$submitted) && OT_HR_FORM.OT_HR.$error.required}">
+                                            <ng-form name="OT_HR_FORM">
+                                                <input style="width:100%" ng-change="item.IS_INDIV_CHANGE = 'Y';IS_REFRESH_DISABLED=true;" ng-disabled="item.STS_FLAG=='P'"
+                                                       tabindex="{{data.details.length*2 + key}}" type="number" ng-click="item.OT_HR> 4 ? item.RF_RESP_DEPT_ID = item.RF_RESP_DEPT_ID : item.RF_RESP_DEPT_ID=''"
+                                                       ng-model="item.OT_HR" required />
+                                            </ng-form>
+                                            <i ng-if="item.IS_INDIV_CHANGE == 'Y'" style="color:lightgray;" class="fa fa-pencil" title="Manually Changed"></i>
+                                        </td>
+                                        <td ng-class="{'has-error': (RF_RESP_DEPT_ID_FORM.RF_RESP_DEPT_ID.$touched || GmtPlanAllocationTuningForm.$submitted) && RF_RESP_DEPT_ID_FORM.RF_RESP_DEPT_ID.$error.required}">
+                                            <ng-form name="RF_RESP_DEPT_ID_FORM">
+
+
+                                                <select name="RF_RESP_DEPT_ID" id="RF_RESP_DEPT_ID" ng-disabled="item.STS_FLAG=='P' || item.OT_HR < 6"
+                                                        ng-options="option.RF_RESP_DEPT_ID as option.RESP_DEPT_NAME for option in ResDeptDs"
+                                                        ng-model="item.RF_RESP_DEPT_ID" ng-required="item.OT_HR > 5" class="form-control"></select>
+                                            </ng-form>
+                                        </td>
+
+                                        <td>
+                                            <input type="text" style="width:100%" ng-model="item.REASON_OF_EOT" ng-disabled="item.STS_FLAG=='P'" />
+                                        </td>
+
+
+                                        <td ng-class="{'has-error': (RF_PLAN_EFF_FORM.RF_PLAN_EFF.$touched || GmtPlanAllocationTuningForm.$submitted) && RF_PLAN_EFF_FORM.RF_PLAN_EFF.$error.required}">
+                                            <ng-form name="RF_PLAN_EFF_FORM">
+                                                <input style="width:100%" ng-change="item.IS_INDIV_CHANGE = 'Y';IS_REFRESH_DISABLED=true;" ng-disabled="item.STS_FLAG=='P'" tabindex="{{data.details.length*3 + key}}" type="number" ng-model="item.RF_PLAN_EFF" required />
+                                            </ng-form>
+                                            <i ng-if="item.IS_INDIV_CHANGE == 'Y'" style="color:lightgray;" class="fa fa-pencil" title="Manually Changed"></i>
+                                        </td>
+                                        <td class="has-warning">
+                                            {{item.REQ_EFF+' %'}}
+                                        </td>
+
+                                        <td>
+                                            <b>{{item.REQ_PROD_QTY}}</b> ({{item.REQ_PROD_HR+'/Hr'}})
+                                        </td>
+
+                                        <td>
+                                            <b>{{item.TOT_PROD}}</b>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="9" style="text-align:right;">
+                                            <span class="text-danger" ng-if="data.OUT_OF_PLAN_PROD_REC">{{ data.OUT_OF_PLAN_PROD_REC }}</span>
+                                        </td>
+                                        <td style="text-align:right;">
+                                            <strong>Total</strong>
+                                        </td>
+                                        <td>
+                                            {{data.TTL_REQ_PROD}}
+                                        </td>
+                                        <td>
+                                            {{data.TOT_PROD}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </fieldset>
+                    
+                        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;">
+                            <legend class="custom-legend">Plan Change History</legend>
+                            <table class="table table-condensed table-striped table-bordered">
+                                <thead>
+                                    <tr class="site-table-header">
+                                        <th style="width: 5%">#</th>
+                                        <th style="width: 30%">Reason Of Plan Change</th>
+                                        <th style="width: 40%">Change Details</th>
+                                        <th style="width: 13%">Accountibility</th>
+                                        <th style="width: 12%">Change By</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody style="font-weight:900">
+                                    <tr ng-repeat="itm in data.PlanChangeLogs">
+                                        <td>{{itm.PLN_CHANE_NO}}</td>
+                                        <td>{{itm.PLAN_CNGE_REASON}}</td>
+                                        <td>{{itm.PLAN_CHANGE_TEXT}}</td>
+                                        <td>{{itm.RES_DEPT_TEXT}}</td>
+                                        <td>{{itm.PLAN_CHANGE_BY_TXT}} &#x40; {{itm.DT_PLN_CHANE|date:'dd-MMM-yyyy'}}</td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+
+                        </fieldset>
+
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+ </div>

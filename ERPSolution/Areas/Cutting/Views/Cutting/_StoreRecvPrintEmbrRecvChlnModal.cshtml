@@ -1,0 +1,77 @@
+﻿<div class="modal-body">
+    <div class="portlet grey-cascade box">
+        <div class="portlet-title">
+            <div>
+                <h3 style="padding-top:10px;margin-top:3px;">
+                    Receive Challan
+                    <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                </h3>
+            </div>
+        </div>
+        <div class="portlet-body">
+
+           
+
+            <form name="PrintEmbrRecvChallanForm">
+                <table class="table table-condensed table-striped borderless" style="margin-bottom:5px;">
+
+                    <thead>
+                        <tr style="border: 1px solid #cecece;" ng-repeat="challan in challans">
+
+                            <th style="width: 10%; text-align: right;">
+                                <br />
+                                {{challan.SUP_TRD_NAME_EN}}
+                            </th>
+                            <th style="width:10%" ng-class="{'has-error': (CHALAN_NO_FORM.CHALAN_NO.$touched || PrintEmbrRecvChallanForm.$submitted) && CHALAN_NO_FORM.CHALAN_NO.$error.required}">
+                                <ng-form name="CHALAN_NO_FORM">
+                                    Challan #
+                                    <input type="text" name="CHALAN_NO" ng-model="challan.CHALAN_NO" class="form-control" ng-required="challan.IS_AUTO_CHALLAN_NO=='N'" />
+                                </ng-form>
+                            </th>
+
+                            <th style="width: 10%;">
+                                <br />
+                                <div class="checkbox-list">
+                                    <label class="checkbox-inline" style="margin-left:20px;margin-top:-15px;">
+                                        <span><input type="checkbox" ng-model="challan.IS_AUTO_CHALLAN_NO" ng-true-value="'Y'" ng-false-value="'N'"></span> Is Auto Challan?
+                                    </label>
+                                </div>
+                            </th>
+
+
+                            <th style="width: 10%;">
+                                GetPass#
+                                <input type="text" name="GATE_PASS_NO" ng-model="challan.GATE_PASS_NO" class="form-control" />
+
+                            </th>
+
+                            <th style="width: 10%;">
+                                Vehicle#
+                                <input type="text" name="VEHICLE_NO" ng-model="challan.VEHICLE_NO" class="form-control" />
+
+                            </th>
+                            <th style="width:10%">
+                                Delvery Date
+                                <input type="text" class="form-control" ng-click="GridDateOpen($event, $index)" datepicker-popup="{{dtFormat}}"
+                                       name="CHALAN_DT" ng-model="challan.CHALAN_DT" is-open="GridDateOpened[$index]" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+
+                            </th>
+
+                        </tr>
+
+                    </thead>
+                </table>
+                <table class="table table-condensed table-striped table-bordered" style="padding-left: 5px; padding-right: 5px; margin-bottom: 3px;">
+                    <tbody>
+                        <tr>
+                            <td style="width: 100%; padding-bottom: 5px;" align="left">
+                                <a class="btn btn-sm bg-green" ng-class="{'disabled': PrintEmbrRecvChallanForm.$invalid}" ng-click="save(challans,PrintEmbrRecvChallanForm.$valid);PrintEmbrRecvChallanForm.$submitted=true;"> Save</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+
+        </div>
+    </div>
+</div>

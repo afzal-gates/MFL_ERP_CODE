@@ -1,0 +1,252 @@
+﻿
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="margin:auto;">
+            <div class="col-md-12">
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend">Search By</legend>
+
+                    <form class="form-horizontal" role="form" name="TnAFollowupForm" novalidate
+                          ng-submit="vm.onSearch(vm.form)">
+
+                        <div class="col-md-3" style="padding-left:3px;padding-right:3px;">
+                            Buyer A/C
+                            <select kendo-drop-down-list name="MC_BYR_ACC_ID" class="form-control"
+                                    k-options="buyerAcList" id="MC_BYR_ACC_ID" ng-model="vm.form.MC_BYR_ACC_ID" required></select>
+                        </div>
+
+                        <div class="col-md-2" style="padding-left:3px;padding-right:3px;">
+                            Order/Style
+                            <select class="form-control" kendo-drop-down-list id="ORDER_LIST" name="MC_FAB_PROD_ORD_H_ID" k-option-label="'--Order# --'"
+                                    k-data-text-field="'ORDER_NO_LST'" k-data-value-field="'MC_FAB_PROD_ORD_H_ID'" k-filter="'Contains'"
+                                    k-template="templateOh" k-value-template="valueTemplateOh"
+                                    k-auto-bind="'true'" k-data-source="FabOederByOhDs" ng-model="vm.form.MC_FAB_PROD_ORD_H_ID"
+                                    required style="width:100%;"></select>
+                        </div>
+
+
+                        <div class="col-md-2" style="padding-left:3px;padding-right:3px;">
+                            Status
+                            <select class="form-control" kendo-drop-down-list name="RF_ACTN_STATUS_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                    k-data-text-field="'EVENT_NAME'" k-data-value-field="'RF_ACTN_STATUS_ID'"
+                                    k-auto-bind="'true'" k-data-source="vm.actionStatusDs" ng-model="vm.form.RF_ACTN_STATUS_ID"></select>
+                        </div>
+
+                        <div class="col-md-3" style="padding-left:3px;padding-right:3px;">
+                          S/C Factory
+                            <select class="form-control" kendo-drop-down-list name="SCM_SUPPLIER_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                    k-data-text-field="'SUP_TRD_NAME_EN'" k-data-value-field="'SCM_SUPPLIER_ID'"
+                                    k-auto-bind="'true'" k-data-source="vm.supplierListDs" ng-model="vm.form.SCM_SUPPLIER_ID" required></select>
+
+
+                        </div>
+                        <div class="col-md-1">
+                            <br />
+                            <button type="submit" class="btn btn-sm blue">
+                                Search
+                            </button>
+                        </div>
+                    </form>
+                </fieldset>
+            </div>
+
+        </div>
+        <div class="row" style="margin:auto;">
+            <div class="col-md-12">
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend"> Trim & Accessories Booking List </legend>
+                    <div kendo-grid k-options="vm.taBookingPoHrdOpt" k-data-source="vm.taBookingPoHrdDs" id="idStyleExtentionList">
+
+                        <div k-detail-template>
+                            <div kendo-grid k-options="vm.taBookingPoHrdDtl(dataItem)"></div>
+                        </div>
+
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <br />
+    </div>
+</div>
+
+<script type="text/ng-template" id="DyeScProgramIssueModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h3 style="padding-top:10px;margin-top:3px;">
+                        Dyeing Sub-Contract Issue || {{data.SUP_TRD_NAME_EN}}
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </h3>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table table-condensed table-striped table-bordered" style="padding: 5px;margin-bottom: 5px;">
+                            <thead>
+
+                                <tr class="site-table-header">
+                                    <th style="width:10%;">
+                                        <small>
+                                            SL#
+                                        </small>
+
+                                    </th>
+
+                                    <th style="width:20%;">
+                                        <small>
+                                            Date
+                                        </small>
+
+                                    </th>
+
+                                    <th style="width:30%;">
+                                        <small>
+                                            Challan
+                                        </small>
+                                    </th>
+
+
+
+                                    <th style="width:10%;">
+                                        <small>
+                                            Issue Confirm
+                                        </small>
+                                    </th>
+                                    <th style="width:20%;">
+                                        <small>
+                                            Action
+                                        </small>
+                                    </th>
+
+
+
+
+                                    
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr ng-repeat="data in ChallanList">
+                                    <td>
+                                        {{$index+1}}
+                                    </td>
+
+                                    <td>
+                                        {{data.ISS_DT|date:'dd-MMM-yyyy hh:mma'}}
+                                    </td>
+                                    <td>
+                                        {{data.ISS_CHALAN_NO}}
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-xs purple" ng-click="issue(data)" ng-disabled="data.RF_ACTN_STATUS_ID==56">Issue</a>
+                                    </td>
+
+                                    <td>
+                                        <a class="btn btn-xs blue" ng-click="printDeliveryChallan(data)">D.Challan</a>
+                                        <a class="btn btn-xs blue-hoki" ng-click="onSelect(data)">Select</a>
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <form class="form-horizontal" role="form" name="OrderRevisionModal" novalidate>
+                            <div class="form-group">
+                                <label for="selectPeriod" class="col-md-3 control-label">
+                                    Issue Ref#
+                                </label>
+                                <div class="col-md-4" style="padding-top:5px;">
+                                    <input type="text" class="form-control" ng-model="form.PRG_ISS_NO" disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="selectPeriod" class="col-md-3 control-label">
+                                    Issue Date
+                                </label>
+                                <div class="col-md-4" style="padding-top:5px;">
+                                    <input type="text" class="form-control" ng-click="ISS_DTopen($event)" datepicker-popup="{{dtFormat}}"
+                                           name="EXP_DELV_DT" ng-model="form.ISS_DT" is-open="ISS_DTopened"
+                                           datepicker-options="dateOptions" min-date="form.SC_PRG_DT" date-disabled="disabled(date, mode)" close-text="Close" required />
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Challan #</label>
+                                <div class="col-md-8" style="padding-top:5px;">
+                                    <input type="text" class="form-control" ng-model="form.ISS_CHALAN_NO" placeholder="Auto Generated" disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Vehicle #</label>
+                                <div class="col-md-8" style="padding-top:5px;">
+                                    <input type="text" class="form-control" ng-model="form.VEHICLE_NO">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Carrier Name</label>
+                                <div class="col-md-8" style="padding-top:5px;">
+                                    <input type="text" class="form-control" ng-model="form.CARRIER_NAME">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Remarks</label>
+                                <div class="col-md-8" style="padding-top:5px;">
+                                    <textarea rows="3" cols="50" class="form-control" ng-model="form.REMARKS"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group form-actions">
+                                <div class="col-md-offset-3 col-md-10">
+                                    <button type="button" class="btn blue btn-sm" ng-click="save(form)"> <i class="fa fa-external-link"></i> Save</button>
+                                    <button type="button" class="btn btn-default btn-sm" ng-click="cancel()">Cancel</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</script>

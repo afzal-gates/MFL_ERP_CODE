@@ -1,0 +1,126 @@
+﻿
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Hr</a>
+
+    </li>
+    <li>
+        <a href="#">Loan/Advance List</a>
+    </li>
+</ul>
+
+
+
+<div class="portlet box blue-dark">
+
+    <div class="portlet-title">
+        <div class="caption">
+            @*<i class="fa fa-gift"></i>*@ Loan/Advance List
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <kendo-grid k-options="vm.gridOptions"></kendo-grid>
+    </div>
+
+    @*<form action="/Hr/HrReport/PreviewReport" method="post" target="_blank">
+        <input type="hidden" name="REPORT_CODE" value="RPT-1036" />
+        <button type="submit" class="btn blue m-icon btn-small">
+            Print <i class="m-icon-swapright m-icon-white"></i>
+        </button>
+    </form>*@
+
+
+</div>
+
+<script type="text/ng-template" id="AdvSalaryModal.html">
+    <div class="modal-header">
+        <h5 class="title">
+            Ref. # {{item.ADV_REF_NO}} <br />
+            {{item.EMP_FULL_NAME_EN}}
+            <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+        </h5>
+    </div>
+    <div class="modal-body">
+        <div class="portlet-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th>
+                                Slab #
+                            </th>
+                            <th>
+                                No. of Installment
+                            </th>
+                            <th>
+                                Installment/Month
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr ng-repeat="itm in item.items" ng-if="!itm.CAN_BE_DEL==1">
+                            <td>
+                                <input type="number" style="width:50px;" ng-model="itm.SLAB_NO" ng-disabled="((itm.NO_OF_INSTL||0)-itm.TOT_INSTL_PAID)==0 && itm.TOT_INSTL_PAID>0" />                               
+                            </td>
+                            <td>
+                                <input type="number" ng-model="itm.NO_OF_INSTL" ng-disabled="((itm.NO_OF_INSTL||0)-itm.TOT_INSTL_PAID)==0 && itm.TOT_INSTL_PAID>0"/>
+                            </td>
+                            <td>
+                                <input type="number" ng-model="itm.INSTL_AMT" ng-disabled="((itm.NO_OF_INSTL||0)-itm.TOT_INSTL_PAID)==0 && itm.TOT_INSTL_PAID>0" />
+                            </td>
+                            <td>
+
+
+                                <a ng-click="remove($index)"  class="btn btn-xs red" ng-disabled="((itm.NO_OF_INSTL||0)-itm.TOT_INSTL_PAID)==0||item.items.length==1">
+                                    <i class="fa fa-times"></i> Remv
+                                </a>
+
+                                <a  class="btn btn-xs green" ng-click="add()" ng-show="(itm.NO_OF_INSTL-itm.TOT_INSTL_PAID)>0">
+                                    <i class="fa fa-plus"></i> Slab
+                                </a>
+
+                            </td>
+
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>Total</td>
+                            <td><b>{{sumInstl}}</b></td>
+                            <td><b>{{sumAmt}}</b></td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="form-actions" ng-if="item.LK_ADV_TYPE_ID==146">
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-4">
+                        <button type="button" ng-click="save(item)" class="btn btn-sm green" ng-class="{'disabled':disableSave}">Save</button>
+                        <button type="button" class="btn btn-sm default" ng-click="cancel()">Cancel</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+

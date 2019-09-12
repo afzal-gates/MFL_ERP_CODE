@@ -1,0 +1,191 @@
+﻿
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Garments</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">            
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <form class="form-horizontal" role="form" name="frmItemPartMap" novalidate>
+            <div class="form-body clearfix" style="padding-top:5px;">
+                <div class="row">
+                    <div class="col-md-12" >
+
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend">Item and Part Mapping</legend>
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label class="form-control-solid" style="background-color: hsl(208, 56%, 46%); color: hsl(0, 0%, 100%); font-weight: bold; width: 100%; padding-top: 5px; padding-bottom: 5px;">&nbsp;Garments Item Group</label>
+
+                                    <div kendo-list-view id="gmtCategoryGroup" k-selectable="'single'" k-data-source="vm.gmtCategoryGroupDataSource" k-on-change="vm.onChangeGmtCategoryGroup(dataItem)"
+                                         k-on-data-bound="vm.onDataBoundGmtCategoryGroup(kendoEvent)" style="max-height:400px;overflow:auto;">
+                                        <div k-template>
+                                            <dd class="k-state-default" style="padding: 5px; border-bottom: solid 1px; border-color: lightgray; ">
+                                                <b>{{dataItem.ITEM_CAT_NAME_EN}}</b>
+                                            </dd>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label class="form-control-solid" style="background-color: hsl(208, 56%, 46%); color: hsl(0, 0%, 100%); font-weight: bold; width: 100%; padding-top: 5px; padding-bottom: 5px;">&nbsp;Garments Item</label>
+
+                                    <div class="input-icon right" style="padding-bottom:3px;">
+                                        <i class="icon-magnifier"></i>
+                                        <input type="text" class="form-control form-control-solid" ng-model="qGMT_CAT_NAME" placeholder="Search..." ng-change="vm.gmtCategoryDataSource.filter( { field:'ITEM_CAT_NAME_EN', operator :'contains', value: qGMT_CAT_NAME })"                                               
+                                               ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }">
+                                    </div>
+                                    <div kendo-list-view k-selectable="'single'" k-data-source="vm.gmtCategoryDataSource" k-on-change="vm.onChangeGmtCategory(dataItem)"
+                                         k-on-data-bound="vm.onDataBoundGmtCategory(kendoEvent)" style="max-height:415px;overflow:auto;">
+                                        <div k-template>
+                                            <dd class="k-state-default" style="padding: 5px; border-bottom: solid 1px; border-color: lightgray; ">
+                                                <b>{{dataItem.ITEM_CAT_NAME_EN}}</b>
+                                            </dd>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <fieldset class="custom-fieldset">
+                                        <legend class="custom-legend">Garments Part</legend>
+                                        
+                                        <div class="form-group">
+                                            <div class="col-md-12">                                                
+                                                <kendo-grid id="gmtPartGrid" k-options="vm.gmtPartOption" k-data-source="vm.gmtPartDataSource"></kendo-grid>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <button type="button" class="btn btn-sm green" ng-click="vm.save()" ng-class="{'disabled':!frmItemPartMap.$valid}">Save</button>
+                                                <button type="button" class="btn btn-sm blue" ng-click="vm.newGmtPart()"><i class="fa fa-plus"></i> New Part</button>
+                                                @*<button type="button" class="btn btn-sm blue" ng-click="vm.reset();">Cancel</button>*@
+                                            </div>
+                                        </div>
+
+                                    </fieldset>
+                                </div>
+                            </div>
+
+                        </fieldset>
+
+                    </div>
+
+                    
+                    
+                </div>
+            </div>
+        </form>
+        
+
+        
+       
+    </div>
+</div>
+
+
+
+
+
+
+@*Start For Garments Part Model*@
+<script type="text/ng-template" id="NewGmtPartModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <p style="padding-top:10px;">
+                        Garments Part
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </p>
+
+
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="NewGmtPartModal" novalidate @*ng-submit="save(Task,token,TaskForm.$valid)"*@>
+                    <input id="access_token" data-ng-model="token" type="hidden"
+                           data-ng-init="token='@Session["access_token"]'" />
+
+                    @*<div kendo-grid k-data-source="asortDataList" k-columns="asortColumns" k-selectable="true" k-on-change="selected = data" k-height="300" k-filterable="true" k-sortable="true"></div>*@
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">
+                            <span aria-required="true" class="required">*</span>Code
+                        </label>
+                        <div class="col-md-5" style="padding-top:5px;">
+                            <input type="text" class="form-control" name="GARM_PART_CODE" ng-model="vm.form.GARM_PART_CODE" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">
+                            <span aria-required="true" class="required">*</span>Name
+                        </label>
+                        <div class="col-md-5" style="padding-top:5px;">
+                            <input type="text" class="form-control" name="GARM_PART_NAME" ng-model="vm.form.GARM_PART_NAME" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-2">
+                            <label class="control-label checkbox-inline">
+                                <input type="checkbox" name="IS_FLAT_CIR" ng-model="vm.form.IS_FLAT_CIR" ng-true-value="'F'" ng-false-value="'C'" /> Flat Knit?
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-2">
+                            <label class="control-label checkbox-inline">
+                                <input type="checkbox" name="IS_ACTIVE" ng-model="vm.form.IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'" /> Active?
+                            </label>
+                        </div>
+                    </div>
+
+                    @*<pre>{{ProcessLossModalForm.$valid}}</pre>*@
+
+                    <br />
+                    <div class="form-group form-actions">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="button" class="btn green btn-sm" ng-click="vm.save(token, NewGmtPartModal.$invalid)" ng-class="{'disabled':!NewGmtPartModal.$valid}" ng-show="vm.form.RF_GARM_PART_ID<1">Save</button>
+                            <button type="button" class="btn yellow-gold btn-sm" ng-click="vm.save(token, NewGmtPartModal.$invalid)" ng-class="{'disabled':!NewGmtPartModal.$valid}" ng-show="vm.form.RF_GARM_PART_ID>0">Update</button>
+
+                            <button type="button" class="btn btn-default btn-sm" ng-click="vm.tranCancel()">Cancel</button>
+                        </div>
+                    </div>
+
+                    <kendo-grid k-options="vm.gmtPartGridOption" k-data-source="vm.gmtPartGridDataSource"></kendo-grid>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+@*End For Garments Part Model*@

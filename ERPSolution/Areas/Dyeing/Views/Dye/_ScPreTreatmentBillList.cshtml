@@ -1,0 +1,76 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Dyeing</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        <input id="access_token" data-ng-model="token" type="hidden"
+               data-ng-init="token='@Session["access_token"]'" />
+        <input ng-model="vm.form.CREATED_BY" type="hidden"
+               data-ng-init="vm.form.CREATED_BY='@Session["multiScUserId"]'" />
+
+        <input id="access_token" ng-model="vm.form.LAST_UPDATED_BY" type="hidden"
+               ng-init="vm.form.LAST_UPDATED_BY='@Session["multiScUserId"]'" />
+
+        <div style="padding:5px;">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend"></legend>
+                        <div class="form-group">
+                            <label class="col-md-1" style="padding-right:0px;">
+                                Party
+                            </label>
+
+                            <div class="col-md-3">
+                                <select class="form-control" kendo-drop-down-list name="SCM_SUPPLIER_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                        k-data-text-field="'SUP_TRD_NAME_EN'" k-data-value-field="'SCM_SUPPLIER_ID'"
+                                        k-auto-bind="'true'" k-options="vm.supplierOption" k-data-source="vm.supplierDataSource" ng-model="vm.form.SCM_SUPPLIER_ID" required></select>
+                            </div>
+                            
+                            <div class="col-md-1">
+                                <button class="btn btn-sm blue" ng-click="vm.getBillList()" ng-disabled="vm.form.SCM_SUPPLIER_ID==null||vm.form.SCM_SUPPLIER_ID==''">Show</button>
+                            </div>
+
+                            <div class="col-md-2">
+                                <a ui-sref="ScPreTreatmentBill({pDF_SCO_PT_BILL_H_ID : 0})" class="btn btn-sm blue"><i class="fa fa-plus"></i> Add New</a>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+
+                <div class="col-md-12" style="padding-top:5px;">
+                    <div kendo-grid k-options="vm.sciBillGridOption" k-data-source="vm.sciBillGridDataSource"></div>
+                </div>
+            </div>
+    </div>
+</div>

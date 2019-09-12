@@ -1,0 +1,485 @@
+﻿<style>
+
+
+    tbody {
+        height: 1000px; /* Just for the demo          */
+        overflow-y: auto; /* Trigger vertical scroll    */
+        overflow-x: hidden; /* Hide the horizontal scroll */
+    }
+
+    .blue.btn:active, .blue.btn.active {
+        background-image: none;
+        background-color: #5b6e8c;
+    }
+
+
+</style>
+<div class="row">
+    <div class="col-md-12 ">
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <a href="index.html">MultiTex ERP</a>
+
+            </li>
+            <li>
+                <a href="#">Garments</a>
+
+            </li>
+            <li>
+                <a href="#" ng-bind="vm.Title"></a>
+            </li>
+        </ul>
+
+        <!-- BEGIN Portlet PORTLET-->
+        <div class="portlet box lightgrey">
+            <div class="portlet-title">
+                <div class="row" style="padding-top: 10px;font-size:14px;">
+                    <div class="col-md-11">
+
+
+
+                        <div class="btn-group btn-group"  style="padding:3px;" ng-repeat="itm in FloorList">
+                            <a class="btn default btn-xs" ng-class="{'blue': itm.HR_PROD_FLR_ID === vm.selectedFlr}" ng-click="vm.OnChangeFloor(itm)">
+                                {{itm.FLOOR_DESC_EN}}
+                            </a>
+                        </div>
+
+                        <div class="btn-group btn-group">
+
+                            <a class="btn green-meadow btn-xs" ng-click="vm.refresh()">
+                                <i class="fa fa-refresh"></i> Refresh
+                            </a>
+                        </div>
+
+                        <div class="btn-group btn-group" ng-if="isTargetSetting">
+                            <a ui-sref="ManMinAdjustment({pFLOOR_LIST :  vm.selectedFlr})" class="btn blue-hoki btn-xs">
+                                Man Minutes Adjustment
+                            </a>
+                        </div>
+
+
+                        <div class="btn-group btn-group">
+                            <a class="btn green-meadow btn-xs" ng-click="vm.printEfficiencyReport(vm.selectedDt,'N')">
+                                <i class="fa fa-refresh"></i>  Efficiency (pdf)
+                            </a>
+                        </div>
+
+                        <div class="btn-group btn-group">
+                            <a class="btn green-meadow btn-xs" ng-click="vm.printEfficiencyReport(vm.selectedDt,'Y')">
+                                <i class="fa fa-refresh"></i>  Efficiency (excel)
+                            </a>
+
+                        </div>
+
+
+                        <div class="btn-group btn-group">
+                            <input type="hidden" class="form-control" datepicker-popup="{{format}}" ng-model="dt" is-open="opened" max-date="minDate" ng-change="vm.onDateSelect(dt)" datepicker-options="dateOptions" close-text="Close" />
+                            <span style="color:white;text-align:right;"><b><i class="glyphicon glyphicon-calendar"></i></b></span>
+                            <span style="color: violet; text-align: right; border: 1px solid white; ">&nbsp;&nbsp;<b>{{dt|date:'dd-MMM-yyyy'}}</b>&nbsp;&nbsp;</span>
+                            <span style="color: olivedrab; cursor: pointer;" ng-click="open($event)"><b>Change</b></span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-md-1" align="right">
+                        <button class="btn btn-xs" ng-click="vm.openConfigModal()">
+                            <span class="item"> <span aria-hidden="true" class="icon-settings"></span>&nbsp; Setting</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+  
+            <form role="form" name="IeTargetSettingForm" class="form-horizontal" ng-submit="vm.submitData(vm.data, IeTargetSettingForm.$valid, 'N');IeTargetSettingForm.$submitted=true">
+                <div class="portlet-body">
+                    <table style="font-weight: 600;font-style: italic;font-size: 11px;margin-bottom: 0px;" class="table table-condensed table-sm table-bordered" ng-repeat="(key, data) in vm.data.lines">
+                        <tbody>
+                            <tr ng-hide="$index !=0" class="site-table-header">
+                                <th style="width:6%;text-align: center;" colspan="2"> Used/Layout</th>
+
+                                <th style="width:2%;" rowspan="2"> Buyer</th>
+                                <th style="width:8%;" rowspan="2">Order/ Style</th>
+                                <th style="width:3%;" rowspan="2"> D'R</th>
+                                <th style="width:4%;" rowspan="2">
+                                    T.Effi.<br>
+                                    @*<p-checkbox></p-checkbox> <i class="fa fa-lock"></i>*@
+                                </th>
+                                <th style="width:4%;" rowspan="2">
+                                    WH <br>
+                                    @*<p-checkbox></p-checkbox> <i class="fa fa-lock"></i>*@
+                                </th>
+
+                                <th style="width:3%;" rowspan="2">
+                                    WH <br>
+                                    Range
+                                </th>
+                                <th style="width:16%;text-align: center;" colspan="8"> General Hour</th>
+                                <th style="width:6%;text-align: center;" colspan="2"> Over Time</th>
+                                <th style="width:3%;" rowspan="2"> TTL <br> Prod</th>
+                                <th style="width:3%;" rowspan="2"> WIP</th>
+                            </tr>
+                            <tr ng-hide="$index !=0" class="site-table-header">
+
+                                <th style="width:3%;"> OP</th>
+                                <th style="width:3%;"> ASO</th>
+                                <th style="width:2%;"> 1</th>
+                                <th style="width:2%;"> 2</th>
+                                <th style="width:2%;"> 3</th>
+                                <th style="width:2%;"> 4</th>
+                                <th style="width:2%;"> 5</th>
+                                <th style="width:2%;"> 6</th>
+                                <th style="width:2%;"> 7</th>
+                                <th style="width:2%;"> 8</th>
+                                <th style="width:3%;">Hrs</th>
+                                <th style="width:3%;">Prod</th>
+
+                            </tr>
+
+                            <tr style="background-color:gainsboro;">
+                                <td colspan="20">
+                                    <b style="color: coral;">{{ data.LINE_CODE }}</b>
+                                    <b ng-if="!isTargetSetting">
+                                        <span class="badge badge-warning badge-roundless" ng-if="data.RF_PFLT_RSN_TYPE_ID && data.RF_PFLT_RSN_TYPE_ID > 0 ">
+                                            {{data.RSN_TYPE_NAME_EN}}
+                                        </span>
+                                        <span class="badge badge-success badge-roundless" ng-if="!data.RF_PFLT_RSN_TYPE_ID">
+                                            No Problem
+                                        </span>
+
+                                        <span class="badge badge-default badge-roundless" ng-click="vm.onChangeReason(data)" style="cursor:pointer;">
+                                            Change
+                                        </span>
+                                    </b>
+
+                                    @*<div style="display:block;float: right;">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="badge badge-info" style="font-size: 11px;">Target/Hr:  <span class="badge badge-danger"> {{ data.HOURLY_TARGET }}</span></span>
+                                    &nbsp;&nbsp;<span class="badge badge-info" style="font-size: 11px;">Production/Hr:  <span class="badge badge-danger"> {{ data.HOURLY_PROD }}</span></span>
+
+                                    &nbsp;&nbsp;<span class="badge badge-info" style="font-size: 11px;">Day Target:  <span class="badge badge-danger">{{ data.DAILY_TARGET }}</span></span>
+                                    &nbsp;&nbsp;<span class="badge badge-info" style="font-size: 11px;">Efficiency:  <span class="badge badge-danger">{{ data.EFFICIENCY | number:'3.1-2' }}</span></span>
+                                    &nbsp;&nbsp;<span class="badge badge-info" style="font-size: 11px;">Performance:  <span class="badge badge-danger">{{ data.PERFORMANCE | number:'3.1-2' }}</span></span>
+                                    &nbsp;&nbsp;<span class="badge badge-info" style="font-size: 11px;">NPT:  <span class="badge badge-danger">{{ data.NPT }}</span></span>
+                                    &nbsp;&nbsp;<span class="badge badge-info" style="font-size: 11px;">WIP:  <span class="badge badge-danger">{{ data.WIP}}</span></span>
+                                </div>*@
+                                    <span style="display:block;float: right;">
+
+                                        <span class="badge badge-dark" style="cursor:pointer;" ng-if="!isTargetSetting && vm.CUR_FLR.PROD_ENTRY_FLAG == 'W'" ng-click="vm.openOutPlanProdEntryModal(data)"><i class="fa fa-plus"></i> OutOfPlanProd</span>
+
+                                        <span class="badge badge-primary" style="cursor:pointer;" ng-if="isTargetSetting && data.GMT_PROD_PLN_CLNDR_ID == data.GMT_PROD_PLN_CLNDR_ID_C" ng-click="vm.openOrderAllocationCnfModal(data.HR_PROD_LINE_ID, data.GMT_PROD_PLN_CLNDR_ID, data.LINE_CODE)"><i class="fa fa-plus"></i> Plans Execution</span>
+                                        &nbsp;&nbsp; <span class="badge badge-warning" style="cursor:pointer;" ng-click="vm.openIeNptModal(data.GMT_PROD_PLN_CLNDR_ID,data.HR_PROD_LINE_ID)"> <i class="fa fa-plus"></i>NPT</span>
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+
+                            <tr ng-repeat="itm in data.items">
+                                <td style="width:3%;" ng-class="{'has-error': (USED_OP_FORM.USED_OP.$touched || IeTargetSettingForm.$submitted) && ( USED_OP_FORM.USED_OP.$error.required || USED_OP_FORM.USED_OP.$error.min ) }">
+                                    <ng-form name="USED_OP_FORM" ng-if="itm.IS_IN_PLAN == 'Y'">
+                                        <input type="number" ng-change="vm.onCalculateHourTarget(itm)" name="USED_OP" ng-disabled="!isTargetSetting" class="form-control" ng-model="itm.USED_OP" required min="1" />
+                                    </ng-form>
+
+                                    <span style="display:block;" ng-if="itm.IS_IN_PLAN == 'Y'">
+                                        <small>{{ itm.PLAN_OP }}</small>
+                                    </span>
+                                    <span class="label label-danger" ng-if="itm.IS_IN_PLAN == 'N'">OutOfPlan</span>
+                                </td>
+                                <td style="width:3%;" ng-class="{'has-error': (USED_HLP_FORM.USED_HLP.$touched || IeTargetSettingForm.$submitted)
+                                     && ( USED_HLP_FORM.USED_HLP.$error.required || USED_HLP_FORM.USED_HLP.$error.min )}">
+                                    <ng-form name="USED_HLP_FORM" ng-if="itm.IS_IN_PLAN == 'Y'">
+                                        <input type="number" ng-change="vm.onCalculateHourTarget(itm)" ng-disabled="!isTargetSetting" name="USED_HLP" class="form-control" ng-model="itm.USED_HLP" required min="1" />
+                                    </ng-form>
+                                    <span style="display:block;" ng-if="itm.IS_IN_PLAN == 'Y'"> <small>{{ itm.PLAN_HP }}</small></span>
+                                    <span class="label label-danger" ng-if="itm.IS_IN_PLAN == 'N'">OutOfPlan</span>
+                                </td>
+                                <td style="width:2%;"> {{ itm.BYR_ACC_GRP_NAME_EN }}</td>
+                                <td style="width:8%;">
+                                    {{ itm.ORDER_NO }}
+                                    <span style="display:block;">
+                                        <small>{{ itm.STYLE_NO }}</small>
+                                    </span>
+                                    <span style="display:block;">
+                                        <small> {{ itm.ITEM_NAME_EN }} <b style="color:blue;">[SMV: {{ itm.SMV }}]</b></small>
+                                    </span>
+                                </td>
+                                <td style="width:3%;" ng-class="{'has-error': (DAY_NO_FORM.DAY_NO.$touched || IeTargetSettingForm.$submitted) && (DAY_NO_FORM.DAY_NO.$error.required ||  DAY_NO_FORM.DAY_NO.$error.min)}">
+                                    <ng-form name="DAY_NO_FORM" ng-if="itm.IS_IN_PLAN == 'Y'">
+                                        <input ng-model="itm.DAY_NO" ng-disabled="(!isTargetSetting || itm.IS_TRGT_LOCK=='Y') && vm.CUR_FLR.IS_ADMIN=='N'" name="DAY_NO" type="number" class="form-control" required min="1" />
+                                    </ng-form>
+                                    <span class="label label-danger" ng-if="itm.IS_IN_PLAN == 'N'">OutOfPlan</span>
+
+                                </td>
+
+                                <td style="width:4%;" ng-class="{'has-error': (TARGET_EFF_FORM.TARGET_EFF.$touched || IeTargetSettingForm.$submitted) && ( TARGET_EFF_FORM.TARGET_EFF.$error.required || TARGET_EFF_FORM.TARGET_EFF.$error.min || TARGET_EFF_FORM.TARGET_EFF.$error.max) }">
+                                    <ng-form name="TARGET_EFF_FORM" ng-if="itm.IS_IN_PLAN == 'Y'">
+                                        <input ng-model="itm.TARGET_EFF" ng-disabled="(!isTargetSetting || itm.IS_TRGT_LOCK=='Y' ) && vm.CUR_FLR.IS_ADMIN=='N'" name="TARGET_EFF" type="number" ng-change="vm.onCalculateHourTarget(itm)" min="1" max="100" required class="form-control" />
+                                    </ng-form>
+
+                                    <span class="label label-danger" ng-if="itm.IS_IN_PLAN == 'N'">OutOfPlan</span>
+
+
+                                    <span style="display:block;">
+
+                                        <div class="ui-inputgroup">
+                                            <span class="ui-inputgroup-addon"><i class="fa fa-dot-circle-o"></i></span>
+                                            <input type="number"  ng-model="itm.HRLY_TARGET" class="form-control" readonly>
+                                        </div>
+                                    </span>
+                                </td>
+                                <td style="width:4%;" ng-class="{'has-error': (TARGET_WH_FORM.TARGET_WH.$touched || IeTargetSettingForm.$submitted) && (TARGET_WH_FORM.TARGET_WH.$error.required || TARGET_WH_FORM.TARGET_WH.$error.min || TARGET_WH_FORM.TARGET_WH.$error.max)}">
+                                    <ng-form name="TARGET_WH_FORM" ng-if="itm.IS_IN_PLAN == 'Y'">
+                                        <input ng-model="itm.TARGET_WH" ng-disabled="(!isTargetSetting || itm.IS_TRGT_LOCK=='Y' ) && vm.CUR_FLR.IS_ADMIN=='N'" name="TARGET_WH" type="number" min="1" max="20" required class="form-control" ng-change="vm.onCalculateHourTarget(itm)" />
+                                    </ng-form>
+                                    <span class="label label-danger" ng-if="itm.IS_IN_PLAN == 'N'">OutOfPlan</span>
+                                    <div class="ui-inputgroup">
+                                        <span class="ui-inputgroup-addon"><i class="fa fa-dot-circle-o"></i></span>
+                                        <input type="number" ng-model="itm.DAY_TARGET" class="form-control" readonly>
+                                    </div>
+                                </td>
+
+                                <td style="width:3%;" ng-class="{'has-error': (R_BEGIN_HR_FORM.R_BEGIN_HR.$touched || R_BEGIN_HR_FORM.R_END_HR.$touched || IeTargetSettingForm.$submitted) && (
+                                    R_BEGIN_HR_FORM.R_BEGIN_HR.$error.required||R_BEGIN_HR_FORM.R_END_HR.$error.required|| R_BEGIN_HR_FORM.R_END_HR.$error.min || R_BEGIN_HR_FORM.R_END_HR.$error.max
+                                    || R_BEGIN_HR_FORM.R_BEGIN_HR.$error.min || R_BEGIN_HR_FORM.R_BEGIN_HR.$error.max)}">
+                                    <ng-form name="R_BEGIN_HR_FORM" ng-if="itm.IS_IN_PLAN == 'Y'">
+                                        <input ng-model="itm.R_BEGIN_HR" ng-disabled="(!isTargetSetting || itm.IS_TRGT_LOCK=='Y' ) && vm.CUR_FLR.IS_ADMIN=='N'" name="R_BEGIN_HR" type="number" min="1" required max="20" class="form-control" />
+
+                                        To
+                                        <input ng-model="itm.R_END_HR" ng-disabled="(!isTargetSetting || itm.IS_TRGT_LOCK=='Y' ) && vm.CUR_FLR.IS_ADMIN=='N'" name="R_END_HR" type="number" min="1" required max="20" class="form-control" />
+                                    </ng-form>
+                                    <span class="label label-danger" ng-if="itm.IS_IN_PLAN == 'N'">OutOfPlan</span>
+                                </td>
+
+                                <td ng-if="isTargetSetting && itm.IS_IN_PLAN == 'Y'" style="width:3%;" ng-style="{'background-color': findColorCode(itm, 1)}" title="{{ findTitle(itm, 1)}}"> {{ itm.H1_HR }} </td>
+                                <td ng-if="isTargetSetting && itm.IS_IN_PLAN == 'Y'" style="width:3%;" ng-style="{'background-color': findColorCode(itm, 2)}" title="{{ findTitle(itm, 2)}}"> {{ itm.H2_HR }} </td>
+                                <td ng-if="isTargetSetting && itm.IS_IN_PLAN == 'Y'" style="width:3%;" ng-style="{'background-color': findColorCode(itm, 3)}" title="{{ findTitle(itm, 3)}}"> {{ itm.H3_HR }} </td>
+                                <td ng-if="isTargetSetting && itm.IS_IN_PLAN == 'Y'" style="width:3%;" ng-style="{'background-color': findColorCode(itm, 4)}" title="{{ findTitle(itm, 4)}}"> {{ itm.H4_HR }} </td>
+                                <td ng-if="isTargetSetting && itm.IS_IN_PLAN == 'Y'" style="width:3%;" ng-style="{'background-color': findColorCode(itm, 5)}" title="{{ findTitle(itm, 5)}}"> {{ itm.H5_HR }} </td>
+                                <td ng-if="isTargetSetting && itm.IS_IN_PLAN == 'Y'" style="width:3%;" ng-style="{'background-color': findColorCode(itm, 6)}" title="{{ findTitle(itm, 6)}}"> {{ itm.H6_HR }}</td>
+                                <td ng-if="isTargetSetting && itm.IS_IN_PLAN == 'Y'" style="width:3%;" ng-style="{'background-color': findColorCode(itm, 7)}" title="{{ findTitle(itm, 7)}}"> {{ itm.H7_HR }}</td>
+                                <td ng-if="isTargetSetting && itm.IS_IN_PLAN == 'Y'" style="width:3%;" ng-style="{'background-color': findColorCode(itm, 8)}" title="{{ findTitle(itm, 8)}}"> {{ itm.H8_HR }}</td>
+
+                                <td ng-if="isTargetSetting" style="width:3%;"> {{ itm.RUNING_OTWH }} </td>
+                                <td ng-if="isTargetSetting" style="width:3%;"> {{ itm.ACHV_QTY_OTWH }}</td>
+
+                                <td ng-if="!isTargetSetting && itm.IS_IN_PLAN == 'Y'" style="padding-left:0px;width:3%;padding-right:0px;" ng-class="{'has-error': (H1_HR_FORM.H1_HR.$touched || IeTargetSettingForm.$submitted) &&  H1_HR_FORM.H1_HR.$error.min }"><ng-form name="H1_HR_FORM"> <input type="number" name="H1_HR" tabindex="{{findTabIndex(key, $index,1)}}" ng-model="itm.H1_HR" ng-disabled="is_locked(1,itm.prods) && vm.CUR_FLR.IS_ADMIN=='N' " class="form-control" min="0" ng-change="onChangeVal(vm.data)" ng-model-options="{ debounce: { 'default': 100, 'blur': 0 } }"> </ng-form> <i class="fa" ng-class="{'fa-lock': is_locked(1,itm.prods),'fa-unlock': !is_locked(1,itm.prods)}"></i> </td>
+                                <td ng-if="!isTargetSetting && itm.IS_IN_PLAN == 'Y'" style="padding-left:0px;width:3%;padding-right:0px;" ng-class="{'has-error': (H2_HR_FORM.H2_HR.$touched || IeTargetSettingForm.$submitted) &&  H2_HR_FORM.H2_HR.$error.min }"><ng-form name="H2_HR_FORM"> <input type="number" name="H2_HR" tabindex="{{findTabIndex(key, $index, 100)}}" ng-disabled="(itm.H1_HR==null || !is_locked(1,itm.prods) || is_locked(2,itm.prods)) && vm.CUR_FLR.IS_ADMIN=='N'" ng-model="itm.H2_HR" class="form-control" min="0" ng-change="onChangeVal(vm.data)" ng-model-options="{ debounce: { 'default': 100, 'blur': 0 } }"></ng-form> <i class="fa" ng-class="{'fa-lock': is_locked(2,itm.prods),'fa-unlock': !is_locked(2,itm.prods)}"></i></td>
+                                <td ng-if="!isTargetSetting && itm.IS_IN_PLAN == 'Y'" style="padding-left:0px;width:3%;padding-right:0px;" ng-class="{'has-error': (H3_HR_FORM.H3_HR.$touched || IeTargetSettingForm.$submitted) &&  H3_HR_FORM.H3_HR.$error.min }"><ng-form name="H3_HR_FORM"> <input type="number" name="H3_HR" tabindex="{{findTabIndex(key, $index,200)}}" ng-disabled="(itm.H2_HR==null || !is_locked(2,itm.prods) || is_locked(3,itm.prods) ) && vm.CUR_FLR.IS_ADMIN=='N'" ng-model="itm.H3_HR" class="form-control" min="0" ng-change="onChangeVal(vm.data)" ng-model-options="{ debounce: { 'default': 100, 'blur': 0 } }"> </ng-form> <i class="fa" ng-class="{'fa-lock': is_locked(3,itm.prods),'fa-unlock': !is_locked(3,itm.prods)}"></i> </td>
+                                <td ng-if="!isTargetSetting && itm.IS_IN_PLAN == 'Y'" style="padding-left:0px;width:3%;padding-right:0px;" ng-class="{'has-error': (H4_HR_FORM.H4_HR.$touched || IeTargetSettingForm.$submitted) &&  H4_HR_FORM.H4_HR.$error.min }"><ng-form name="H4_HR_FORM"> <input type="number" name="H4_HR" tabindex="{{findTabIndex(key, $index,300)}}" ng-disabled="(itm.H3_HR==null || !is_locked(3,itm.prods) || is_locked(4,itm.prods) ) && vm.CUR_FLR.IS_ADMIN=='N'" ng-model="itm.H4_HR" class="form-control" min="0" ng-change="onChangeVal(vm.data)" ng-model-options="{ debounce: { 'default': 100, 'blur': 0 } }"> </ng-form> <i class="fa" ng-class="{'fa-lock': is_locked(4,itm.prods),'fa-unlock': !is_locked(4,itm.prods)}"></i> </td>
+                                <td ng-if="!isTargetSetting && itm.IS_IN_PLAN == 'Y'" style="padding-left:0px;width:3%;padding-right:0px;" ng-class="{'has-error': (H5_HR_FORM.H5_HR.$touched || IeTargetSettingForm.$submitted) &&  H5_HR_FORM.H5_HR.$error.min }"><ng-form name="H5_HR_FORM"> <input type="number" name="H5_HR" tabindex="{{findTabIndex(key, $index,400)}}" ng-disabled="(itm.H4_HR==null || !is_locked(4,itm.prods) || is_locked(5,itm.prods) ) && vm.CUR_FLR.IS_ADMIN=='N'" ng-model="itm.H5_HR" class="form-control" min="0" ng-change="onChangeVal(vm.data)" ng-model-options="{ debounce: { 'default': 100, 'blur': 0 } }"> </ng-form> <i class="fa" ng-class="{'fa-lock': is_locked(5,itm.prods),'fa-unlock': !is_locked(5,itm.prods)}"></i> </td>
+                                <td ng-if="!isTargetSetting && itm.IS_IN_PLAN == 'Y'" style="padding-left:0px;width:3%;padding-right:0px;" ng-class="{'has-error': (H6_HR_FORM.H6_HR.$touched || IeTargetSettingForm.$submitted) &&  H6_HR_FORM.H6_HR.$error.min }"><ng-form name="H6_HR_FORM"> <input type="number" name="H6_HR" tabindex="{{findTabIndex(key, $index,500)}}" ng-disabled="(itm.H5_HR==null || !is_locked(5,itm.prods) || is_locked(6,itm.prods) ) && vm.CUR_FLR.IS_ADMIN=='N'" ng-model="itm.H6_HR" class="form-control" min="0" ng-change="onChangeVal(vm.data)" ng-model-options="{ debounce: { 'default': 100, 'blur': 0 } }"></ng-form> <i class="fa" ng-class="{'fa-lock': is_locked(6,itm.prods),'fa-unlock': !is_locked(6,itm.prods)}"></i> </td>
+                                <td ng-if="!isTargetSetting && itm.IS_IN_PLAN == 'Y'" style="padding-left:0px;width:3%;padding-right:0px;" ng-class="{'has-error': (H7_HR_FORM.H7_HR.$touched || IeTargetSettingForm.$submitted) &&  H7_HR_FORM.H7_HR.$error.min }"><ng-form name="H7_HR_FORM"> <input type="number" name="H7_HR" tabindex="{{findTabIndex(key, $index,600)}}" ng-disabled="(itm.H6_HR==null || !is_locked(6,itm.prods) || is_locked(7,itm.prods) ) && vm.CUR_FLR.IS_ADMIN=='N'" ng-model="itm.H7_HR" class="form-control" min="0" ng-change="onChangeVal(vm.data)" ng-model-options="{ debounce: { 'default': 100, 'blur': 0 } }"></ng-form> <i class="fa" ng-class="{'fa-lock': is_locked(7,itm.prods),'fa-unlock': !is_locked(7,itm.prods)}"></i> </td>
+                                <td ng-if="!isTargetSetting && itm.IS_IN_PLAN == 'Y'" style="padding-left:0px;width:3%;padding-right:0px;" ng-class="{'has-error': (H8_HR_FORM.H8_HR.$touched || IeTargetSettingForm.$submitted) &&  H8_HR_FORM.H8_HR.$error.min }"><ng-form name="H8_HR_FORM"> <input type="number" name="H8_HR" tabindex="{{findTabIndex(key, $index,700)}}" ng-disabled="(itm.H7_HR==null || !is_locked(7,itm.prods) || is_locked(8,itm.prods) ) && vm.CUR_FLR.IS_ADMIN=='N'" ng-model="itm.H8_HR" class="form-control" min="0" ng-change="onChangeVal(vm.data)" ng-model-options="{ debounce: { 'default': 100, 'blur': 0 } }"></ng-form>  <i class="fa" ng-class="{'fa-lock': is_locked(8,itm.prods),'fa-unlock': !is_locked(8,itm.prods)}"></i> </td>
+                                <td ng-if="!isTargetSetting && itm.IS_IN_PLAN == 'Y'" style="padding-left:0px;width:3%;padding-right:0px;" ng-class="{'has-error': (OTWH_FORM.OTWH.$touched || IeTargetSettingForm.$submitted) &&  ( OTWH_FORM.OTWH.$error.min || OTWH_FORM.OTWH.$error.max )}"><ng-form name="OTWH_FORM"> <input type="number" step="any" name="OTWH" tabindex="{{findTabIndex(key, $index,800)}}" ng-disabled="is_locked(9,itm.prods) && vm.CUR_FLR.IS_ADMIN=='N'" ng-model="itm.OTWH" class="form-control" max="12" min="0"></ng-form>  </td>
+                                <td ng-if="!isTargetSetting && itm.IS_IN_PLAN == 'Y'" style="padding-left:0px;width:3%;padding-right:0px;" ng-class="{'has-error': (ACHV_QTY_OTWH_FORM.ACHV_QTY_OTWH_FORM.$touched || IeTargetSettingForm.$submitted) &&  ACHV_QTY_OTWH_FORM.ACHV_QTY_OTWH_FORM.$error.min }"><ng-form name="ACHV_QTY_OTWH_FORM"> <input name="ACHV_QTY_OTWH" ng-disabled="is_locked(9,itm.prods) && vm.CUR_FLR.IS_ADMIN=='N'" tabindex="{{findTabIndex(key, $index, 900)}}" type="number" ng-model="itm.ACHV_QTY_OTWH" ng-change="onChangeVal(vm.data)" ng-model-options="{ debounce: { 'default': 100, 'blur': 0 } }" class="form-control" min="0"></ng-form> </td>
+
+                                <td ng-if="!isTargetSetting && itm.IS_IN_PLAN == 'N'" style="padding-left:0px;width:3%;padding-right:0px;"> {{ itm.H1_HR }} </td>
+                                <td ng-if="!isTargetSetting && itm.IS_IN_PLAN == 'N'" style="padding-left:0px;width:3%;padding-right:0px;">{{ itm.H2_HR }}</td>
+                                <td ng-if="!isTargetSetting && itm.IS_IN_PLAN == 'N'" style="padding-left:0px;width:3%;padding-right:0px;">{{ itm.H3_HR }} </td>
+                                <td ng-if="!isTargetSetting && itm.IS_IN_PLAN == 'N'" style="padding-left:0px;width:3%;padding-right:0px;">{{ itm.H4_HR }}</td>
+                                <td ng-if="!isTargetSetting && itm.IS_IN_PLAN == 'N'" style="padding-left:0px;width:3%;padding-right:0px;">{{ itm.H5_HR }} </td>
+                                <td ng-if="!isTargetSetting && itm.IS_IN_PLAN == 'N'" style="padding-left:0px;width:3%;padding-right:0px;">{{ itm.H6_HR }}</td>
+                                <td ng-if="!isTargetSetting && itm.IS_IN_PLAN == 'N'" style="padding-left:0px;width:3%;padding-right:0px;">{{ itm.H7_HR }}</td>
+                                <td ng-if="!isTargetSetting && itm.IS_IN_PLAN == 'N'" style="padding-left:0px;width:3%;padding-right:0px;">{{ itm.H8_HR }}</td>
+                                <td ng-if="!isTargetSetting && itm.IS_IN_PLAN == 'N'" style="padding-left:0px;width:3%;padding-right:0px;">{{ itm.OTWH }}</td>
+                                <td ng-if="!isTargetSetting && itm.IS_IN_PLAN == 'N'" style="padding-left:0px;width:3%;padding-right:0px;">{{ itm.ACHV_QTY_OTWH }}</td>
+
+                                <td style="width:3%;"> {{ itm.ACHV_QTY_GWH + itm.ACHV_QTY_OTWH }}</td>
+                                <td style="width:3%;"> {{ itm.WIP }}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot ng-if="$last">
+                            <tr style="background-color:grey;color: white;">
+                                <td style="width:30%" colspan="8">
+                                    <span class="label label-warning" style="float:left;">Floor Ttl Target<b>{{ vm.data.DAY_TARGET }}</b></span>
+                                    @*(<span class="label label-info">{{ vm.data.HOURLY_TARGET }}/Hr</span>)*@
+                                    <b style="float:right;">Total</b>
+                                </td>
+                                <td style="width:3%;"><b>{{ vm.data.H1_HR }}</b></td>
+                                <td style="width:3%;"><b>{{ vm.data.H2_HR }}</b></td>
+                                <td style="width:3%;"><b>{{ vm.data.H3_HR }}</b></td>
+                                <td style="width:3%;"><b>{{ vm.data.H4_HR }}</b></td>
+                                <td style="width:3%;"><b>{{ vm.data.H5_HR }}</b></td>
+                                <td style="width:3%;"><b>{{ vm.data.H6_HR }}</b></td>
+                                <td style="width:3%;"><b>{{ vm.data.H7_HR }}</b></td>
+                                <td style="width:3%;"><b>{{ vm.data.H8_HR }}</b></td>
+                                <td style="width:3%;"><b></b></td>
+                                <td style ="width:3%;"><b>{{ vm.data.ACHV_QTY_OTWH }}</b></td>
+                                <td style="width:3%;"><b>{{ vm.data.ACHV_QTY_OTWH + vm.data.ACHV_QTY_GWH }}</b></td>
+                                <td style="width:3%;"><b>{{ vm.data.WIP }}</b></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="row" style="margin:auto;">
+                    <div class="col-md-6">
+                        
+                        <button type="submit" class="btn btn-sm green" ng-if="isTargetSetting && vm.CUR_FLR.TERGET_SETTING_FLAG=='W'">Save</button>
+                        <button type="submit" class="btn btn-sm green" ng-if="!isTargetSetting && vm.CUR_FLR.PROD_ENTRY_FLAG == 'W'">Save</button>
+                        <button type="button" class="btn btn-sm default" ng-if="vm.CUR_FLR.PROD_ENTRY_FLAG == 'W'|| vm.CUR_FLR.TERGET_SETTING_FLAG=='W'" ng-click="cancel()">Reset</button>
+                    </div>
+
+                    <div class="col-md-6">
+                        <button type="button" style="float: right;" ng-if="vm.CUR_FLR.IS_ADMIN=='N' && (vm.CUR_FLR.PROD_ENTRY_FLAG == 'W'|| vm.CUR_FLR.TERGET_SETTING_FLAG=='W')" class="btn btn-sm btn-warning" ng-click="vm.submitDataLock(vm.data, IeTargetSettingForm.$valid, 'Y');IeTargetSettingForm.$submitted=true">Lock Recent Entry</button>
+                    </div>
+                </div>
+            </form>
+
+                <!-- END Portlet PORTLET-->
+</div>
+    </div>
+</div>
+
+    <script type="text/ng-template" id="HourlyProductionBoardConfigModal.html">
+        <div class="modal-body">
+            <div id="splash-page" data-ng-show="showSplash" class="dissolve-animation">
+                <div class="page-splash">
+                    <div class="page-splash-message">
+                        <b>Please wait ....</b>
+                    </div>
+                </div>
+            </div>
+
+            <div class="portlet grey-cascade box">
+                <div class="portlet-title">
+                    <div>
+                        <h3 style="padding-top:10px;margin-top:3px;">
+                            <span class="item"> <span aria-hidden="true" class="icon-settings"></span>&nbsp;Setting</span>
+                            <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                        </h3>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <form role="form" class="form-horizontal">
+                        <div style="padding:5px;" class="row">
+
+
+                            <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)"><h4 style="margin:0px;">{{alert.msg}}</h4></alert>
+
+                            @*<div class="row" style="padding-bottom:5px;margin:auto;">
+                                    <div class="input-icon right">
+                                        <i class="icon-magnifier" style="margin-top: 6px;"></i>
+                                        <input type="text" class="form-control form-control-solid" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" ng-model="q" placeholder="search...">
+                                    </div>
+                                </div>*@
+
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Option :</label>
+                                <div class="col-md-10">
+                                    <div class="radio-list">
+                                        <label class="radio-inline">
+                                            <span class="checked"><input type="radio" name="option_hpe" ng-model="option_hpe" ng-value="'M'"></span> Multi-Selction
+                                        </label>
+                                        <label class="radio-inline">
+                                            <span class="checked"><input type="radio" name="option_hpe" ng-model="option_hpe" ng-value="'F'"></span> Fixed Floor
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group" ng-show="option_hpe=='F'">
+                                <label class="col-md-5 control-label"></label>
+                                <div class="col-md-5">
+                                    <div class="radio-list">
+                                        <label ng-repeat="itm in FloorList">
+                                            <input type="radio" name="floor" ng-model="$parent.floor_hpe" ng-value="itm.HR_PROD_FLR_ID"> {{itm.FLOOR_DESC_EN}}
+                                        </label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <table class="table table-condensed table-striped table-bordered" style="margin-bottom: 0px" ng-if="option_hpe=='M'">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50%;">
+                                            Floor
+                                        </th>
+                                        <th style="width: 50%;">
+                                            Line
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div slimscroll="{height: 300,allowPageScroll:true,railVisible :true,allowPageScroll :true}" ng-if="option_hpe=='M'">
+                                <table class="table table-condensed table-striped table-bordered" style="margin-bottom: 3px">
+                                    <tbody>
+
+                                        <tr ng-repeat="item in lineList">
+                                            <td style="width: 50%;" rowspan="{{item.LK_FLOOR_ID_SPAN}}" ng-if="item.LK_FLOOR_ID_SL==1">
+                                                <div class="checkbox-list">
+                                                    <label class="checkbox-list">
+                                                        <span><input type="checkbox" ng-model="item.IS_SELECT_FLR" ng-change="FloorChange(item.HR_PROD_FLR_ID,item.IS_SELECT_FLR)"></span> {{item.FLOOR_DESC_EN}}
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td style="width: 50%;">
+                                                <div class="checkbox-list">
+                                                    <label class="checkbox-list">
+                                                        <span><input type="checkbox" ng-model="item.IS_SELECT_LINE"></span> {{item.LINE_CODE}}
+                                                    </label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <div class="row" style="margin:auto;">
+                                <div class="col-md-12">
+                                    <button type="button" class="btn btn-sm green" ng-click="save(lineList)">Save</button>
+                                    <button type="button" class="btn btn-sm default" ng-click="cancel()">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="FaultReasonChangeModal.html">
+        <div class="modal-body">
+
+            <div class="portlet grey-cascade box">
+                <div class="portlet-title">
+                    <div>
+                        <h3 style="padding-top:10px;margin-top:3px;">
+                            <span class="item"> <span aria-hidden="true" class="icon-settings"></span>&nbsp;Status</span>
+                            <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                        </h3>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <form role="form" class="form-horizontal">
+                        <div style="padding:5px;" class="row">
+                            <div class="row" style="margin:auto;">
+                                <div class="col-md-12">
+                                    <select class="form-control" kendo-drop-down-list name="RF_PFLT_RSN_TYPE_ID" k-option-label="'--No Problem --'"
+                                            k-data-text-field="'RSN_TYPE_NAME_EN'" k-data-value-field="'RF_PFLT_RSN_TYPE_ID'" k-filter="'Contains'"
+                                            k-auto-bind="'true'" k-data-source="dataSource" k-on-change="onChangeReason(kendoEvent)" ng-model="form.RF_PFLT_RSN_TYPE_ID"></select>
+                                </div>
+
+                            </div>
+
+                            <div class="row" style="margin:auto;padding-top:3px;" ng-if="form.RF_PFLT_RSN_TYPE_ID==-100">
+                                <div class="col-md-12">
+                                    <textarea rows="3" name="RSN_TYPE_NAME_EN" class="form-control" cols="50" ng-model="form.RSN_TYPE_NAME_EN" placeholder="Reason goes here..."></textarea>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin:auto;padding-top:5px;">
+                                <div class="col-md-12">
+                                    <button type="button" class="btn btn-sm green" ng-click="save(form)">Save</button>
+                                    <button type="button" class="btn btn-sm default" ng-click="cancel()">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </script>

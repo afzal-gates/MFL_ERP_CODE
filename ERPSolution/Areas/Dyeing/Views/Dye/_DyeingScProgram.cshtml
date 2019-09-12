@@ -1,0 +1,1120 @@
+﻿<style>
+    .dropdown-header {
+        border-width: 0 0 1px 0;
+        text-transform: uppercase;
+    }
+
+        .dropdown-header > span {
+            display: inline-block;
+            padding: 10px;
+        }
+
+            .dropdown-header > span:first-child {
+                width: 10px;
+            }
+
+    .selected-value {
+        display: inline-block;
+        vertical-align: middle;
+        width: 24px;
+        height: 24px;
+        background-size: 100%;
+        margin-right: 5px;
+        border-radius: 50%;
+    }
+
+    #customers-list .k-item {
+        line-height: 1em;
+        min-width: 300px;
+    }
+
+    /* Material Theme padding adjustment*/
+
+    .k-material #customers-list .k-item,
+    .k-material #customers-list .k-item.k-state-hover,
+    .k-materialblack #customers-list .k-item,
+    .k-materialblack #customers-list .k-item.k-state-hover {
+        padding-left: 5px;
+        border-left: 0;
+    }
+
+    #customers-list .k-item > span {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        display: inline-block;
+        vertical-align: top;
+        margin: 20px 10px 10px 5px;
+    }
+
+        #customers-list .k-item > span:first-child {
+            -moz-box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            -webkit-box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            margin: 5px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+
+    #customers-list h3 {
+        font-size: 1.2em;
+        font-weight: normal;
+        margin: 0 0 1px 0;
+        padding: 0;
+    }
+
+    #customers-list p {
+        margin: 0;
+        padding: 0;
+        font-size: .8em;
+    }
+
+
+    /*///////////////////////*/
+    .k-treeview .k-in {
+        padding: 5px;
+    }
+
+    #ItemCategTreeview .k-sprite {
+        background-image: url("/Content/assets/global/img/coloricons-sprite.png");
+    }
+
+    .rootfolder {
+        background-position: 0 0;
+    }
+
+    .folder {
+        background-position: 0 -16px;
+    }
+
+    .pdf {
+        background-position: 0 -32px;
+    }
+
+    .html {
+        background-position: 0 -48px;
+    }
+
+    .image {
+        background-position: 0 -64px;
+    }
+
+    /*.demo-section {
+        float: left;
+        width: 200px;
+        margin: 0 60px 0 0;
+    }*/
+</style>
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Dyeing</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+    <form name="formData" class="form-horizontal" style="background-color: white;">
+        <div class="portlet-body">
+
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend"><b>Program Information By Batch:</b></legend>
+                <div><label id="lblMsg"></label></div>
+
+                <div class="form-group">
+                    <div class="col-md-1">
+                    </div>
+                    <label class="control-label col-md-2">
+                        <span aria-required="true" class="required"></span>
+                        Program Type
+                    </label>
+                    <div class="col-md-4">
+                        <input type="radio" id="IS_BATCH_YES" value="Y" style="border: 0px; width: 10%; height: 1.5em;" ng-model="vm.form.IS_BATCH" /><label for="IS_BATCH_YES"> <b>Batch Card</b></label>&nbsp; &nbsp;&nbsp;
+                        <input type="radio" id="IS_BATCH_NO" value="N" style="border: 0px; width: 10%; height: 1.5em;" ng-model="vm.form.IS_BATCH" /><label for="IS_BATCH_NO"> <b>Grey Fabric</b>&nbsp; &nbsp;&nbsp;</label>
+                        <input type="radio" id="IS_BATCH_BT" value="B" style="border: 0px; width: 10%; height: 1.5em;" ng-model="vm.form.IS_BATCH" /><label for="IS_BATCH_BT"> <b>Batch Fabric</b>&nbsp; &nbsp;&nbsp;</label>
+
+                    </div>
+
+                    <label class="control-label col-md-1" ng-if="vm.form.IS_BATCH=='Y'">
+                        <span aria-required="true" class="required"></span>
+                        Batch #
+                    </label>
+                    <div class="col-md-2" ng-if="vm.form.IS_BATCH=='Y'">
+                        <input type="text" id="REMARKS" name="DYE_BATCH_NO" ng-model="vm.form.DYE_BATCH_NO" class="form-control" />
+                        <input type="hidden" ng-model="vm.form.DYE_BT_CARD_H_ID" />
+                    </div>
+                    <div class="col-md-1" ng-if="vm.form.IS_BATCH=='Y'">
+                        <a class="btn btn-sm yellow-gold" ng-click="vm.findBatchFabData()"><i class="fa fa-search"> Load</i></a>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <div class="col-md-1">
+                    </div>
+                    <label class="control-label col-md-2 ">
+                        <span aria-required="true" class="required">*</span>
+                        Company
+                    </label>
+                    <div class="col-md-3">
+                        <select kendo-drop-down-list name="HR_COMPANY_ID" id="HR_COMPANY_ID" class="form-control required"
+                                options="vm.companyList" ng-model="vm.form.HR_COMPANY_ID" tabindex="5" required></select>
+                        <input type="hidden" id="ISS_STORE_ID" name="ISS_STORE_ID" ng-model="vm.form.ISS_STORE_ID" />
+
+                    </div>
+
+                    <label class="control-label col-md-2">
+                        <span aria-required="true" class="required"></span>
+                        S/C Party
+                    </label>
+                    <div class="col-md-2">
+                        <select class="form-control" kendo-drop-down-list name="SCM_SUPPLIER_ID" k-option-label="'-- Select S/C Party --'"
+                                k-data-text-field="'SUP_TRD_NAME_EN'" k-data-value-field="'SCM_SUPPLIER_ID'" k-filter="'contains'"
+                                k-auto-bind="'true'" k-data-source="vm.supplierList" k-ng-delay="vm.supplierList"
+                                ng-class="{'required': vm.form.ACTN_ROLE_FLAG=='SI'}"
+                                ng-model=" vm.form.SCM_SUPPLIER_ID"></select>
+
+                    </div>
+                    @*<div class="col-md-2">
+
+                            <select kendo-drop-down-list name="SCM_SUPPLIER_ID" id="SCM_SUPPLIER_ID" class="form-control"
+                                    options="vm.scPartyList" ng-model="vm.form.SCM_SUPPLIER_ID" ng-class="{'required': vm.form.ACTN_ROLE_FLAG=='SI'}"></select>
+
+                        </div>*@
+
+                    <div class="col-md-2">
+                        <input type="checkbox" id="IS_SC" ng-model="vm.form.IS_SC" ng-true-value="'Y'" ng-false-value="'N'" ng-click="vm.reloadScParty()" /><label for="IS_SC">Is S/C Party?</label>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-1">
+                    </div>
+                    <label class="control-label col-md-2">
+                        <span aria-required="true" class="required"></span>
+                        Program No
+                    </label>
+                    <div class="col-md-2">
+                        <input type="text" name="SC_PRG_NO" placeholder="[Auto Gen]" ng-model="vm.form.SC_PRG_NO" readonly="readonly" class="form-control" />
+                        <input type="hidden" id="DF_SC_PT_ISS_H_ID" name="DF_SC_PT_ISS_H_ID" ng-model="vm.form.DF_SC_PT_ISS_H_ID" />
+                        <input type="hidden" id="DYE_GSTR_REQ_H_ID" name="DYE_GSTR_REQ_H_ID" ng-model="vm.form.DYE_GSTR_REQ_H_ID" />
+                        <input type="hidden" id="RF_FAB_PROD_CAT_LST" name="RF_FAB_PROD_CAT_LST" ng-model="vm.form.RF_FAB_PROD_CAT_LST" />
+
+                    </div>
+
+                    <div class="col-md-1">
+                    </div>
+                    <label class="col-md-2 control-label">
+                        <span aria-required="true" class="required">*</span>
+                        Program Date
+                    </label>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control required" ng-click="PRG_ISS_DT_LNopen($event)" ng-focus="PRG_ISS_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                               name="PRG_ISS_DT" max-date="vm.today" ng-model="vm.form.PRG_ISS_DT" is-open="PRG_ISS_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close"
+                               required />
+
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="vm.form.DF_SC_PT_RCV_H_ID>0">
+                    <div class="col-md-1">
+                    </div>
+                    <label class="control-label col-md-2">
+                        <span aria-required="true" class="required"></span>
+                        Revision No
+                    </label>
+                    <div class="col-md-2">
+                        <input type="number" name="REVISION_NO" ng-model="vm.form.REVISION_NO" readonly="readonly" class="form-control" />
+                        <input type="hidden" id="DF_SC_PT_RCV_H_ID" name="DF_SC_PT_RCV_H_ID" ng-model="vm.form.DF_SC_PT_RCV_H_ID" />
+
+                    </div>
+
+                    <div class="col-md-1">
+                    </div>
+                    <label class="col-md-2 control-label">
+                        <span aria-required="true" class="required">*</span>
+                        Revision Date
+                    </label>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control required" ng-click="REVISION_DT_LNopen($event)" ng-focus="REVISION_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                               name="REVISION_DT" max-date="vm.today" ng-model="vm.form.REVISION_DT" is-open="REVISION_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close"
+                               required />
+
+                    </div>
+                </div>
+
+
+                <div class="form-group" ng-if="vm.form.DF_SC_PT_RCV_H_ID>0">
+                    <div class="col-md-1">
+                    </div>
+                    <label class="control-label col-md-2">
+                        <span aria-required="true" class="required"></span>
+                        Revision Reason
+                    </label>
+                    <div class="col-md-7">
+                        <textarea name="REV_REASON" ng-model="vm.form.REV_REASON" class="form-control"></textarea>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-1"></div>
+
+                    <label class="col-md-2 control-label">
+                        <span aria-required="true" class="required"></span>
+                        Program By
+                    </label>
+                    <div class="col-md-3">
+                        <select id="customers" kendo-drop-down-list options="vm.userList" ng-model="vm.form.PRG_ISS_BY" class="form-control required" style="width:100%;"></select>
+
+                    </div>
+
+                    <label class="control-label col-md-2">
+                        <span aria-required="true" class="required">*</span>
+                        Program To
+                    </label>
+                    <div class="col-md-3">
+
+                        <select id="customers" kendo-drop-down-list options="vm.userList" ng-model="vm.form.PRG_ISS_TO" class="form-control required" style="width:100%;"></select>
+
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-1"></div>
+
+                    <label class="control-label col-md-2">
+                        <span aria-required="true" class="required">*</span>
+                        Required Process
+                    </label>
+                    <div class="col-md-3">
+
+
+                        <select kendo-multi-select name="DF_PROC_TYPE_ID" id="DF_PROC_TYPE_ID" class="form-control required requiredSub"
+                                options="vm.processTypeList" ng-model="vm.form.DF_PROC_TYPE_LST"></select>
+
+                        @*<select class="form-control" kendo-multi-select name="DF_PROC_TYPE_ID" k-option-label="'-- Select Process --'"
+                            k-data-text-field="'DF_PROC_TYPE_NAME'" k-data-value-field="'DF_PROC_TYPE_ID'" k-filter="'contains'"
+                            k-auto-bind="'true'" k-data-source="vm.processTypeList" k-ng-delay="vm.processTypeList" ng-model="vm.form.DF_PROC_TYPE_LST"></select>*@
+
+                    </div>
+
+
+                    <label class="col-md-2 control-label">
+                        <span aria-required="true" class="required"></span>
+                        Exp. Delivery Date
+                    </label>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control required" ng-click="EXP_DELV_DT_LNopen($event)" ng-focus="EXP_DELV_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                               name="EXP_DELV_DT" min-date="vm.today" ng-model="vm.form.EXP_DELV_DT" is-open="EXP_DELV_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close"
+                               required />
+
+
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <div class="col-md-1">
+                    </div>
+                    <label class="control-label col-md-2">
+                        <span aria-required="true" class="required"></span>
+                        Production Category
+                    </label>
+                    <div class="col-md-3">
+
+                        <select kendo-drop-down-list name="RF_FAB_PROD_CAT_ID" id="RF_FAB_PROD_CAT_ID" class="form-control"
+                                options="vm.prodCatList" ng-model="vm.form.RF_FAB_PROD_CAT_ID"></select>
+
+                    </div>
+
+
+                    <label class="control-label col-md-2">
+                        <span aria-required="true" class="required"></span>
+                        Work Order/Program Type
+                    </label>
+                    <div class="col-md-3">
+
+                        <select kendo-drop-down-list name="LK_FAB_PRG_TYPE" id="LK_FAB_PRG_TYPE" class="form-control required"
+                                options="vm.programTypeList" ng-model="vm.form.LK_FAB_PRG_TYPE"></select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <div class="col-md-1">
+                    </div>
+                    <label class="control-label col-md-2 ">
+                        <span aria-required="true" class="required"></span>
+                        Remarks
+                    </label>
+                    <div class="col-md-8">
+                        <textarea id="REMARKS" name="REMARKS" ng-model="vm.form.REMARKS" class="form-control"></textarea>
+                    </div>
+
+
+                </div>
+
+                <div style="padding:3px;">
+                </div>
+
+            </fieldset>
+            <fieldset>
+                <fieldset class="custom-fieldset" ng-if="vm.form.IS_BATCH=='N'">
+                    <legend class="custom-legend"><b>Order Search Data</b></legend>
+
+                    <div class="form-group">
+                        <div class="col-md-3" style="padding-right: 0px;">
+                            Buyer A/C Group
+                            <select kendo-drop-down-list name="MC_BYR_ACC_GRP_ID" class="form-control"
+                                    k-options="buyerAcGrpList" id="MC_BYR_ACC_GRP_ID" ng-model="search.MC_BYR_ACC_GRP_ID" required></select>
+                        </div>
+
+
+
+
+                        <div class="col-md-3" style="padding-left: 3px; padding-right: 0px;">
+                            Style
+                            <select class="form-control" kendo-drop-down-list name="MC_FAB_PROD_ORD_H_ID" k-option-label="'--Style --'"
+                                    k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_FAB_PROD_ORD_H_ID'" k-filter="'Contains'"
+                                    k-template="template" k-value-template="valueTemplate"
+                                    k-auto-bind="'true'" k-data-source="StyleExtDs" ng-model="search.MC_FAB_PROD_ORD_H_IDD"
+                                    k-on-change="onFabOrderChange(kendoEvent)" required></select>
+                        </div>
+
+                        <div class="col-md-2" style="padding-left: 3px; padding-right: 0px;">
+                            Order No
+                            <select class="form-control" kendo-drop-down-list name="MC_FAB_PROD_ORD_H_ID" k-option-label="'--Order# --'"
+                                    k-data-text-field="'ORDER_NO_LST'" k-data-value-field="'MC_FAB_PROD_ORD_H_ID'" k-filter="'Contains'"
+                                    k-template="templateOh" k-value-template="valueTemplateOh"
+                                    k-auto-bind="'true'" k-data-source="FabOederByOhDs" ng-model="search.MC_FAB_PROD_ORD_H_IDDD"
+                                    required style="width:100%;"></select>
+                        </div>
+                        <div class="col-md-2" style="padding-left: 3px; padding-right: 0px;">
+                            Ship Month
+                            <select class="form-control" kendo-drop-down-list name="MONTHOF" k-option-label="'-- Select Month --'"
+                                    k-data-text-field="'MONTHOF'" k-data-value-field="'MONTHOF'" k-filter="'contains'"
+                                    k-auto-bind="'true'" k-data-source="shipMonthList" k-ng-delay="shipMonthList" ng-model="search.MONTHOF"
+                                    k-on-change="onChangeShipMonth(kendoEvent)"></select>
+                        </div>
+
+                        <div class="col-md-1" style="text-align: right; padding-left: 3px;">
+                            <br />
+                            <a class="btn btn-sm blue-hoki" ng-click="vm.findGridData(search)"><i class="fa fa-search"></i>Load</a>
+                        </div>
+
+                    </div>
+
+                </fieldset>
+
+                <div style="padding:3px;">
+                </div>
+                <tabset>
+                    <tab heading="Body/RIB" active="true">
+
+                        <fieldset class="custom-fieldset" ng-if="vm.form.IS_BATCH=='Y'">
+                            <legend class="custom-legend"><b>Batch Fabric Info</b></legend>
+
+                            <div class="form-group" style="margin:auto;">
+                                <table class="clsTableMtex">
+                                    <thead class="clstheadMtex">
+                                        <tr class="clstdMtex">
+                                            <th class="clstdMtex" style="width:8%;">Buyer A/C Group</th>
+                                            <th class="clstdMtex" style="width:12%;">Order/Style</th>
+                                            <th class="clstdMtex" style="width:5%;">Type</th>
+                                            <th class="clstdMtex" style="width:5%;">Fab. Type</th>
+
+                                            <th class="clstdMtex" style="width:8%;">Color Name</th>
+                                            <th class="clstdMtex" style="width:5%;">Grey Qty</th>
+                                            <th class="clstdMtex" style="width:20%;">Fabric Description</th>
+                                            <th class="clstdMtex" style="width:10%;">Re-Process</th>
+                                            <th class="clstdMtex" style="width:5%;">Req Qty</th>
+                                            <th class="clstdMtex" style="width:5%;">Issue Qty</th>
+                                            <th class="clstdMtex" style="width:5%;">Issue Roll Qty</th>
+                                            <th class="clstdMtex" style="width:5%;">Select</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="clstdMtex" ng-repeat="item in vm.OrderList">
+                                            <td class="clstdMtex">
+                                                {{item.BYR_ACC_NAME_EN}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.STYLE_NO}}<br />{{item.ORDER_NO_LIST}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.COL_TYPE_NAME}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.FAB_PROD_CAT_NAME}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.COLOR_NAME_EN}}
+                                            </td>
+
+                                            <td class="clstdMtex">
+                                                {{item.RQD_QTY}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.FABRIC_DESC}}
+                                            </td>
+
+                                            <td class="clstdMtex">
+                                                <select kendo-multi-select name="DF_PROC_TYPE_ID" id="DF_PROC_TYPE_ID" class="form-control required requiredSub"
+                                                        options="vm.processTypeList" ng-model="item.DF_PROC_TYPE_LST"></select>
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.RQD_QTY}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.ISS_QTY}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.ISS_ROLL_QTY}}
+                                            </td>
+
+                                            <td class="clstdMtex">
+                                                <input type="checkbox" id="IS_SELECT" ng-model="item.IS_SELECT" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div style="padding:3px;">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-11">
+                                    </div>
+                                    <div class="col-md-1">
+                                        <a class="btn btn-sm yellow-gold" ng-disabled="!vm.form.RF_ACTN_STATUS_ID>0" ng-click="vm.addToGrid(vm.OrderList);"> Add to Grid</a>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="padding:3px;">
+                            </div>
+                            <div class="form-group" style="margin:auto;">
+                                <div kendo-grid k-options="vm.gridOptions" k-data-source="vm.ScItemListDS"></div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="custom-fieldset" ng-if="vm.form.IS_BATCH=='N'">
+                            <legend class="custom-legend"><b>Fabric Availablity</b></legend>
+
+                            <div class="form-group" style="margin:auto;">
+                                <table class="clsTableMtex">
+                                    <thead class="clstheadMtex">
+                                        <tr class="clstdMtex">
+                                            <th class="clstdMtex" style="width:12%;">Buyer A/C Group</th>
+                                            <th class="clstdMtex" style="width:12%;">Order/Style</th>
+                                            <th class="clstdMtex" style="width:5%;">Type</th>
+                                            <th class="clstdMtex" style="width:5%;">Fab. Type</th>
+
+                                            <th class="clstdMtex" style="width:8%;">Color Name</th>
+                                            <th class="clstdMtex" style="width:5%;">Grey Qty</th>
+                                            <th class="clstdMtex" style="width:20%;">Fabric Description</th>
+                                            <th class="clstdMtex" style="width:10%;">Re-Process</th>
+                                            <th class="clstdMtex" style="width:5%;">Fabric Qty</th>
+                                            <th class="clstdMtex" ng-if="!vm.form.DF_SC_PT_RCV_H_ID>0" style="width:5%;">Batch Qty</th>
+                                            <th class="clstdMtex" ng-if="!vm.form.DF_SC_PT_RCV_H_ID>0" style="width:5%;">S/C Qty</th>
+
+                                            <th class="clstdMtex" ng-if="!vm.form.DF_SC_PT_RCV_H_ID>0" style="width:5%;">Balance Qty</th>
+                                            <th class="clstdMtex" style="width:10%;">Req. Qty</th>
+                                            <th class="clstdMtex" ng-if="vm.form.DF_SC_PT_RCV_H_ID>0" style="width:7%;">Issue Qty</th>
+                                            <th class="clstdMtex" ng-if="vm.form.DF_SC_PT_RCV_H_ID>0" style="width:7%;">Issue Roll</th>
+                                            <th class="clstdMtex" style="width:5%;">Select</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="clstdMtex" ng-repeat="item in vm.OrderList">
+                                            <td class="clstdMtex">
+                                                {{item.BYR_ACC_NAME_EN}}
+                                                <br />
+                                                <span style="color:red; background-color:skyblue;">{{item.SC_PRG_NO}}</span>
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.STYLE_NO}}<br />{{item.ORDER_NO_LIST}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.COL_TYPE_NAME}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.FAB_PROD_CAT_NAME}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.COLOR_NAME_EN}}
+                                            </td>
+
+                                            <td class="clstdMtex">
+                                                {{item.NET_GFAB_QTY}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.FABRIC_DESC}}
+                                            </td>
+
+                                            <td class="clstdMtex">
+                                                <select kendo-multi-select name="DF_PROC_TYPE_ID" id="DF_PROC_TYPE_ID" class="form-control"
+                                                        options="vm.processTypeList" ng-model="item.DF_PROC_TYPE_LST" ng-class="{'multiSelectSub':item.IS_SELECT==true}"></select>
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.KNT_FAB_QTY}}
+                                            </td>
+                                            <td class="clstdMtex" ng-if="!vm.form.DF_SC_PT_RCV_H_ID>0">
+                                                {{item.BATCH_GFAB_QTY}}
+                                            </td>
+                                            <td class="clstdMtex" ng-if="!vm.form.DF_SC_PT_RCV_H_ID>0">
+                                                {{item.SC_FAB_QTY}}
+                                            </td>
+
+                                            <td class="clstdMtex" ng-if="!vm.form.DF_SC_PT_RCV_H_ID>0">
+                                                {{item.BAL_GFAB_QTY}}
+                                            </td>
+
+                                            <td class="clstdMtex">
+                                                <input type="number" id="RQD_QTY" style="width:60px;text-align:right;" ng-class="{'doubleSub':item.IS_SELECT==true}" ng-model="item.RQD_QTY" />
+                                            </td>
+                                            <td class="clstdMtex" ng-if="vm.form.DF_SC_PT_RCV_H_ID>0">
+                                                <input type="number" id="ISS_QTY" style="width:100%;text-align:right;" ng-class="{'doubleSub':item.IS_SELECT==true}" ng-model="item.ISS_QTY" />
+                                            </td>
+                                            <td class="clstdMtex" ng-if="vm.form.DF_SC_PT_RCV_H_ID>0">
+                                                <input type="number" id="ISS_ROLL_QTY" style="width:100%;text-align:right;" ng-class="{'doubleSub':item.IS_SELECT==true}" ng-model="item.ISS_ROLL_QTY" />
+                                            </td>
+                                            <td class="clstdMtex">
+                                                <input type="checkbox" id="IS_SELECT" ng-model="item.IS_SELECT" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div style="padding:3px;">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-11">
+                                    </div>
+                                    <div class="col-md-1">
+                                        <a class="btn btn-sm yellow-gold" ng-disabled="!vm.form.RF_ACTN_STATUS_ID>0" ng-click="vm.addToGrid(vm.OrderList);"> Add to Grid</a>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="padding:3px;">
+                            </div>
+                            <div class="form-group" style="margin:auto;">
+                                <div kendo-grid k-options="vm.gridOptions" k-data-source="vm.ScItemListDS"></div>
+                            </div>
+                        </fieldset>
+                    </tab>
+
+                    <tab heading="Collar & Cuff">
+
+                        <fieldset class="custom-fieldset" ng-if="vm.form.IS_BATCH=='Y'">
+                            <legend class="custom-legend"><b>Batch Fabric Info</b></legend>
+
+                            <div class="form-group" style="margin:auto;">
+                                <table class="clsTableMtex">
+                                    <thead class="clstheadMtex">
+                                        <tr class="clstdMtex">
+                                            <th class="clstdMtex" style="width:8%;">Buyer A/C Group</th>
+                                            <th class="clstdMtex" style="width:12%;">Order/Style</th>
+                                            <th class="clstdMtex" style="width:5%;">Type</th>
+                                            <th class="clstdMtex" style="width:5%;">Fab. Type</th>
+
+                                            <th class="clstdMtex" style="width:8%;">Color Name</th>
+                                            <th class="clstdMtex" style="width:5%;">Grey Qty</th>
+                                            <th class="clstdMtex" style="width:20%;">Fabric Description</th>
+                                            <th class="clstdMtex" style="width:10%;">Re-Process</th>
+                                            <th class="clstdMtex" style="width:5%;">Req Qty</th>
+                                            <th class="clstdMtex" style="width:5%;">Issue Qty</th>
+                                            <th class="clstdMtex" style="width:5%;">Issue Roll Qty</th>
+                                            <th class="clstdMtex" style="width:5%;">Select</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="clstdMtex" ng-repeat="item in vm.OrderList">
+                                            <td class="clstdMtex">
+                                                {{item.BYR_ACC_NAME_EN}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.STYLE_NO}}<br />{{item.ORDER_NO_LIST}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.COL_TYPE_NAME}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.FAB_PROD_CAT_NAME}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.COLOR_NAME_EN}}
+                                            </td>
+
+                                            <td class="clstdMtex">
+                                                {{item.RQD_QTY}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.FABRIC_DESC}}
+                                            </td>
+
+                                            <td class="clstdMtex">
+                                                <select kendo-multi-select name="DF_PROC_TYPE_ID" id="DF_PROC_TYPE_ID" class="form-control required requiredSub"
+                                                        options="vm.processTypeList" ng-model="item.DF_PROC_TYPE_LST"></select>
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.RQD_QTY}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.ISS_QTY}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.ISS_ROLL_QTY}}
+                                            </td>
+
+                                            <td class="clstdMtex">
+                                                <input type="checkbox" id="IS_SELECT" ng-model="item.IS_SELECT" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div style="padding:3px;">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-11">
+                                    </div>
+                                    <div class="col-md-1">
+                                        <a class="btn btn-sm yellow-gold" ng-disabled="!vm.form.RF_ACTN_STATUS_ID>0" ng-click="vm.addToGrid(vm.OrderList);"> Add to Grid</a>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="padding:3px;">
+                            </div>
+                            <div class="form-group" style="margin:auto;">
+                                <div kendo-grid k-options="vm.gridOptions" k-data-source="vm.ScItemListDS"></div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="custom-fieldset" ng-if="vm.form.IS_BATCH=='N'">
+                            <legend class="custom-legend"><b>Collar & Cuff Availablity</b></legend>
+
+                            <div class="form-group" style="margin:auto;">
+                                <table class="clsTableMtex">
+                                    <thead class="clstheadMtex">
+                                        <tr class="clstdMtex">
+                                            <th class="clstdMtex" style="width:12%;">Buyer A/C Group</th>
+                                            <th class="clstdMtex" style="width:12%;">Order/Style</th>
+                                            <th class="clstdMtex" style="width:5%;">Type</th>
+                                            <th class="clstdMtex" style="width:5%;">Fab. Type</th>
+
+                                            <th class="clstdMtex" style="width:8%;">Color Name</th>
+                                            <th class="clstdMtex" style="width:5%;">Grey Qty</th>
+                                            <th class="clstdMtex" style="width:20%;">Fabric Description</th>
+                                            <th class="clstdMtex" style="width:10%;">Re-Process</th>
+                                            <th class="clstdMtex" style="width:5%;">Fabric Qty</th>
+                                            <th class="clstdMtex" ng-if="!vm.form.DF_SC_PT_RCV_H_ID>0" style="width:5%;">Batch Qty</th>
+                                            <th class="clstdMtex" ng-if="!vm.form.DF_SC_PT_RCV_H_ID>0" style="width:5%;">S/C Qty</th>
+
+                                            <th class="clstdMtex" ng-if="!vm.form.DF_SC_PT_RCV_H_ID>0" style="width:5%;">Balance Qty</th>
+                                            <th class="clstdMtex" style="width:10%;">Req. Qty</th>
+                                            <th class="clstdMtex" ng-if="vm.form.DF_SC_PT_RCV_H_ID>0" style="width:7%;">Issue Qty</th>
+                                            <th class="clstdMtex" ng-if="vm.form.DF_SC_PT_RCV_H_ID>0" style="width:7%;">Issue Roll</th>
+                                            <th class="clstdMtex" style="width:5%;">Select</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="clstdMtex" ng-repeat="item in vm.OrderList">
+                                            <td class="clstdMtex">
+                                                {{item.BYR_ACC_NAME_EN}}
+                                                <br />
+                                                <span style="color:red; background-color:skyblue;">{{item.SC_PRG_NO}}</span>
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.STYLE_NO}}<br />{{item.ORDER_NO_LIST}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.COL_TYPE_NAME}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.FAB_PROD_CAT_NAME}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.COLOR_NAME_EN}}
+                                            </td>
+
+                                            <td class="clstdMtex">
+                                                {{item.NET_GFAB_QTY}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.FABRIC_DESC}}
+                                            </td>
+
+                                            <td class="clstdMtex">
+                                                <select kendo-multi-select name="DF_PROC_TYPE_ID" id="DF_PROC_TYPE_ID" class="form-control"
+                                                        options="vm.processTypeList" ng-model="item.DF_PROC_TYPE_LST" ng-class="{'multiSelectSub':item.IS_SELECT==true}"></select>
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.KNT_FAB_QTY}}
+                                            </td>
+                                            <td class="clstdMtex" ng-if="!vm.form.DF_SC_PT_RCV_H_ID>0">
+                                                {{item.BATCH_GFAB_QTY}}
+                                            </td>
+                                            <td class="clstdMtex" ng-if="!vm.form.DF_SC_PT_RCV_H_ID>0">
+                                                {{item.SC_FAB_QTY}}
+                                            </td>
+
+                                            <td class="clstdMtex" ng-if="!vm.form.DF_SC_PT_RCV_H_ID>0">
+                                                {{item.BAL_GFAB_QTY}}
+                                            </td>
+
+                                            <td class="clstdMtex">
+                                                <input type="number" id="RQD_QTY" style="width:60px;text-align:right;" ng-class="{'doubleSub':item.IS_SELECT==true}" ng-model="item.RQD_QTY" />
+                                            </td>
+                                            <td class="clstdMtex" ng-if="vm.form.DF_SC_PT_RCV_H_ID>0">
+                                                <input type="number" id="ISS_QTY" style="width:100%;text-align:right;" ng-class="{'doubleSub':item.IS_SELECT==true}" ng-model="item.ISS_QTY" />
+                                            </td>
+                                            <td class="clstdMtex" ng-if="vm.form.DF_SC_PT_RCV_H_ID>0">
+                                                <input type="number" id="ISS_ROLL_QTY" style="width:100%;text-align:right;" ng-class="{'doubleSub':item.IS_SELECT==true}" ng-model="item.ISS_ROLL_QTY" />
+                                            </td>
+                                            <td class="clstdMtex">
+                                                <input type="checkbox" id="IS_SELECT" ng-model="item.IS_SELECT" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div style="padding:3px;">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-11">
+                                    </div>
+                                    <div class="col-md-1">
+                                        <a class="btn btn-sm yellow-gold" ng-disabled="!vm.form.RF_ACTN_STATUS_ID>0" ng-click="vm.addToGrid(vm.OrderList);"> Add to Grid</a>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="padding:3px;">
+                            </div>
+                            <div class="form-group" style="margin:auto;">
+                                <div kendo-grid k-options="vm.gridOptions" k-data-source="vm.ScItemListDS"></div>
+                            </div>
+                        </fieldset>
+                    </tab>
+                    <tab heading="Trims & Accessories">
+
+
+                        <fieldset class="custom-fieldset" ng-if="vm.form.IS_BATCH=='Y'">
+                            <legend class="custom-legend"><b>Batch Fabric Info</b></legend>
+
+                            <div class="form-group" style="margin:auto;">
+                                <table class="clsTableMtex">
+                                    <thead class="clstheadMtex">
+                                        <tr class="clstdMtex">
+                                            <th class="clstdMtex" style="width:8%;">Buyer A/C Group</th>
+                                            <th class="clstdMtex" style="width:12%;">Order/Style</th>
+                                            <th class="clstdMtex" style="width:5%;">Type</th>
+                                            <th class="clstdMtex" style="width:5%;">Fab. Type</th>
+
+                                            <th class="clstdMtex" style="width:8%;">Color Name</th>
+                                            <th class="clstdMtex" style="width:5%;">Grey Qty</th>
+                                            <th class="clstdMtex" style="width:20%;">Fabric Description</th>
+                                            <th class="clstdMtex" style="width:10%;">Re-Process</th>
+                                            <th class="clstdMtex" style="width:5%;">Req Qty</th>
+                                            <th class="clstdMtex" style="width:5%;">Issue Qty</th>
+                                            <th class="clstdMtex" style="width:5%;">Issue Roll Qty</th>
+                                            <th class="clstdMtex" style="width:5%;">Select</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="clstdMtex" ng-repeat="item in vm.OrderList">
+                                            <td class="clstdMtex">
+                                                {{item.BYR_ACC_NAME_EN}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.STYLE_NO}}<br />{{item.ORDER_NO_LIST}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.COL_TYPE_NAME}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.FAB_PROD_CAT_NAME}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.COLOR_NAME_EN}}
+                                            </td>
+
+                                            <td class="clstdMtex">
+                                                {{item.RQD_QTY}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.FABRIC_DESC}}
+                                            </td>
+
+                                            <td class="clstdMtex">
+                                                <select kendo-multi-select name="DF_PROC_TYPE_ID" id="DF_PROC_TYPE_ID" class="form-control required requiredSub"
+                                                        options="vm.processTypeList" ng-model="item.DF_PROC_TYPE_LST"></select>
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.RQD_QTY}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.ISS_QTY}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.ISS_ROLL_QTY}}
+                                            </td>
+
+                                            <td class="clstdMtex">
+                                                <input type="checkbox" id="IS_SELECT" ng-model="item.IS_SELECT" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div style="padding:3px;">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-11">
+                                    </div>
+                                    <div class="col-md-1">
+                                        <a class="btn btn-sm yellow-gold" ng-disabled="!vm.form.RF_ACTN_STATUS_ID>0" ng-click="vm.addToGrid(vm.OrderList);"> Add to Grid</a>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="padding:3px;">
+                            </div>
+                            <div class="form-group" style="margin:auto;">
+                                <div kendo-grid k-options="vm.gridOptions" k-data-source="vm.ScItemListDS"></div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="custom-fieldset" ng-if="vm.form.IS_BATCH=='N'">
+                            <legend class="custom-legend"><b>Trim & Accessories Availablity</b></legend>
+
+                            <div class="form-group" style="margin:auto;">
+                                <table class="clsTableMtex">
+                                    <thead class="clstheadMtex">
+                                        <tr class="clstdMtex">
+                                            <th class="clstdMtex" style="width:12%;">Buyer A/C Group</th>
+                                            <th class="clstdMtex" style="width:12%;">Order/Style</th>
+                                            <th class="clstdMtex" style="width:5%;">Type</th>
+                                            <th class="clstdMtex" style="width:5%;">Fab. Type</th>
+
+                                            <th class="clstdMtex" style="width:8%;">Color Name</th>
+                                            <th class="clstdMtex" style="width:5%;">Grey Qty</th>
+                                            <th class="clstdMtex" style="width:20%;">Fabric Description</th>
+                                            <th class="clstdMtex" style="width:10%;">Re-Process</th>
+                                            <th class="clstdMtex" style="width:5%;">Fabric Qty</th>
+                                            <th class="clstdMtex" ng-if="!vm.form.DF_SC_PT_RCV_H_ID>0" style="width:5%;">Batch Qty</th>
+                                            <th class="clstdMtex" ng-if="!vm.form.DF_SC_PT_RCV_H_ID>0" style="width:5%;">S/C Qty</th>
+
+                                            <th class="clstdMtex" ng-if="!vm.form.DF_SC_PT_RCV_H_ID>0" style="width:5%;">Balance Qty</th>
+                                            <th class="clstdMtex" style="width:10%;">Req. Qty</th>
+                                            <th class="clstdMtex" ng-if="vm.form.DF_SC_PT_RCV_H_ID>0" style="width:7%;">Issue Qty</th>
+                                            <th class="clstdMtex" ng-if="vm.form.DF_SC_PT_RCV_H_ID>0" style="width:7%;">Issue Roll</th>
+                                            <th class="clstdMtex" style="width:5%;">Select</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="clstdMtex" ng-repeat="item in vm.OrderList">
+                                            <td class="clstdMtex">
+                                                {{item.BYR_ACC_NAME_EN}}
+                                                <br />
+                                                <span style="color:red; background-color:skyblue;">{{item.SC_PRG_NO}}</span>
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.STYLE_NO}}<br />{{item.ORDER_NO_LIST}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.COL_TYPE_NAME}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.FAB_PROD_CAT_NAME}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.COLOR_NAME_EN}}
+                                            </td>
+
+                                            <td class="clstdMtex">
+                                                {{item.NET_GFAB_QTY}}
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.FABRIC_DESC}}
+                                            </td>
+
+                                            <td class="clstdMtex">
+                                                <select kendo-multi-select name="DF_PROC_TYPE_ID" id="DF_PROC_TYPE_ID" class="form-control"
+                                                        options="vm.processTypeList" ng-model="item.DF_PROC_TYPE_LST" ng-class="{'multiSelectSub':item.IS_SELECT==true}"></select>
+                                            </td>
+                                            <td class="clstdMtex">
+                                                {{item.KNT_FAB_QTY}}
+                                            </td>
+                                            <td class="clstdMtex" ng-if="!vm.form.DF_SC_PT_RCV_H_ID>0">
+                                                {{item.BATCH_GFAB_QTY}}
+                                            </td>
+                                            <td class="clstdMtex" ng-if="!vm.form.DF_SC_PT_RCV_H_ID>0">
+                                                {{item.SC_FAB_QTY}}
+                                            </td>
+
+                                            <td class="clstdMtex" ng-if="!vm.form.DF_SC_PT_RCV_H_ID>0">
+                                                {{item.BAL_GFAB_QTY}}
+                                            </td>
+
+                                            <td class="clstdMtex">
+                                                <input type="number" id="RQD_QTY" style="width:60px;text-align:right;" ng-class="{'doubleSub':item.IS_SELECT==true}" ng-model="item.RQD_QTY" />
+                                            </td>
+                                            <td class="clstdMtex" ng-if="vm.form.DF_SC_PT_RCV_H_ID>0">
+                                                <input type="number" id="ISS_QTY" style="width:100%;text-align:right;" ng-class="{'doubleSub':item.IS_SELECT==true}" ng-model="item.ISS_QTY" />
+                                            </td>
+                                            <td class="clstdMtex" ng-if="vm.form.DF_SC_PT_RCV_H_ID>0">
+                                                <input type="number" id="ISS_ROLL_QTY" style="width:100%;text-align:right;" ng-class="{'doubleSub':item.IS_SELECT==true}" ng-model="item.ISS_ROLL_QTY" />
+                                            </td>
+                                            <td class="clstdMtex">
+                                                <input type="checkbox" id="IS_SELECT" ng-model="item.IS_SELECT" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div style="padding:3px;">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-11">
+                                    </div>
+                                    <div class="col-md-1">
+                                        <a class="btn btn-sm yellow-gold" ng-disabled="!vm.form.RF_ACTN_STATUS_ID>0" ng-click="vm.addToGrid(vm.OrderList);"> Add to Grid</a>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="padding:3px;">
+                            </div>
+                            <div class="form-group" style="margin:auto;">
+                                <div kendo-grid k-options="vm.gridOptions" k-data-source="vm.ScItemListDS"></div>
+                            </div>
+                        </fieldset>
+                    </tab>
+                </tabset>
+            </fieldset>
+
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend"><b>Pre-Treatment Actions</b></legend>
+
+                <table class="clsTableMtex">
+                    <thead class="clstheadMtex">
+                        <tr class="clstdMtex">
+                            <th class="clstdMtex" style="width:5%;">SL #</th>
+                            <th class="clstdMtex" style="width:10%;">Process Name</th>
+                            <th class="clstdMtex" style="width:20%;">Supplier</th>
+                            <th class="clstdMtex" style="width:65%;">Parameter Info</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="clstdMtex" ng-repeat="item in vm.PreProcessList">
+
+                            <td class="clstdMtex">
+                                <b>{{$index+1}}</b>
+                            </td>
+                            <td class="clstdMtex">
+                                <b>{{item.DF_PROC_TYPE_NAME}}</b>
+                                <input type="hidden" ng-model="item.DF_SC_PT_ISS_D2_ID" />
+                                <input type="hidden" ng-model="item.DF_SC_PT_ISS_H_ID" />
+                                <input type="hidden" ng-model="item.DF_PROC_TYPE_ID" />
+                                <input type="hidden" ng-model="item.RF_DF_PARAM_TYPE_ID" />
+
+                            </td>
+                            <td class="clstdMtex">
+                                <select kendo-drop-down-list name="SCM_SUPPLIER_ID" class="form-control"
+                                        k-options="vm.scPartyList" id="SCM_SUPPLIER_ID" ng-model="item.SCM_SUPPLIER_ID" ng-disabled="vm.form.ACTN_ROLE_FLAG!='SI'"></select>
+                            </td>
+                            <td class="clstdMtex" style="background-color:#d0bfbf">
+
+                                <table class="clsTableMtex">
+
+                                    <tbody>
+                                        <tr class="clstdMtex" ng-repeat="obj in item.scParamList">
+
+                                            <td class="clstdMtex" style="width:30%;">
+                                                <select kendo-drop-down-list name="RF_DF_PARAM_TYPE_ID" class="form-control"
+                                                        k-options="vm.dfParamList" id="RF_DF_PARAM_TYPE_ID" ng-model="obj.RF_DF_PARAM_TYPE_ID" ng-disabled="vm.form.ACTN_ROLE_FLAG!='SI'"></select>
+                                            </td>
+                                            <td class="clstdMtex" style="width:40%;">
+                                                <input type="text" style="width:100%; text-align:left;" ng-model="obj.PARAM_DESC" ng-disabled="vm.form.ACTN_ROLE_FLAG!='SI'" />
+                                                @*<textarea style="width:100%;" ng-model="obj.PARAM_DESC" ng-disabled="vm.form.ACTN_ROLE_FLAG!='SI'"></textarea>*@
+                                            </td>
+
+                                            <td class="clstdMtex" style="width:20%;">
+                                                <input type="text" style="width:100%; text-align:left;" ng-model="obj.PARAM_TYPE_SNAME" ng-disabled="vm.form.ACTN_ROLE_FLAG!='SI'" />
+                                            </td>
+                                            <td class="clstdMtex" style="width:10%;">
+                                                <a class="btn btn-xs red" ng-click="vm.removeParam(item,obj);"><i class="fa fa-remove"></i></a> <a class="btn btn-xs green" ng-click="vm.addParam(item,$index);"><i class="fa fa-plus"></i></a>
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+            </fieldset>
+        </div>
+        <div style="padding:3px;">
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <button type="button" class="btn btn-sm blue" ui-sref="DyeScProgramList">Back To List</button>
+                <button type="button" ng-if="vm.form.DF_SC_PT_ISS_H_ID>0" class="btn btn-sm yellow-gold" ng-disabled="!vm.form.RF_ACTN_STATUS_ID>0" ng-click="vm.submitAll(vm.form,'N');"> Submit</button>
+                <button type="button" ng-if="vm.form.DF_SC_PT_ISS_H_ID>0" class="btn btn-sm yellow-lemon" ng-disabled="!vm.form.RF_ACTN_STATUS_ID>0" ng-click="vm.submitAll(vm.form,'Y');"> Update</button>
+                <button type="button" ng-if="vm.form.DF_SC_PT_ISS_H_ID>0" class="btn btn-sm green" ng-click="vm.printRDLC(vm.form);"> Print</button>
+                <button type="button" ng-if="!vm.form.DF_SC_PT_ISS_H_ID>0" class="btn btn-sm green" ng-disabled="!vm.form.RF_ACTN_STATUS_ID>0" ng-click="vm.submitAll(vm.form,'N');">Save</button>
+                <button type="button" class="btn btn-sm default" ui-sref="DyeingScProgram({pDF_SC_PT_ISS_H_ID : 0})" ui-sref-opts="{reload: true}">Cancel</button>
+
+            </div>
+
+            <label class="control-label col-md-2">
+                <span aria-required="true" class="required">*</span>
+                Take Action
+            </label>
+            <div class="col-md-3" ng-if="vm.form.RF_ACTN_VIEW>0">
+                <select kendo-drop-down-list name="RF_ACTN_STATUS_ID" id="RF_ACTN_STATUS_ID" class="form-control required"
+                        options="vm.statusList" ng-model="vm.form.RF_ACTN_STATUS_ID" required></select>
+            </div>
+
+            <div class="col-md-3" ng-if="!vm.form.RF_ACTN_VIEW>0">
+
+                <input type="text" ng-model="vm.form.ACTN_STATUS_NAME" style="width: 100%;" readonly="readonly" />
+                <input type="hidden" ng-model="vm.form.RF_ACTN_STATUS_ID" />
+
+            </div>
+
+        </div>
+        <div style="padding:3px;">
+        </div>
+    </form>
+</div>

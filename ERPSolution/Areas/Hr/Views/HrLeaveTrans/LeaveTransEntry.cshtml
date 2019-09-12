@@ -1,0 +1,522 @@
+﻿@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Hr</a>
+
+    </li>
+    <li>
+        <a href="#">Leave Application Entry</a>
+    </li>
+</ul>
+
+
+
+<div class="portlet box blue-dark">
+
+    <div class="portlet-title">
+        <div class="caption">
+            @*<i class="fa fa-gift"></i>*@ Leave Application Entry
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+            <div class="form-body clearfix">
+                <div class="row">
+                    <form class="form-horizontal" role="form">
+                        <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+                               data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Leave Ref. No. </label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" ng-model="vm.form.LEAVE_REF_NO" readonly>
+                                <span class="field-validation-error" ng-repeat="err in vm.errors.LEAVE_REF_NO">
+                                    {{err}}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">
+                                Company
+                                <span class="required" aria-required="true">
+                                    *
+                                </span>
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control" ng-model="vm.form.HR_COMPANY_ID" ng-options="item.HR_COMPANY_ID as item.COMP_NAME_EN for item in vm.companyData"></select>
+                                <span class="field-validation-error" ng-repeat="err in vm.errors.HR_COMPANY_ID">
+                                    {{err}}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">
+                                Fiscal Year
+                                <span class="required" aria-required="true">
+                                    *
+                                </span>
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control" ng-model="vm.form.RF_FISCAL_YEAR_ID" ng-options="item.RF_FISCAL_YEAR_ID as item.FY_NAME_EN for item in vm.FiscalYearData"></select>
+                                <span class="field-validation-error" ng-repeat="err in vm.errors.RF_FISCAL_YEAR_ID">
+                                    {{err}}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">
+                                Leave Type
+                                <span class="required" aria-required="true">
+                                    *
+                                </span>
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control" ng-if="!vm.form.HR_LEAVE_TRANS_ID" ng-model="vm.form.HR_LEAVE_TYPE_ID" ng-options="item.HR_LEAVE_TYPE_ID as item.LEAVE_TYPE_CODE for item in vm.LeaveTypeData" ng-change="vm.onChangeLeaveType(vm.form.HR_LEAVE_TYPE_ID)"></select>
+                                <select class="form-control" ng-if="vm.form.HR_LEAVE_TRANS_ID" ng-model="vm.form.HR_LEAVE_TYPE_ID" ng-options="item.HR_LEAVE_TYPE_ID as item.LEAVE_TYPE_CODE for item in vm.LeaveTypeData"></select>
+                                <span class="field-validation-error" ng-if="vm.errors.HR_LEAVE_TYPE_ID">
+                                    {{vm.errors.HR_LEAVE_TYPE_ID[0]}}
+                                </span>
+                                <span class="help-block" ng-if="vm.showBalance">Balance :{{vm.LeaveBalance}}</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="vm.form.HR_LEAVE_TYPE_ID==5 && vm.offDayLeaveData.length>0 ">
+                            <label class="col-md-3 control-label">
+                                Offday Duty History
+                            </label>
+                            <div class="col-md-6">
+
+                                <div class="slimScrollDiv" slimscroll="{height: 100,alwaysVisible:true,allowPageScroll:true}">
+                                    <table class="table table-condensed table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    #
+                                                </th>
+                                                <th>
+                                                    Date
+                                                </th>
+                                                <th>
+                                                    Day
+                                                </th>
+                                                <th>
+                                                    In Time
+                                                </th>
+
+                                                <th>
+                                                    Out Time
+                                                </th>
+
+                                                <th>
+                                                    Status
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="item in vm.offDayLeaveData">
+                                                <td>
+                                                    {{$index+1}}
+                                                </td>
+                                                <td>
+                                                    {{item.ATTEN_DATE}}
+                                                </td>
+                                                <td>
+                                                    {{item.NAME_OF_DAY}}
+                                                </td>
+                                                <td>
+                                                    {{item.CLK_IN_WT}}
+                                                </td>
+                                                <td>
+                                                    {{item.CLK_OUT_WT}}
+                                                </td>
+
+                                                <td>
+                                                    <span class="label label-sm label-success" ng-if="item.IS_OL_ADJUSTED=='Y'">
+                                                        Availed
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">
+                                Leave Applicant
+                                <span class="required" aria-required="true">
+                                    *
+                                </span>
+                            </label>
+                            <div class="col-md-3">
+                                @*<select class="form-control" ng-init="vm.form.HR_EMPLOYEE_ID=1" ng-model="vm.form.HR_EMPLOYEE_ID">
+                        <option value=1>Default</option>
+                    </select>*@
+                                @*<select kendo-drop-down-list name="HR_EMPLOYEE_ID" class="form-control"
+                    options="vm.EmployeeDataList" ng-model="vm.form.HR_EMPLOYEE_ID"></select>*@
+
+
+                                <input type="text" ng-model="vm.form.EMPLOYEE_CODE" placeholder="Search..." typeahead-min-length="3" typeahead-wait-ms="1000" typeahead="item.EMPLOYEE_CODE as item.EMPLOYEE_CODE for item in emoloyeeAuto($viewValue,vm.form.HR_LEAVE_TYPE_ID)" typeahead-on-select="onSelectItem($item)" typeahead-loading="loadingLocations" class="form-control">
+                                <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+
+                                <span class="field-validation-error" ng-repeat="err in vm.errors.EMPLOYEE_CODE">
+                                    {{err}}
+                                </span>
+                            </div>
+
+                            @*<div class="col-md-3" ng-if="LvFor=='Self'">
+                    <select class="form-control" ng-model="vm.form.HR_EMPLOYEE_ID" ng-options="item.HR_EMPLOYEE_ID as item.EMP_FULL_NAME_EN for item in vm.EmployeeDataList1" disabled></select>
+                    <span class="field-validation-error" ng-repeat="err in vm.errors.HR_EMPLOYEE_ID">
+
+                    </span>
+                </div>*@
+
+                        </div>
+
+                        <div ng-if="vm.showEmployeeInfo">
+
+
+
+                            <div class="form-group">
+
+
+                                <label class="col-md-3 control-label"></label>
+                                <div class="col-md-6">
+                                    <span class="help-block">{{vm.employee.EMP_FULL_NAME_EN}},{{vm.employee.DESIGNATION_NAME_EN}},{{vm.employee.DEPARTMENT_NAME_EN}}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="vm.form.HR_LEAVE_TYPE_ID==4">
+                            <label class="col-md-3 control-label">EDD Date</label>
+                            <div class="col-md-3 input-group">
+                                <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="vm.form.EDD_DT" is-open="EDD_DTopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn-calendar" ng-click="EDD_DTopen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+
+                                <span class="field-validation-error" ng-repeat="err in vm.errors.EDD_DT">
+                                    {{err}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">
+
+                                <span class="required" aria-required="true">
+                                    *
+                                </span>
+                            </label>
+                            <div class="col-md-3">
+                                <div class="radio-list" style="margin-left:20px">
+                                    <label class="radio-inline">
+                                        <span class="checked"><input type="radio" ng-model="vm.form.IS_DAY_OR_HR" name="optionsRadios" ng-value="'Y'" checked=""></span>Daily
+                                    </label>
+                                    <label class="radio-inline">
+                                        <span class=""><input type="radio" ng-model="vm.form.IS_DAY_OR_HR" name="optionsRadios" ng-value="'N'" checked=""></span>Hourly
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
+
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="col-md-6 control-label">
+                                        Form Date
+                                        <span class="required" aria-required="true">
+                                            *
+                                        </span>
+                                    </label>
+                                    <div class="col-md-4 input-group">
+                                        <input type="text" class="form-control" @*ng-init="vm.form.FROM_DATE=vm.toDay"*@ datepicker-popup="{{format}}" ng-model="vm.form.FROM_DATE" is-open="FROM_DATEopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn-calendar" ng-click="FROM_DATEopen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">
+                                        To Date
+                                        <span class="required" aria-required="true">
+                                            *
+                                        </span>
+                                    </label>
+                                    <div class="col-md-4 input-group">
+                                        <span class="input-group-btn">
+                                            <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="vm.form.TO_DATE" is-open="TO_DATEopened" min-date="vm.form.FROM_DATE" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                                            <button type="button" class="btn-calendar" ng-click="TO_DATEopen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-3 control-label"></label>
+                            <div class="col-md-8">
+                                <span class="field-validation-error" ng-if="vm.dateRangeError">
+                                   Please choose valid date range
+                                </span>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group" ng-if="vm.form.IS_DAY_OR_HR=='Y'">
+                            <label class="col-md-3 control-label">No. of Days Approved  </label>
+                            <div class="col-md-2">
+                                <input type="text" min="0" class="form-control" ng-model="vm.form.NO_DAYS_APPL" ui-number-mask="0" readonly>
+                                <span class="field-validation-error" ng-repeat="err in vm.errors.NO_DAYS_APPL">
+                                    {{err}}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="vm.form.IS_DAY_OR_HR=='N'">
+                            <label class="col-md-3 control-label">No. of Hours Approved  </label>
+                            <div class="col-md-2">
+                                <input type="text" min="0" class="form-control" ng-model="vm.form.NO_HRS_APPL" ui-number-mask="0">
+                                <span class="field-validation-error" ng-repeat="err in vm.errors.NO_HRS_APPL">
+                                    {{err}}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Apply Date</label>
+                            <div class="col-md-3 input-group">
+                                <input type="text" class="form-control" @*ng-init="vm.form.APPLY_DATE=vm.toDay"*@ datepicker-popup="{{format}}" ng-model="vm.form.APPLY_DATE" is-open="APPLY_DATEopened" max-date="vm.form.FROM_DATE" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn-calendar" ng-click="APPLY_DATEopen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+
+                                <span class="field-validation-error" ng-repeat="err in vm.errors.APPLY_DATE">
+                                    {{err}}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Approve Date</label>
+                            <div class="col-md-3 input-group">
+                                <input type="text" class="form-control" @*ng-init="vm.form.APPROVE_DATE=vm.toDay"*@ datepicker-popup="{{format}}" ng-model="vm.form.APPROVE_DATE" is-open="APPROVE_DATEopened" max-date="vm.form.FROM_DATE" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn-calendar" ng-click="APPROVE_DATEopen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+
+                                <span class="field-validation-error" ng-if="vm.errors.APPROVE_DATE" ng-repeat="err in vm.errors.APPROVE_DATE">
+                                    {{err}}
+                                </span>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">
+                                Duty Carried Out By
+                            </label>
+                            <div class="col-md-3">
+                                <input type="text" ng-model="vm.form.EMPLOYEE_CODE2" placeholder="Search..." typeahead-min-length="3" typeahead-wait-ms="1000" typeahead="item.EMPLOYEE_CODE as item.EMPLOYEE_CODE for item in emoloyeeAuto($viewValue,false)" typeahead-on-select="onSelectItem2($item)" typeahead-loading="loadingLocations" class="form-control">
+                                <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+
+                                <input type="hidden" ng-model="vm.form.ON_DUTY_EMP_ID">
+                                <span class="field-validation-error" ng-repeat="err in vm.errors.ON_DUTY_EMP_ID">
+                                    {{err}}
+                                </span>
+                            </div>
+
+
+
+                            <div class="col-md-3">
+                                <div class="checkbox-list">
+                                    <label class="checkbox-inline" style="margin-left:20px">
+                                        <span><input type="checkbox" ng-model="vm.form.IS_CONFIRM_OD" ng-true-value="'Y'" ng-false-value="'N'"></span> Confirmed?
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div ng-if="vm.onDutyEmployee">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label"></label>
+                                <div class="col-md-6">
+                                    <span class="help-block">{{vm.onDutyEmployee.EMP_FULL_NAME_EN}},{{vm.onDutyEmployee.DESIGNATION_NAME_EN}},{{vm.onDutyEmployee.DEPARTMENT_NAME_EN}}</span>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Joining Date After Leave</label>
+                            <div class="col-md-3 input-group">
+                                <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="vm.form.NEXT_JOIN_DATE" is-open="NEXT_JOIN_DATEopened" min-date="vm.form.TO_DATE" max-date="vm.maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" readonly />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn-calendar" ng-click="NEXT_JOIN_DATEopen($event)" ng-disabled="true"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+
+                                <span class="field-validation-error" ng-repeat="err in vm.errors.NEXT_JOIN_DATE">
+                                    {{err}}
+                                </span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">
+                                Leave Status
+                                <span class="required" aria-required="true">
+                                    *
+                                </span>
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control" ng-model="vm.form.LK_LV_STATUS_ID" ng-options="item.LOOKUP_DATA_ID as item.LK_DATA_NAME_EN for item in vm.leaveStatusList"></select>
+                                <span class="field-validation-error" ng-repeat="err in vm.errors.LK_LV_STATUS_ID">
+                                    {{err}}
+                                </span>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="checkbox-list">
+                                    <label class="checkbox-inline" style="margin-left:20px">
+                                        <span><input type="checkbox" ng-model="MoreDetails"></span> More Details?
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div ng-if="MoreDetails">
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Reason of Leave</label>
+                                <div class="col-md-5">
+                                    <textarea rows="3" cols="50" class="form-control" ng-model="vm.form.REASON_DESC_EN"></textarea>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="checkbox-list">
+                                        <label class="checkbox-inline" style="margin-left:20px">
+                                            <span><input type="checkbox" ng-model="Bangla1"></span> Bangla?
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-if="Bangla1">
+                                <label class="col-md-3 control-label">Reason of Leave [BN]</label>
+                                <div class="col-md-5">
+                                    <textarea rows="3" class="banglafont form-control" cols="50" ng-model="vm.form.REASON_DESC_BN"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Address While On Leave</label>
+                                <div class="col-md-5">
+                                    <textarea rows="3" class="form-control" cols="50" ng-model="vm.form.LV_TIME_ADD_EN"></textarea>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="checkbox-list">
+                                        <label class="checkbox-inline" style="margin-left:20px">
+                                            <span><input type="checkbox" ng-model="Bangla2"></span> Bangla?
+                                        </label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-group" ng-if="Bangla2">
+                                <label class="col-md-3 control-label">Address While On Leave[BN]</label>
+                                <div class="col-md-5">
+                                    <textarea rows="3" class="form-control banglafont" cols="50" ng-model="vm.form.LV_TIME_ADD_BN"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Remarks</label>
+                                <div class="col-md-5">
+                                    <textarea rows="3" class="form-control" cols="50" ng-model="vm.form.REMARKS"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>    
+
+                    @*<pre>{{vm.form.LK_LV_STATUS_ID_ORG}}</pre>*@
+
+                    <form action="/Hr/HrReport/PreviewReport" role="form" method="post" target="_blank">
+                        <div class="form-actions">
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-9">
+                                    @*<button type="button" class="btn btn-sm blue" ui-sref="LeaveTransEdit">Back To List</button>*@
+                                    <button ng-if="vm.form.HR_LEAVE_TRANS_ID" type="button" ng-click="vm.submitData('/hr/hrleavetrans/Update',true)" class="btn btn-sm yellow-gold" ng-class="{'disabled':vm.form.LK_LV_STATUS_ID==153}">Update</button>
+
+                                    <button ng-if="!vm.form.HR_LEAVE_TRANS_ID" type="button" ng-click="vm.submitData('/hr/hrleavetrans/Save',false)" class="btn btn-sm green" ng-class="{'disabled':(vm.disableSubmit||vm.dateRangeError)}">Save</button>
+
+                                    <button type="button" ui-sref-opts="{reload: true, notify: true}" class="btn btn-sm default" ui-sref="LeaveTransEntry({LeaveTrans:null})">Cancel</button>
+                                    <input type="hidden" name="REPORT_CODE" value="RPT-1006" />
+                                    <input type="hidden" name="HR_LEAVE_TRANS_ID" value="{{vm.form.HR_LEAVE_TRANS_ID}}" />
+                                    <input type="hidden" name="HR_COMPANY_ID" value="{{vm.form.HR_COMPANY_ID}}" />
+                                    <button type="submit" class="btn btn-sm btn-default" ng-if="vm.form.HR_LEAVE_TRANS_ID && vm.form.HR_LEAVE_TYPE_ID==4">
+                                        <i class="fa fa-print"></i> Print Application
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+
+
+
+
+
+
+            </div>
+
+
+    </div>
+
+</div>

@@ -1,0 +1,178 @@
+﻿Content-Type: text/html; charset=utf-8
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style media="all" type="text/css">
+        table td {
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+           
+    <p>Dear Concern</p>
+    @{
+        int vFabRowCount;
+        string vCreateDT = DateTime.Today.AddDays(-1).ToString("dd/MMM/yyyy");
+        <p>New order entry list as on @vCreateDT.</p>
+    }
+   
+    <table class="table table-striped" style="width:450px; border-collapse: collapse; overflow: scroll;">
+        <caption style="text-align: left;font-style:italic; color: #5738b5; padding-top: 10px; padding-bottom: 5px;"><strong>Order entry summery</strong></caption>
+        <thead>
+            <tr style="border: solid 1px black; background: #f2dede; color: #a94442;">                
+                <th style="border: solid 1px black;">GMT Type</th>
+                <th style="border: solid 1px black;"># of Order</th>                
+                <th style="border: solid 1px black;">Order Qty [Pcs]</th>
+                <th style="border: solid 1px black;">FOB Value [USD]</th>                
+            </tr>
+
+        </thead>
+
+        <tbody class="clstdMtex">
+            @{
+                vFabRowCount = 1;
+                
+                foreach (var itm in Model.data.ORDER_ENTRY_SUMMERY_LIST)
+                {
+                    if (vFabRowCount % 2 == 0)
+                    {
+                        <tr style="background: #ddd">                            
+                            <td style="border: solid 1px black; text-align: left;">@itm.GMT_TYPE_NAME</td>
+                            <td style="border: solid 1px black; text-align: center;">@itm.TOTAL_REC</td>                            
+                            <td style="border: solid 1px black; text-align: center;">@itm.TOT_ORD_QTY</td>
+                            <td style="border: solid 1px black; text-align: center;">@itm.TOT_ORD_VALUE</td>                            
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr style="background: white">
+                            <td style="border: solid 1px black; text-align: left;">@itm.GMT_TYPE_NAME</td>
+                            <td style="border: solid 1px black; text-align: center;">@itm.TOTAL_REC</td>
+                            <td style="border: solid 1px black; text-align: center;">@itm.TOT_ORD_QTY</td>
+                            <td style="border: solid 1px black; text-align: center;">@itm.TOT_ORD_VALUE</td>
+                        </tr>
+                    }
+                   
+                    vFabRowCount = vFabRowCount + 1;
+                }
+            }
+            
+        </tbody>
+    </table>
+
+
+
+    <table class="table table-striped" style="width: 1050px; border-collapse: collapse; overflow: scroll;">
+        <caption style="text-align: left;font-style:italic; color: #5738b5; padding-top: 10px; padding-bottom: 5px;"><strong>Order entry list</strong></caption>
+        <thead>
+            <tr style="border: solid 1px black; background: #f2dede; color: #a94442;">
+                <th style="border: solid 1px black;">Type</th>
+                <th style="border: solid 1px black;">Buyer A/C</th>
+                <th style="border: solid 1px black;">Style#</th>
+                <th style="border: solid 1px black;">Order#</th>
+                <th style="border: solid 1px black;">GMT Type</th>
+                <th style="border: solid 1px black;">Conf DT</th>
+                <th style="border: solid 1px black;">Ship DT</th>
+                <th style="border: solid 1px black;">Lead Time</th>
+                <th style="border: solid 1px black;">Doc Rcv DT</th>
+                <th style="border: solid 1px black;">Order Qty [Pcs]</th>
+                <th style="border: solid 1px black;">FOB Value [USD]</th>
+                <th style="border: solid 1px black;">Prepared By</th>
+            </tr>
+                        
+        </thead>
+
+        <tbody class="clstdMtex">
+            @{
+                vFabRowCount = 1;
+                Int64 vTotOrdPcs = 0;
+                decimal vTotOrdValue = 0;
+                string vOrdCategory;
+                string vOrdDocRcvDT;
+
+                foreach (var itm in Model.data.ORDER_ENTRY_LIST)
+                {
+                    vOrdCategory = itm.IS_PROV=="Y"?"Projection":"Confirmed";
+                    vOrdDocRcvDT = itm.ORD_DOC_RCV_DT != null ? itm.ORD_DOC_RCV_DT.ToString("dd/MMM/yyyy") : "";
+                    
+                    if (vFabRowCount % 2 == 0)
+                    {
+                        <tr style="background: #ddd">
+                            <td style="border: solid 1px black; text-align: left;">@vOrdCategory</td>
+                            <td style="border: solid 1px black; text-align: left;">@itm.BYR_ACC_NAME_EN</td>
+                            <td style="border: solid 1px black; text-align: left;">@itm.WORK_STYLE_NO</td>
+                            <td style="border: solid 1px black; text-align: left;">@itm.ORDER_NO</td>
+                            <td style="border: solid 1px black; text-align: left;">@itm.GMT_TYPE_NAME</td>
+                            <td style="border: solid 1px black; text-align: center;">@itm.ORD_CONF_DT.ToString("dd/MMM/yyyy")</td>
+                            <td style="border: solid 1px black; text-align: center;">@itm.SHIP_DT.ToString("dd/MMM/yyyy")</td>
+                            <td style="border: solid 1px black; text-align: center;">@itm.LEAD_TIME</td>
+                            <td style="border: solid 1px black; text-align: center;">@vOrdDocRcvDT</td>
+                            <td style="border: solid 1px black; text-align: right;">@itm.TOT_ORD_QTY</td>
+                            <td style="border: solid 1px black; text-align: right;">@itm.TOT_ORD_VALUE</td>
+                            <td style="border: solid 1px black; text-align: left;">@itm.PREPARED_BY</td>                           
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr style="background: white">
+                            <td style="border: solid 1px black; text-align: left;">@vOrdCategory</td>
+                            <td style="border: solid 1px black; text-align: left;">@itm.BYR_ACC_NAME_EN</td>
+                            <td style="border: solid 1px black; text-align: left;">@itm.WORK_STYLE_NO</td>
+                            <td style="border: solid 1px black; text-align: left;">@itm.ORDER_NO</td>
+                            <td style="border: solid 1px black; text-align: left;">@itm.GMT_TYPE_NAME</td>
+                            <td style="border: solid 1px black; text-align: center;">@itm.ORD_CONF_DT.ToString("dd/MMM/yyyy")</td>
+                            <td style="border: solid 1px black; text-align: center;">@itm.SHIP_DT.ToString("dd/MMM/yyyy")</td>
+                            <td style="border: solid 1px black; text-align: center;">@itm.LEAD_TIME</td>
+                            <td style="border: solid 1px black; text-align: center;">@vOrdDocRcvDT</td>                          
+                            <td style="border: solid 1px black; text-align: right;">@itm.TOT_ORD_QTY</td>
+                            <td style="border: solid 1px black; text-align: right;">@itm.TOT_ORD_VALUE</td>
+                            <td style="border: solid 1px black; text-align: left;">@itm.PREPARED_BY</td>  
+                        </tr>
+                    }
+
+                    vTotOrdPcs = vTotOrdPcs + itm.TOT_ORD_QTY;
+                    vTotOrdValue = vTotOrdValue + itm.TOT_ORD_VALUE;
+                    vFabRowCount = vFabRowCount + 1;
+                }
+                vFabRowCount = vFabRowCount - 1;
+            }
+
+            <tr>
+                <td style="border: solid 1px black;"><b>Total</b></td>
+                <td style="border: solid 1px black;"><b></b></td>
+                <td style="border: solid 1px black;"><b></b></td>
+                <td style="border: solid 1px black; text-align: right"><b>@vFabRowCount</b></td>
+                <td style="border: solid 1px black;"><b></b></td>
+                <td style="border: solid 1px black;"><b></b></td>
+                <td style="border: solid 1px black;"><b></b></td>
+                <td style="border: solid 1px black;"><b></b></td>
+                <td style="border: solid 1px black;"><b></b></td>
+                <td style="border: solid 1px black; text-align:right"><b>@vTotOrdPcs</b></td>
+                <td style="border: solid 1px black; text-align: right"><b>@vTotOrdValue</b></td>
+                <td style="border: solid 1px black;"><b></b></td>               
+            </tr>
+
+        </tbody>
+    </table>
+
+
+
+    <br />
+    <br />
+    <span style="display: block; font-size: 10px; font-style: italic;">
+        N.B: No need to reply. This mail is auto generated from MultiTex ERP server.
+    </span>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

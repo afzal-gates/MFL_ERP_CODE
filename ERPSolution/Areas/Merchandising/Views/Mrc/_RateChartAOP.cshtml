@@ -1,0 +1,19 @@
+﻿<fieldset class="custom-fieldset">
+
+    <form class="form-horizontal" role="form" name="AOPChartForm" novalidate ng-submit="vm.submitData(token)">
+
+        <input id="access_token" data-ng-model="token" type="hidden"
+               data-ng-init="token='@Session["access_token"]'" />
+
+        <legend class="custom-legend">All Over Print (AOP) Rate Chart</legend>
+
+        <kendo-grid k-data-source="vm.dataSource" k-filterable="true" k-selectable="false" k-height="300"
+                    k-sortable="true" k-pageable="false" k-columns="vm.gridColumns"></kendo-grid>
+
+
+        <div class="col-md-4" style="padding-top:10px; padding-bottom:10px;">
+            <button type="submit" class="btn btn-sm green" ng-disabled="AOPChartForm.$invalid">Save</button>
+            <button type="button" class="btn btn-sm default" ng-click="vm.cancel()">Cancel</button>
+        </div>
+    </form>
+</fieldset>

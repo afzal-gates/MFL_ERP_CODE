@@ -1,0 +1,95 @@
+﻿@{
+    Layout = null;
+}
+
+<input id="access_token" data-ng-model="token" type="hidden"
+       data-ng-init="token='@Session["access_token"]'" />
+<div class="modal-body">
+    <div class="portlet grey-cascade box">
+        <div class="portlet-title">
+            <div>
+                <h3 class="title">
+                    New Brand Entry
+                    <span class="pull-right"><i class="fa fa-times red" ng-click="vm.cancel(vm.form)"></i></span>
+                </h3>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <form class="form-horizontal" role="form" name="BrandEntry" novalidate>
+
+                <div class="form-body clearfix">
+                    <div class="row" style="margin:auto;padding-top:10px;">
+
+
+                        <input id="access_token" data-ng-model="token" type="hidden"
+                               data-ng-init="token='@Session["access_token"]'" />
+
+                        <div class="form-group">
+                            <label class="col-md-5 control-label">
+                                <span aria-required="true" class="required">*</span>
+                                Brand Name (EN)
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" min="1" max="200" name="BRAND_NAME_EN" ng-model="vm.form.BRAND_NAME_EN" class="form-control" required />
+                                <input type="hidden" name="RF_BRAND_ID" ng-model="vm.form.RF_BRAND_ID" />
+                                
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-5 control-label" >
+                                <span aria-required="true" class="required"></span>
+                                Brand Name (BN)
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" min="1" max="200" name="BRAND_NAME_BN" ng-model="vm.form.BRAND_NAME_BN" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-5 control-label">
+                                <span aria-required="true" class="required"></span>
+                                Is Active
+                            </label>
+                            <div class="col-md-1">
+                                <input type="checkbox" name="IS_ACTIVE" ng-model="vm.form.IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'" class="f" />
+                            </div>
+                        </div>
+                        <div class="form-group" style="text-align:center;">
+                            <div class="row">
+                                <div class="col-md-5 col-md-offset-4">
+                                    <button type="button" ng-if="vm.form.RF_BRAND_ID" ng-click="vm.submitDataNewBrand(vm.form,token)" class="btn btn-sm yellow-gold">Update</button>
+                                    <button type="button" ng-if="!vm.form.RF_BRAND_ID" ng-click="vm.submitDataNewBrand(vm.form,token)" class="btn btn-sm green">Save</button>
+                                    <button type="button" class="btn btn-sm default" ng-click="vm.resetBrandInfo()">Clear</button>
+                                    <button type="button" class="btn btn-sm default" ng-click="vm.cancel(vm.form)">Exit</button>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div kendo-grid k-options="vm.gridBrand" id="IDBrandDS" k-data-source="vm.brandAllList"></div>
+
+                    </div>
+                    <br />
+                    @*<div class="row">
+                        <div class="col-md-5 col-md-offset-4">
+                            <button type="button" ng-if="vm.form.RF_BRAND_ID" ng-click="vm.submitDataNewBrand(vm.form,token)" class="btn btn-sm yellow-gold">Update</button>
+                            <button type="button" ng-if="!vm.form.RF_BRAND_ID" ng-click="vm.submitDataNewBrand(vm.form,token)" class="btn btn-sm green">Save</button>
+                            <button type="button" class="btn btn-sm default" ng-click="vm.cancel(vm.form)">Cancel</button>
+                        </div>
+
+                    </div>*@
+
+                    <div class="row" style="margin:auto;padding-top:10px;" ng-if="vm.errors.length>0">
+                        <div class="alert alert-warning" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                            <ul ng-repeat="field in vm.errors">
+                                <li ng-repeat="error in field" ng-bind="error"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

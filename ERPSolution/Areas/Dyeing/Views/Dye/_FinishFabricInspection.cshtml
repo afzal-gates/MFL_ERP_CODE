@@ -1,0 +1,1149 @@
+﻿<style>
+    .hideMaster {
+        display: none;
+    }
+
+    .cls_select {
+        background-color: rgba(218, 230, 65, 0.58),;
+        color: red;
+    }
+</style>
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Dyeing</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="caption">
+
+        </div>
+    </div>
+
+
+    <div class="portlet-body form">
+        <form name="formData" class="form-horizontal" style="background-color: white;">
+            <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+                <div class="page-splash">
+                    <div class="page-splash-message">
+                        <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-body clearfix">
+                <div class="form-group">
+                    @*<div class="col-md-12">
+
+                        </div>*@
+                    <div class="col-md-3" style="padding-right:0px;">
+
+                        <fieldset class="custom-fieldset" ng-hide="collepsMaster">
+                            <legend class="custom-legend"><b>Search Data</b></legend>
+                            <div><label id="lblMsg"></label></div>
+
+                            <div class="form-group">
+
+                                <label class="control-label col-md-3" style="padding:0px;">
+                                    <span aria-required="true" class="required"></span>
+                                    Batch No
+                                </label>
+                                <div class="col-md-5" style="padding:0px;">
+                                    <input type="text" name="DYE_BATCH_NO" style="cursor:text;" value="B-18030462" placeholder="Scan Batch Card Barcode" ng-model="vm.form.DYE_BATCH_NO" auto-focus class="form-control btn required" />
+                                </div>
+
+                                <div class="col-md-3">
+                                    <a class="btn btn-sm yellow-gold" ng-click="vm.searchBatchInfo(1)">Load</a>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label class="control-label col-md-3" style="padding:0px;">
+                                    <span aria-required="true" class="required"></span>
+                                    Roll No
+                                </label>
+                                <div class="col-md-5" style="padding:0px;">
+                                    <input type="text" name="FAB_ROLL_NO" style="cursor:text;" placeholder="Scan Fabric Roll Barcode" ng-model="vm.form.FAB_ROLL_NO" class="form-control btn required" />
+
+                                </div>
+                                <div class="col-md-3">
+                                    <a class="btn btn-sm blue" ng-click="vm.searchRoll()">Load Roll</a>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 5px;">
+                            <legend class="custom-legend">
+                                Roll List
+                            </legend>
+                            <table class="table table-condensed table-striped table-bordered" style="padding:5px;">
+                                <thead>
+                                    <tr>
+                                        <th style="width:15%;">
+                                            <small>
+                                                Roll No
+                                            </small>
+
+                                        </th>
+                                        <th style="width:10%;">
+                                            <small>
+                                                Weight
+                                            </small>
+
+                                        </th>
+
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr ng-repeat="item in vm.RollProductionList| orderBy:'-KNT_JOB_CRD_H_ID'" ng-class="{'cls_select': item.KNT_JOB_CRD_H_ID >0}" style="cursor:pointer;" ng-dblclick="vm.setRoll(item);">
+                                        <td>
+                                            {{item.FAB_ROLL_NO}}
+                                        </td>
+
+                                        <td>
+                                            {{item.FAB_ROLL_WT}}
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </fieldset>
+
+
+                    </div>
+
+                    <div class="col-md-9" style="padding-left:0px;">
+                        <div class="form-group">
+
+                            <div class="col-md-5" style="padding-right:0px;">
+                                <fieldset class="custom-fieldset" ng-hide="collepsMaster">
+                                    <legend class="custom-legend"><b>Batch Details</b></legend>
+
+                                    <div class="form-group">
+
+                                        <label class="control-label col-md-2">
+                                            <span aria-required="true" class="required"></span>
+                                            Buyer
+                                        </label>
+                                        <div class="col-md-4" style="padding:0px;">
+                                            <input type="text" name="BUYER_NAME_EN" ng-model="vm.form.BUYER_NAME_EN" readonly="readonly" class="form-control" />
+                                            <input type="hidden" name="MC_BYR_ACC_GRP_ID" ng-model="vm.form.MC_BYR_ACC_GRP_ID" />
+
+                                        </div>
+                                        <label class="control-label col-md-2" style="padding:0px;">
+                                            <span aria-required="true" class="required"></span>
+                                            Style
+                                        </label>
+                                        <div class="col-md-4">
+                                            <input type="text" name="STYLE_NO" ng-model="vm.form.STYLE_NO" readonly="readonly" class="form-control" />
+
+                                            <input type="hidden" name="MC_STYLE_H_ID" ng-model="vm.form.MC_STYLE_H_ID" />
+                                        </div>
+
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <label class="control-label col-md-2">
+                                            <span aria-required="true" class="required"></span>
+                                            Order
+                                        </label>
+                                        <div class="col-md-4" style="padding:0px;">
+                                            <input type="text" name="ORDER_NO" ng-model="vm.form.ORDER_NO" readonly="readonly" class="form-control" />
+
+                                        </div>
+
+                                        <label class="control-label col-md-2" style="padding:0px;">
+                                            <span aria-required="true" class="required"></span>
+                                            Color
+                                        </label>
+                                        <div class="col-md-4">
+                                            <input type="text" name="COLOR_NAME_EN" ng-model="vm.form.COLOR_NAME_EN" readonly="readonly" class="form-control" />
+                                            <input type="hidden" name="MC_COLOR_ID" ng-model="vm.form.MC_COLOR_ID" />
+                                            <input type="hidden" id="FAB_COLOR_ID" ng-model="vm.form.FAB_COLOR_ID" />
+                                            <input type="hidden" id="DYE_BT_CARD_H_ID" ng-model="vm.form.DYE_BT_CARD_H_ID" />
+                                            <input type="hidden" id="LK_DIA_TYPE_ID" ng-model="vm.form.LK_DIA_TYPE_ID" />
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <label class="control-label col-md-2">
+                                            <span aria-required="true" class="required"></span>
+                                            Lot #
+                                        </label>
+                                        <div class="col-md-4" style="padding:0px;">
+                                            <input type="text" name="DYE_LOT_NO" ng-model="vm.form.DYE_LOT_NO" readonly="readonly" class="form-control" />
+
+                                        </div>
+                                        <label class="control-label col-md-2" style="padding:0px;">
+                                            Weights
+                                        </label>
+                                        <div class="col-md-3">
+                                            <input type="text" name="ACT_BATCH_QTY_LST" ng-model="vm.form.ACT_BATCH_QTY_LST" readonly="readonly" class="form-control" />
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <label class="control-label col-md-2">
+                                            <span aria-required="true" class="required"></span>
+                                            SL
+                                        </label>
+                                        <div class="col-md-4" style="padding:0px;">
+                                            <input type="text" name="RPT_SL_NO" ng-model="vm.form.RPT_SL_NO" class="form-control" />
+
+                                        </div>
+                                       
+                                    </div>
+                                    <div class="form-group">
+                                    </div>
+                                    <div class="form-group">
+                                    </div>
+                                    <div class="form-group">
+                                    </div>
+                                    <div class="form-group">
+                                    </div>
+                                </fieldset>
+
+
+                            </div>
+                            <div class="col-md-7" style="padding-left:0px;">
+
+                                <fieldset class="custom-fieldset" ng-hide="collepsMaster">
+                                    <legend class="custom-legend"><b>Fabrics Details</b></legend>
+                                    <div class="form-group" style="margin:auto;">
+
+                                        <div class="form-body clearfix">
+
+                                            <div kendo-grid k-options="vm.gridOptionsFabric" id="IDBatchFabricDS" k-data-source="vm.BatchFabricList"></div>
+
+                                        </div>
+                                    </div>
+
+                                </fieldset>
+
+
+                            </div>
+                        </div>
+
+                        <fieldset class="custom-fieldset" ng-hide="collepsMaster">
+                            <legend class="custom-legend"><b>Lab Report</b></legend>
+
+                            <div class="form-group" style="padding-left:20px;">
+
+                                <div class="col-md-1" style="padding:0px;">
+                                    Actual Dia
+                                </div>
+                                <div class="col-md-2" style="padding:0px;">
+                                    <input type="text" />
+                                </div>
+                                <div class="col-md-1" style="padding:0px;">
+                                    Shinkage L%
+                                </div>
+                                <div class="col-md-2" style="padding:0px;">
+                                    <input type="text" />
+                                </div>
+                                <div class="col-md-1" style="padding:0px;">
+                                    Shinkage W%
+                                </div>
+                                <div class="col-md-2" style="padding:0px;">
+                                    <input type="text" />
+                                </div>
+                                <div class="col-md-1" style="padding:0px;">
+                                    Spirality
+                                </div>
+                                <div class="col-md-2" style="padding:0px;">
+                                    <input type="text" />
+                                </div>
+                            </div>
+
+                        </fieldset>
+
+                        <fieldset class="custom-fieldset" ng-hide="collepsMaster" style="text-align:right;">
+                            <legend class="custom-legend"><b>Inspection</b></legend>
+
+
+                            <div class="form-group" style="padding-left:20px;">
+
+                                <div class="col-md-2">
+                                    Ref #
+                                </div>
+                                <div class="col-md-3">
+
+                                    <input type="text" id="RPT_REF_NO" style="min-width:100%" ng-model="vm.form.RPT_REF_NO" />
+
+                                </div>
+                                <div class="col-md-1"></div>
+                                <div class="col-md-2">
+                                    Insp. Date
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control required" ng-click="QC_DT_LNopen($event)" ng-focus="QC_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                           name="QC_DT" max-date="vm.today" ng-model="vm.form.QC_DT" is-open="QC_DT_LNopened" style="width:60%;"
+                                           datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-group" style="padding-left:20px;">
+
+                                <div class="col-md-2">
+                                    Insp. Name
+                                </div>
+                                <div class="col-md-3">
+
+                                    <select class="form-control requiredDDL btn" style="width: 100%; height: 32px;" ng-model="vm.form.QC_BY" ng-options="item.HR_EMPLOYEE_ID as item.EMP_FULL_NAME_EN for item in vm.userList"></select>
+                                    <span class="field-validation-error" ng-repeat="err in vm.errors.HR_EMPLOYEE_ID">
+                                        {{err}}
+                                    </span>
+                                </div>
+                                <div class="col-md-1"></div>
+                                <div class="col-md-2">
+                                    Shift
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-control requiredDDL btn" style="width: 100%; height: 32px; " ng-model="vm.form.HR_SCHEDULE_H_ID" ng-options="item.HR_SCHEDULE_H_ID as item.SCHEDULE_NAME_EN for item in vm.shiftList"></select>
+                                    <span class="field-validation-error" ng-repeat="err in vm.errors.HR_SCHEDULE_H_ID">
+                                        {{err}}
+                                    </span>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group" style="padding-left:20px;">
+
+                                <div class="col-md-2">
+                                    Shift In-Charge
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-control requiredDDL btn" style="width: 100%; height: 32px; " ng-model="vm.form.SHFT_IN_CHRGE" ng-options="item.HR_EMPLOYEE_ID as item.EMP_FULL_NAME_EN for item in vm.userList"></select>
+                                    <span class="field-validation-error" ng-repeat="err in vm.errors.HR_EMPLOYEE_ID">
+                                        {{err}}
+                                    </span>
+                                </div>
+                                <div class="col-md-1"></div>
+                                <div class="col-md-2">
+                                    QC In-Charge
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-control requiredDDL btn" style="width: 100%; height: 32px; " ng-model="vm.form.QC_BY" ng-options="item.HR_EMPLOYEE_ID as item.EMP_FULL_NAME_EN for item in vm.userList"></select>
+                                    <span class="field-validation-error" ng-repeat="err in vm.errors.HR_EMPLOYEE_ID">
+                                        {{err}}
+                                    </span>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group" style="padding-left:20px;">
+
+                                <div class="col-md-2">
+                                    Shade Note
+                                </div>
+                                <div class="col-md-4">
+                                    <textarea ng-model="vm.form.SHADE_NOTE" style="width: 100%; "></textarea>
+                                </div>
+
+                                <div class="col-md-2">
+                                    QC Comment
+                                </div>
+                                <div class="col-md-4">
+                                    <textarea ng-model="vm.form.QC_NOTE" style="width: 100%; "></textarea>
+
+                                </div>
+                            </div>
+
+                        </fieldset>
+
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend"><b>Extra Section</b></legend>
+                            <div class="form-group">
+
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-sm yellow fa fa-warning" ng-click="vm.openDyeRollInspDtl();"> Hold List</button>
+
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                </div>
+
+
+                <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 5px;">
+                    <legend class="custom-legend">
+                        Roll Inspection List
+                    </legend>
+                    <table class="table table-condensed table-striped table-bordered" style="padding:5px;">
+                        <thead>
+                            <tr class="clstheadMtex">
+                                <th class="clstdMtex" style="width:5%;">
+
+                                    <small>
+                                        SL #
+                                    </small>
+
+                                </th>
+                                <th class="clstdMtex" style="width:10%;">
+
+                                    <small>
+                                        Fabric Roll No
+                                    </small>
+
+                                </th>
+                                <th class="clstdMtex">
+                                    <small>
+                                        Weight
+                                    </small>
+
+                                </th>
+                                <th class="clstdMtex" ng-repeat="obj in vm.checkRollResultList[0].items">
+                                    <small>
+                                        {{obj.FB_DFCT_TYPE_NAME}}
+                                    </small>
+                                </th>
+                                <th class="clstdMtex">
+                                    <small>
+                                        Action
+                                    </small>
+
+                                </th>
+
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr ng-repeat="item in vm.checkRollResultList">
+                                <td style="width:10%;">
+                                    @*{{$index+1}}*@
+                                    {{item.DF_ROLL_SL}}
+                                </td>
+
+                                <td style="width:10%;">
+                                    {{item.FAB_ROLL_NO}}
+                                    <input type="hidden" ng-model="item.DF_ROLL_SL" />                                    
+                                </td>
+
+                                <td>
+                                    {{item.FAB_ROLL_WT}} Kg
+                                </td>
+
+                                <td ng-repeat="obj in item.items">
+
+                                    {{obj.DFCT_QTY}}
+                                    <input type="hidden" ng-model="obj.RF_FB_DFCT_TYPE_ID" />
+                                    <input type="hidden" ng-model="obj.FB_DFCT_TYPE_NAME" />
+                                    <input type="hidden" ng-model="obj.STD_PT" />
+                                    <input type="hidden" ng-model="obj.EARN_PT" />
+
+                                </td>
+
+                                <td style="width:5%;">
+                                    <a ng-click="vm.removeData(item);" class="btn btn-xs red"><i class="fa fa-remove"></i></a> <a ng-click="vm.loadModalByData(item);" class="btn btn-xs green"><i class="fa fa-edit"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+
+
+                <div style="padding:3px;">
+                </div>
+                <fieldset class="custom-fieldset">
+                    <div class="form-group">
+                        <div class="col-md-4">
+
+                            <a title="Save" ng-click="vm.submitAll(vm.form,6)" class="btn btn-small green"><i class="fa fa-save"> Save</i></a>
+
+                            @*<a title="Start" ng-click="vm.submitAll(vm.form,4)" ng-if="vm.form.DYE_BT_STS_TYPE_ID==1 || vm.form.DYE_BT_STS_TYPE_ID==8" ng-disabled="vm.form.IS_RPROC_DONE=='N'" class="btn btn-small green"><i class="fa fa-save"> Load</i></a>
+                                <a title="Resume" ng-click="vm.resumeThis(vm.form)" ng-if="vm.form.DYE_BT_STS_TYPE_ID==5 && vm.form.DYE_BT_STS_TYPE_ID!=6" ng-disabled="vm.form.IS_DISABLE==1 || vm.form.IS_EDT_LOCKED=='Y'" class="btn btn-small blue"><i class="fa fa-copy"> Re-Load</i></a>
+                                <a title="Push" ng-click="vm.pauseThis(vm.form)" ng-if="vm.form.DYE_BT_STS_TYPE_ID==4" ng-disabled="vm.form.IS_DISABLE==1 || vm.form.IS_EDT_LOCKED=='Y'" class="btn btn-small yellow-gold"><i class="fa fa-save"> In-Complete</i></a>
+                                <a title="Complete" ng-click="vm.submitAll(vm.form,6)" ng-if="vm.form.DYE_BT_STS_TYPE_ID==4" ng-disabled="vm.form.IS_DISABLE==1 || vm.form.IS_EDT_LOCKED=='Y'" class="btn btn-small green"><i class="fa fa-save"> Complete</i></a>*@
+
+                        </div>
+
+                    </div>
+                </fieldset>
+
+
+
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+<script type="text/ng-template" id="DFRollInsp.html">
+    <input id="access_token" data-ng-model="token" type="hidden"
+           data-ng-init="token='@Session["access_token"]'" />
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h3 class="title">
+                        Inspection Data
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel([])"></i></span>
+                    </h3>
+                </div>
+            </div>
+            <div class="portlet-body">
+
+
+                <fieldset class="custom-fieldset" ng-hide="collepsMaster">
+                    <legend class="custom-legend"><b></b></legend>
+
+                    <div class="form-group" style="padding-left:20px; text-align:right;">
+                        <div class="col-md-1">
+                            Required Dia
+                        </div>
+                        <div class="col-md-1">
+                            <input type="text" ng-model="form.ACT_FIN_DIA" style="width:100%;" />
+                        </div>
+                        <div class="col-md-2">
+                            Actual Dia
+                        </div>
+                        <div class="col-md-1">
+                            <input type="text" ng-model="form.RQD_FIN_DIA" />
+                        </div>
+
+                        <div class="col-md-2">
+                            Roll Weight
+                        </div>
+                        <div class="col-md-1">
+                            <input type="text" ng-model="form.ACT_ROLL_WT" ng-change="checkWeight();" />
+                        </div>
+                        <div class="col-md-2">
+                            Loss%
+                        </div>
+                        <div class="col-md-1">
+                            <input type="text" ng-model="form.ACT_ROLL_LOSS" />
+                        </div>
+
+                    </div>
+
+                </fieldset>
+
+                <fieldset class="custom-fieldset" ng-hide="collepsMaster">
+                    <legend class="custom-legend"><b></b></legend>
+
+                    <div class="form-group" style="padding-left: 20px; text-align: right;">
+
+                        <div class="col-md-1">
+                            Total Point
+                        </div>
+                        <div class="col-md-1">
+                            <input type="text" style="width:100%;" ng-model="form.TOTAL_PT" readonly />
+                        </div>
+                        <div class="col-md-2">
+                            Points/100yds
+                        </div>
+                        <div class="col-md-1">
+                            <input type="text" style="width:100%;" ng-model="form.GRADE_PT" readonly />
+                        </div>
+                        @*<div class="col-md-2">
+                                Fault App
+                            </div>
+                            <div class="col-md-1">
+
+                                <select kendo-multi-select name="RF_FB_FLT_APRN_TYPE_LST" class="form-control"
+                                        options="faultList" ng-model="form.RF_FB_FLT_APRN_TYPE_LST"></select>
+
+                            </div>*@
+                        <div class="col-md-2">
+                            Class/Grade
+                        </div>
+                        <div class="col-md-1">
+                            <input type="text" ng-model="form.GRADE_NO" readonly />
+                        </div>
+                    </div>
+
+                </fieldset>
+
+                <div style="padding:3px;">
+                </div>
+                <div style="padding:3px;">
+                </div>
+
+                <table class="table table-condensed table-responsive table-bordered" style="padding: 2px; margin-bottom: 2px;">
+                    <tbody>
+                        <tr>
+                            <td style="padding-bottom: 5px; padding-top: 0px;" ng-if="item.DISPLAY_ORDER<=7" ng-repeat="item in formItemList">
+                                
+                                <b>{{item.FB_DFCT_TYPE_NAME}}</b>
+                                <input type="hidden" ng-model="item.RF_FB_DFCT_TYPE_ID" />
+                                <input type="hidden" ng-model="item.IS_CALC_APLY" />
+                                <input type="hidden" ng-model="item.STD_PT" />
+                                <input type="hidden" ng-model="item.EARN_PT" />
+                                <input type="hidden" ng-model="item.KNT_FAB_ROLL_ID" />
+
+                                <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-sm  green" ng-click="addOne(item);" type="button"><b>+</b></button>
+
+                                    </span>
+                                    <input type="number" style="height:28px;" min="0" ng-model="item.DFCT_QTY" class="form-control">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-sm red" ng-click="subOne(item);" type="button"><b>-</b></button>
+                                    </span>
+                                </div>
+                            </td>
+
+                        <tr>
+                            <td style="padding-bottom: 5px; padding-top: 0px;">
+
+                                <table>
+                                    <tr ng-if="item.DISPLAY_ORDER>=8 && item.DISPLAY_ORDER<=9" ng-repeat="item in formItemList">
+                                        <td>
+                                            <b>{{item.FB_DFCT_TYPE_NAME}}</b>
+                                            <input type="hidden" ng-model="item.RF_FB_DFCT_TYPE_ID" />
+                                            <input type="hidden" ng-model="item.IS_CALC_APLY" />
+                                            <input type="hidden" ng-model="item.STD_PT" />
+                                            <input type="hidden" ng-model="item.EARN_PT" />
+                                            <input type="hidden" ng-model="item.KNT_FAB_ROLL_ID" />
+                                            <div class="input-group">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-sm  green" ng-click="addOne(item);" type="button"><b>+</b></button>
+
+                                                </span>
+                                                <input type="number" style="height:28px;" min="0" ng-model="item.DFCT_QTY" class="form-control">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-sm red" ng-click="subOne(item);" type="button"><b>-</b></button>
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+
+
+                            </td>
+
+                            <td style="padding-bottom: 5px; padding-top: 0px;">
+
+                                <table>
+                                    <tr ng-if="item.DISPLAY_ORDER>=10 && item.DISPLAY_ORDER<=11" ng-repeat="item in formItemList">
+                                        <td>
+                                            <b>{{item.FB_DFCT_TYPE_NAME}}</b>
+                                            <input type="hidden" ng-model="item.RF_FB_DFCT_TYPE_ID" />
+                                            <input type="hidden" ng-model="item.IS_CALC_APLY" />
+                                            <input type="hidden" ng-model="item.STD_PT" />
+                                            <input type="hidden" ng-model="item.EARN_PT" />
+                                            <input type="hidden" ng-model="item.KNT_FAB_ROLL_ID" />
+                                            <div class="input-group">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-sm  green" ng-click="addOne(item);" type="button"><b>+</b></button>
+
+                                                </span>
+                                                <input type="number" style="height:28px;" min="0" ng-model="item.DFCT_QTY" class="form-control">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-sm red" ng-click="subOne(item);" type="button"><b>-</b></button>
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+
+
+                            </td>
+                            <td style="padding-bottom: 5px; padding-top: 0px;" colspan="2">
+                                <b>Faulty Appearance</b> <br />
+                                <table style="width:98%;">
+                                    <tr ng-if="item.DISPLAY_ORDER>=12 && item.DISPLAY_ORDER<=16" ng-repeat="item in formItemList">
+                                        <td style="width:60%;">
+                                            <input type="checkbox" id="DFCT_QTY_{{item.RF_FB_DFCT_TYPE_ID}}" ng-model="item.DFCT_QTY" ng-true-value="'1'" ng-false-value="'0'" ng-change="updateDDL(item);" /><label for="DFCT_QTY_{{item.RF_FB_DFCT_TYPE_ID}}"> {{item.FB_DFCT_TYPE_NAME}}</label>
+                                            <input type="hidden" ng-model="item.RF_FB_DFCT_TYPE_ID" />
+                                            <input type="hidden" ng-model="item.IS_CALC_APLY" />
+                                            <input type="hidden" ng-model="item.STD_PT" />
+                                            <input type="hidden" ng-model="item.EARN_PT" />
+                                            <input type="hidden" ng-model="item.KNT_FAB_ROLL_ID" />
+                                        </td>
+                                        <td style="width:40%;" ng-if="item.DFCT_QTY=='1'">
+                                            <input type="radio" value="MJ" id="MAJOR_{{item.RF_FB_DFCT_TYPE_ID}}" ng-model="item.IS_MN_MJ" /><label for="MAJOR_{{item.RF_FB_DFCT_TYPE_ID}}"> Major</label> <input type="radio" value="MN" id="MINOR_{{item.RF_FB_DFCT_TYPE_ID}}" ng-model="item.IS_MN_MJ" /> <label for="MINOR_{{item.RF_FB_DFCT_TYPE_ID}}"> Minor</label>
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+
+                            </td>
+
+                            <td style="padding-bottom: 5px; padding-top: 0px;" colspan="2">
+                                <b>Faulty Appearance</b> <br />
+                                <table style="width:98%;">
+                                    <tr ng-if="item.DISPLAY_ORDER>=17" ng-repeat="item in formItemList">
+                                        <td style="width:60%;">
+                                            <input type="checkbox" id="DFCT_QTY_{{item.RF_FB_DFCT_TYPE_ID}}" ng-model="item.DFCT_QTY" ng-true-value="'1'" ng-false-value="'0'" ng-change="updateDDL(item);" /> <label for="DFCT_QTY_{{item.RF_FB_DFCT_TYPE_ID}}"> {{item.FB_DFCT_TYPE_NAME}}</label>
+                                            <input type="hidden" ng-model="item.RF_FB_DFCT_TYPE_ID" />
+                                            <input type="hidden" ng-model="item.IS_CALC_APLY" />
+                                            <input type="hidden" ng-model="item.STD_PT" />
+                                            <input type="hidden" ng-model="item.EARN_PT" />
+                                            <input type="hidden" ng-model="item.KNT_FAB_ROLL_ID" />
+
+                                        </td>
+                                        <td style="width:40%;" ng-if="item.DFCT_QTY=='1'">
+                                            <input type="radio" value="MJ" id="MAJOR_{{item.RF_FB_DFCT_TYPE_ID}}" ng-model="item.IS_MN_MJ" /><label for="MAJOR_{{item.RF_FB_DFCT_TYPE_ID}}"> Major</label> <input type="radio" value="MN" id="MINOR_{{item.RF_FB_DFCT_TYPE_ID}}" ng-model="item.IS_MN_MJ" /> <label for="MINOR_{{item.RF_FB_DFCT_TYPE_ID}}"> Minor</label>
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+
+                            </td>
+
+                            @*<td style="padding-bottom: 5px; padding-top: 0px;">
+
+                                    <br />
+                                    <div class="alert alert-block alert-info fade in" style="padding-top:5px;">
+                                        <input type="hidden" ng-model="form.FIN_GSM" />
+                                        <input type="hidden" ng-model="form.LK_QC_GRD_ID" />
+                                        <p>
+                                            Grade for this roll is : <b>{{form.GRADE_NO}}</b>
+                                        </p>
+
+                                        <p>
+                                            Total Point for this roll is : <b>{{form.TOTAL_PT}}</b>
+                                        </p>
+
+                                        <p>
+                                            Grade Point for this roll is : <b>{{form.GRADE_PT}}</b>
+                                        </p>
+
+                                        <p>
+                                            <button class="btn btn-sm green" ng-if="form.KNT_QC_STS_TYPE_ID==0 || form.KNT_QC_STS_TYPE_ID==3" ng-click="submitData(form,1);">Pass</button>
+                                            <button class="btn btn-sm blue-hoki" ng-if="form.KNT_QC_STS_TYPE_ID==0 || form.KNT_QC_STS_TYPE_ID==3" ng-click="submitData(form,3);">Hold</button>
+
+                                            <button style="float:right;" class="btn btn-sm red" ng-if="form.KNT_QC_STS_TYPE_ID==0 || form.KNT_QC_STS_TYPE_ID==3" ng-disabled="!form.GRADE_PT || (form.GRADE_PT||0)<=70" ng-click="submitData(form,4);">Reject</button>
+
+                                        </p>
+                                    </div>
+
+
+                                </td>*@
+
+                            <td style="padding-bottom: 5px; padding-top: 0px;">
+
+                                @*<br />
+                                    <table style="width:98%;" class="clsTableMtex">
+                                        <tr class="clstheadMtex">
+                                            <th class="clstdMtex">
+                                               <b>Defects</b>
+                                            </th>
+                                            <th class="clstdMtex">
+                                               <b>Action</b>
+                                            </th>
+                                        </tr>
+                                        <tr ng-repeat="obj in defectList">
+                                            <td class="clstdMtex">
+                                                {{obj.FB_DFCT_TYPE_NAME}}
+                                                <input type="hidden" ng-model="obj.RF_FB_DFCT_TYPE_ID" />
+                                                <input type="hidden" ng-model="obj.DF_FAB_QC_ROLL_FA_ID" />
+                                            </td>
+                                            <td class="clstdMtex">
+                                                <input type="radio" value="MJ" id="MAJOR_{{obj.RF_FB_DFCT_TYPE_ID}}" ng-model="obj.IS_MN_MJ" /><label for="MAJOR_{{obj.RF_FB_DFCT_TYPE_ID}}"> Major</label> <input type="radio" value="MN" id="MINOR_{{obj.RF_FB_DFCT_TYPE_ID}}" ng-model="obj.IS_MN_MJ" /> <label for="MINOR_{{obj.RF_FB_DFCT_TYPE_ID}}"> Minor</label>
+                                            </td>
+                                        </tr>
+                                    </table>*@
+
+                                <br />
+                                <button class="btn blue btn-block" ng-disabled="!form.FAB_ROLL_WT>0" ng-click="ClaculateDefectResult();"><span aria-hidden="true" class="icon-calculator"></span> Calculate</button>
+
+                            </td>
+
+
+
+
+
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4 style="margin-bottom: 0px;">
+                    Roll Details
+                </h4>
+
+                <table class="table table-condensed table-striped table-bordered" style="padding: 2px; margin-bottom: 2px;">
+                    <tbody>
+
+                        <tr>
+                            <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                                <b>Job Card#</b>
+                            </td>
+
+                            <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;">
+                                {{form.JOB_CRD_NO}}
+                            </td>
+
+
+                            <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                                <b>Roll #</b>
+                            </td>
+
+                            <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;">
+                                {{form.FAB_ROLL_NO}}
+                            </td>
+
+                            <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                                <b>Shift</b>
+                            </td>
+
+
+                            <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;">
+                                {{form.SCHEDULE_NAME_EN}}
+                            </td>
+
+                            <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                                <b>Operator</b>
+                            </td>
+
+
+                            <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;">
+                                @*Md. X (KNT-000102)*@
+                                {{form.OPERATOR_NAME}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                                <b>Buyer</b>
+                            </td>
+
+                            <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;">
+                                @*{{item.BYR_ACC_NAME_EN}}*@
+                                {{form.BUYER_NAME_EN}}
+
+                            </td>
+
+                            <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                                <b>Style</b>
+                            </td>
+
+                            <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;">
+                                @*{{item.WORK_STYLE_NO}}*@
+                                {{form.STYLE_NO}}
+
+                            </td>
+
+                            <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                                <b>Order</b>
+                            </td>
+
+
+                            <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;">
+                                @*{{item.ORDER_NO_LIST}}*@
+                                {{form.MC_ORDER_H_ID_LST}}
+                            </td>
+
+                            <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                                @*<b>Order</b>*@
+                            </td>
+
+
+                            <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;">
+                                @*{{form.MC_ORDER_H_ID_LST}}*@
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                                <b>Fab Type</b>
+                            </td>
+
+                            <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;">
+                                {{form.FAB_TYPE_NAME}}
+                            </td>
+
+                            <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                                <b>Finish Dia</b>
+                            </td>
+
+                            <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;">
+
+                                {{form.ACT_FIN_DIA}}
+                            </td>
+
+                            <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                                <b>Color</b>
+                            </td>
+
+
+                            <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;">
+
+                                {{form.COLOR_NAME_EN}}
+
+                            </td>
+                            <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                                <b>Roll Weight</b>
+                            </td>
+
+
+                            <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;">
+                                {{form.FAB_ROLL_WT}} Kg
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                                <b>Yarn Details</b>
+                            </td>
+
+                            <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;" colspan="3">
+                                {{form.KNT_YRN_LOT_LST}}
+
+                            </td>
+
+                            <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                                <b>M/C</b>
+
+                            </td>
+
+                            <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;">
+
+                                {{form.KNT_MACHINE_NO}}
+                            </td>
+                            <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                                <b>Dia x Gauge</b>
+
+                            </td>
+
+                            <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;">
+
+                                {{form.MC_DIA}} x {{form.MC_GG}}
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                                <b>F-GSM</b>
+                            </td>
+
+                            <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;" colspan="3">
+                                {{form.FIN_GSM}}
+
+                            </td>
+
+                            <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                                <b>Stich Length</b>
+
+                            </td>
+
+                            <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;">
+
+                                {{form.STITCH_LEN}}
+                            </td>
+                            <td style="width: 10%; padding-bottom: 3px; padding-top: 3px;">
+                                <b>DIA Type</b>
+
+                            </td>
+
+                            <td style="width: 15%; padding-bottom: 3px; padding-top: 3px;">
+                                {{form.DIA_TYPE_NAME_EN}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="padding:3px;">
+                </div>
+
+                <div style="padding:3px;">
+                </div>
+                <div style="padding:3px;">
+                </div>
+                <div class="form-group">
+
+                    <a class="btn btn-sm green" ng-click="fillCheckRollData(form);">Load Result</a>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</script>
+
+
+<script type="text/ng-template" id="DyeRollInspDtl.html">
+    <input id="access_token" data-ng-model="token" type="hidden"
+           data-ng-init="token='@Session["access_token"]'" />
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h3 class="title">
+                        Hold Details
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel([])"></i></span>
+                    </h3>
+                </div>
+            </div>
+            <div class="portlet-body">
+
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend"><b>Search Data</b></legend>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" style="text-align: right;">
+                            <span aria-required="true" class="required"></span>
+                            Buyer Group
+                        </label>
+
+                        <div class="col-md-4">
+                            <select kendo-drop-down-list name="MC_BYR_ACC_GRP_ID" class="form-control" options="buyerAccGrpList" ng-model="vm.form.MC_BYR_ACC_GRP_ID"></select>
+                            @*<select class="form-control required" name="repeatSelectBG" id="repeatSelectBG" ng-model="MC_BYR_ACC_GRP_ID">
+                                    <option ng-repeat="option in buyerAccGrpList" value="{{option.MC_BYR_ACC_GRP_ID}}">{{option.BYR_ACC_GRP_NAME_EN}}</option>
+                                </select>*@
+
+                        </div>
+
+                        <label class="col-md-2 control-label" style="text-align: right;">
+                            <span aria-required="true" class="required"></span>
+                            Batch No
+                        </label>
+                        <div class="col-md-4">
+
+                            <input type="text" id="DYE_BATCH_NO" style="min-width:100%" ng-model="DYE_BATCH_NO" />
+
+                        </div>
+
+                    </div>
+                    <div style="padding:5px;"></div>
+                    <div style="padding:5px;"></div>
+                    <div class="form-group">
+
+
+                        <label class="col-md-2 control-label" style="text-align: right;">
+                            <span aria-required="true" class="required"></span>
+                            Style/Order No
+                        </label>
+
+                        <div class="col-md-4">
+                            <input type="text" id="STYLE_ORDER_NO" style="min-width:100%" ng-model="STYLE_ORDER_NO" />
+                        </div>
+
+                        <label class="col-md-2 control-label" style="text-align: right;">
+                            Check Date
+                        </label>
+
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" ng-click="CHK_ROLL_DT_LNopen($event)" ng-focus="CHK_ROLL_DT_LNopen($event)" datepicker-popup="{{dtFormat}}"
+                                   name="CHK_ROLL_DT" ng-model="CHK_ROLL_DT" is-open="CHK_ROLL_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close"
+                                   required />
+                        </div>
+
+                    </div>
+                    <div style="padding:5px;"></div>
+                    <div style="padding:5px;"></div>
+                    <div style="padding:5px;"></div>
+
+                    <div class="form-group">
+                        <div class="col-md-2">
+
+                        </div>
+                        <div class="col-md-1">
+
+                            <button type="submit" class="btn btn-sm blue" ng-click="getRollDtl(3);">Search</button>
+                        </div>
+                        <div class="col-md-1">
+
+                            <button type="submit" class="btn btn-sm default" ng-click="clearAll();">Clear</button>
+                        </div>
+
+                    </div>
+
+                </fieldset>
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend"><b>Roll Details</b></legend>
+
+                    <table style="width:100%" class="clsTableMtex">
+
+                        <tr class="clstheadMtex">
+                            <td class="clstdMtex">
+                                <b>Copy</b>
+                            </td>
+
+                            <td class="clstdMtex">
+                                <b>QC DT</b>
+                            </td>
+                            <td class="clstdMtex">
+                                <b>Buyer A/C</b>
+                            </td>
+
+                            <td class="clstdMtex">
+                                <b>Style #</b>
+                            </td>
+
+                            <td class="clstdMtex">
+                                <b>Order #</b>
+                            </td>
+                            <td class="clstdMtex">
+                                <b>Batch #</b>
+                            </td>
+
+                            <td class="clstdMtex">
+                                <b>OK</b>
+                            </td>
+                            <td class="clstdMtex">
+                                <b>Not OK</b>
+                            </td>
+
+                        </tr>
+                        <tr ng-repeat="item in formItemList">
+                            <td class="clstdMtex">
+                                <button ng-click="selectRollNo(item);" ng-disabled="item.IS_VALID=='N'" class="fa fa-arrow-circle-o-left"></button>
+                            </td>
+
+                            <td class="clstdMtex">
+                                {{item.CHK_ROLL_DT|date: 'dd-MMM-yyyy'}}
+                            </td>
+                            <td class="clstdMtex">
+                                {{item.BUYER_NAME_EN}}
+                            </td>
+
+                            <td class="clstdMtex">
+                                {{item.STYLE_NO}}
+                            </td>
+                            <td class="clstdMtex">
+                                {{item.ORDER_NO}}
+                            </td>
+                            <td class="clstdMtex">
+                                {{item.DYE_BATCH_NO}}
+
+                            </td>
+
+                            <td class="clstdMtex">
+
+                                <button class="btn btn-xs green" ng-disabled="item.IS_VALID=='N'" ng-click="submitData(item,1);">OK</button>
+
+                            </td>
+                            <td class="clstdMtex">
+
+                                <button class="btn btn-xs blue-hoki" ng-disabled="item.IS_VALID=='N'" ng-click="submitData(item,4);">Not OK</button>
+
+                            </td>
+
+                        </tr>
+                    </table>
+
+
+
+                </fieldset>
+
+
+            </div>
+        </div>
+    </div>
+</script>

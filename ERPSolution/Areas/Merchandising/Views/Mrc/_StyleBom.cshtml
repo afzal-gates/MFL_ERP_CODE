@@ -1,0 +1,168 @@
+﻿<div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+    <div class="page-splash">
+        <div class="page-splash-message">
+            <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 250px;">
+    <div class="scroller" style="height: 250px; overflow: hidden; width: auto;" data-always-visible="1" data-rail-visible1="0" data-handle-color="#D7DCE2" data-initialized="1" slimscroll="{height: 400,alwaysVisible:true,allowPageScroll:true}">
+
+
+        <form class="form-horizontal" role="form" name="StyleBomForm" novalidate ng-submit="vm.submitData(vm.ItemData,token)">
+
+
+            <input id="access_token" data-ng-model="token" type="hidden"
+                   data-ng-init="token='@Session["access_token"]'" />
+
+            <div class="table-scrollable">
+                <table class="table table-condensed table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="col-md-2">
+                                    Category                               
+                            </th>
+                            <th class="col-md-10">
+                                    Item Specification
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr ng-repeat="item in vm.ItemData">
+                            <td>
+                                
+                                <b><i>{{item.ITEM_CAT_NAME_EN}}</i></b>
+                                <input type="hidden" ng-init="item.index=$index" ng-model="item.index" />
+                            </td>
+                            <td>
+                                <table class="table table-condensed table-striped table-bordered" style="padding:0px;">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-md-4">
+                                                <small>
+                                                    Item Name
+                                                </small>
+
+                                            </th>
+                                            <th class="col-md-1">
+                                                <small>
+                                                    ReqQty/Gmt
+                                                </small>
+
+                                            </th>
+
+                                            <th class="col-md-1">
+                                                <small>
+                                                    Cons.Ut.
+                                                </small>
+                                            </th>
+
+
+                                            <th class="col-md-1">
+                                                <small>
+                                                    Purc.Ut
+                                                </small>
+                                            </th>
+
+
+                                            <th class="col-md-1">
+                                                <input type="checkbox" ng-model="item.IS_PCT" ng-change="vm.setPctChecked(item,item.IS_PCT)" ng-true-value="'Y'" ng-false-value="'N'" />
+                                                <small>
+                                                    Addi%
+                                                </small>
+                                            </th>
+                                            <th class="col-md-1">
+                                                <small>
+                                                    Rate
+                                                </small>
+                                            </th>
+                                            <th class="col-md-2">
+                                                <small>Remarks</small>
+                                            </th>
+                                            <th class="col-md-1">
+                                                <a ng-click='vm.add(item)' class='btn btn-xs blue'><i class='fa fa-plus'> </i></a>
+                                            </th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr ng-repeat="itm in item.inv_items_view">
+                                            <td>
+
+                                                <span ng-if="itm.ITEM_NAME_EN && !itm.edit">
+                                                    {{itm.ITEM_NAME_EN}}
+                                                </span>
+                                                <span ng-if="!itm.ITEM_NAME_EN" ng-class="{'danger':StyleBomForm['INV_ITEM_ID-{{item.index+'-'+$index}}'].$invalid}">
+
+                                                    <select kendo-drop-down-list
+                                                            options="vm.ItemListForDD" name="INV_ITEM_ID-{{item.index+'-'+$index}}" ng-model="itm.INV_ITEM_ID" ng-change="vm.onItemChange(itm,item)" required class="form-control"></select>
+                                                </span>
+
+                                                <span ng-if="itm.edit" ng-class="{'danger':StyleBomForm['INV_ITEM_ID-{{item.index+'-'+$index}}'].$invalid}">
+
+                                                    <select kendo-drop-down-list
+                                                            options="vm.ItemListForDD" name="INV_ITEM_ID-{{item.index+'-'+$index}}" ng-model="itm.INV_ITEM_ID" ng-change="vm.onItemChange(itm,item)" required class="form-control"></select>
+                                                </span>
+
+
+                                            </td>
+                                            <td ng-class="{'danger':StyleBomForm['UNIT_QTY_REQ-{{item.index+'-'+$index}}'].$invalid}">
+                                                <input type="number" min="1" max="99" name="UNIT_QTY_REQ-{{item.index+'-'+$index}}" ng-model="itm.UNIT_QTY_REQ" class="form-control" />
+                                            </td>
+
+                                            <td ng-class="{'danger':StyleBomForm['CONS_MOU_ID-{{item.index+'-'+$index}}'].$invalid}">
+                                                <select kendo-drop-down-list name="CONS_MOU_ID-{{item.index+'-'+$index}}"
+                                                        options="vm.MOUList" id="CONS_MOU_ID" ng-model="itm.CONS_MOU_ID" required class="form-control"></select>
+                                            </td>
+
+
+                                            <td ng-class="{'danger':StyleBomForm['QTY_MOU_ID-{{item.index+'-'+$index}}'].$invalid}">
+
+                                                <select kendo-drop-down-list name="QTY_MOU_ID-{{item.index+'-'+$index}}"
+                                                        options="vm.MOUList" id="QTY_MOU_ID" ng-model="itm.PURCH_MOU_ID" required class="form-control"></select>
+
+                                            </td>
+
+                                            <td>
+                                                <input type="checkbox" ng-model="itm.IS_PCT" ng-true-value="'Y'" ng-false-value="'N'" />
+                                                <span ng-if="itm.IS_PCT==='Y' && itm.PCT_ADD_QTY>0">{{itm.PCT_ADD_QTY}}%</span>
+                                            </td>
+                                            <td>
+                                                <input type="number" ng-model="itm.RATE_EST" class="form-control" />
+                                            </td>
+                                            <td>
+                                                <input type="text" name="REMARKS" ng-model="itm.REMARKS" class="form-control" />
+                                            </td>
+                                            <td>
+                                                <a ng-click='vm.remove(item,itm)' class='btn btn-xs red'><i class='fa fa-times'> </i></a>
+                                                <a class='btn btn-xs blue' ng-click="vm.editItem(item,itm)" ng-disabled="!itm.ITEM_NAME_EN"><i class='fa' ng-class="{'fa-pencil': !itm.edit,'fa-ban':itm.edit}"> </i></a>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+                            </td>
+                        </tr>
+
+
+                    </tbody>
+
+                </table>
+            </div>
+
+            <div class="row">
+                <div class="col-md-5">
+                    <button type="submit" class="btn btn-sm green" ng-class="{'disabled':StyleBomForm.$invalid}">Save</button>
+                    <button type="button" class="btn btn-sm default" ng-click="vm.cancel()">Cancel</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+

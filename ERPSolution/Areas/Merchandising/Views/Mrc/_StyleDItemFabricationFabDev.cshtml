@@ -1,0 +1,549 @@
+﻿<div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+    <div class="page-splash">
+        <div class="page-splash-message">
+            <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+        </div>
+    </div>
+</div>
+
+<ng-form class="form-horizontal" role="form" name="FabricDetails" novalidate>
+    <div class="form-body" style="padding:0px;">
+        <input id="access_token" data-ng-model="token" type="hidden"
+               data-ng-init="token='@Session["access_token"]'" />
+        <table class="table" style=" margin-bottom: 0px;border:none;">
+            <tbody>
+                <tr>
+                    <td class="col-md-5" rowspan="20">
+                        <fieldset class="custom-fieldset" ng-if="vm.FabList.length>0">
+                            <legend class="custom-legend">Fabrication List</legend>
+                            <div class="table-scrollable">
+                                <table class="table table-striped table-bordered table-advance table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                SL
+                                            </th>
+                                            <th>
+                                                Category
+                                            </th>
+                                            <th>
+                                                Fabric Description
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in vm.FabList">
+                                            <td>
+                                                {{$index+1}}
+                                            </td>
+                                            <td>
+                                                {{item.FAB_CATEGORY}}
+                                            </td>
+                                            <td>
+                                                <a class="btn-xs btn-link" ui-sref="StyleHFabDev.Fab({MC_STYLE_H_ID:vm.params.MC_STYLE_H_ID,MC_STYLE_D_FAB_ID:item.MC_STYLE_D_FAB_ID})">
+                                                    {{item.FABRIC_DESC}}
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="custom-fieldset" ng-if="vm.fabYarnList.length>0">
+                            <legend class="custom-legend">Yarn List</legend>
+                            <div class="table-scrollable">
+                                <table class="table table-striped table-bordered table-advance table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                SL
+                                            </th>
+                                            <th>
+                                                Yarn Description
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in vm.fabYarnList">
+                                            <td>
+                                                {{$index+1}}
+                                            </td>
+                                            <td>
+                                                {{item.ITEM_NAME_EN}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </fieldset>
+
+                    </td>
+                    <td class="col-md-2 text-right">
+                        <label class="control-label">
+                            Fabric Category
+                        </label>
+                    </td>
+                    <td class="col-md-4">
+
+                        <select kendo-drop-down-list name="INV_ITEM_CAT_ID" class="form-control"
+                                options="vm.FabricCategoryList" id="INV_ITEM_CAT_ID" ng-model="vm.Fab.INV_ITEM_CAT_ID" required></select>
+                        @*<span class="col-md-9" style="padding-left:0px;padding-right:3px;">
+                            <select kendo-drop-down-list name="INV_ITEM_CAT_ID" class="form-control"
+                                    options="vm.FabricCategoryList" id="INV_ITEM_CAT_ID" ng-model="vm.Fab.INV_ITEM_CAT_ID" required></select>
+                        </span>
+                        <span class="col-md-3" style="padding-left:10px;padding-right:3px;">
+                            <div class="checkbox-list">
+                                <label class="checkbox-inline" style="margin-left:20px">
+                                    <span><input type="checkbox" ng-model="vm.Fab.LK_FBR_GRP_ID" ng-true-value="192" ng-false-value="''"> Main?</span>
+                                </label>
+                            </div>
+                        </span>*@
+
+                    </td>
+                    <td class="col-md-1" rowspan="18"></td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-1"></td>
+                    <td class="col-md-3">
+
+                        <div class="radio-list" style="margin-left:20px">
+                            <label class="radio-inline">
+                                <span class="checked"><input type="radio" ng-model="vm.Fab.IS_M_P" ng-value="'M'" ng-change="vm.Fab.INV_ITEM_CAT_ID_SUB=vm.Fab.IS_M_P=='M'?'':vm.Fab.INV_ITEM_CAT_ID_SUB" ng-disabled="vm.isWovenFab"></span> Manufactured ?
+
+                            </label>
+                            <label class="radio-inline">
+                                <span class="checked"><input type="radio" ng-model="vm.Fab.IS_M_P" ng-value="'P'"></span> Purchased ?
+
+                            </label>
+                        </div>
+
+                    </td>
+                </tr>
+                <tr ng-if="vm.Fab.IS_M_P=='P'">
+                    <td class="col-md-1"></td>
+                    <td class="col-md-3">
+
+                        <div class="radio-list" style="margin-left:20px">
+                            <label class="radio-inline" ng-repeat="item in vm.itemSubCategory">
+                                <span class="checked"><input type="radio" name="INV_ITEM_CAT_ID_SUB_{{$index}}" ng-model="vm.Fab.INV_ITEM_CAT_ID_SUB" ng-value="item.INV_ITEM_CAT_ID" required></span> {{item.ITEM_CAT_NAME_EN}}
+                            </label>
+                        </div>
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-1 text-right">
+                        <label class="control-label">
+                            Composition
+                        </label>
+
+
+                    </td>
+                    <td class="col-md-3" ng-class="{'has-error': (FabricDetails.RF_FIB_COMP_ID.$touched || FabricDetails.$submitted) && FabricDetails.RF_FIB_COMP_ID.$error.required}">
+
+                        <span class="col-md-9" style="padding-left: 0px; padding-right: 3px;">
+                            <select kendo-drop-down-list name="RF_FIB_COMP_ID" class="form-control"
+                                    options="vm.FabricCompList" id="RF_FIB_COMP_ID" ng-model="vm.Fab.RF_FIB_COMP_ID" required></select>
+                            @*{{vm.Fab.RF_FIB_COMP_ID}}*@
+                        </span>
+
+                        <span class="col-md-3" style="padding-left:10px;padding-right:3px;">
+                            <div class="checkbox-list">
+                                <label class="checkbox-inline" style="margin-left:20px">
+                                    <span><input type="checkbox" ng-model="vm.Fab.IS_AS_SWATCH_FIB_COMP" ng-true-value="'Y'" ng-false-value="'N'" ng-change="vm.Fab.IS_AS_SWATCH_FIB_COMP=='Y'?vm.Fab.RF_FIB_COMP_ID=360:''"> As Swatch?</span>
+                                </label>
+                            </div>
+                        </span>
+
+                    </td>
+
+                    
+                </tr>
+
+                <tr ng-if="vm.IS_FEEDER_TYPE">
+                    <td class="col-md-1 text-right">
+                        <label class="control-label">
+                            FeederType/Brand
+                        </label>
+
+
+                    </td>
+                    <td class="col-md-3">
+
+                        <span class="col-md-4" style="padding-left:0px;" ng-class="{'has-error': (FabricDetails.LK_FEDER_TYPE_ID.$touched || FabricDetails.$submitted) && FabricDetails.LK_FEDER_TYPE_ID.$error.required}">
+                            <select kendo-drop-down-list name="LK_FEDER_TYPE_ID" class="form-control"
+                                    options="vm.FeederTypeList" id="LK_FEDER_TYPE_ID" ng-model="vm.Fab.LK_FEDER_TYPE_ID" ng-required="vm.IS_FEEDER_TYPE && !vm.isWovenFab" ng-disabled="vm.isWovenFab"></select>
+                        </span>
+
+
+                        <span class="col-md-4" style="padding-left: 0px; padding-right: 0px;" ng-class="{'has-error': (FabricDetails.LK_ELA_BRAND_ID.$touched || FabricDetails.$submitted) && FabricDetails.LK_ELA_BRAND_ID.$error.required}">
+                            <select kendo-drop-down-list name="LK_ELA_BRAND_ID" class="form-control" ng-model="vm.Fab.LK_ELA_BRAND_ID"
+                                    options="vm.ElaBrandList" id="LK_ELA_BRAND_ID" ng-disabled="vm.isWovenFab" ng-required="vm.IS_FEEDER_TYPE && !vm.isWovenFab"></select>
+                        </span>
+
+
+
+                        <span class="col-md-4" style="padding-left: 0px; padding-right: 0px;" ng-class="{'has-error': (FabricDetails.RF_ELA_CNT_ID.$touched || FabricDetails.$submitted) && FabricDetails.RF_ELA_CNT_ID.$error.required}">
+                            <select kendo-drop-down-list name="RF_ELA_CNT_ID" class="form-control" ng-model="vm.Fab.RF_ELA_CNT_ID"
+                                    options="vm.ElaCountList" id="RF_ELA_CNT_ID" ng-disabled="vm.isWovenFab" ng-required="vm.IS_FEEDER_TYPE && !vm.isWovenFab"></select>
+                        </span>
+
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-1 text-right" rowspan="2">
+                        <label class="control-label">
+                            <br />
+                            <br />
+                            Fiber Feature
+                        </label>
+
+
+                    </td>
+                    <td class="col-md-3">
+                        <span class="col-md-6" style="padding-left:5px;padding-right:5px;">
+                            Spin Finish
+                            <select kendo-drop-down-list name="LK_SPN_PRCS_ID" class="form-control"
+                                    options="vm.SpinFinList" id="LK_SPN_PRCS_ID" ng-model="vm.Fab.LK_SPN_PRCS_ID" ng-disabled="vm.isWovenFab"></select>
+                        </span>
+
+                        <span class="col-md-6" style="padding-left:0px;padding-right:3px;">
+                            Cotton Type
+                            <select kendo-drop-down-list name="LK_COTN_TYPE_ID" class="form-control"
+                                    options="vm.CotnTypeList" id="LK_COTN_TYPE_ID" ng-model="vm.Fab.LK_COTN_TYPE_ID"></select>
+                            @*ng-disabled="vm.isWovenFab||!vm.isCtnFibExit"*@
+                        </span>
+
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-3">
+
+                        <div class="checkbox-list">
+                            <label class="checkbox-inline" style="margin-left:20px">
+                                <span><input type="checkbox" ng-model="vm.Fab.IS_SLUB" ng-true-value="'Y'" ng-false-value="'N'" ng-disabled="vm.isWovenFab"> Slub?</span>
+                            </label>
+
+                            <label class="checkbox-inline" style="margin-left:20px">
+                                <span><input type="checkbox" ng-model="vm.Fab.IS_MELLANGE" ng-true-value="'Y'" ng-false-value="'N'" ng-disabled="vm.isWovenFab"> Mellange?</span>
+                            </label>
+
+                        </div>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-1 text-right">
+                        <label class="control-label">
+                            Fabric Type
+                        </label>
+
+
+                    </td>
+                    <td class="col-md-3" ng-class="{'has-error': (FabricDetails.RF_FAB_TYPE_ID.$touched || FabricDetails.$submitted) && FabricDetails.RF_FAB_TYPE_ID.$error.required}">
+                        
+                        <span ng-class="(vm.IS_FKNIT||vm.IS_DRP_NDL)?'col-md-5':'col-md-9'" style="padding-left:5px;padding-right:5px;">
+                            <select kendo-drop-down-list name="RF_FAB_TYPE_ID" class="form-control"
+                                    options="vm.FabricTypeList" id="RF_FAB_TYPE_ID" ng-model="vm.Fab.RF_FAB_TYPE_ID" required></select>
+                        </span>
+                        
+                        <span class="col-md-3" @*style="padding-left:10px;padding-right:3px;"*@>
+                            <div class="checkbox-list">
+                                <label class="checkbox-inline" style="margin-left:10px">
+                                    <span><input type="checkbox" ng-model="vm.Fab.IS_AS_SWATCH_FAB_TYPE" ng-true-value="'Y'" ng-false-value="'N'" ng-change="vm.Fab.IS_AS_SWATCH_FAB_TYPE=='Y'?vm.Fab.RF_FAB_TYPE_ID=40:''"> As Swatch?</span>
+                                </label>
+                            </div>
+                        </span>
+
+
+
+                        <span class="col-md-4" style="padding-left:5px;padding-right:5px;" ng-if="vm.IS_FKNIT" ng-class="{'has-error': (FabricDetails.LK_FK_DGN_TYP_ID.$touched || FabricDetails.$submitted) && FabricDetails.LK_FK_DGN_TYP_ID.$error.required}">
+                            <select kendo-drop-down-list name="LK_FK_DGN_TYP_ID" class="form-control"
+                                    options="vm.ColCuffDesType" id="LK_FK_DGN_TYP_ID" ng-model="vm.Fab.LK_FK_DGN_TYP_ID" required></select>
+                        </span>
+
+                        <span class="col-md-4" style="padding-left:5px;padding-right:5px;" ng-if="vm.IS_DRP_NDL" ng-class="{'has-error': (FabricDetails.DROP_NDL_DESC.$touched || FabricDetails.$submitted) && FabricDetails.DROP_NDL_DESC.$error.required}">
+                            <input type="text" class="form-control" name="DROP_NDL_DESC" ng-model="vm.Fab.DROP_NDL_DESC" placeholder="Ex. 2x2" required />
+                        </span>
+
+                        <div class="radio-list" style="margin-left:20px;">
+                            <label class="radio-inline" ng-repeat="itm in vm.FabGroup">
+                                <span class="checked"><input type="radio" ng-model="vm.Fab.LK_FBR_GRP_ID" ng-value="itm.LOOKUP_DATA_ID"></span> {{itm.LK_DATA_NAME_EN}}
+                            </label>
+                        </div>
+
+
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-1 text-right">
+                        <label class="control-label">
+                            Fabric {{vm.Fab.WT_MOU_ID==24||vm.Fab.WT_MOU_ID==23 ? 'Width' : 'Weight'}}
+                        </label>
+
+
+                    </td>
+                    <td class="col-md-3" ng-class="{'has-error': (FabricDetails.FB_WT_MIN.$touched || FabricDetails.$submitted) && FabricDetails.FB_WT_MIN.$error.required}">
+                        <span class="col-md-4" style="padding-left:5px;padding-right:5px;">
+                            <input type="number" min="0" name="FB_WT_MIN" ng-model="vm.Fab.FB_WT_MIN" max="999" class="form-control" ng-model-options="{ debounce: { 'default': 1000, 'blur': 0 } }" ng-change="vm.changed(vm.Fab.FB_WT_MIN)" placeholder="{{vm.Fab.WT_MOU_ID==24?'':'low'}}" ng-required="!vm.IS_FKNIT" />
+                        </span>
+
+                        <span class="col-md-4" style="padding-left: 5px; padding-right: 5px;" ng-hide="vm.Fab.WT_MOU_ID==24||vm.Fab.WT_MOU_ID==23">
+                            <input type="number" name="FB_WT_MAX" min="{{vm.Fab.FB_WT_MIN}}" max="999" ng-model="vm.Fab.FB_WT_MAX" ng-model-options="{ debounce: { 'default': 1000, 'blur': 0 } }" class="form-control" placeholder="High" ng-required="!vm.IS_FKNIT" />
+                        </span>
+
+
+                        <span class="col-md-4" style="padding-left: 5px; padding-right: 5px;">
+                            <select ng-model="vm.Fab.WT_MOU_ID" class="form-control" ng-options="item.RF_MOU_ID as item.MOU_NAME_EN for item in vm.mouUnits"></select>
+                        </span>
+
+                    </td>
+                </tr>
+
+                <tr ng-if="!vm.isWovenFab">
+                    <td class="col-md-1 text-right">
+                        <label class="control-label">
+                            Count(s)
+                        </label>
+
+
+                    </td>
+                    <td class="col-md-3" style="padding:5px;">
+                        <table class="table table-condensed" style="padding: 0px; margin-bottom: 0px; margin-top: 0px;border:none;">
+                            <tr>
+                                <td class="col-md-3">
+                                    Top <select kendo-drop-down-list options='vm.YarnCountList' k-ng-delay="vm.YarnCountList" name='RF_YRN_CNT_LST1' ng-model='vm.Fab.RF_YRN_CNT_LST[0].CNT_ID' ng-change="vm.onCountChange(vm.Fab.RF_YRN_CNT_LST,vm.Fab.MC_STYLE_D_FAB_ID)" class='form-control' ng-required="!vm.IS_FKNIT"></select>
+                                </td>
+
+                                <td class="ccol-md-3">
+                                    Binding <select kendo-drop-down-list options='vm.YarnCountList' k-ng-delay="vm.YarnCountList" name='RF_YRN_CNT_LST2' ng-model='vm.Fab.RF_YRN_CNT_LST[1].CNT_ID' class='form-control' ng-disabled="vm.isLoopDisabled"></select>
+                                </td>
+
+                                <td class="col-md-3">
+                                    Back <select kendo-drop-down-list options='vm.YarnCountList' k-ng-delay="vm.YarnCountList" name='RF_YRN_CNT_LST3' ng-model='vm.Fab.RF_YRN_CNT_LST[2].CNT_ID' class='form-control' ng-readonly="vm.isRatioHidden" ng-required="!vm.IS_FKNIT"></select>
+                                </td>
+                            </tr>
+                            <tr ng-hide="vm.isRatioHidden">
+                                <input type="number" ng-hide="true" min="100" max="100.4" name="TOT_PERCENT" ng-model="vm.Fab.TOT_PERCENT" ng-value="vm.Fab.TOT_PERCENT =(vm.Fab.RF_YRN_CNT_LST[0].RATIO+vm.Fab.RF_YRN_CNT_LST[1].RATIO+vm.Fab.RF_YRN_CNT_LST[2].RATIO) " />
+                                <td class="col-md-4">
+                                    <input type="number" class="form-control" name='RF_YRN_CNT_RATIO1' ng-model="vm.Fab.RF_YRN_CNT_LST[0].RATIO" ng-required />
+                                </td>
+                                <td class="col-md-4">
+                                    <input type="number" class="form-control" name='RF_YRN_CNT_RATIO2' ng-model="vm.Fab.RF_YRN_CNT_LST[1].RATIO" ng-readonly="vm.isRatioHidden" ng-required="!vm.isLoopDisabled" />
+                                </td>
+                                <td class="col-md-4">
+                                    <input type="number" class="form-control" name='RF_YRN_CNT_RATIO3' ng-model="vm.Fab.RF_YRN_CNT_LST[2].RATIO" ng-required />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-9" colspan="2" style="padding-top: 0px;padding-bottom: 0px;">
+                                    <button class="btn btn-xs btn-link" style="padding-top:5px;" ng-if="vm.Fab.MC_STYLE_D_FAB_ID < 0" ng-click="vm.getSuggestedCount(vm.Fab)"> <i class="fa" ng-class="vm.countFiltered?'fa-times':'fa-filter'"></i> Suggest</button>
+                                </td>
+                                <td class="col-md-3" style="padding-top: 0px;padding-bottom: 0px;">
+                                    <div class="checkbox-list">
+                                        <label class="checkbox-inline" style="margin-left:20px">
+                                            <span><input type="checkbox" ng-model="vm.Fab.IS_AS_SWATCH_YRN_CNT" ng-true-value="'Y'" ng-false-value="'N'" ng-change="vm.onChangeSwtchYrnCtn()"> As Swatch?</span>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+
+
+
+
+
+                <tr ng-if="!vm.isWovenFab">
+                    <td class="col-md-1 text-right">
+                        <label class="control-label">
+                            Wash Type
+                        </label>
+
+
+                    </td>
+                    <td class="col-md-3">
+
+                        <span class="col-md-10" style="padding-left:0px;padding-right:3px;">
+                            <oi-select oi-options="item.LK_DATA_NAME_EN for item in vm.WashTypeList track by item.LOOKUP_DATA_ID"
+                                       ng-model="vm.Fab.LK_WASH_TYPE_ID"
+                                       name="LK_WASH_TYPE_ID"
+                                       ng-style="{'border': ((FabricDetails.LK_WASH_TYPE_ID.$touched || FabricDetails.$submitted) && FabricDetails.LK_WASH_TYPE_ID.$error.required)?'1px solid #ff0000':'1px solid #898383'}"
+                                       multiple
+                                       placeholder="Search..." ng-required="vm.Fab.IS_SP_WASH=='N'">
+                            </oi-select>
+                        </span>
+                        <span class="col-md-2" style="padding-left:10px;padding-right:3px;">
+                            <div class="checkbox-list">
+                                <label class="checkbox-inline" style="margin-left:20px">
+                                    <span><input type="checkbox" ng-model="vm.Fab.IS_SP_WASH" ng-true-value="'Y'" ng-false-value="'N'"> N/A?</span>
+                                </label>
+                            </div>
+                        </span>
+                    </td>
+                </tr>
+
+                <tr ng-if="!vm.isWovenFab">
+                    <td class="col-md-1 text-right">
+                        <label class="control-label">
+                            Finish Type
+                        </label>
+
+
+                    </td>
+                    <td class="col-md-3">
+
+                        <span class="col-md-10" style="padding-left:0px;padding-right:3px;">
+                            <oi-select oi-options="item.LK_DATA_NAME_EN for item in vm.FinishTypeList track by item.LOOKUP_DATA_ID"
+                                       ng-model="vm.Fab.LK_FINIS_TYPE_ID"
+                                       ng-style="{'border': ((FabricDetails.LK_FINIS_TYPE_ID.$touched || FabricDetails.$submitted) && FabricDetails.LK_FINIS_TYPE_ID.$error.required)?'1px solid #ff0000':'1px solid #898383'}"
+                                       name="LK_FINIS_TYPE_ID"
+                                       multiple
+                                       placeholder="Search..." ng-required="vm.Fab.IS_SP_FINISH=='N'">
+                            </oi-select>
+                        </span>
+                        <span class="col-md-2" style="padding-left:10px;padding-right:3px;">
+                            <div class="checkbox-list">
+                                <label class="checkbox-inline" style="margin-left:20px">
+                                    <span><input type="checkbox" ng-model="vm.Fab.IS_SP_FINISH" ng-true-value="'Y'" ng-false-value="'N'"> N/A?</span>
+                                </label>
+                            </div>
+                        </span>
+
+
+
+
+                        @*<select kendo-multi-select options='vm.FinishTypeList' id="LK_FINIS_TYPE_ID" style="border: 1px solid #898383;" ng-model='vm.Fab.LK_FINIS_TYPE_ID' class='form-control'></select>*@
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-1 text-right">
+                        <label class="control-label">
+                            Fabric Description
+                        </label>
+
+
+                    </td>
+                    <td class="col-md-3">
+                        <textarea rows="2" name="FABRIC_DESC" class="form-control" cols="50" ng-model="vm.Fab.FABRIC_DESC" required></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-1 text-right"></td>
+                    <td class="col-md-3">
+                        <span class="badge badge-danger" ng-if="vm.Fab.IS_USED=='Y'">[Locked]</span>
+
+                        <button type="button" ng-if="vm.Fab.MC_STYLE_D_FAB_ID>0" ng-click="vm.submitData(vm.Fab,token,FabricDetails.$valid)" class="btn btn-sm yellow-gold" ng-class="{'disabled':(!FabricDetails.$valid ||vm.Fab.IS_USED=='Y')}">Update</button>
+                        <button type="button" ng-if="vm.Fab.MC_STYLE_D_FAB_ID<0" ng-click="vm.submitData(vm.Fab,token,FabricDetails.$valid)" class="btn btn-sm green">Save</button>
+                        <button type="button" class="btn btn-sm default" ui-sref="StyleHFabDev.Fab({MC_STYLE_H_ID:vm.params.MC_STYLE_H_ID, MC_STYLE_D_FAB_ID:vm.params.MC_STYLE_D_FAB_ID==0?-1:0})" u-sref-opts="{reload:'StyleHFabDev.Fab'}">Cancel</button>
+
+                        <button type="button" ng-if="vm.Fab.MC_STYLE_D_FAB_ID && vm.Fab.IS_CHILD_EXIST==='N'" ng-click="vm.deleteFabData(vm.Fab.MC_STYLE_D_FAB_ID,token,vm.Fab.FABRIC_DESC)" title="Delete" class="btn btn-sm red" style="float:right;"><i class="fa fa-trash-o"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</ng-form>
+
+
+<script type="text/ng-template" id="FabricCompositionGeneration.html">
+    <input id="access_token" data-ng-model="token" type="hidden"
+           data-ng-init="token='@Session["access_token"]'" />
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h3 class="title">
+                        New Fiber Composition
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="vm.cancel(vm.form)"></i></span>
+                    </h3>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="FiberComposition" novalidate>
+
+                    <div class="form-body clearfix">
+                        <div class="row" style="margin:auto;padding-top:10px;">
+
+
+                            <input id="access_token" data-ng-model="token" type="hidden"
+                                   data-ng-init="token='@Session["access_token"]'" />
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">
+                                    <span aria-required="true" class="required">*</span>
+                                    Fiber Type
+                                </label>
+                                <div class="col-md-4">
+                                    <oi-select oi-options="item.LK_DATA_NAME_EN for item in vm.FiberCompositionTypeList track by item.LOOKUP_DATA_ID"
+                                                    ng-model="vm.form.LK_FIB_TYPE_LST"
+                                                    name="LK_FIB_TYPE_LST"
+                                                    style="border: 1px solid #898383;"
+                                                    multiple
+                                                    placeholder="Search..."
+                                                    required>
+                                    </oi-select>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group" ng-repeat="itm in vm.form.LK_FIB_TYPE_LST">
+                                <label class="col-md-4 control-label">
+                                    <span aria-required="true" class="required">*</span>
+                                    <span>
+                                        {{itm.LK_DATA_NAME_EN}} <b>(%)</b>
+                                    </span>
+
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="number" min="1" max="100" name="PERCENT{{$index}}" ng-model="itm.PERCENT" class="form-control" required />
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">
+
+                                    Composition Desc.
+                                </label>
+                                <div class="col-md-5">
+                                    <input type="text" name="FIB_COMP_NAME" ng-minlength="3" ng-model="vm.form.FIB_COMP_NAME" class="form-control" readonly />
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-5 col-md-offset-4">
+                                <button type="button" ng-if="vm.form.RF_FIB_COMP_ID" ng-click="vm.submitData(vm.form,token)" class="btn btn-sm yellow-gold" ng-class="{'disabled':!FiberComposition.$valid || vm.formDisabled}">Update</button>
+                                <button type="button" ng-if="!vm.form.RF_FIB_COMP_ID" ng-click="vm.submitData(vm.form,token)" class="btn btn-sm green" ng-class="{'disabled':!FiberComposition.$valid||vm.formDisabled}">Save</button>
+                                <button type="button" class="btn btn-sm default" ng-click="vm.cancel(vm.form)">Cancel</button>
+                            </div>
+
+                        </div>
+
+                        <div class="row" style="margin:auto;padding-top:10px;" ng-if="vm.errors.length>0">
+                            <div class="alert alert-warning" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                                <ul ng-repeat="field in vm.errors">
+                                    <li ng-repeat="error in field" ng-bind="error"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>

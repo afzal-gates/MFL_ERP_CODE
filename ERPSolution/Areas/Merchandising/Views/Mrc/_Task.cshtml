@@ -1,0 +1,261 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#">Task/Action List for Garment Supply Chain</a>
+    </li>
+</ul>
+
+
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+
+        <form class="form-horizontal" role="form" name="TaskForm" novalidate ng-submit="vm.submitData(vm.form,token)">
+
+            <div class="form-body clearfix">
+                <div class="row" style="margin:auto;padding-top:10px;">
+
+
+                    <input id="access_token" data-ng-model="token" type="hidden"
+                           data-ng-init="token='@Session["access_token"]'" />
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3">
+                            <span aria-required="true" class="required">*</span>
+                            Task Group
+                        </label>
+                        <div class="col-md-3">
+                            <select kendo-drop-down-list name="MC_TNA_TASK_GRP_ID" class="form-control"
+                                    options="vm.TaskGroupList" id="MC_TNA_TASK_GRP_ID" ng-model="vm.form.MC_TNA_TASK_GRP_ID" required ng-change="vm.onChangeTaskGroup(vm.form.MC_TNA_TASK_GRP_ID)"></select>
+                        </div>
+
+                        <div class="col-md-5" style="padding-top:3px;">
+                            <a class="btn btn-xs blue" ng-click="vm.openTaskGroupModal()">
+                                <i class="fa fa-plus"></i> Add Group
+                            </a>
+                        </div>
+                    </div>
+
+                            <div class="form-group">
+                                <div class="col-md-5 col-md-offset-3">
+                                    <div ng-messages="TaskForm.MC_TNA_TASK_GRP_ID.$error" ng-if="TaskForm.$submitted || TaskForm.MC_TNA_TASK_GRP_ID.$touched">
+                                        <div ng-message="required" class="field-validation-error">Please select Task Group</div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            <span aria-required="true" class="required">*</span>
+                            Task Order #
+                        </label>
+                        <div class="col-md-2">
+                            <input type="text" name="TA_TASK_SL" ng-model="vm.form.TA_TASK_SL" class="form-control" ui-number-mask="0" required />
+                        </div>
+
+                        <div class="col-md-5 col-md-offset-1">
+                            <div ng-messages="TaskForm.TA_TASK_SL.$error" ng-if="TaskForm.$submitted || TaskForm.TA_TASK_SL.$touched">
+                                <div ng-message="required" class="field-validation-error">The field Task Order # is required</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            <span aria-required="true" class="required">*</span>
+                            Task Name (En)
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" name="TA_TASK_NAME_EN" ng-model="vm.form.TA_TASK_NAME_EN" class="form-control" required />
+                        </div>
+                    </div>
+
+                            <div class="form-group">
+                                <div class="col-md-5 col-md-offset-3">
+                                    <div ng-messages="TaskForm.TA_TASK_NAME_EN.$error" ng-if="TaskForm.$submitted || TaskForm.TA_TASK_NAME_EN.$touched">
+                                        <div ng-message="required" class="field-validation-error">The field Task Name (En) is required</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            Task Name (Bn)
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" name="TA_TASK_NAME_BN" ng-model="vm.form.TA_TASK_NAME_BN" class="form-control banglafont" />
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" style="padding-top: 8px;">
+                            Sample Related ?
+                        </label>
+                        <div class="col-md-1">
+                            <div class="checkbox-list">
+                                <label class="checkbox-inline" style="margin-left:20px;">
+                                    <span><input type="checkbox" style="margin-top:0px;" ng-model="vm.form.IS_SMPL_TASK" ng-true-value="'Y'" ng-false-value="'N'" ng-change="vm.form.IS_SMPL_TASK=='Y'?vm.form.RF_SMPL_TYPE_ID=vm.form.RF_SMPL_TYPE_ID:vm.form.RF_SMPL_TYPE_ID=''"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-3" ng-if="vm.form.IS_SMPL_TASK=='Y'">
+                            <select kendo-drop-down-list name="RF_SMPL_TYPE_ID" class="form-control"
+                                    options="vm.sampleTypeList" id="RF_SMPL_TYPE_ID" ng-model="vm.form.RF_SMPL_TYPE_ID" required></select>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" style="padding-top: 8px;">
+                            Is Active ?
+                        </label>
+                        <div class="col-md-1">
+                            <div class="checkbox-list">
+                                <label class="checkbox-inline" style="margin-left:20px;">
+                                    <span><input type="checkbox" style="margin-top:0px;" ng-model="vm.form.IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin:auto;padding-top:10px;">
+                    <div class="col-md-3 col-md-offset-3">
+                        <button type="submit" ng-if="vm.form.MC_TNA_TASK_ID" class="btn btn-sm yellow-gold" ng-class="{'disabled':!TaskForm.$valid}">Update</button>
+                        <button type="submit" ng-if="!vm.form.MC_TNA_TASK_ID" class="btn btn-sm green" ng-class="{'disabled':!TaskForm.$valid}">Save</button>
+                        <button type="button" class="btn btn-sm default" ng-click="vm.form={IS_ACTIVE:'Y'};TaskForm.$submitted=false;TaskForm.TA_TASK_SL.$touched=false">Cancel</button>
+                    </div>
+                </div>
+
+                <div class="row" style="margin:auto;padding-top:10px;" ng-if="vm.errors">
+                    <div class="alert alert-warning" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                        <ul ng-repeat="field in vm.errors">
+                            <li ng-repeat="error in field" ng-bind="error"></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="row" style="padding-top:10px;margin:auto;">
+                        <kendo-grid k-options="vm.gridOptions" id="kendoGrid"></kendo-grid>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script type="text/ng-template" id="TaskGroupModal.html">
+
+
+
+
+            <div class="portlet grey-cascade box">
+                <div class="portlet-title">
+                    <div>
+                        <h3 class="title">
+                            Task Group Entry
+                            <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                        </h3>
+                    </div>
+                </div>
+                <div class="portlet-body" style="margin:auto;">
+
+                    <form class="form-horizontal"  name="modal" ng-submit="vm.submitData(vm.form,token)">
+                        <div class="modal-body">
+
+                            <input id="access_token" data-ng-model="token" type="hidden"
+                                   data-ng-init="token='@Session["access_token"]'" />
+                            <input ng-model="vm.form.CREATED_BY" type="hidden"
+                                   data-ng-init="vm.form.CREATED_BY='@Session["multiScUserId"]'" />
+
+                            <input id="access_token" ng-model="vm.form.LAST_UPDATED_BY" type="hidden"
+                                   ng-init="vm.form.LAST_UPDATED_BY='@Session["multiScUserId"]'" />
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">
+                                    <span aria-required="true" class="required">*</span>
+                                    Task Group Name (En)
+                                </label>
+                                <div class="col-md-5">
+                                    <input type="text" name="TA_GRP_NAME_EN" ng-model="vm.form.TA_GRP_NAME_EN" class="form-control" required />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-5 col-md-offset-3">
+                                    <div ng-messages="modal.TA_GRP_NAME_EN.$error" ng-if="modal.$submitted || modal.TA_GRP_NAME_EN.$touched">
+                                        <div ng-message="required" class="field-validation-error">The field Task Group Name (En) is required</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">
+                                    Task Group Name (Bn)
+                                </label>
+                                <div class="col-md-5">
+                                    <input type="text" name="TA_GRP_NAME_BN" ng-model="vm.form.TA_GRP_NAME_BN" class="form-control banglafont" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label" style="padding-top: 8px;">
+                                    Is Active ?
+                                </label>
+                                <div class="col-md-1">
+                                    <div class="checkbox-list">
+                                        <label class="checkbox-inline" style="margin-left:20px;">
+                                            <span><input type="checkbox" style="margin-top:0px;" ng-model="vm.form.IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin:auto;padding-top:10px;">
+                                <div class="col-md-3 col-md-offset-3">
+                                    <button type="submit" class="btn btn-sm green" ng-class="{'disabled':!modal.$valid}">Save</button>
+                                    <button type="button" class="btn btn-sm default" ng-click="vm.reset()">Cancel</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+
+                    <kendo-grid k-options="vm.gridOptions"></kendo-grid>
+                </div>
+                </div>
+
+</script>
+
+
+
+

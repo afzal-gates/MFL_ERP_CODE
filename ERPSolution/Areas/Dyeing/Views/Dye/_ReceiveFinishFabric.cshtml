@@ -1,0 +1,834 @@
+﻿<style>
+    .dropdown-header {
+        border-width: 0 0 1px 0;
+        text-transform: uppercase;
+    }
+
+        .dropdown-header > span {
+            display: inline-block;
+            padding: 10px;
+        }
+
+            .dropdown-header > span:first-child {
+                width: 10px;
+            }
+
+    .selected-value {
+        display: inline-block;
+        vertical-align: middle;
+        width: 24px;
+        height: 24px;
+        background-size: 100%;
+        margin-right: 5px;
+        border-radius: 50%;
+    }
+
+    #customers-list .k-item {
+        line-height: 1em;
+        min-width: 300px;
+    }
+
+    /* Material Theme padding adjustment*/
+
+    .k-material #customers-list .k-item,
+    .k-material #customers-list .k-item.k-state-hover,
+    .k-materialblack #customers-list .k-item,
+    .k-materialblack #customers-list .k-item.k-state-hover {
+        padding-left: 5px;
+        border-left: 0;
+    }
+
+    #customers-list .k-item > span {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        display: inline-block;
+        vertical-align: top;
+        margin: 20px 10px 10px 5px;
+    }
+
+        #customers-list .k-item > span:first-child {
+            -moz-box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            -webkit-box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            margin: 5px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+
+    #customers-list h3 {
+        font-size: 1.2em;
+        font-weight: normal;
+        margin: 0 0 1px 0;
+        padding: 0;
+    }
+
+    #customers-list p {
+        margin: 0;
+        padding: 0;
+        font-size: .8em;
+    }
+
+
+    /*///////////////////////*/
+    .k-treeview .k-in {
+        padding: 5px;
+    }
+
+    #ItemCategTreeview .k-sprite {
+        background-image: url("/Content/assets/global/img/coloricons-sprite.png");
+    }
+
+    .rootfolder {
+        background-position: 0 0;
+    }
+
+    .folder {
+        background-position: 0 -16px;
+    }
+
+    .pdf {
+        background-position: 0 -32px;
+    }
+
+    .html {
+        background-position: 0 -48px;
+    }
+
+    .image {
+        background-position: 0 -64px;
+    }
+
+    /*.demo-section {
+        float: left;
+        width: 200px;
+        margin: 0 60px 0 0;
+    }*/
+</style>
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Dyeing Finishing</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+    <form name="formData" class="form-horizontal" style="background-color: white;">
+        <div class="portlet-body">
+
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend"><b>Search Data</b></legend>
+                <div><label id="lblMsgSub"></label></div>
+                <div class="row">
+
+                    <div class="form-group">
+
+                        <div class="col-md-1">
+                        </div>
+                        <label class="control-label col-md-2">
+                            <span aria-required="true" class="required">*</span>
+                            S/C Party
+                        </label>
+                        <div class="col-md-3">
+
+                            <select class="form-control required" kendo-drop-down-list name="SCM_SUPPLIER_ID" id="SCM_SUPPLIER_ID" k-option-label="'-- Select Party --'"
+                                    k-data-text-field="'SUP_TRD_NAME_EN'" k-data-value-field="'SCM_SUPPLIER_ID'"
+                                    k-auto-bind="'true'" k-data-source="vm.supplierList" k-delay="vm.supplierList" k-filter="'contains'"
+                                    ng-model="vm.form.SCM_SUPPLIER_ID" k-on-change="vm.searchScProgramInfo(kendoEvent)"></select>
+
+                        </div>
+
+                        @*<label class="control-label col-md-2">
+                            <span aria-required="true" class="required">*</span>
+                            Our Challan No
+                        </label>
+                        <div class="col-md-2" ng-if="vm.form.SCM_SUPPLIER_ID>0">
+                            <select class="form-control requiredSub" kendo-drop-down-list name="CHALLAN_NO" id="CHALLAN_NO" k-option-label="'-- Select Challan --'"
+                                    k-data-text-field="'CHALAN_NO'" k-data-value-field="'CHALAN_NO'"
+                                    k-auto-bind="'true'" k-data-source="vm.challanList" k-delay="vm.challanList" k-filter="'contains'"
+                                    ng-model="vm.form.CHALLAN_NO"></select>
+
+                        </div>
+                        <div class="col-md-2" ng-if="!vm.form.SCM_SUPPLIER_ID>0">
+
+                            <input type="text" name="CHALLAN_NO" ng-model="vm.form.CHALLAN_NO" class="form-control" />
+
+                        </div>
+
+                        <div class="col-md-1">
+
+                            <a ng-click="vm.getScProgramByChallanNo()" class="btn btn-success"><i class="fa fa-search">Load</i></a>
+                        </div>*@
+
+
+                    </div>
+                </div>
+            </fieldset>
+
+
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend"><b>Challan Data</b></legend>
+                <div class="row" style="padding-left: 5px; padding-right: 5px;">
+
+                    <div class="row">
+
+
+                        <div class="form-group">
+
+                            <div class="col-md-1">
+                            </div>
+                            <label class="control-label col-md-2 ">
+                                <span aria-required="true" class="required">*</span>
+                                MRR No
+                            </label>
+                            <div class="col-md-2">
+                                <input type="hidden" name="DF_SCO_FSTR_RCV_H_ID" ng-model="vm.form.DF_SCO_FSTR_RCV_H_ID" />
+                                <input type="text" name="RCV_REF_NO" ng-model="vm.form.RCV_REF_NO" readonly="readonly" class="form-control" />
+
+                            </div>
+                            <div class="col-md-1">
+                            </div>
+                            <label class="control-label col-md-2 ">
+                                <span aria-required="true" class="required">*</span>
+                                Receive Date
+                            </label>
+
+                            <div class="col-md-2">
+                                <input type="text" class="form-control required" ng-click="RCV_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                       name="RCV_DT" max-date="vm.today" ng-model="vm.form.RCV_DT" is-open="RCV_DT_LNopened"
+                                       datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" required />
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-1">
+                            </div>
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>
+                                Party Delv. Challan No
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" name="CHALAN_NO" ng-model="vm.form.CHALAN_NO" class="form-control required" />
+                            </div>
+
+                            <div class="col-md-1">
+                            </div>
+                            <label class="col-md-2 control-label">
+                                <span aria-required="true" class="required">*</span>
+                                Challan Date
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control required" ng-click="CHALAN_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                       name="CHALAN_DT" max-date="vm.today" ng-model="vm.form.CHALAN_DT" is-open="CHALAN_DT_LNopened"
+                                       datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" required />
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-1">
+                            </div>
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required"></span>
+                                Vehicle No
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" name="VEHICLE_NO" ng-model="vm.form.VEHICLE_NO" class="form-control" />
+
+                            </div>
+
+                            <div class="col-md-1">
+                            </div>
+                            <label class="col-md-2 control-label">
+                                <span aria-required="true" class="required"></span>
+                                Driver Name
+                            </label>
+                            <div class="col-md-2">
+
+                                <input type="text" name="CARRIER_NAME" ng-model="vm.form.CARRIER_NAME" class="form-control" />
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-1">
+                            </div>
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required"></span>
+                                Gate-Pass No
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" name="GATE_PASS_NO" ng-model="vm.form.GATE_PASS_NO" class="form-control" />
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+
+                            <div class="col-md-1">
+                            </div>
+
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>
+                                Receiving Store
+                            </label>
+                            <div class="col-md-3">
+                                <select kendo-drop-down-list name="SCM_STORE_ID" id="SCM_STORE_ID" class="form-control required"
+                                        options="vm.storeList" ng-k-delay="vm.storeList" ng-model="vm.form.SCM_STORE_ID" required></select>
+
+                            </div>
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>
+                                Receive By
+                            </label>
+                            <div class="col-md-2">
+                                <select id="customers" kendo-drop-down-list options="vm.userList" ng-model="vm.form.CREATED_BY" class="form-control" style="width:100%;"></select>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+
+                            <div class="col-md-1">
+                            </div>
+                            <label class="control-label col-md-2 ">
+                                <span aria-required="true" class="required"></span>
+                                Remarks
+                            </label>
+                            <div class="col-md-8">
+                                <textarea id="REMARKS" name="REMARKS" ng-model="vm.form.REMARKS" class="form-control"></textarea>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </fieldset>
+
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend"><b>Detail Data</b></legend>
+                <tabset>
+                    <tab heading="Body Fabric">
+                        <table style="width:100%" class="clsTableMtex">
+
+                            <tr class="clstheadMtex">
+                                <td class="clstdMtex">
+                                    <b>Batch #</b>
+                                </td>
+
+                                <td class="clstdMtex">
+                                    <b>Buyer</b>
+                                </td>
+
+                                <td class="clstdMtex">
+                                    <b>Style #</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Order #</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Color</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Lot #</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Fabric Type</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Fab. Com</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Fin. Dia</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Fin. GSM</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>S/C Batch #</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Issued Qty</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Rcv. Roll Qty</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Rcv. Fab Qty</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Loss Qty</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Loss %</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Action</b>
+                                </td>
+
+
+                            </tr>
+                            <tr class="" ng-repeat-start="item in vm.scProgramFabList">
+                                <td class="clstdMtex">
+
+                                    {{item.DYE_BATCH_NO}}
+                                    <input type="hidden" name="DYE_BT_CARD_H_ID" ng-model="item.DYE_BT_CARD_H_ID" class="form-control" />
+                                    <input type="hidden" name="KNT_STYL_FAB_ITEM_ID" ng-model="item.KNT_STYL_FAB_ITEM_ID" class="form-control" />
+                                    <input type="hidden" name="DYE_SC_PRG_ISS_ID" ng-model="item.DYE_SC_PRG_ISS_ID" class="form-control" />
+
+                                </td>
+
+                                <td class="clstdMtex">
+                                    {{item.BUYER_NAME_EN}}
+                                </td>
+
+                                <td class="clstdMtex">
+                                    {{item.STYLE_NO}}
+
+                                </td>
+                                <td class="clstdMtex">
+                                    {{item.ORDER_NO}}
+                                </td>
+                                <td class="clstdMtex">
+                                    {{item.COLOR_NAME_EN}}
+
+                                </td>
+                                <td class="clstdMtex">
+                                    {{item.DYE_LOT_NO}}
+
+                                </td>
+                                <td class="clstdMtex">
+                                    {{item.FAB_TYPE_NAME}}
+
+                                </td>
+                                <td class="clstdMtex">
+                                    {{item.FIB_COMP_NAME}}
+
+                                </td>
+                                <td class="clstdMtex">
+                                    {{item.FIN_DIA}}
+
+                                </td>
+                                <td class="clstdMtex">
+                                    {{item.FIN_GSM}}
+
+                                </td>
+                                <td class="clstdMtex">
+                                    <input type="text" name="SC_BATCH_NO" ng-model="item.SC_BATCH_NO" style="width:80px;" class="form-control required" />
+                                </td>
+                                <td class="clstdMtex">
+                                    {{item.ISS_QTY}}
+
+                                </td>
+                                <td class="clstdMtex">
+                                    <input type="text" name="RCV_ROLL_QTY" ng-model="item.RCV_ROLL_QTY" style="width:50px;" class="form-control double" />
+
+                                </td>
+                                <td class="clstdMtex">
+                                    <input type="text" name="RCV_FIN_FAB_QTY" ng-model="item.RCV_FIN_FAB_QTY" style="width:50px;" class="form-control" ng-change="vm.checkRcvQty(item);" />
+
+                                </td>
+                                <td class="clstdMtex">
+                                    <input type="text" name="LOSS_QTY" ng-model="item.LOSS_QTY" style="width:50px;" class="form-control" readonly />
+
+                                </td>
+                                <td class="clstdMtex">
+                                    {{(((item.ISS_QTY-item.RCV_FIN_FAB_QTY)/item.ISS_QTY)*100)|number:2}} %
+                                </td>
+
+                                <td class="clstdMtex" style="width:80px;">
+                                    <a title="Down" ng-click="vm.removeRecoed(item)" class="btn btn-xs red"><i class="fa fa-remove"></i></a>
+                                    @*<a title="Down" ng-click="vm.addAllNewRecoed(item,$index)" class="btn btn-xs green"><i class="fa fa-plus"></i></a>*@
+                                </td>
+
+                            </tr>
+
+                            <tr>
+                                <td colspan="16">
+                                    <table style="border-collapse:collapse">
+
+                                        <tbody>
+                                            <tr class="clsthead">
+                                                <td style="width:100px;border-left:0px;">
+                                                    <b></b>
+                                                </td>
+                                                <td class="clstd" style="font-weight: bold; background-color: #caf5d1;">
+                                                    <b>Process To Be Complete: </b>
+
+                                                </td>
+
+                                                <td class="clstd" ng-repeat="item_2 in item.processTypeList" style="font-weight: bold; background-color: #caf5d1; ">
+                                                    <input type="hidden" name="DYE_BT_CARD_H_ID" ng-model="item.DYE_BT_CARD_H_ID" class="form-control" />
+                                                    <input type="hidden" name="DF_PROC_TYPE_ID" ng-model="item_2.DF_PROC_TYPE_ID" class="form-control" />
+                                                    <input type="hidden" name="DYE_SC_PRG_ISS_ID" ng-model="item_2.DYE_SC_PRG_ISS_ID" class="form-control" />
+
+                                                    <input type="checkbox" class="" name="PROC_STATUS_{{$index}}" id="PROC_STATUS_{{$index}}" ng-model="item_2.PROC_STATUS" /><label style="font-weight: bold;" for="PROC_STATUS_{{$index}}"> {{item_2.DF_PROC_TYPE_NAME}}</label>
+                                                </td>
+
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr ng-repeat-end></tr>
+                        </table>
+                    </tab>
+
+
+                    <tab heading="Collar & Cuff Fabric">
+                        <table style="width:100%" class="clsTableMtex">
+
+                            <tr class="clstheadMtex">
+                                <td class="clstdMtex">
+                                    <b>Batch #</b>
+                                </td>
+
+                                <td class="clstdMtex">
+                                    <b>Buyer</b>
+                                </td>
+
+                                <td class="clstdMtex">
+                                    <b>Style #</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Order #</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Color</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Lot #</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Fabric Type</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Fab. Com</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Fin. Dia</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Size</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>S/C Batch #</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Issued Qty</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Rcv. Roll Qty</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Rcv. Fab Qty</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Loss Qty</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Loss %</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Action</b>
+                                </td>
+
+
+                            </tr>
+                            <tr class="" ng-repeat-start="item2 in vm.scProgramCCList">
+                                <td class="clstdMtex">
+
+                                    {{item2.DYE_BATCH_NO}}
+                                    <input type="hidden" name="DYE_BT_CARD_H_ID" ng-model="item2.DYE_BT_CARD_H_ID" class="form-control" />
+                                    <input type="hidden" name="KNT_CLCF_STYL_ITEM_ID" ng-model="item2.KNT_CLCF_STYL_ITEM_ID" class="form-control" />
+                                    <input type="hidden" name="DYE_SC_PRG_ISS_ID" ng-model="item2.DYE_SC_PRG_ISS_ID" class="form-control" />
+
+                                </td>
+
+                                <td class="clstdMtex">
+                                    {{item2.BUYER_NAME_EN}}
+                                </td>
+
+                                <td class="clstdMtex">
+                                    {{item2.STYLE_NO}}
+
+                                </td>
+                                <td class="clstdMtex">
+                                    {{item2.ORDER_NO}}
+                                </td>
+                                <td class="clstdMtex">
+                                    {{item2.COLOR_NAME_EN}}
+
+                                </td>
+                                <td class="clstdMtex">
+                                    {{item2.DYE_LOT_NO}}
+
+                                </td>
+                                <td class="clstdMtex">
+                                    {{item2.FAB_TYPE_NAME}}
+
+                                </td>
+                                <td class="clstdMtex">
+                                    {{item2.FIB_COMP_NAME}}
+
+                                </td>
+                                <td class="clstdMtex">
+                                    {{item2.FIN_DIA}}
+
+                                </td>
+                                <td class="clstdMtex">
+                                    {{item2.MESUREMENT}}
+
+                                </td>
+                                <td class="clstdMtex">
+                                    <input type="text" name="SC_BATCH_NO" ng-model="item2.SC_BATCH_NO" style="width:80px;" class="form-control required" />
+                                </td>
+                                <td class="clstdMtex">
+                                    {{item2.ISS_QTY}}
+
+                                </td>
+                                <td class="clstdMtex">
+                                    <input type="text" name="RCV_ROLL_QTY" ng-model="item2.RCV_ROLL_QTY" style="width:50px;" class="form-control double" />
+
+                                </td>
+                                <td class="clstdMtex">
+                                    <input type="text" name="RCV_QTY" ng-model="item2.RCV_QTY" style="width:50px;" class="form-control" ng-change="vm.checkOtherRcvQty(item2);" />
+
+                                </td>
+                                <td class="clstdMtex">
+                                    <input type="text" name="LOSS_QTY" ng-model="item2.LOSS_QTY" style="width:50px;" class="form-control" readonly />
+
+                                </td>
+                                <td class="clstdMtex">
+                                    {{(((item2.ISS_QTY-item2.RCV_QTY)/item2.ISS_QTY)*100)|number:2}} %
+                                </td>
+
+                                <td class="clstdMtex" style="width:80px;">
+                                    <a title="Down" ng-click="vm.removeRecoed(item2)" class="btn btn-xs red"><i class="fa fa-remove"></i></a>
+                                    @*<a title="Down" ng-click="vm.addAllNewRecoed(item2,$index)" class="btn btn-xs green"><i class="fa fa-plus"></i></a>*@
+                                </td>
+
+                            </tr>
+
+                            <tr>
+                                <td colspan="16">
+                                    <table style="border-collapse:collapse">
+
+                                        <tbody>
+                                            <tr class="clsthead">
+                                                <td style="width:100px;border-left:0px;">
+                                                    <b></b>
+                                                </td>
+                                                <td class="clstd" style="font-weight: bold; background-color: #caf5d1;">
+                                                    <b>Process To Be Complete: </b>
+
+                                                </td>
+
+                                                <td class="clstd" ng-repeat="item22 in item2.processTypeList" style="font-weight: bold; background-color: #caf5d1; ">
+                                                    <input type="hidden" name="DYE_BT_CARD_H_ID" ng-model="item2.DYE_BT_CARD_H_ID" class="form-control" />
+                                                    <input type="hidden" name="DF_PROC_TYPE_ID" ng-model="item22.DF_PROC_TYPE_ID" class="form-control" />
+                                                    <input type="hidden" name="DYE_SC_PRG_ISS_ID" ng-model="item22.DYE_SC_PRG_ISS_ID" class="form-control" />
+
+                                                    <input type="checkbox" class="" name="PROC_STATUS_{{$index}}" id="PROC_STATUS_{{$index}}" ng-model="item22.PROC_STATUS" /><label style="font-weight: bold;" for="PROC_STATUS_{{$index}}"> {{item22.DF_PROC_TYPE_NAME}}</label>
+                                                </td>
+
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr ng-repeat-end></tr>
+                        </table>
+                    </tab>
+
+                    <tab heading="Trims & Accesories Fabric">
+                        <table style="width:100%" class="clsTableMtex">
+
+                            <tr class="clstheadMtex">
+                                <td class="clstdMtex">
+                                    <b>Batch #</b>
+                                </td>
+
+                                <td class="clstdMtex">
+                                    <b>Buyer</b>
+                                </td>
+
+                                <td class="clstdMtex">
+                                    <b>Style #</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Order #</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Color</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Lot #</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>S/C Batch #</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Issued Qty</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Rcv. Roll Qty</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Rcv. Fab Qty</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Loss Qty</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Loss %</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Action</b>
+                                </td>
+
+
+                            </tr>
+                            <tr class="" ng-repeat-start="item3 in vm.scProgramTrimList">
+                                <td class="clstdMtex">
+
+                                    {{item3.DYE_BATCH_NO}}
+                                    <input type="hidden" name="DYE_BT_CARD_H_ID" ng-model="item3.DYE_BT_CARD_H_ID" class="form-control" />
+                                    <input type="hidden" name="MC_ORD_TRMS_ITEM_ID" ng-model="item3.MC_ORD_TRMS_ITEM_ID" class="form-control" />
+                                    <input type="hidden" name="DYE_SC_PRG_ISS_ID" ng-model="item3.DYE_SC_PRG_ISS_ID" class="form-control" />
+
+                                </td>
+
+                                <td class="clstdMtex">
+                                    {{item3.BUYER_NAME_EN}}
+                                </td>
+
+                                <td class="clstdMtex">
+                                    {{item3.STYLE_NO}}
+
+                                </td>
+                                <td class="clstdMtex">
+                                    {{item3.ORDER_NO}}
+                                </td>
+                                <td class="clstdMtex">
+                                    {{item3.COLOR_NAME_EN}}
+
+                                </td>
+                                <td class="clstdMtex">
+                                    {{item3.DYE_LOT_NO}}
+
+                                </td>
+                                <td class="clstdMtex">
+                                    <input type="text" name="SC_BATCH_NO" ng-model="item3.SC_BATCH_NO" style="width:100px;" class="form-control required" />
+
+                                </td>
+                                <td class="clstdMtex">
+                                    {{item3.ISS_QTY}}
+
+                                </td>
+                                <td class="clstdMtex">
+                                    <input type="text" name="RCV_ROLL_QTY" ng-model="item3.RCV_ROLL_QTY" style="width:50px;" class="form-control double" />
+
+                                </td>
+                                <td class="clstdMtex">
+                                    <input type="text" name="RCV_QTY" ng-model="item3.RCV_QTY" style="width:50px;" class="form-control" ng-change="vm.checkOtherRcvQty(item3);" />
+
+                                </td>
+                                <td class="clstdMtex">
+                                    <input type="text" name="LOSS_QTY" ng-model="item3.LOSS_QTY" style="width:50px;" class="form-control" readonly />
+
+                                </td>
+                                <td class="clstdMtex">
+                                    {{(((item3.ISS_QTY-item3.RCV_QTY)/item3.ISS_QTY)*100)|number:2}} %
+                                </td>
+                                @*<td class="clstdMtex" style="width:80px;">
+                                        <a title="Down" ng-click="vm.removeRecoed(item)" class="btn btn-xs red"><i class="fa fa-remove"></i></a>
+                                    </td>*@
+                                <td class="clstdMtex" style="width:80px;">
+                                    <a title="Down" ng-click="vm.removeRecoed(item3)" class="btn btn-xs red"><i class="fa fa-remove"></i></a>
+                                    @*<a title="Down" ng-click="vm.addAllNewRecoed(item,$index)" class="btn btn-xs green"><i class="fa fa-plus"></i></a>*@
+                                </td>
+
+                            </tr>
+
+                            <tr>
+                                <td colspan="16">
+                                    <table style="border-collapse:collapse">
+
+                                        <tbody>
+                                            <tr class="clsthead">
+                                                <td style="width:100px;border-left:0px;">
+                                                    <b></b>
+                                                </td>
+                                                <td class="clstd" style="font-weight: bold; background-color: #caf5d1;">
+                                                    <b>Process To Be Complete: </b>
+
+                                                </td>
+
+                                                <td class="clstd" ng-repeat="item32 in item3.processTypeList" style="font-weight: bold; background-color: #caf5d1; ">
+                                                    <input type="hidden" name="DYE_BT_CARD_H_ID" ng-model="item3.DYE_BT_CARD_H_ID" class="form-control" />
+                                                    <input type="hidden" name="DF_PROC_TYPE_ID" ng-model="item32.DF_PROC_TYPE_ID" class="form-control" />
+                                                    <input type="hidden" name="DYE_SC_PRG_ISS_ID" ng-model="item32.DYE_SC_PRG_ISS_ID" class="form-control" />
+                                                    
+                                                    <input type="checkbox" class="" name="PROC_STATUS_{{$index}}" id="PROC_STATUS_{{$index}}" ng-model="item32.PROC_STATUS" /><label style="font-weight: bold;" for="PROC_STATUS_{{$index}}"> {{item32.DF_PROC_TYPE_NAME}}</label>
+                                                </td>
+
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr ng-repeat-end></tr>
+                        </table>
+                    </tab>
+                </tabset>
+
+            </fieldset>
+        </div>
+        <div style="padding:3px;">
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <button type="button" class="btn btn-sm blue" ui-sref="ScProgramReceiveList">Back To List</button>
+
+                <button type="button" ng-if="vm.form.DF_SCO_FSTR_RCV_H_ID>0" class="btn btn-sm yellow-gold" ng-click="vm.submitAll(vm.form);">Update</button>
+                <button type="button" ng-if="vm.form.DF_SCO_FSTR_RCV_H_ID>0" class="btn btn-sm green" ng-click="vm.completeAll(vm.form);">Finalize</button>
+                <button type="button" ng-if="!vm.form.DF_SCO_FSTR_RCV_H_ID>0" class="btn btn-sm green" ng-click="vm.submitAll(vm.form);">Save</button>
+                <button type="button" class="btn btn-sm default" ui-sref="ScProgramReceive({pDF_SCO_FSTR_RCV_H_ID : 0})" ui-sref-opts="{reload: true}">Cancel</button>
+            </div>
+
+        </div>
+        <div style="padding:3px;">
+        </div>
+    </form>
+</div>

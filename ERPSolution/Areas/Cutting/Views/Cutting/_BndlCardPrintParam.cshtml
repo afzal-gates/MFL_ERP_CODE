@@ -1,0 +1,198 @@
+﻿<style>
+    #grid tr td {
+        /* this makes the menu visibile */
+        overflow: visible;
+    }
+
+    #grid .k-grid-header {
+        padding-right: 0 !important;
+    }
+</style>
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Knitting</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <form class="form-horizontal form-body" name="frmCuttingList">
+
+            <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+                <div class="page-splash">
+                    <div class="page-splash-message">
+                        <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend"></legend>
+
+
+                        <div class="form-group">
+                            <label class="control-label col-md-1">
+                                <span aria-required="true" class="required">*</span>Buyer A/C
+                            </label>
+                            <div class="col-md-3">
+                                <select kendo-drop-down-list name="MC_BYR_ACC_GRP_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                        k-options="vm.buyerAcGrpOption" k-data-source="vm.buyerAcGrpDataSource" k-ng-delay="vm.buyerAcGrpDataSource"
+                                        ng-model="vm.form.MC_BYR_ACC_GRP_ID" k-auto-bind="'true'" required></select>
+                            </div>
+
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>Style/Order
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control" kendo-drop-down-list name="MC_STYLE_H_EXT_ID" k-option-label="'-- Select --'"
+                                        k-template="vm.templateOh" k-value-template="vm.valueTemplateOh" k-filter="'contains'"
+                                        k-auto-bind="'true'" k-options="vm.OrdStyleExtOption" k-data-source="vm.OrdStyleExtDataSource" k-ng-delay="vm.OrdStyleExtDataSource"
+                                        ng-model="vm.form.MC_STYLE_H_EXT_ID" required></select>
+                            </div>
+
+                            <label class="control-label col-md-1">
+                                <span aria-required="true" class="required">*</span>Shipment
+                            </label>
+                            <div class="col-md-2">
+                                <select kendo-drop-down-list name="MC_ORDER_SHIP_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                        k-options="vm.ordShipOption" k-data-source="vm.ordShipDataSource" k-ng-delay="vm.ordShipDataSource"
+                                        ng-model="vm.form.MC_ORDER_SHIP_ID" k-auto-bind="'true'" required></select>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="control-label col-md-1">
+                                <span aria-required="true" class="required">*</span>GMT Color
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control" kendo-drop-down-list name="GMT_COLOR_ID" k-option-label="'--Select--'"
+                                        ng-model="vm.form.GMT_COLOR_ID" k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'MC_COLOR_ID'"
+                                        k-options="vm.ordColorOption" k-data-source="vm.ordColorDataSource" k-filter="'contains'" k-auto-bind="'true'"
+                                        k-on-change="" required></select>
+                            </div>
+
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>Cutting#
+                            </label>
+                            <div class="col-md-2">
+                                <select kendo-drop-down-list name="GMT_CUT_INFO_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                        k-options="vm.cuttingNoOption" k-data-source="vm.cuttingNoDataSource" k-ng-delay="vm.cuttingNoDataSource"
+                                        ng-model="vm.form.GMT_CUT_INFO_ID" k-auto-bind="'true'" required></select>
+                            </div>
+                        </div>
+
+                        @*<div class="form-group">
+
+                        <div class="col-md-2" >
+                            <a class="btn btn-sm blue" href="/Cutting/Cutting/MrkrReq?a=363/#/mrkrReqH/0"><i class="fa fa-plus"></i> Add New</a>
+                        </div>
+                    </div>*@
+                    </fieldset>
+                </div>
+
+
+                <div class="col-md-8" @*style="padding-top:5px;"*@>
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend">Print Bundle Card</legend>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Bundle#</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" name="BUNDLE_NO_LST" ng-model="vm.form.BUNDLE_NO_LST" placeholder="1,2,3" autocomplete="off" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Size</label>
+                                <div class="col-md-6">
+                                    <select class="form-control" kendo-drop-down-list name="MC_ORDER_SIZE_ID" k-option-label="'--Select--'"
+                                            ng-model="vm.form.MC_ORDER_SIZE_ID" k-data-text-field="'SIZE_CODE'" k-data-value-field="'MC_ORDER_SIZE_ID'"
+                                            k-options="vm.ordSizeOption" k-data-source="vm.ordSizeDataSource" k-filter="'contains'" k-auto-bind="'true'"
+                                            k-on-change=""></select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="control-label col-md-4">SL#</label>
+                                <div class="col-md-4">
+                                    <input type="number" class="form-control" name="GRD_SL" ng-model="vm.form.GRD_SL" ng-disabled="vm.form.MC_ORDER_SIZE_ID<1" autocomplete="off" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Print/Solid/Embr</label>
+                                <div class="col-md-6" @*style="padding-right:0px;"*@>
+                                    <select kendo-drop-down-list name="SERVICE_ID" class="form-control"
+                                            options="vm.addnlServiceOptions" ng-model="vm.form.SERVICE_ID"></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-4">GMT Part</label>
+                                <div class="col-md-8" @*style="padding-right:0px;"*@>
+                                    <select class="form-control" kendo-multi-select name="RF_GARM_PART_ID_LIST" k-placeholder="'Search...'"
+                                            k-data-text-field="'GARM_PART_NAME'" k-data-value-field="'RF_GARM_PART_ID'"
+                                            k-data-source="vm.gmtPartDataSource" ng-model="vm.form.RF_GARM_PART_ID_LIST"
+                                            k-on-close="vm.onCloseGmtPart()"></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+
+                                <div class="col-md-offset-4 col-md-8" @*style="text-align:right"*@>
+
+                                    <button type="button" class="btn btn-sm blue" ng-click="vm.printBundleCard()"
+                                            ng-disabled="vm.form.RF_GARM_PART_ID_LIST==null||vm.form.SERVICE_ID==null||
+                                            ((vm.form.BUNDLE_NO_LST==null||vm.form.BUNDLE_NO_LST=='') && vm.form.MC_ORDER_SIZE_ID<1)">
+                                        <i class="fa fa-file-text-o"></i> Print Bundle Card
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </div>
+
+            </div>
+        </form>
+
+        <br />
+
+        @*<pre>{{vm.gmtPartList|json}}</pre>*@
+
+        @*<pre>{{vm.form|json}}</pre>*@
+
+        @*<div class="form-group">
+            <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px"></label>
+            <div class="col-md-8" style="padding-right:0px;">
+                <button type="button" class="btn btn-sm blue" ng-click="vm.printBundleCard()"><i class="fa fa-file-text-o"></i> Print Bundle Card</button>
+            </div>
+        </div>*@
+
+
+    </div>
+</div>
+

@@ -1,0 +1,125 @@
+﻿
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Knitting</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+    
+    <div class="portlet-body">
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <form class="form-horizontal" role="form" name="frmMcnNeedleAssign" novalidate>
+            
+            <div class="form-body clearfix">
+                <div class="row" style="margin:auto;">
+                    @*<div class="col-md-12">*@
+
+                    <fieldset class="custom-fieldset col-md-12">
+                        <legend class="custom-legend"><b>Search</b></legend>
+
+                        <div class="form-group">
+
+                            <label class="control-label col-md-2">                                
+                                Office/Unit
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control" kendo-drop-down-list name="HR_OFFICE_ID" k-option-label="'-- Select Office --'"
+                                        k-data-text-field="'OFFICE_NAME_EN'" k-data-value-field="'HR_OFFICE_ID'" k-filter="'contains'"
+                                        k-auto-bind="'true'" k-options="vm.officeOptions" k-data-source="vm.officeDataSource" @*k-ng-delay="vm.styleList"*@
+                                        ng-model="vm.form.HR_OFFICE_ID" required></select>
+                            </div>
+
+                            <label class="control-label col-md-1">                                
+                                Category
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control required" kendo-drop-down-list name="INV_ITEM_CAT_ID" id="INV_ITEM_CAT_ID" k-option-label="'-- Select Category --'"
+                                        k-data-text-field="'ITEM_CAT_NAME_EN'" k-data-value-field="'INV_ITEM_CAT_ID'" ng-disabled="vm.form.KNT_YRN_RCV_OB_ID>0"
+                                        k-auto-bind="'true'" k-filter="'contains'" ng-model="vm.form.INV_ITEM_CAT_ID"
+                                        k-options="vm.categoryOptions" k-data-source="vm.categoryDataSource" required></select>
+                            </div>
+
+                            <div class="col-md-1">
+                                <button type="button" class="btn btn-sm blue" ng-click="vm.loadNdlAssignList()"
+                                        ng-disabled="(vm.form.HR_OFFICE_ID==''||vm.form.HR_OFFICE_ID==null)||(vm.form.INV_ITEM_CAT_ID==''||vm.form.INV_ITEM_CAT_ID==null)">
+                                    Load
+                                </button>
+                            </div>
+                            
+                        </div>                                               
+
+                    </fieldset>
+
+
+                   
+
+                    <div class="col-md-12" style="padding-top:5px;" ng-show="vm.IS_NEXT=='Y'">
+                        <div class="form-group">
+                            <div kendo-grid id="mcNdlAssign" k-options="vm.mcNdlAssignOptions" k-data-source="vm.mcNdlAssignDataSource"></div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-12" style="padding-top:5px; padding-right:30px" ng-show="vm.IS_NEXT=='Y'">
+                        <div class="form-group" @*style="text-align:right"*@>
+                            @*<div class="col-md-6">*@
+                            <button class="btn btn-sm green" type="button" ng-click="vm.submitData(token, 'N')">
+                                Save
+                            </button>
+
+                            @*<button class="btn btn-sm yellow-gold" type="button" ng-click="vm.submitData(token, 'N')" ng-show="vm.form.KNT_MCN_NDL_BRK_H_ID>0"
+                        ng-class="{'disabled':frmMcNeedleBroken.$invalid||vm.form.IS_FINALIZED=='Y'}">
+                    Update
+                </button>*@
+
+                            <button class="btn btn-sm blue" type="button" ng-click="vm.cancel()">
+                                Cancel
+                            </button>
+
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <button type="button" @*ng-disabled="rollDelvGridDataSource.length()<0"*@ class="btn btn-sm blue" ng-click="vm.submitData(token, 'Y')"
+                                    ng-class="{'disabled':vm.IS_FINALIZED=='Y'}">
+                                Save & Finalize
+                            </button>
+
+
+
+
+                            @*</div>*@
+
+
+                        </div>
+                    </div>
+
+                    @*</div>*@
+
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+
+</div>

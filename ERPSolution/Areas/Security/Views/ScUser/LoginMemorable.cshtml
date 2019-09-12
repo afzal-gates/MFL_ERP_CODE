@@ -1,0 +1,63 @@
+﻿@model ERP.Model.LoginMemorableModel
+
+@{
+    //ViewBag.Title = "LoginMemorable";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+
+<div class="content ">
+
+    @using (Html.BeginForm())
+    {
+
+        @Html.AntiForgeryToken()
+
+        <div class="form-body">
+            <h3 class="form-title">Memorable</h3>
+
+            @Html.ValidationSummary(true)
+
+            <div class="form-group">
+                <p>To complete login please enter the request number and/or letters from your memorable word using the three select list provided.</p>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-4">
+                    <input type="text" name="FIRST_LETTER_NUMBER" style="margin-left: 20px;width:50px;border:none;background-color:transparent;" value="@ViewBag.firstLeterNumber" readonly />                  
+                </div>
+                <div class="col-md-4">
+                    <input type="text" name="SECOND_LETTER_NUMBER" style="margin-left: 35px;width:50px;border:none;background-color:transparent;" value="@ViewBag.secondLeterNumber" readonly />                    
+                </div>
+                <div class="col-md-4">
+                    <input type="text" name="THIRD_LETTER_NUMBER" style="margin-left: 35px;width:50px;border:none;background-color:transparent;" value="@ViewBag.thirdLeterNumber" readonly />                    
+                </div>
+            </div>
+            <p style="margin-bottom: -10px;">&nbsp;</p>
+
+            <div class="form-group">
+                <div class="col-md-4">
+                    @Html.DropDownList("FIRST_LETTER", (IEnumerable<SelectListItem>)ViewData["letterListData"], new { @class = "form-control", style = "margin-left:-15px;" })
+                </div>
+                <div class="col-md-4">
+                    @Html.DropDownList("SECOND_LETTER", (IEnumerable<SelectListItem>)ViewData["letterListData"], new { @class = "form-control", style = "margin-left:0px;" })
+                </div>
+                <div class="col-md-4">
+                    @Html.DropDownList("THIRD_LETTER", (IEnumerable<SelectListItem>)ViewData["letterListData"], new { @class = "form-control", style = "margin-left:15px;" })
+                </div>
+            </div>
+            <p>&nbsp;</p>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn btn-success  uppercase">Check</button>
+                @*<a class="btn btn-success default uppercase" href="@Url('/H')"><i class="fa fa-arrow-left fa-fw"></i>Cancel</a>*@
+                <a href="@Url.Action("SignIn","ScUser", new { action = "SignIn", controller = "ScUser",  area = "Security" })" class="btn btn-success grey-salsa uppercase"><i class="fa fa-arrow-left fa-fw"></i>Cancel</a>
+
+                @*<label class="rememberme check">
+                        <input type="checkbox" name="remember" value="1" />Remember
+                    </label>*@
+                @*<a href="javascript:;" id="forget-password" class="forget-password">Forgot Password?</a>*@
+            </div>
+
+        </div>
+    }
+</div>

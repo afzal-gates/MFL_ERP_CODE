@@ -1,0 +1,189 @@
+﻿Content-Type: text/html; charset=utf-8
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style media="all" type="text/css">
+        table td {
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+    <span style="font-weight: bold; font-size: 25px; color: red;">Warning !!!</span>
+
+    @{
+        if (Model.data.CAP_BKING_DTL[0].CAP_WEEK_DATA_LIST[0].MN_WK_NO > 0)
+        {
+            <p>
+                Order over-booked for the period of Week#<b>@Model.data.CAP_BKING_DTL[0].CAP_WEEK_DATA_LIST[0].MN_WK_NO (@Model.data.CAP_BKING_DTL[0].CAP_WEEK_HDR_LIST[0].WK_NAME_EN), @Model.data.CAP_BKING_DTL[0].CAP_WEEK_DATA_LIST[0].MONTH_NAME_EN</b> for Buyer A/C: <b>@Model.data.BYR_ACC_GRP_NAME_EN</b>, Style# <b>@Model.data.WORK_STYLE_NO</b>, Order# <b>@Model.data.ORDER_NO</b>. Prepared by <b>@Model.data.EMP_FULL_NAME_EN</b>, <b>@Model.data.DESIGNATION_NAME_EN</b>.
+            </p>            
+        }
+        else
+        {
+            <p>
+                Order over-booked for the period of <b>(@Model.data.CAP_BKING_DTL[0].CAP_WEEK_HDR_LIST[0].WK_NAME_EN), @Model.data.CAP_BKING_DTL[0].CAP_WEEK_DATA_LIST[0].MONTH_NAME_EN</b> for Buyer A/C: <b>@Model.data.BYR_ACC_GRP_NAME_EN</b>, Style# <b>@Model.data.WORK_STYLE_NO</b>, Order# <b>@Model.data.ORDER_NO</b>. Prepared by <b>@Model.data.EMP_FULL_NAME_EN</b>, <b>@Model.data.DESIGNATION_NAME_EN</b>.
+            </p>
+        }
+    }
+    
+
+    
+    @*<table class="table table-striped" style="width: 300px; border-collapse: collapse; overflow: scroll;">
+        <caption style="text-align: left;font-style:italic; color: #5738b5; padding-top: 10px; padding-bottom: 5px;"><strong>New Order Detail (Qty in pcs)</strong></caption>
+        <thead>
+            <tr style="border: solid 1px black; background: #f2dede; color: #a94442;">
+                <th style="border: solid 1px black; text-align: left;">GMT Type</th>
+                <th style="border: solid 1px black; text-align: center;">Order Qty</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @{
+                Int64 vTotPcsBooked = 0;
+                
+                foreach (var itm in Model.data.PROD_TYP_WISE_DTL)
+                {
+                    vTotPcsBooked = vTotPcsBooked + itm.PCS_BOOKED;
+                    
+                    <tr>
+                        <th style="border: solid 1px black; text-align: left;font-weight:normal">@itm.GMT_PRODUCT_TYP_NAME</th>
+                        <th style="border: solid 1px black; text-align: center; font-weight: normal">@itm.PCS_BOOKED</th>
+                    </tr>
+                }
+            
+                <tr>
+                    <td style="border: solid 1px black; text-align: left;" ><b>Total</b></td>
+                    <td style="border: solid 1px black; text-align: center;"><b>@vTotPcsBooked</b></td>                
+                </tr>
+            }
+        </tbody>
+    </table>*@    
+    @*<br />*@
+    
+
+
+    <table class="table table-striped" style="width: 850px; border-collapse: collapse; overflow: scroll;">
+        <caption style="text-align: left;font-style:italic; color: #5738b5; padding-top: 10px; padding-bottom: 5px;"><strong>Order Booking Detail (Qty in pcs)</strong></caption>
+        <thead>
+            <tr style="border: solid 1px black; background: #f2dede; color: #a94442;">
+                <th style="border: solid 1px black;" rowspan="3">GMT Type</th>
+
+                @foreach (var itmMonth in Model.data.CAP_BKING_DTL[0].CAP_MONTH_HDR_LIST)
+                {
+                    <th colspan="6" style="border: solid 1px black; text-align: center;">
+                        <span>@itmMonth.MONTH_NAME_EN</span>
+                    </th>
+                }
+            </tr>
+
+            <tr style="border: solid 1px black; background: #dff0d8; color: #3c763d;">                
+                @foreach (var itmWeek in Model.data.CAP_BKING_DTL[0].CAP_WEEK_HDR_LIST)
+                {
+                    <th style="border: solid 1px black; text-align: center;" colspan="6">
+                        <span class="col-md-12">@itmWeek.WK_NAME_EN</span>
+                    </th>
+                }
+            </tr>
+
+            <tr style="border: solid 1px black; background: #d9edf7; color: #31708f;">                
+                @foreach (var itmWeek in Model.data.CAP_BKING_DTL[0].CAP_WEEK_HDR_LIST)
+                {                    
+                    <th style="border: solid 1px black; text-align: center;">Capacity Qty</th>
+                    <th style="border: solid 1px black; text-align: center;">Bkd with Carry Over</th>
+                    <th style="border: solid 1px black; text-align: center;">Balance Qty</th>
+                    <th style="border: solid 1px black; text-align: center;">Booked(%)</th>
+                    <th style="border: solid 1px black; text-align: center;">New Order Qty</th>
+                    <th style="border: solid 1px black; text-align: center;">Bkd (%) with New Ord</th>
+                }
+            </tr>
+        </thead>
+
+        <tbody class="clstdMtex">
+            @{
+                int vFabRowCount = 1;
+                                
+                foreach (var itmGmtTyp in Model.data.CAP_BKING_DTL)
+                {
+                    if (vFabRowCount % 2 == 0)
+                    {
+                        <tr style="background: #ddd">
+                            <td style="border: solid 1px black; text-align: left;">@itmGmtTyp.GMT_PRODUCT_TYP_NAME</td>
+
+                            @foreach (var itm in itmGmtTyp.CAP_WEEK_DATA_LIST)
+                            {                                                                
+                                <td style="border: solid 1px black; text-align: center;">@itm.PLAN_PROD_PCS</td>
+                                <td style="border: solid 1px black; text-align: center;">@itm.BK_WITH_CO_PCS</td>
+                                <td style="border: solid 1px black; text-align: center;">@itm.BAL_PCS</td>
+                                <td style="border: solid 1px black; text-align: center;">@itm.OVER_BOOKED_PCT</td>
+                                <td style="border: solid 1px black; text-align: center;">@itm.NEW_ORD_PCS</td>
+                                <td style="border: solid 1px black; text-align: center;">@itm.NEW_OVER_BOOKED_PCT</td>
+                            }
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr style="background: white">
+                            <td style="border: solid 1px black; text-align: left;">@itmGmtTyp.GMT_PRODUCT_TYP_NAME</td>
+
+                            @foreach (var itm in itmGmtTyp.CAP_WEEK_DATA_LIST)
+                            {                                                                
+                                <td style="border: solid 1px black; text-align: center;">@itm.PLAN_PROD_PCS</td>
+                                <td style="border: solid 1px black; text-align: center;">@itm.BK_WITH_CO_PCS</td>
+                                <td style="border: solid 1px black; text-align: center;">@itm.BAL_PCS</td>
+                                <td style="border: solid 1px black; text-align: center;">@itm.OVER_BOOKED_PCT</td>
+                                <td style="border: solid 1px black; text-align: center;">@itm.NEW_ORD_PCS</td>
+                                <td style="border: solid 1px black; text-align: center;">@itm.NEW_OVER_BOOKED_PCT</td>
+                            }
+                        </tr>
+                    }
+                    vFabRowCount = vFabRowCount + 1;
+                }
+            }
+
+            <tr>
+                <td style="border: solid 1px black;" ><b>Total</b></td>
+
+                @foreach (var itmWeek in Model.data.CAP_BKING_DTL[0].CAP_WEEK_HDR_LIST)
+                {                                        
+                    <td style="border: solid 1px black; text-align: center;"><b>@itmWeek.PLAN_PROD_PCS</b></td>
+                    <td style="border: solid 1px black; text-align: center;"><b>@itmWeek.BK_WITH_CO_PCS</b></td>
+                    <td style="border: solid 1px black; text-align: center;"><b>@itmWeek.BAL_PCS</b></td>  
+                    <td style="border: solid 1px black; text-align: center;"><b>@itmWeek.OVER_BOOKED_PCT</b></td>    
+                    <td style="border: solid 1px black; text-align: center;"><b>@itmWeek.NEW_ORD_PCS</b></td>
+                    <td style="border: solid 1px black; text-align: center;"><b>@itmWeek.NEW_OVER_BOOKED_PCT</b></td>              
+                }
+            </tr>
+
+        </tbody>
+    </table>
+  
+    <br />    
+    <div>Here is the OTP: <b>@Model.data.OTP_ORDR_BKNG</b> </div>
+    <div>Please give him your opinion</div>
+    <br />
+    @*<div><a href="http://erp.multi-fabs.com/@Model.data.REDIRECT_URL" target="_top">If you want to permit, please inform it by clicking here and allow to Confirm Order.</a></div>*@
+    <div style="font-size:20px">
+        <a href="mailto:@Model.data.USER_EMAIL?subject=Your OTP for Order Over-booking&body=Dear,%20%0A%0AOrder%20over-booked%20has%20been%20allowed%20for%20Buyer%20A%2FC%3A%20 @Model.data.BYR_ACC_GRP_NAME_EN%2C%20Style%23%20 @Model.data.STYLE_NO%2C%20Order%23%20 @Model.data.ORDER_NO.%0A%0A%0AHere%20is%20your%20OTP%3A%20 @Model.data.OTP_ORDR_BKNG%0A%0A%0AN.B%3A%20No%20need%20to%20reply.%20This%20mail%20is%20auto%20generated%20from%20MultiTex%20ERP%20server."><b>Accept</b></a>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="mailto:@Model.data.USER_EMAIL?subject=Your OTP for Order Over-booking&body=Dear,%20%0A%0AOrder%20over-booked%20has not%20been%20allowed%20for%20Buyer%20A%2FC%3A%20 @Model.data.BYR_ACC_GRP_NAME_EN%2C%20Style%23%20 @Model.data.STYLE_NO%2C%20Order%23%20 @Model.data.ORDER_NO.%0A%0A%0AN.B%3A%20No%20need%20to%20reply.%20This%20mail%20is%20auto%20generated%20from%20MultiTex%20ERP%20server."><b>Reject</b></a>
+    </div>
+
+
+    <br />
+    <br />
+    <span style="display: block; font-size: 10px; font-style: italic;">
+        N.B: No need to reply. This mail is auto generated from MultiTex ERP server.
+    </span>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

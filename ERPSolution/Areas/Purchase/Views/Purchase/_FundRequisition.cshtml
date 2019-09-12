@@ -1,0 +1,641 @@
+﻿<style>
+    .dropdown-header {
+        border-width: 0 0 1px 0;
+        text-transform: uppercase;
+    }
+
+        .dropdown-header > span {
+            display: inline-block;
+            padding: 10px;
+        }
+
+            .dropdown-header > span:first-child {
+                width: 10px;
+            }
+
+    .selected-value {
+        display: inline-block;
+        vertical-align: middle;
+        width: 24px;
+        height: 24px;
+        background-size: 100%;
+        margin-right: 5px;
+        border-radius: 50%;
+    }
+
+    .customers-list .k-item {
+        line-height: 1em;
+        min-width: 300px;
+    }
+
+    /* Material Theme padding adjustment*/
+
+    .k-material .customers-list .k-item,
+    .k-material .customers-list .k-item.k-state-hover,
+    .k-materialblack .customers-list .k-item,
+    .k-materialblack .customers-list .k-item.k-state-hover {
+        padding-left: 5px;
+        border-left: 0;
+    }
+
+    .customers-list .k-item > span {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        display: inline-block;
+        vertical-align: top;
+        margin: 20px 10px 10px 5px;
+    }
+
+        .customers-list .k-item > span:first-child {
+            -moz-box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            -webkit-box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            margin: 5px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+
+    .customers-list h3 {
+        font-size: 1.2em;
+        font-weight: normal;
+        margin: 0 0 1px 0;
+        padding: 0;
+    }
+
+    .customers-list p {
+        margin: 0;
+        padding: 0;
+        font-size: .8em;
+    }
+
+
+    /*///////////////////////*/
+    .k-treeview .k-in {
+        padding: 5px;
+    }
+
+    #ItemCategTreeview .k-sprite {
+        background-image: url("/Content/assets/global/img/coloricons-sprite.png");
+    }
+
+    .rootfolder {
+        background-position: 0 0;
+    }
+
+    .folder {
+        background-position: 0 -16px;
+    }
+
+    .pdf {
+        background-position: 0 -32px;
+    }
+
+    .html {
+        background-position: 0 -48px;
+    }
+
+    .image {
+        background-position: 0 -64px;
+    }
+
+    /*.demo-section {
+        float: left;
+        width: 200px;
+        margin: 0 60px 0 0;
+    }*/
+</style>
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Purchase</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+        <div class="page-splash">
+            <div class="page-splash-message">
+                <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+            </div>
+        </div>
+    </div>
+    <form name="formData" class="form-horizontal" style="background-color: white;">
+        <div class="portlet-body">
+
+            <fieldset class="custom-fieldset col-md-3">
+                <legend class="custom-legend"><b>Requisition Data</b></legend>
+                <table style="width:100%" class="clsTableMtex">
+
+                    <tr class="clstheadMtex">
+                        <td style="border: solid 1px black; width: 10%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                            <b>SL #</b>
+                        </td>
+                        <td style="border: solid 1px black; width: 35%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>Department</b>
+                        </td>
+                        <td style="border: solid 1px black; width: 55%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                            <b>Requisition No</b>
+                        </td>
+                        @*<td style="border: solid 1px black; width: 5%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                                <b>Required Amount</b>
+                            </td>*@
+                    </tr>
+                    <tr class="clstdMtex" ng-repeat="item in vm.RequisitionList" title="'{{item.ITEM_NAME_LIST}}'" ng-click="vm.showRequisition(item);" style="cursor:pointer;">
+                        <td style="padding:5px;border:solid 1px black;width: 5%;">
+
+                            {{$index+1}}
+
+                        </td>
+
+                        <td style="padding:5px;border:solid 1px black;width: 10%;">
+                            {{item.DEPARTMENT_NAME_EN}}
+                        </td>
+
+                        <td style="padding:5px;border:solid 1px black;width: 10%;">
+                            {{item.PURC_REQ_NO}}
+                            <input type="hidden" name="SCM_PURC_REQ_H_ID" ng-model="item.SCM_PURC_REQ_H_ID" class="form-control" />
+                            <input type="hidden" name="SCM_FUND_REQ_D_ID" ng-model="item.SCM_FUND_REQ_D_ID" class="form-control" />
+
+                        </td>
+                        @*<td style="padding:5px;border:solid 1px black;width: 5%;">
+                                {{item.RQD_AMT}}
+                            </td>*@
+
+                    </tr>
+                </table>
+
+            </fieldset>
+
+            <fieldset class="custom-fieldset col-md-9" style="width:74%;">
+                <legend class="custom-legend"><b>Fund Data</b></legend>
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend"><b>Processed Data</b></legend>
+                    <div><label id="lblMsgSub"></label></div>
+                    <div class="row" style="padding-left: 5px; padding-right: 5px;">
+
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-1">
+                                </div>
+                                <label class="control-label col-md-2 ">
+                                    <span aria-required="true" class="required">*</span>
+                                    Department
+                                </label>
+                                <div class="col-md-3">
+                                    <select kendo-drop-down-list name="HR_DEPARTMENT_ID" id="HR_DEPARTMENT_ID" class="form-control required"
+                                            options="vm.departmentList" ng-init="vm.form.HR_DEPARTMENT_ID='@Session["multiLoginEmpCoreDeptId"]'"
+                                            ng-model="vm.form.HR_DEPARTMENT_ID" tabindex="1" required></select>
+                                </div>
+
+                                <label class="control-label col-md-2">
+                                    <span aria-required="true" class="required">*</span>
+                                    Company/Importer
+                                </label>
+                                <div class="col-md-3">
+                                    <select kendo-drop-down-list name="HR_COMPANY_ID" id="HR_COMPANY_ID" class="form-control required"
+                                            options="vm.companyList" ng-model="vm.form.HR_COMPANY_ID" ng-init="vm.form.HR_COMPANY_ID='@Session["multiLoginEmpCompId"]'" required></select>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="form-group">
+
+                                <div class="col-md-1">
+                                </div>
+                                <label class="control-label col-md-2 ">
+                                    <span aria-required="true" class="required">*</span>
+                                    Requisitioned By
+                                </label>
+                                <div class="col-md-3">
+                                    <select id="REQ_BY" kendo-drop-down-list options="vm.userList" ng-init="vm.form.REQ_BY='@Session["multiScUserId"]'" ng-model="vm.form.REQ_BY" class="form-control customers" style="width:100%;"></select>
+                                </div>
+
+                                <label class="control-label col-md-2">
+                                    <span aria-required="true" class="required">*</span>
+                                    Prepared By
+                                </label>
+                                <div class="col-md-3">
+                                    <select id="PREPARED_BY" kendo-drop-down-list options="vm.userList" ng-init="vm.form.PREPARED_BY='@Session["multiScUserId"]'" ng-model="vm.form.PREPARED_BY" class="form-control customers required " style="width:100%;"></select>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend"><b>Master Data</b></legend>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-1">
+                            </div>
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required"></span>
+                                Requisition No
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" name="REQ_NO" placeholder="[Auto Gen]" ng-model="vm.form.REQ_NO" readonly="readonly" class="form-control" />
+                                <input type="hidden" id="SCM_FUND_REQ_H_ID" name="SCM_FUND_REQ_H_ID" ng-model="vm.form.SCM_FUND_REQ_H_ID" />
+                            </div>
+
+                            <div class="col-md-1">
+                            </div>
+                            <label class="col-md-2 control-label">
+                                <span aria-required="true" class="required">*</span>
+                                Date of Requisition
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control required" ng-click="REQ_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                       name="REQ_DT" max-date="vm.today" ng-model="vm.form.REQ_DT" is-open="REQ_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close"
+                                       required />
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+
+                            <div class="col-md-1">
+                            </div>
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>
+                                Requisition To
+                            </label>
+                            <div class="col-md-3">
+                                <select id="REQ_TO" kendo-drop-down-list options="vm.userList" ng-model="vm.form.REQ_TO" class="form-control customers required " style="width:100%;"></select>
+
+                            </div>
+
+
+                            <label class="control-label col-md-2 ">
+                                <span aria-required="true" class="required">*</span>
+                                Attn. Persons
+                            </label>
+                            <div class="col-md-3">
+                                @*<select kendo-drop-down-list name="REQ_ATTN_MAIL" id="REQ_ATTN_MAIL" class="form-control required"
+                                    options="vm.reqSourceList" ng-model="vm.form.REQ_ATTN_MAIL"></select>*@
+
+
+                                <select kendo-multi-select name="REQ_ATTN_MAIL" class="form-control"
+                                        options="vm.userList" ng-model="vm.form.REQ_ATTN_MAIL"></select>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+
+                            <div class="col-md-1">
+                            </div>
+                            <label class="control-label col-md-2 ">
+                                <span aria-required="true" class="required"></span>
+                                Remarks
+                            </label>
+                            <div class="col-md-8">
+                                <textarea id="REMARKS_REQ" name="REMARKS_REQ" ng-model="vm.form.REMARKS_REQ" class="form-control"></textarea>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </fieldset>
+
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend"><b>Accounts Data</b></legend>
+
+                    <div class="row">
+                        <div class="form-group">
+
+                            <div class="col-md-1">
+                            </div>
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>
+                                Budget Checked By
+                            </label>
+                            <div class="col-md-3">
+                                <select id="FND_ARPV_BY" kendo-drop-down-list options="vm.userList" ng-model="vm.form.FND_ARPV_BY" class="form-control customers" style="width:100%;"></select>
+
+                            </div>
+
+
+                            <label class="control-label col-md-2 ">
+                                <span aria-required="true" class="required">*</span>
+                                Action Taken
+                            </label>
+                            <div class="col-md-3">
+                                <select kendo-drop-down-list name="RF_REQ_SRC_ID" id="RF_REQ_SRC_ID" class="form-control"
+                                        options="vm.reqSourceList" ng-model="vm.form.RF_REQ_SRC_ID"></select>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+
+                            <div class="col-md-1"></div>
+
+                            <label class="col-md-2 control-label">
+                                <span aria-required="true" class="required">*</span>
+                                Approved Amount
+                            </label>
+                            <div class="col-md-2">
+                                <input type="number" ng-model="vm.form.TOT_ARPV_AMT" />
+                            </div>
+                            <div class="col-md-1"></div>
+                            <label class="control-label col-md-2 ">
+                                <span aria-required="true" class="required">*</span>
+                                GL Expense Code
+                            </label>
+                            <div class="col-md-2">
+
+                                <input type="text" ng-model="vm.form.CODE" />
+                            </div>
+
+                        </div>
+                    </div>
+
+                    @*<div class="row">
+                            <div class="form-group">
+
+                                <div class="col-md-1"></div>
+
+                                <label class="col-md-2 control-label">
+                                    <span aria-required="true" class="required">*</span>
+                                    Approved Amount
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="number" ng-model="vm.form.ACTN_STATUS_NAME" />
+                                </div>
+                                <div class="col-md-1"></div>
+                                <label class="control-label col-md-2 ">
+                                    <span aria-required="true" class="required">*</span>
+                                    Currency
+                                </label>
+                                <div class="col-md-2">
+
+                                    <select kendo-drop-down-list id="RF_CURRENCY_ID" name="RF_CURRENCY_ID" class="form-control requiredSub"
+                                            options="vm.currencyList" ng-model="vm.form.RF_CURRENCY_ID"></select>
+                                </div>
+
+                            </div>
+                        </div>*@
+
+                    <div class="row">
+                        <div class="form-group">
+
+                            <div class="col-md-1">
+                            </div>
+                            <label class="control-label col-md-2 ">
+                                <span aria-required="true" class="required"></span>
+                                Remarks
+                            </label>
+                            <div class="col-md-8">
+                                <textarea id="REMARKS_APRV" name="REMARKS_APRV" ng-model="vm.form.REMARKS_APRV" class="form-control"></textarea>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </fieldset>
+
+
+
+                <fieldset class="custom-fieldset" ng-if="vm.form.ACTN_ROLE_FLAG!='RA'" style="background-color:white;">
+                    <legend class="custom-legend"><b>Details Data</b></legend>
+                    <div style="overflow-x:scroll;">
+                        <table class="clsTableMtex">
+                            <tr class="clstheadMtex">
+                                <td class="clstdMtex" title="Select All">
+
+                                    <input type="checkbox" ng-model="vm.form.IS_SELECT" ng-click="vm.SelectAll(vm.form.IS_SELECT)" />
+                                </td>
+                                @*<td class="clstdMtex">
+                                        <b>Requisition #</b>
+                                    </td>*@
+                                <td class="clstdMtex">
+                                    <b>Item Name</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Brand</b>
+                                </td>
+
+                                <td class="clstdMtex">
+                                    <b>Requisition Qty</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Order Qty</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Unit Price</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Amount</b>
+                                </td>
+                                @*<td class="clstdMtex">
+                                        <b>Delivery Date</b>
+                                    </td>*@
+                            </tr>
+
+                            <tr class="clstdMtex" ng-repeat="item in vm.RequisitionItemList">
+                                <td class="clstdMtex" title="Select">
+                                    <input type="checkbox" ng-model="item.IS_SELECT" />
+                                </td>
+                                @*<td class="clstdMtex" style="min-width:150px;">
+                                        {{item.PURC_REQ_NO}}
+                                    </td>*@
+                                <td class="clstdMtex" style="min-width:150px;">
+                                    {{item.ITEM_NAME_EN}}
+                                    <input type="hidden" ng-model="item.INV_ITEM_ID" />
+                                    <input type="hidden" ng-model="item.SCM_PURC_REQ_H_ID" />
+                                    <input type="hidden" ng-model="item.SCM_FUND_REQ_H_ID" />
+                                    <input type="hidden" ng-model="item.SCM_PURC_REQ_D_ID" />
+                                    <input type="hidden" ng-model="item.SCM_FUND_REQ_D_ITM_ID" />
+
+                                </td>
+                                <td class="clstdMtex">
+                                    {{item.BRAND_NAME_EN}}
+                                </td>
+
+                                <td class="clstdMtex">
+                                    {{item.BAL_QTY}} {{item.MOU_CODE}}
+                                </td>
+
+                                <td class="clstdMtex">
+                                    <input type="number" ng-model="item.RQD_QTY" ng-init="item.RQD_QTY=item.BAL_QTY" style="width:70px; text-align:right;" ng-change="vm.checkBalance(item);" /> {{item.MOU_CODE}}
+                                    @*{{item.RQD_QTY}} Kg*@
+                                </td>
+
+                                <td class="clstdMtex">
+                                    <input type="number" ng-model="item.MKT_RATE" style="width: 70px; text-align: right;" />
+                                    @*{{item.MKT_RATE}}*@
+                                </td>
+
+                                <td class="clstdMtex">
+                                    {{(item.RQD_QTY*item.MKT_RATE)|number:2}}
+
+                                    @*<textarea ng-model="item.REMARKS" />*@
+                                </td>
+
+                                @*<td class="clstdMtex">
+                                        <input type="text" class="form-control" ng-class="{'requiredSub': item.IS_SELECT==true}" ng-click="DELV_TGT_DT_LNopen($event,$index)" datepicker-popup="{{vm.dtFormat}}"
+                                               name="DELV_TGT_DT_{{$index}}" min-date="vm.today" ng-model="item.DELV_TGT_DT" is-open="DELV_TGT_DT_LNopened[$index]"
+                                               datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" style="width:120px;" />
+
+                                    </td>*@
+                            </tr>
+                        </table>
+                        <br />
+                        <div class="form-group">
+                            <div style="text-align:right;padding-right:100px;">
+                                <button type="button" class="btn btn-sm green" ng-if="vm.EDIT==0" ng-click="vm.AddToGrid();">Add to Grid</button>
+                                <button type="button" class="btn btn-sm yellow-gold" ng-if="vm.EDIT>0" ng-click="vm.updateToGrid();">Update Grid</button>
+                                <button type="button" class="btn btn-sm default" ng-click="vm.clearGrid();">Cancel</button>
+
+                            </div>
+
+                        </div>
+
+                        <br />
+
+                        <div class="form-group" style="padding-left:15px;">
+                            <div kendo-grid k-options="vm.gridOptions" k-data-source="vm.importOrderList" style="width:98%"></div>
+
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="control-label col-md-9">
+                                    <span aria-required="true" class="required"></span>
+                                    Net PO Amount
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" style="text-align:right;padding-right:10px;" readonly name="PI_NET_AMT" ng-model="vm.form.PI_NET_AMT" class="form-control" />
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset class="custom-fieldset" ng-if="vm.form.ACTN_ROLE_FLAG=='RA'" style="background-color:white;">
+                    <legend class="custom-legend"><b>Details Data</b></legend>
+
+                    <table style="width:100%" class="clsTableMtex">
+
+                        <tr class="clstheadMtex">
+                            <td style="border: solid 1px black; width: 10%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                                <b>SL #</b>
+                            </td>
+                            <td style="border: solid 1px black; width: 20%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                                <b>Department</b>
+                            </td>
+                            <td style="border: solid 1px black; width: 50%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                                <b>Requisition No</b>
+                            </td>
+                            <td style="border: solid 1px black; width: 10%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                                <b>Required Amount</b>
+                            </td>
+                            <td style="border: solid 1px black; width: 10%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                                <b>Approved Amount</b>
+                            </td>
+                        </tr>
+                        <tr class="clstdMtex" ng-repeat="item in vm.RequisitionList" title="'{{item.ITEM_NAME_LIST}}'" ng-click="vm.showRequisition(item);" style="cursor:pointer;">
+                            <td style="padding:5px;border:solid 1px black;width: 10%;">
+
+                                {{$index+1}}
+
+                            </td>
+
+                            <td style="padding:5px;border:solid 1px black;width: 20%;">
+                                {{item.DEPARTMENT_NAME_EN}}
+                            </td>
+
+                            <td style="padding:5px;border:solid 1px black;width: 50%;">
+                                {{item.PURC_REQ_NO}}
+                                <input type="hidden" name="SCM_PURC_REQ_H_ID" ng-model="item.SCM_PURC_REQ_H_ID" class="form-control" />
+                                <input type="hidden" name="SCM_FUND_REQ_D_ID" ng-model="item.SCM_FUND_REQ_D_ID" class="form-control" />
+
+                            </td>
+                            <td style="padding:5px;border:solid 1px black;width: 10%;">
+                                {{item.RQD_AMT}}
+                            </td>
+
+                            <td style="padding:5px;border:solid 1px black;width: 10%;">
+                                <input type="number" name="APRV_AMT" ng-model="item.APRV_AMT" style="text-align:right;" class="form-control" />
+                            </td>
+
+                        </tr>
+                    </table>
+                </fieldset>
+
+
+
+            </fieldset>
+
+
+        </div>
+
+
+        <div style="padding:3px;">
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <button type="button" class="btn btn-sm blue" ui-sref="FundRequisitionList">Back To List</button>
+                <button type="submit" ng-if="vm.form.SCM_FUND_REQ_H_ID>0" class="btn btn-sm yellow-gold" ng-click="vm.submitAll(vm.form);">Submit</button>
+                <button type="submit" ng-if="!vm.form.SCM_FUND_REQ_H_ID>0" class="btn btn-sm green" ng-click="vm.submitAll(vm.form);">Save</button>
+                <button type="button" class="btn btn-sm default" ui-sref="FundRequisition({pSCM_FUND_REQ_H_ID : 0})" ui-sref-opts="{reload: true}">Cancel</button>
+
+                <a ng-if="vm.form.SCM_FUND_REQ_H_ID>0" class="btn btn-sm green" ng-click="vm.printRequisition(vm.form);"> Print</a>
+
+
+            </div>
+
+            <label class="control-label col-md-2">
+                <span aria-required="true" class="required">*</span>
+                Action Status
+            </label>
+            <div class="col-md-2" ng-if="vm.form.RF_ACTN_VIEW>0">
+                <select kendo-drop-down-list name="RF_ACTN_STATUS_ID" id="RF_ACTN_STATUS_ID" class="form-control" ng-class="{'required': vm.form.DYE_RE_PROC_TYPE_ID<2}"
+                        options="vm.statusList" ng-model="vm.form.RF_ACTN_STATUS_ID" required></select>
+            </div>
+
+            <div class="col-md-2" ng-if="!vm.form.RF_ACTN_VIEW>0">
+
+                <input type="text" ng-model="vm.form.ACTN_STATUS_NAME" style="width: 100%;" readonly="readonly" />
+                <input type="hidden" ng-model="vm.form.RF_ACTN_STATUS_ID" />
+
+            </div>
+
+        </div>
+        <div style="padding:3px;">
+        </div>
+    </form>
+</div>

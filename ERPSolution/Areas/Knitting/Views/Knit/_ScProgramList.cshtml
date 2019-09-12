@@ -1,0 +1,214 @@
+﻿<style>
+    #grid tr td {
+        /* this makes the menu visibile */
+        overflow: visible;
+    }
+
+    #grid .k-grid-header {
+        padding-right: 0 !important;
+    }
+</style>
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="margin:auto;">
+            <br />
+            <div class="col-md-12">
+                <a class="btn btn-xs blue" ng-click="vm.openProgramModal()">  <i class="fa fa-plus"></i>New SC Program</a>
+
+                <p style="padding-top:10px"></p>
+
+                <div kendo-grid k-options="vm.ScProgramHeaderOpt" k-data-source="vm.ScProgramHeaderDs">
+
+                    <div k-detail-template>
+                        <div kendo-grid k-options="vm.ScProgramHeaderDtl(dataItem)"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <br />
+    </div>
+</div>
+
+
+<script type="text/x-kendo-template" id="ScProgramToolBarTemplate">
+    <div class="toolbar">
+        <div class="actions">
+
+            <form class="form-horizontal" role="form" name="ScProgramHeaderList" novalidate
+                  ng-submit="vm.getScProgramHeaderList(vm.form.RF_FAB_PROD_CAT_ID,vm.form.SCM_SUPPLIER_ID,vm.form.MC_BYR_ACC_ID,vm.form.MC_STYLE_H_EXT_ID,vm.form.PRG_ISS_NO)">
+
+
+
+                @*<label class="col-md-1" style="padding-left: 0px; padding-right: 0px;">
+                <a class="btn btn-xs blue" ng-click="vm.openProgramModal()">  <i class="fa fa-plus"></i>SC Prgrm</a>
+            </label>*@
+
+
+                <label class="col-md-1 control-label" style="padding-left: 0px; padding-right: 3px;">
+                    Prod.Category
+                </label>
+
+                <div class="col-md-2" style="padding-left:0px;padding-right:0px;">
+                    <select kendo-drop-down-list name="RF_FAB_PROD_CAT_ID" id="RF_FAB_PROD_CAT_ID" class="form-control"
+                            options="vm.productionTypeList" ng-model="vm.form.RF_FAB_PROD_CAT_ID"
+                            k-on-data-bound="vm.onProdCategoryDataBound(kendoEvent)"></select>
+                </div>
+
+                <label class="col-md-1 control-label" style="padding-left: 0px; padding-right: 3px;">
+                    Party
+                </label>
+
+                <div class="col-md-3" style="padding-left:0px;padding-right:0px;">
+                    <select class="form-control" kendo-drop-down-list name="SCM_SUPPLIER_ID" k-filter="'contains'" k-option-label="'-- Party --'"
+                            k-data-text-field="'SUP_TRD_NAME_EN'" k-data-value-field="'SCM_SUPPLIER_ID'"
+                            k-auto-bind="'true'" k-data-source="vm.supplierListDs" ng-model="vm.form.SCM_SUPPLIER_ID" required></select>
+                </div>
+
+                <label class="col-md-1 control-label" style="padding-left: 0px;padding-right:3px;">
+                    Buyer A/C
+                </label>
+                <div class="col-md-3" style="padding-left:0px;padding-right:0px;">
+
+                    <select kendo-drop-down-list name="MC_BYR_ACC_ID" class="form-control"
+                            k-options="vm.buyerAcList" id="MC_BYR_ACC_ID" ng-model="vm.form.MC_BYR_ACC_ID"></select>
+                </div>
+
+                <p style="padding-top:10px">&nbsp;</p>
+
+
+                <label class="col-md-1 control-label" style="padding-left: 0px; padding-right: 3px;">
+                    Style
+                </label>
+
+                <div class="col-md-2" style="padding-left:0px;padding-right:5px;">
+                    <select class="form-control" kendo-drop-down-list name="MC_STYLE_H_EXT_ID" k-option-label="'-- Select Style --'"
+                            k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_STYLE_H_EXT_ID'" k-filter="'contains'"
+                            k-auto-bind="'true'" k-data-source="vm.StyleExtDs" ng-model="vm.form.MC_STYLE_H_EXT_ID"></select>
+                </div>
+
+
+                <label class="col-md-1 control-label" style="padding-left: 0px; padding-right: 0px;">
+                    Program
+                </label>
+                <div class="col-md-1" style="padding-left:0px;padding-right:0px;">
+                    <input type="text" class="form-control" placeholder="Search Program" ng-model="vm.form.PRG_ISS_NO" />
+                </div>
+
+                <div class="col-md-1">
+                    <button type="submit" class="btn btn-sm">
+                        Search
+                    </button>
+                </div>
+
+
+            </form>
+
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="ProgramModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h3 style="padding-top:10px;margin-top:3px;">
+                        Knitting Program
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </h3>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="OrderRevisionModal" novalidate>
+                    <div class="form-group">
+                        <label for="selectPeriod" class="col-md-3 control-label">
+                            Program #
+                        </label>
+                        <div class="col-md-4" style="padding-top:5px;">
+                            <input type="text" class="form-control" ng-model="form.PRG_ISS_NO" disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="selectPeriod" class="col-md-3 control-label">
+                            Date
+                        </label>
+                        <div class="col-md-4" style="padding-top:5px;">
+                            <input type="text" class="form-control" ng-click="RevisionDate_LNopen($event)" datepicker-popup="{{dtFormat}}"
+                                   name="REVISION_DT" ng-model="form.SC_PRG_DT" is-open="RevisionDate_LNopened"
+                                   datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">To Party</label>
+                        <div class="col-md-4" style="padding-top:5px;">
+                            <select class="form-control" kendo-drop-down-list name="SCM_SUPPLIER_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                    k-data-text-field="'SUP_TRD_NAME_EN'" k-data-value-field="'SCM_SUPPLIER_ID'"
+                                    k-auto-bind="'true'" k-data-source="supplierListDs" ng-model="form.SCM_SUPPLIER_ID" required></select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">                        
+                        <div class="col-md-offset-3 col-md-4" style="padding-top:5px;">
+                            <label class="control-label checkbox-inline">
+                                <input type="checkbox" name="IS_TI_TE" ng-model="form.IS_TI_TE" ng-true-value="'TI'" ng-false-value="''"  /> Transfer?
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-show="form.IS_TI_TE=='TI'">
+                        <label class="col-md-3 control-label">From Party</label>
+                        <div class="col-md-4" style="padding-top:5px;">
+                            <select class="form-control" kendo-drop-down-list name="FRM_SUPPLIER_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                    k-data-text-field="'SUP_TRD_NAME_EN'" k-data-value-field="'SCM_SUPPLIER_ID'"
+                                    k-auto-bind="'true'" k-data-source="fromSupplierListDs" ng-model="form.FRM_SUPPLIER_ID" required></select>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-actions">
+                        <div class="col-md-offset-3 col-md-10">
+                            <button type="button" class="btn blue btn-sm" ng-click="save(form)"> <i class="fa fa-external-link"></i> Go</button>
+                            <button type="button" class="btn btn-default btn-sm" ng-click="cancel()">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+
+
+

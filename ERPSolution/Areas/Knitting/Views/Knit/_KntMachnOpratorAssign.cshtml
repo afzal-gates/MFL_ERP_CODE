@@ -1,0 +1,285 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 13px;
+    }
+
+    .RadFirstPage .rgPageFirst, .RadFirstPage .rgPagePrev {
+        display: none !important;
+    }
+
+    .RadLastPage .rgPageNext, .RadLastPage .rgPageLast {
+        display: none !important;
+    }
+
+</style>
+
+
+
+
+
+
+
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Knitting</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+    
+        <div class="portlet-body">
+            <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+                <div class="page-splash">
+                    <div class="page-splash-message">
+                        <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class=" form-group">
+                    <div class="col-md-3" style="padding-right:0px">
+                        
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend">Machine List</legend>
+
+                            <div class="input-icon right" style="padding-bottom:3px;">
+                                <i class="icon-magnifier"></i>
+                                <input type="text" class="form-control form-control-solid" ng-model="q" placeholder="search..." ng-change="vm.machineList.filter({ field:'KNT_MACHINE_NO', operator :'contains', value: q })" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }">
+                            </div>
+
+                            <div kendo-list-view
+                                 k-selectable="'single'"
+                                 k-data-source="vm.machineList"
+                                 k-on-change="vm.onChangeMachine(dataItem)">
+                                <div k-template>
+                                    <dd class="k-state-default" style="padding: 5px; border-bottom: solid 1px; border-color: lightgray; ">
+                                        {{dataItem.KNT_MACHINE_NO}}
+                                    </dd>
+                                </div>
+                            </div>
+                            <div kendo-pager k-data-source="vm.machineList" button-count="1"></div>
+
+                        </fieldset>
+                    </div>
+
+                    <div class="col-md-5" style="padding-left:0px;padding-right:0px">
+                        
+                        <fieldset class="custom-fieldset" ng-show="vm.assignedGridDataSource.data().length>0">
+                            <legend class="custom-legend"><b>Assigned Information</b></legend>
+                            <div class="form-group">
+                                <kendo-grid id="assignedGrid" k-options="vm.assignedGridOption" k-data-source="vm.assignedGridDataSource" style="padding-top:0px;"></kendo-grid>
+                                @*{{vm.assignedGridDataSource.data().length}}*@
+
+                            </div>                            
+                        </fieldset>
+                   
+                        @*===================== New Entry ==========================*@                        
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend"><b>New Assign</b></legend>
+                            <div><label id="lblMsg"></label></div>
+                            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                                
+                                <form class="form-horizontal" role="form" name="frmKnitMachinOperatorAssign" novalidate>
+
+                                    <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+                                           data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-md-1">
+                                            </div>
+                                            <label class="control-label col-md-3">
+                                                <span aria-required="true" class="required">*</span>
+                                                Machine#
+                                            </label>
+                                            <div class="col-md-4">
+                                                <input type="hidden" name="KNT_MACHN_OPR_ID" ng-model="vm.form.KNT_MACHN_OPR_ID" class="form-control required" readonly required />
+                                                <input type="text" name="KNT_MACHINE_NO" ng-model="vm.form.KNT_MACHINE_NO" class="form-control required" readonly required />
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="row">&nbsp;</div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-md-1">
+                                            </div>
+                                            <label class="control-label col-md-3">
+                                                <span aria-required="true" class="required">*</span>
+                                                Emp. Code
+                                            </label>
+                                            <div class="col-md-4">
+                                                <input type="hidden" name="HR_EMPLOYEE_ID" ng-model="vm.form.HR_EMPLOYEE_ID" class="form-control required" required />
+                                                <input type="text" name="EMPLOYEE_CODE" ng-model="vm.form.EMPLOYEE_CODE" class="form-control required" required readonly />
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="row">&nbsp;</div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-md-1">
+                                            </div>
+                                            <label class="control-label col-md-3">
+                                                Name
+                                            </label>
+                                            <div class="col-md-7">
+                                                <input type="text" name="EMP_FULL_NAME_EN" ng-model="vm.form.EMP_FULL_NAME_EN" class="form-control required" readonly />
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="row">&nbsp;</div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-md-1">
+                                            </div>
+                                            <label class="control-label col-md-3">
+                                                <span aria-required="true" class="required">*</span>
+                                                Schedule
+                                            </label>
+                                            <div class="col-md-7">
+                                                <select class="form-control" kendo-drop-down-list name="HR_SCHEDULE_H_ID" k-option-label="'--Select--'"
+                                                        ng-model="vm.form.HR_SCHEDULE_H_ID" k-data-text-field="'SCHEDULE_NAME_EN'" k-data-value-field="'HR_SCHEDULE_H_ID'"
+                                                        k-options="vm.scheduleOption" k-data-source="vm.scheduleDataSource" k-filter="'contains'" k-auto-bind="'true'"
+                                                        k-on-change="" required></select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row">&nbsp;</div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-md-1">
+                                            </div>
+                                            <label class="control-label col-md-3">
+                                                <span aria-required="true" class="required">*</span>
+                                                Effective
+                                            </label>
+                                            <div class="col-md-5">
+                                                <input id="datetimepicker" type="datetime" kendo-date-time-picker class="form-control required" ng-model="vm.form.EFFECT_FROM" @*k-ng-model="vm.form.EFFECT_FROM"*@ interval="30" format="dd/MMM/yyyy hh:mm tt" />
+
+                                                @*<input type="text" name="EFFECT_FROM" ng-model="vm.form.EFFECT_FROM" class="form-control required" />*@
+                                                @*<input type="text" class="form-control required" ng-click="vm.EFFECT_FROM_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                                       name="EFFECT_FROM" max-date="vm.today" ng-model="vm.form.EFFECT_FROM" is-open="vm.EFFECT_FROM_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" required />*@
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @*<div class="row">&nbsp;</div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-1">
+                    </div>
+                    <label class="control-label col-md-3">
+                        <span aria-required="true" class="required">*</span>
+                        Expire
+                    </label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control required" ng-click="vm.EXPIRED_ON_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                               name="EXPIRED_ON" max-date="vm.today" ng-model="vm.form.EXPIRED_ON" is-open="vm.EXPIRED_ON_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" required />
+                    </div>
+
+                </div>
+
+            </div>*@
+
+                                    <div class="row">&nbsp;</div>
+                                    <div class="row">
+                                        <div class="col-md-12 col-md-offset-4" style="text-align:left;">
+                                            <button type="button" class="btn btn-sm green" ng-click="vm.Save()" ng-show="(vm.form.KNT_MACHN_OPR_ID<1||vm.form.KNT_MACHN_OPR_ID==''||vm.form.KNT_MACHN_OPR_ID==null)"
+                                                    ng-class="{'disabled':!frmKnitMachinOperatorAssign.$valid}">
+                                                Save
+                                            </button>
+                                            <button type="button" class="btn btn-sm yellow-gold" ng-click="vm.Save()" ng-show="vm.form.KNT_MACHN_OPR_ID>0"
+                                                    ng-class="{'disabled':!frmKnitMachinOperatorAssign.$valid}">
+                                                Update
+                                            </button>
+
+                                            <button type="button" class="btn btn-sm" ng-click="vm.reset();">Cancel</button>
+                                        </div>
+
+                                        @*<pre>{{frmKnitMachinOperatorAssign.$error|json}}</pre>*@
+                                    </div>
+                                </form>
+
+
+                            </div>
+                        </fieldset>
+                     </div>
+
+          
+                    <div class="col-md-4" style="padding-left:0px;">
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend"><b>Available Operator</b></legend>
+                            <div class="input-icon right" style="padding-bottom:3px;">
+                                <i class="icon-magnifier"></i>
+                                <input type="text" class="form-control form-control-solid" ng-model="q1" placeholder="search..." ng-change="vm.operatorList.filter({logic: 'or', filters: [{ field:'EMPLOYEE_CODE', operator:'contains', value:q1 },{ field:'EMP_FULL_NAME_EN', operator:'contains', value:q1 }]})" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }">
+                            </div>
+
+                            <div kendo-list-view
+                                 k-selectable="'single'"
+                                 k-data-source="vm.operatorList"
+                                 k-on-change="vm.onChangeOperator(dataItem)">
+                                <div k-template>
+                                    <dd class="k-state-default" style="padding: 5px; border-bottom: solid 1px; border-color: lightgray; ">
+                                        <img src="/UPLOAD_DOCS/EMP_PHOTOS/{{dataItem.EMPLOYEE_CODE}}.jpg" alt="No Photo" style="border:1px solid black; height:55px;width:50px" /> <b>{{dataItem.EMPLOYEE_CODE+' : '}}</b>{{dataItem.EMP_FULL_NAME_EN}}
+                                    </dd>
+                                </div>
+                            </div>
+                            <div kendo-pager k-data-source="vm.operatorList" button-count="3"></div>
+                        </fieldset>
+                    </div>
+                </div>
+
+            </div>
+            <div style="padding:3px;">
+            </div>
+        </div>
+    
+</div>
+
+
+
+
+
+<script>
+    $("#datetimepicker").kendoDateTimePicker({
+        format: "dd/MMM/yyyy hh:mm tt" //"yyyy/MM/dd hh:mm tt"
+        //parseFormats: ["MMMM yyyy", "HH:mm"] //format also will be added to parseFormats
+    });
+</script>

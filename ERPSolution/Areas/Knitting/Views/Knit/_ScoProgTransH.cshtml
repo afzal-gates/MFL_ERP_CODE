@@ -1,0 +1,246 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Knitting</a>
+
+    </li>
+    <li>
+        <a href="#">{{vm.Title}}</a>
+    </li>
+</ul>
+
+
+<div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+    <div class="page-splash">
+        <div class="page-splash-message">
+            <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+        </div>
+    </div>
+</div>
+
+
+<div class="portlet box blue-dark" @*ng-controller="HrReportController as vm"*@>
+    
+    
+    <div class="portlet-title">
+        <div class="caption" @*ng-bind="vm.Title"*@>  
+            {{vm.Title}}&nbsp;<span style="color:#ff4600" ng-show="form.IS_FINALIZED == 'Y'"><b>[ Record Locked ]</b></span>          
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <form class="form-horizontal form-body" name="frmScProgTrans">
+            <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+
+            <div class="row" style="margin:auto;" ng-show="vm.errors">
+                <div class="alert alert-danger" role="alert">
+                    @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                    <div style="padding: 0px 0px 15px 25px; ">
+                        <b>Please fix the following errors ....</b>
+                    </div>
+                    <ul ng-repeat="field in vm.errors">
+                        <li ng-repeat="error in field" ng-bind="error"></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row">
+                
+                <div class="col-md-4">
+                    <fieldset class="custom-fieldset" style="margin-bottom:5px" ng-disabled="form.IS_FINALIZED=='Y'">
+                        <legend class="custom-legend">From Party</legend>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-4">
+                                <span aria-required="true" class="required">*</span>Party
+                            </label>
+                            <div class="col-md-8">
+                                <select class="form-control" kendo-drop-down-list name="FRM_SUPPLIER_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                        k-data-text-field="'SUP_TRD_NAME_EN'" k-data-value-field="'SCM_SUPPLIER_ID'"
+                                        k-auto-bind="'true'" k-options="vm.fromSupplierOption" k-data-source="vm.frmSupplierDataSource" ng-model="vm.form.FRM_SUPPLIER_ID"
+                                        @*ng-disabled="vm.form.KNT_SCO_CHL_RCV_H_ID>0"*@ required></select>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-4">
+                                <span aria-required="true" class="required">*</span>Challan#
+                            </label>
+                            <div class="col-md-8">
+                                <select class="form-control" kendo-drop-down-list name="KNT_SCO_CHL_RCV_H_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                        k-data-text-field="'CHALAN_NO'" k-data-value-field="'KNT_SCO_CHL_RCV_H_ID'"
+                                        k-auto-bind="'true'" k-options="vm.scoFabYrnRcvChlnOption" k-data-source="vm.scoFabYrnRcvChlnDataSource" ng-model="vm.form.KNT_SCO_CHL_RCV_H_ID"
+                                        @*ng-disabled="vm.form.KNT_SCO_CHL_RCV_H_ID>0"*@ required></select>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-4">
+                                <span aria-required="true" class="required">*</span>Chaln Date
+                            </label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" ng-click="vm.rtnChlnDateOpen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                       name="RTN_CHALAN_DT" ng-model="vm.form.RTN_CHALAN_DT" is-open="vm.rtnChlnDateOpened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" ng-disabled="true" />
+                            </div>
+
+                        </div>
+
+
+                    </fieldset>
+
+                </div>
+
+                <div class="col-md-8">
+
+                    <fieldset class="custom-fieldset" style="margin-bottom:5px" ng-disabled="form.IS_FINALIZED=='Y'">
+                        <legend class="custom-legend">To Party</legend>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>Party
+                            </label>
+                            <div class="col-md-4">
+                                <select class="form-control" kendo-drop-down-list name="TO_SUPPLIER_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                        k-data-text-field="'SUP_TRD_NAME_EN'" k-data-value-field="'SCM_SUPPLIER_ID'"
+                                        k-auto-bind="'true'" k-options="vm.toSupplierOption" k-data-source="vm.toSupplierDataSource" ng-model="vm.form.TO_SUPPLIER_ID"
+                                        @*ng-disabled="vm.form.KNT_SCO_CHL_RCV_H_ID>0"*@ required></select>
+                            </div>
+
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>Program#
+                            </label>
+                            <div class="col-md-4">
+                                <select class="form-control" kendo-drop-down-list name="KNT_SC_PRG_ISS_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                        k-data-text-field="'PRG_ISS_NO'" k-data-value-field="'KNT_SC_PRG_ISS_ID'"
+                                        k-auto-bind="'true'" k-options="vm.scoIssProgOption" k-data-source="vm.scoIssProgDataSource" ng-model="vm.form.KNT_SC_PRG_ISS_ID"
+                                        @*ng-disabled="vm.form.KNT_SCO_CHL_RCV_H_ID>0"*@ required></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                Challan#
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="CHALAN_NO" ng-model="vm.form.CHALAN_NO" readonly />
+                            </div>
+
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>Chln. Date
+                            </label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" ng-click="vm.chlnDateOpen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                       name="CHALAN_DT" ng-model="vm.form.CHALAN_DT" is-open="vm.chlnDateOpened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" required />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @*<label class="control-label col-md-3">
+                    Gate Pass#
+                </label>
+                <div class="col-md-3">
+                    <input type="text" class="form-control" name="GT_PASS_NO" ng-model="vm.form.GT_PASS_NO" />
+                </div>*@
+
+                            <label class="control-label col-md-2">
+                                Vehicle#
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="VEHICLE_NO" ng-model="vm.form.VEHICLE_NO" />
+                            </div>
+
+                            <label class="control-label col-md-2">
+                                Driver
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="CARRIER_NAME" ng-model="vm.form.CARRIER_NAME" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+
+                            <label class="control-label col-md-2">
+                                Remarks
+                            </label>
+                            <div class="col-md-10">
+                                <textarea class="form-control" name="REMARKS" ng-model="vm.form.REMARKS"></textarea>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group" ng-show="vm.IS_NEXT=='N'">
+                            <div class="col-md-offset-2 col-md-8">
+                                <button type="button" class="btn btn-sm blue" ng-click="vm.gotoNext()"
+                                        ng-class="{'disabled':vm.form.FRM_SUPPLIER_ID==null||vm.form.KNT_SCO_CHL_RCV_H_ID==null||vm.form.TO_SUPPLIER_ID==null||
+                                        vm.form.KNT_SC_PRG_ISS_ID==null||vm.form.CHALAN_DT==null}">
+                                    Next
+                                </button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+
+
+                
+
+                
+                
+
+                
+                <div ng-show="vm.IS_NEXT=='Y'">
+                    <div class="portlet-body" data-ui-view="ScoProgTransH.YrnTrans"></div>
+                </div>
+
+                <div class="col-md-12" style="padding-top:10px;padding-left:32px;">
+                    <div class="form-group">
+                        @*{{form.IS_FINALIZED}}*@
+                        <button type="button" class="btn btn-sm green" ng-click="vm.batchSave(token, 'N')" ng-show="vm.form.KNT_SCO_YRN_TR_H_ID<1"
+                                ng-class="{'disabled':!frmScProgTrans.$valid || form.IS_FINALIZED=='Y'}">
+                            Save
+                        </button>
+                        <button type="button" class="btn btn-sm yellow-gold" ng-click="vm.batchSave(token, 'N')" ng-show="vm.form.KNT_SCO_YRN_TR_H_ID>0"
+                                ng-class="{'disabled':!frmScProgTrans.$valid || form.IS_FINALIZED=='Y'}">
+                            Update
+                        </button>
+                        <button type="button" class="btn btn-sm blue" ng-click="vm.cancel()">Cancel</button>
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;                        
+                        <button type="button" class="btn btn-sm blue-hoki" ng-click="vm.backToList()">Back to List</button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;                        
+                        <button type="button" class="btn btn-sm blue" ng-click="vm.batchSave(token, 'Y')" ng-disabled="vm.form.KNT_SCO_YRN_TR_H_ID<1 || form.IS_FINALIZED=='Y'">Finalize</button>
+                        <button type="button" class="btn btn-sm blue" ng-click="vm.printChallan()" ng-disabled="form.IS_FINALIZED!='Y'">Print</button>
+                    </div>
+                </div>
+
+
+            </div>
+
+            
+        </form>
+
+       
+
+    </div>
+
+</div>
+
+
+@*<pre>{{frmScProgTrans|json}}</pre>*@
+@*<pre>{{form|json}}</pre>*@

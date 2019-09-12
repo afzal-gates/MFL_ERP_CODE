@@ -1,0 +1,320 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 13px;
+    }
+</style>
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Hr</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+@*<pre>{{form|json}}</pre>*@
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" @*ng-bind="vm.Title"*@>
+            {{vm.Title}}@*&nbsp;<span style="color:#ff4600" ng-show="form.HR_YR_INCR_H_ID>0"><b>[ {{form.BATCH_APVRL_STATUS}} ]</b></span>*@
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+
+    <div class="portlet-body form">
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <form class="form-horizontal" role="form" name="frmCompPayPeriod" novalidate>
+            <div class="form-body clearfix">
+                <div class="row" style="margin:auto">
+
+                    <div class="row" style="margin:auto;" ng-show="vm.errors">
+                        <div class="alert alert-danger" role="alert">
+                            @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                            <div style="padding: 0px 0px 15px 25px; ">
+                                <b>Please fix the following errors ....</b>
+                            </div>
+                            <ul ng-repeat="field in vm.errors">
+                                <li ng-repeat="error in field" ng-bind="error"></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <fieldset class="custom-fieldset col-md-12" >
+                        <legend class="custom-legend">Pay Period</legend>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>Company
+                            </label>
+                            <div class="col-md-4">
+                                <select class="form-control" kendo-drop-down-list name="COMP_NAME_EN" required
+                                        k-data-text-field="'COMP_NAME_EN'" k-data-value-field="'HR_COMPANY_ID'" k-option-label="'-- Select --'"
+                                        k-auto-bind="'true'" k-options="vm.compOptions" @*k-data-source="vm.memoListDataSource"*@ ng-model="vm.form.HR_COMPANY_ID"
+                                        ng-disabled="vm.form.IS_CLOSED=='Y'"></select>
+                            </div>
+
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>Period Type
+                            </label>
+                            <div class="col-md-2">
+                                <select class="form-control" kendo-drop-down-list name="PERIOD_TYPE_NAME_EN_UNIT" required
+                                        k-data-text-field="'PERIOD_TYPE_NAME_EN_UNIT'" k-data-value-field="'HR_PERIOD_TYPE_ID'" k-option-label="'-- Select --'"
+                                        k-auto-bind="'true'" k-options="vm.periodTypeOptions" @*k-data-source="vm.memoListDataSource"*@ ng-model="vm.form.HR_PERIOD_TYPE_ID"
+                                        ng-disabled="vm.form.IS_CLOSED=='Y'"></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>Fiscal Year
+                            </label>
+                            <div class="col-md-2">
+                                <select class="form-control" kendo-drop-down-list name="FY_NAME_EN" required
+                                        k-data-text-field="'FY_NAME_EN'" k-data-value-field="'RF_FISCAL_YEAR_ID'" k-option-label="'-- Select --'"
+                                        k-auto-bind="'true'" k-options="vm.fiscalYearOptions" k-data-source="vm.fiscalYearDataSource" ng-model="vm.form.RF_FISCAL_YEAR_ID"
+                                        ng-disabled="vm.form.IS_CLOSED=='Y'"></select>
+                            </div>
+
+                            <label class="control-label col-md-2 col-md-offset-2">
+                                <span aria-required="true" class="required">*</span>Month
+                            </label>
+                            <div class="col-md-2">
+                                <select class="form-control" kendo-drop-down-list name="MONTH_NAME_EN" required
+                                        k-data-text-field="'MONTH_NAME_EN'" k-data-value-field="'RF_CAL_MONTH_ID'" k-option-label="'-- Select --'"
+                                        k-auto-bind="'true'" k-options="vm.monthListOptions" @*k-data-source="vm.memoListDataSource"*@ ng-model="vm.form.RF_CAL_MONTH_ID"
+                                        ng-disabled="vm.form.IS_CLOSED=='Y'"></select>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>Start Date
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" ng-click="vm.START_DATE_Open($event)" datepicker-popup="{{vm.dtFormat}}"
+                                       name="START_DATE" ng-model="vm.form.START_DATE" is-open="vm.START_DATE_Opened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)"
+                                       required close-text="Close" ng-disabled="vm.form.IS_CLOSED=='Y'" />
+                            </div>
+
+                            <label class="control-label col-md-2 col-md-offset-2">
+                                <span aria-required="true" class="required">*</span>End Date
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" ng-click="vm.END_DATE_Open($event)" datepicker-popup="{{vm.dtFormat}}"
+                                       name="END_DATE" ng-model="vm.form.END_DATE" is-open="vm.END_DATE_Opened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)"
+                                       required close-text="Close" ng-disabled="vm.form.IS_CLOSED=='Y'" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>Pay Date
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" ng-click="vm.PAY_DATE_Open($event)" datepicker-popup="{{vm.dtFormat}}"
+                                       name="PAY_DATE" ng-model="vm.form.PAY_DATE" is-open="vm.PAY_DATE_Opened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)"
+                                       required close-text="Close" ng-disabled="vm.form.IS_CLOSED=='Y'" />
+                            </div>
+
+                            <label class="control-label col-md-2 col-md-offset-2">
+                                &nbsp;
+                            </label>
+                            <div class="col-md-4">
+                                <label class="control-label checkbox-inline">
+                                    <input type="checkbox" name="IS_SHOW4_RPT" ng-model="vm.form.IS_SHOW4_RPT" ng-true-value="'Y'" ng-false-value="'N'" /> Show for Report?
+                                </label>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                    
+                    @*<div>&nbsp;</div>*@
+
+                    <div class="col-md-12" style="padding-top:5px;padding-left:0px;padding-right:0px">
+                        <fieldset class="custom-fieldset" style="padding-top:5px;padding-bottom:5px;">
+                            <kendo-grid k-options="vm.compPayPeriodGridOption" k-data-source="vm.compPayPeriodGridDataSource"></kendo-grid>
+                        </fieldset>
+                    </div>
+
+                    <div class="col-md-12" style="padding-top:5px">
+                        <div class="form-group" >
+                            <button class="btn btn-sm green" type="button" ng-click="vm.save('N')" ng-show="vm.form.ACC_PAY_PERIOD_ID<1"
+                                    ng-class="{'disabled':frmCompPayPeriod.$invalid}">
+                                Save
+                            </button>
+
+                            <button class="btn btn-sm yellow-gold" type="button" ng-click="vm.save('N')" ng-show="vm.form.ACC_PAY_PERIOD_ID>0"
+                                    ng-class="{'disabled':frmCompPayPeriod.$invalid}">
+                                Update
+                            </button>
+
+                            
+                            <a ui-sref="CompPayPeriod({pACC_PAY_PERIOD_ID : 0})" class="btn btn-sm blue">
+                                Cancel
+                            </a>
+
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <button class="btn btn-sm blue" type="button" ng-click="vm.save('Y')" ng-show="vm.form.ACC_PAY_PERIOD_ID>0"
+                                    ng-class="{'disabled':frmCompPayPeriod.$invalid||vm.form.IS_CLOSED=='Y'}">
+                                Period Close
+                            </button>
+                                 
+                            &nbsp;&nbsp;&nbsp;&nbsp;     
+                            <button class="btn btn-sm blue" type="button" ng-click="vm.newFY()" >
+                                New FY
+                            </button>
+                                            
+                        </div>
+                    </div>
+
+                                 
+                </div>
+
+                @*<pre>{{vm.form|json}}</pre>*@
+                @*<pre>{{form|json}}</pre>*@
+                
+             
+                @*<div class="portlet-body" data-ui-view="IncrimentProposalH@Dtl" ></div>*@
+               
+            </div>
+        </form>
+
+
+
+    </div>
+
+</div>
+
+
+
+
+
+
+@*Start For Fiscal Year*@
+<script type="text/ng-template" id="NewFYEntryModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <p style="padding-top:10px;">
+                        Fyscal Year
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </p>
+
+
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="NewFYEntryModal" novalidate @*ng-submit="save(Task,token,TaskForm.$valid)"*@>
+                    <input id="access_token" data-ng-model="token" type="hidden"
+                           data-ng-init="token='@Session["access_token"]'" />
+
+                    @*<div kendo-grid k-data-source="asortDataList" k-columns="asortColumns" k-selectable="true" k-on-change="selected = data" k-height="300" k-filterable="true" k-sortable="true"></div>*@
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            <span aria-required="true" class="required">*</span>FY Name
+                        </label>
+                        <div class="col-md-5" style="padding-top:5px;">
+                            <input type="text" class="form-control" name="FY_NAME_EN" ng-model="vm.form.FY_NAME_EN" ng-disabled="vm.form.IS_CLOSED=='Y'" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            <span aria-required="true" class="required">*</span>FY Start Date
+                        </label>
+                        <div class="col-md-3" style="padding-top:5px;">
+                            <input type="text" class="form-control" ng-click="vm.FY_START_DATE_Open($event)" datepicker-popup="{{vm.dtFormat}}"
+                                   name="FY_START_DATE" ng-model="vm.form.FY_START_DATE" is-open="vm.FY_START_DATE_Opened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)"
+                                   required close-text="Close" ng-disabled="vm.form.IS_CLOSED=='Y'" />
+                            
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            <span aria-required="true" class="required">*</span>FY End Date
+                        </label>
+                        <div class="col-md-3" style="padding-top:5px;">
+                            <input type="text" class="form-control" ng-click="vm.FY_END_DATE_Open($event)" datepicker-popup="{{vm.dtFormat}}"
+                                   name="FY_END_DATE" ng-model="vm.form.FY_END_DATE" is-open="vm.FY_END_DATE_Opened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)"
+                                   required close-text="Close" ng-disabled="vm.form.IS_CLOSED=='Y'" />
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            <span aria-required="true" class="required">*</span>CY Start Date
+                        </label>
+                        <div class="col-md-3" style="padding-top:5px;">
+                            <input type="text" class="form-control" ng-click="vm.CY_START_DATE_Open($event)" datepicker-popup="{{vm.dtFormat}}"
+                                   name="CY_START_DATE" ng-model="vm.form.CY_START_DATE" is-open="vm.CY_START_DATE_Opened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)"
+                                   required close-text="Close" ng-disabled="vm.form.IS_CLOSED=='Y'" />
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            <span aria-required="true" class="required">*</span>CY End Date
+                        </label>
+                        <div class="col-md-3" style="padding-top:5px;">
+                            <input type="text" class="form-control" ng-click="vm.CY_END_DATE_Open($event)" datepicker-popup="{{vm.dtFormat}}"
+                                   name="CY_END_DATE" ng-model="vm.form.CY_END_DATE" is-open="vm.CY_END_DATE_Opened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)"
+                                   required close-text="Close" ng-disabled="vm.form.IS_CLOSED=='Y'" />
+
+                        </div>
+                    </div>
+
+                    @*<div class="form-group">
+                        <div class="col-md-offset-2 col-md-2">
+                            <label class="control-label checkbox-inline">
+                                <input type="checkbox" name="IS_ACTIVE" ng-model="IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'" /> Active?
+                            </label>
+                        </div>
+                    </div>*@
+
+                    @*<pre>{{ProcessLossModalForm.$valid}}</pre>*@
+
+                    <br />
+                    <div class="form-group form-actions">
+                        <div class="col-md-offset-3 col-md-9">
+                            <button type="button" class="btn green btn-sm" ng-click="vm.save(token, NewFYEntryModal.$invalid, 'N')" ng-class="{'disabled':!NewFYEntryModal.$valid||vm.form.IS_CLOSED=='Y'}" ng-show="vm.form.RF_FISCAL_YEAR_ID<1">Save</button>
+                            <button type="button" class="btn yellow-gold btn-sm" ng-click="vm.save(token, NewFYEntryModal.$invalid, 'N')" ng-class="{'disabled':!NewFYEntryModal.$valid||vm.form.IS_CLOSED=='Y'}" ng-show="vm.form.RF_FISCAL_YEAR_ID>0">Update</button>
+
+                            <button type="button" class="btn btn-default btn-sm" ng-click="vm.tranCancel()">Cancel</button>
+                        </div>
+                    </div>
+
+                    <kendo-grid k-options="vm.FYGridOption" k-data-source="vm.FYGridDataSource"></kendo-grid>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+@*End For Fiscal Year*@

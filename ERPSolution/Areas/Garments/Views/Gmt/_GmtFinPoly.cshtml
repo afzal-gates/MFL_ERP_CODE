@@ -1,0 +1,188 @@
+﻿<style>
+    tbody {
+        height: 1000px; /* Just for the demo          */
+        overflow-y: auto; /* Trigger vertical scroll    */
+        overflow-x: hidden; /* Hide the horizontal scroll */
+    }
+
+    .blue.btn:active, .blue.btn.active {
+        background-image: none;
+        background-color: #5b6e8c;
+    }
+</style>
+
+
+
+
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Garments</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="row" style="padding-top: 10px;font-size:14px;">
+            <div class="col-md-6">
+
+                <div class="btn-group btn-group">
+                    <input type="hidden" class="form-control" datepicker-popup="{{format}}" ng-model="dt" is-open="opened" max-date="minDate" ng-change="vm.onDateSelect(dt)" datepicker-options="dateOptions" close-text="Close" />
+                    <span style="color:white;text-align:right;"><b><i class="glyphicon glyphicon-calendar"></i></b></span>
+                    <span style="color: yellow; text-align: right; border: 1px solid white; ">&nbsp;&nbsp;<b>{{dt|date:'dd-MMM-yyyy'}}</b>&nbsp;&nbsp;</span>
+                    <span style="color: white; cursor: pointer;" ng-click="open($event)"><b>Change</b></span>
+                </div>
+
+
+                <div class="btn-group btn-group" style="padding:3px;" ng-repeat="itm in FloorList">
+                    <a class="btn default btn-xs" ng-class="{'blue': itm.IS_ACTIVE}" ng-click="vm.OnChangeFloor(itm)">
+                        {{itm.FLOOR_DESC_EN}}
+                    </a>
+                </div>
+
+                
+                @*<div class="btn-group btn-group" style="padding:3px;">
+                    <a class="btn default btn-xs blue">
+                        Iron
+                    </a>
+                    &nbsp;
+                    <a class="btn default btn-xs">
+                        Folding
+                    </a>
+                    &nbsp;
+                    <a class="btn default btn-xs">
+                        Poly
+                    </a>
+                    &nbsp;
+                    <a class="btn default btn-xs">
+                       Finishing Rejection
+                    </a>
+
+                </div>*@
+
+
+            </div>
+
+
+            <div class="col-md-4 col-md-offset-2" align="right">
+                <div class="btn-group btn-group">
+                    <a class="btn green-meadow btn-xs" ng-click="vm.refresh()">
+                        <i class="fa fa-refresh"></i> Refresh
+                    </a>
+                </div>
+
+                @*<button class="btn btn-xs" ng-click="vm.openConfigModal()">
+                    <span class="item"> <span aria-hidden="true" class="icon-settings"></span>&nbsp; Setting</span>
+                </button>*@
+            </div>
+
+        </div>
+    </div>
+
+    <div class="portlet-body">
+        
+        <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+
+        <details ng-repeat="hrItm in vm.GmtFinPolyData" ng-open="hrItm.HR_PROD_FLR_ID==vm.selectedFlr && hrItm.HR_NO==vm.selectedHrNo" >
+            
+            <summary>
+                <span class="badge badge-primary"><b><span ng-show="vm.isFlrShowWithHr">{{hrItm.FLOOR_DESC_EN}} >> </span>{{hrItm.HR_NO|OrdinalFilter}} Hour</b></span>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                <span>
+                    <input type="text" name="ADD_NEW_HR_NO" style="width:5%" ng-model="hrItm.ADD_NEW_HR_NO" ng-show="hrItm.HR_PROD_FLR_ID==vm.selectedFlr && hrItm.HR_NO==vm.selectedHrNo" ng-focus="vm.onFocus(hrItm)" placeholder="New Hour" />
+                    <button class="btn btn-xs blue" title="Add New Hour" ng-click="vm.addNewFlrHr(hrItm)" ng-show="hrItm.HR_PROD_FLR_ID==vm.selectedFlr && hrItm.HR_NO==vm.selectedHrNo" ng-disabled="hrItm.ADD_NEW_HR_NO==null"><i class="fa fa-plus"></i></button>
+                </span>
+            </summary>
+
+
+            <div class="form-group" style="padding-bottom:20px">
+                <div class="col-md-10">
+                    <select class="form-control" kendo-multi-select name="MC_ORDER_H_LIST" k-placeholder="'Search Order...'"
+                            k-template="vm.templateOh" k-value-template="vm.valueTemplateOh" k-filter="'contains'"
+                            k-data-text-field="'ORDER_NO'" k-data-value-field="'MC_ORDER_H_ID'"
+                            k-auto-bind="'true'" k-data-source="vm.OrdStyleExtDataSource" k-ng-delay="vm.OrdStyleExtDataSource"
+                            ng-model="vm.MC_ORDER_H_LIST"></select>
+                </div>
+
+                <div class="col-md-2">
+                    <button class="btn btn-xs blue" title="Generate" ng-click="vm.ordItmColorGenerate(hrItm)" ng-disabled="MC_ORDER_H_LIST.length<1"><i class="fa fa-send-o"></i></button>
+                </div>
+            </div>
+
+            <table class="table table-condensed table-striped table-bordered" style="padding:5px;" ng-repeat-start="itmOrd in hrItm.itemsOrder" ng-show="itmOrd.IS_HIDE!='Y'">
+                <thead>
+
+                    <tr style="border: 1px solid #cecece">
+
+                        <th style="width:30%">
+                            Buyer: {{itmOrd.BYR_ACC_GRP_NAME_EN}} >> Style: {{itmOrd.STYLE_NO}} >> Order: {{itmOrd.ORDER_NO}}
+                            <a ng-click="vm.hideRow($index, hrItm.itemsOrder)" title="Temporary Hide">
+                                <span class="label label-sm label-warning">
+                                    <i class="fa fa-level-down"></i> Hide
+                                </span>
+                            </a>
+                        </th>
+                        <th style="text-align:center" ng-repeat="itmOrdSz in itmOrd.itemsOrdItmColor[0].itemsOrdSize">
+                            {{itmOrdSz.SIZE_CODE}}
+                        </th>
+
+                        <th></th>
+                    </tr>
+
+
+                    <tr style="border: 1px solid #cecece" ng-repeat="itmOrdItmColor in itmOrd.itemsOrdItmColor">
+                        <td>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:green">{{itmOrdItmColor.ITEM_NAME_EN}}</span> >> <span style="color:blue">{{itmOrdItmColor.COUNTRY_NAME_EN}}</span> >> <span style="color:red">{{itmOrdItmColor.COLOR_NAME_EN}}</span>
+                        </td>
+
+                        <td ng-repeat="itmOrdSize in itmOrdItmColor.itemsOrdSize">
+                            <input type="number" style="text-align:center" class="form-control" ng-model="itmOrdSize.POLY_QTY" />
+                        </td>
+
+                        <td>
+                            <a class="btn btn-xs red" title="Remove Item" ng-click="vm.removeRow($index, itmOrd.itemsOrdItmColor)">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </td>
+                    </tr>
+
+                    @*<tr ng-repeat-end></tr>*@
+
+
+
+                </thead>
+            </table>
+
+            <span ng-repeat-end></span>
+        </details>
+           
+
+
+        <table class="table table-condensed table-striped table-bordered" style="padding-left: 5px; padding-right: 5px; margin-bottom: 3px;">
+            <tbody>
+                <tr>
+                    <td style="width: 100%; padding-bottom: 5px;" align="left">
+                        <button class="btn btn-sm green" ng-click="vm.save()" ng-show="vm.GmtFinPolyData[0].GMT_FIN_POLY_H_ID<1"> Save</button>
+                        <button class="btn btn-sm bg-yellow-gold" ng-click="vm.save()" ng-show="vm.GmtFinPolyData[0].GMT_FIN_POLY_H_ID>0"> Update</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+        @*<pre>{{vm.GmtFinIronData|json}}</pre>*@
+
+    </div>
+
+    
+
+</div>

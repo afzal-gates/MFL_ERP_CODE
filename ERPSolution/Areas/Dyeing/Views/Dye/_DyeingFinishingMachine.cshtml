@@ -1,0 +1,245 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Dyeing</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+    <form name="formData" class="form-horizontal" style="background-color: white;">
+        <div class="portlet-body">
+
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend"><b>Machine Info</b></legend>
+                <div><label id="lblMsgSub"></label></div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label">
+                        <span aria-required="true" class="required">*</span>
+                        Machine No
+                    </label>
+                    <div class="col-md-2">
+                        <input type="text" id="DF_MACHINE_NO" ng-model="vm.form.DF_MACHINE_NO" class="form-control required" />
+                        <input type="hidden" id="DF_MACHINE_ID" ng-model="vm.form.DF_MACHINE_ID" />
+
+                    </div>
+                    <label class="col-md-2 control-label">
+                        <span aria-required="true" class="required"></span>
+                        Model #
+                    </label>
+                    <div class="col-md-2">
+                        <input type="text" id="MODEL_NO" ng-model="vm.form.MODEL_NO" class="form-control">
+
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label">
+                        <span aria-required="true" class="required">*</span>
+                        Machine Name
+                    </label>
+                    <div class="col-md-2">
+                        <input type="text" id="DF_MC_NAME" class="form-control required" ng-model="vm.form.DF_MC_NAME">
+
+                    </div>
+
+                    <label class="col-md-2 control-label">
+                        <span aria-required="true" class="required">*</span>
+                        Brand
+                    </label>
+                    <div class="col-md-2">
+                        <select class="form-control required" kendo-drop-down-list name="RF_BRAND_ID" id="RF_BRAND_ID" k-option-label="'-- Select Brand --'"
+                                k-data-text-field="'BRAND_NAME_EN'" k-data-value-field="'RF_BRAND_ID'"
+                                k-auto-bind="'true'" k-data-source="vm.categoryBrandList" k-delay="vm.categoryBrandList" k-filter="'contains'"
+                                ng-model="vm.form.RF_BRAND_ID" k-on-change="vm.newBrandEntry(kendoEvent)"></select>
+
+                        @*<select kendo-drop-down-list name="RF_BRAND_ID" id="RF_BRAND_ID" class="form-control required"
+                                options="vm.categoryBrandList" ng-model="vm.form.RF_BRAND_ID"></select>*@
+                    </div>
+                </div>
+
+                <div class="form-group">
+
+                    <label class="col-md-4 control-label">
+                        <span aria-required="true" class="required">*</span>
+                        Country of Origine
+                    </label>
+                    <div class="col-md-2">
+                        <select kendo-drop-down-list name="C_ORIGIN_ID" id="C_ORIGIN_ID" class="form-control required"
+                                options="vm.countryList" ng-model="vm.form.C_ORIGIN_ID"></select>
+
+                    </div>
+                    <label class="col-md-2 control-label">
+                        <span aria-required="true" class="required"></span>
+                        Location
+                    </label>
+                    <div class="col-md-2">
+                        <select kendo-drop-down-list name="RF_LOCATION_ID" id="RF_LOCATION_ID" class="form-control"
+                                options="vm.locationList" ng-model="vm.form.RF_LOCATION_ID"></select>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4 control-label">
+                        <span aria-required="true" class="required"></span>
+                        Capacity
+                    </label>
+                    <div class="col-md-2">
+                        <input type="text" id="D_PRD_CAPACITY" class="form-control" ng-model="vm.form.D_PRD_CAPACITY">
+
+                    </div>
+                    <label class="col-md-2 control-label">
+                        <span aria-required="true" class="required"></span>
+                        Efficency
+                    </label>
+                    <div class="col-md-2">
+                        <input type="text" id="PCT_EFFCNCY" class="form-control" ng-model="vm.form.PCT_EFFCNCY">
+
+                    </div>
+                </div>
+                <div class="form-group">
+
+                    <label class="col-md-4 control-label">
+                        <span aria-required="true" class="required">*</span>
+                        MOU
+                    </label>
+                    <div class="col-md-2">
+                        <select kendo-drop-down-list name="CAP_MOU_ID" id="CAP_MOU_ID" class="form-control required"
+                                options="vm.mOUList" ng-model="vm.form.CAP_MOU_ID"></select>
+                    </div>
+                    <label class="col-md-2 control-label">
+                        <span aria-required="true" class="requiredSub">*</span>
+                        Machine Type
+                    </label>
+                    <div class="col-md-2">
+
+                        <select kendo-drop-down-list name="DF_MC_TYPE_ID" id="DF_MC_TYPE_ID" class="form-control required"
+                                options="vm.machineTypeList" ng-model="vm.form.DF_MC_TYPE_ID"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4 control-label">
+                        <span aria-required="true" class="required"></span>
+                        SL No
+                    </label>
+                    <div class="col-md-2">
+                        <input type="text" id="MC_SERIAL_NO" class="form-control" ng-model="vm.form.MC_SERIAL_NO">
+
+                    </div>
+                    <label class="col-md-2 control-label">
+                        <span aria-required="true" class="required"></span>
+                        Year
+                    </label>
+                    <div class="col-md-2">
+                        <input type="text" id="MFG_YEAR" class="form-control" ng-model="vm.form.MFG_YEAR">
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4 control-label">
+                        <span aria-required="true" class="required"></span>
+                        RPM
+                    </label>
+                    <div class="col-md-2">
+                        <input type="text" id="MC_RPM" class="form-control" ng-model="vm.form.MC_RPM">
+
+                    </div>
+                    <label class="col-md-2 control-label">
+                        <span aria-required="true" class="required"></span>
+                        Temp
+                    </label>
+                    <div class="col-md-2">
+                        <input type="text" id="MAX_TEMP_C" class="form-control" ng-model="vm.form.MAX_TEMP_C">
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4 control-label">
+                        <span aria-required="true" class="required">*</span>
+                        Status
+                    </label>
+                    <div class="col-md-2">
+                        <select kendo-drop-down-list name="LK_MAC_STATUS_ID" id="LK_MAC_STATUS_ID" class="form-control required"
+                                options="vm.machineStatusList" ng-model="vm.form.LK_MAC_STATUS_ID"></select>
+                    </div>
+
+                    <label class="col-md-2 control-label">
+                        <span aria-required="true" class="required"></span>
+                        Sample?
+                    </label>
+                    <div class="col-md-2">
+                        <input type="checkbox" name="IS_SMP_BLK" ng-model="vm.form.IS_SMP_BLK" ng-true-value="'S'" ng-false-value="'B'" class="" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label">
+                        <span aria-required="true" class="required">*</span>Prod.Floor
+                    </label>
+                    <div class="col-md-2">
+                        <select kendo-drop-down-list name="HR_PROD_FLR_ID" class="form-control"
+                                k-options="vm.mcLocationOption" k-data-source="vm.mcLocationDataSource" ng-model="vm.form.HR_PROD_FLR_ID" required></select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+
+                    <div class="col-md-4"></div>
+                    <div class="col-md-8">
+                        <div class="thumbnail" style="height: 135px;">
+                            <img id="Key" data-ng-src="data:image/png;base64,{{vm.form.MC_IMAGE}}" alt="No Image Selected" style="height: 130px;">
+
+                            <p style="padding-top: 3px;">
+                                <a class="btn btn-xs red" ng-click="vm.removeKeyImage()" style="float:right;margin-right:0px;">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </p>
+
+                            <input type="file" id="MC_IMAGE_FILE" accept="image/*" base-sixty-four-input ng-model="vm.form.MC_IMAGE_FILE">
+                            <p class="help-block">
+                                Key Image
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-4"></div>
+
+                </div>
+                <br />
+                <br />
+
+                <div class="form-group">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                        <button type="button" ng-if="vm.form.DF_MACHINE_ID>0" class="btn btn-sm yellow" ng-click="vm.submitAll(vm.form)">Update</button>
+                        <button type="button" ng-if="!vm.form.DF_MACHINE_ID>0" class="btn btn-sm green" ng-click="vm.submitAll(vm.form)">Save</button>
+
+                        <button type="button" class="btn btn-sm default" ng-click="vm.resetAll()">Clear</button>
+                    </div>
+
+                </div>
+
+                <div style="padding:3px;">
+                </div>
+                <div style="padding:10px;">
+                    <div kendo-grid="vm.webapiGrid" k-data-source="vm.machineList" k-options=" vm.gridOptions"></div>
+                </div>
+
+            </fieldset>
+
+        </div>
+    </form>
+</div>

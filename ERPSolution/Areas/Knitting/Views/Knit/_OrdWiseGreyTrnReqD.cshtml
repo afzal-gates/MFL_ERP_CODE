@@ -1,0 +1,221 @@
+﻿<fieldset class="custom-fieldset" style="min-width:inherit" ng-disabled="form.RF_ACTN_STATUS_ID>91">
+    <legend class="custom-legend">From Order</legend>
+
+    <div class="form-group">
+        <label class="control-label col-md-1">Buyer A/C</label>
+        <div class="col-md-2"> 
+            <select kendo-drop-down-list name="MC_BYR_ACC_GRP_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                    k-data-text-field="'BYR_ACC_GRP_NAME_EN'" k-data-value-field="'MC_BYR_ACC_GRP_ID'"
+                    k-auto-bind="'true'" k-options="$parent.viewBuyerAcGrpOption" k-data-source="$parent.viewBuyerAcGrpDataSource" k-ng-delay="$parent.viewBuyerAcGrpDataSource"
+                    ng-model="$parent.viewOrdItem.MC_BYR_ACC_GRP_ID"></select>            
+        </div>
+
+        <label class="control-label col-md-1">Style/Order#</label>
+        <div class="col-md-3">
+            <select class="form-control" kendo-drop-down-list name="MC_STYLE_H_EXT_ID" k-option-label="'-- Select --'"
+                    k-template="$parent.templateOh" k-value-template="$parent.valueTemplateOh"
+                    k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_STYLE_H_EXT_ID'" k-filter="'contains'"
+                    k-auto-bind="'true'" k-options="$parent.viewOrdStyleExtOption" k-data-source="$parent.viewOrdStyleExtDataSource" k-ng-delay="$parent.viewOrdStyleExtDataSource"
+                    ng-model="$parent.viewOrdItem.MC_STYLE_H_EXT_ID"></select>
+        </div>
+
+        <label class="control-label col-md-1">
+            Color
+        </label>
+        <div class="col-md-2">            
+            <select class="form-control" kendo-drop-down-list name="MC_COLOR_ID" k-option-label="'-- Select Color --'"
+                    k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'MC_COLOR_ID'" k-filter="'contains'"
+                    k-auto-bind="'true'" k-options="$parent.viewOrdColorOption" k-data-source="$parent.viewOrdColorDataSource" k-ng-delay="$parent.viewOrdColorDataSource"
+                    ng-model="$parent.viewOrdItem.MC_COLOR_ID" ></select>
+        </div>
+            
+        <div class="col-md-1">
+            <button type="button" class="btn btn-sm blue" ng-click="vm.loadFabric4Trans()"
+                    ng-class="{'disabled':$parent.viewOrdItem.MC_BYR_ACC_GRP_ID==null||($parent.viewOrdItem.MC_STYLE_H_EXT_ID==null||$parent.viewOrdItem.MC_STYLE_H_EXT_ID=='')||
+                    ($parent.viewOrdItem.MC_COLOR_ID==null||$parent.viewOrdItem.MC_COLOR_ID=='')}">
+                Load
+            </button>
+        </div>
+    </div>
+
+    <div kendo-grid id="ViewFromOrderGrid" k-options="$parent.viewFromOrderOptions" k-data-source="$parent.viewFromOrderDataSource"></div>
+
+    @*<div class="col-md-12" style="text-align:right;padding-right:0px;padding-top:5px">
+        <button type="button" class="btn btn-sm blue" ng-click="vm.includeBill()">Include</button>
+    </div>*@
+</fieldset>
+
+
+<fieldset class="custom-fieldset" style="min-width:inherit" >
+    <legend class="custom-legend">To Order</legend>
+
+    <div class="form-group">
+        
+        <div class="col-md-2">
+            <label class="control-label">Buyer A/C</label>
+            <select kendo-drop-down-list name="MC_BYR_ACC_GRP_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                    k-data-text-field="'BYR_ACC_GRP_NAME_EN'" k-data-value-field="'MC_BYR_ACC_GRP_ID'"
+                    k-auto-bind="'true'" k-options="$parent.viewToBuyerAcGrpOption" k-data-source="$parent.viewToBuyerAcGrpDataSource" k-ng-delay="$parent.viewToBuyerAcGrpDataSource"
+                    ng-model="$parent.viewToOrdItem.MC_BYR_ACC_GRP_ID" ng-disabled="$parent.form.RF_ACTN_STATUS_ID>91||$parent.form.LK_TRN_SRC_ID==726"></select>
+        </div>
+
+        
+        <div class="col-md-3">
+            <label class="control-label">Style/Order#</label>
+            <select class="form-control" kendo-drop-down-list name="MC_STYLE_H_EXT_ID" k-option-label="'-- Select --'"
+                    k-template="$parent.templateOh" k-value-template="$parent.valueTemplateOh"
+                    k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_STYLE_H_EXT_ID'" k-filter="'contains'"
+                    k-auto-bind="'true'" k-options="$parent.viewToOrdStyleExtOption" k-data-source="$parent.viewToOrdStyleExtDataSource" k-ng-delay="$parent.viewToOrdStyleExtDataSource"
+                    ng-model="$parent.viewToOrdItem.MC_STYLE_H_EXT_ID" ng-disabled="$parent.form.RF_ACTN_STATUS_ID>91||$parent.form.LK_TRN_SRC_ID==726"></select>
+        </div>
+
+        
+        <div class="col-md-6">
+            <label class="control-label">Color and Fabric</label>
+            <select class="form-control" kendo-drop-down-list name="MC_FAB_PROD_ORD_D_ID" k-option-label="'-- Select --'"
+                    k-template="$parent.templateToColorFab" k-value-template="$parent.valueTemplateToColorFab"
+                    k-data-text-field="'BKING_FABRIC_DESC'" k-data-value-field="'MC_FAB_PROD_ORD_D_ID'" k-filter="'contains'"
+                    k-auto-bind="'true'" k-options="$parent.viewToOrdFabBkingOption" k-data-source="$parent.viewToOrdFabBkingDataSource" k-ng-delay="$parent.viewToOrdFabBkingDataSource"
+                    ng-model="$parent.viewToOrdItem.MC_FAB_PROD_ORD_D_ID"></select>
+
+            @*<select class="form-control" kendo-drop-down-list name="MC_COLOR_ID" k-option-label="'-- Select Color --'"
+                    k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'MC_COLOR_ID'" k-filter="'contains'"
+                    k-auto-bind="'true'" k-options="$parent.viewToOrdColorOption" k-data-source="$parent.viewToOrdColorDataSource" k-ng-delay="$parent.viewToOrdColorDataSource"
+                    ng-model="$parent.viewToOrdItem.MC_COLOR_ID" 
+                    ng-disabled="$parent.form.RF_ACTN_STATUS_ID>91||$parent.form.LK_TRN_SRC_ID==726"></select>*@
+        </div>
+
+        <div class="col-md-1">
+            <label class="control-label">&nbsp;</label>
+            <button type="button" class="btn btn-sm blue" ng-click="vm.addTrnsDtlRow()"
+                    ng-class="{'disabled':!$parent.frmOrdWiseGreyFabTrn.$valid||$parent.viewFromOrderDataSource.data().length<1||$parent.viewToOrdItem.MC_BYR_ACC_GRP_ID==null||($parent.viewToOrdItem.MC_STYLE_H_EXT_ID==null||$parent.viewToOrdItem.MC_STYLE_H_EXT_ID=='')||
+                    ($parent.viewToOrdItem.MC_COLOR_ID==null||$parent.viewToOrdItem.MC_COLOR_ID=='')}">
+                Add to Grid
+            </button>
+        </div>
+    </div>
+
+</fieldset>
+    
+
+<fieldset class="custom-fieldset" ng-disabled="form.RF_ACTN_STATUS_ID>91">
+    <legend class="custom-legend">Transfer Detail</legend>
+
+    <div kendo-grid k-options="vm.transDtlOptions" k-data-source="vm.transDtlDataSource"></div>
+</fieldset>
+
+
+
+<div class="col-md-12" style="padding-top:5px">
+    <div class="form-group">
+
+        <button type="button" class="btn btn-sm green" ng-click="vm.submitData(token, 'N', $parent.form.RF_ACTN_STATUS_ID)" ng-show="$parent.form.KNT_ORD_TRN_REQ_H_ID<1"
+                ng-class="{'disabled':!$parent.frmOrdWiseGreyFabTrn.$valid || vm.transDtlDataSource.data().length<1}">
+            Save
+        </button>
+        <button type="button" class="btn btn-sm yellow-gold" ng-click="vm.submitData(token, 'N', $parent.form.RF_ACTN_STATUS_ID)" ng-show="$parent.form.KNT_ORD_TRN_REQ_H_ID>0"
+                ng-class="{'disabled':!$parent.frmOrdWiseGreyFabTrn.$valid || $parent.form.RF_ACTN_STATUS_ID>91}">
+            Update
+        </button>
+
+
+        <a class="btn btn-sm blue" href="/Knitting/Knit/OrdWiseGreyTrnReq?a=359/#/ordWiseGreyTrnReqH/0/dtl" ng-show="$parent.form.LK_TRN_SRC_ID==725">Cancel</a>
+
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="button" class="btn btn-sm blue-hoki" ng-click="vm.backToList()" ng-show="$parent.form.LK_TRN_SRC_ID==725">Back to List</button>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        @*<button type="button" class="btn btn-sm blue" ng-click="vm.otpModal()" ng-show="$parent.form.KNT_ORD_TRN_REQ_H_ID>0 && $parent.form.LK_TRN_SRC_ID==726" ng-disabled="$parent.form.RF_ACTN_STATUS_ID==96">Finalize</button>*@
+        
+        <button type="button" class="btn btn-sm blue" ng-click="vm.submitData(token, 'N', 92)" ng-show="$parent.form.RF_ACTN_STATUS_ID==91 && $parent.form.ACTION_USER_TYPE=='SENDER' && ($parent.form.LK_TRN_SRC_ID==725||$parent.form.LK_TRN_SRC_ID==726)">Submit</button>
+        <button type="button" class="btn btn-sm blue" ng-click="vm.submitData(token, 'Y', $parent.form.RF_ACTN_STATUS_ID)" ng-show="$parent.form.RF_ACTN_STATUS_ID==92 && $parent.form.ACTION_USER_TYPE=='RECEIVER' && ($parent.form.LK_TRN_SRC_ID==725||$parent.form.LK_TRN_SRC_ID==726)">Finalize</button>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="button" class="btn btn-sm blue" ng-click="vm.submitData(token, 'N', 123)" ng-show="$parent.form.RF_ACTN_STATUS_ID==92 && $parent.form.ACTION_USER_TYPE=='RECEIVER' && ($parent.form.LK_TRN_SRC_ID==725||$parent.form.LK_TRN_SRC_ID==726)">Reject</button>
+        @*<button type="button" class="btn btn-sm blue" ng-click="vm.sendMail(token, 'Y', 92)" ng-show="$parent.form.LK_TRN_SRC_ID==725">Mail Send</button>*@
+
+    </div>
+
+    @*<pre>{{$parent.form|json}}</pre>*@
+    @*<pre>{{$parent.viewToOrdItem|json}}</pre>*@    
+    @*<pre>{{$parent.stateParams|json}}</pre>*@
+
+    @*<pre>{{$parent.frmOrdWiseGreyFabTrn.$error|json}}</pre>*@
+
+</div>
+   
+
+
+
+
+
+
+
+
+@*Start OTP Modal*@
+<script type="text/ng-template" id="OrdWiseGreyTrnReqOtpModal.html">
+
+    @*<div id="splash-page" data-ng-show="$parent.form.OTP_CODE==null" class="dissolve-animation">
+        <div class="page-splash">
+            <div class="page-splash-message">
+                <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+            </div>
+        </div>
+    </div>*@
+
+    <div class="modal-body">
+        
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <p style="padding-top:10px;">
+                        OTP - Grey Fabric Transfer
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </p>
+
+
+                </div>
+            </div>
+            <div class="portlet-body">
+
+               
+                <div class="row" style="margin:auto;" ng-show="errors">
+                    <div class="alert alert-danger" role="alert">
+                        @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                        <div style="padding: 0px 0px 15px 25px; ">
+                            <b>Please fix the following errors ....</b>
+                        </div>
+                        <ul ng-repeat="itm in errors">
+                            <li ng-bind="itm.error"></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <form class="form-horizontal" role="form" name="OrdWiseGreyTrnReqOtpModal" novalidate @*ng-submit="save(Task,token,TaskForm.$valid)"*@>
+                    <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+                                        
+                    <div class="form-group">
+                        <label for="selectPeriod" class="col-md-2 control-label">
+                            <span aria-required="true" class="required">*</span>OTP
+                        </label>
+                        <div class="col-md-5" style="padding-top:5px;">
+                            <input type="text" class="form-control" name="OTP_CODE" ng-model="OTP_CODE" maxlength="4" required />
+                        </div>
+                    </div>
+
+
+                    @*<pre>{{OrdWiseGreyTrnReqOtpModal.$valid}}</pre>*@
+
+                    <br />
+                    <div class="form-group form-actions">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="button" class="btn green btn-sm" ng-click="save(token, OrdWiseGreyTrnReqOtpModal.$valid)" ng-class="{'disabled':!OrdWiseGreyTrnReqOtpModal.$valid}" @*ng-disabled="formInvalid"*@>Submit</button>
+                            <button type="button" class="btn btn-default btn-sm" ng-click="cancel()">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+@*End OTP Modal*@

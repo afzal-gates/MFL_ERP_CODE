@@ -1,0 +1,119 @@
+﻿<style>
+    .k-grid .k-grid-header .k-header {
+        white-space: normal;
+    }
+</style>
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin:auto;padding-top:8px;">
+                        <kendo-grid k-options="vm.options" k-data-source="vm.dataSource" id="tna_matrix_grid" style="width:auto;"></kendo-grid>
+        </div>
+        <div class="row" style="margin:auto;padding-top:8px;">
+            Export to :
+            <a class="btn btn-sm blue-chambray" ng-click="vm.saveAs('pdf')">pdf</a>
+        </div>
+    </div>
+</div>
+
+<script type="text/x-kendo-template" id="TnAFollowupMatrixToolbarTemplate">
+    <div class="toolbar">
+        <div class="actions">
+
+            <form class="form-horizontal" role="form" name="TnAFollowupMatrixToolbar" novalidate
+                  ng-submit="vm.onSearch(vm.form)">
+
+                <label class="col-md-1 control-label" style="padding-left: 0px; padding-right: 0px;">
+                    Task Group
+                </label>
+
+                <div class="col-md-1" style="padding-left:0px;padding-right:0px;">
+
+                    <select class="form-control" kendo-drop-down-list name="GROUP" k-option-label="'--All --'"
+                            k-data-text-field="'TEXT'" k-data-value-field="'ID'" k-filter="'Contains'"
+                            k-auto-bind="'true'" k-data-source="vm.tnaCodeHideDs" ng-model="vm.form.ID"
+                            required style="width:100%;border-bottom-width:1px;" k-on-change="vm.onChangeGroup(vm.form,kendoEvent)"></select>
+
+                </div>
+
+
+                <label class="col-md-1 control-label" style="padding-left: 0px;padding-right:30x;">
+                    Buyer A/C
+                </label>
+                <div class="col-md-2" style="padding-left:0px;padding-right:0px;">
+
+                    <select kendo-drop-down-list name="MC_BYR_ACC_ID" class="form-control"
+                            k-options="vm.buyerAcList" id="MC_BYR_ACC_ID" ng-model="vm.form.MC_BYR_ACC_ID"></select>
+                </div>
+
+                <label class="col-md-1 control-label" style="padding-left: 0px;padding-right:0px;">
+                   Bk Month
+                </label>
+                <div class="col-md-1" style="padding-left:0px;padding-right:0px;">
+                    <select class="form-control" kendo-drop-down-list name="MONTHOF" k-option-label="'-- Select Month --'"
+                            k-data-text-field="'MONTHOF'" k-data-value-field="'MONTHOF'" k-filter="'contains'"
+                            k-auto-bind="'true'" k-data-source="vm.shipMonthList" ng-model="vm.form.MONTHOF"
+                            k-on-change="vm.onChangeShipMonth(vm.form,kendoEvent)"></select>
+                </div>
+
+
+
+
+                <label class="col-md-1 control-label" style="padding-left: 0px; padding-right: 0px;">
+                    Style/Order
+                </label>
+
+                <div class="col-md-3" style="padding-left:5px;padding-right:0px;">
+                    <span style="padding-left:0px;padding-right:3px;" class="col-md-10">
+                        <select class="form-control" kendo-multi-select name="MC_ORDER_H_ID" k-option-label="'--Order --'"
+                                k-data-text-field="'ORDER_NO'" k-data-value-field="'MC_ORDER_H_ID'" k-filter="'Contains'"
+                                k-template="template"
+                                k-auto-bind="'true'" k-data-source="vm.oderListDs" ng-model="vm.form.MC_ORDER_H_ID_LST"
+                                required style="width:100%;border-bottom-width:1px;"></select>
+                    </span>
+
+                    <span style="padding-left:0px;padding-right:0px;" class="col-md-1">
+                        <button type="submit" class="btn btn-sm blue">
+                            Load
+                        </button>
+                    </span>
+                </div>
+
+
+
+            </form>
+
+        </div>
+    </div>
+</script>
+
+

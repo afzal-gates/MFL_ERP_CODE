@@ -1,0 +1,225 @@
+﻿<form class="form-horizontal" role="form" name="StyleOrderForm" ng-submit="vm.submitData(vm.form,token)" novalidate>
+    <div class="form-body clearfix">
+
+        <input id="access_token" data-ng-model="token" type="hidden"
+               data-ng-init="token='@Session["access_token"]'" />
+
+        <input type="hidden" name="MC_ORDER_SIZE_DTL" ng-model="vm.form.MC_ORDER_SIZE_DTL" />
+
+        <div class="form-group">
+            <label class="col-md-3 control-label">
+                <span aria-required="true" class="required">*</span>Devlopment Type
+            </label>
+            <div class="col-md-3">
+                <select kendo-drop-down-list name="LK_STYL_DEV_TYP_ID" class="form-control" ng-disabled="vm.orderDtlQty>0"
+                        options="vm.styleDevTypeOptions" ng-model="vm.form.LK_STYL_DEV_TYP_ID" required></select>
+                @*{{vm.orderDtlQty}}*@
+            </div>
+
+            <label class="col-md-3 control-label">
+                Job #
+            </label>
+            <div class="col-md-3">
+                <input type="text" name="JOB_TRAC_NO" ng-model="vm.form.JOB_TRAC_NO" class="form-control" style="background-color:hsl(0, 0%, 87%);font-weight:bold" readonly />
+            </div>
+        </div>
+
+        <div class="form-group" ng-show="false">
+            <label class="col-md-3 control-label">
+                Working Style #
+            </label>
+            <div class="col-md-3">
+                <input type="text" name="WORK_STYLE_NO" ng-model="vm.form.WORK_STYLE_NO" class="form-control" required />
+            </div>
+        </div>
+
+
+        <div class="form-group" ng-show="false">
+            <label class="col-md-4 control-label">
+                PO #
+            </label>
+            <div class="col-md-6">
+                <input type="text" name="ORDER_NO" ng-model="vm.form.ORDER_NO" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-3 control-label">
+                <span aria-required="true" class="required">*</span>
+               Recieve Date
+            </label>
+            <div class="col-md-3">
+                <input type="text" class="form-control" ng-click="ConfirmDate_LNopen($event)" datepicker-popup="{{vm.dtFormat}}" placeholder="Recieve Date"
+                       name="ORD_CONF_DT"  ng-model="vm.form.ORD_CONF_DT" is-open="ConfirmDate_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close"
+                       required />
+                <p ng-show="StyleOrderForm.ORD_CONF_DT.$invalid && !StyleOrderForm.ORD_CONF_DT.$pristine" class="help-block error">Please select Order Confirmed Date.</p>
+
+            </div>
+
+            <label class="col-md-3 control-label">
+                Lead Time (Days)
+                <span style="display:block;"><small>without (Weekend/Holiday)</small> </span>
+            </label>
+            <div class="col-md-3">
+                <input type="number" class="form-control" name="LEAD_TIME" ng-model="vm.form.LEAD_TIME" readonly />
+            </div>
+
+        </div>
+
+
+        @*<div class="form-group">
+            <label class="col-md-4 control-label">
+                <span aria-required="true" class="required">*</span>
+                  Delivery Date
+            </label>
+            <div class="col-md-4">
+                <input type="text" class="form-control" ng-click="vm.shipmentDateOpen($event)" datepicker-popup="{{vm.dtFormat}}" placeholder="Delivery Date"
+                       name="SHIP_DT" ng-model="vm.form.SHIP_DT" is-open="vm.shipmentDateOpened" datepicker-options="vm.dateOptions"
+                       date-disabled="disabled(date, mode)" min-date="vm.form.ORD_CONF_DT" close-text="Close" required />
+
+                <p ng-show="StyleOrderForm.SHIP_DT.$invalid && !StyleOrderForm.SHIP_DT.$pristine" class="help-block error">Please select Shipment Date.</p>
+            </div>
+        </div>*@
+
+        <div class="form-group">
+
+            <label class="col-md-3 control-label">
+                <span aria-required="true" class="required">*</span>
+                Delivery Date
+            </label>
+            <div class="col-md-3">
+                <input type="text" class="form-control" ng-click="vm.shipmentDateOpen($event)" datepicker-popup="{{vm.dtFormat}}" placeholder="Delivery Date"
+                       name="SHIP_DT" ng-model="vm.form.SHIP_DT" is-open="vm.shipmentDateOpened" datepicker-options="vm.dateOptions"
+                       date-disabled="disabled(date, mode)" min-date="vm.form.ORD_CONF_DT" close-text="Close" required />
+
+                <p ng-show="StyleOrderForm.SHIP_DT.$invalid && !StyleOrderForm.SHIP_DT.$pristine" class="help-block error">Please select Shipment Date.</p>
+            </div>
+
+            <label class="col-md-3 control-label">
+                <span aria-required="true" class="required">*</span>
+                Quantity
+            </label>
+            <div class="col-md-1" style="padding-right:0px">
+                <input type="number" min="0" name="TOT_ORD_QTY" ng-model="vm.form.TOT_ORD_QTY" class="form-control" required
+                       ng-disabled="vm.form.LK_ORD_STATUS_ID>0 && vm.form.LK_STYL_DEV_TYP_ID==542" />
+                <p ng-show="StyleOrderForm.TOT_ORD_QTY.$invalid && !StyleOrderForm.TOT_ORD_QTY.$pristine" class="help-block error">Please input Order Qty</p>
+            </div>
+
+            <div class="col-md-2">
+                <select kendo-drop-down-list name="QTY_MOU_ID" class="form-control" ng-disabled="vm.form.LK_ORD_STATUS_ID>0 && vm.form.LK_STYL_DEV_TYP_ID==542"
+                        options="vm.MOUList" id="QTY_MOU_ID" ng-model="vm.form.QTY_MOU_ID" required></select>
+            </div>
+        </div>
+
+
+        @*<div class="form-group">
+            <label class="col-md-4 control-label">
+                <span aria-required="true" class="required">*</span>
+
+               Quantity
+            </label>
+            <div class="col-md-3">
+                <input type="number" min="1" name="TOT_ORD_QTY" ng-model="vm.form.TOT_ORD_QTY" class="form-control" required />
+                <p ng-show="StyleOrderForm.TOT_ORD_QTY.$invalid && !StyleOrderForm.TOT_ORD_QTY.$pristine" class="help-block error">Please input Order Qty</p>
+            </div>
+
+            <div class="col-md-3">
+                <select kendo-drop-down-list name="QTY_MOU_ID" class="form-control"
+                        options="vm.MOUList" id="QTY_MOU_ID" ng-model="vm.form.QTY_MOU_ID" required></select>
+            </div>
+
+        </div>*@
+
+        @*<div class="form-group">
+            <label class="col-md-3 control-label">
+                <span aria-required="true" class="required">*</span>Delivery To
+            </label>
+            <div class="col-md-9">
+                <select class="form-control" kendo-multi-select name="HR_COUNTRY_ID_LST"                        
+                        ng-model="vm.form.HR_COUNTRY_ID_LST" options="vm.countryList" k-on-close="vm.onCloseCountry(kendoEvent)"
+                        ng-disabled="vm.form.IS_ORD_FINALIZED=='Y'" required></select>
+            </div>           
+        </div>*@
+
+
+
+
+
+
+        <div class="form-group">
+            <label class="col-md-3 control-label">
+                TNA Template
+            </label>
+            <div class="col-md-3">
+                <select class="form-control" kendo-drop-down-list name="MC_TNA_TMPLT_H_ID" k-option-label="'-- Select Template--'"
+                        k-data-text-field="'TNA_TMPLT_CODE'" k-data-value-field="'MC_TNA_TMPLT_H_ID'" filter="contains"
+                        k-auto-bind="'true'" k-data-source="vm.TnaTempList" ng-model="vm.form.MC_TNA_TMPLT_H_ID" k-ng-delay="vm.TnaTempList" k-template="vm.template"
+                        k-on-data-bound="vm.onTnaTemplateDataBound(kendoEvent)"></select>
+            </div>
+
+            
+            <div ng-show="vm.form.MC_SMP_REQ_H_ID<1">
+                <label class="col-md-3 control-label">
+                    Smpl. Type
+                </label>
+                <div class="col-md-3">
+                    <select kendo-drop-down-list name="RF_SMPL_TYPE_ID" id="RF_SMPL_TYPE_ID" class="form-control"
+                            options="vm.byrWiseSmplTypeList" ng-model="vm.form.RF_SMPL_TYPE_ID"></select>
+                </div>
+            </div>
+        </div>
+
+
+        
+        <div class="form-group">
+            <label class="col-md-3 control-label">
+                Order Status
+            </label>
+            <div class="col-md-9">
+                <select kendo-drop-down-list name="LK_ORD_STATUS_ID" id="LK_ORD_STATUS_ID" class="form-control"
+                        options="vm.orderStatusList" k-on-data-bound="onSelectIOrderStatus(kendoEvent)" k-template="templateOrderStatus" ng-model="vm.form.LK_ORD_STATUS_ID" required></select>
+            </div>
+        </div>
+
+
+
+        <div class="form-group" ng-show="vm.form.LK_ORD_STATUS_ID>0 && vm.form.LK_STYL_DEV_TYP_ID==541">
+            <div kendo-grid k-options="vm.ordDtlGridOption" k-data-source="vm.ordDtlGridDataSource"></div>
+        </div>
+
+        
+        <div class="form-group">
+            
+            <div class="col-md-12" style="text-align:right">
+                @*  <a class="btn btn-xs blue" ng-if="vm.form.MC_ORDER_H_ID" ng-click="vm.goToOrderDetail(vm.detailsForm)"> <i class="fa fa-plus"></i> Order Detail</a>*@
+                <button type="submit" ng-if="vm.form.MC_ORDER_H_ID" class="btn btn-sm yellow-gold" ng-class="{'disabled':!StyleOrderForm.$valid}">Update</button>
+                <button type="submit" ng-if="!vm.form.MC_ORDER_H_ID" class="btn btn-sm green" ng-class="{'disabled':!StyleOrderForm.$valid}">Save</button>
+                <button type="button" class="btn btn-sm default" ui-sref="StyleHDev.OrderConDev.DetailDev({MC_STYLE_H_ID:vm.StyleData.MC_STYLE_H_ID , pMC_STYLE_H_EXT_ID:vm.params.pMC_STYLE_H_EXT_ID, pMC_ORDER_H_ID:0})" ui-sref-opts="{reload : 'StyleHDev.OrderConDev.DetailDev'}">Cancel</button>
+                @*&nbsp;&nbsp;&nbsp;*@
+
+                <button type="button" class="btn btn-sm blue" ng-click="vm.devSampleCreate(token)" ng-class="{'disabled':vm.form.MC_ORDER_H_ID<1 && vm.form.RF_SMPL_TYPE_ID<1}"
+                        ng-show="vm.form.MC_SMP_REQ_H_ID<1">
+                    <span ng-show="vm.form.LK_STYL_DEV_TYP_ID==541">Generate Sample Booking</span>
+                    <span ng-show="vm.form.LK_STYL_DEV_TYP_ID==542">Generate Fabric Booking</span>
+                </button>
+                <a type="button" class="btn btn-sm blue" href="/Merchandising/Mrc/SmplFabBook?a=88/#/smplfabbookentry/{{vm.form.MC_SMP_REQ_H_ID}}/dtl?pLK_STYL_DEV_TYP_ID={{vm.form.LK_STYL_DEV_TYP_ID}}"
+                   ng-show="vm.form.MC_SMP_REQ_H_ID>0">
+                    <span ng-show="vm.form.LK_STYL_DEV_TYP_ID==541">Goto Sample Booking</span>
+                    <span ng-show="vm.form.LK_STYL_DEV_TYP_ID==542">Goto Fabric Booking</span>
+                </a>
+                
+            </div>
+
+        </div>
+
+        
+        <div class="row" style="margin:auto;padding-top:10px;" ng-if="vm.errors">
+            <div class="alert alert-warning" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                <ul ng-repeat="field in vm.errors">
+                    <li ng-repeat="error in field" ng-bind="error"></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</form>

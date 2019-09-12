@@ -1,0 +1,173 @@
+﻿        <style type="text/css">
+            .scheduler_default_selected .scheduler_default_event_inner {
+                background: #ddd;
+            }            
+            .scheduler_default_rowheader {
+                background: -webkit-gradient(linear, left top, left bottom, from(#eeeeee), to(#dddddd));
+                background: -moz-linear-gradient(top, #eeeeee 0%, #dddddd);
+                background: -ms-linear-gradient(top, #eeeeee 0%, #dddddd);
+                background: -webkit-linear-gradient(top, #eeeeee 0%, #dddddd);
+                background: linear-gradient(top, #eeeeee 0%, #dddddd);
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorStr="#eeeeee", endColorStr="#dddddd");
+            }
+
+            .scheduler_default_rowheader_inner {
+                border-right: 1px solid #ccc;
+            }
+
+            .scheduler_default_rowheadercol2 {
+                background: #ffffff;
+            }
+        </style>
+        <style>
+            .scheduler_default_selected .scheduler_default_event_inner {
+                background-color: #d4cfcf;
+                background-image: -webkit-gradient(linear, 0 100%, 100% 0,color-stop(.25, rgba(255, 255, 255, .2)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .2)), color-stop(.75, rgba(255, 255, 255, .2)), color-stop(.75, transparent), to(transparent));
+                background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+                background-image: -moz-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+                background-image: -ms-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+                background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+                background-image: linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+                -webkit-background-size: 20px 20px;
+                -moz-background-size: 20px 20px;
+                background-size: 20px 20px;
+            }
+        </style>
+
+        <style>
+            .scheduler_default_cellparent, .scheduler_default_cell.scheduler_default_cell_business.scheduler_default_cellparent {
+                background: #ddd;
+            }
+        </style>
+        <div class="row" style="margin:auto;">
+            <div id="splash-page" data-ng-show="showSplash" class="dissolve-animation">
+                <div class="page-splash">
+                    <div class="page-splash-message">
+                        <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                    </div>
+                </div>
+            </div>
+
+            <form class="form-horizontal" ng-submit="onSearchEvent(qEvt)">
+
+                <div style="float:left; width:160px">
+                    <div class="form-group">
+                        <div class="col-md-8">
+                            <a onclick="picker.show(); return false;" class="btn btn-sm btn-link" id="start" style="color:red;padding-top:8px;padding-bottom:0px;">{{CurrentDTRange.today|date:'dd-MMM-yyyy'}}</a>
+                            <a class="btn btn-sm btn-link" ng-click="vm.ChangeDataByDate()" style="color: blue; padding-top: 0px; padding-bottom: 0px;">Today</a>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="form-group" style="margin-left: 160px">
+
+                    @*<div class="col-md-2" style="padding-left:0px;padding-right:5px;">
+                        Company #
+                        <select class="form-control" kendo-drop-down-list name="HR_COMPANY_ID" 
+                                k-data-text-field="'COMP_NAME_EN'" k-data-value-field="'HR_COMPANY_ID'" k-option-label="'-- All --'"
+                                k-auto-bind="'true'" k-options="vm.companyOpt" ng-model="vm.form.HR_COMPANY_ID"></select>
+                    </div>
+
+                    <div class="col-md-1" style="padding-left:0px;padding-right:5px;">
+                        Unit
+                        <select class="form-control" kendo-drop-down-list name="PROD_UNIT_ID" 
+                                k-data-text-field="'OFFICE_NAME_EN'" k-data-value-field="'HR_OFFICE_ID'" k-option-label="'-- All --'"
+                                k-auto-bind="'true'" k-options="vm.officeOpt" k-data-source="vm.officeDs" ng-model="vm.form.HR_OFFICE_ID"></select>
+
+                    </div>*@
+
+                    <div class="col-md-1" style="padding-left:0px;padding-right:5px;">
+                        Floor
+                        <select class="form-control" kendo-drop-down-list name="HR_PROD_FLR_ID" 
+                                k-data-text-field="'FLOOR_CODE'" k-data-value-field="'HR_PROD_FLR_ID'" k-option-label="'-- All --'"
+                                k-auto-bind="'true'" k-options="vm.floorOpt" k-data-source="vm.floorDs" ng-model="vm.form.HR_PROD_FLR_ID"></select>
+
+
+                    </div>
+                    <div class="col-md-1" style="padding-left:0px;padding-right:5px;">
+                        Line
+                        <select class="form-control" kendo-drop-down-list name="HR_PROD_LINE_ID" 
+                                k-data-text-field="'LINE_CODE'" k-data-value-field="'HR_PROD_LINE_ID'" k-option-label="'-- All --'"
+                                k-auto-bind="'true'" k-options="vm.lineOpt" k-data-source="vm.lineDs" ng-model="vm.form.HR_PROD_LINE_ID"></select>
+
+                    </div>
+
+                    <div class="col-md-3" style="padding-left:0px;padding-right:5px;">
+                        Style#/Order
+
+                        <div class="input-group">
+                            <select class="form-control" kendo-drop-down-list name="MC_ORDER_SHIP_ID" k-option-label="'--All --'"
+                                    k-data-text-field="'ORDER_NO'" k-data-value-field="'MC_ORDER_SHIP_ID'" k-filter="'Contains'"
+                                    k-template="template" k-value-template="valueTemplate"
+                                    k-auto-bind="'true'" k-data-source="vm.oderListDs" k-on-change="vm.onChangeOrderShipData(kendoEvent)" ng-model="vm.form.MC_ORDER_SHIP_ID"></select>
+                            <span class="input-group-btn">
+                                <button ng-disabled="!vm.form.MC_ORDER_SHIP_ID" class="btn btn-sm" ng-click="vm.onOrderSearch(vm.form.MC_ORDER_SHIP_ID)" type="button"><i class="fa fa-search"></i></button>
+                            </span>
+                        </div>
+                         
+                    </div>
+                    <div class="col-md-1" style="padding-left:0px;padding-right:5px;">
+                
+                        Scale
+                        <select class="form-control" kendo-drop-down-list k-data-text-field="'txt'" k-data-value-field="'val'"
+                                k-auto-bind="'false'" k-data-source="scaleDs" ng-model="scale"></select>
+
+                    </div>
+
+
+
+                    <div class="col-md-1" style="padding-left: 0px; padding-right: 5px;">
+                        Range
+                        <select class="form-control" kendo-drop-down-list k-data-text-field="'txt'" k-data-value-field="'val'"
+                                k-auto-bind="'false'" k-data-source="timeRangeDs" ng-model="TimeRange"></select>
+
+                    </div>
+                    <div class="col-md-1" style="padding-left:0px;padding-right:5px;">
+                        <label class="control-label" style="text-align:left;">
+                            Cell Width(%)
+                        </label>
+                        <input type="number" ng-init="cellWidth=schedulerConfig.cellWidth" class="form-control" step="5" min="15" max="100" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" ng-model="cellWidth" ng-change="onChangeCellWidth(cellWidth)" />
+                    </div>
+
+                    <div class="col-md-3" style="padding-left: 0px; text-align: right;">
+                        <div class="checkbox-list">
+                            
+                            <label class="checkbox-inline" style="margin-left:20px">
+                                <span><input type="checkbox" ng-change="vm.form.IS_GMT_ITEM_VIEW='N';refreshData();" ng-model="vm.form.IS_REGULAR_VIEW" ng-true-value="'Y'" ng-false-value="'N'">Regular View</span>
+                            </label>
+                            <label class="checkbox-inline">
+                                <span><input type="checkbox" ng-change="vm.form.IS_REGULAR_VIEW='N'; refreshData();" ng-model="vm.form.IS_GMT_ITEM_VIEW" ng-true-value="'Y'" ng-false-value="'N'">GmtItemCat View</span>
+                               
+                            </label>
+                        </div>
+                        <span ng-if="vm.form.IS_GMT_ITEM_VIEW == 'Y'" class="label" style="color: #84FF19;background-color:black;">Basic</span>
+                        <span ng-if="vm.form.IS_GMT_ITEM_VIEW == 'Y'" class="label" style="color: #9B9FE8; background-color: black;">Fency</span>
+                        <span ng-if="vm.form.IS_GMT_ITEM_VIEW == 'Y'" class="label" style="color: #89FFF3; background-color: black;">Polo</span>
+
+                    </div>
+
+
+
+                    <div class="col-md-1" style="padding-left: 0px; padding-right: 10px; text-align: right;padding-top:23px;">
+                        <button class="btn blue-hoki btn-xs" style="float:right;" ng-click="vm.refreshScheduler()" title="Refresh"><i class="fa fa-refresh"></i> Refresh</button>
+                    </div>
+                </div>
+            </form>
+
+            <div click-anywhere-but-here="clearSelection()">
+                <daypilot-scheduler id="scheduler"  daypilot-config="schedulerConfig" daypilot-events="events"></daypilot-scheduler>
+            </div>
+
+        </div>
+
+<script type="text/javascript">
+    var picker = new DayPilot.DatePicker({
+        target: 'start',
+        pattern: 'dd-MMM-yyyy',
+        onTimeRangeSelected: function (args) {
+            window.ChangeDataByDate(args.start.value);
+        }
+    });
+</script>

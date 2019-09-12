@@ -1,0 +1,146 @@
+﻿    @model ERP.Model.MC_ACCS_PO_HModel 
+
+
+        @{
+            Layout = "~/Views/Shared/_HtmlRptLayout.cshtml";
+        }
+
+        @{
+            ViewBag.Title = "Accessories Booking Sheet";
+        }
+
+    <!-- BEGIN CONTAINER -->
+    <div class="page-container">
+    <!-- BEGIN CONTENT -->
+    <div class="page-content-wrapper">
+    <!-- BEGIN PAGE HEAD -->
+    <!-- BEGIN PAGE CONTENT-->
+    <div class="portlet light">
+    <div class="portlet-body">
+        <div class="invoice">
+            <div class="row">
+                <div class="col-xs-12 col-md-12 col-lg-12">
+                    <img src="/Content/assets/admin/layout4/img/ReportHeader.png" class="img-responsive" alt="" style="width:100%; height:100px;" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-10 col-md-10 col-lg-10">
+                    <ul class="list-unstyled">
+                        <li>
+                            Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>@Model.ACCS_PO_DT.ToString("dd-MMM-yyyy")</b>
+                        </li>
+                        <li>
+                            PO#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>@Model.ACCS_PO_NO</b>
+                        </li>
+                        <li>
+                            Subject&nbsp;:&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>@Model.ACCS_PO_SUB</b>
+                        </li>
+                        <li>
+                            Buyer&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>@Model.BUYER_NAME_EN</b>
+                        </li>
+                        <li>
+                            Style&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>@Model.STYLE_NO_EXT</b>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-xs-2 col-md-2 col-lg-2">
+                    <a class="btn btn-sm btn-default hidden-print margin-bottom-5" style="float:right;" onclick="javascript:window.print();">
+                        <i class="fa fa-print"></i> Print
+                    </a>
+                </div>
+            </div>
+
+            @*<div class="row">
+                <div class="col-xs-12 col-md-12 col-lg-12">
+                    <ul class="list-unstyled">
+                        <li>
+                            Dear [Attention]
+                        </li>
+
+                        <li>
+                            We would like to  place our [item1,item2,item3] to  your company for our customer [Buyer Acc].
+                            as below breakdown,
+                        </li>
+
+                    </ul>
+                </div>
+            </div>*@
+
+            <div class="row">
+                <div data-ui-view></div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-md-12 col-lg-12">
+                    <ul class="list-unstyled">
+
+                        @if (!Model.ACC_PO_NOTE.IsEmpty())
+                        {
+                            <li>
+                                <b>Note :</b> @Model.ACC_PO_NOTE
+                            </li>
+                        }
+
+                        @if (!Model.SP_INSTRUCTION.IsEmpty())
+                        {
+                            <li>
+                                <b>Note :</b> @Model.SP_INSTRUCTION
+                            </li>
+                        }
+
+
+                    </ul>
+                </div>
+            </div>
+
+ 
+
+
+            <div class="row" style="margin-top:40px;">
+                <div class="col-xs-4 col-md-4 col-lg-4">
+                    <div align="center">
+                        <address style="border-top:0.5px solid grey">
+                            <strong>Merchandiser</strong><br />
+                            @*<span>
+                                Designation
+                            </span>*@
+                        </address>
+                    </div>
+                </div>
+
+                <div class="col-xs-4 col-md-4 col-lg-4">
+                    <div align="center">
+                        <address style="border-top:0.5px solid grey">
+                            <strong>Check By</strong><br />
+                            @*<span>
+                                Designation
+                            </span>*@
+                        </address>
+                    </div>
+                </div>
+
+                <div class="col-xs-4 col-md-4 col-lg-4">
+                    <div align="center">
+                        <address style="border-top:0.5px solid grey">
+                            <strong>Approved By</strong><br />
+                            @*<span>
+                                Designation
+                            </span>*@
+                        </address>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- END PAGE CONTENT-->
+    </div>
+    </div>
+    <!-- END CONTENT -->
+
+
+    @section angularscripts{
+        <script src="~/Areas/Merchandising/Client/app/config.mrcRoute.js"></script>
+        <script src="~/Areas/Merchandising/Client/app/controllers/taBookingRptController.js"></script>
+    }

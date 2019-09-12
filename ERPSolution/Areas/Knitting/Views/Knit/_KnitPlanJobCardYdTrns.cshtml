@@ -1,0 +1,312 @@
+﻿ <div class="modal-body">
+     <div class="portlet box blue-dark">
+         <div class="portlet-title">
+             <div class="caption">
+                 {{vm.Title+' '+vm.TitleAdi}}
+             </div>
+             <div class="tools">
+             </div>
+         </div>
+
+         <div class="portlet-body">
+             <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;" ng-disabled="vm.ScProData.IS_REQS_DONE=='Y'">
+                 <legend class="custom-legend">Knit Card Info</legend>
+
+                 <table class="table table-condensed table-striped table-bordered" style="padding:5px;">
+                     <thead>
+                         <tr class="site-table-header">
+                             <td class="text-justify">
+                                 <b>Buyer A/C : </b> {{data.BYR_ACC_NAME_EN}} <b> &nbsp;  Style # : </b> {{data.WORK_STYLE_NO}} &nbsp; <b>Order #: </b> {{data.ORDER_NO_LIST}}&nbsp;
+                                 <b>Fabrication :</b>  {{data.FABRIC_SNAME}}&nbsp;&nbsp; <b>Color:</b>  {{data.COLOR_NAME_EN}}&nbsp;&nbsp;<b>Fin Dia :</b>  {{data.FIN_DIA_N_DIA_TYPE}}
+                                 &nbsp;&nbsp;<b>Fin GSM :</b>  {{data.FIN_GSM}}
+
+                                 &nbsp;<b>Req Qty :</b>   {{data.RQD_GFAB_QTY +' '+data.MOU_CODE}}
+
+                             </td>
+                         </tr>
+                         <tr>
+                             <td style="padding-left:90%; color:red;">
+                                 <b>Qty Left :</b>   {{data.QTY_LEFT +' '+data.MOU_CODE}}
+
+                             </td>
+                         </tr>
+
+                         <tr>
+                             <td>
+
+                                 <form role="form" name="JobCardParams" class="form-horizontal">
+                                     <div class="form-group">
+                                         <label class="col-md-1 control-label">
+                                             Job Card No
+                                         </label>
+                                         <div class="col-md-1" style="padding-left:0px;padding-right:0px;">
+                                             <input type="text" class="form-control" ng-model="data.JOB_CRD_NO" disabled />
+                                         </div>
+                                         <label class="col-md-1 control-label" style="padding-left:0px;padding-right:0px;">
+                                             Exp. M/C Dia
+                                         </label>
+                                         <div class="col-md-1">
+
+                                             <select class="form-control" kendo-drop-down-list name="KNT_MC_DIA_ID" k-option-label="'--M/C Dia--'" k-filter="'Contains'"
+                                                     k-data-text-field="'MC_DIA'" k-data-value-field="'KNT_MC_DIA_ID'"
+                                                     k-auto-bind="'true'" k-data-source="vm.machineDiaDs" k-ng-delay="vm.machineDiaDs" ng-model="data.KNT_MC_DIA_ID" required disabled></select>
+
+                                         </div>
+
+                                         <label class="col-md-1 control-label">
+                                             Act M/C Dia
+                                         </label>
+                                         <div class="col-md-1" ng-class="{'has-error': (JobCardParams.ACT_MC_DIA_ID.$touched || JobCardParams.$submitted) && JobCardParams.ACT_MC_DIA_ID.$error.required}">
+                                             <select class="form-control" kendo-drop-down-list name="ACT_MC_DIA_ID" k-option-label="'--N/A--'" k-filter="'Contains'"
+                                                     k-data-text-field="'MC_DIA'" k-data-value-field="'KNT_MC_DIA_ID'"
+                                                     k-auto-bind="'true'" k-data-source="vm.machineDiaDs"
+                                                     k-ng-delay="vm.machineDiaDs" k-on-change="vm.onChangeMcDia(kendoEvent)" ng-model="data.ACT_MC_DIA_ID" ng-required="!(data.RF_FAB_PROD_CAT_ID==1||data.RF_FAB_PROD_CAT_ID==3)"></select>
+                                         </div>
+
+                                         <label class="col-md-1 control-label">
+                                             Exp. Fin Dia
+                                         </label>
+                                         <div class="col-md-1">
+                                             <span class="col-md-6" style="padding-left:0px;padding-right:0px;">
+                                                 <input type="text" name="FIN_DIA" class="form-control" ng-model="data.FIN_DIA" readonly />
+                                             </span>
+                                             <span class="col-md-6" style="padding-left:3px;padding-right:0px;">
+                                                 <input type="text" name="DIA_TYPE" class="form-control" ng-model="data.DIA_TYPE" readonly />
+                                             </span>
+
+                                         </div>
+                                         <label class="col-md-1 control-label">
+                                             Finish Dia
+                                         </label>
+                                         <div class="col-md-1" ng-class="{'has-error': (JobCardParams.ACT_FIN_DIA.$touched || JobCardParams.$submitted) && ( JobCardParams.ACT_FIN_DIA.$error.required||JobCardParams.ACT_FIN_DIA.$error.min)}">
+                                             <input type="number" name="ACT_FIN_DIA" min="{{(data.RF_FAB_PROD_CAT_ID==1||data.RF_FAB_PROD_CAT_ID==3)?0:1}}" class="form-control" ng-model="data.ACT_FIN_DIA" required />
+                                         </div>
+
+                                         <label class="col-md-1 control-label">
+                                             M/C Gauge
+                                         </label>
+                                         <div class="col-md-1">
+                                             <select class="form-control" kendo-drop-down-list name="LK_MC_GG_ID"
+                                                     k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'"
+                                                     k-auto-bind="'true'" k-data-source="vm.MachineGaugeListDs" k-ng-delay="vm.MachineGaugeListDs" ng-model="data.LK_MC_GG_ID" ng-disabled="true"></select>
+                                         </div>
+
+                                     </div>
+
+                                     <div class="form-group">
+
+                                         <label class="col-md-1 control-label">
+                                             Prod. Flr
+                                         </label>
+                                         <div class="col-md-1" ng-class="{'has-error': (JobCardParams.HR_PROD_FLR_ID.$touched || JobCardParams.$submitted) && JobCardParams.HR_PROD_FLR_ID.$error.required}" style="padding-left:0px;padding-right:0px;">
+                                             <select class="form-control" kendo-drop-down-list name="HR_PROD_FLR_ID" k-option-label="'-- Select Flr--'"
+                                                     k-data-text-field="'FLOOR_DESC_EN'" k-data-value-field="'HR_PROD_FLR_ID'"
+                                                     k-auto-bind="'true'" k-data-source="vm.KnitMachineFlrListDs" ng-if="vm.params.pIS_SUB_CONTR != 'Y'" k-ng-delay="vm.KnitMachineFlrListDs" ng-model="data.HR_PROD_FLR_ID" ng-required="vm.params.pIS_SUB_CONTR != 'Y'" k-on-change="vm.onFlrChange(kendoEvent)"></select>
+                                         </div>
+
+
+                                         <label class="col-md-1 control-label">
+                                             M/C
+                                         </label>
+                                         <div class="col-md-1" style="padding-left:0px;padding-right:0px;">
+                                             <select class="form-control" kendo-drop-down-list name="KNT_MACHINE_ID" k-option-label="'-- N/A--'"
+                                                     k-data-text-field="'KNT_MACHINE_NO'" k-data-value-field="'KNT_MACHINE_ID'"
+                                                     k-auto-bind="'true'" k-data-source="vm.KnitMachineListDs" ng-if="vm.params.pIS_SUB_CONTR != 'Y'" k-ng-delay="vm.KnitMachineListDs" ng-model="data.KNT_MACHINE_ID" k-on-change="vm.onMachineChange(kendoEvent)"></select>
+                                         </div>
+
+
+                                         <label class="col-md-1 control-label">
+                                             Assign Qty
+                                         </label>
+                                         <div class="col-md-1" ng-class="{'has-error': (JobCardParams.ASIGN_QTY.$touched || JobCardParams.$submitted) && (JobCardParams.ASIGN_QTY.$error.required||JobCardParams.ASIGN_QTY.$error.max)}">
+                                             <input type="number" name="ASIGN_QTY" @*max="{{data.QTY_LEFT+(data.KNT_JOB_CRD_H_ID>0?data.ASIGN_QTY:0)}}"*@ class="form-control" ng-model="data.ASIGN_QTY" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" required />
+                                         </div>
+
+                                         <label class="col-md-1 control-label">
+                                             Trgt/Day
+                                         </label>
+                                         <div class="col-md-1" ng-class="{'has-error': (JobCardParams.TG_D_PROD_QTY.$touched || JobCardParams.$submitted) && JobCardParams.TG_D_PROD_QTY.$error.required}">
+                                             <input type="number" name="TG_D_PROD_QTY" class="form-control" min="1" ng-if="vm.params.pIS_SUB_CONTR != 'Y'" ng-model="data.TG_D_PROD_QTY" ng-required="vm.params.pIS_SUB_CONTR != 'Y'" />
+                                         </div>
+
+
+                                         <div class="col-md-1" ng-if="vm.params.pIS_SUB_CONTR && vm.params.pIS_SUB_CONTR =='Y'" style="padding-left:0px;padding-right:0px;">
+                                             <div class="checkbox-list">
+                                                 <label class="checkbox-inline" style="margin-left:20px;margin-top:-10px;">
+                                                     <span><input type="checkbox" ng-value="data.IS_SUB_CONTR='Y'" ng-model="data.IS_SUB_CONTR" ng-true-value="'Y'" ng-false-value="'N'" readonly></span>SubContract?
+                                                 </label>
+                                             </div>
+                                         </div>
+
+                                         <label class="col-md-1 control-label" ng-if="vm.params.pIS_SUB_CONTR && vm.params.pIS_SUB_CONTR =='Y'">
+                                             Rate/Kg
+                                         </label>
+                                         <div class="col-md-1" ng-class="{'has-error': (JobCardParams.PROD_RATE.$touched || JobCardParams.$submitted) && JobCardParams.PROD_RATE.$error.required}" ng-if="vm.params.pIS_SUB_CONTR && vm.params.pIS_SUB_CONTR =='Y'">
+                                             <input type="number" name="PROD_RATE" class="form-control" min="0.001" ng-model="data.PROD_RATE" required />
+                                         </div>
+
+
+                                     </div>
+
+                                     <div class="form-group">
+                                         <label class="col-md-1 control-label">
+                                             Schedule
+                                         </label>
+                                         <div class="col-md-3">
+                                             <span class="col-md-6" style="padding-right:2px;">
+                                                 <input type="text" class="form-control" ng-click="vm.START_DT_OPEN($event)" datepicker-popup="{{vm.dtFormat}}"
+                                                        name="START_DT" ng-model="data.START_DT" ng-change="data.END_DT=data.START_DT" is-open="vm.START_DT_OPENED"
+                                                        datepicker-options="dateOptions" date-disabled="disabled(date, mode)" required close-text="Close" />
+                                             </span>
+                                             <span class="col-md-6" style="padding-left:2px;padding-right:0px;">
+                                                 <input type="text" class="form-control" ng-click="vm.END_DT_OPEN($event)" datepicker-popup="{{vm.dtFormat}}" min-date="data.START_DT"
+                                                        name="END_DT" ng-model="data.END_DT" is-open="vm.END_DT_OPENED" datepicker-options="dateOptions"
+                                                        date-disabled="disabled(date, mode)" required close-text="Close" />
+                                             </span>
+                                         </div>
+
+                                         <label class="col-md-1" style="padding-left:0px;padding-right:0px;">
+                                         </label>
+                                         <div class="col-md-1" style="padding-left:0px;padding-right:0px;">
+                                             <div class="checkbox-list">
+                                                 <label class="checkbox-inline" style="margin-left:20px;margin-top:-10px;">
+                                                     <span><input type="checkbox" ng-init="data.IS_FINALIZED_SC='Y'" ng-model="data.IS_FINALIZED_SC" ng-true-value="'Y'" ng-false-value="'N'"></span> Finalised?
+                                                 </label>
+                                             </div>
+                                         </div>
+
+                                         <div class="col-md-3" style="padding-left:0px;padding-right:0px;">
+                                             <div class="checkbox-list">
+                                                 <label class="checkbox-inline" style="margin-left:20px;margin-top:-10px;">
+                                                     <span><input type="checkbox" ng-model="data.IS_REMARKS" ng-true-value="'Y'" ng-false-value="'N'"></span> Remarks
+                                                 </label>
+                                             </div>
+                                         </div>
+                                     </div>
+
+
+
+                                     <div class="form-group" ng-show="data.IS_REMARKS=='Y'">
+                                         <label class="col-md-1 control-label" style="padding-left:0px;padding-right:0px;">
+                                             Remarks
+                                         </label>
+                                         <div class="col-md-10" style="padding-left:0px;padding-right:0px;">
+                                             <textarea rows="5" name="PLAN_NOTE" class="form-control" cols="50" ng-model="data.REMARKS"></textarea>
+                                         </div>
+                                     </div>
+                                 </form>
+
+                             </td>
+                         </tr>
+                     </thead>
+                 </table>
+
+                 <form name="YarnDetailsJobCard">
+                     <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 5px;">
+                         <legend class="custom-legend"> Yarn Details</legend>
+
+                         <table class="table table-condensed table-striped table-bordered" style="padding:5px;">
+                             <thead>
+                                 <tr class="site-table-header">
+                                     <th style="width:20%;">
+                                         <small>
+                                             Yarn
+                                         </small>
+
+                                     </th>
+                                     <th style="width:10%;">
+                                         <small>
+                                             Yarn Lot
+                                         </small>
+
+                                     </th>
+
+
+                                     <th style="width:10%;" ng-if="data.IS_FBP_VISIBLE=='Y'">
+                                         <small>
+                                             Part
+                                         </small>
+
+                                     </th>
+                                     <th style="width:5%;" @*ng-if="data.IS_FBP_VISIBLE=='Y'"*@>
+                                         <small>
+                                             Ratio(%)
+                                         </small>
+
+                                     </th>
+
+
+                                     <th style="width:10%;">
+                                         <small>
+                                             Stitch Len
+                                         </small>
+
+                                     </th>
+
+
+                                     <th style="width:10%;">
+                                         <small>
+                                             Req Yarn
+                                         </small>
+
+                                     </th>
+                                 </tr>
+                             </thead>
+
+                             <tbody>
+                                 <tr ng-repeat="item in data.details track by $index">
+
+                                     <td>
+                                         {{item.ITEM_NAME_EN}}
+                                     </td>
+
+                                     <td ng-class="{'has-error': ((YarnDetailsJobCard['KNT_YRN_LOT_ID'+$index].$touched || YarnDetailsJobCard.$submitted) && YarnDetailsJobCard['KNT_YRN_LOT_ID'+$index].$error.required)||item.INVALID_LOT}">
+                                         <select class="form-control" kendo-drop-down-list name="KNT_YRN_LOT_ID{{$index}}" k-option-label="'--Yarn Lot --'"
+                                                 k-data-text-field="'YRN_LOT_NO'" k-data-value-field="'KNT_YRN_LOT_ID'"
+                                                 k-auto-bind="'true'" k-data-source="item.yarnLotListDs" k-ng-delay="item.yarnLotListDs" ng-model="item.KNT_YRN_LOT_ID"
+                                                 ng-required="true" k-template="vm.template" k-on-data-bound="vm.yarnLotListOnBound(item,kendoEvent)" k-value-template="vm.value_template" k-on-change="vm.onChangeYarnLot(item,kendoEvent)"></select>
+                                     </td>
+
+                                     <td ng-if="data.IS_FBP_VISIBLE=='Y'">
+                                         {{item.LK_YFAB_PART_NAME}}
+                                     </td>
+
+                                     <td @*ng-if="data.IS_FBP_VISIBLE=='Y'"*@>
+                                         {{item.RATIO_QTY}}
+
+                                     </td>
+                                     <td>
+                                         <input type="number" class="form-control" ng-model="item.STITCH_LEN" name="STITCH_LEN"/>
+                                     </td>
+
+                                     <td>
+                                         <input type="text" class="form-control" ng-model="item.RQD_YRN_QTY" name="RQD_YRN_QTY" />
+
+                                     </td>
+
+                                 </tr>
+                             </tbody>
+                         </table>
+                     </fieldset>
+                 </form>
+
+                 
+                 @*<pre>{{JobCardParams|json}}</pre>
+                 <pre>{{YarnDetailsJobCard|json}}</pre>*@
+
+                 <div class="row" style="padding-top:4px;padding-bottom:4px;">
+                     <div class="col-md-6" style="text-align:left;">
+                         <button type="button" class="btn btn-xs yellow-gold" ng-if="data.KNT_JOB_CRD_H_ID > 0 " ng-click="vm.submitDataTrns(data,JobCardParams.$valid,YarnDetailsJobCard.$valid);JobCardParams.$submitted= true;YarnDetailsJobCard.$submitted = true;" ng-disabled="JobCardParams.$invalid || YarnDetailsJobCard.$invalid">Update</button>
+                         <button type="button" class="btn btn-xs green" ng-if="data.KNT_JOB_CRD_H_ID <= 0" ng-click="vm.submitDataTrns(data,JobCardParams.$valid,YarnDetailsJobCard.$valid);JobCardParams.$submitted= true;YarnDetailsJobCard.$submitted = true;" ng-disabled="JobCardParams.$invalid || YarnDetailsJobCard.$invalid"> <i class="fa fa-plus"></i> Save</button>
+                         <button type="button" class="btn btn-xs default" ng-if="data.KNT_JOB_CRD_H_ID <= 0" ng-click="vm.cancelModal()">Cancel</button>
+
+                     </div>
+                     <div class="col-md-6" style="text-align:right;">
+                         <button class="btn btn-xs blue" ng-click="vm.createStoreRequisitionTrns()"> Confirm</button>
+                     </div>
+                 </div>
+             </fieldset>
+         </div>
+     </div>
+ </div>  
+  

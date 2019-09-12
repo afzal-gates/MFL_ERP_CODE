@@ -1,0 +1,121 @@
+﻿
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Inventory</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <form class="form-horizontal">
+
+            <div class="form-body clearfix">
+                <div class="row" style="margin:auto;">
+
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend"><b>Master Data</b></legend>
+
+                        <div class="form-group">
+                            <div class="col-md-3"></div>
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>
+                                Store
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control required" kendo-drop-down-list name="SCM_STORE_ID" 
+                                        id="SCM_STORE_ID" k-option-label="'-- Select Store --'"
+                                        k-data-text-field="'STORE_NAME_EN'" k-data-value-field="'SCM_STORE_ID'"
+                                        k-auto-bind="'true'" k-filter="'contains'" ng-model="vm.form.SCM_STORE_ID"
+                                        k-data-source="vm.storeList" ng-change="vm.loadItemList();"></select>
+
+                                <input type="hidden" ng-model="vm.form.DYE_CFG_SUB_STR_ITM_IA_ID" />
+                            </div>
+
+                        </div>
+
+                        @*<div class="form-group">
+                            <div class="col-md-3"></div>
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>
+                                Item Category
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control required" kendo-drop-down-list name="INV_ITEM_CAT_ID" 
+                                        id="INV_ITEM_CAT_ID" k-option-label="'-- Select Category --'"
+                                        k-data-text-field="'ITEM_CAT_NAME_EN'" k-data-value-field="'INV_ITEM_CAT_ID'" 
+                                        k-auto-bind="'true'" k-filter="'contains'" ng-model="vm.form.INV_ITEM_CAT_ID"
+                                        k-options="vm.categoryOptions" k-data-source="vm.categoryDataSource" required></select>
+                            </div>
+
+                        </div>*@
+
+                        <div class="form-group">
+                            <div class="col-md-3"></div>
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>
+                                Item Name
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control required" kendo-drop-down-list name="INV_ITEM_ID" 
+                                        id="INV_ITEM_ID" k-option-label="'-- Select Item --'"
+                                        k-data-text-field="'ITEM_NAME_EN'" k-data-value-field="'INV_ITEM_ID'" 
+                                        k-auto-bind="'true'" k-filter="'contains'" ng-model="vm.form.INV_ITEM_ID"
+                                        k-options="vm.itemOptions" k-data-source="vm.itemDataSource" required></select>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-5"></div>
+                            <div class="col-md-5">
+                                <button type="button" ng-if="vm.form.DYE_CFG_SUB_STR_ITM_IA_ID" class="btn btn-sm yellow-gold" ng-click="vm.submitAll(vm.form)">
+                                    Update
+                                </button>
+                                <button type="button" ng-if="!vm.form.DYE_CFG_SUB_STR_ITM_IA_ID" class="btn btn-sm green" ng-click="vm.submitAll(vm.form)">
+                                    Save
+                                </button>
+                                <button type="button" class="btn btn-sm" ng-click="vm.reset()">Clear</button>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend"><b>Details Data</b></legend>
+
+                        <div>
+                            <div kendo-grid k-options="vm.gridOptionsItem" k-data-source="vm.ItemGridDataSource"></div>
+                        </div>
+
+                    </fieldset>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+
+</div>

@@ -1,0 +1,220 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Knitting</a>
+
+    </li>
+    <li>
+        <a href="#">{{vm.Title}}</a>
+    </li>
+</ul>
+
+
+<div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+    <div class="page-splash">
+        <div class="page-splash-message">
+            <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+        </div>
+    </div>
+</div>
+
+
+<div class="portlet box blue-dark" @*ng-controller="HrReportController as vm"*@>
+    
+    
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">            
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <form class="form-horizontal form-body" name="frmScOutHouseChlan">
+            <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    <fieldset class="custom-fieldset" style="margin-bottom:5px" ng-disabled="vm.form.IS_FINALIZED=='Y'">
+                        <legend class="custom-legend">Challan Information</legend>
+
+                        @*<pre>{{frmScOutHouseChlan.$error|json}}</pre>*@
+
+                        <div class="row" style="margin:auto;" ng-show="vm.errors">
+                            <div class="alert alert-danger" role="alert">
+                                @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                                <div style="padding: 0px 0px 15px 25px; ">
+                                    <b>Please fix the following errors ....</b>
+                                </div>
+                                <ul ng-repeat="field in vm.errors">
+                                    <li ng-repeat="error in field" ng-bind="error"></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>Date of Receive
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" ng-click="vm.scRcvDateOpen($event)" datepicker-popup="{{vm.dtFormat}}" @*ng-change="vm.onChangeProdDate()"*@
+                                       name="RCV_DT" ng-model="vm.form.RCV_DT" is-open="vm.scRcvDateOpened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close"
+                                       required />
+                            </div>
+
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>Store
+                            </label>
+                            <div class="col-md-2">
+                                <select class="form-control" kendo-drop-down-list name="SCM_STORE_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                        k-data-text-field="'STORE_NAME_EN'" k-data-value-field="'SCM_STORE_ID'"
+                                        k-auto-bind="'true'" k-options="vm.storeOption" k-data-source="vm.storeDataSource" ng-model="vm.form.SCM_STORE_ID"
+                                        ng-disabled="vm.form.IS_FINALIZED=='Y'" required></select>
+                            </div>
+
+                            <label class="control-label col-md-2">
+                                Work Type
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" name="WORK_TYPE" ng-model="vm.form.WORK_TYPE" ng-init="vm.form.WORK_TYPE='S/C Knitting Outhouse'" readonly />
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>Party
+                            </label>
+                            <div class="col-md-2">
+                                <select class="form-control" kendo-drop-down-list name="SCM_SUPPLIER_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                        k-data-text-field="'SUP_TRD_NAME_EN'" k-data-value-field="'SCM_SUPPLIER_ID'"
+                                        k-auto-bind="'true'" k-options="vm.supplierOption" k-data-source="vm.supplierDataSource" ng-model="vm.form.SCM_SUPPLIER_ID"
+                                        ng-change="vm.gotoNext()" ng-model-options="{ debounce: { 'default': 3000, 'blur': 0 } }"
+                                        ng-disabled="vm.form.KNT_SCO_CHL_RCV_H_ID>0" required></select>
+                            </div>
+
+
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>Challan#
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" name="CHALAN_NO" ng-model="vm.form.CHALAN_NO" required />
+                            </div>
+
+
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>Chln. Date
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" ng-click="vm.chlnDateOpen($event)" datepicker-popup="{{vm.dtFormat}}" @*ng-change="vm.onChangeProdDate()"*@
+                                       name="CHALAN_DT" ng-model="vm.form.CHALAN_DT" is-open="vm.chlnDateOpened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" required />
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                Gate Pass#
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" name="GT_PASS_NO" ng-model="vm.form.GT_PASS_NO" />
+                            </div>
+
+                            <label class="control-label col-md-2">
+                                Vehicle#
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" name="VEHICLE_NO" ng-model="vm.form.VEHICLE_NO" />
+                            </div>
+
+                            <label class="control-label col-md-2">
+                                Driver Name
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" name="CARRIER_NAME" ng-model="vm.form.CARRIER_NAME" />
+                            </div>
+                        </div>
+
+
+                        @*<div class="form-group" ng-show="vm.IS_NEXT=='N'">
+                            <div class="col-md-offset-2 col-md-2">
+                                <button type="button" class="btn btn-sm blue" ng-click="vm.gotoNext()"
+                                        ng-class="{'disabled':vm.form.RCV_DT==null||vm.form.CHALAN_DT==null||vm.form.CHALAN_NO==null||vm.form.SCM_STORE_ID==null||vm.form.SCM_SUPPLIER_ID==null}">
+                                    Load Search Order List
+                                </button>
+                            </div>
+                        </div>*@
+                    </fieldset>
+                    
+                    <div style="padding-top:5px;" @*ng-show="vm.IS_NEXT=='Y'"*@>
+                        <tabset>
+                            <tab heading="Fabric Receive" active="vm.fabRcvState" ui-sref="ScGreyFabRcvFormPartyH.FabRcv">
+                                <div class="portlet-body" data-ui-view="ScGreyFabRcvFormPartyH.FabRcv"></div>
+                            </tab>
+
+                            <tab heading="Yarn Receive" active="vm.yrnRcvState" ui-sref="ScGreyFabRcvFormPartyH.YrnRcv">
+                                <div data-ui-view="ScGreyFabRcvFormPartyH.YrnRcv"></div>
+                            </tab>
+
+                            <tab heading="Collar/Cuff Receive" active="vm.clcfRcvState" ui-sref="ScGreyFabRcvFormPartyH.ClcfRcv">
+                                <div data-ui-view="ScGreyFabRcvFormPartyH.ClcfRcv"></div>
+                            </tab>
+                        </tabset>
+                    </div>
+
+                </div>
+
+                <div class="col-md-12" style="padding-top:0px;padding-right:32px;text-align:right">
+                    <div class="form-group">
+
+                        <button type="button" class="btn btn-sm green" ng-click="vm.batchSave('N')" ng-show="form.KNT_SCO_CHL_RCV_H_ID<1"
+                                ng-class="{'disabled':!frmScOutHouseChlan.$valid || form.IS_FINALIZED=='Y'}">
+                            Save
+                        </button>
+                        <button type="button" class="btn btn-sm yellow-gold" ng-click="vm.batchSave('N')" ng-show="form.KNT_SCO_CHL_RCV_H_ID>0"
+                                ng-class="{'disabled':!frmScOutHouseChlan.$valid || form.IS_FINALIZED=='Y'}">
+                            Update
+                        </button>
+                        <button type="button" class="btn btn-sm blue" ng-click="vm.cancel()">Cancel</button>
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <button type="button" class="btn btn-sm blue" ng-click="vm.batchSave('Y')" ng-show="form.KNT_SCO_CHL_RCV_H_ID>0"
+                                ng-class="{'disabled':!frmScOutHouseChlan.$valid || form.IS_FINALIZED=='Y'}">
+                            Finalize
+                        </button>
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        @*<button type="button" class="btn btn-sm blue" ng-click="vm.printLedger()" ng-show="form.KNT_SCO_CHL_RCV_H_ID>0">Print</button>*@
+                        <button type="button" class="btn btn-sm blue-hoki" ng-click="vm.backToList()">Back to List</button>
+                        @*&nbsp;&nbsp;&nbsp;&nbsp;                        
+                        <button type="button" class="btn btn-sm blue" ng-click="vm.progTransfer()">Program Transfer</button>*@
+                    </div>
+                </div>
+
+
+            </div>
+
+            
+        </form>
+
+       
+
+    </div>
+
+</div>
+
+
+@*<pre>{{form|json}}</pre>*@

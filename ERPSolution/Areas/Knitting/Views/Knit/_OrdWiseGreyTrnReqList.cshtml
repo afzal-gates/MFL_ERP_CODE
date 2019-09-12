@@ -1,0 +1,106 @@
+﻿<style>
+    #grid tr td {
+        /* this makes the menu visibile */
+        overflow: visible;
+    }
+
+    #grid .k-grid-header {
+        padding-right: 0 !important;
+    }
+</style>
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Knitting</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" >
+            <div class="col-md-12">
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend"></legend>
+                    <div class="form-group">
+                        <label class="col-md-1" style="padding-right:0px;">
+                            Buyer A/C
+                        </label>
+                        <div class="col-md-2">
+                            <select kendo-drop-down-list name="MC_BYR_ACC_GRP_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                    ng-model="vm.form.MC_BYR_ACC_GRP_ID"
+                                    k-data-text-field="'BYR_ACC_GRP_NAME_EN'" k-data-value-field="'MC_BYR_ACC_GRP_ID'"
+                                    k-auto-bind="'true'" k-options="vm.buyerAcGrpOption" k-data-source="vm.buyerAcGrpDataSource" k-ng-delay="vm.buyerAcGrpDataSource"></select>
+                        </div>
+
+
+                        <label class="col-md-1" style="padding-right:0px;">
+                            Style/Order#
+                        </label>
+                        <div class="col-md-3">
+                            <select class="form-control" kendo-drop-down-list name="MC_STYLE_H_EXT_ID" k-option-label="'-- Select --'"
+                                    k-template="vm.templateOh" k-value-template="vm.valueTemplateOh"
+                                    k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_STYLE_H_EXT_ID'" k-filter="'contains'"
+                                    k-auto-bind="'true'" k-options="vm.viewOrdStyleExtOption" k-data-source="vm.viewOrdStyleExtDataSource" k-ng-delay="vm.viewOrdStyleExtDataSource"
+                                    ng-model="vm.form.MC_STYLE_H_EXT_ID"></select>
+                        </div>
+
+                        <label class="col-md-1" style="padding-right:0px;">
+                            Trans Ref#
+                        </label>
+                        <div class="col-md-2">
+                            <input type="hidden" class="form-control" name="KNT_ORD_TRN_REQ_H_ID" ng-model="vm.form.KNT_ORD_TRN_REQ_H_ID" />
+                            
+                            <input type="text" ng-model="vm.form.TRN_REQ_NO" placeholder="Search..."
+                                   typeahead="item.TRN_REQ_NO as item.TRN_REQ_NO for item in transAuto($viewValue)"
+                                   typeahead-min-length="3" typeahead-wait-ms="1000"
+                                   typeahead-on-select="onSelectItem($item)" typeahead-loading="loadingLocations" class="form-control">
+                            <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+                        </div>
+
+                        <div class="col-md-1">
+                            <button class="btn btn-sm blue" ng-click="vm.getBillList()" >Show</button>
+                        </div>
+
+                        <div class="col-md-1" ng-show="vm.isVisableAddBtn=='Y'">
+                            <a class="btn btn-sm blue" href="/Knitting/Knit/OrdWiseGreyTrnReq?a=359/#/ordWiseGreyTrnReqH/0/dtl?pLK_TRN_SRC_ID=725"><i class="fa fa-plus"></i> New</a>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            
+            <div class="col-md-12" style="padding-top:5px;">                
+                <div kendo-grid k-options="vm.ordTrnListGridOption" k-data-source="vm.ordTrnListGridDataSource"></div>
+            </div>
+        </div>
+        <br />
+
+        @*<pre>{{vm.form}}</pre>*@
+        @*<pre>{{vm.userLavelData|json}}</pre>*@
+    </div>
+</div>
+

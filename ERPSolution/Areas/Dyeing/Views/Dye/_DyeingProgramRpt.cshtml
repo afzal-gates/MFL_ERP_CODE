@@ -1,0 +1,119 @@
+﻿
+<div class="row" style="padding-left:5px;">
+    <div class="col-xs-6 col-md-6 col-lg-6">
+        <ul class="list-unstyled">
+            <li>
+                @*Knit Card# : &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<b>{{vm.data.JOB_CRD_NO}}</b>*@
+            </li>
+        </ul>
+    </div>
+
+    <div class="col-xs-6 col-md-6 col-lg-6">
+        <ul class="list-unstyled">
+            <li style="float:right;" ng-if="vm.datas.length>0">
+                From: <b>{{vm.datas[0].SC_START|date:'dd-MMM-yy hh:mma'}}</b> to <b>{{vm.datas[0].SC_END|date:'dd-MMM-yy hh:mma'}}</b>  : <b>{{vm.datas[0].SC_DURATION}}</b> Days
+            </li>
+        </ul>
+    </div>
+
+</div>
+
+<div class="row" style="padding-left:5px;padding-top:5px;">
+    <div class="col-xs-12 col-md-12 col-lg-12">
+        <table class="table table-condensed table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th style="width:6%;">
+                        <b>M/C</b> 
+                    </th>
+                    <th style="width:2%;">
+                        <b>SL</b>
+                    </th>
+                    <th style="width:10%;">
+                        <b>Buyer</b>
+                    </th>
+                    <th style="width:15%;">
+                        <b>Order#/Style</b>
+                    </th>
+                    <th style="width:13%;">
+                        <b>Color</b>
+                    </th>
+                    <th style="width:5%;">
+                        <b>Qty</b>
+                    </th>
+                    <th style="width:6%;">
+                        <b>F.Type</b>
+                    </th>
+                    <th style="width:8%;">
+                        <b>Load</b>
+                    </th>
+                    <th style="width:8%;">
+                        <b>Unload</b>
+                    </th>
+                    <th style="width:7%;">
+                        <b>Duration</b>
+                    </th>
+                    <th style="width:7%;">
+                        <b>Batch#</b>
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in vm.datas">
+                    <td rowspan="{{item.DYE_MACHINE_ID_SPAN}}" ng-if="item.DYE_MACHINE_ID_SL==1">
+                        {{item.DYE_MACHINE_NO}}
+                    </td>
+                    <td>
+                        {{item.DYE_MACHINE_ID_SL}}
+                    </td>
+                    <td>
+                        {{item.BYR_ACC_NAME_EN}}
+                    </td>
+                    <td>
+                       
+                        <span style="display:block;font-weight:800;"> {{item.ORDER_NO_LIST}}</span>
+                        <span style="display:block; font-size:10px;font-style:italic;"> {{item.WORK_STYLE_NO}}</span>
+                    </td>
+                    <td>
+                        {{item.COLOR_NAME_EN}}
+                    </td>
+                    <td>
+                        {{item.RQD_PRD_QTY}}
+                    </td>
+                    <td>
+                        {{item.FAB_TYPE_NAME}}
+                    </td>
+                    <td>
+                        {{item.start|date:'dd-MMM-yy hh:mma'}}
+                    </td>
+                    <td>
+                        {{item.end|date:'dd-MMM-yy hh:mma'}}
+                    </td>
+                    <td>
+                        {{item.DURATION_STR}}
+                    </td>
+                    <td>
+                        @*{{item.status}}*@
+                        {{item.DYE_BATCH_NO_LST}}
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+@*<div class="row" style="padding-left:5px;padding-top:5px;">
+    <div class="col-xs-12 col-md-12 col-lg-12">
+        <ul class="list-unstyled">
+            <li>
+                <b>Comment :</b> {{vm.data.REMARKS}}
+            </li>
+        </ul>
+    </div>
+</div>*@
+
+

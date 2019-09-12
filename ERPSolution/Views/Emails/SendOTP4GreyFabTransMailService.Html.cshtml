@@ -1,0 +1,126 @@
+﻿Content-Type: text/html; charset=utf-8
+
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style media="all" type="text/css">
+        table td {
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+    @*<h4 style="margin:5px;"><span style="color: #5e9ca0;">Excess Requisition</span></h4>*@      
+    
+
+    <p>Dear Concern</p>
+    @{
+        if (Model.LK_TRN_SRC_ID == 725)
+        {
+            <p>Grey fabric has been transfered (<b>@Model.data.TRN_TYPE_NAME</b>) with transfer# <b>@Model.data.TRN_REQ_NO</b>. Please, take necessary action as soon as possible.</p>
+        }
+        else
+        {                    
+            <p>Waiting for Authorization Approval: Grey Fabric Transfer</p>
+        }
+    }
+
+        
+    @*Fabric Detail*@
+    <table border="1" cellpadding="0" cellspacing="0" style="width: 900px; border: solid 1px #8a8a8a;">
+        <caption style="text-align: left;font-style:italic; color: #5738b5; padding-top: 10px; padding-bottom: 5px;"><strong>Grey Fabric Transfer Detail</strong></caption>
+        <thead>
+           
+            <tr style="background-color:bisque">
+                <td colspan="6" style="text-align:center"><strong>From Order</strong></td>
+                <td colspan="5" style="text-align:center"><strong>To Order</strong></td>
+            </tr>
+            <tr style="background-color:bisque">
+                <td><strong>Buyer A/C</strong></td>
+                <td><strong>Style</strong></td>
+                <td><strong>Order</strong></td>
+                <td><strong>Color</strong></td>
+                <td><strong>Fabric</strong></td>
+                <td><strong>Qty (Kg)</strong></td>
+
+                <td><strong>Buyer A/C</strong></td>
+                <td><strong>Style</strong></td>
+                <td><strong>Order</strong></td>
+                <td><strong>Color</strong></td>
+                <td><strong>Fabric</strong></td>
+            </tr>
+                                               
+        </thead>
+
+        <tbody>
+            @{
+                int vFabRowCount = 1;
+
+                foreach (var itm in Model.data.fabTransList)
+                {
+                    if (vFabRowCount % 2 == 0)
+                    {
+                        <tr style="background-color: #e5e5e5;">
+                            <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itm.FROM_BYR_ACC_GRP_NAME_EN</td>
+                            <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itm.FROM_STYLE_NO</td>
+                            <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itm.FROM_ORDER_NO</td>
+                            <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itm.FROM_COLOR_NAME_EN</td>
+                            <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itm.FROM_FAB_ITEM_DESC</td>
+                            <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itm.TRN_FAB_QTY</td>
+
+                            <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itm.TO_BYR_ACC_GRP_NAME_EN</td>
+                            <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itm.TO_STYLE_NO</td>
+                            <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itm.TO_ORDER_NO</td>
+                            <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itm.TO_COLOR_NAME_EN</td>
+                            <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itm.TO_FAB_ITEM_DESC</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr style="background-color: white;">
+                            <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itm.FROM_BYR_ACC_GRP_NAME_EN</td>
+                            <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itm.FROM_STYLE_NO</td>
+                            <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itm.FROM_ORDER_NO</td>
+                            <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itm.FROM_COLOR_NAME_EN</td>
+                            <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itm.FROM_FAB_ITEM_DESC</td>
+                            <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itm.TRN_FAB_QTY</td>
+
+                            <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itm.TO_BYR_ACC_GRP_NAME_EN</td>
+                            <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itm.TO_STYLE_NO</td>
+                            <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itm.TO_ORDER_NO</td>
+                            <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itm.TO_COLOR_NAME_EN</td>
+                            <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itm.TO_FAB_ITEM_DESC</td>
+                        </tr>
+                    }
+                    vFabRowCount = vFabRowCount + 1;
+                }             
+            }
+                                     
+            
+        </tbody>
+    </table>
+
+    
+
+    @*<br />
+    <br />
+    @{
+        if (Model.LK_TRN_SRC_ID == 726) { 
+            <div>Here is your OTP: <b>@Model.data.OTP_CODE</b> </div>
+            <div>Please inform your OTP to the authorized person and allow these grey fabrics transfer.</div>
+        }
+    }*@
+
+       
+   
+    <br />
+    <br />
+    <span style="display: block; font-size: 10px; font-style: italic;">
+        N.B: No need to reply. This mail is auto generated from MultiTex ERP server.
+    </span>
+   
+</body>
+</html>
+
+

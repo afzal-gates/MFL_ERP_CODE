@@ -1,0 +1,74 @@
+﻿@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+<div class="form-body form-horizontal">
+    <div class="row">
+        <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+               data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+        <div class="col-md-12">
+            <fieldset class="custom-fieldset">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <span class="badge badge-roundless" style="background-color: #FFFF00">&nbsp;</span>
+                        Company/Govt. Holiday
+                    </div>
+                    <div class="form-group">
+                        <span class="badge badge-roundless" style="background-color: #db0ddb">&nbsp;</span>
+                        Weekly Off Day
+                    </div>
+                    <div class="form-group">
+                        <span class="badge badge-roundless" style="background-color: #6600ff">&nbsp;</span>
+                        Govt. Holiday
+                    </div>
+                </div>
+                <div class="col-md-5" @*style="border:1px solid red"*@>
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Company</label>
+                        <div class="col-md-9">
+                            <select class="form-control" name="HR_COMPANY_ID" ng-model="vm.form.HR_COMPANY_ID"
+                                    ng-options="Item.HR_COMPANY_ID as Item.COMP_NAME_EN for Item in vm.companyData"></select>
+                        </div>
+                    </div>
+                    <span></span>
+                    <div class="form-group">
+                        <label class="control-label col-md-3">&nbsp;</label>
+                        &nbsp;&nbsp;
+                        <button type="button" name="btnHolidayProcess" class="btn btn-default" ng-click="vm.HolidayCalendarProcess()">Curr. Year Process</button>
+                        <button type="button" name="btnEditCalenderDate" class="btn btn-default" ng-click="vm.EditCalenderDate();">Edit Date</button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Fiscal Year</label>
+                        <div class="col-md-8">
+                            <select class="form-control" name="RF_FISCAL_YEAR_ID" ng-model="vm.form.RF_FISCAL_YEAR_ID"
+                                    ng-options="Item.RF_FISCAL_YEAR_ID as Item.FY_NAME_EN for Item in vm.FiscalYearData"></select>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <p></p>
+            <fieldset class="custom-fieldset">
+                <div id="scheduler"></div>
+
+                @*<div data-ui-view="calender@YearlyCalendarParamView" class="shuffle-animation"></div>*@
+                @*<div id="scheduler" kendo-scheduler options="vm.schedulerOptions">
+                        <span k-event-template class='custom-event'>{{dataItem.title}}</span>
+                        <div k-all-day-event-template class='custom-all-day-event'>{{dataItem.title}}</div>
+                    </div>*@
+            </fieldset>
+        </div>
+    </div>
+</div>
+
+
+
+
+

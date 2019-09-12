@@ -1,0 +1,705 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption">
+            {{vm.Title}}
+        </div>
+        <div class="tools">
+        </div>
+
+        <div class="actions">
+            <a ng-click="vm.openConfigModal()" class="btn blue-dark btn-sm">
+                Printer Setting  <i class="fa fa-print"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="portlet-body">
+        <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)"><h4 style="margin:0px;">{{alert.msg}}</h4></alert>
+
+
+        <table class="table table-condensed table-striped table-bordered" style="padding-left: 5px; padding-right: 5px; margin-bottom: 3px;">
+            <tbody>
+                <tr>
+                    <td style="width:80%;">
+                        <form name="JobCardSearchForm" ng-submit="vm.loadDataByJobCardNo(vm.JOB_CRD_NO)">
+                            <div class="input-group input-large">
+                                <input type="text" class="form-control" ng-model="vm.JOB_CRD_NO" style="height:28px;" focus-me="vm.IS_SEARCH_FOCUS" placeholder="Job Card No">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-sm blue" type="submit">Go</button>
+                                </span>
+
+                                <span class="input-group-btn" ng-show="item.KNT_SC_PRG_ISS_ID>0">
+                                    <button class="btn btn-sm blue-hoki" type="button" ng-click="vm.printFabRcvReg(item.JOB_CRD_NO)">Fabric Receive Reg</button>
+                                </span>
+                            </div>
+                        </form>
+                        
+                        @*{{item.KNT_SC_PRG_ISS_ID}}*@
+                    </td>
+
+                    <td style="width: 20%;">
+
+                        <h4 class="block" style="margin:0px;">
+                            Job Card #  <span class="label label-danger">
+                                <b>{{item.JOB_CRD_NO}}</b>
+                            </span>
+                        </h4>
+                    </td>
+                    
+                </tr>
+            </tbody>
+        </table>
+
+
+
+        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;">
+            <legend class="custom-legend">Job Card Detail</legend>
+
+
+            <table class="table table-condensed table-striped table-bordered" style="padding:5px;">
+                <tbody>
+                    <tr>
+                        <td style="width:12%">
+                            <b>Buyer</b>
+                        </td>
+
+                        <td style="width:21%">
+                            {{item.BYR_ACC_NAME_EN}}
+                        </td>
+
+                        <td style="width:12%">
+                            <b>Style</b>
+                        </td>
+
+                        <td style="width:21%">
+                            {{item.WORK_STYLE_NO}}
+                        </td>
+
+                        <td style="width:12%">
+                            <b>Order</b>
+                        </td>
+
+
+                        <td style="width:21%">
+                            {{item.ORDER_NO_LIST}}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="width:12%">
+                            <b>Fab Type</b>
+                        </td>
+
+                        <td style="width:21%">
+                            {{item.FAB_TYPE_NAME}}
+                        </td>
+
+                        <td style="width:12%">
+                            <b>Finish Dia</b>
+                        </td>
+
+                        <td style="width:21%">
+                            {{item.FIN_DIA_N_DIA_TYPE}}
+                        </td>
+
+                        <td style="width:12%">
+                            <b>Color</b>
+                        </td>
+
+
+                        <td style="width:21%">
+                            {{item.COLOR_NAME_EN}}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="width:12%">
+                            <b>Yarn Details</b>
+                        </td>
+
+                        <td style="width:54%" colspan="3">
+                            {{item.YRN_DETAILS}}
+                        </td>
+
+
+                        <td style="width:12%">
+                            <b>M/CxDiaxGauge</b>
+                            
+                        </td>
+
+
+                        <td style="width:21%">
+                            {{item.KNT_MACHINE_NO+' x '+item.MC_DIA_GG}}
+                        </td>
+                    </tr>
+
+                    @*<tr>
+                        <td style="width:12%">
+                            <b>Finish GSM</b>
+                        </td>
+
+                        <td style="width:21%">
+                            {{item.FIN_GSM}}
+                        </td>
+
+                        <td style="width:12%">
+                            <b>M/C</b>
+                        </td>
+
+                        <td style="width:21%">
+                            {{item.KNT_MACHINE_NO}}
+                        </td>
+
+                        <td style="width:12%">
+                            <b>M/C Dia X Gauge</b>
+                        </td>
+
+
+                        <td style="width:21%">
+                            {{item.MC_DIA_GG}}
+                        </td>
+                    </tr>*@
+                </tbody>
+            </table>
+
+        </fieldset>
+
+        <div class="row" ng-if="!vm.NoJobCardFound">
+
+            <div class="col-md-4" style="text-align:left;">
+                <h4 class="block" style="margin:0px;">
+                    Assigned Qty <span class="label label-success">
+                        <b>{{item.ASIGN_QTY-item.UN_ASIGN_QTY}}</b>
+                    </span>
+                </h4>
+            </div>
+
+            <div class="col-md-4" style="text-align:left;">
+                <h4 class="block" style="margin:0px;">
+                    Assigned Qty <span class="label label-success">
+                        <b>{{item.ASIGN_QTY-item.UN_ASIGN_QTY}}</b>
+                    </span>
+                </h4>
+            </div>
+
+            <div class="col-md-6" style="text-align:right;">
+                <h4 class="block" style="margin:0px;">
+                    Left Qty <span class="label label-primary">
+                        <b>{{item.QTY_LEFT}}</b>
+                    </span>
+                </h4>
+            </div>
+        </div>
+
+
+        @*<pre>{{item|json}}</pre>*@
+        
+
+        <form name="JobCardRollProd">
+            <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 5px;" ng-disabled="vm.NoJobCardFound">
+                <legend class="custom-legend">Roll Weight Entry</legend>
+
+                <table class="table table-condensed table-striped table-bordered" style="padding:5px;">
+                    <thead>
+                        <tr>
+                            <th style="width:5%;">
+                                <small>
+                                    Roll No
+                                </small>
+
+                            </th>
+
+                            <th style="width:8%;">
+                                <small>
+                                    Shift
+                                </small>
+
+                            </th>
+
+
+                            <th style="width:10%;">
+                                <small>
+                                   {{(item.KNT_SC_PRG_ISS_ID && item.KNT_SC_PRG_ISS_ID)>0?'SC Factory':'Operator'}} 
+                                </small>
+
+                            </th>
+                            <th style="width:6%;">
+                                <small>
+                                    Roll Weight
+                                </small>
+                            </th>
+
+
+                            @*<th style="width:6%;" ng-if="item.KNT_SC_PRG_ISS_ID && item.KNT_SC_PRG_ISS_ID>0">
+                                <small>
+                                    Challan#
+                                </small>
+                            </th>*@
+
+                            <th style="width:12%;">
+                                <small>
+                                    Comments
+                                </small>
+
+                            </th>
+
+                            <th style="width:5%;" ng-if="!item.ACT_MC_DIA_ID">
+                                <small>
+                                    McDia
+                                </small>
+                            </th>
+
+                            <th style="width:5%;" ng-if="!item.KNT_MACHINE_ID && !item.KNT_SC_PRG_ISS_ID">
+                                <small>
+                                    M/C
+                                </small>
+                            </th>
+
+                            <th style="width:5%;" ng-if="!item.ACT_MC_DIA_ID">
+                                <small>
+                                    FinDia
+                                </small>
+                            </th>
+
+                            <th style="width:5%;" ng-if="item.FIN_GSM">
+                                <small>
+                                    FinDia
+                                </small>
+                            </th>
+
+                            <th style="width:7%;">
+                                <small>Action</small>
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>
+                                {{form.FAB_ROLL_NO?form.FAB_ROLL_NO:'Auto'}}
+                            </td>
+
+
+                            <td ng-class="{'has-error': (JobCardRollProd.HR_SCHEDULE_H_ID.$touched || JobCardRollProd.$submitted) && JobCardRollProd.HR_SCHEDULE_H_ID.$error.required}">
+                                <select class="form-control" kendo-drop-down-list name="HR_SCHEDULE_H_ID" k-option-label="'-- Operator --'"
+                                        k-data-text-field="'SCHEDULE_NAME_EN'" k-data-value-field="'HR_SCHEDULE_H_ID'"
+                                        k-auto-bind="'true'" k-data-source="vm.shifDataDs" ng-model="form.HR_SCHEDULE_H_ID"
+                                        @*k-on-data-bound="vm.onBoundShift(kendoEvent)"*@ k-on-change="vm.onChangeShift(kendoEvent)" k-ng-delay="vm.shifDataDs"></select>
+                            </td>
+                            <td ng-if="!item.KNT_SC_PRG_ISS_ID" ng-class="{'has-error': (JobCardRollProd.OPERATOR_ID.$touched || JobCardRollProd.$submitted) && JobCardRollProd.OPERATOR_ID.$error.required}">
+                                <select class="form-control" kendo-drop-down-list name="OPERATOR_ID" k-option-label="'-- Operator --'"
+                                        k-data-text-field="'EMP_FULL_NAME_EN'" k-data-value-field="'OPERATOR_ID'"
+                                        k-auto-bind="'true'" k-data-source="vm.operatorDataDs" ng-model="form.OPERATOR_ID" k-ng-delay="vm.operatorDataDs"></select>
+                            </td>
+
+                            <td  ng-if="item.KNT_SC_PRG_ISS_ID && item.KNT_SC_PRG_ISS_ID>0">
+                                {{item.SUP_TRD_NAME_EN}}
+                            </td>
+
+                            <td ng-class="{'has-error': (JobCardRollProd.FAB_ROLL_WT.$touched || JobCardRollProd.$submitted) && (JobCardRollProd.FAB_ROLL_WT.$error.required||JobCardRollProd.FAB_ROLL_WT.$error.min||JobCardRollProd.FAB_ROLL_WT.$error.max)}">
+
+                                <span class="col-md-11" style="padding-left:5px;padding-right:5px;">
+
+                                    
+                                    <input type="number" focus-me="vm.IS_ROLL_PROD" class="form-control" name="FAB_ROLL_WT" min="1" max="{{item.MAX_ROLL_PROD_WT}}" ng-model="form.FAB_ROLL_WT" required />
+                                </span>
+
+                                <span class="col-md-1" style="padding-left:0px;padding-right:3px;">
+                                    {{item.MOU_CODE}}
+                                </span>
+
+
+
+
+                            </td>
+                            @*<td ng-if="item.KNT_SC_PRG_ISS_ID && item.KNT_SC_PRG_ISS_ID>0" ng-class="{'has-error': (JobCardRollProd.CHALAN_NO.$touched || JobCardRollProd.$submitted) && JobCardRollProd.CHALAN_NO.$error.required}">
+                                <input type="text" class="form-control" name="CHALAN_NO" ng-model="form.CHALAN_NO" required />
+                            </td>*@
+                            <td>
+                                <input type="text" class="form-control" ng-model="form.REMARKS" />
+                            </td>
+
+                            <td ng-if="!item.ACT_MC_DIA_ID" ng-class="{'has-error': (JobCardRollProd.ACT_MC_DIA_ID.$touched || JobCardRollProd.$submitted) && JobCardRollProd.ACT_MC_DIA_ID.$error.required}">
+
+                                <select class="form-control" kendo-drop-down-list name="ACT_MC_DIA_ID" k-option-label="'---'"
+                                        k-filter="'startswith'"
+                                        k-data-text-field="'MC_DIA'" k-data-value-field="'KNT_MC_DIA_ID'"
+                                        k-auto-bind="'true'"
+                                        k-on-change="vm.onChangeMcDia(kendoEvent)"
+                                        k-data-source="vm.machineDiaDs" ng-model="form.ACT_MC_DIA_ID_V" required></select>
+                            </td>
+
+                            <td ng-if="!item.KNT_MACHINE_ID && !item.KNT_SC_PRG_ISS_ID" ng-class="{'has-error': (JobCardRollProd.KNT_MACHINE_ID.$touched || JobCardRollProd.$submitted) && JobCardRollProd.KNT_MACHINE_ID.$error.required}">
+                                <select class="form-control" kendo-drop-down-list name="KNT_MACHINE_ID" k-option-label="'-- N/A--'"
+                                        k-data-text-field="'KNT_MACHINE_NO'" k-data-value-field="'KNT_MACHINE_ID'"
+                                        k-auto-bind="'true'" k-data-source="vm.KnitMachineListDs" ng-model="form.KNT_MACHINE_ID"></select>
+
+                            </td>
+
+
+
+                            <td ng-if="!item.ACT_MC_DIA_ID" ng-class="{'has-error': (JobCardRollProd.ACT_FIN_DIA.$touched || JobCardRollProd.$submitted) && (JobCardRollProd.ACT_FIN_DIA.$error.required||JobCardRollProd.ACT_FIN_DIA.$error.number||JobCardRollProd.ACT_FIN_DIA.$error.min)}">
+                                <input type="number" class="form-control" name="ACT_FIN_DIA" min="1" ng-model="form.ACT_FIN_DIA" required />
+                            </td>
+
+                            <td ng-if="item.FIN_GSM==0" ng-class="{'has-error': (JobCardRollProd.ACT_FIN_GSM.$touched || JobCardRollProd.$submitted) && (JobCardRollProd.ACT_FIN_GSM.$error.required||JobCardRollProd.ACT_FIN_GSM.$error.min)}">
+                                <input type="text" class="form-control"  name="ACT_FIN_GSM" ng-model="form.ACT_FIN_GSM" required />
+                            </td>
+
+
+                            @*<td ng-if="form.KNT_FAB_ROLL_ID>0" ng-class="{'has-error': (JobCardRollProd.ACT_FIN_GSM.$touched || JobCardRollProd.$submitted) && (JobCardRollProd.ACT_FIN_GSM.$error.required||JobCardRollProd.ACT_FIN_GSM.$error.number||JobCardRollProd.ACT_FIN_GSM.$error.min)}">
+                                <input type="number" class="form-control" min="1" name="ACT_FIN_GSM" ng-model="form.ACT_FIN_GSM" required />
+                            </td>
+
+                            <td ng-if="form.KNT_FAB_ROLL_ID>0" ng-class="{'has-error': (JobCardRollProd.ACT_FIN_DIA.$touched || JobCardRollProd.$submitted) && (JobCardRollProd.ACT_FIN_DIA.$error.required||JobCardRollProd.ACT_FIN_DIA.$error.number||JobCardRollProd.ACT_FIN_DIA.$error.min)}">
+                                <input type="text" class="form-control" name="ACT_FIN_DIA" min="1" ng-model="form.ACT_FIN_DIA" required />
+                            </td>*@
+
+                            <td>
+                                <a class="btn btn-xs" ng-if="item.IS_KNT_CLOSED=='N'" ng-class="{'green': form.KNT_FAB_ROLL_ID<0,'yellow-gold': form.KNT_FAB_ROLL_ID>0}" ng-click="vm.addToList(form,JobCardRollProd.$valid,item.KNT_SC_PRG_ISS_ID);JobCardRollProd.$submitted= true"
+                                   ng-disabled="(vm.cur_user_id !=1 && vm.cur_user_id != 208 && vm.cur_user_id !=109 && vm.cur_user_id != 345 && vm.cur_user_id != 262)">
+                                    <i class="fa" ng-class="{'fa-plus': form.KNT_FAB_ROLL_ID<0,'fa-check': form.KNT_FAB_ROLL_ID>0}"></i> {{ form.KNT_FAB_ROLL_ID>0 ? 'Update':'Add Roll'}}
+                                </a>
+
+                                <span class="badge badge-danger" ng-if="item.IS_KNT_CLOSED=='Y'">[Closed]</span>
+
+                                <a class="btn btn-xs red" ng-if="form.KNT_FAB_ROLL_ID>0" ng-click="vm.cancelEdit(form)">
+                                    <i class="fa fa-times"></i>
+                                </a>
+
+
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+        </form>
+        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 5px;" ng-if="!vm.NoJobCardFound">
+            <legend class="custom-legend">Roll List</legend>
+
+            <table class="table table-condensed table-striped table-bordered" style="padding:5px;">
+                <thead>
+
+                    <tr style="font-weight:700;">
+                        <th colspan="6" style="border-bottom: 1px solid #ddd;">
+
+                            <p class="input-group">
+                                <input type="text" class="form-control" ng-change="onChangeDate(DateFilter)" datepicker-popup="{{vm.dtFormat}}"
+                                       name="ACCS_DELV_DT" ng-model="DateFilter" is-open="vm.ACCS_DELV_DT_OPENED" datepicker-options="dateOptions"
+                                       date-disabled="disabled(date, mode)" required close-text="Close" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-sm btn-default" ng-click="vm.ACCS_DELV_DT_OPEN($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+
+                                <span class="input-group-btn">
+                                    <button type="button" title="Clear Filter" class="btn btn-sm btn-default" ng-click="onChangeDate('')"><i class="fa fa-times"></i></button>
+                                </span>
+                            </p>
+
+                            
+
+
+                        </th>
+
+                        <th colspan="2" style="border-bottom: 1px solid #ddd;">
+                            <h3 class="block" style="margin:0px;">
+                                NoOfRoll: <span style="color:darkcyan;">
+                                    <b>{{vm.ttl_rolls}}</b>
+                                </span>
+                            </h3>
+                        </th>
+
+
+                        <th colspan="2" style="border-bottom: 1px solid #ddd;">
+                            <h3 class="block" style="margin:0px;">
+                                Weight: <span style="color:darkblue;">
+                                    <b>{{vm.ttl_kgs|number:2}}</b> Kgs 
+                                     (<b>- {{vm.ttl_kgs_ded|number:2}}</b> Kgs)
+                                </span>
+                            </h3>
+                        </th>
+
+
+                    </tr>
+
+                    <tr>
+                        <th style="width:5%;">
+                            <small>
+                                Roll #
+                            </small>
+
+                        </th>
+
+                        <th style="width:6%;">
+                            <small>
+                                Date & Time
+                            </small>
+
+                        </th>
+
+                        <th style="width:12%;">
+                            <small>
+                                Shift
+                            </small>
+
+                        </th>
+
+                        <th style="width:15%;">
+                            <small>
+                                Operator/SC Factory
+                            </small>
+
+                        </th>
+
+
+                        <th style="width:5%;">
+                            <small>
+                                Weight
+                            </small>
+                        </th>
+                        <th style="width:5%;">
+                            <small>
+                                Deducted
+                            </small>
+                        </th>
+
+                        <th style="width:5%;">
+                            <small>
+                                Movement Status
+                            </small>
+                        </th>
+
+                        <th style="width:5%;">
+                            <small>
+                                Quality Status
+                            </small>
+                        </th>
+
+
+                        <th style="width:10%;">
+                            <small>
+                                Comments
+                            </small>
+                        </th>
+
+                        <th style="width:10%;">
+                            <small>
+                                Action
+                            </small>
+                        </th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="item in vm.RollProductionList">
+                        <td>
+                            {{item.FAB_ROLL_NO}}
+                        </td>
+                        <td>
+                            {{item.PROD_DT|date:'dd-MMM-yyyy hh:mma'}}
+                        </td>
+
+                        <td>
+                            {{item.SCHEDULE_NAME_EN}}
+                        </td>
+
+                        <td>
+                            {{item.KNT_SC_PRG_ISS_ID?item.SUP_TRD_NAME_EN:item.OPERATOR_NAME}}
+
+                        </td>
+
+                        <td>
+                            {{item.FAB_ROLL_WT}}
+                        </td>
+                        <td ng-class="{'danger' : item.DED_ROLL_WT > 0}">
+                            {{ item.DED_ROLL_WT }}
+                        </td>
+                        <td>
+
+                            <span class="label" ng-style="{'background-color' : item.RGB_COL_CODE}">
+                                {{item.RL_STS_TYP_NAME}}
+                            </span>
+
+
+                        </td>
+
+                        <td>
+                            <span class="label" ng-style="{'background-color' : item.RGB_COL_CODE_QC}">
+                                {{item.RL_STS_TYP_NAME_QC}}
+                            </span>
+                        </td>
+
+
+
+                        <td>
+                            {{item.REMARKS}}
+                        </td>
+
+                        <td>
+                            @*<a class="btn btn-xs blue-madison" ng-click="vm.editRoll(item)" ng-disabled="item.KNT_ROLL_STS_TYPE_ID">
+                                <i class="fa fa-pencil"></i> Edit
+                            </a>*@
+
+                            <a class="btn btn-xs" ng-class="{'blue': !item.KNT_ROLL_STS_TYPE_ID,'default': item.KNT_ROLL_STS_TYPE_ID}" ng-click="vm.lavelPrint(item)">
+                                <i class="fa fa-print"></i> Label
+                            </a>
+                            <a class="btn btn-xs red" ng-disabled="(item.RL_STS_TYP_NAME && vm.cur_user_id !=1 && vm.cur_user_id !=109)" ng-click="vm.removeRoll(item)">
+                                <i class="fa fa-ban"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </fieldset>
+        <div class="row" style="margin:auto;padding-top:10px;" ng-if="vm.errors">
+            <div class="col-md-5 col-md-offset-2">
+                <div class="alert alert-warning" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                    <ul ng-repeat="field in vm.errors">
+                        <li ng-repeat="error in field" ng-bind="error"></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/ng-template" id="ExColourListModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h3 style="padding-top:10px;margin-top:3px;">
+                        Color & Fabric List
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </h3>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div style="padding:5px;">
+                    <kendo-grid k-options="gridOptions" k-data-source="gridDs"></kendo-grid>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-kendo-template" id="JobCardDashBoardTemplate">
+    <div class="toolbar">
+        <div class="actions">
+
+            <form class="form-horizontal" role="form" name="JobCardDashBoard" novalidate
+                  ng-submit="getJobCardList(form.MC_BYR_ACC_ID,form.MC_BUYER_ID,form.MC_STYLE_H_EXT_ID)">
+                <label class="col-md-1 control-label" align="right">
+                    Buyer A/C
+                </label>
+                <div class="col-md-2" style="padding-left:0px;padding-right:5px;">
+
+                    <select kendo-drop-down-list name="MC_BYR_ACC_ID" class="form-control"
+                            k-options="buyerAcList" id="MC_BYR_ACC_ID" ng-model="form.MC_BYR_ACC_ID"></select>
+                </div>
+                <label class="col-md-1 control-label" align="right" style="padding-left:0px;padding-right:10px;">
+                    Buyer
+                </label>
+
+                <div class="col-md-2" style="padding-left:0px;padding-right:5px;">
+                    <select class="form-control" kendo-drop-down-list name="MC_BUYER_ID" k-option-label="'-- Select Buyer --'"
+                            k-data-text-field="'BUYER_NAME_EN'" k-data-value-field="'MC_BUYER_ID'"
+                            k-auto-bind="'true'" k-data-source="BuyerListDs" ng-model="form.MC_BUYER_ID"
+                            k-on-data-bound="buyerListOnBound(kendoEvent)" k-on-change="buyerListOnChange(kendoEvent)"></select>
+                </div>
+
+                <label class="col-md-1 control-label" align="right" style="padding-left:0px;padding-right:10px;">
+                    Style
+                </label>
+
+                <div class="col-md-2" style="padding-left:0px;padding-right:0px;">
+                    <select class="form-control" kendo-drop-down-list name="MC_STYLE_H_EXT_ID" k-option-label="'-- Select Style --'"
+                            k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_STYLE_H_EXT_ID'"
+                            k-auto-bind="'true'" k-data-source="StyleExtDs" ng-model="form.MC_STYLE_H_EXT_ID"></select>
+                </div>
+
+                <div class="col-md-1">
+                    <button type="submit" class="btn btn-sm default">
+                        <i class="fa fa-search"></i> Load
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="UnAssignQtyModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h3 style="padding-top:10px;margin-top:3px;">
+                        Job Card Cancel or Unassign Qty [Ref # {{form.JOB_CRD_NO}}]
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </h3>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="UnAssignQtyModalForm" novalidate>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            Assign Qty
+                        </label>
+                        <div class="col-md-3" style="padding-top:5px;">
+                            <input type="text" class="form-control" ng-model="form.ASIGN_QTY" disabled>
+                        </div>
+                        <label class="col-md-2 control-label">
+                            Production
+                        </label>
+                        <div class="col-md-3" style="padding-top:5px;">
+                            <input type="text" class="form-control" ng-model="form.PROD_QTY" disabled>
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            Un Assign Qty
+                        </label>
+                        <div class="col-md-3" style="padding-top:5px;" ng-class="{'has-error': (UnAssignQtyModalForm.UN_ASIGN_QTY.$touched || UnAssignQtyModalForm.$submitted) && (UnAssignQtyModalForm.UN_ASIGN_QTY.$error.required||UnAssignQtyModalForm.UN_ASIGN_QTY.$error.max)}">
+                            <input type="number" name="UN_ASIGN_QTY" class="form-control" max={{form.UN_ASIGN_QTY_ORI}} ng-model="form.UN_ASIGN_QTY" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Reason</label>
+                        <div class="col-md-8" style="padding-top:5px;">
+                            <textarea rows="2" name="PLAN_NOTE" class="form-control" cols="50" ng-model="form.REASON_DESC"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group form-actions">
+                        <div class="col-md-offset-3 col-md-10">
+                            <button type="button" class="btn green btn-sm" ng-click="save(form,UnAssignQtyModalForm.$valid);UnAssignQtyModalForm.$submitted=true;">Save</button>
+                            <button type="button" class="btn btn-default btn-sm" ng-click="cancel()">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>

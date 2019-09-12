@@ -1,0 +1,343 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+    </li>
+    <li>
+        <a href="#">Knitting</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption">
+            {{vm.Title+' '+vm.TitleAdi+'  Ref#  '+vm.YARN_REQ.STR_REQ_NO}}
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        @*<pre>{{datas|json}}</pre>*@
+
+        @*<div class="row" style="text-align:left;margin:auto;">
+            <a class="btn btn-xs blue" ng-if="vm.YARN_REQ.LK_REQ_STATUS_ID==233" ui-sref="KnitPlanJobCardCollarCuff" ui-sref-opts="{inherit:false}">  <i class="fa fa-plus"></i>New Program</a>
+            <a class="btn btn-xs btn-warning" ui-sref="KnitPlanJobCardCollarCuff" ui-sref-opts="{inherit:false,reload:true}">  <i class="fa fa-refresh"></i>Reload</a>
+        </div>*@
+
+        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;" ng-disabled="vm.YARN_REQ.LK_REQ_STATUS_ID==233">
+            <legend class="custom-legend">Required List</legend>
+            <form name="YarnDetailsJobCardH">
+                <ng-form name="YarnDetailsJobCard" ng-repeat="data in datas">
+                    <p class="block" style="margin: 0px; font-size: 14px;text-align:left; background-color: rgb(236, 233, 248); padding-left: 2px;" ng-if="data.KNT_PLAN_H_ID>0">
+                        
+                        <div class="col-md-10">
+                            <b>Buyer A/C : </b> {{data.BYR_ACC_NAME_EN}} <b> &nbsp;  Style # : </b> {{data.WORK_STYLE_NO}} &nbsp; <b>Order #: </b> {{data.ORDER_NO_LIST}}&nbsp;
+                            <b>Fabric Type :</b>  {{data.FAB_TYPE_NAME}}&nbsp; <b>Color:</b>  {{data.COLOR_NAME_EN}}
+                        </div>
+
+                        <div class="col-md-2" style="text-align:right">                            
+                            <a class="btn btn-xs red" title="Remove Color" ng-click="vm.onRemoveReqRow($index, datas)"><i class="fa fa-remove"></i> Remove</a>                           
+                        </div>
+                    </p>
+
+                    <table class="table table-condensed table-striped table-bordered" style="padding:5px;" ng-if="data.KNT_PLAN_H_ID>0">
+                        <thead>
+                            <tr class="site-table-header">
+                                <th style="width:20%;">
+                                    <small>
+                                        Yarn
+                                    </small>
+
+                                </th>
+                                <th style="width:10%;">
+                                    <small>
+                                        Barnd
+                                    </small>
+
+                                </th>
+
+                                <th style="width:10%;">
+                                    <small>
+                                        Yarn Lot
+                                    </small>
+
+                                </th>
+
+
+                                <th style="width:10%;" ng-if="data.IS_FBP_VISIBLE=='Y'">
+                                    <small>
+                                        Part
+                                    </small>
+
+                                </th>
+                                <th style="width:5%;" ng-if="data.IS_FBP_VISIBLE=='Y'">
+                                    <small>
+                                        Ratio(%)
+                                    </small>
+
+                                </th>
+
+
+                                <th style="width:10%;">
+                                    <small>
+                                        Stitch Len
+                                    </small>
+
+                                </th>
+
+
+                                <th style="width:10%;">
+                                    <small>
+                                        Req Yarn
+                                    </small>
+
+                                </th>
+                                <th style="width:10%;">
+                                    <small>
+                                        Req. Done
+                                    </small>
+
+                                </th>
+
+                                <th style="width:10%;">
+                                    <small>
+                                        New Requisition
+                                    </small>
+
+                                </th>
+
+                                <th style="width:5%;">
+                                    <small>
+                                        Action
+                                    </small>
+                                </th>
+
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr ng-repeat="item in data.items track by $index">
+
+                                <td>
+                                    {{item.ITEM_NAME_EN}}
+                                </td>
+
+                                <td>
+                                    {{item.BRAND_NAME_EN}}
+                                </td>
+
+
+                                <td>
+                                    {{item.YRN_LOT_NO}}
+                                </td>
+
+                                <td ng-if="data.IS_FBP_VISIBLE=='Y'">
+                                    {{item.LK_YFAB_PART_NAME}}
+                                </td>
+
+                                <td ng-if="data.IS_FBP_VISIBLE=='Y'">
+                                    {{item.RATIO_QTY}}
+                                </td>
+
+                                <td>
+                                    {{item.STITCH_LEN}}
+                                </td>
+
+                                <td>
+                                    {{item.RQD_YRN_QTY}}
+                                </td>
+
+                                <td>
+                                    {{item.RQSTD_QTY}}
+                                </td>
+
+                                <td ng-class="{'has-error': (YarnDetailsJobCard['RQSTD_NEW'+$index].$touched || YarnDetailsJobCardH.$submitted) && (YarnDetailsJobCard['RQSTD_NEW'+$index].$error.required||YarnDetailsJobCard['RQSTD_NEW'+$index].$error.min||YarnDetailsJobCard['RQSTD_NEW'+$index].$error.max)}">
+                                    <input type="number" name="RQSTD_NEW" min="1" max="{{item.RQD_YRN_QTY-item.RQSTD_QTY}}" class="form-control" ng-model="item.RQSTD_NEW" required />
+                                </td>
+
+                                <td>
+                                    <a class="btn btn-xs red" title="Remove Yarn" ng-click="vm.onRemoveReqRow($index, data.items)"><i class="fa fa-remove"></i></a>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </ng-form>
+            </form>
+            <div class="row" style="padding-top:4px;padding-bottom:4px;">
+                <div class="col-md-12" style="text-align:right;">
+                    <button type="button" class="btn btn-xs green" ng-if="datas.length>0" ng-click="vm.submitData(datas,YarnDetailsJobCardH.$valid);" ng-disabled="YarnDetailsJobCardH.$invalid"> <i class="fa fa-plus"></i> Add to Grid</button>
+                    @*<a class="btn btn-xs blue" ng-click="vm.openExColourListModal(data.MC_FAB_PROD_ORD_H_ID)">  <i class="fa fa-plus"></i>New Order/Kp</a>
+                    <a class="btn btn-xs btn-danger" ng-if="datas.length>0" ng-click="vm.resetAdding()">Reset</a>*@
+                </div>
+            </div>
+
+
+            @*<pre>{{YarnDetailsJobCardH|json}}</pre>*@
+
+        </fieldset>
+
+
+        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 5px;" ng-disabled="vm.YARN_REQ.LK_REQ_STATUS_ID==233">
+            <legend class="custom-legend">Yarn Requisition List</legend>
+
+            <table class="table table-condensed table-striped table-bordered" style="padding:5px;">
+                <thead>
+                    <tr class="site-table-header">
+                        <th style="width:10%;">
+                            <small>
+                                Buyer
+                            </small>
+
+                        </th>
+
+                        <th style="width:10%;">
+                            <small>
+                                Style/Order
+                            </small>
+
+                        </th>
+
+                        <th style="width:7%;">
+                            <small>
+                                Fab. Type
+                            </small>
+
+                        </th>
+                        <th style="width:7%;">
+                            <small>
+                                Colour
+                            </small>
+
+                        </th>
+
+                        <th style="width:15%;">
+                            <small>
+                                Yarn Details
+                            </small>
+
+                        </th>
+
+                        <th style="width:10%;">
+                            <small>
+                                Req.Qty
+                            </small>
+
+                        </th>
+
+                        <th style="width:7%;">
+                            <small>
+                                Action
+                            </small>
+                        </th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="item in vm.jobCardList">
+
+                        <td>
+                            {{item.BYR_ACC_NAME_EN}}
+                        </td>
+
+
+                        <td>
+                            {{item.WORK_STYLE_NO}}<br />
+                            {{item.ORDER_NO_LIST}}
+                        </td>
+
+
+                        <td>
+                            {{item.FAB_TYPE_NAME}}
+                        </td>
+
+                        <td>
+                            {{item.COLOR_NAME_EN}}
+                        </td>
+
+                        <td>
+                            {{item.YRN_DETAILS}}
+                        </td>
+
+                        <td>
+                            {{item.RQSTD_QTY||item.RQD_YRN_QTY}}
+                        </td>
+
+                        <td>
+                            <a class="btn btn-xs blue-madison" ng-click="vm.editData(item)">
+                                <i class="fa fa-pencil"></i>
+                            </a>
+
+                            <a class="btn btn-xs red" ng-click="vm.unAssignQty(item)">
+                                <i class="fa fa-ban"></i>
+                            </a>
+                            @*<a class="btn btn-xs blue-chambray" target="_blank" href="/Knitting/Knit/KnitPlan/#/JobCard?pKNT_PLAN_H_ID={{item.KNT_PLAN_H_ID}}">+Knit Card</a>*@
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+            @*<pre>{{vm.jobCardList|json}}</pre>*@
+        </fieldset>
+
+        <div class="row" style="padding-top:4px;padding-bottom:5px;">
+            <div class="col-md-6">
+                <a class="btn btn-sm green" ng-disabled="(vm.YARN_REQ.LK_REQ_STATUS_ID==233||vm.jobCardList.length==0)" ng-click="vm.createStoreRequisition(vm.jobCardList,true,'N')"> Submit Requistion</a>
+
+                @*<a class="btn btn-sm blue-hoki" href="/Knitting/Knit/ScoCollarCuffProg?a=225/#/scoClrCufProgList?pSCM_SUPPLIER_ID=0">Back to Program List</a>*@
+                <div class="btn-group" dropdown>
+                    @*<button id="split-button" type="button" class="btn btn-sm blue" ng-click="vm.printBookingRecord(vm.form.REVISION_NO)" ng-disabled="vm.form.MC_BLK_FAB_REQ_H_ID<1 || vm.form.HAS_PLOSS=='N'">Print</button>*@
+                    <button type="button" class="btn btn-sm blue" dropdown-toggle title="Print List">
+                        @*<i class="fa fa-print"></i>*@ Back To
+                        <span class="caret"></span>
+                        <span class="sr-only">Split button!</span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="split-button">
+                        <li role="menuitem">
+                            <a class="btn btn-sm" href="/Knitting/Knit/ScoCollarCuffProg?a=225/#/scoClrCufProgList?pSCM_SUPPLIER_ID=0">Program List</a>
+
+                        </li>
+                        <li role="menuitem">
+                            <a class="btn btn-sm" href="/Knitting/Knit/ScoCollarCuffProg?a=225/#/scoClrCufProg/{{vm.params.pKNT_SCO_CLCF_PRG_H_ID}}/clrCuffDtl?pMC_FAB_PROD_ORD_H_ID={{vm.params.pMC_FAB_PROD_ORD_H_ID}}">Program</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            @*<div class="col-md-6" style="text-align:right;">
+                <a class="btn btn-sm purple" ng-disabled="vm.YARN_REQ.LK_REQ_STATUS_ID==233" ng-if="vm.YARN_REQ.LK_REQ_STATUS_ID==229" ng-click="vm.createStoreRequisition(vm.jobCardList,true,'N')"> Submit Requistion</a>
+            </div>*@
+
+
+        </div>
+        <div class="row" style="margin:auto;padding-top:10px;" ng-if="vm.errors">
+            <div class="col-md-5 col-md-offset-2">
+                <div class="alert alert-warning" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                    <ul ng-repeat="field in vm.errors">
+                        <li ng-repeat="error in field" ng-bind="error"></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+

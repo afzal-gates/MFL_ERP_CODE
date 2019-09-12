@@ -1,0 +1,71 @@
+﻿Content-Type: text/html; charset=utf-8
+@model ERPSolution.Controllers.SendYarnReplacementMailService
+
+To: @Model.obj.EMAIL_TO_LST
+Cc: dev.maruf@multi-fabs.com
+Subject: Party wise Yarn Replacement Request
+<html>
+<body>
+    <div>Party wise Yarn Replacement Request</div>
+    <div>
+        <div style="width:30%">
+            <b>Request No:</b> @Model.obj.STR_REQ_NO 
+        </div>
+        <div style="width:30%">            
+            <b>Request Date:</b> @Model.obj.STR_REQ_DT.ToString("dd-MM-yyyy") </div>
+    </div>
+    <br />
+    <table style="width:100%;">
+        <tbody>
+            <tr style="border:solid 1px;">
+                <td style="border:solid 1px;"><b>L/C #</b></td>
+                <td style="border:solid 1px;"><b>Lot #</b></td>
+                <td style="border:solid 1px;"><b>Yarn Item</b></td>
+                <td style="border:solid 1px;"><b>Brand</b></td>
+                <td style="border:solid 1px;"><b>Color Group</b></td>
+                <td style="border:solid 1px;"><b>Stock Qty(Kg)</b></td>
+                <td style="border:solid 1px;"><b>Return Qty(Kg)</b></td>
+            </tr>
+            @if (Model.data.Count > 0)
+            {
+                for (int i = 0; i < Model.data.Count; i++)
+                {
+                    <tr style="border:solid 1px;">
+
+                        <td style="border:solid 1px;">
+                            @Model.data[i].IMP_LC_NO
+                        </td>
+                        <td style="border:solid 1px;">
+                            @Model.data[i].YRN_LOT_NO
+                        </td>
+                        <td style="border:solid 1px;">
+                            @Model.data[i].ITEM_NAME_EN
+                        </td>
+                        <td style="border:solid 1px;">
+                            @Model.data[i].BRAND_NAME_EN
+                        </td>
+                        <td style="border:solid 1px;">
+                            @Model.data[i].LK_YRN_COLR_GRP_NAME
+                        </td>
+                        <td style="border:solid 1px;">
+                            @Model.data[i].STOCK_QTY
+                        </td>
+                        <td style="border:solid 1px;">
+                            @Model.data[i].REQ_RTN_QTY
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    <br />
+    <br />
+    <div>This is system generated email.</div>
+    <br />
+    <div>Thanks</div>
+    <div>ERP Team</div>
+</body>
+</html>
+
+
+

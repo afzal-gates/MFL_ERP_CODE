@@ -1,0 +1,282 @@
+﻿
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Hr</a>
+
+    </li>
+    <li>
+        <a href="#">Company Information</a>
+    </li>
+</ul>
+
+@model ERP.Model.HrCompanyModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+
+<div class="portlet box blue-dark" ng-controller="HrCompanyController as vm">
+
+    <div class="portlet-title">
+        <div class="caption">
+            @*<i class="fa fa-gift"></i>*@ Company Information
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+        <div class="row">
+
+            <div class="col-md-12">
+
+                @*<div class="form-body">*@
+
+                <tabset>
+
+                    <tab ng-repeat="tab in vm.tabs" heading="{{tab.title}}" active="tab.active" disabled="tab.disabled">
+
+
+                        <div ng-if="tab.title=='Entry'">
+
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    
+                                    @*{{frmCompany.$valid}}*@
+                                    <form name="frmCompany" novalidate class="form-horizontal" method="post" ng-class="{ loading:form.submitting }"                                          
+                                          ng-submit="vm.submit(frmCompany.$valid,vm.form,vm.insert)" @*kendo-validator=" validator"*@>
+
+                                        <div class="form-body">
+
+
+
+
+                                            @*<input type="text" class="form-control" name="TRAN_MODE" ng-init="vm.form.TRAN_MODE=1" ng-model="vm.form.TRAN_MODE"  />*@
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3">
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <input type="hidden" class="form-control" name="HR_COMPANY_ID" ng-model="vm.form.HR_COMPANY_ID" ng-show="" />
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group" ng-class="{'has-error': (frmCompany.HR_COMPANY_GRP_ID.$error.required) && (frmCompany.HR_COMPANY_GRP_ID.$touched || frmCompany.$submitted) }">
+                                                <label class="control-label col-md-3">
+                                                    Company Group
+                                                    <span class="required" aria-required="true">*</span>
+                                                </label>
+                                                <div class="col-md-5">
+                                                    @*<input type="text" class="form-control" name="HR_COMPANY_GRP_ID" ng-model="vm.form.HR_COMPANY_GRP_ID" />*@
+                                                    <select kendo-drop-down-list name="HR_COMPANY_GRP_ID" class="form-control"
+                                                            options="vm.compGroupList" ng-model="vm.form.HR_COMPANY_GRP_ID" required disabled></select>
+                                                    <div class="help-block help-block-error" ng-messages="frmCompany.HR_COMPANY_GRP_ID.$error" ng-if="frmCompany.$submitted || frmCompany.HR_COMPANY_GRP_ID.$touched">
+                                                        <div ng-message="required">Please select company group</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group col-md-offset-1">
+                                                <label class="control-label col-md-3">
+                                                    Company Code
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <input type="text" class="form-control" name="COMP_CODE" ng-model="vm.form.COMP_CODE" disabled />
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group" ng-class="{'has-error': (frmCompany.COMP_NAME_EN.$error.required) && (frmCompany.COMP_NAME_EN.$touched || frmCompany.$submitted) }">
+                                                <label class="control-label col-md-3">
+                                                    Company Name [E]
+                                                    <span class="required" aria-required="true">*</span>
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <input type="text" class="form-control" name="COMP_NAME_EN" ng-model="vm.form.COMP_NAME_EN" required />
+
+                                                    <div class="help-block help-block-error" ng-messages="frmCompany.COMP_NAME_EN.$error" ng-if="frmCompany.$submitted || frmCompany.COMP_NAME_EN.$touched">
+                                                        <div ng-message="required">Please input company name [E]</div>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group" ng-class="{'has-error': (frmCompany.COMP_NAME_BN.$error.required) && (frmCompany.COMP_NAME_BN.$touched || frmCompany.$submitted) }">
+                                                <label class="control-label col-md-3">
+                                                    Company Name [B]
+                                                    <span class="required" aria-required="true">*</span>
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <input type="text" class="form-control banglafont" name="COMP_NAME_BN" ng-model="vm.form.COMP_NAME_BN" required />
+
+                                                    <div class="help-block help-block-error" ng-messages="frmCompany.COMP_NAME_BN.$error" ng-if="frmCompany.$submitted || frmCompany.COMP_NAME_BN.$touched">
+                                                        <div ng-message="required">Please input company name [B]</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group" ng-class="{'has-error': (frmCompany.COMP_SNAME.$error.maxlength || frmCompany.COMP_SNAME.$error.required) && (frmCompany.COMP_SNAME.$touched || frmCompany.$submitted) }">
+                                                <label class="control-label col-md-3">
+                                                    Short Name
+                                                    <span class="required" aria-required="true">*</span>
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <input type="text" class="form-control" name="COMP_SNAME" ng-model="vm.form.COMP_SNAME" required ng-maxlength="10" />
+
+                                                    <div class="help-block help-block-error" ng-messages="frmCompany.COMP_SNAME.$error" ng-if="frmCompany.$submitted || frmCompany.COMP_SNAME.$touched">
+                                                        <div ng-message="required">Please input short name</div>
+                                                        <div ng-message="maxlength">Maximum 10 character for short name</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3">
+                                                    Description
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <textarea class="form-control" name="COMP_DESC" ng-model="vm.form.COMP_DESC" rows="3"></textarea>
+                                                </div>
+                                            </div>
+                                            
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3">
+                                                    Company Type
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <select kendo-drop-down-list name="LK_COMP_TYPE_ID" class="form-control"
+                                                            options="vm.compTypeList" ng-model="vm.form.LK_COMP_TYPE_ID"></select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3">
+                                                    Business Type
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <select kendo-drop-down-list name="LK_COMP_TYPE_ID" class="form-control"
+                                                            options="vm.businessTypeList" ng-model="vm.form.LK_BUS_TYPE_ID"></select>
+                                                </div>
+                                            </div>
+
+                                            @*req:{{frmCompany.VAT_REG_NO.$error.required}}
+                                            tou:{{frmCompany.VAT_REG_NO.$touched}}
+                                            sub:{{frmCompany.$submitted}}*@
+
+                                            <div class="form-group" ng-class="{'has-error': (frmCompany.VAT_REG_NO.$error.required) && (frmCompany.VAT_REG_NO.$touched || frmCompany.$submitted) }">
+                                                <label class="control-label col-md-3">
+                                                    Vat Registation#
+                                                    <span class="required" aria-required="true">*</span>
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <input type="text" class="form-control" name="VAT_REG_NO" ng-model="vm.form.VAT_REG_NO" required />
+
+                                                    <div class="help-block help-block-error" ng-messages="frmCompany.VAT_REG_NO.$error" ng-if="frmCompany.$submitted || frmCompany.VAT_REG_NO.$touched">
+                                                        <div ng-message="required">Please input vat registation#</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group" ng-class="{'has-error':  frmCompany.YEAR_ESTD.$error.pattern || frmCompany.YEAR_ESTD.$error.maxlength  }">
+                                                <label class="control-label col-md-3">
+                                                    Establish Year
+                                                </label>
+                                                <div class="col-md-5">                                                                                                                                                                                                                
+                                                    <input type="text" ui-mask="9999" class="form-control" name="YEAR_ESTD" ng-model="vm.form.YEAR_ESTD" placeholder="YYYY"/>
+
+                                                    <div class="help-block help-block-error" ng-messages="frmCompany.YEAR_ESTD.$error" ng-if="frmCompany.YEAR_ESTD.$dirty">
+                                                        <div ng-message="pattern">Please input positive numeric value</div>
+                                                        <div ng-message="maxlength">Maximum length 4 digit</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group" ng-class="{'has-error':  frmCompany.COMP_WEB.$error.url  }">
+                                                <label class="control-label col-md-3">
+                                                    Web Site
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <input type="url" class="form-control" name="COMP_WEB" ng-model="vm.form.COMP_WEB" @*pattern="https?://.+"*@ />
+
+                                                    <div class="help-block help-block-error" ng-messages="frmCompany.COMP_WEB.$error" ng-if="frmCompany.COMP_WEB.$dirty">
+                                                        <div ng-message="url">Please input valid web site</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3">
+                                                </label>
+                                                <div class="col-md-2">
+                                                    <label class="checkbox-inline">
+                                                        <input type="checkbox" name="IS_ACTIVE" ng-model="vm.form.IS_ACTIVE" ng-init="vm.form.IS_ACTIVE='Y'" ng-true-value="'Y'" ng-false-value="'N'">&nbsp;Active?
+                                                    </label>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-actions">
+                                                <div class="row">
+                                                    <div class="col-md-offset-3 col-md-6">
+                                                        <button type="submit" class="btn green" ng-if="vm.insert" @*ng-click="vm.save()"*@><i class="fa fa-check"></i> Save</button>
+                                                        <button type="submit" class="btn yellow-gold" ng-if="!vm.insert" @*ng-click="vm.save()"*@><i class="fa fa-check"></i> Update</button>
+                                                        @*<button type="button" class="btn green" ng-if="vm.==0 || vm.from.TRAN_MODE==''" disabled><i class="fa fa-check"></i> Save</button>*@
+
+                                                        @*<button type="reset" class="btn blue" ng-if="TRAN_MODE==1" @*ng-click="TranCancel()">Cancel</button>*@
+                                                        <button type="button" class="btn blue" @*ng-if="TRAN_MODE==2"*@ ng-click="vm.TranCancel()">Cancel</button>
+                                                        @*<a href="@Url.Action("Index","HrDesignation")" class="btn default">Back</a>*@
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </form>
+
+
+
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+
+                        @* List Start *@
+                        <div ng-if="tab.title=='List'" style="padding:10px 10px 10px 10px;">
+                            <kendo-grid k-options="vm.gridOptions" @*k-rebind="gridOptions"*@></kendo-grid>
+                        </div>
+                        @* List End *@
+                    </tab>
+
+                </tabset>
+
+                @*</div>*@
+
+
+
+            </div>
+
+        </div>
+    </div>
+
+</div>

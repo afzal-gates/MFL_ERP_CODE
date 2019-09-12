@@ -1,0 +1,136 @@
+﻿<fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;">
+    <legend class="custom-legend">Dyeing Rate Chart</legend>
+    <form class="form-horizontal" role="form" name="DyeingChartForm" novalidate ng-submit="vm.submitData(vm.form,token,DyeingChartForm.$valid)">
+
+        <div class="form-body clearfix">
+            <div class="row" style="margin:auto;padding-top:10px;">
+
+
+                <input id="access_token" data-ng-model="token" type="hidden"
+                       data-ng-init="token='@Session["access_token"]'" />
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label">
+                        <span aria-required="true" class="required">*</span>
+                        Fiber Combi. Template
+
+                    </label>
+                    <div class="col-md-5">
+
+                        <span class="col-md-11" style="padding-left:0px;padding-right:0px;">
+                            <select kendo-drop-down-list options='TemplateList' id="MC_FIB_COMB_TMPLT_ID" name="MC_FIB_COMB_TMPLT_ID" ng-model='vm.form.MC_FIB_COMB_TMPLT_ID' class='form-control' required></select>
+                        </span>
+
+                        <span class="col-md-1" style="padding-left:8px;padding-right:0px;">
+                            <a ng-click='vm.openFiberConfigModal(vm.form.MC_FIB_COMB_TMPLT_ID)' class='btn btn-xs blue'><i class='fa' ng-class="vm.form.MC_FIB_COMB_TMPLT_ID ? 'fa-pencil':'fa-plus'"></i> </a>
+                        </span>
+                        <div ng-messages="KnittingChartForm.MC_FIB_COMB_TMPLT_ID.$error" ng-if="KnittingChartForm.$submitted || !KnittingChartForm.MC_FIB_COMB_TMPLT_ID.$pristine">
+                            <div ng-message="required" class="field-validation-error">The field Fiber Combination Template is required</div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label">
+                        <span aria-required="true" class="required">*</span>
+                        Colour Group
+                    </label>
+                    <div class="col-md-5">
+
+                        <select kendo-drop-down-list name="RF_FAB_TYPE_ID" class="form-control"
+                                options="vm.ColourGroupList" id="MC_COLOR_GRP_ID" ng-model="vm.form.MC_COLOR_GRP_ID" required></select>
+
+                        <div ng-messages="DyeingChartForm.MC_COLOR_GRP_ID.$error" ng-if="DyeingChartForm.$submitted || !DyeingChartForm.MC_COLOR_GRP_ID.$pristine">
+                            <div ng-message="required" class="field-validation-error">The field Colour Group is required</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label">
+                       Dyeing Method
+                    </label>
+                    <div class="col-md-5">
+                        <select kendo-drop-down-list name="LK_DYE_MTHD_ID" class="form-control"
+                                options="vm.DyeMethodList" id="LK_DYE_MTHD_ID" ng-model="vm.form.LK_DYE_MTHD_ID"></select>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label">
+                        <span aria-required="true" class="required">*</span>
+                        Rate Description
+                    </label>
+                    <div class="col-md-6">
+                        <textarea rows="2" name="FAB_PROC_NAME" class="form-control" cols="50" ng-model="vm.form.FAB_PROC_NAME" required></textarea>
+
+                        <div ng-messages="DyeingChartForm.FAB_PROC_NAME.$error" ng-if="DyeingChartForm.$submitted || !DyeingChartForm.FAB_PROC_NAME.$pristine">
+                            <div ng-message="required" class="field-validation-error">The field Rate Description is required</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label">
+                        <span aria-required="true" class="required">*</span>
+                        Rate
+                    </label>
+
+                    <div class="col-md-2">
+                        <input type="number" min="0.001" id="PROC_RATE" name="PROC_RATE" ng-model="vm.form.PROC_RATE" class="form-control" required />
+                    </div>
+                    <div class="col-md-2">
+
+                        <select kendo-drop-down-list name="RF_CURRENCY_ID" class="form-control"
+                                options="vm.currencyList" id="RF_CURRENCY_ID" ng-model="vm.form.RF_CURRENCY_ID" required></select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="row">
+
+                            <span class="col-md-3" style="font-size:20px;">
+                                /
+                            </span>
+                            <span class="col-md-9">
+
+                                <select kendo-drop-down-list name="RATE_MOU_ID" class="form-control"
+                                        options="vm.MOUList" id="RATE_MOU_ID" ng-model="vm.form.RATE_MOU_ID" required></select>
+                            </span>
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-5 col-md-offset-3">
+                    <button type="submit" ng-if="vm.form.MC_RATE_SPEC_DYE_ID>0" class="btn btn-sm yellow-gold" ng-class="{'disabled':!DyeingChartForm.$valid}">Update</button>
+                    <button type="submit" ng-if="vm.form.MC_RATE_SPEC_DYE_ID<0" class="btn btn-sm green" ng-class="{'disabled':!DyeingChartForm.$valid}">Save</button>
+                    <button type="button" class="btn btn-sm default" ng-click="vm.reset()">Cancel</button>
+                </div>
+            </div>
+
+            <div class="row" style="margin:auto;padding-top:10px;" ng-if="vm.errors">
+                <div class="alert alert-warning" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                    <ul ng-repeat="field in vm.errors">
+                        <li ng-repeat="error in field" ng-bind="error"></li>
+                    </ul>
+                </div>
+            </div>
+            <hr />
+
+            <div class="row" style="padding-top:5px;margin:auto;">
+                <kendo-grid k-options="vm.gridOptions" id="kendoGrid"></kendo-grid>
+            </div>
+
+
+        </div>
+    </form>
+</fieldset>

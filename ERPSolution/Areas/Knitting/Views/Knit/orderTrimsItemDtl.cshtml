@@ -1,0 +1,263 @@
+﻿
+<input id="access_token" data-ng-model="token" type="hidden"
+       data-ng-init="token='@Session["access_token"]'" />
+<div class="modal-body">
+    <div class="portlet grey-cascade box">
+        <div class="portlet-title">
+            <div>
+                <h3 class="title">
+                    Trims Item Entry
+                    <span class="pull-right"><i class="fa fa-times red" ng-click="cancel([])"></i></span>
+                </h3>
+            </div>
+        </div>
+        <div class="portlet-body">
+
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend"><b>Trims Item Entry</b></legend>
+
+                @*<div class="form-group">
+
+                        <div class="col-md-1"></div>
+
+                        <label class="col-md-2 control-label">
+                            <span aria-required="true" class="required"></span>
+                            Item Category
+                        </label>
+                        <div class="col-md-3">
+
+                            <select class="form-control requiredSub" kendo-drop-down-list name="INV_ITEM_CAT_ID" id="INV_ITEM_CAT_ID" k-option-label="'-- Select Category --'"
+                                    k-data-text-field="'ITEM_CAT_NAME_EN'" k-data-value-field="'INV_ITEM_CAT_ID'"
+                                    k-auto-bind="'true'" k-data-source="itemCategoryList" k-delay="itemCategoryList"
+                                    k-filter="'contains'" ng-model="vmS.form.INV_ITEM_CAT_ID" k-on-change="loadItemDataByCategory(kendoEvent)"></select>
+
+                            <input type="hidden" ng-model="vmS.form.MC_BUYER_ID" />
+                            <input type="hidden" ng-model="vmS.form.MC_STYLE_H_EXT_ID" />
+
+
+                        </div>
+
+
+                        <label class="col-md-2 control-label">
+                            <span aria-required="true" class="required"></span>
+                            Item Name
+                        </label>
+                        <div class="col-md-4">
+                            <select class="form-control requiredSub " style="min-width: 50px; max-width: 250px;"
+                                    kendo-drop-down-list name="INV_ITEM_ID" id="INV_ITEM_ID" k-option-label="'-- Select Item --'"
+                                    k-data-text-field="'ITEM_NAME_EN'" k-data-value-field="'INV_ITEM_ID'"
+                                    k-auto-bind="'true'" k-data-source="ItemList" k-ng-delay="ItemList" k-filter="'contains'"
+                                    ng-model="vmS.form.INV_ITEM_ID" ng-change="concateItemSpec(vmS.form);"></select>
+                        </div>
+                    </div>
+                    <div style="padding:3px;">
+                    </div>
+                    <div style="padding:3px;">
+                    </div>
+                    <div style="padding:3px;">
+                    </div>
+                    <div class="form-group">
+
+                        <div class="col-md-1"></div>
+
+                        <label class="col-md-2 control-label">
+                            <span aria-required="true" class="required"></span>
+                            Garments Color
+                        </label>
+                        <div class="col-md-3">
+
+                            <select class="form-control requiredSub" kendo-drop-down-list name="MC_COLOR_ID" id="MC_COLOR_ID"
+                                    k-option-label="'-- Select Color --'" k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'MC_COLOR_ID'"
+                                    k-auto-bind="'true'" k-data-source="ColorList" k-delay="ColorList"
+                                    k-filter="'contains'" ng-model="vmS.form.GMT_COLOR_ID" ng-change="concateItemSpec(vmS.form);"></select>
+                        </div>
+
+
+                        <label class="col-md-2 control-label">
+                            <span aria-required="true" class="required"></span>
+                            Garments Size
+                        </label>
+                        <div class="col-md-4">
+
+                            <select class="form-control" kendo-drop-down-list name="MC_SIZE_ID" id="MC_SIZE_ID" k-option-label="'-- Select Size --'"
+                                    k-data-text-field="'SIZE_CODE'" k-data-value-field="'MC_SIZE_ID'"
+                                    k-auto-bind="'true'" k-data-source="SizeList" k-ng-delay="SizeList" k-filter="'contains'"
+                                    ng-model="vmS.form.MC_SIZE_ID" ng-change="concateItemSpec(vmS.form);"></select>
+                        </div>
+                    </div>
+                    <div style="padding:3px;">
+                    </div>
+                    <div style="padding:3px;">
+                    </div>
+                    <div style="padding:3px;">
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="col-md-1"></div>
+
+                        <label class="col-md-2 control-label">
+                            <span aria-required="true" class="required"></span>
+                            Product Color
+                        </label>
+                        <div class="col-md-3">
+
+                            <input type="text" name="PROD_COLOR_NAME_EN" ng-model="vmS.form.PROD_COLOR_NAME_EN" class="form-control" ng-change="concateItemSpec(vmS.form);" />
+                        </div>
+
+
+                        <label class="col-md-2 control-label">
+                            <span aria-required="true" class="required"></span>
+                            Product Size
+                        </label>
+                        <div class="col-md-3">
+                            <input type="text" name="PROD_SIZE_CODE" ng-model="vmS.form.PROD_SIZE_CODE" class="form-control" ng-change="concateItemSpec(vmS.form);" />
+
+                        </div>
+                    </div>
+                    <div style="padding:3px;">
+                    </div>
+                    <div style="padding:3px;">
+                    </div>
+                    <div style="padding:3px;">
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="col-md-1"></div>
+
+                        <label class="col-md-2 control-label">
+                            <span aria-required="true" class="required"></span>
+                            Item Code
+                        </label>
+                        <div class="col-md-3">
+
+                            <input type="text" name="ITEM_CODE" ng-model="vmS.form.ITEM_CODE" class="form-control" ng-change="concateItemSpec(vmS.form);" />
+                        </div>
+
+                        <label class="col-md-2 control-label">
+                            <span aria-required="true" class="required"></span>
+                            Details Spec.
+                        </label>
+                        <div class="col-md-3">
+                            <input type="text" name="ITEM_SPEC_AUTO" ng-model="vmS.form.ITEM_SPEC_AUTO" class="form-control" />
+
+                        </div>
+                    </div>
+
+                    <div style="padding:3px;">
+                    </div>
+                    <div style="padding:3px;">
+                    </div>
+                    <div style="padding:3px;">
+                    </div>
+                    <div style="padding:3px;">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5">
+                        </div>
+                        <div class="col-md-7">
+                            <button type="button" class="btn btn-sm green" ng-click="submitAll(vmS.form);">Save</button>
+                            <button type="button" class="btn btn-sm default" ng-click="cancel();">Cancel</button>
+
+                        </div>
+
+                    </div>*@
+
+                <div class="form-group">
+
+                    <table class="table table-condensed table-striped table-bordered" style="padding:5px;">
+                        <thead>
+                            <tr>
+                                <th>Item Name</th>
+                                <th>Gmt. Color</th>
+                                <th>Gmt. Size</th>
+                                <th>Prod Color</th>
+                                <th>Prod Size</th>
+                                <th>Specification</th>
+                                <th>Code</th>
+                                <th>Other Particulars</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="width:10%;">
+                                    <select class="form-control requiredSub " style="min-width: 50px; max-width: 250px;"
+                                            kendo-drop-down-list name="INV_ITEM_ID" id="INV_ITEM_ID" k-option-label="'-- Select Item --'"
+                                            k-data-text-field="'ITEM_NAME_EN'" k-data-value-field="'INV_ITEM_ID'"
+                                            k-auto-bind="'true'" k-data-source="ItemList" k-ng-delay="ItemList" k-filter="'contains'"
+                                            ng-model="vmS.form.INV_ITEM_ID" ng-change="concateItemSpec(vmS.form);"></select>
+                                </td>
+                                <td style="width:10%;">
+                                    <select class="form-control requiredSub" kendo-drop-down-list name="MC_COLOR_ID" id="MC_COLOR_ID"
+                                            k-option-label="'-- Select Color --'" k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'MC_COLOR_ID'"
+                                            k-auto-bind="'true'" k-data-source="ColorList" k-delay="ColorList"
+                                            k-filter="'contains'" ng-model="vmS.form.GMT_COLOR_ID" ng-change="concateItemSpec(vmS.form);"></select>
+
+                                    <input type="hidden" ng-model="vmS.form.MC_FAB_PROD_D_BOM_ID" />
+                                    <input type="hidden" ng-model="vmS.form.MC_FAB_PROD_H_BOM_ID" />
+                                    <input type="hidden" ng-model="vmS.form.GMT_COLOR_ID" />
+                                    <input type="hidden" ng-model="vmS.form.GMT_SIZE_ID" />
+                                    <input type="hidden" ng-model="vmS.form.CONS_MOU_ID" />
+                                    <input type="hidden" ng-model="vmS.form.PURCH_MOU_ID" />
+                                    <input type="hidden" ng-model="vmS.form.INV_ITEM_ID" />
+                                    <input type="hidden" ng-model="vmS.form.MC_FAB_PROD_ORD_H_ID" />
+
+                                </td>
+                                <td style="width:5%;">
+
+                                    <select class="form-control" kendo-drop-down-list name="MC_SIZE_ID" id="MC_SIZE_ID" k-option-label="'-- Size --'"
+                                            k-data-text-field="'SIZE_CODE'" k-data-value-field="'MC_SIZE_ID'"
+                                            k-auto-bind="'true'" k-data-source="SizeList" k-ng-delay="SizeList" k-filter="'contains'"
+                                            ng-model="vmS.form.MC_SIZE_ID" ng-change="concateItemSpec(vmS.form);"></select>
+                                </td>
+                                <td style="width:10%;">
+                                    <input type="text" ng-model="vmS.form.PROD_COLOR_NAME_EN" class="form-control" />
+                                </td>
+                                <td style="width:8%;">
+                                    <input type="text" ng-model="vmS.form.PROD_SIZE_CODE" class="form-control" />
+                                </td>
+                                <td style="width:15%;">
+                                    <textarea ng-model="vmS.form.ITEM_SPEC_AUTO" class="form-control"></textarea>
+                                </td>
+                                <td style="width:10%;">
+                                    <input type="text" ng-model="vmS.form.ITEM_CODE" class="form-control" />
+                                </td>
+                                <td style="width:20%;">
+                                    <table style="width:100%;">
+                                        <tr ng-repeat="obj in vmS.form.PARTICULARS_LST">
+                                            <td style="width:40%; padding-right:5px;">
+                                                <select kendo-drop-down-list name="CNTRL_NAME" id="CNTRL_NAME" class="form-control"
+                                                        options="controlList" k-delay="controlList" ng-model="obj.CNTRL_NAME"></select>
+                                            </td>
+                                            <td style="width:40%;">
+                                                <input type="text" ng-model="obj.COL_VAL" />
+                                            </td>
+                                            <td style="width: 20%; padding-left:2px;">
+                                                <a class="btn btn-xs blue" ng-click="addCtrl($index,vmS.form.PARTICULARS_LST)"><i class="fa fa-plus"></i></a>
+                                                <a class="btn btn-xs red" ng-click="delCtrl($index,vmS.form.PARTICULARS_LST)" ng-if="$index>0"><i class="fa fa-remove"></i></a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+                <div class="form-group" style="text-align:center;">
+                   
+                    <button type="button" class="btn btn-sm green" ng-if="vmS.form.MC_ORD_TRMS_ITEM_ID==0" ng-click="submitAll(vmS.form);">Save</button>
+                    <button type="button" class="btn btn-sm yellow-gold" ng-if="!vmS.form.MC_ORD_TRMS_ITEM_ID==0" ng-click="submitAll(vmS.form);">Update</button>
+                    <button type="button" class="btn btn-sm default" ng-click="resetAllData();"><i class="fa fa-recycle"></i> Clear</button>
+                    <button type="button" class="btn btn-sm red" ng-click="cancel();"> Exit</button>
+                </div>
+                <div style="padding:2px;">
+                    <div kendo-grid k-options="gridOptionsItem" id="IDRequisitionDS" k-data-source="TrimsItemList"></div>
+                </div>
+
+            </fieldset>
+        </div>
+    </div>
+</div>

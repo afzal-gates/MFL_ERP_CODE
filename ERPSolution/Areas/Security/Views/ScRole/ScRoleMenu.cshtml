@@ -1,0 +1,121 @@
+﻿<div ng-controller="ScRoleMenuController as vm">
+    <div class="blue-dark" style="border-bottom: 1px solid #BDBDBD; background-color: #5e738b; color: white">
+        <div class="col-md-11">
+            <h4 class=" modal-title " style="padding-top:5px; ">&nbsp;&nbsp;&nbsp;Role Menu</h4>
+        </div>
+
+        <button type="button" class="btn red" ng-click="vm.close()"><i class=" fa fa-times"></i> </button>
+    </div>
+    
+
+
+    <form name="frmRoleMenu" ng-submit="vm.submit(frmRoleMenu.$valid, vm.isInsert, vm.myForm)" novalidate>
+
+        @*<div class="modal-body">*@
+        <div class="form-body">
+
+            <div class="row">
+
+                <div class="col-md-12">
+
+                    <input type="hidden" name="SC_ROLE_MENU_ID" ng-model="vm.myForm.SC_ROLE_MENU_ID" />
+
+                    <div class="form-group" style="margin-top:10px">
+                        <label class="control-label col-md-offset-1 col-md-3">
+                            Role 
+                            <span class="required" aria-required="true">*</span>
+                        </label>
+                        <div class="col-md-7">
+                            @*<input type="hidden" class="form-control" name="SC_ROLE_ID" ng-model="vm.myForm.SC_ROLE_ID" />*@
+                            <select kendo-drop-down-list name="SC_ROLE_ID" class="form-control" @*ng-init="vm.myForm.SC_ROLE_ID=vm.shiftPlanId.HR_SHIFT_PLAN_ID"*@
+                                    options="vm.RoleListData" ng-model="vm.myForm.SC_ROLE_ID" required ></select>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-12">
+
+                    <div class="form-group" style="margin-top:10px">
+                        <label class="control-label col-md-offset-1 col-md-3">
+                            Menu
+                            <span class="required" aria-required="true">*</span>
+                        </label>
+                        <div class="col-md-7">
+                            <select kendo-drop-down-list name="SC_MENU_ID" class="form-control" @*ng-init="vm.myForm.SC_MENU_ID=vm.shiftPlanId.HR_SHIFT_PLAN_ID"*@
+                                    options="vm.MenuListData" ng-model="vm.myForm.SC_MENU_ID" required></select>
+                        </div>
+                    </div>
+                </div>
+
+               
+                <div class="col-md-12">
+                    <div class="form-group " style="margin-top:10px">
+                        <label class="control-label col-md-offset-1 col-md-3">
+                        </label>
+                        <div class="col-md-7">
+                            @*<input type="checkbox" name="IS_ACTIVE" ng-model="IS_ACTIVE" ng-if="IS_ACTIVE=='Y'" ng-init="IS_ACTIVE='Y'" ng-true-value="'Y'" ng-false-value="'N'" checked>*@
+                            <input type="checkbox" name="IS_ACTIVE" ng-model="vm.myForm.IS_ACTIVE" ng-init="vm.myForm.IS_ACTIVE='Y'" ng-true-value="'Y'" ng-false-value="'N'">&nbsp;Active?
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-12">
+                    <div class="form-group " style="margin-top:10px">
+                        <label class="control-label col-md-offset-1 col-md-3">
+                        </label>
+                        <div class="col-md-7">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-actions">
+
+                        <div class="col-md-offset-4 col-md-6">
+                            <button type="submit" class="btn green" ng-if="vm.isInsert"><i class="fa fa-check"></i> Save</button>
+                            <button type="submit" class="btn yellow-gold" ng-if="!vm.isInsert"><i class="fa fa-check"></i> Update</button>
+
+                            <button type="button" class="btn blue" @*ng-if="TRAN_MODE==2"*@ ng-click="vm.TranCancel()">Cancel</button>                           
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+
+                <div class="col-md-12">
+                    <div class="form-group " style="margin-top:10px">
+                        <label class="control-label col-md-offset-1 col-md-3">
+                        </label>
+                        <div class="col-md-7">
+                        </div>
+                    </div>
+                </div>
+
+                @*<div class="modal-footer">
+                        <button type="submit" class="btn green"><i class="fa fa-check"></i>Save</button>
+                        <button class="btn btn-primary" ng-click="ok()">OK</button>
+                        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+                    </div>*@
+
+
+            </div>
+
+
+
+
+        </div>
+        @*</div>*@
+
+    </form>
+
+
+    <div style="padding:0px 10px 10px 10px;">
+        <kendo-grid k-options="vm.gridOptions" k-rebind="vm.gridOptions"></kendo-grid>
+    </div>
+
+</div>

@@ -1,0 +1,597 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Inventory</a>
+
+    </li>
+    <li>
+        <a href="#">Inventory Reports</a>
+    </li>
+</ul>
+
+
+<div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+    <div class="page-splash">
+        <div class="page-splash-message">
+            <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+        </div>
+    </div>
+</div>
+
+
+<div class="portlet box blue-dark">
+
+
+    <div class="portlet-title">
+        <div class="caption">
+            Inventory Reports
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <form class="form-horizontal form-body">
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="col-md-offset-0 col-md-10">
+                        <p></p>
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend">Selection of Parameters</legend>
+
+
+                            <p></p>
+                            <div class="col-md-6" style="padding-left:5px;">
+                                <fieldset class=" custom-fieldset">
+                                    <div class="radio-list" @*ng-if="vm.LOGIN_ID!='adminhr'"*@>
+                                        <label class="radio" style="padding-left:30px;" ng-repeat="itm in vm.rptList">
+                                            <input type="radio" name="RPT_CODE" ng-model="itm.RPT_CODE" value="{{vm.rptList[0].RPT_CODE}}" ng-click="vm.rptOnChange(itm,$index)">{{itm.RPT_NAME_EN}}
+                                        </label>
+                                    </div>
+                                </fieldset>
+                            </div>
+
+
+                            @*{{vm.loginUserID}}*@
+                            <div class="col-md-6">
+                                <input type="hidden" name="REPORT_CODE" ng-model="vm.form.REPORT_CODE" ng-init="vm.form.REPORT_CODE=vm.rptList[0].RPT_CODE" />
+
+                                <div class="form-group" ng-if="vm.isCompany==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Company</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+
+                                        <select kendo-drop-down-list name="HR_COMPANY_ID" class="form-control"
+                                                options="vm.companyList" ng-model="vm.form.HR_COMPANY_ID"></select>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isOffice==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Office</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+
+                                        <select kendo-drop-down-list name="HR_OFFICE_ID" class="form-control"
+                                                options="vm.officeListData" ng-model="vm.form.HR_OFFICE_ID"></select>
+
+
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isSupplier==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Supplier</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select class="form-control" kendo-drop-down-list name="SCM_SUPPLIER_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                                k-data-text-field="'SUP_TRD_NAME_EN'" k-data-value-field="'SCM_SUPPLIER_ID'"
+                                                k-auto-bind="'true'" k-data-source="vm.supplierDataSource" ng-model="vm.form.SCM_SUPPLIER_ID"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isYarnSupplier==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Supplier</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select class="form-control" kendo-drop-down-list name="SCM_SUPPLIER_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                                k-data-text-field="'SUP_TRD_NAME_EN'" k-data-value-field="'SCM_SUPPLIER_ID'"
+                                                k-auto-bind="'true'" k-data-source="vm.yarnSupplierList" ng-model="vm.form.SCM_SUPPLIER_ID"></select>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group" ng-if="vm.isScIssProgNo==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Issue Prog. Ref</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select class="form-control" kendo-drop-down-list name="KNT_SC_PRG_ISS_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                                k-data-text-field="'PRG_ISS_NO'" k-data-value-field="'KNT_SC_PRG_ISS_ID'"
+                                                k-auto-bind="'true'" k-options="vm.scIssProgOption" k-data-source="vm.scIssProgDataSource" ng-model="vm.form.KNT_SC_PRG_ISS_ID"></select>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group" ng-if="vm.isScProgNo==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Rcveive Prog. Ref</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select class="form-control" kendo-drop-down-list name="KNT_SC_PRG_RCV_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                                k-data-text-field="'PRG_RCV_NO'" k-data-value-field="'KNT_SC_PRG_RCV_ID'"
+                                                k-auto-bind="'true'" k-options="vm.scProgOption" k-data-source="vm.scProgDataSource" ng-model="vm.form.KNT_SC_PRG_RCV_ID"></select>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group" ng-if="vm.isScOrder==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">S/C Order#</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select class="form-control" kendo-drop-down-list name="SCM_SC_WO_REF_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                                k-data-text-field="'SC_ORDER_NO'" k-data-value-field="'SCM_SC_WO_REF_ID'"
+                                                k-auto-bind="'true'" k-options="vm.scOrderOption" k-data-source="vm.scOrderDataSource" ng-model="vm.form.SCM_SC_WO_REF_ID"></select>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group" ng-if="vm.isScDelvChallan==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Challan#
+                                    </label>
+                                    <div class="col-md-5" style="padding-right:10px;">
+
+                                        <input type="text" ng-model="vm.form.SC_FAB_DELV_CHALAN_NO" placeholder="Search..."
+                                               typeahead="item.CHALAN_NO as item.CHALAN_NO for item in scFabDelvChallanAuto($viewValue)"
+                                               typeahead-min-length="3" typeahead-wait-ms="1000"
+                                               typeahead-on-select="onScFabDelvChallanSelectItem($item)" typeahead-loading="loadingLocations" class="form-control">
+                                        <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group" ng-if="vm.isScYrnIssChallan==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Issue Challan#
+                                    </label>
+                                    <div class="col-md-5" style="padding-right:10px;">
+
+                                        <input type="text" ng-model="vm.form.ISS_CHALAN_NO" placeholder="Search..."
+                                               typeahead="item.ISS_CHALAN_NO as item.ISS_CHALAN_NO for item in scYrnIssChallanAuto($viewValue)"
+                                               typeahead-min-length="3" typeahead-wait-ms="1000"
+                                               typeahead-on-select="onScYrnIssChallanSelectItem($item)" typeahead-loading="loadingLocations" class="form-control">
+                                        <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isByrAccGrp==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Buyer A/C</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="MC_BYR_ACC_GRP_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                                k-options="vm.buyerAcGrpList" ng-model="vm.form.MC_BYR_ACC_GRP_ID"
+                                                k-data-text-field="'BYR_ACC_GRP_NAME_EN'" k-data-value-field="'MC_BYR_ACC_GRP_ID'"
+                                                k-auto-bind="'true'" k-on-change="vm.setBuyerName(kendoEvent)"></select>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group" ng-if="vm.isProdCatSource==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Production Type</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="RF_FAB_PROD_CAT_ID" class="form-control"
+                                                k-data-text-field="'FAB_PROD_CAT_SNAME'" k-data-value-field="'RF_FAB_PROD_CAT_ID'"
+                                                k-options="vm.prodCatSourceOption" k-data-source="vm.prodCatDataSource" ng-model="vm.form.RF_FAB_PROD_CAT_ID"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isProdCatIdLst==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Production Type</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select class="form-control" kendo-multi-select name="RF_FAB_PROD_CAT_ID_LST" k-placeholder="'Search...'"
+                                                k-data-text-field="'FAB_PROD_CAT_SNAME'" k-data-value-field="'RF_FAB_PROD_CAT_ID'"
+                                                k-data-source="vm.prodCatDataSource" ng-model="vm.form.RF_FAB_PROD_CAT_ID_LST" ng-change="vm.onChangeProdCat()"></select>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group" ng-if="vm.isStyleExt==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Style#</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="MC_STYLE_H_EXT_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                                k-data-source="vm.styleExtDataSource" ng-model="vm.form.MC_STYLE_H_EXT_ID"
+                                                k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_STYLE_H_EXT_ID'"
+                                                k-auto-bind="'true'"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-show="vm.isFabOrderYd==true">
+                                    <label class="control-label col-md-4" style="padding-right:0px">
+                                        Style/Order#
+                                    </label>
+                                    <div class="col-md-8 input-group">
+                                        <select class="form-control" kendo-drop-down-list id="ORDER_LIST" name="MC_FAB_PROD_ORD_H_ID" k-option-label="'--Order# --'"
+                                                k-data-text-field="'ORDER_NO_LST'" k-data-value-field="'MC_FAB_PROD_ORD_H_ID'" k-filter="'Contains'"
+                                                k-template="templateFabProdOdr" k-value-template="valueTemplateFabProdOdr"
+                                                k-auto-bind="'true'" k-data-source="FabOederByOhDsYD" ng-model="vm.form.MC_FAB_PROD_ORD_H_ID"
+                                                required style="width:100%;"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-show="vm.isFabOrderSolid==true">
+                                    <label class="control-label col-md-4" style="padding-right:0px">
+                                        Style/Order#
+                                    </label>
+                                    <div class="col-md-8 input-group">
+                                        <select class="form-control" kendo-drop-down-list id="ORDER_LIST" name="MC_FAB_PROD_ORD_H_ID" k-option-label="'--Order# --'"
+                                                k-data-text-field="'ORDER_NO_LST'" k-data-value-field="'MC_FAB_PROD_ORD_H_ID'" k-filter="'Contains'"
+                                                k-template="templateFabProdOdr" k-value-template="valueTemplateFabProdOdr"
+                                                k-auto-bind="'true'" k-data-source="FabOederByOhDsSolid" ng-model="vm.form.MC_FAB_PROD_ORD_H_ID"
+                                                required style="width:100%;"></select>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="form-group" ng-if="vm.isOrder==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Style/Order#</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="MC_STYLE_H_EXT_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                                k-template="vm.styleExtTemplate" k-value-template="vm.styleExtValueTemplate"
+                                                k-options="vm.styleExtOption" k-data-source="vm.styleExtDataSource" ng-model="vm.form.MC_STYLE_H_EXT_ID"
+                                                k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_STYLE_H_EXT_ID'"
+                                                k-auto-bind="'true'" k-on-change="vm.setStyleOrder(kendoEvent)"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isOrderColor==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Color</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="MC_COLOR_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                                k-options="vm.orderColorListOption" k-data-source="vm.orderColorListDataSource" ng-model="vm.form.MC_COLOR_ID"
+                                                k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'MC_COLOR_ID'" k-auto-bind="'true'"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isColor==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Color</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="MC_COLOR_ID" class="form-control"
+                                                options="vm.colorList" ng-model="vm.form.MC_COLOR_ID" k-on-change="vm.setColorName(kendoEvent)"></select>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group" ng-if="vm.isMultiKnitCard==true">
+                                    <label class="col-md-4 control-label" style="padding-left: 0px; padding-right: 0px">Knit Card#</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select class="form-control" kendo-multi-select name="KNT_JOB_CRD_LIST" k-placeholder="'Search...'"
+                                                k-data-text-field="'JOB_CRD_NO'" k-data-value-field="'KNT_JOB_CRD_H_ID'"
+                                                k-data-source="vm.multiCardDataSource" ng-model="vm.form.KNT_JOB_CRD_LIST"
+                                                k-value-primitive="false" k-auto-bind="'false'"></select>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="form-group" ng-if="vm.isStore==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Store</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="SCM_STORE_ID" id="SCM_STORE_ID" class="form-control"
+                                                options="vm.storeList" ng-model="vm.form.SCM_STORE_ID" required></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isCat==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Item Category</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="INV_ITEM_CAT_ID" id="INV_ITEM_CAT_ID" class="form-control"
+                                                options="vm.categoryList" ng-model="vm.form.INV_ITEM_CAT_ID" required></select>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-if="vm.isBrand==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Brand</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="RF_BRAND_ID" id="RF_BRAND_ID" class="form-control"
+                                                options="vm.categoryBrandList" ng-model="vm.form.RF_BRAND_ID" required></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isReqType==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Req. Type</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="RF_REQ_TYPE_ID" class="form-control"
+                                                options="vm.reqTypeList" ng-model="vm.form.RF_REQ_TYPE_ID"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isYrnRtnChallanNo==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Yarn Return Challan#</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select class="form-control" kendo-drop-down-list name="KNT_YRN_ISS_RET_H_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                                k-data-text-field="'RET_CHALAN_NO'" k-data-value-field="'KNT_YRN_ISS_RET_H_ID'"
+                                                k-auto-bind="'true'" k-options="vm.yrnIssRtnOption" k-data-source="vm.yrnIssRtnDataSource" ng-model="vm.form.KNT_YRN_ISS_RET_H_ID"></select>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group" ng-if="vm.isScoGreyFabRcvChln==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Receive Chlallan#</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select class="form-control" kendo-drop-down-list name="KNT_SCO_CHL_RCV_H_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                                k-data-text-field="'CHALAN_NO'" k-data-value-field="'KNT_SCO_CHL_RCV_H_ID'"
+                                                k-auto-bind="'true'" k-options="vm.scoGreyFabRcvChalnOption" k-data-source="vm.scoGreyFabRcvChalnDataSource" ng-model="vm.form.KNT_SCO_CHL_RCV_H_ID"></select>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group" ng-if="vm.isQcStatus==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">QC Status Type</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="KNT_QC_STS_TYPE_ID" class="form-control"
+                                                options="vm.QcStatusTypeList" ng-model="vm.form.KNT_QC_STS_TYPE_ID" k-on-change="vm.setQCStatus(kendoEvent)"></select>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="form-group" ng-if="vm.isGreyQcUser==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Grey QC User</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="GREY_QC_BY" class="form-control"
+                                                options="vm.greyQcUserList" ng-model="vm.form.GREY_QC_BY"></select>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="form-group" ng-if="vm.isJobCard==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Knit Card#
+                                    </label>
+                                    <div class="col-md-5" style="padding-right:10px;">
+                                        <input type="text" ng-model="vm.form.JOB_CRD_NO" />
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group" ng-if="vm.isLC==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        L/C #
+                                    </label>
+                                    <div class="col-md-5" style="padding-right:10px;">
+                                        <input type="text" ng-model="vm.form.IMP_LC_NO" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isLot==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Yarn Lot #
+                                    </label>
+                                    <div class="col-md-5" style="padding-right:10px;">
+
+                                        <input type="text" ng-model="vm.form.YRN_LOT_NO" />
+
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group" ng-if="vm.isYC==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Yarn Count</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="RF_YRN_CNT_ID" class="form-control"
+                                                options="vm.YarnCountList" ng-model="vm.form.RF_YRN_CNT_ID"></select>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group" ng-if="vm.isCT==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Cotton Type</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="LK_COTN_TYPE_ID" class="form-control"
+                                                options="vm.CotnTypeList" ng-model="vm.form.LK_COTN_TYPE_ID"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isYarnItem==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Yarn Item</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="INV_ITEM_ID" class="form-control"
+                                                options="vm.YarnItemList" ng-model="vm.form.INV_ITEM_ID"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-if="vm.isItem==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Item</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="INV_ITEM_ID" class="form-control"
+                                                options="vm.ItemList" ng-model="vm.form.INV_ITEM_ID"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-if="vm.isShipMonth==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Shipment Month</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="MONTHOF" class="form-control"
+                                                options="vm.shipMonthList" ng-model="vm.form.MONTHOF"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isShift==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Shift</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="HR_SCHEDULE_H_ID" class="form-control"
+                                                options="vm.shiftList" ng-model="vm.form.HR_SCHEDULE_H_ID" k-on-change="vm.setShiftName(kendoEvent)"></select>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group" ng-if="vm.isProdType==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Production Type</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="KNT_SC_PRG_ISS_ID" class="form-control"
+                                                options="vm.prodTypeList" ng-model="vm.form.KNT_SC_PRG_ISS_ID" k-on-change="vm.setPrdType(kendoEvent)"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isSubContactParty==true && vm.form.KNT_SC_PRG_ISS_ID>0">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Sub-Contact Party</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select class="form-control" kendo-drop-down-list name="SCM_SUPPLIER_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                                k-data-text-field="'SUP_TRD_NAME_EN'" k-data-value-field="'SCM_SUPPLIER_ID'"
+                                                k-auto-bind="'true'" k-options="vm.supplierOption" k-data-source="vm.supplierDataSource"
+                                                ng-model="vm.form.SCM_SUPPLIER_ID" k-on-change="vm.setSupplier(kendoEvent)"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isFabType==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Fabric Type</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+
+                                        <select kendo-drop-down-list name="RF_FAB_TYPE_ID" class="form-control"
+                                                options="vm.fabricTypeList" ng-model="vm.form.RF_FAB_TYPE_ID" k-on-change="vm.setFabType(kendoEvent)"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isFabRoll==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Roll No
+                                    </label>
+                                    <div class="col-md-5" style="padding-right:10px;">
+                                        <input type="text" name="FAB_ROLL_NO" ng-model="vm.form.FAB_ROLL_NO" />
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group" ng-if="vm.isNoOfCount==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        # of Count
+                                    </label>
+                                    <div class="col-md-5" style="padding-right:10px;">
+                                        <input type="text" name="NO_OF_COUNT" ng-model="vm.form.NO_OF_COUNT" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isMcType==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Machine Type</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select class="form-control" kendo-drop-down-list name="KNT_MC_TYPE_ID" k-filter="'contains'" k-option-label="'-- Select M/C Type--'"
+                                                k-data-text-field="'MC_TYPE_NAME_EN'" k-data-value-field="'KNT_MC_TYPE_ID'"
+                                                k-auto-bind="'true'" k-options="vm.mcTypeOption" k-data-source="vm.mcTypeDataSource" ng-model="vm.form.KNT_MC_TYPE_ID"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isMachine==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Machine #</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select class="form-control" kendo-drop-down-list name="KNT_MACHINE_ID" k-filter="'contains'" k-option-label="'-- Select Machine --'"
+                                                k-data-text-field="'KNT_MACHINE_NO'" k-data-value-field="'KNT_MACHINE_ID'"
+                                                k-auto-bind="'true'" k-data-source="vm.machineList" ng-model="vm.form.KNT_MACHINE_ID"></select>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group" ng-if="vm.isKnitingType==true">
+                                    <label class="col-md-4 control-label" style="padding-left: 0px; padding-right: 0px">Knitting Type</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="IS_FLAT_CIR" class="form-control"
+                                                options="vm.knitingTypeList" ng-model="vm.form.IS_FLAT_CIR"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-show="vm.isFromDate==true">
+                                    <label class="control-label col-md-4" style="padding-right:0px">
+                                        From Date
+                                    </label>
+                                    <div class="col-md-6 input-group">
+                                        <input type="text" class="form-control" name="FROM_DATE" ng-model="vm.form.FROM_DATE" value="{{vm.form.FROM_DATE}}"
+                                               style="padding-right:0px;"
+                                               datepicker-popup="{{vm.dtFormat}}" is-open="vm.fromDateOpened"
+                                               max-date="vm.today"
+                                               datepicker-options="vm.dateOptions" close-text="Close" />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn-calendar" ng-click="vm.fromDateOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-show="vm.isToDate==true">
+                                    <label class="control-label col-md-4" style="padding-right:0px">
+                                        To Date
+                                    </label>
+                                    <div class="col-md-6 input-group">
+                                        <input type="text" class="form-control" name="TO_DATE" ng-model="vm.form.TO_DATE"
+                                               style="padding-right:0px;"
+                                               datepicker-popup="{{vm.dtFormat}}" is-open="vm.toDateOpened"
+                                               max-date="vm.today"
+                                               datepicker-options="vm.dateOptions" close-text="Close" />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn-calendar" ng-click="vm.toDateOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group" ng-show="vm.isFromDateTime==true">
+                                    <label class="control-label col-md-4" style="padding-right:0px">
+                                        From Date
+                                    </label>
+                                    <div class="col-md-6 input-group">
+                                        <input kendo-date-time-picker name="FROM_DATE" ng-model="vm.form.FROM_DATE" k-max="vm.today" k-options="datePickerOptions" class="form-control" />
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-show="vm.isToDateTime==true">
+                                    <label class="control-label col-md-4" style="padding-right:0px">
+                                        To Date
+                                    </label>
+                                    <div class="col-md-6 input-group">
+                                        <input kendo-date-time-picker name="TO_DATE" ng-model="vm.form.TO_DATE" k-max="vm.today" k-options="datePickerOptions" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label"></label>
+                                    <div class="col-md-6">
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="IS_EXCEL_FORMAT" ng-model="vm.form.IS_EXCEL_FORMAT" ng-true-value="'Y'" ng-false-value="'N'" value="{{vm.form.IS_EXCEL_FORMAT}}" />Export to Excel?
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <p>&nbsp;</p>
+                                <div class="form-group">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px"></label>
+                                    <div class="col-md-8" style="padding-right:0px;">
+                                        <button type="button" class="btn btn-sm blue" ng-click="vm.preview()"><i class="fa fa-file-text-o"></i> Preview</button>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <p>&nbsp;</p>
+                        </fieldset>
+                        <p>&nbsp;</p>
+
+                    </div>
+                    <div class="col-md-4">
+                    </div>
+
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+

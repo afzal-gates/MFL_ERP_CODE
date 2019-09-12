@@ -1,0 +1,226 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Admin</a>
+
+    </li>
+    <li>
+        <a href="#">HR Grade</a>
+    </li>
+
+</ul>
+
+@model IEnumerable<ERP.Model.HrGradeModel>
+
+@{
+    ViewBag.Title = "Grade Information"; //"<i class='fa fa-dropbox'></i> Package Services";
+    //ViewBag.Breadcrumb = "<li><a href='/Package/Index'>Setup</a></li><li class='active'>Package Services</li>";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $('#datatbl').dataTable({
+            "bPaginate": true,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": true,
+            "bAutoWidth": true
+        })
+    });
+    
+</script>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN EXAMPLE TABLE PORTLET-->
+        <div class="portlet box blue-dark ">
+            <div class="portlet-title">
+                <div class="caption">
+                    @*<i class="fa fa-globe"></i>*@Grade Information
+                </div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse">
+                    </a>
+                    @*<a href="#portlet-config" data-toggle="modal" class="config">
+                        </a>
+                        <a href="javascript:;" class="reload">
+                        </a>
+                    *@
+                    <a href="javascript:;" class="remove">
+                    </a>
+                </div>
+            </div>
+
+
+
+            <div class="portlet-body">
+
+                @* Start Model Edit *@
+                <div id="responsive" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                <h4 class="modal-title">Edit Grade</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 200px;">
+                                    <div class="scroller" style="height: 300px; overflow: hidden; width: auto;" data-always-visible="1" data-rail-visible1="1" data-initialized="1">
+                                        <div class="row">
+                                            
+                                            <div class="col-md-12">                                               
+                                                <p>
+                                                    Grade# [E]<input type="text" class="form-control" name="GRADE_NO_EN" id="GRADE_NO_EN" />
+                                                </p>
+                                                <p>
+                                                    Grade# [B]<input type="text" class="form-control" name="GRADE_NO_BN" />
+                                                </p>
+                                                <p>
+                                                    <input type="checkbox" class="form-control" name="IS_ACTIVE" />Active?
+                                                </p>
+                                                
+                                            </div>    
+                                               
+                                                
+
+                                                @*<div class="form-group">
+                                                    <label class="control-label col-md-3">
+                                                        Active?
+                                                    </label>
+                                                    <div class="col-md-8">
+                                                        <input type="checkbox" class="form-control" name="IS_ACTIVE" checked />
+                                                    </div>
+                                                </div>*@
+                                            
+
+                                        </div>
+                                    </div><div class="slimScrollBar" style="width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 300px; background: rgb(187, 187, 187);"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; opacity: 0.2; z-index: 90; right: 1px; background: rgb(234, 234, 234);"></div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" data-dismiss="modal" class="btn default">Close</button>
+                                <button type="button" class="btn green">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @* End Model Edit *@
+
+
+                <div class="table-toolbar">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="btn-group">
+                                <a id="sample_editable_1_new" href="@Url.Action("AddNew","HrGrade")" class="btn green">
+                                    Add New <i class="fa fa-plus"></i>
+                                </a>
+                            </div>
+                        </div>
+                        @*<div class="col-md-6">
+                                <div class="btn-group pull-right">
+                                    <button class="btn dropdown-toggle" data-toggle="dropdown">
+                                        Tools <i class="fa fa-angle-down"></i>
+                                    </button>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li>
+                                            <a href="#">
+                                                Print
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                Save as PDF
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                Export to Excel
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>*@
+                    </div>
+                </div>
+
+
+
+                <table id="datatbl" class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                Grade No [E]
+                            </th>
+                            <th>
+                                Grade No [B]
+                            </th>
+                            <th>
+                                Active?
+                            </th>
+                            <th>
+                                Action
+                            </th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="odd gradex">
+                                <td>
+                                    
+                                    @Html.ActionLink(item.GRADE_NO_EN, "Edit", new { Id = item.HR_GRADE_ID })
+
+                                </td>
+                                <td class="banglafont">
+                                    @Html.DisplayFor(modelItem => item.GRADE_NO_BN)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IS_ACTIVE)
+                                </td>
+
+                                <td>
+
+                                    <a href="@Url.Action("Edit", "HrGrade", new { id = item.HR_GRADE_ID })" title="Edit"><i class='fa fa-edit'></i></a> &nbsp;
+                                    @*<a class="fa fa-edit" data-toggle="modal" href="#responsive"></a>*@
+                                    
+                                    
+                                    @*@Html.ActionLink("Add Table Data", "LookupDataIndex", new { Id = item.LOOKUP_TABLE_ID }, new { @class = "ui tiny button" })*@
+                                    @*<a href="@Url.Action("LookupDataIndex", "LookupTables", new { id = item.LOOKUP_TABLE_ID })" title="Table Data"><i class='fa fa-external-link-square'></i></a>*@
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+
+
+
+
+            </div>
+        </div>
+        <!-- END EXAMPLE TABLE PORTLET-->
+    </div>
+</div>
+
+
+<script>
+
+    $(document).on("click", "#responsive", function () {
+        var myBookId = 'hello';//$(this).data('GRADE_NO_EN');
+        $(".modal-body #GRADE_NO_EN").val(myBookId);
+        // As pointed out in comments, 
+        // it is superfluous to have to manually call the modal.
+        // $('#addBookDialog').modal('show');
+    });
+
+</script>

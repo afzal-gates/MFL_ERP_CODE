@@ -1,0 +1,347 @@
+﻿@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+
+<form class="form-horizontal" role="form">
+    <div class="form-body clearfix">
+        <div class="row">
+
+            <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+                   data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+            <div class="form-group">
+                <label class="col-md-4 control-label">Leave Type Code :</label>
+                <div class="col-md-2">
+                    <input type="text" class="form-control" ng-model="vm.form.LEAVE_TYPE_CODE">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label"></label>
+                <div class="col-md-8">
+                    <span class="field-validation-error" ng-repeat="err in vm.errors.LEAVE_TYPE_CODE">
+                        {{err}}
+                    </span>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-md-4 control-label">Color Code :</label>
+                    <input type="hidden" class="form-control" ng-init="vm.form.COLOR_CODE?vm.form.COLOR_CODE:color" ng-model="vm.form.COLOR_CODE">
+
+
+                <div class="col-md-2">
+                    <input kendo-color-picker k-palette="'websafe'" ng-change="vm.form.COLOR_CODE=color" ng-model="color" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label"></label>
+                <div class="col-md-8">
+                    <span class="field-validation-error" ng-repeat="err in vm.errors.COLOR_CODE">
+                        {{err}}
+                    </span>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-md-4 control-label">Leave Type Name [E]:</label>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" ng-model="vm.form.LV_TYPE_NAME_EN">
+                    <span class="field-validation-error" ng-repeat="err in vm.errors.LV_TYPE_NAME_EN">
+                        {{err}}
+                    </span>
+               </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label">Leave Type Name[B] :</label>
+                <div class="col-md-5">
+                    <input type="text" class="form-control banglafont" ng-model="vm.form.LV_TYPE_NAME_BN">
+                    <span class="field-validation-error" ng-repeat="err in vm.errors.LV_TYPE_NAME_BN">
+                        {{err}}
+                    </span>
+                </div>
+            </div>
+
+           
+
+            <div class="form-group">
+                <label class="col-md-4 control-label" style="padding-top: 12px;">Paid Leave? :</label>
+                <div class="col-md-1">
+                    <div class="checkbox-list">
+                        <label class="checkbox-inline" style="margin-left:20px">
+                            <span><input type="checkbox" ng-model="vm.form.IS_PAID" ng-true-value="'Y'" ng-false-value="'N'"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <label class="col-md-2 control-label">Pay Element:</label>
+                <div class="col-md-2">
+                    <select class="form-control" ng-model="vm.form.HR_PAY_ELEMENT_ID">
+                        <option value="1">Option 1</option>
+                    </select>
+                </div>
+
+
+            </div>
+
+
+
+            <div class="form-group">
+                <label class="col-md-4 control-label" style="padding-top: 12px;">Day Forward?</label>
+                <div class="col-md-1">
+                    <div class="checkbox-list">
+                        <label class="checkbox-inline" style="margin-left:20px">
+                            <span><input type="checkbox" ng-model="vm.form.IS_FY_CF" ng-true-value="'Y'" ng-false-value="'N'"></span> 
+                        </label>
+                    </div>
+                </div>
+                <label class="col-md-2 control-label">No. of Days Forward</label>
+                <div class="col-md-2">
+                    <input type="text" class="form-control" min="0" ng-model="vm.form.MAX_DAYS_CF" ui-number-mask="0">
+                    <span class="field-validation-error" ng-repeat="err in vm.errors.MAX_DAYS_CF">
+                        {{err}}
+                    </span>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label"> </label>
+                <div class="col-md-4">
+                    <div class="checkbox-list">
+                        <label class="checkbox-inline" style="margin-left:20px">
+                            <span><input type="checkbox" ng-model="vm.form.IS_ACCURED" ng-true-value="'Y'" ng-false-value="'N'"></span>
+                            Is Accrual?
+                           
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label"></label>
+                <div class="col-md-4">
+                    <div class="checkbox-list">
+                        <label class="checkbox-inline" style="margin-left:20px">
+                            <span><input type="checkbox" ng-model="vm.form.IS_ACCURED_AUTO" ng-true-value="'Y'" ng-false-value="'N'"></span>
+                            Is Accrual Auto ?
+                            
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-md-4 control-label" style="padding-top: 12px;">
+                    Is Offday Included ?
+                </label>
+                <div class="col-md-4">
+                    <div class="checkbox-list">
+                        <label class="checkbox-inline" style="margin-left:20px">
+                            <span><input type="checkbox" ng-model="vm.form.IS_OFFDAY_INCLUDE" ng-true-value="'Y'" ng-false-value="'N'"></span>
+
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-md-4 control-label" style="padding-top: 12px;">Is Holiday Included ?</label>
+                <div class="col-md-4">
+                    <div class="checkbox-list">
+                        <label class="checkbox-inline" style="margin-left:20px">
+                            <span><input type="checkbox" ng-model="vm.form.IS_HOLIDAY_INCLUDE" ng-true-value="'Y'" ng-false-value="'N'"></span>
+
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label" style="padding-top: 12px;">Is Balance Check?</label>
+                <div class="col-md-4">
+                    <div class="checkbox-list">
+                        <label class="checkbox-inline" style="margin-left:20px">
+                            <span><input type="checkbox" ng-model="vm.form.IS_BAL_CHQ" ng-true-value="'Y'" ng-false-value="'N'"></span>
+
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <div class="form-group">
+                <label class="col-md-4 control-label">Leave Group</label>
+                <div class="col-md-6">
+                    <div class="radio-list" style="margin-left:20px">
+                        <label class="radio-inline">
+                            <span class="checked"><input type="radio" ng-model="vm.form.IS_L_P_A" name="optionsRadios" ng-value="'L'" checked=""></span>Leave
+                        </label>
+                        <label class="radio-inline">
+                            <span class=""><input type="radio" ng-model="vm.form.IS_L_P_A" name="optionsRadios" ng-value="'P'" checked=""></span>Present
+                        </label>
+
+                        <label class="radio-inline">
+                            <span class=""><input type="radio" ng-model="vm.form.IS_L_P_A" name="optionsRadios" ng-value="'A'" checked=""></span>Absent
+                        </label>
+
+
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+            <div class="form-group">
+                <label class="col-md-4 control-label">Min. Period of Employment :</label>
+                <div class="col-md-2">
+                    <input type="text" class="form-control" min="0" ng-model="vm.form.MIN_PERIOD_REQ" ui-number-mask="0">
+                    <span class="field-validation-error" ng-repeat="err in vm.errors.MIN_PERIOD_REQ">
+                        {{err}}
+                    </span>
+                </div>
+                <div class="col-md-2">
+                    <select class="form-control" ng-model="vm.form.HR_PERIOD_TYPE_ID" ng-options="Item.HR_PERIOD_TYPE_ID as Item.PERIOD_TYPE_NAME_EN for Item in vm.periodData">
+                    </select>
+
+                </div>
+            </div>
+
+            @*<div class="form-group">
+                <label class="col-md-4 control-label">HR Period Type Id :</label>
+                <div class="col-md-3">
+                    <select class="form-control" ng-model="vm.form.HR_PERIOD_TYPE_ID">
+                        <option>Option 1</option>
+                        <option>Option 2</option>
+                        <option>Option 3</option>
+                        <option>Option 4</option>
+                        <option>Option 5</option>
+                    </select>
+                </div>
+            </div>*@
+
+            <div class="form-group">
+                <label class="col-md-4 control-label">Days to Notify</label>
+                <div class="col-md-2">
+                    <input type="text" min="0" class="form-control" ng-model="vm.form.DAYS_NOTIFY" ui-number-mask="0">
+                    <span class="field-validation-error" ng-repeat="err in vm.errors.DAYS_NOTIFY">
+                        {{err}}
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label">Max. Days Leave</label>
+                <div class="col-md-2">
+                    <input type="text" class="form-control" min="0" ng-model="vm.form.MAX_DAYS_LV" ui-number-mask="0">
+                    <span class="field-validation-error" ng-repeat="err in vm.errors.MAX_DAYS_LV">
+                        {{err}}
+                    </span>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-md-4 control-label">Min. Days Work</label>
+                <div class="col-md-2">
+                    <input type="text" class="form-control" min="0" ng-model="vm.form.MIN_DAYS_WORK" ui-number-mask="0">
+                    <span class="field-validation-error" ng-repeat="err in vm.errors.MIN_DAYS_WORK">
+                        {{err}}
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label">Applicable For</label>
+                <div class="col-md-6">
+
+                    <div class="radio-list" style="margin-left:20px">
+                        <label class="radio-inline">
+                            <span class="checked"><input type="radio" ng-model="vm.form.IS_FEMALE" name="optionsRadios" ng-value="'N'" checked=""></span>Male
+                        </label>
+                        <label class="radio-inline">
+                            <span class=""><input type="radio" ng-model="vm.form.IS_FEMALE" name="optionsRadios" ng-value="'Y'" checked=""></span>Female
+                        </label>
+
+                        <label class="radio-inline">
+                            <span class=""><input type="radio" ng-model="vm.form.IS_FEMALE" name="optionsRadios" ng-value="" checked=""></span>Common
+                        </label>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label"></label>
+                <div class="col-md-6">
+                    <div class="checkbox-list">
+                        <label class="checkbox-inline" style="margin-left:20px">
+                            <span><input type="checkbox" ng-model="vm.form.IS_CASH" ng-true-value="'Y'" ng-false-value="'N'"></span> Encashable?
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label"></label>
+                <div class="col-md-6">
+                    <div class="checkbox-list">
+                        <label class="checkbox-inline" style="margin-left:20px">
+                            <span><input type="checkbox" ng-model="vm.form.IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'"></span> Active?
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label">Remarks :</label>
+                <div class="col-md-3">
+                    <textarea rows="4" cols="50" ng-model="vm.form.REMARKS">
+                    </textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <div class="row">
+                <div class="col-md-offset-3 col-md-9">
+                    <button type="button" class="btn blue" ui-sref="LeaveTypeList">Back To List</button>
+                    
+                    <button ng-if="vm.form.HR_LEAVE_TYPE_ID" type="button" ng-click="vm.submitData('/Hr/Admin/HrLeaveType/Update',true)" class="btn yellow-gold">Update</button>
+
+                    <button ng-if="!vm.form.HR_LEAVE_TYPE_ID" type="button" ng-click="vm.submitData('/Hr/Admin/HrLeaveType/Save',false)" class="btn green">Save</button>
+
+                    <button type="button" class="btn default" ui-sref="LeaveTypeEntry({data:null})">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+    </div>
+</form>

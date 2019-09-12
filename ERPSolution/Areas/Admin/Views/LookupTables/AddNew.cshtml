@@ -1,0 +1,134 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Admin</a>
+
+    </li>
+    <li>
+        <a href="#">Lookup Table</a>
+    </li>
+    <li>
+        <a href="#">Add New</a>
+    </li>
+</ul>
+
+@model ERP.Model.LookupTablesModel
+
+@{
+    ViewBag.Title = "AddNew";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption">
+            @*<i class="fa fa-gift"></i>*@Add New Table
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+            </a>
+            <a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>
+            <a href="javascript:;" class="remove">
+            </a>*@
+        </div>
+    </div>
+    <div class="portlet-body form" ng-controller="LookupTableController as vm">
+        <!-- BEGIN FORM-->
+        <form name="frmLookuptable" @*action="/Admin/LookupTables/AddNew"*@ method="post" class="form-horizontal form-bordered" ng-submit="vm.submit(frmLookuptable.$valid,vm.form,vm.insert)" novalidate>
+            <div class="form-body">
+                <div class="form-group">
+                    <label class="control-label col-md-3">
+                        @Html.LabelFor(model => model.LK_TABLE_CODE)
+                    </label>
+                    <div class="col-md-4">
+                        @*<input type="text" class="form-control" maxlength="25" name="defaultconfig" id="maxlength_defaultconfig">*@
+
+                        @Html.TextBoxFor(model => model.LK_TABLE_CODE, new { @class = "form-control", disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.LK_TABLE_CODE)
+
+
+                        @*<span class="help-block">
+                            Maxlength is 25 chars. The badge will show up by default when the remaining chars are 10 or less.
+                        </span>*@
+                    </div>
+                </div>
+                <div class="form-group" ng-class="{'has-error': (frmLookuptable.LK_TABLE_NAME_EN.$error.required) && (frmLookuptable.LK_TABLE_NAME_EN.$touched || frmLookuptable.$submitted) }">
+                    <label class="control-label col-md-3">
+                        @Html.LabelFor(model => model.LK_TABLE_NAME_EN)
+                        <span class="required" aria-required="true">*</span>
+                    </label>
+                    <div class="col-md-4">
+                        @*@Html.TextBoxFor(model => model.LK_TABLE_NAME_EN, new { @class = "form-control", placeholder = "Input table name", @required="required" })
+                        @Html.ValidationMessageFor(model => model.LK_TABLE_NAME_EN)*@
+
+                        <input type="text" class="form-control" name="LK_TABLE_NAME_EN" ng-model="vm.form.LK_TABLE_NAME_EN" required />
+
+                        <div class="help-block help-block-error" ng-messages="frmLookuptable.LK_TABLE_NAME_EN.$error" ng-if="frmLookuptable.$submitted || frmLookuptable.LK_TABLE_NAME_EN.$touched">
+                            <div ng-message="required">Please input table name</div>
+                        </div>
+                    </div>
+                </div>
+
+                @*{{frmLookuptable.$error}}*@
+
+                <div class="form-group">
+                    <label class="control-label col-md-3"></label>
+                    <div class="col-md-9">
+                        <input type="checkbox" name="IS_ACTIVE" ng-model="vm.form.IS_ACTIVE" ng-init="vm.form.IS_ACTIVE='Y'" ng-true-value="'Y'" ng-false-value="'N'" />
+
+                        @*@Html.CheckBox("IS_ACTIVE", true)*@
+                        @Html.LabelFor(model => model.IS_ACTIVE)
+                        @*@Html.ValidationMessageFor(model => model.IS_ACTIVE)*@
+
+                        @*<input type="text" class="form-control" maxlength="25" name="defaultconfig" id="maxlength_alloptions">
+                        <span class="help-block">
+                            This is a complete example where all the options configured for the bootstrap-maxlength counter are setted. Please note: if the <code>alwaysShow</code> option is enabled, the <code>threshold</code>
+                        </span>*@
+                    </div>
+                </div>
+                <!--
+            <div class="form-group">
+                <label class="control-label col-md-3">Textarea</label>
+                <div class="col-md-9">
+                    <textarea id="maxlength_textarea" class="form-control" maxlength="225" rows="2" placeholder="This textarea has a limit of 225 chars."></textarea>
+                    <span class="help-block">
+                        Bootstrap maxlength supports textarea as well as inputs. Even on old IE.
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-3">Position</label>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" maxlength="25" name="defaultconfig" id="maxlength_placement">
+                    <span class="help-block">
+                        The field counter can be positioned at the top, bottom, left or right. You can also place the maxlength indicator on the corners: <code>bottom-right</code>, <code>top-right</code>, <code>top-left</code>, <code>bottom-left</code> and <code>centered-right</code>. All you need to do is specify the <code>placement</code> option, with one of those strings.
+                    </span>
+                </div>
+            </div>
+            -->
+
+            </div>
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button type="submit" class="btn green"><i class="fa fa-check"></i> Save</button>
+                        <button type="reset" class="btn blue">Cancel</button>
+                        <a href="@Url.Action("Index","LookupTables")" class="btn default">Back</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- END FORM-->
+    </div>
+</div>
+
+
+
+
+

@@ -1,0 +1,1203 @@
+﻿<br />
+<fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;">
+    <legend class="custom-legend"> <b>Item Registration {{vm.form.PARENT_ITEM_NAME?'For '+vm.form.PARENT_ITEM_NAME:''}}</b></legend>
+    <form class="form-horizontal" role="form" name="StyleItemForm" novalidate ng-submit="vm.submitData(vm.form,token,vm.form.CREATED_BY)" ng-hide="vm.hideForm">
+
+        <div class="form-body" style="padding:0px;">
+            <input id="access_token" data-ng-model="token" type="hidden"
+                   data-ng-init="token='@Session["access_token"]'" />
+            <input ng-model="vm.form.CREATED_BY" type="hidden"
+                   data-ng-init="vm.form.CREATED_BY='@Session["multiScUserId"]'" />
+
+            <input id="access_token" ng-model="vm.form.LAST_UPDATED_BY" type="hidden"
+                   ng-init="vm.form.LAST_UPDATED_BY='@Session["multiScUserId"]'" />
+
+
+            <div class="form-group">
+
+                <div class="col-md-2">
+                    Item Group
+                    <select kendo-drop-down-list name="LK_GARM_GRP_ID" class="form-control"
+                            options="vm.GmtItemGroupList" id="ITEM_GRP_ID" ng-model="vm.form.ITEM_GRP_ID" required></select>
+                </div>
+
+                <div class="col-md-2">
+                    Item Type
+                    <select kendo-drop-down-list options="vm.getItemList" name="INV_ITEM_CAT_ID" class="form-control" id="INV_ITEM_CAT_ID" ng-model="vm.form.INV_ITEM_CAT_ID" required></select>
+                </div>
+
+
+
+
+                @*<div class="col-md-2">
+                        Item Code
+                        <input type="text" name="ITEM_CODE" ng-model="vm.form.ITEM_CODE" class="form-control" required />
+                    </div>*@
+
+                @*<div class="col-md-2">
+                        Buyer Item #
+                        <input type="text" name="BUYER_ITEM_NO" ng-model="vm.form.BUYER_ITEM_NO" class="form-control" required />
+                    </div>*@
+
+                <div class="col-md-2">
+                    Item Name
+                    <input type="text" name="ITEM_NAME_EN" ng-model="vm.form.ITEM_NAME_EN" class="form-control" required />
+                </div>
+
+
+                <div class="col-md-1">
+                    Item Ext#
+                    <input type="text" name="ITEM_EXT_NO" ng-model="vm.form.ITEM_EXT_NO" class="form-control"/>
+                </div>
+
+                
+                <div class="col-md-2">
+                    Material Desc.
+                    <input type="text" name="MATERIAL_SPEC" ng-model="vm.form.MATERIAL_SPEC" class="form-control" />
+                </div>
+
+                <div class="col-md-1">
+                    &nbsp;
+                    <div class="checkbox-list">
+                        <label class="checkbox-inline">
+                            <span class="checked"><input type="checkbox" ng-model="more"></span>
+                            More?
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-md-2" align="center" style="padding-top:10px;">
+                    <button type="submit" ng-if="vm.form.MC_STYLE_ITEM_ID" class="btn btn-sm yellow-gold" ng-class="{'disabled':!StyleItemForm.$valid}">Update</button>
+                    <button type="submit" ng-if="!vm.form.MC_STYLE_ITEM_ID" class="btn btn-sm green" ng-class="{'disabled':!StyleItemForm.$valid}">Add</button>
+                    <button type="button" class="btn btn-sm default" ng-click="vm.cancel()">Cancel</button>
+                </div>
+
+            </div>
+
+            <div class="form-group" ng-if="more">
+
+                <div class="col-md-2">
+                    Item Short Name
+                    <input type="text" name="ITEM_SNAME" ng-model="vm.form.ITEM_SNAME" class="form-control" />
+                </div>
+
+                <div class="col-md-2">
+                    Gmt Dept.
+                    <select kendo-drop-down-list name="LK_GARM_DEPT_ID" class="form-control"
+                            options="vm.GmtDeptList" id="LK_GARM_DEPT_ID" ng-model="vm.form.LK_GARM_DEPT_ID"></select>
+                </div>
+
+                <div class="col-md-2">
+                    Slv Type
+                    <select kendo-drop-down-list name="LK_SLV_TYPE_ID" class="form-control"
+                            options="vm.SlvTypeList" id="LK_SLV_TYPE_ID" ng-model="vm.form.LK_SLV_TYPE_ID"></select>
+                </div>
+
+                <div class="col-md-2">
+                    Neck Type
+                    <select kendo-drop-down-list name="LK_NECK_TYPE_ID" class="form-control"
+                            options="vm.NeckTypeList" id="LK_NECK_TYPE_ID" ng-model="vm.form.LK_NECK_TYPE_ID"></select>
+                </div>
+
+                <div class="col-md-2">
+                    Status
+                    <select kendo-drop-down-list name="LK_ITEM_STATUS_ID" class="form-control"
+                            options="vm.RmgItemStatusList" id="LK_ITEM_STATUS_ID" ng-model="vm.form.LK_ITEM_STATUS_ID"></select>
+                </div>
+
+            </div>
+
+            <div class="row" style="margin:auto;padding-top:10px;" ng-if="vm.errors">
+                <div class="alert alert-warning" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                    <ul ng-repeat="field in vm.errors">
+                        <li ng-repeat="error in field" ng-bind="error"></li>
+                    </ul>
+                </div>
+            </div>
+
+            <br />
+        </div>
+    </form>
+
+    <!--Set Top Bottom Without Combo -->
+
+    <div class="row" style="padding-top:10px;margin:auto;" ng-if="vm.Style.HAS_COMBO=='N' && vm.Style.HAS_OPTION=='N' && vm.Style.HAS_SET=='Y'" ng-hide="vm.allItemList.length==0">
+
+        <div class="table-scrollable">
+            <table class="table table-condensed table-bordered">
+
+                <thead>
+                <th scope="col">
+                    SL
+                </th>
+
+                <th scope="col">
+                    Set Item Name
+                </th>
+
+                <th scope="col"></th>
+
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in vm.allItemList">
+                        <td style="width:40px;">{{$index+1}}</td>
+                        <td ng-bind="item.ITEM_NAME_EN" style="width:150px;"></td>
+                        <td>
+                            <table class="table table-condensed table-hover table-bordered">
+                                <thead>
+                                <th>
+                                    Item Name
+                                </th>
+
+                                <th>
+                                    Fabrication & Cost Calculation
+                                </th>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="itm in item.items" ng-hide="itm.REMOVE==-2">
+                                        <td>
+                                            <input type="text" ng-model="itm.ITEM_NAME_EN" />
+                                        </td>
+
+                                        <td>
+                                            <table class="table table-condensed table-hover table-bordered">
+                                                <thead>
+                                                <th class="col-md-1">
+                                                    Part
+                                                </th>
+
+                                                <th class="col-md-1">
+                                                    Fab.Grp
+                                                </th>
+
+                                                <th class="col-md-1">
+                                                    Count/Dia
+                                                </th>
+
+
+                                                <th>
+                                                    Fabrication
+                                                </th>
+                                                <th class="col-md-1">
+                                                    Cons.<br /><small>({{vm.Inquiry.CONS_MOU+'/'+vm.Inquiry.QTY_MOU}})</small>
+                                                </th>
+                                                <th class="col-md-1">
+                                                    Rate <br /> <small>({{vm.Inquiry.CURR_NAME_EN+'/'+vm.Inquiry.CONS_MOU}})</small>
+                                                </th>
+                                                <th>
+                                                    Action
+                                                </th>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="it in itm.items" ng-if="itm.items.length>0" ng-hide="it.REMOVE==-2">
+                                                        <td>
+                                                            <input type="text" ng-model="it.GARM_PART" style="width:100px;" />
+                                                        </td>
+                                                        <td>
+                                                            <select ng-model="it.LK_FBR_GRP_ID" class="form-control" ng-options="item.LOOKUP_DATA_ID as item.LK_DATA_NAME_EN for item in vm.getFabGroupList"></select>
+                                                        </td>
+
+                                                        <td>
+                                                            <input type="text" ng-model="it.YC_DIA" style="width:60px;" />
+                                                        </td>
+
+
+                                                        <td>
+                                                            <input type="text" ng-model="it.FABRIC_DESC" style="width:250px;" />
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" ng-model="it.FABRIC_CONS" style="width:60px;" />
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" ng-model="it.FABRIC_RATE" style="width:60px;" />
+                                                        </td>
+
+                                                        <td>
+                                                            <a ng-click="vm.copyItem(it,itm,true)" class="btn btn-xs blue">
+                                                                <i class="fa fa-copy"></i>
+                                                            </a>
+                                                            <a class="btn btn-xs red" ng-click=vm.remove($index,itm,false)>
+                                                                <i class="fa fa-times"></i>
+
+                                                            </a>
+
+
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+
+
+                                        <td>
+                                            <a ng-click="vm.editItem(itm)" class="btn btn-xs blue" ng-disabled="itm.copied">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+                        </td>
+                        <td>
+                            <p>
+                                <button type="button" class="btn btn-xs blue" ng-click="vm.openStyleItemCostHead(item,2)">Cost Head</button>
+                            </p>
+                            <p>
+                                <a ng-click="vm.addItemTo(item)" class="btn btn-xs blue">
+                                    <i class="fa fa-plus"></i>Item
+                                </a>
+
+                            </p>
+                            @*<p>
+                                    <a ng-click="vm.editItem(item)" class="btn btn-xs blue" ng-disabled="itm.copied">
+                                        <i class="fa fa-edit"></i> Edit
+                                    </a>
+                                </p>*@
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-4" align="left">
+                <button type="button" class="btn btn-sm green" ng-click="vm.saveDataForNonComboSetItem(vm.allItemList,token,vm.form.CREATED_BY)">Save</button>
+                <button type="button" class="btn btn-sm blue" ui-sref="InquiryList">Back To List</button>
+                <button type="button" class="btn btn-sm blue" ng-click="vm.lsitView()">Cost Breakup</button>
+                <button type="button" class="btn btn-sm default" ng-click="vm.cancel()">Cancel</button>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!--Set Top Bottom With Combo -->
+    <div class="row" style="padding-top:10px;margin:auto;" ng-if="(vm.Style.HAS_COMBO=='Y'||vm.Style.HAS_OPTION=='Y') && vm.Style.HAS_SET=='Y' " ng-hide="vm.ForSetCombo.length==0">
+
+        <div class="table-scrollable">
+            <table class="table table-condensed table-bordered">
+
+                <thead>
+                <th scope="col">
+                    SL
+                </th>
+
+
+
+                <th scope="col">
+                    Set Item Name
+                </th>
+                <th scope="col">
+                    Cmb/Mdl
+                </th>
+
+                <th scope="col">
+                    Opt
+                </th>
+
+
+                <th scope="col"></th>
+
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in vm.ForSetCombo" ng-hide="item.REMOVE==-2">
+                        <td style="width:40px;">{{$index+1}}</td>
+                        <td ng-bind="item.ITEM_NAME_EN" style="width:80px;"></td>
+                        <td>
+                            <input type="text" ng-model="item.COMBO_NO" style="width:40px;" ng-disabled="vm.Style.HAS_OPTION=='Y'" />
+                        </td>
+
+                        <td>
+                            <input type="text" ng-model="item.OPTION_NO" style="width:40px;" ng-disabled="vm.Style.HAS_OPTION=='N'" />
+                        </td>
+
+                        <td>
+                            <table class="table table-condensed table-hover table-bordered">
+                                <thead>
+                                <th>
+                                    Item Name
+                                </th>
+
+                                <th>
+                                    Fabrication & Cost Calculation
+                                </th>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="itm in item.items" ng-hide="itm.REMOVE==-2">
+                                        <td>
+                                            <input type="text" ng-model="itm.ITEM_NAME_EN" />
+                                        </td>
+
+                                        <td>
+                                            <table class="table table-condensed table-hover table-bordered">
+                                                <thead>
+                                                <th class="col-md-1">
+                                                    Part
+                                                </th>
+
+                                                <th class="col-md-1">
+                                                    Fab.Grp
+                                                </th>
+
+                                                <th class="col-md-1">
+                                                    Count/Dia
+                                                </th>
+
+                                                <th>
+                                                    Fabrication
+                                                </th>
+                                                <th class="col-md-1">
+                                                    Cons.<br /><small>({{vm.Inquiry.CONS_MOU+'/'+vm.Inquiry.QTY_MOU}})</small>
+                                                </th>
+                                                <th class="col-md-1">
+                                                    Rate <br /> <small>({{vm.Inquiry.CURR_NAME_EN+'/'+vm.Inquiry.CONS_MOU}})</small>
+                                                </th>
+                                                @*<th>
+                                                        Action
+                                                    </th>*@
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="it in itm.items" ng-if="itm.items.length>0" ng-hide="it.REMOVE==-2">
+                                                        <td>
+                                                            <input type="text" ng-model="it.GARM_PART" style="width:100px;" />
+                                                        </td>
+
+                                                        <td>
+                                                            <select ng-model="it.LK_FBR_GRP_ID" class="form-control" ng-options="item.LOOKUP_DATA_ID as item.LK_DATA_NAME_EN for item in vm.getFabGroupList"></select>
+                                                        </td>
+
+                                                        <td>
+                                                            <input type="text" ng-model="it.YC_DIA" style="width:60px;" />
+                                                        </td>
+
+                                                        <td>
+                                                            <input type="text" ng-model="it.FABRIC_DESC" style="width:180px;" />
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" ng-model="it.FABRIC_CONS" style="width:60px;" />
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" ng-model="it.FABRIC_RATE" style="width:60px;" />
+                                                        </td>
+
+                                                        <td>
+                                                            <a ng-click="vm.copyItem(it,itm,true)" class="btn btn-xs blue">
+                                                                <i class="fa fa-copy"></i>
+                                                            </a>
+                                                            <a class="btn btn-xs red" ng-click=vm.remove($index,itm,false)>
+                                                                <i class="fa fa-times"></i>
+
+                                                            </a>
+
+
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+
+
+                                        @*<td>
+                                                <a ng-click="vm.editItem(itm)" class="btn btn-xs blue" ng-disabled="itm.copied">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
+                                            </td>*@
+                                        @*<td>
+                                                <br />
+                                                <a class="btn btn-xs blue" ng-click="vm.addCombo(itm,item.items)" ng-hide="item.ITEM_GRP_ID==vm.TopBottomSet">
+                                                    <i class="fa fa-plus"></i>Cmb
+                                                </a>
+                                                <a class="btn btn-xs red" ng-click="vm.remove($index,item.items,true)">
+                                                    <i class="fa fa-times"></i>
+                                                </a>
+                                            </td>*@
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+                        </td>
+                        <td>
+
+                            <p ng-if="$index==0||vm.Style.HAS_OPTION=='Y'">
+                                <button type="button" class="btn btn-xs blue" ng-click="vm.openStyleItemCostHead(item,1)">Cost Head</button>
+                            </p>
+
+
+                            <p>
+                                <a ng-click="vm.addItemTo(item)" class="btn btn-xs blue">
+                                    <i class="fa fa-plus"></i>Item
+                                </a>
+                            </p>
+
+                            @*<p>
+                                    <a ng-click="vm.editItem(item)" class="btn btn-xs blue">
+                                        <i class="fa fa-edit"></i> Edit
+                                    </a>
+                                </p>*@
+
+                            <p>
+                                <a ng-click="vm.addComboInTopBottomSet(item,vm.ForSetCombo)" class="btn btn-xs blue">
+                                    <i class="fa fa-plus"></i> Cmb/Opt
+                                </a>
+                            </p>
+
+                            <p>
+                                <a class="btn btn-xs red" ng-click="vm.remove($index,vm.ForSetCombo,true)">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-4" align="left">
+
+                <button type="button" class="btn btn-sm green" ng-click="vm.saveDataForComboSetItem(vm.ForSetCombo,token,vm.form.CREATED_BY)" ng-disabled="vm.ForSetCombo.length==0">Save</button>
+                <button type="button" class="btn btn-sm blue" ui-sref="InquiryList">Back To List</button>
+                <button type="button" class="btn btn-sm blue" ng-click="vm.lsitView()">Cost Breakup</button>
+
+                <button type="button" class="btn btn-sm default" ng-click="vm.cancel()">Cancel</button>
+
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- Other Item With Combo -->
+
+    <div class="row" style="padding-top:10px;margin:auto;" ng-if="vm.Style.HAS_COMBO=='Y' && vm.Style.HAS_SET=='N'" ng-hide="vm.allItemList.length==0">
+
+        <div class="table-scrollable">
+            <table class="table table-condensed table-bordered">
+
+                <thead>
+                <th scope="col">
+                    SL
+                </th>
+
+                <th scope="col">
+                    Item Name
+                </th>
+
+                <th scope="col"></th>
+
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in vm.allItemList" ng-hide="item.REMOVE==-2">
+                        <td style="width:40px;">{{$index+1}}</td>
+                        <td>
+                            <input type="text" ng-model="item.ITEM_NAME_EN" style="width:150px;" />
+
+                        </td>
+
+                        <td ng-if="vm.Style.HAS_OPTION=='Y'">
+                            <input type="text" ng-model="item.OPTION_NO" style="width:40px;" />
+                        </td>
+
+
+                        <td>
+                            <table class="table table-condensed table-hover table-bordered">
+                                <thead>
+                                <th>
+                                    Cmb/Mdl
+                                </th>
+                                <th>
+                                    Combo Item
+                                </th>
+
+
+                                <th>
+                                    Fabrication & Cost Calculation
+                                </th>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="itm in item.items" ng-hide="itm.REMOVE==-2">
+                                        <td>
+                                            <input type="text" ng-model="itm.COMBO_NO" style="width:50px;" />
+                                        </td>
+
+                                        @*<td>
+                                                <input type="text" ng-model="itm.OPTION_NO" style="width:50px;" />
+                                            </td>*@
+
+                                        <td>
+                                            <input type="text" ng-model="itm.ITEM_NAME_EN" style="width:100px;" />
+                                        </td>
+
+
+                                        <td>
+                                            <table class="table table-condensed table-hover table-bordered">
+                                                <thead>
+                                                <th class="col-md-1">
+                                                    Part
+                                                </th>
+                                                <th class="col-md-1">
+                                                    Fab.Grp
+                                                </th>
+
+                                                <th class="col-md-1">
+                                                    Count/Dia
+                                                </th>
+
+                                                <th>
+                                                    Fabrication
+                                                </th>
+                                                <th class="col-md-1">
+                                                    Cons.<br /><small>({{vm.Inquiry.CONS_MOU+'/'+vm.Inquiry.QTY_MOU}})</small>
+                                                </th>
+                                                <th class="col-md-1">
+                                                    Rate <br /> <small>({{vm.Inquiry.CURR_NAME_EN+'/'+vm.Inquiry.CONS_MOU}})</small>
+                                                </th>
+                                                <th>
+                                                    Action
+                                                </th>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="it in itm.items" ng-if="itm.items.length>0" ng-hide="it.REMOVE==-2">
+                                                        <td>
+                                                            <input type="text" ng-model="it.GARM_PART" style="width:100px;" />
+                                                        </td>
+
+                                                        <td>
+                                                            <select ng-model="it.LK_FBR_GRP_ID" class="form-control" ng-options="item.LOOKUP_DATA_ID as item.LK_DATA_NAME_EN for item in vm.getFabGroupList"></select>
+                                                        </td>
+
+                                                        <td>
+                                                            <input type="text" ng-model="it.YC_DIA" style="width:60px;" />
+                                                        </td>
+
+
+                                                        <td>
+                                                            <input type="text" ng-model="it.FABRIC_DESC" style="width:180px;" />
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" ng-model="it.FABRIC_CONS" style="width:40px;" />
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" ng-model="it.FABRIC_RATE" style="width:40px;" />
+                                                        </td>
+
+                                                        <td>
+                                                            <a ng-click="vm.copyItem(it,itm,true)" class="btn btn-xs blue">
+                                                                <i class="fa fa-copy"></i>
+                                                            </a>
+                                                            <a class="btn btn-xs red" ng-click=vm.remove($index,itm,false)>
+                                                                <i class="fa fa-times"></i>
+
+                                                            </a>
+
+
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+
+
+                                        <td>
+                                            @*<p>
+                                                    <a ng-click="vm.editItem(itm)" class="btn btn-xs blue" ng-disabled="itm.copied">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                </p>*@
+
+                                            <p>
+                                                <a class="btn btn-xs blue" ng-click="vm.addCombo(itm,item.items)">
+                                                    <i class="fa fa-plus"></i>Cmb
+                                                </a>
+                                            </p>
+
+                                            <p>
+                                                <a class="btn btn-xs red" ng-click="vm.remove($index,item.items,true)">
+                                                    <i class="fa fa-times"></i>
+                                                </a>
+                                            </p>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+                        </td>
+                        <td>
+
+                            <p>
+                                <a class="btn btn-xs blue" ng-click="vm.openStyleItemCostHead(item,3)" ng-disabled="item.MC_STYLE_ITEM_ID<0">Cost Head</a>
+                            </p>
+
+                            @*<p>
+                                    <a ng-click="vm.editItem(item)" class="btn btn-xs blue">
+                                        <i class="fa fa-edit"></i> Edit
+                                    </a>
+                                </p>*@
+
+                            <p>
+                                <a class="btn btn-xs blue" ng-click="vm.addOption(item,vm.allItemList)" ng-if="vm.Style.HAS_OPTION=='Y'">
+                                    <i class="fa fa-plus"></i>Option
+                                </a>
+                            </p>
+
+                            <p>
+                                <a class="btn btn-xs red" ng-click="vm.remove($index,vm.allItemList,true)">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </p>
+
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-4" align="left">
+                <button type="button" class="btn btn-sm green" ng-click="vm.saveDataForComboOtherItem(vm.allItemList,token,vm.form.CREATED_BY)" ng-disabled="vm.allItemList.length==0">Save</button>
+                <button type="button" class="btn btn-sm blue" ui-sref="InquiryList">Back To List</button>
+                <button type="button" class="btn btn-sm blue" ng-click="vm.lsitView()">Cost Breakup</button>
+                <button type="button" class="btn btn-sm default" ng-click="vm.cancel()">Cancel</button>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <!-- Other Item With Option -->
+
+    <div class="row" style="padding-top:10px;margin:auto;" ng-if="vm.Style.HAS_OPTION=='Y' && vm.Style.HAS_SET=='N'" ng-hide="vm.allItemList.length==0">
+
+        <div class="table-scrollable">
+            <table class="table table-condensed table-bordered">
+
+                <thead>
+                <th scope="col">
+                    SL
+                </th>
+
+                <th scope="col">
+                    Item Name
+                </th>
+                <th scope="col">
+                    Opt#
+                </th>
+
+
+                <th scope="col"></th>
+
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in vm.allItemList" ng-hide="item.REMOVE==-2">
+                        <td style="width:40px;">{{$index+1}}</td>
+                        <td>
+                            <input type="text" ng-model="item.ITEM_NAME_EN" style="width:150px;" />
+
+                        </td>
+
+                        <td>
+                            <input type="text" ng-model="item.OPTION_NO" style="width:40px;" />
+                        </td>
+
+
+                        <td>
+                            <table class="table table-condensed table-hover table-bordered">
+                                <thead>
+                                <th>
+                                    Item
+                                </th>
+
+
+                                <th>
+                                    Fabrication & Cost Calculation
+                                </th>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="itm in item.items" ng-hide="itm.REMOVE==-2">
+
+                                        @*<td>
+                                                <input type="text" ng-model="itm.OPTION_NO" style="width:50px;" />
+                                            </td>*@
+
+                                        <td>
+                                            <input type="text" ng-model="itm.ITEM_NAME_EN" style="width:100px;" />
+                                        </td>
+
+
+                                        <td>
+                                            <table class="table table-condensed table-hover table-bordered">
+                                                <thead>
+                                                <th class="col-md-1">
+                                                    Part
+                                                </th>
+                                                <th class="col-md-1">
+                                                    Fab.Grp
+                                                </th>
+
+                                                <th class="col-md-1">
+                                                    Count/Dia
+                                                </th>
+
+                                                <th>
+                                                    Fabrication
+                                                </th>
+                                                <th class="col-md-1">
+                                                    Cons.<br /><small>({{vm.Inquiry.CONS_MOU+'/'+vm.Inquiry.QTY_MOU}})</small>
+                                                </th>
+                                                <th class="col-md-1">
+                                                    Rate <br /> <small>({{vm.Inquiry.CURR_NAME_EN+'/'+vm.Inquiry.CONS_MOU}})</small>
+                                                </th>
+                                                <th>
+                                                    Action
+                                                </th>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="it in itm.items" ng-if="itm.items.length>0" ng-hide="it.REMOVE==-2">
+                                                        <td>
+                                                            <input type="text" ng-model="it.GARM_PART" style="width:100px;" />
+                                                        </td>
+
+                                                        <td>
+                                                            <select ng-model="it.LK_FBR_GRP_ID" class="form-control" ng-options="item.LOOKUP_DATA_ID as item.LK_DATA_NAME_EN for item in vm.getFabGroupList"></select>
+                                                        </td>
+
+                                                        <td>
+                                                            <input type="text" ng-model="it.YC_DIA" style="width:60px;" />
+                                                        </td>
+
+
+                                                        <td>
+                                                            <input type="text" ng-model="it.FABRIC_DESC" style="width:180px;" />
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" ng-model="it.FABRIC_CONS" style="width:40px;" />
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" ng-model="it.FABRIC_RATE" style="width:40px;" />
+                                                        </td>
+
+                                                        <td>
+                                                            <a ng-click="vm.copyItem(it,itm,true)" class="btn btn-xs blue">
+                                                                <i class="fa fa-copy"></i>
+                                                            </a>
+                                                            <a class="btn btn-xs red" ng-click=vm.remove($index,itm,false)>
+                                                                <i class="fa fa-times"></i>
+
+                                                            </a>
+
+
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+                        </td>
+                        <td>
+
+                            <p>
+                                <a class="btn btn-xs blue" ng-click="vm.openStyleItemCostHead(item,3)" ng-disabled="item.MC_STYLE_ITEM_ID<0">Cost Head</a>
+                            </p>
+
+                            @*<p>
+                                    <a ng-click="vm.editItem(item)" class="btn btn-xs blue">
+                                        <i class="fa fa-edit"></i> Edit
+                                    </a>
+                                </p>*@
+
+                            <p>
+                                <a class="btn btn-xs blue" ng-click="vm.addOption(item,vm.allItemList)" >
+                                    <i class="fa fa-plus"></i>Option
+                                </a>
+                            </p>
+
+                            <p>
+                                <a class="btn btn-xs red" ng-click="vm.remove($index,vm.allItemList,true)">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </p>
+
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-4" align="left">
+                <button type="button" class="btn btn-sm green" ng-click="vm.saveDataForComboOtherItem(vm.allItemList,token,vm.form.CREATED_BY)" ng-disabled="vm.allItemList.length==0">Save</button>
+                <button type="button" class="btn btn-sm blue" ui-sref="InquiryList">Back To List</button>
+                <button type="button" class="btn btn-sm blue" ng-click="vm.lsitView()">Cost Breakup</button>
+                <button type="button" class="btn btn-sm default" ng-click="vm.cancel()">Cancel</button>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- Other Item Without Combo -->
+    <div class="row" style="padding-top:10px;margin:auto;" ng-if="vm.Style.HAS_COMBO=='N' && vm.Style.HAS_SET=='N' && vm.Style.HAS_OPTION=='N'" ng-hide="vm.itemList2L.length==0">
+
+        <div class="table-scrollable">
+            <table class="table table-condensed table-bordered">
+
+                <thead>
+                <th scope="col">
+                    SL
+                </th>
+
+                <th scope="col">
+                    Item Name
+                </th>
+
+                <th scope="col"></th>
+
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in vm.itemList2L">
+                        <td style="width:40px;">{{$index+1}}</td>
+                        <td>
+                            <input type="text" ng-model="item.ITEM_NAME_EN" style="width:150px;" />
+
+                        </td>
+                        <td>
+                            <table class="table table-condensed table-hover table-bordered">
+                                <thead>
+                                <th class="col-md-1">
+                                    Part
+                                </th>
+
+                                <th class="col-md-1">
+                                    Fab.Grp
+                                </th>
+
+                                <th class="col-md-1">
+                                    Count/Dia
+                                </th>
+
+                                <th>
+                                    Fabrication
+                                </th>
+                                <th class="col-md-1">
+                                    Cons.<br /><small>({{vm.Inquiry.CONS_MOU+'/'+vm.Inquiry.QTY_MOU}})</small>
+                                </th>
+                                <th class="col-md-1">
+                                    Rate <br /> <small>({{vm.Inquiry.CURR_NAME_EN+'/'+vm.Inquiry.CONS_MOU}})</small>
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="itm in item.items" ng-if="item.items.length>0" ng-hide="itm.REMOVE==-2">
+                                        <td>
+                                            <input type="text" ng-model="itm.GARM_PART" style="width:100px;" />
+                                        </td>
+
+                                        <td>
+                                            <select ng-model="itm.LK_FBR_GRP_ID" class="form-control" ng-options="item.LOOKUP_DATA_ID as item.LK_DATA_NAME_EN for item in vm.getFabGroupList"></select>
+                                        </td>
+
+                                        <td>
+                                            <input type="text" ng-model="itm.YC_DIA" style="width:60px;" />
+                                        </td>
+
+                                        <td>
+                                            <input type="text" ng-model="itm.FABRIC_DESC" style="width:250px;" />
+                                        </td>
+                                        <td>
+                                            <input type="text" ng-model="itm.FABRIC_CONS" style="width:60px;" />
+                                        </td>
+                                        <td>
+                                            <input type="text" ng-model="itm.FABRIC_RATE" style="width:60px;" />
+                                        </td>
+
+                                        <td>
+                                            <a ng-click="vm.copyItem(itm,item,true)" class="btn btn-xs blue">
+                                                <i class="fa fa-copy"></i>
+                                            </a>
+                                            <a class="btn btn-xs red" ng-click=vm.remove($index,item,false)>
+                                                <i class="fa fa-times"></i>
+
+                                            </a>
+
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td>
+
+                            <p>
+                                <a class="btn btn-xs blue" ng-click="vm.openStyleItemCostHead(item,4)">Cost Head</a>
+                            </p>
+
+                            <p>
+                                <a ng-click="vm.editItem(item)" class="btn btn-xs blue">
+                                    <i class="fa fa-edit"></i> Edit
+                                </a>
+                            </p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-4" align="left">
+                <button type="button" class="btn btn-sm green" ng-click="vm.saveOtherNonComboData(vm.itemList2L,token,vm.form.CREATED_BY)" ng-disabled="vm.allItemList.length==0">Save</button>
+                <button type="button" class="btn btn-sm blue" ui-sref="InquiryList">Inquiry List</button>
+                <button type="button" class="btn btn-sm blue" ng-click="vm.lsitView()">Cost Breakup</button>
+                <button type="button" class="btn btn-sm default" ng-click="vm.cancel()">Cancel</button>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <br />
+
+
+</fieldset>
+
+
+<script type="text/ng-template" id="ItemCostHead.html">
+    <input id="access_token" data-ng-model="token" type="hidden"
+           data-ng-init="token='@Session["access_token"]'" />
+    <input ng-model="CREATED_BY" type="hidden"
+           data-ng-init="CREATED_BY='@Session["multiScUserId"]'" />
+
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h3 class="title">
+                         Cost Head Mapping
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </h3>
+                </div>
+            </div>
+            <div class="portlet-body">
+
+                <div class="table-scrollable">
+                    <table class="table table-condensed table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Option#
+                                </th>
+                                <th>
+                                    Item Name
+                                </th>
+                               <th>
+                                   <label class="checkbox-inline">
+                                       <span class="checked"><input type="checkbox" ng-model="more" ng-change="vm.changeView(more)"></span>
+                                       Show {{more?'Less':'More'}}
+                                   </label>
+                               </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in vm.CostHeadList">
+                                <td ng-bind="item.OPTION_NO">
+                                </td>
+                                <td ng-bind="item.ITEM_NAME_EN">
+                                   
+                                </td>
+                                <td>
+                                    <table class="table table-condensed table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Cost Head
+                                                </th>
+                                                @*<th>
+                                                    Is Percent?
+                                                </th>*@
+                                                <th>
+                                                    Description
+                                                </th>
+                                                <th>
+                                                    Value 
+                                                    <small>({{vm.Inquiry.CURR_NAME_EN+' / '+vm.Inquiry.QTY_MOU}})</small>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="itm in item.items|filter:{ IS_PCT: 'N' }|filterWithOr:{MC_COST_HEAD_ID:list}">
+
+                                                <td>
+                                                    {{itm.COST_NAME_EN}}
+                                                </td>
+
+                                                <td>
+                                                  
+
+                                                    <input type='text' ng-model='itm.HEAD_COST_DESC' />
+                                                </td>
+                                                <td>
+                                                    <small>({{vm.Inquiry.CURR_SYMBOL}})</small>
+                                                    <input type='number' ng-model='itm.HEAD_COST' style="width:80px;" ng-disabled="itm.MC_COST_HEAD_ID==6" />
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    
+                                                </td>
+
+                                                <td class="text-right">
+                                                    <b>
+                                                        Sub Total
+                                                    </b>
+                                                </td>
+                                                <td>
+                                                    <small>({{vm.Inquiry.CURR_SYMBOL}})</small>
+                                                    <input type='text' ng-model='item.SUB_TTL_1' style="width:80px;" ng-disabled="true"/>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td></td>
+
+                                                <td class="text-right">
+
+                                                    {{item.items[10].COST_NAME_EN}} 
+
+
+                                                </td>
+                                                <td>
+                                                    <small>(%)</small>
+                                                    <input type='number' ng-model='item.items[10].PCT_COST' style="width:80px;" />
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                   
+                                                </td>
+
+                                                <td class="text-right">
+                                                    <b>
+                                                        Sub Total
+                                                    </b>
+                                                </td>
+                                                <td>
+                                                    <small>({{vm.Inquiry.CURR_SYMBOL}})</small>
+                                                    <input type='text' ng-model='item.SUB_TTL_2' style="width:80px;" />
+                                                </td>
+                                            </tr>
+
+                                            <tr @*ng-repeat="itm in item.items|filter:{ IS_PCT: 'Y' }|limitTo:2:2"*@>
+                                                <td></td>
+
+                                                <td class="text-right">
+
+                                                    {{item.items[11].COST_NAME_EN}}
+                                                </td>
+                                                <td>
+                                                    <small>(%)</small>
+                                                    <input type='text' ng-model='item.items[11].PCT_COST' style="width:80px;"/>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    
+                                                </td>
+
+                                                <td class="text-right">
+                                                    <b>
+                                                        Total FOB
+                                                    </b>
+                                                </td>
+                                                <td>
+                                                    <small>({{vm.Inquiry.CURR_SYMBOL}})</small>
+                                                    <input type='text' ng-model='item.FOB' style="width:80px;" ng-disabled="true" />
+                                                </td>
+                                            </tr>
+                       
+
+                                            <tr ng-if="vm.Inquiry.LK_INCOTERM_ID==216">
+                                                <td></td>
+
+                                                <td class="text-right">
+                                                    {{item.items[15].COST_NAME_EN}}
+                                                 
+                                                </td>
+                                                <td>
+                                                    <small>({{vm.Inquiry.CURR_SYMBOL}})</small>
+                                                    <input type='text' ng-model='item.items[15].HEAD_COST' style="width:80px;"/>
+                                                </td>
+                                            </tr>
+
+                                            <tr ng-if="vm.Inquiry.LK_INCOTERM_ID==216">
+                                                <td></td>
+
+                                                <td class="text-right">
+                                                    <b>
+                                                        Total C&F
+                                                    </b>
+                                                </td>
+                                                <td>
+                                                    <small>({{vm.Inquiry.CURR_SYMBOL}})</small>
+                                                    <input type='text' ng-model='item.CAL_PRICE' style="width:80px;" />
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td></td>
+
+                                                <td class="text-right">
+                                                    <b>
+                                                        Quoted Price
+                                                    </b>
+                                                </td>
+                                                <td>
+                                                    <small>({{vm.Inquiry.CURR_SYMBOL}})</small>
+                                                    <input type='text' ng-model='item.QUOTE_PRICE' style="width:80px;" />
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <br />
+                <div class="row">
+                    <div class="col-md-4">
+                    
+                        <button type="button" class="btn btn-sm green" ng-click="vm.saveGridData(vm.CostHeadList,token,CREATED_BY)">Save</button>
+                        <button type="button" class="btn btn-sm default" ng-click="cancel()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+
+<div data-ui-view></div>

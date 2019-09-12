@@ -1,0 +1,183 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 12px;
+    }
+
+    #grid tr td {
+        /* this makes the menu visibile */
+        overflow: visible;
+    }
+
+    #grid .k-grid-header {
+        padding-right: 0 !important;
+    }
+</style>
+
+<div ng-init="Showed=true">
+
+    <div class="col-md-3" ng-class="{'col-md-pull-0' : !Showed, 'col-md-3' : Showed }" ng-hide="!Showed" style="padding-right:0px;">
+        <fieldset class="custom-fieldset" style="min-width:inherit" ng-disabled="$parent.form.RF_ACTN_STATUS_ID==75||$parent.form.RF_ACTN_STATUS_ID==12||($parent.form.RF_ACTN_STATUS_ID==12 && $parent.form.ACTION_USER_TYPE=='SENDER')">
+            <legend class="custom-legend">Receive Challan</legend>
+
+            <div kendo-grid k-options="$parent.delvChlnOptions" k-data-source="$parent.delvChlnDataSource"></div>
+
+            <div class="col-md-12" style="text-align:right;padding-right:0px;padding-top:5px">
+                <button type="button" class="btn btn-sm blue" ng-click="vm.includeBill()">Include Bill</button>
+            </div>
+        </fieldset>
+
+    </div>
+
+
+    <div class="col-md-9" ng-class="{'col-md-9' : Showed, 'col-md-12' : !Showed }">
+        <a class="btn btn-xs btn-link" ng-click="Showed= !Showed"><i class="fa" ng-class="{'fa-chevron-left' : Showed, 'fa-chevron-right' : !Showed }"></i> {{Showed?'Hide':'Show'}} Receive Challan List</a>
+
+        <fieldset class="custom-fieldset" ng-disabled="$parent.form.RF_ACTN_STATUS_ID==75||($parent.form.RF_ACTN_STATUS_ID==12 && $parent.form.ACTION_USER_TYPE=='SENDER')">
+            <legend class="custom-legend">Bill Detail</legend>
+
+            <div kendo-grid k-options="vm.billDtlOptions" k-data-source="vm.billDtlDataSource"></div>
+
+            <div class="form-group" style="padding-top:3px">
+                <label class="control-label col-md-2">Misc Desc</label>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" name="MISC_DESC" ng-model="$parent.form.MISC_DESC" />
+                </div>
+
+                <label class="control-label col-md-2">Misc Amount</label>
+                <div class="col-md-2">
+                    <input type="number" class="form-control" name="MISC_BILL_AMT" ng-model="$parent.form.MISC_BILL_AMT" ng-blur="vm.totalBillAmt()" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-offset-8 col-md-2">Total Amount</label>
+                <div class="col-md-2">
+                    <input type="text" class="form-control" style="background-color:yellow" name="CURR_BILL_AMT" ng-model="$parent.form.CURR_BILL_AMT" readonly />
+                </div>
+            </div>
+
+        </fieldset>
+
+        <div class="col-md-12" style="padding-top:5px">
+            <div class="form-group">
+
+                <button type="button" class="btn btn-sm green" ng-click="vm.submitData(token, 'N')" ng-show="$parent.form.KNT_SCO_BILL_H_ID<1"
+                        ng-class="{'disabled':!frmScoBillProc.$valid || $parent.form.RF_ACTN_STATUS_ID==75 || $parent.form.IS_ACTIVE=='N' || vm.billDtlDataSource.data().length<1}">
+                    Save
+                </button>
+                <button type="button" class="btn btn-sm yellow-gold" ng-click="vm.submitData(token, 'N')" ng-show="$parent.form.KNT_SCO_BILL_H_ID>0"
+                        ng-class="{'disabled':!frmScoBillProc.$valid || $parent.form.RF_ACTN_STATUS_ID==75 || $parent.form.IS_ACTIVE=='N' || (form.RF_ACTN_STATUS_ID==12 && form.ACTION_USER_TYPE=='SENDER')}">                    
+                    Update
+                </button>
+
+                @*<button type="button" class="btn btn-sm blue" ng-click="vm.cancel()">Cancel</button>*@
+                <a class="btn btn-sm blue" href="/Knitting/Knit/ScoBillProc?a=337/#/scoBillProcH/0/dtl">Cancel</a>
+
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" class="btn btn-sm blue-hoki" ng-click="vm.backToList()">Back to List</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                @*<button type="button" class="btn btn-sm blue" ng-click="vm.printBill()" ng-disabled="$parent.form.KNT_SCO_BILL_H_ID<1">Print</button>*@
+                <button type="button" class="btn btn-sm blue" ng-click="vm.submitData(token, 'Y')" ng-show="$parent.form.RF_ACTN_STATUS_ID==74">Finalize</button>
+
+
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" class="btn btn-sm blue" ng-click="vm.reviseBillModal()" ng-show="$parent.form.RF_ACTN_STATUS_ID==75 && $parent.form.ACTION_USER_TYPE=='SENDER' && $parent.form.IS_ACTIVE=='Y'">Revise</button>
+                <button type="button" class="btn btn-sm blue" ng-click="vm.submitData(token, 'N', 12)" ng-show="$parent.form.RF_ACTN_STATUS_ID==4||$parent.form.RF_ACTN_STATUS_ID==15">Send for Verify</button>
+                <button type="button" class="btn btn-sm blue" ng-click="vm.submitData(token, 'Y', $parent.form.RF_ACTN_STATUS_ID)" ng-show="$parent.form.RF_ACTN_STATUS_ID==12 && $parent.form.ACTION_USER_TYPE=='RECEIVER'">Verify</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" class="btn btn-sm blue" ng-click="vm.submitData(token, 'N', 15)" ng-show="$parent.form.RF_ACTN_STATUS_ID==12 && $parent.form.ACTION_USER_TYPE=='RECEIVER'">Resend</button>
+
+                @*
+                    <button type="button" class="btn btn-sm blue" ng-click="vm.batchSave(token, 'Y')" ng-disabled="vm.form.KNT_SCO_YRN_TR_H_ID<1 || form.IS_FINALIZED=='Y'">Finalize</button>
+                    <button type="button" class="btn btn-sm blue" ng-click="vm.printChallan()" ng-disabled="form.IS_FINALIZED!='Y'">Print</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+@*Start Bill Revision*@
+<script type="text/ng-template" id="ScoBillRevisionModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <p style="padding-top:10px;">
+                        Bill Revision
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </p>
+
+
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="ScoBillRevisionModal" novalidate @*ng-submit="save(Task,token,TaskForm.$valid)"*@>
+                    <input id="access_token" data-ng-model="token" type="hidden"
+                           data-ng-init="token='@Session["access_token"]'" />
+
+                    @*<div kendo-grid k-data-source="asortDataList" k-columns="asortColumns" k-selectable="true" k-on-change="selected = data" k-height="300" k-filterable="true" k-sortable="true"></div>*@
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">
+                            <span aria-required="true" class="required">*</span>Date
+                        </label>
+                        <div class="col-md-5" style="padding-top:5px;">
+                            <input type="text" class="form-control" ng-click="RevisionDate_LNopen($event)" datepicker-popup="{{dtFormat}}"
+                                   name="BILL_DT" ng-model="BILL_DT" is-open="RevisionDate_LNopened"
+                                   datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close"
+                                   ng-disabled="true" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">
+                            <span aria-required="true" class="required">*</span>Bill#
+                        </label>
+                        <div class="col-md-5" style="padding-top:5px;">
+                            <input type="text" class="form-control" name="BILL_NO" ng-model="BILL_NO" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Corr.Type</label>
+                        <div class="col-md-10" style="padding-top:5px;">
+                            <select class="form-control" kendo-drop-down-list name="LK_BL_CR_RSN_TYP_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                    k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'"
+                                    k-auto-bind="'true'" k-options="billCorrTypeOptions" k-data-source="billCorrTypeDataSource" ng-model="LK_BL_CR_RSN_TYP_ID"
+                                    @*ng-disabled="form.RF_ACTN_STATUS_ID==75" required*@></select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Description</label>
+                        <div class="col-md-10" style="padding-top:5px;">
+                            <textarea class="form-control" name="OTH_RSN_DESC" ng-model="OTH_RSN_DESC" rows="2"></textarea>
+                        </div>
+                    </div>
+
+                    @*<pre>{{ProcessLossModalForm.$valid}}</pre>*@
+
+                    <br />
+                    <div class="form-group form-actions">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="button" class="btn green btn-sm" ng-click="save(token, ScoBillRevisionModal.$valid)" ng-class="{'disabled':!ScoBillRevisionModal.$valid}" ng-disabled="formInvalid">Save</button>
+                            <button type="button" class="btn btn-default btn-sm" ng-click="cancel()">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+@*End Bill Revision*@

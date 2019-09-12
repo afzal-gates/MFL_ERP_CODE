@@ -1,0 +1,66 @@
+﻿<div class="modal-body">
+    <div id="splash-page" data-ng-show="showSplash" class="dissolve-animation">
+        <div class="page-splash">
+            <div class="page-splash-message">
+                <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+            </div>
+        </div>
+    </div>
+
+    <div class="portlet grey-cascade box">
+        <div class="portlet-title">
+            <div style="padding-top:2px;">
+                <h4 class="title">
+                    Buyer : <strong>{{data.BYR_ACC_GRP_NAME_EN}}</strong> &nbsp;&nbsp; Style # : <strong>{{data.STYLE_NO}}</strong>&nbsp;&nbsp; Style Desc : <strong>{{data.STYLE_DESC}}</strong>&nbsp;&nbsp;  Item Name : <strong>{{data.ITEM_NAME_EN}}</strong>&nbsp;&nbsp; SMV : <strong>{{data.SMV}}</strong>
+                    <br />
+                    <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                </h4>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div class="row">
+                <div class="col-md-12">
+
+                    <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;margin:auto;">
+                        <legend class="custom-legend">Others Order List</legend>
+                        <p>Please Include Order to Merge</p>
+                        <table class="table table-condensed table-striped table-bordered">
+                            <thead>
+                                <tr class="site-table-header">
+                                    <th style="width: 5%">
+                                        <label class="checkbox-list" style="margin-left: 20px; margin-top: 0px;">
+                                            <span><input type="checkbox" ng-change="onSelectAll(data.IS_SELECTED)" ng-model="data.IS_SELECTED" ng-true-value="'Y'" ng-false-value="'N'"> </span>
+                                        </label>
+                                    </th>
+                                    <th style="width: 40%"> Style/Order</th>
+                                    <th style="width: 10%">Order Qty</th>
+                                    <th style="width: 10%">Order Confirmed</th>
+                                    <th style="width: 10%">Shipment</th>
+                                </tr>
+                            </thead>
+                            <tbody style="font-weight:700">
+                                <tr ng-repeat="itm in OrderPlanList">
+                                    <td>
+                                        <label class="checkbox-list" style="margin-left: 20px; margin-top: 0px;">
+                                            <span><input type="checkbox" ng-model="itm.IS_SELECTED" ng-true-value="'Y'" ng-false-value="'N'"> </span>
+                                        </label>
+                                    </td>
+                                    <td>{{itm.ORDER_NO}}</td>
+                                    <td>{{itm.ORDER_QTY}}</td>
+                                    <td>{{itm.ORD_CONF_DT|date:'dd-MMM-yyyy'}}</td>
+                                    <td>{{itm.SHIP_DT|date:'dd-MMM-yyyy'}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </fieldset>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <button style="float:right;" type="button" ng-click="SaveData(OrderPlanList);" class="btn btn-sm btn-success btn-block">Click here to Merge </button>
+                </div>
+            </div>
+        </div>
+    </div>
+ </div>

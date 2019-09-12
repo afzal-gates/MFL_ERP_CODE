@@ -1,0 +1,69 @@
+﻿<div class="modal-body">
+    <div class="portlet grey-cascade box">
+        <div id="splash-page" data-ng-show="showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <div class="portlet-title">
+            <div style="padding-top:2px;">
+                <h4 class="title">
+                    Manual Line Loading => Style # : <strong>{{data.WORK_STYLE_NO}}</strong>&nbsp;&nbsp;Order # : <strong>{{data.ORDER_NO}}</strong>&nbsp;&nbsp;Buyer : <strong>{{data.BYR_ACC_GRP_NAME_EN}}</strong>&nbsp;&nbsp;Order Quantity # : <strong>{{data.TOT_ORD_QTY}}</strong>&nbsp;&nbsp;Order Confirm: <strong>{{data.ORD_CONF_DT|date:'dd-MMM-yyyy'}}</strong>&nbsp;&nbsp;
+                    Shipment: <strong>{{data.SHIP_DT|date:'dd-MMM-yyyy'}}</strong>&nbsp;&nbsp;
+                    <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                </h4>
+            </div>
+        </div>
+        <div class="portlet-body" style="background-color: #e9ecf3;">
+
+            <div class="row" style="padding-bottom:5px;">
+                <div class="col-md-9">
+                    <h4 style="margin:0px;font-weight:800;">
+                       Time & Action Calendar: {{data.PLAN_START_DT|date:'dd-MMM-yy'}} - {{data.PLAN_END_DT|date:'dd-MMM-yy'}}
+                    </h4>
+
+                </div>
+                <div class="col-md-3" align="right">
+                    <div class="input-icon right">
+                        <i class="icon-magnifier"></i>
+                        <input type="text" class="form-control form-control-solid" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" ng-model="q" placeholder="search...">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-3" style="margin-bottom:10px;" ng-repeat="itm in lines|filter:q">
+                    <div class="dashboard-stat2" style="margin-bottom: 0px; padding:5px;">
+                        <div class="display" style="margin-bottom:0px;">
+                            <div class="number">
+
+                                <h5 ng-if="itm.IS_DISABLED=='N'" ng-click="selected(itm)" style="cursor:pointer;">
+                                    <span class="bage badge-warning"><b>{{itm.LINE_CODE}}</b></span> 
+                                </h5>
+                                <h5 ng-if="itm.IS_DISABLED=='Y'"><b>{{itm.LINE_CODE}}</b></h5>
+                                
+                                <h6 style="margin-bottom: 0px; margin-top: 0px; font-style: italic; font-weight:600;">{{(itm.LOAD_START_DT|date:'dd-MMM-yyyy hha') +' to ' + (itm.LOAD_END_DT|date:'dd-MMM-yyyy hha')}}</h6>
+                                <h6 style="margin-bottom: 0px; margin-top: 0px; font-style: italic; font-weight:600;">{{itm.OQ_PCT_ONTYM +'('+(((itm.OQ_PCT_ONTYM/itm.ALLOCATED_QTY)*100)|number:2)+'%)'+' <= ' + (itm.OQ_ONTYM_DT|date:'dd-MMM-yyyy hha')}}</h6>
+
+
+                                <h6 style="margin-bottom:0px;font-style:italic;font-weight:700;" ng-style="{'color':itm.STS_COLOR_CODE_STOS}">{{itm.PLN_STS_CODE_STOS+'||'+itm.PLN_STS_NAME_STOS}}</h6>
+                                <h6 style="margin-top: 0px; margin-bottom: 0px; font-style: italic; font-weight: 700;" ng-style="{'color':itm.STS_COLOR_CODE_TNA}">{{itm.PLN_STS_CODE_TNA+'||'+itm.PLN_STS_NAME_TNA}}</h6>
+
+                            </div>
+                            <div class="icon" title="Fabric Class (Solid/YD/Non Lycra/Lycra)=>{{itm.S2SM01_SCORE+'/20'}} &#13;Stitching Specification=>{{itm.S2SM02_SCORE+'/30'}} &#13;Product Criticality=>{{itm.S2SM03_SCORE+'/40'}}&#13;Preferred Garment Item Category=>{{itm.S2SM04_SCORE+'/10'}}&#13;Sewing Input Ontime=>{{itm.SCORE_TNA01+'/20'}}&#13;Shipment OnTime=>{{itm.SCORE_TNA02+'/40'}}&#13;TnA Other than Sewing=>{{itm.SCORE_TNA03+'/25'}}&#13;OQ Completion%=>{{itm.SCORE_TNA04+'/25'}}">
+                                {{itm.TTL_SCORE+'/200'}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

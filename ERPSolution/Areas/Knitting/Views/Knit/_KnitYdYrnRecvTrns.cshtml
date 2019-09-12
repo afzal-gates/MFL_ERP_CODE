@@ -1,0 +1,550 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<!-- BEGIN SPLASH -->
+<div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+    <div class="page-splash">
+        <div class="page-splash-message">
+            <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+        </div>
+    </div>
+</div>
+<!-- END SPLASH -->
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" @*ng-bind="vm.Title"*@>
+            {{vm.Title}}&nbsp;<span style="color:#ff4600" ng-show="form.RF_ACTN_STATUS_ID == 20"><b>[ Draft ]</b></span><span style="color:#ff4600" ng-show="form.RF_ACTN_STATUS_ID == 64"><b>[ Confirmed ]</b></span>
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+        <form role="form" name="YdYrnRevForm" class="form-horizontal">
+
+            <div class="row" style="margin:auto;">
+                <div class="col-md-6" style="text-align:left;padding-left:0px;padding-right:0px;">
+                    <a class="btn btn-xs blue" ng-click="vm.onNewMode()">  <i class="fa fa-plus"></i>New Receive</a>
+                </div>
+
+                <div class="col-md-6" style="text-align: right; padding-left: 0px; padding-right: 0px;">
+                    <a class='btn btn-xs green-haze' @*style="float:right;"*@ ng-if="vm.params.ConMode=='N' && form.KNT_SC_PRG_ISS_ID && form.RF_ACTN_STATUS_ID>20" ng-click='vm.printDeliveryChallan(form.KNT_SC_PRG_ISS_ID)' title='Delivery Challan'> <i class="fa fa-print"></i>Delivery Challan</a>
+                    <a class='btn btn-xs blue-chambray' @*style="float:right;"*@ ng-if="vm.params.ConMode=='N' && form.KNT_SC_PRG_ISS_ID && form.RF_ACTN_STATUS_ID>20" ng-click='vm.printScProgram(form.KNT_SC_PRG_ISS_ID)' title='S/C Program'> <i class="fa fa-print"></i>Program</a>
+                    <a class="btn btn-xs blue" @*style="float:right;"*@ ng-if="vm.params.ConMode=='N' && form.KNT_SC_PRG_ISS_ID && form.RF_ACTN_STATUS_ID>20" ng-click="vm.addKnitPlan(form.MC_FAB_PROD_ORD_H_ID,form.KNT_SC_PRG_ISS_ID,form.TR_PARTY_ID)">  <i class="fa fa-plus"></i> Knit Plan</a>
+                </div>
+            </div>
+
+            <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;" ng-disabled="form.RF_ACTN_STATUS_ID==64||(form.RF_ACTN_STATUS_ID>20 && vm.params.ConMode=='N')">
+                <legend class="custom-legend"> Program Info</legend>
+
+                <div class="form-group">
+                    <label class="col-md-2">
+                        Y/D Program Ref# (<span aria-required="true" class="custom-required">*</span>)
+                    </label>
+                    <div class="col-md-2" ng-class="{'has-error': (YdYrnRevForm.KNT_YD_PRG_H_ID.$touched || YdYrnRevForm.$submitted) && YdYrnRevForm.KNT_YD_PRG_H_ID.$error.required}">
+
+                        <select class="form-control" kendo-drop-down-list name="KNT_YD_PRG_H_ID" k-option-label="'--Yd Program --'"
+                                k-data-text-field="'PRG_REF_NO'" k-data-value-field="'KNT_YD_PRG_H_ID'" k-filter="'Contains'"
+                                k-auto-bind="'true'" k-data-source="KntYdProgramDs" ng-model="form.KNT_YD_PRG_H_ID" k-on-change="vm.onChaneProgramRef(kendoEvent)"
+                                required style="width:100%;" ng-disabled="form.RF_ACTN_STATUS_ID==64||vm.params.ConMode=='Y'"></select>
+                        <span class="badge badge-success">{{form.SUP_TRD_NAME_EN}}</span>
+
+                    </div>
+
+                    <label class="col-md-2">
+
+                        Order # (<span aria-required="true" class="custom-required">*</span>)
+                    </label>
+                    <div class="col-md-2" ng-class="{'has-error': (YdYrnRevForm.MC_FAB_PROD_ORD_H_ID.$touched || YdYrnRevForm.$submitted) && YdYrnRevForm.MC_FAB_PROD_ORD_H_ID.$error.required}">
+
+                        <select class="form-control" kendo-drop-down-list name="MC_FAB_PROD_ORD_H_ID" k-option-label="'--Order#--'"
+                                k-data-text-field="'MC_ORDER_NO_LST'" k-data-value-field="'MC_FAB_PROD_ORD_H_ID'" k-filter="'Contains'"
+                                k-auto-bind="'true'" k-data-source="vm.fabProdOrderDs" ng-model="form.MC_FAB_PROD_ORD_H_ID" k-on-data-bound="vm.onFabProdOrderBound(form,kendoEvent)"
+                                required style="width:100%;" ng-disabled="form.RF_ACTN_STATUS_ID==64||vm.params.ConMode=='Y'"></select>
+                    </div>
+
+
+                    <label class="col-md-2">
+                        Work Ref#
+                    </label>
+                    <div class="col-md-2" ng-class="{'has-error': (YdYrnRevForm.CL_WO_REF_NO.$touched || YdYrnRevForm.$submitted) && YdYrnRevForm.CL_WO_REF_NO.$error.required}">
+                        <input type="text" class="form-control" name="CL_WO_REF_NO" ng-model="form.CL_WO_REF_NO" ng-disabled="vm.params.ConMode=='Y'" />
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2">
+                        Challan # (<span aria-required="true" class="custom-required">*</span>)
+                    </label>
+                    <div class="col-md-2" ng-class="{'has-error': (YdYrnRevForm.CHALAN_NO.$touched || YdYrnRevForm.$submitted) && YdYrnRevForm.CHALAN_NO.$error.required}">
+                        <input type="text" class="form-control" typeahead="item.YD_BATCH_NO as item.YD_BATCH_NO for item in vm.onRequestChallanNo($viewValue)" typeahead-loading="'Loading...'" name="CHALAN_NO" ng-model="form.CHALAN_NO" ng-disabled="form.IS_TEMP_CHALLAN=='Y'" ng-required="form.IS_TEMP_CHALLAN=='N'" />
+                    </div>
+                    <div class="col-md-3">
+                        <div class="checkbox-list">
+                            <label class="checkbox-inline" style="margin-left:20px;margin-top:-15px;">
+                                <span><input type="checkbox" ng-model="form.IS_TEMP_CHALLAN" ng-true-value="'Y'" ng-false-value="'N'"></span> Auto Generate?
+                            </label>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2">
+                        Challan DT
+                    </label>
+                    <div class="col-md-2" ng-class="{'has-error': (YdYrnRevForm.CHALAN_DT.$touched || YdYrnRevForm.$submitted) && YdYrnRevForm.CHALAN_DT.$error.required}">
+
+                        <input type="text" class="form-control" ng-click="vm.CHALAN_DT_OPEN($event)" datepicker-popup="{{vm.dtFormat}}"
+                               name="CHALAN_DT" ng-model="form.CHALAN_DT" is-open="vm.CHALAN_DT_OPENED" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" required close-text="Close" />
+                    </div>
+
+                    <label class="col-md-2">
+                        Invoice #
+                    </label>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control" ng-model="form.INVOICE_NO" />
+                    </div>
+
+
+                    <label class="col-md-2">
+                        Get Pass #
+                    </label>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control" ng-model="form.GATE_PASS_NO" />
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="col-md-2">
+                        Vehicle #
+                    </label>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control" ng-model="form.VEHICLE_NO" />
+                    </div>
+
+
+                    <label class="col-md-2">
+                        Carrier #
+                    </label>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control" ng-model="form.CARRIER_NAME" />
+                    </div>
+
+
+                    <label class="col-md-2">
+                    </label>
+                    <div class="col-md-2">
+                        <div class="checkbox-list">
+                            <label class="checkbox-inline" style="margin-left:20px;margin-top:-15px;">
+                                <span><input type="checkbox" ng-model="form.IS_REMARKS" ng-true-value="'Y'" ng-false-value="'N'"></span> Remarks
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-show="form.IS_REMARKS=='Y'">
+                    <label class="col-md-2">
+                        Remarks
+                    </label>
+                    <div class="col-md-10">
+                        <textarea rows="3" name="REMARKS" class="form-control" cols="50" ng-model="form.REMARKS"></textarea>
+                    </div>
+                </div>
+
+                <div class="row" style="margin:auto;padding-top:10px;" ng-if="vm.errors">
+                    <div class="col-md-5 col-md-offset-2">
+                        <div class="alert alert-warning" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                            <ul ng-repeat="field in vm.errors">
+                                <li ng-repeat="error in field" ng-bind="error"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </fieldset>
+
+            @*<pre>{{form|json}}</pre>*@
+
+            @*<div class="col-md-12" style="padding-top:10px" ng-if="vm.params.ConMode=='Y' && form.IS_TRANSFER=='N'">
+                <div class="form-group">
+                    <div class="checkbox-list" style="float:left;">
+                        <label class="checkbox-inline" style="margin-left:20px;margin-top:-15px;">
+                            <span style="color:purple;"><input type="checkbox" ng-model="form.IS_TRANSFER" ng-true-value="'Y'" ng-false-value="'N'"> <b>Transfer to S/C Party</b></span>
+                        </label>
+                    </div>
+                </div>
+            </div>*@
+
+            @*<div class="form-group" ng-if="form.IS_TRANSFER=='Y'">
+                <div class="col-md-12" style="padding-right:0px;">*@
+            <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;" ng-if="(form.IS_TRANSFER=='Y')" ng-disabled="form.RF_ACTN_STATUS_ID==64||form.RF_ACTN_STATUS_ID>20">
+                <legend class="custom-legend"> Transfer to </legend>
+                <div class="form-group">
+
+                    <label class="col-md-2">
+                        S/C Factory (<span aria-required="true" class="custom-required">*</span>)
+                    </label>
+                    <div class="col-md-4" ng-class="{'has-error': (YdYrnRevForm.TR_PARTY_ID.$touched || YdYrnRevForm.$submitted) && YdYrnRevForm.TR_PARTY_ID.$error.required}">
+                        <select class="form-control" kendo-drop-down-list name="TR_PARTY_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                k-data-text-field="'SUP_TRD_NAME_EN'" k-data-value-field="'SCM_SUPPLIER_ID'"
+                                k-auto-bind="'true'" k-data-source="vm.supplierListDs" k-ng-delay="vm.supplierListDs" ng-model="form.TR_PARTY_ID" required></select>
+
+                    </div>
+                </div>
+            </fieldset>
+                @*</div>
+            </div>*@
+
+            @*<div class="form-group">
+                <div class="col-md-12" style="padding-right:0px;">*@
+            <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;" ng-disabled="form.RF_ACTN_STATUS_ID==64||(form.RF_ACTN_STATUS_ID>20 && vm.params.ConMode=='N')">
+                <legend class="custom-legend"> Dyed Yarn Receive Info </legend>
+                <table class="table table-condensed table-striped table-bordered" style="padding:5px;">
+                    <thead>
+                        <tr class="site-table-header">
+
+                            <th style="width:10%;">
+                                <small>
+                                    Color
+                                </small>
+                            </th>
+
+
+                            <th style="width:20%;">
+
+                                <small>
+                                    Yarn Item
+                                </small>
+
+                            </th>
+
+                            <th style="width:5%;">
+                                <small>
+                                    Sent(Kg)
+                                </small>
+                            </th>
+
+                            <th style="width:10%;">
+                                <small>
+                                    Batch#
+                                </small>
+                            </th>
+
+                            <th style="width:14%;">
+                                <small>
+                                    Ttl Recv-Cur. Recv
+                                </small>
+                            </th>
+
+                            <th style="width:7%;">
+                                <small>
+                                    Cone Qty
+                                </small>
+                            </th>
+                            <th style="width:7%;">
+                                <small>
+                                    Pack Qty
+                                </small>
+                            </th>
+                            <th style="width:7%;">
+                                <small>
+                                    PkMoU
+                                </small>
+                            </th>
+
+                            <th style="width:8%;" ng-show="form.RF_ACTN_STATUS_ID>=63">
+                                <small>
+                                    Grey Qty Recv
+                                </small>
+                            </th>
+
+                            <th style="width:12%;">
+                                <small>
+                                    Remarks
+                                </small>
+                            </th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+
+                        <tr ng-repeat="item in form.details">
+                            <td>
+                                <b>{{item.COLOR_NAME_EN}}</b>
+                            </td>
+                            <td>{{item.YR_SPEC_DESC}}</td>
+
+                            <td>
+                                {{item.RQD_YD_QTY}}
+                            </td>
+
+
+                            <td ng-class="{'has-error': (YD_BATCH_NO_FORM.YD_BATCH_NO.$touched || YdYrnRevForm.$submitted) && YD_BATCH_NO_FORM.YD_BATCH_NO.$error.required}">
+
+                                <ng-form name="YD_BATCH_NO_FORM">
+                                    <input type="text" name="YD_BATCH_NO" class="form-control" typeahead="item.YD_BATCH_NO as item.YD_BATCH_NO for item in vm.OnRequestYarnBatch($viewValue)" typeahead-on-select="onSelectItem2($item)" typeahead-loading="'Loading...'"
+                                           ng-model="item.YD_BATCH_NO" ng-required="item.RCV_YD_QTY>0" ng-disabled="vm.params.ConMode=='Y'" />
+                                </ng-form>
+
+
+                            </td>
+
+
+                            <td ng-class="{'has-error': (RCV_YD_QTY_FORM.RQD_FDR_QTY.$touched || YdYrnRevForm.$submitted) && RQD_FDR_QTY_FORM.RQD_FDR_QTY.$error.number}">
+                                <div class="col-md-5" style="padding-right:0px;">
+                                    {{item.TTL_RECV}} Kg -
+                                </div>
+
+                                <div class="col-md-7" style="padding-left:0px;padding-right:0px;">
+                                    <ng-form name="RCV_YD_QTY_FORM">
+                                        <input class="form-control" type="number" name="RCV_YD_QTY" ng-model="item.RCV_YD_QTY" ng-disabled="item.RCV_YD_QTY < 1" />
+                                    </ng-form>
+                                </div>
+
+
+                            </td>
+
+                            <td ng-class="{'has-error': (RCV_CONE_QTY_FORM.RCV_CONE_QTY.$touched || YdYrnRevForm.$submitted) && (RCV_CONE_QTY_FORM.RCV_CONE_QTY.$error.required||RCV_CONE_QTY_FORM.RCV_CONE_QTY.$error.min)}">
+                                <ng-form name="RCV_CONE_QTY_FORM">
+                                    <input type="number" name="RCV_CONE_QTY" ng-min="(item.RCV_YD_QTY>0)?1:0" class="form-control" ng-model="item.RCV_CONE_QTY" ng-disabled="vm.params.ConMode=='Y'" ng-required="item.RCV_YD_QTY>0" />
+                                </ng-form>
+                            </td>
+
+                            <td ng-class="{'has-error': (RCV_PACK_QTY_FORM.RCV_PACK_QTY.$touched || YdYrnRevForm.$submitted) && (RCV_PACK_QTY_FORM.RCV_PACK_QTY.$error.required||RCV_PACK_QTY_FORM.RCV_PACK_QTY.$error.min)}">
+                                <ng-form name="RCV_PACK_QTY_FORM">
+                                    <input type="number" name="RCV_PACK_QTY" ng-min="(item.RCV_YD_QTY>0)?1:0" class="form-control" ng-model="item.RCV_PACK_QTY" ng-disabled="vm.params.ConMode=='Y'" ng-required="item.RCV_YD_QTY>0" />
+                                </ng-form>
+                            </td>
+                            <td>
+                                <ng-form name="PACK_MOU_ID_FORM">
+                                    <select class="form-control" kendo-drop-down-list
+                                            name="PACK_MOU_ID"
+                                            k-option-label="'-- MoU --'"
+                                            k-data-text-field="'MOU_CODE'"
+                                            k-data-value-field="'RF_MOU_ID'"
+                                            k-filer="'contains'"
+                                            k-auto-bind="'true'"
+                                            k-data-source="vm.rfMouDs"
+                                            k-ng-delay="vm.rfMouDs"
+                                            ng-model="item.PACK_MOU_ID" ng-disabled="form.RF_ACTN_STATUS_ID==64||vm.params.ConMode=='Y'" required></select>
+                                </ng-form>
+                            </td>
+
+
+                            <td ng-show="form.RF_ACTN_STATUS_ID>=63" ng-class="{'has-error': (RCV_GYRN_QTY_FORM.RCV_GYRN_QTY.$touched || YdYrnRevForm.$submitted) && (RCV_GYRN_QTY_FORM.RCV_GYRN_QTY.$error.required||RCV_GYRN_QTY_FORM.RCV_GYRN_QTY.$error.min)}">
+                                <ng-form name="RCV_GYRN_QTY_FORM">
+                                    <input type="number" name="RCV_GYRN_QTY" ng-min="(item.RCV_YD_QTY>0 && form.RF_ACTN_STATUS_ID==63)?1:0" class="form-control" ng-model="item.RCV_GYRN_QTY" ng-required="item.RCV_YD_QTY>0 && form.RF_ACTN_STATUS_ID==63" />
+                                </ng-form>
+                            </td>
+
+                            <td>
+                                <input type="text" name="REMARKS" class="form-control" ng-model="item.REMARKS" />
+                            </td>
+
+
+
+                        </tr>
+
+
+                    </tbody>
+                </table>
+
+                @*<div class="checkbox-list" style="float:left;" ng-if="vm.params.ConMode=='Y'">
+                <label class="checkbox-inline" style="margin-left:20px;margin-top:-15px;">
+                    <span style="color:purple;"><input type="checkbox" ng-model="form.RF_ACTN_STATUS_ID_INIT" ng-true-value="64" ng-false-value="63"> Confirm</span>
+                </label>
+            </div>*@
+
+            </fieldset>
+                @*</div>
+            </div>*@
+
+
+            <div class="form-group" style="padding-top:5px;">
+                <div class="col-md-5">
+                    
+                    <button type="button" ui-sref="{{vm.params.stateBack}}" class="btn btn-sm blue">List View</button>
+                    &nbsp;&nbsp;
+
+                    <button type="button" class="btn btn-sm yellow-gold" ng-disabled="form.RF_ACTN_STATUS_ID==64||(form.RF_ACTN_STATUS_ID>20 && vm.params.ConMode=='N')" ng-if="vm.params.pKNT_YD_RCV_H_ID" ng-click="form.IS_PASS='N';vm.submitData(form,YdYrnRevForm.$valid);YdYrnRevForm.$submitted=true;">Update</button>
+                    <button type="button" class="btn btn-sm green" ng-if="!vm.params.pKNT_YD_RCV_H_ID" ng-click="form.IS_PASS='N';vm.submitData(form,YdYrnRevForm.$valid);YdYrnRevForm.$submitted=true;">Save</button>
+                    <button type="button" class="btn btn-sm default" ng-click="vm.reset()">Cancel</button>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <button type="button" class="btn btn-sm blue" ng-if="vm.params.pKNT_YD_RCV_H_ID && vm.params.ConMode=='N'" ng-disabled="form.RF_ACTN_STATUS_ID>20" ng-click="form.IS_PASS='Y';form.RF_ACTN_STATUS_ID_INIT=64;vm.submitData(form,YdYrnRevForm.$valid);YdYrnRevForm.$submitted=true;">Finalize</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script type="text/ng-template" id="ExColourListModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h3 style="padding-top:10px;margin-top:3px;">
+                        Please select Knit Plan
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </h3>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend"><b>Search</b></legend>
+                    <div>
+                        <div>
+                            <table class="clsTable">
+                                <tbody class="clsthead">
+                                    <tr class="clstd">
+                                        <td class="clstd">
+                                            Type
+                                        </td>
+                                        <td class="clstd">
+                                            Buyer A/C
+                                        </td>
+
+                                        <td class="clstd">
+                                            Shipment
+                                        </td>
+                                        <td class="clstd">
+                                            Work Style
+                                        </td>
+                                        <td class="clstd">
+                                            Order #
+                                        </td>
+
+                                        <td class="clstd">
+                                            Action
+                                        </td>
+                                    </tr>
+                                    <tr class="clstd">
+                                        <td class="clstd">
+                                            <select kendo-drop-down-list name="RF_FAB_PROD_CAT_ID" id="RF_FAB_PROD_CAT_ID" class="form-control"
+                                                    options="productionTypeList" ng-model="search.RF_FAB_PROD_CAT_ID"></select>
+
+                                        </td>
+                                        <td class="clstd">
+                                            <select kendo-drop-down-list name="MC_BYR_ACC_ID" class="form-control"
+                                                    k-options="buyerAcList" id="MC_BYR_ACC_ID" ng-model="search.MC_BYR_ACC_ID" required></select>
+
+                                        </td>
+
+                                        <td class="clstd">
+                                            <select class="form-control" kendo-drop-down-list name="MONTHOF" k-option-label="'-- Select Month --'"
+                                                    k-data-text-field="'MONTHOF'" k-data-value-field="'MONTHOF'" k-filter="'contains'"
+                                                    k-auto-bind="'true'" k-data-source="shipMonthList" k-ng-delay="shipMonthList" ng-model="search.MONTHOF"
+                                                    k-on-change="onChangeShipMonth(kendoEvent)"></select>
+                                        </td>
+
+                                        <td class="clstd">
+                                            <select class="form-control" kendo-drop-down-list name="MC_FAB_PROD_ORD_H_ID" k-option-label="'--Style --'"
+                                                    k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_FAB_PROD_ORD_H_ID'" k-filter="'Contains'"
+                                                    k-template="template" k-value-template="valueTemplate"
+                                                    k-auto-bind="'true'" k-data-source="StyleExtDs" ng-model="search.MC_FAB_PROD_ORD_H_ID"
+                                                    k-on-change="onFabOrderChange(kendoEvent)" required></select>
+                                        </td>
+                                        <td class="clstd">
+                                            <select class="form-control" kendo-drop-down-list name="MC_FAB_PROD_ORD_H_ID" k-option-label="'--Order# --'"
+                                                    k-data-text-field="'ORDER_NO_LST'" k-data-value-field="'MC_FAB_PROD_ORD_H_ID'" k-filter="'Contains'"
+                                                    k-template="templateOh" k-value-template="valueTemplateOh"
+                                                    k-auto-bind="'true'" k-data-source="FabOederByOhDs" ng-model="search.MC_FAB_PROD_ORD_H_ID"
+                                                    required style="width:100%;"></select>
+
+                                        </td>
+
+                                        <td class="clstd">
+                                            <button class="btn btn-sm" ng-click="showFabProdOrderList();"><i class='fa fa-search'></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </fieldset>
+                <div style="padding:5px;">
+                    <kendo-grid k-options="gridOptions" id="FabProdOrderGrid" k-data-source="gridOptionsDs">
+                        <div k-detail-template>
+                            <div>
+                                <div kendo-grid k-options="detailGridOptionsForSupp(dataItem)"></div>
+                            </div>
+                        </div>
+
+                    </kendo-grid>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-kendo-template" id="JobCardDashBoardTemplate">
+    <div class="toolbar">
+        <div class="actions">
+
+            <form class="form-horizontal" role="form" name="JobCardDashBoard" novalidate
+                  ng-submit="getJobCardList(form.MC_BYR_ACC_ID,form.MC_BUYER_ID,form.MC_STYLE_H_EXT_ID)">
+                <label class="col-md-1 control-label" align="right">
+                    Buyer A/C
+                </label>
+                <div class="col-md-2" style="padding-left:0px;padding-right:5px;">
+
+                    <select kendo-drop-down-list name="MC_BYR_ACC_ID" class="form-control"
+                            k-options="buyerAcList" id="MC_BYR_ACC_ID" ng-model="form.MC_BYR_ACC_ID"></select>
+                </div>
+                <label class="col-md-1 control-label" align="right" style="padding-left:0px;padding-right:10px;">
+                    Buyer
+                </label>
+
+                <div class="col-md-2" style="padding-left:0px;padding-right:5px;">
+                    <select class="form-control" kendo-drop-down-list name="MC_BUYER_ID" k-option-label="'-- Select Buyer --'"
+                            k-data-text-field="'BUYER_NAME_EN'" k-data-value-field="'MC_BUYER_ID'"
+                            k-auto-bind="'true'" k-data-source="BuyerListDs" ng-model="form.MC_BUYER_ID"
+                            k-on-data-bound="buyerListOnBound(kendoEvent)" k-on-change="buyerListOnChange(kendoEvent)"></select>
+                </div>
+
+                <label class="col-md-1 control-label" align="right" style="padding-left:0px;padding-right:10px;">
+                    Style
+                </label>
+
+                <div class="col-md-2" style="padding-left:0px;padding-right:0px;">
+                    <select class="form-control" kendo-drop-down-list name="MC_STYLE_H_EXT_ID" k-option-label="'-- Select Style --'"
+                            k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_STYLE_H_EXT_ID'"
+                            k-auto-bind="'true'" k-data-source="StyleExtDs" ng-model="form.MC_STYLE_H_EXT_ID"></select>
+                </div>
+
+                <div class="col-md-1">
+                    <button type="submit" class="btn btn-sm default">
+                        <i class="fa fa-search"></i> Load
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</script>

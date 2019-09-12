@@ -1,0 +1,88 @@
+﻿Content-Type: text/html; charset=utf-8
+
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style media="all" type="text/css">
+        table td {
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+    <h3><span style="color: #5e9ca0;">TnA Summary( Due on Today+Tomorrow) &nbsp;
+        
+            <small style="color:black;">More details >>></small>  
+        <span style="color: #333399;">
+        
+        <a style="color: #333399;" href="http://erp.multi-fabs.com/Merchandising/Mrc/TnAFollowup?a=101/#/main/0/TnaTask/0/list">TnA Followup(List View)</a>
+            &nbsp; &nbsp; &nbsp;
+        <a style="color: #333399;" href="http://erp.multi-fabs.com/Merchandising/Mrc/TnaFollowupMatrix?a=216/#/TnaFollowupMatrix">TnA Followup(Matrix View)</a>
+        
+        &nbsp; &nbsp; &nbsp; &nbsp;</span></span>&nbsp; &nbsp;  <span style="background-color: #ceb56b;"><small>Due Today</small></span><span style="background-color: #9ec1df;"><small>Upcoming</small></span></h3>    
+    <table class="editorDemoTable" style="height: 41px; border-color: #164426; border-collapse: collapse; border: solid 1px #48463b;" width="1100">
+        <thead>
+            <tr style="background-color: #68b33c;">
+                <td style="width: 10%; border: solid 1px #48463b;">Buyer</td>
+                <td style="width: 10%; border: solid 1px #48463b;">Style</td>
+                <td style="width: 8%; border: solid 1px #48463b;">Order</td>
+                <td style="width: 12%; border: solid 1px #48463b;">Ship</td>
+                <td style="width: 30%; border: solid 1px #48463b;">Task Name</td>
+                <td style="width: 15%; border: solid 1px #48463b;">Plan Dt</td>
+                <td style="width: 5%; border: solid 1px #48463b;"></td>
+                <td style="width: 10%; border: solid 1px #48463b;">Remarks</td>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model.data)
+            {
+                <tr>
+                    @if (item.BYR_ACC_SL == 1)
+{
+    <td rowspan="@item.BYR_ACC_SPAN" style="border:solid 1px #48463b;">@item.BYR_ACC_NAME_EN </td>
+}
+
+                    @if (item.STYL_EXT_SL == 1)
+{
+    <td rowspan="@item.STYL_EXT_SPAN" style="border:solid 1px #48463b;">@item.WORK_STYLE </td>
+}
+
+                    @if (item.ORDER_SL == 1)
+{
+    <td rowspan="@item.ORDER_SPAN" style="border:solid 1px #48463b;">@item.ORDER_NO </td>
+    <td rowspan="@item.ORDER_SPAN" style="border:solid 1px #48463b;">@item.SHIP_DT </td>
+}
+
+                    <td style="border:solid 1px #48463b;"><a title="Click to view details" href="http://erp.multi-fabs.com/Merchandising/Mrc/TnAFollowup?a=101/#/main/@item.MC_BYR_ACC_ID/TnaTask/@item.MC_ORDER_H_ID/list"> >> @item.TA_TASK_NAME_EN</a></td>
+
+                    <td style="border:solid 1px #48463b;"> @item.PLAN_START_DT</td>
+                    @if (item.LAG_DAYS == 0)
+                    {
+                        <td style="background-color: #ceb56b; border: solid 1px #48463b;">@item.LAG_DAYS</td>
+                    }
+                    else if (item.LAG_DAYS < 0)
+                    {
+                        <td style="background-color: #cd8169; border: solid 1px #48463b;">@item.LAG_DAYS</td>
+                    }
+                    else if (item.LAG_DAYS > 0)
+                    {
+                         <td style="background-color: #9ec1df; border: solid 1px #48463b;">@item.LAG_DAYS</td>
+                    }
+                    else
+                    {
+                        <td style="background-color: white; border: solid 1px #48463b;"></td>
+                    }
+
+
+                    <td style="border:solid 1px #48463b;">@item.REMARKS</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <p>&nbsp;N.B: No need to reply. This mail is auto generated from MultiTex ERP server.</p>
+</body>
+</html>
+
+

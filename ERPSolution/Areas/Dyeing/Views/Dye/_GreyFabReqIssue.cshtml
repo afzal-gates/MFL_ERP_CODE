@@ -1,0 +1,173 @@
+﻿
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption">
+            {{vm.Title+'  (Requisition# : '+ vm.data.STR_REQ_NO+')' }} || {{vm.data.SUP_TRD_NAME_EN}}
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;">
+            <legend class="custom-legend"> Batch Information</legend>
+            <table class="table table-condensed table-striped table-bordered" style="padding: 5px;margin-bottom: 5px;">
+                <thead>
+                    <tr>
+                        <th style="width:10%;">
+                            <small>
+                                Batch #
+                            </small>
+
+                        </th>
+
+                        <th style="width:5%;">
+                            <small>
+                                Req. (Kg)
+                            </small>
+
+                        </th>
+
+                        <th style="width:5%;">
+                            <small>
+                                M/C
+                            </small>
+
+                        </th>
+
+
+                        <th style="width:10%;">
+                            <small>
+                                Load
+                            </small>
+
+                        </th>
+
+                        <th style="width:10%;">
+                            <small>
+                                Unload
+                            </small>
+
+                        </th>
+
+                        <th style="width:10%;">
+                            <small>
+                                Buyer
+                            </small>
+                        </th>
+
+
+                        <th style="width:10%;">
+                            <small>
+                                Style
+                            </small>
+                        </th>
+
+                        <th style="width:10%;">
+                            <small>
+                                Order#
+                            </small>
+                        </th>
+                        <th style="width:15%;">
+                            <small>
+                                Color
+                            </small>
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>
+                            {{vm.data.DYE_BATCH_NO}}
+                        </td>
+
+                        <td>
+                            {{vm.data.PLAN_BATCH_QTY}}
+                        </td>
+
+                        <td>
+                            {{vm.data.DYE_MACHINE_NO}}
+                        </td>
+
+                        <td>
+                            {{vm.data.ACT_LOAD_TIME|date:'dd-MMM-yyyy h:mm a'}}
+
+                        </td>
+
+                        <td>
+                            {{vm.data.ACT_UN_LOAD_TIME|date:'dd-MMM-yyyy h:mm a'}}
+                        </td>
+                        <td>
+                            {{vm.data.BYR_ACC_GRP_NAME_EN}}
+                        </td>
+
+                        <td>
+                            {{vm.data.STYLE_NO}}
+                        </td>
+
+                        <td>
+                            {{vm.data.ORDER_NO}}
+                        </td>
+                        <td>
+                            <b>{{vm.data.COLOR_NAME_EN}}</b>
+
+                        </td>
+
+                    </tr>
+                </tbody>
+
+            </table>
+        </fieldset>
+        <br />
+
+        <div class="row" style="margin:auto; margin-bottom:10px;">
+            <div class="col-md-5" style="text-align:right;">
+            </div>
+            <div class="col-md-2" style="text-align:right;">
+                <select kendo-multi-select name="LK_FBR_GRP_LST" class="form-control"
+                        options="vm.FabGrpList" ng-model="vm.data.LK_FBR_GRP_LST" style="width:220px; height:30px;"></select>
+            </div>
+            <div class="col-md-5" style="text-align:right;">
+
+                <a ng-click="vm.printBatchCard(vm.data)" class="btn btn-xs green"><i class="fa fa-print"></i> Print</a>
+                <a ng-click="vm.printDupBatchCard(vm.data)" class="btn btn-xs yellow-gold"><i class="fa fa-print"></i> Print Duplicate</a>
+                <a ng-click="vm.printCollarCuffTrimsSlip(vm.data)" class="btn btn-xs red"><i class="fa fa-print"></i> Collar/Cuff & Trims Slip</a>
+
+                <a class="btn btn-xs blue" ng-click="vm.onBack2List(vm.data.DYE_GSTR_REQ_H_ID)">Back to List</a>
+            </div>
+        </div>
+
+        <div class="row" style="margin:auto;">
+            <tabset>
+                <tab ng-repeat="tab in vm.data.groups" deselect="tab.IS_TAB_ACT=false" select="tab.IS_TAB_ACT=true;vm.onSelect(vm.data.groups)" heading="{{tab.DYE_BT_CARD_GRP_NAME}}" active="tab.IS_TAB_ACT">
+                    <div data-ui-view="TabInside{{tab.IS_TAB_ACT?'':0}}"></div>
+                </tab>
+            </tabset>
+        </div>
+
+
+        @*<div class="row" style="margin:auto;text-align:right;" ng-if="RF_ACTN_STATUS_ID==42 && CurState=='GreyFabReqListBulk'">
+                <button class="btn btn-sm purple" ng-click="vm.onFinalize()"><i class="fa fa-check"></i> Finalise Issue</button>
+            </div>*@
+
+
+    </div>
+</div>
+
+

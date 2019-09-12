@@ -1,0 +1,240 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Knitting</a>
+
+    </li>
+    <li>
+        <a href="#">{{vm.Title}}</a>
+    </li>
+</ul>
+
+
+<div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+    <div class="page-splash">
+        <div class="page-splash-message">
+            <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+        </div>
+    </div>
+</div>
+
+
+<div class="portlet box blue-dark" @*ng-controller="HrReportController as vm"*@>
+    
+    
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">            
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <form name="frmSciGreyFabDelv" class="form-horizontal form-body" >           
+            <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+            
+            <div class="row">
+                <div class="col-md-12">
+
+                    <fieldset class="custom-fieldset" style="margin-bottom:5px" ng-disabled="form.IS_FINALIZE=='Y'">
+                        <legend class="custom-legend">Challan Information</legend>
+
+                        <div class="row" style="margin:auto;" ng-show="vm.errors">
+                            <div class="alert alert-danger" role="alert">
+                                @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                                <div style="padding: 0px 0px 15px 25px; ">
+                                    <b>Please fix the following errors ....</b>
+                                </div>
+                                <ul ng-repeat="field in vm.errors">
+                                    <li ng-repeat="error in field" ng-bind="error"></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+
+                            <label class="control-label col-md-1">
+                                <span aria-required="true" class="required">*</span>Party
+                            </label>
+                            <div class="col-md-3">
+                                @*<input type="hidden" class="form-control" name="SCM_SUPPLIER_ID" ng-model="vm.form.SCM_SUPPLIER_ID" />*@
+                                <select class="form-control" kendo-drop-down-list name="SCM_SUPPLIER_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                        k-data-text-field="'SUP_TRD_NAME_EN'" k-data-value-field="'SCM_SUPPLIER_ID'"
+                                        k-auto-bind="'true'" k-options="vm.supplierOption" k-data-source="vm.supplierDataSource" ng-model="vm.form.SCM_SUPPLIER_ID" required></select>
+                            </div>
+
+
+                            <label class="control-label col-md-1">
+                                <span aria-required="true" class="required">*</span>Store
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control" kendo-drop-down-list name="KNT_SC_PRG_RCV_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                        k-data-text-field="'STORE_NAME_EN'" k-data-value-field="'SCM_STORE_ID'"
+                                        k-auto-bind="'true'" k-options="vm.storeOption" k-data-source="vm.storeDataSource" ng-model="vm.form.SCM_STORE_ID" required></select>
+                                
+                            </div>
+
+
+                            <label class="control-label col-md-1">
+                                <span aria-required="true" class="required">*</span>Challan#
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" name="CHALAN_NO" ng-model="vm.form.CHALAN_NO" readonly />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                                                        
+                            <label class="control-label col-md-1">
+                                <span aria-required="true" class="required">*</span>Chln. Date
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" ng-click="vm.chlnDateOpen($event)" datepicker-popup="{{vm.dtFormat}}" ng-change="vm.onChangeProdDate()"
+                                       name="CHALAN_DT" ng-model="vm.form.CHALAN_DT" is-open="vm.chlnDateOpened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" required />
+                            </div>
+
+                            <label class="control-label col-md-offset-1 col-md-1">
+                                Gate Pass#
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" name="GT_PASS_NO" ng-model="vm.form.GT_PASS_NO" />
+                            </div>
+
+                            <label class="control-label col-md-offset-1 col-md-1">
+                                Veicle#
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" name="VEHICLE_NO" ng-model="vm.form.VEHICLE_NO" />
+                            </div>
+                        </div>
+
+                        
+                        <div class="form-group">
+
+                            <label class="control-label col-md-1">
+                                Driver
+                            </label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" name="CARRIER_NAME" ng-model="vm.form.CARRIER_NAME" />
+                            </div>
+
+                            <label class="control-label col-md-1">
+                                Receiver
+                            </label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" name="RECEIVER_NAME" ng-model="vm.form.RECEIVER_NAME" />
+                            </div>
+
+                            <label class="control-label col-md-1">
+                                Rcver Mob#
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" name="RECEIVER_PHONE_NO" ng-model="vm.form.RECEIVER_PHONE_NO" />
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="control-label col-md-1">
+                                Note
+                            </label>
+                            <div class="col-md-11">
+                                <textarea class="form-control" name="REMARKS" ng-model="vm.form.REMARKS" rows="1"></textarea>
+                            </div>
+                        </div>
+
+
+                    </fieldset>
+
+
+                    <tabset>
+                        <tab heading="Fabric Delevery" active="vm.fabDelvState" ui-sref="KntScGreyFabDelvH.FabDelv">
+                            <div class="portlet-body" data-ui-view="KntScGreyFabDelvH.FabDelv"></div>
+                        </tab>
+
+                        <tab heading="Yarn Return" active="vm.yrnRtnState" ui-sref="KntScGreyFabDelvH.YrnRtn">
+                            <div data-ui-view="KntScGreyFabDelvH.YrnRtn"></div>
+                        </tab>
+                    </tabset>
+                    
+                </div>
+
+
+                <div class="col-md-12" style="padding-left:32px">
+                    <div class="form-group">
+                        <button type="button" @*ng-disabled="rollDelvGridDataSource.length()<0"*@ class="btn btn-sm green" ng-show="form.KNT_SC_GFAB_DLV_H_ID<1" ng-click="vm.submitData(token,'N')"
+                                ng-class="{'disabled':form.KNT_SC_GFAB_DLV_H_ID==null||form.SCM_STORE_ID==null||
+                                          form.CHALAN_DT==null||form.IS_FINALIZE=='Y'}">
+                            Save
+                        </button>
+                        <button type="button" @*ng-disabled="rollDelvGridDataSource.length()<0"*@ class="btn btn-sm yellow-gold" ng-show="form.KNT_SC_GFAB_DLV_H_ID>0" ng-click="vm.submitData(token,'N')"
+                                ng-class="{'disabled':form.KNT_SC_GFAB_DLV_H_ID==null||form.SCM_STORE_ID==null||
+                                          form.CHALAN_NO==null||form.CHALAN_DT==null||form.IS_FINALIZE=='Y'}">
+                            Update
+                        </button>
+
+                        <button type="button" @*ng-disabled="rollDelvGridDataSource.length()<0"*@ class="btn btn-sm blue" ng-show="form.KNT_SC_GFAB_DLV_H_ID>0" ng-click="vm.submitData(token,'Y')"
+                                ng-class="{'disabled':form.KNT_SC_GFAB_DLV_H_ID==null||form.SCM_STORE_ID==null||
+                                          form.CHALAN_NO==null||form.CHALAN_DT==null||form.IS_FINALIZE=='Y'}">
+                            Finalize
+                        </button>
+
+                        <button type="button" class="btn btn-sm blue" ng-click="vm.cancel()">Cancel</button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <div class="btn-group" dropdown ng-show="form.KNT_SC_GFAB_DLV_H_ID>0">
+                            @*<button id="split-button" type="button" class="btn btn-sm blue" ng-click="vm.printBookingRecord(vm.form.REVISION_NO)" ng-disabled="vm.form.MC_BLK_FAB_REQ_H_ID<1 || vm.form.HAS_PLOSS=='N'">Print</button>*@
+                            <button type="button" class="btn btn-sm blue" dropdown-toggle title="Print List">
+                                <i class="fa fa-print"></i> Print
+                                <span class="caret"></span>
+                                <span class="sr-only">Split button!</span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="split-button">
+                                <li role="menuitem" ng-repeat="itm in vm.printButtonList">
+                                    <a ng-click="vm.print(itm)">{{itm.BTN_NAME}}</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        @*<button type="button" class="btn btn-sm blue" ng-click="vm.printChallan()" ng-show="$parent.form.KNT_SC_GFAB_DLV_H_ID>0"
+                        ng-class="{'disabled':$parent.form.KNT_SC_PRG_RCV_ID==null||$parent.form.SCM_STORE_ID==null||
+                                      $parent.form.CHALAN_NO==null||$parent.form.CHALAN_DT==null||vm.rollDelvGridDataSource.length()<0}">
+                    <i class="fa fa-print"></i> Print Challan
+                </button>*@
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <button type="button" class="btn btn-sm blue-hoki" ng-click="vm.backToList()">Back to List</button>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </form>
+
+       
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+

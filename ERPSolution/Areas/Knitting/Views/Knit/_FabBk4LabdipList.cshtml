@@ -1,0 +1,100 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Knitting</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body" id="PORTLET_BODY">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row" >           
+            <div class="col-md-12">
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend">Search</legend>
+
+                    <div class="form-group">
+
+                        <label class="control-label col-md-1">
+                            From Date
+                        </label>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" ng-click="vm.FROM_DT_Open($event)" datepicker-popup="{{vm.dtFormat}}"
+                                   name="FROM_DT" ng-model="vm.form.FROM_DT" is-open="vm.FROM_DT_Opened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                        </div>
+
+                        <label class="control-label col-md-1">
+                            To Date
+                        </label>
+                        <div class="col-md-2" style="padding-right:0px">
+                            <input type="text" class="form-control" ng-click="vm.TO_DT_Open($event)" datepicker-popup="{{vm.dtFormat}}"
+                                   name="TO_DT" ng-model="vm.form.TO_DT" is-open="vm.TO_DT_Opened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                        </div>
+
+
+                        <div class="col-md-1">
+                            <button class="btn btn-sm" ng-click="vm.getReqList()">Show</button>
+                        </div>
+
+                        <div class="col-md-offset-1 col-md-1">
+                            <a ui-sref="FabBk4LabdipH.Dtl({pKNT_GEN_FAB_REQ_H_ID : 0})" class="btn btn-sm blue">
+                                <i class="fa fa-plus"></i> Add New
+                            </a>
+                        </div>
+
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+
+             
+
+        <br />
+        @*{{vm.width}}*@
+        <div @*style="padding:5px;"*@>
+
+            <kendo-grid k-options="vm.reqGridOption" k-data-source="vm.reqGridDataSource" style="padding-top:0px;"></kendo-grid>
+            @*<div kendo-grid id="grid" options="vm.kntScProgGridOption" k-data-source="vm.kntScProgGridDataSource"></div>*@
+        </div>
+        
+        @*<pre>{{vm.form|json}}</pre>*@
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

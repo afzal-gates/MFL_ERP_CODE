@@ -1,0 +1,265 @@
+﻿
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Garments</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">            
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <form class="form-horizontal" role="form" name="GmtItemTechVariationForm" novalidate>
+            <div class="form-body clearfix" style="padding-top:5px;">
+                <div class="row">
+                    <div class="col-md-12" >
+
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend">Gmt Tech Variations: Entry</legend>
+
+                            <div class="form-group">
+                                <div class="col-md-1">
+                                    <label class="form-control-solid" style="background-color: hsl(208, 56%, 46%); color: hsl(0, 0%, 100%); font-weight: bold; width: 100%; padding-top: 5px; padding-bottom: 5px;">&nbsp; Itm Group</label>
+
+                                    <div kendo-list-view id="gmtCategoryGroup" k-selectable="'single'" k-data-source="vm.gmtCategoryGroupDataSource" k-on-change="vm.onChangeGmtCategoryGroup(dataItem)"
+                                         k-on-data-bound="vm.onDataBoundGmtCategoryGroup(kendoEvent)" style="max-height:400px;overflow:auto;">
+                                        <div k-template>
+                                            <dd class="k-state-default" style="padding: 5px; border-bottom: solid 1px; border-color: lightgray; ">
+                                                <b>{{dataItem.ITEM_CAT_NAME_EN}}</b>
+                                            </dd>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label class="form-control-solid" style="background-color: hsl(208, 56%, 46%); color: hsl(0, 0%, 100%); font-weight: bold; width: 100%; padding-top: 5px; padding-bottom: 5px;">&nbsp;Itm Category</label>
+
+                                    <div class="input-icon right" style="padding-bottom:3px;">
+                                        <i class="icon-magnifier"></i>
+                                        <input type="text" class="form-control form-control-solid" ng-model="qGMT_CAT_NAME" placeholder="Search..." ng-change="vm.gmtCategoryDataSource.filter( { field:'ITEM_CAT_NAME_EN', operator :'contains', value: qGMT_CAT_NAME })"                                               
+                                               ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }">
+                                    </div>
+                                    <div kendo-list-view k-selectable="'single'" k-data-source="vm.gmtCategoryDataSource" k-on-change="vm.onChangeGmtCategory(dataItem)"
+                                         k-on-data-bound="vm.onDataBoundGmtCategory(kendoEvent)" style="max-height:415px;overflow:auto;">
+                                        <div k-template>
+                                            <dd class="k-state-default" style="padding: 5px; border-bottom: solid 1px; border-color: lightgray; ">
+                                                <b>{{dataItem.ITEM_CAT_NAME_EN}}</b>
+                                            </dd>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-9">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <table class="table table-condensed table-hover">
+                                                <thead>
+                                                    <tr class="site-table-header">
+                                                        <th width="13%">
+                                                            <small>Itm Group</small>
+                                                        </th>
+                                                        <th width="25%">
+                                                            <small>Technical Spec.</small>
+
+                                                        </th>
+                                                        <th width="5%">
+                                                            <small>OP</small>
+                                                        </th>
+                                                        <th width="5%">
+                                                            <small>ASO</small>
+                                                        </th>
+                                                        <th width="5%">
+                                                            <small>SMV</small>
+                                                        </th>
+
+                                                        <th width="7%" ng-repeat="ord in vm.FormData.OrdVols">
+                                                            <small>{{ ord.ORD_VOL_1+' - '+ ord.ORD_VOL_2 }}</small>
+                                                        </th>
+                                                        <th width="5%">
+                                                            <small>--</small>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                    <tr ng-repeat="itmV in vm.FormData.datas track by $index">
+                                                        <td ng-class="{'has-error': (LK_ITEM_GRP_ID_FORM.LK_ITEM_GRP_ID.$touched || GmtItemTechVariationForm.$submitted) && LK_ITEM_GRP_ID_FORM.LK_ITEM_GRP_ID.$error.required}">
+                                                            <ng-form name="LK_ITEM_GRP_ID_FORM">
+                                                                <select name="LK_ITEM_GRP_ID" id="LK_ITEM_GRP_ID"
+                                                                        ng-options="option.value as option.label for option in vm.ItmGroup"
+                                                                        ng-model="itmV.LK_ITEM_GRP_ID" class="form-control" required></select>
+                                                            </ng-form>
+                                                        </td>
+                                                        <td ng-class="{'has-error': (TECH_SPEC_DESC_FORM.TECH_SPEC_DESC.$touched || GmtItemTechVariationForm.$submitted) && TECH_SPEC_DESC_FORM.TECH_SPEC_DESC.$error.required}">
+                                                            <ng-form name="TECH_SPEC_DESC_FORM">
+                                                                <input type="text" class="form-control" ng-model="itmV.TECH_SPEC_DESC" name="TECH_SPEC_DESC" required />
+                                                            </ng-form>
+
+
+                                                        </td>
+                                                        <td ng-class="{'has-error': (PLAN_REQ_OP.REQ_OP.$touched || GmtItemTechVariationForm.$submitted) && (PLAN_REQ_OP.REQ_OP.$error.required || PLAN_REQ_OP.REQ_OP.$error.min )}">
+                                                            <ng-form name="PLAN_REQ_OP">
+                                                                <input type="number" class="form-control" ng-model="itmV.REQ_OP" name="REQ_OP" required min="1" />
+                                                            </ng-form>
+                                                        </td>
+                                                        <td ng-class="{'has-error': (PLAN_HP_FORM.REQ_HLP.$touched || GmtItemTechVariationForm.$submitted) && (PLAN_HP_FORM.REQ_HLP.$error.required || PLAN_HP_FORM.REQ_HLP.$error.min)}">
+                                                            <ng-form name="REQ_HLP_FORM">
+                                                                <input type="number" class="form-control" ng-model="itmV.REQ_HLP" name="REQ_HLP" required min="1" />
+                                                            </ng-form>
+
+                                                        </td>
+                                                        <td ng-class="{'has-error': (SMV_FORM.SMV.$touched || GmtItemTechVariationForm.$submitted) && ( SMV_FORM.SMV.$error.required || SMV_FORM.SMV.$error.min )}">
+                                                            <ng-form name="SMV_FORM">
+                                                                <input type="number" class="form-control" ng-model="itmV.SMV" name="SMV" required min="1" />
+                                                            </ng-form>
+                                                        </td>
+
+                                                        <td ng-repeat="ord in vm.FormData.OrdVols">
+                                                            <input type="number" class="form-control" ng-model="itmV[ord.GMT_IE_ITM_OQVOL_ID]['CM_PER_DZ']" name="CM_PER_DZ" />
+                                                        </td>
+
+                                                        <td>
+                                                            <a class="btn btn-xs red" ng-click="vm.FormData.datas.splice($index,1)" ng-if="$index != 0">
+                                                                <i class="fa fa-times"></i>
+                                                            </a>
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td colspan="{{ 6 + vm.FormData.OrdVols.length }}">
+
+                                                            <button type="button" style="float:left;" class="btn btn-sm green" ng-click="vm.save(vm.FormData.datas, GmtItemTechVariationForm.$valid);GmtItemTechVariationForm.$submitted=true;">Save</button>
+                                                            <button type="button" style="float:left;" class="btn btn-sm default">Reset</button>
+
+                                                            <a class="btn btn-xs blue-chambray" style="float:right;" ng-click="vm.addItem(vm.FormData.datas)">
+                                                                <i class="fa fa-plus"></i> Add
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </fieldset>
+
+                    </div>
+
+                    
+                    
+                </div>
+            </div>
+        </form>
+        
+
+        
+       
+    </div>
+</div>
+
+
+
+
+
+
+@*Start For Garments Part Model*@
+<script type="text/ng-template" id="NewGmtPartModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <p style="padding-top:10px;">
+                        Garments Part
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </p>
+
+
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="NewGmtPartModal" novalidate @*ng-submit="save(Task,token,TaskForm.$valid)"*@>
+                    <input id="access_token" data-ng-model="token" type="hidden"
+                           data-ng-init="token='@Session["access_token"]'" />
+
+                    @*<div kendo-grid k-data-source="asortDataList" k-columns="asortColumns" k-selectable="true" k-on-change="selected = data" k-height="300" k-filterable="true" k-sortable="true"></div>*@
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">
+                            <span aria-required="true" class="required">*</span>Code
+                        </label>
+                        <div class="col-md-5" style="padding-top:5px;">
+                            <input type="text" class="form-control" name="GARM_PART_CODE" ng-model="vm.form.GARM_PART_CODE" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">
+                            <span aria-required="true" class="required">*</span>Name
+                        </label>
+                        <div class="col-md-5" style="padding-top:5px;">
+                            <input type="text" class="form-control" name="GARM_PART_NAME" ng-model="vm.form.GARM_PART_NAME" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-2">
+                            <label class="control-label checkbox-inline">
+                                <input type="checkbox" name="IS_FLAT_CIR" ng-model="vm.form.IS_FLAT_CIR" ng-true-value="'F'" ng-false-value="'C'" /> Flat Knit?
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-2">
+                            <label class="control-label checkbox-inline">
+                                <input type="checkbox" name="IS_ACTIVE" ng-model="vm.form.IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'" /> Active?
+                            </label>
+                        </div>
+                    </div>
+
+                    @*<pre>{{ProcessLossModalForm.$valid}}</pre>*@
+
+                    <br />
+                    <div class="form-group form-actions">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="button" class="btn green btn-sm" ng-click="vm.save(token, NewGmtPartModal.$invalid)" ng-class="{'disabled':!NewGmtPartModal.$valid}" ng-show="vm.form.RF_GARM_PART_ID<1">Save</button>
+                            <button type="button" class="btn yellow-gold btn-sm" ng-click="vm.save(token, NewGmtPartModal.$invalid)" ng-class="{'disabled':!NewGmtPartModal.$valid}" ng-show="vm.form.RF_GARM_PART_ID>0">Update</button>
+
+                            <button type="button" class="btn btn-default btn-sm" ng-click="vm.tranCancel()">Cancel</button>
+                        </div>
+                    </div>
+
+                    <kendo-grid k-options="vm.gmtPartGridOption" k-data-source="vm.gmtPartGridDataSource"></kendo-grid>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+@*End For Garments Part Model*@

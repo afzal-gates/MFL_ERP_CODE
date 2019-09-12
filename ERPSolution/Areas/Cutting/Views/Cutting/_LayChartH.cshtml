@@ -1,0 +1,649 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 12px;
+    }
+
+    /*.k-grid-content {
+        height: 200px;
+    }*/
+</style>
+
+
+
+
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Cutting</a>
+
+    </li>
+    <li>
+        <a href="#">{{vm.Title}}</a>
+    </li>
+</ul>
+
+
+<div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+    <div class="page-splash">
+        <div class="page-splash-message">
+            <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+        </div>
+    </div>
+</div>
+
+
+<div class="portlet box blue-dark">
+
+
+    <div class="portlet-title">
+        <div class="caption" @*ng-bind="vm.Title"*@>
+            {{vm.Title}}&nbsp;
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        @*<pre>{{vm.userLevelData|json}}</pre>*@
+
+        <form class="form-horizontal form-body" name="frmLayChart">
+            <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+
+            <div class="row" style="margin:auto;" ng-show="vm.errors">
+                <div class="alert alert-danger" role="alert">
+                    @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                    <div style="padding: 0px 0px 15px 25px; ">
+                        <b>Please fix the following errors ....</b>
+                    </div>
+                    <ul ng-repeat="field in vm.errors">
+                        <li ng-repeat="error in field" ng-bind="error"></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-12">
+
+                    <div class="row">
+                        
+                        <div class="col-md-9" style="padding-right:0px">
+                            <fieldset class="custom-fieldset" style="margin-bottom:5px" ng-disabled="(vm.form.IS_FINALIZED=='Y' && vm.userLevelData[0].USER_LEVEL!='AUTHORITY')">
+                                <legend class="custom-legend">Key Information</legend>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        <span aria-required="true" class="required">*</span>Buyer A/C
+                                    </label>
+                                    <div class="col-md-3" ng-class="{'has-error': (frmLayChart['MC_BYR_ACC_GRP_ID'].$touched || frmLayChart.$submitted) && frmLayChart['MC_BYR_ACC_GRP_ID'].$error.required}">
+                                        <select kendo-drop-down-list name="MC_BYR_ACC_GRP_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                                k-options="vm.buyerAcGrpOption" k-data-source="vm.buyerAcGrpDataSource" k-ng-delay="vm.buyerAcGrpDataSource"
+                                                ng-model="vm.form.MC_BYR_ACC_GRP_ID" k-auto-bind="'true'" required></select>
+                                    </div>
+
+
+                                    <label class="control-label col-md-1">
+                                        <span aria-required="true" class="required">*</span>Style
+                                    </label>
+                                    <div class="col-md-4" ng-class="{'has-error': (frmLayChart['MC_STYLE_H_ID'].$touched || frmLayChart.$submitted) && frmLayChart['MC_STYLE_H_ID'].$error.required}">
+                                        <select class="form-control" kendo-drop-down-list name="MC_STYLE_H_ID" k-option-label="'-- Select --'"
+                                                k-auto-bind="'true'" k-options="vm.styleOption" k-data-source="vm.styleDataSource" k-ng-delay="vm.styleDataSource"
+                                                ng-model="vm.form.MC_STYLE_H_ID" required></select>
+
+                                        @*{{vm.form.MC_STYLE_H_ID}}*@
+                                    </div>
+
+
+                                    <div class="col-md-2" style="margin-bottom:0px">
+                                        <label class="control-label checkbox-inline">
+                                            <input type="checkbox" name="IS_SC_CUTTING" ng-model="vm.form.IS_SC_CUTTING" ng-true-value="'Y'" ng-false-value="'N'" /> <span style="color:red;font-weight:bold"> Sub-contract?</span>
+                                        </label>
+                                    </div>
+
+                                </div>
+
+                            </fieldset>
+                        </div>
+
+
+                        <div class="col-md-3" style="padding-left:0px">
+                            <fieldset class="custom-fieldset" style="margin-bottom:5px" ng-disabled="(vm.form.IS_FINALIZED=='Y' && vm.userLevelData[0].USER_LEVEL!='AUTHORITY')">
+                                <legend class="custom-legend">Style Search By</legend>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">
+                                        <span aria-required="true" class="required">*</span>Job#/Order
+                                    </label>
+                                    <div class="col-md-8" ng-class="{'has-error': (frmLayChart['MC_STYLE_H_EXT_ID'].$touched || frmLayChart.$submitted) && frmLayChart['MC_STYLE_H_EXT_ID'].$error.required}">
+                                        <select class="form-control" kendo-drop-down-list name="MC_STYLE_H_EXT_ID" k-option-label="'-- Select --'"
+                                                k-template="vm.templateOh" k-value-template="vm.valueTemplateOh" k-filter="'contains'"
+                                                k-auto-bind="'true'" k-options="vm.OrdStyleExtOption" k-data-source="vm.OrdStyleExtDataSource" k-ng-delay="vm.OrdStyleExtDataSource"
+                                                ng-model="vm.form.MC_STYLE_H_EXT_ID"></select>
+                                    </div>
+
+                                </div>
+
+                            </fieldset>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-8">
+                            <fieldset class="custom-fieldset" ng-disabled="(vm.form.IS_FINALIZED=='Y' && vm.userLevelData[0].USER_LEVEL!='AUTHORITY')">
+                                <legend class="custom-legend">Marker Information</legend>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        <span aria-required="true" class="required">*</span>Marker
+                                    </label>
+                                    <div class="col-md-10" ng-class="{'has-error': (frmLayChart['GMT_MRKR_ID'].$touched || frmLayChart.$submitted) && frmLayChart['GMT_MRKR_ID'].$error.required}">
+                                        <select class="form-control" kendo-drop-down-list id="GMT_MRKR_ID" name="GMT_MRKR_ID" k-option-label="'-- Select --'"
+                                                k-data-text-field="'MRKR_SH_DESC'" k-data-value-field="'GMT_MRKR_ID'" k-filter="'contains'"
+                                                k-auto-bind="'true'" k-options="vm.mrkrListOption" k-data-source="vm.mrkrListDataSource" k-ng-delay="vm.mrkrListDataSource"
+                                                ng-model="vm.form.GMT_MRKR_ID" @*k-on-change="vm.onChangeMarker(kendoEvent)"*@></select>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        Way of Mrkr
+                                    </label>
+                                    <div class="col-md-4">
+                                        <select class="form-control" kendo-drop-down-list name="LK_WAY_TYPE_ID"
+                                                k-auto-bind="'true'" k-options="vm.mrkrWayTypeList"
+                                                ng-model="vm.form.LK_WAY_TYPE_ID" ng-disabled="true"></select>
+                                    </div>
+
+                                    <label class="control-label col-md-2">
+                                        Type of Mrkr
+                                    </label>
+                                    <div class="col-md-4">
+                                        <select class="form-control" kendo-drop-down-list name="LK_MRKR_TYPE_ID"
+                                                k-auto-bind="'true'" k-options="vm.mrkrTypeList"
+                                                ng-model="vm.form.LK_MRKR_TYPE_ID" ng-disabled="true"></select>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        Length
+                                    </label>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control" name="MRKR_LEN" ng-model="vm.form.MRKR_LEN" readonly />
+                                    </div>
+
+                                    <label class="control-label col-md-offset-2 col-md-2">
+                                        Width
+                                    </label>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control" name="MRKR_WDT" ng-model="vm.form.MRKR_WDT" readonly />
+                                    </div>
+                                </div>
+
+                            </fieldset>
+                        
+                            <fieldset class="custom-fieldset" style="margin-bottom:5px" ng-disabled="(vm.form.IS_FINALIZED=='Y' && vm.userLevelData[0].USER_LEVEL!='AUTHORITY')" @*ng-show="vm.form.itemsCutInfoSzRtoItm.length>0"*@>
+                                <legend class="custom-legend">Cutting Information</legend>
+
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">
+                                        <span aria-required="true" class="required">*</span>Cutting#
+                                    </label>
+                                    <div class="col-md-2" ng-class="{'has-error': (frmLayChart['CUTNG_NO'].$touched || frmLayChart.$submitted) && frmLayChart['CUTNG_NO'].$error.required}">
+                                        <input type="text" class="form-control" name="CUTNG_NO" ng-model="vm.form.CUTNG_NO" autocomplete="off" />
+                                    </div>
+
+
+                                    <label class="control-label col-md-offset-1 col-md-3">
+                                        <span aria-required="true" class="required">*</span>Cutting Type
+                                    </label>
+                                    <div class="col-md-2" ng-class="{'has-error': (frmLayChart['LK_CUT_TYPE_ID'].$touched || frmLayChart.$submitted) && frmLayChart['LK_CUT_TYPE_ID'].$error.required}">
+                                        <select class="form-control" kendo-drop-down-list name="LK_CUT_TYPE_ID" k-option-label="'-- Select --'"
+                                                k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'"
+                                                @*ng-disabled="$parent.IS_BFB_FINALIZED=='Y'"*@
+                                                k-options="vm.cuttingTypeOption" k-data-source="vm.cuttingTypeDataSource" ng-model="vm.form.LK_CUT_TYPE_ID"></select>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">
+                                        <span aria-required="true" class="required">*</span>Start Time
+                                    </label>
+                                    <div class="col-md-3" ng-class="{'has-error': (frmLayChart['LAY_ST_TIME'].$touched || frmLayChart.$submitted) && frmLayChart['LAY_ST_TIME'].$error.required}">
+                                        <input id="layStartTime" type="datetime" kendo-date-time-picker class="form-control" ng-model="vm.form.LAY_ST_TIME" @*k-ng-model="vm.form.EFFECT_FROM"*@ interval="30" format="dd/MMM/yyyy hh:mm tt" />
+                                    </div>
+
+                                    <label class="control-label col-md-3">
+                                        End Time
+                                    </label>
+                                    <div class="col-md-3">
+                                        <input id="layEndTime" type="datetime" kendo-date-time-picker class="form-control" ng-model="vm.form.LAY_END_TIME" @*k-ng-model="vm.form.EFFECT_FROM"*@ interval="30" format="dd/MMM/yyyy hh:mm tt" />
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">
+                                        <span aria-required="true" class="required">*</span>Table#
+                                    </label>
+                                    <div class="col-md-3" ng-class="{'has-error': (frmLayChart['GMT_CUT_TABLE_ID'].$touched || frmLayChart.$submitted) && frmLayChart['GMT_CUT_TABLE_ID'].$error.required}">
+                                        <select kendo-drop-down-list name="GMT_CUT_TABLE_ID" class="form-control"
+                                                k-options="vm.cuttingTableOption" k-data-source="vm.cuttingTableDataSource" ng-model="vm.form.GMT_CUT_TABLE_ID"
+                                                @*ng-disabled="vm.form.RF_ACTN_STATUS_ID==102"*@></select>
+                                    </div>
+
+                                    <label class="control-label col-md-3">
+                                        <span aria-required="true" class="required">*</span>Dia Type
+                                    </label>
+                                    <div class="col-md-3" ng-class="{'has-error': (frmLayChart['LK_DIA_TYPE_ID'].$touched || frmLayChart.$submitted) && frmLayChart['LK_DIA_TYPE_ID'].$error.required}">
+                                        <select class="form-control" kendo-drop-down-list name="LK_DIA_TYPE_ID" k-option-label="'-- Select --'"
+                                                k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'"
+                                                @*ng-disabled="$parent.IS_BFB_FINALIZED=='Y'"*@
+                                                k-options="vm.diaTypeOption" k-data-source="vm.diaTypeDataSource" ng-model="vm.form.LK_DIA_TYPE_ID"></select>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">
+                                        <span aria-required="true" class="required">*</span>Bundle Divide Type
+                                    </label>
+                                    <div class="col-md-2" ng-class="{'has-error': (frmLayChart['LK_BNDL_DIV_TYP_ID'].$touched || frmLayChart.$submitted) && frmLayChart['LK_BNDL_DIV_TYP_ID'].$error.required}">
+                                        <select class="form-control" kendo-drop-down-list name="LK_BNDL_DIV_TYP_ID" k-option-label="'-- Select --'"
+                                                k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'"
+                                                @*ng-disabled="$parent.IS_BFB_FINALIZED=='Y'"*@
+                                                k-options="vm.bndlDivideTypOption" k-data-source="vm.bndlDivideTypDataSource" ng-model="vm.form.LK_BNDL_DIV_TYP_ID"></select>
+
+                                    </div>
+
+                                    <label class="control-label col-md-offset-1 col-md-3">
+                                        <span aria-required="true" class="required">*</span>Stiker Option
+                                    </label>
+                                    <div class="col-md-3" ng-class="{'has-error': (frmLayChart['LK_STCKR_OPT_ID'].$touched || frmLayChart.$submitted) && frmLayChart['LK_STCKR_OPT_ID'].$error.required}">
+                                        <select class="form-control" kendo-drop-down-list name="LK_STCKR_OPT_ID" k-option-label="'-- Select --'"
+                                                k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'"
+                                                @*ng-disabled="$parent.IS_BFB_FINALIZED=='Y'"*@
+                                                k-options="vm.stickerOptOption" k-data-source="vm.stickerOptDataSource" ng-model="vm.form.LK_STCKR_OPT_ID"></select>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">
+                                        <span aria-required="true" class="required" ng-show="vm.form.LK_BNDL_DIV_TYP_ID==683">*</span>Max Ratio
+                                    </label>
+                                    <div class="col-md-2" ng-class="{'has-error': (frmLayChart['MAX_RATIO_QTY'].$touched || frmLayChart.$submitted) && frmLayChart['MAX_RATIO_QTY'].$error.required}">
+                                        <input type="text" class="form-control" name="MAX_RATIO_QTY" ng-model="vm.form.MAX_RATIO_QTY" autocomplete="off" @*ng-required="vm.form.LK_BNDL_DIV_TYP_ID==683"*@ />
+                                    </div>
+
+                                    <label class="control-label col-md-offset-1 col-md-3">
+                                        Max Qty in a Bundle
+                                    </label>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control" name="MAX_QTY_IN_BNDL" ng-model="vm.form.MAX_QTY_IN_BNDL" autocomplete="off" />
+                                    </div>
+                                </div>
+
+
+                                @*<div class="form-group">
+                <label class="control-label col-md-offset-1 col-md-3">
+                    No of Bundle Set
+                </label>
+                <div class="col-md-2">
+                    <input type="text" class="form-control" name="NO_BNDL_SET" ng-model="vm.form.NO_BNDL_SET" />
+                </div>
+            </div>*@
+
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">
+                                        Remarks
+                                    </label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="REMARKS" ng-model="vm.form.REMARKS" autocomplete="off" />
+                                    </div>
+
+                                </div>
+
+                            </fieldset>
+                        </div>
+                       
+                        <div class="col-md-4" @*ng-show="vm.form.itemsCutInfoSzRtoItm.length>0"*@>
+                            <fieldset class="custom-fieldset" style="margin-bottom:5px" ng-disabled="(vm.form.IS_FINALIZED=='Y' && vm.userLevelData[0].USER_LEVEL!='AUTHORITY')">
+                                <legend class="custom-legend">Ratio Information</legend>
+
+                                <details ng-repeat="itm in vm.form.itemsCutInfoSzRtoItm" ng-open="true" style="padding-bottom:5px" @*ng-click="vm.styleQtyChange($index)"*@>
+                                    <br />
+                                    <summary class="large_bold_black">
+                                        <b>{{itm.ITEM_NAME_EN}}</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        @*<a ng-click='gmtPartModal(item.MC_STYLE_H_ID, $index)' class='btn btn-xs blue' ng-show="vm.showGMTPartDia==item.index"><i class='fa fa-plus'> GMT Part</i></a>*@
+                                    </summary>
+                                    @*<input type="hidden" ng-init="itm.index=$index" ng-model="itm.index" />*@
+
+                                    <table class="table table-condensed table-striped table-bordered" @*style="border-collapse: collapse; overflow:scroll;"*@>
+                                        <thead>
+                                            <tr class="site-table-header">
+                                                <th style="border: solid 2px lightgray; width: 25%;">Size</th>
+                                                <th style="border: solid 2px lightgray; width: 25%;"><b>O/Qty</b></th>
+                                                <th style="border: solid 2px lightgray; width: 25%;"><b>Ratio GRP</b></th>
+                                                <th style="border: solid 2px lightgray; width: 25%;"><b>Ratio</b></th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody class="clstdMtex">
+
+                                            <tr ng-repeat="itmSize in itm.itemsOrdSizeRatio" style="border: solid 2px lightgray;">
+                                                <td>{{itmSize.SIZE_CODE}}</td>
+                                                <td>{{itmSize.SIZE_QTY}}</td>
+                                                <td>
+                                                    <select class="form-control" name="'GMT_MRKR_RATIO_GRP_ID-'+$index" ng-model="itmSize.GMT_MRKR_RATIO_GRP_ID" ng-options="Item.GMT_MRKR_RATIO_GRP_ID as Item.GRP_TEXT for Item in itmSize.itemsRatioGrpList" ng-disabled="vm.form.HAS_GRADING!='Y'"></select>
+                                                </td>
+                                                <td ng-class="{'has-error': (frmLayChart['RATIO_QTY-'+$index].$touched || frmLayChart.$submitted) && frmLayChart['RATIO_QTY-'+$index].$error.required}">
+                                                    <input type="text" class="form-control" name="RATIO_QTY-{{$index}}" ng-model="itmSize.RATIO_QTY" autocomplete="off" ng-disabled="vm.form.HAS_GRADING!='Y'"
+                                                           ng-change="vm.onChangeRatioQty(itm)" required />
+                                                </td>
+                                            </tr>
+
+                                            <tr class="warning" style="border: solid 2px lightgray;">
+                                                <td colspan="3"><b>Total</b></td>
+                                                <td><b>{{itm.TOT_RATIO_QTY}}</b></td>
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+
+                                </details>
+
+                                @*<div class="form-group">
+                <div class="col-md-offset-2 col-md-7">
+
+                </div>
+            </div>
+
+            <div style="text-align:right;padding-top:10px">
+                <button class="btn btn-sm blue" ng-click="vm.markerModal()">
+                    <i class="fa fa-plus"></i> Add
+                </button>
+            </div>*@
+
+                            </fieldset>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12" @*ng-show="vm.form.itemsCutInfoSzRtoItm.length>0"*@>
+                            <fieldset class="custom-fieldset" ng-disabled="(vm.form.IS_FINALIZED=='Y' && vm.userLevelData[0].USER_LEVEL!='AUTHORITY')">
+                                <legend class="custom-legend">Lay Information</legend>
+
+                                <table class="table table-condensed table-striped table-bordered" @*style="border-collapse: collapse; overflow:scroll;"*@>
+                                    <thead>
+                                        <tr class="site-table-header">
+                                            <th style="border: solid 2px lightgray; width: 5%;">SL</th>
+                                            <th style="border: solid 2px lightgray; width: 22%;"><b>Order#</b></th>
+                                            <th style="border: solid 2px lightgray; width: 20%;"><b>Color</b></th>
+                                            <th style="border: solid 2px lightgray; width: 5%;"><b>ItmCombo</b></th>
+                                            <th style="border: solid 2px lightgray; width: 15%;"><b>Country</b></th>
+                                            <th style="border: solid 2px lightgray; width: 10%;"><b>Ply Qty</b></th>
+                                            <th style="border: solid 2px lightgray; width: 10%;"><b>Kg in Roll</b></th>
+                                            <th style="border: solid 2px lightgray; width: 10%;"><b>Dye Lot</b></th>
+                                            <th style="border: solid 2px lightgray; width: 8%;"><b>Action</b></th>
+                                        </tr>
+
+                                    </thead>
+
+                                    <tbody class="clstdMtex">
+
+                                        <tr ng-repeat="itmPly in vm.form.itemsCutInfoPly track by $index" style="border: solid 2px lightgray;">
+                                            <td>
+                                                <span ng-if="itmPly.ROLL_SL<1">{{$index+1}}</span>
+                                                <span ng-if="itmPly.ROLL_SL>0"><input type="text" class="form-control" name="ROLL_SL" ng-model="itmPly.ROLL_SL" readonly /></span>
+                                            </td>
+
+
+                                            <td ng-class="{'has-error': (frmLayChart['MC_ORDER_SHIP_ID-'+$index].$touched || frmLayChart.$submitted) && frmLayChart['MC_ORDER_SHIP_ID-'+$index].$error.required}">
+
+                                                @*<select kendo-drop-down-list name="MC_ORDER_SHIP_ID-{{$index}}" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                k-data-text-field="'ORDER_NO'" k-data-value-field="'MC_ORDER_SHIP_ID'" k-filter="'contains'"
+                k-options="vm.ordShipOption" k-data-source="vm.ordShipDataSource" k-ng-delay="vm.ordShipDataSource"
+                ng-model="itmPly.MC_ORDER_SHIP_ID" k-auto-bind="'true'"
+                k-on-change="vm.onChangeOrdShip(itmPly, $index, 'PLY', kendoEvent)"
+                ng-required="vm.form.MC_STYLE_H_ID>0"></select>*@
+
+                                                @*<select class="form-control" kendo-drop-down-list name="MC_ORDER_SHIP_ID-{{$index}}" k-option-label="'-- Select --'"
+                k-data-text-field="'ORDER_NO'" k-data-value-field="'MC_ORDER_SHIP_ID'" k-filter="'contains'"
+                k-auto-bind="'true'" k-data-source="vm.mrkrListDataSource" k-ng-delay="vm.mrkrListDataSource"
+                ng-model="itmPly.MC_ORDER_SHIP_ID" k-on-change="vm.onChangeOrdShip(kendoEvent, $index)" ng-required="vm.form.MC_STYLE_H_ID>0"></select>*@
+
+                                                <select class="form-control" name="MC_ORDER_SHIP_ID-{{$index}}" ng-model="itmPly.MC_ORDER_SHIP_ID"
+                                                        ng-options="Item.MC_ORDER_SHIP_ID as Item.ORDER_NO + (Item.IS_MULTI_SHIP_DT=='Y'?'-' + Item.SHIP_DESC:'') for Item in itmPly.itemsOrdShipList"
+                                                        ng-change="vm.onChangeOrdShip(itmPly, $index, 'PLY')"
+                                                        ng-required="vm.form.MC_STYLE_H_ID>0"></select>
+                                            </td>
+                                            <td ng-class="{'has-error': (frmLayChart['GMT_COLOR_ID-'+$index].$touched || frmLayChart.$submitted) && frmLayChart['GMT_COLOR_ID-'+$index].$error.required}">
+                                                <select class="form-control" name="GMT_COLOR_ID-{{$index}}" ng-model="itmPly.GMT_COLOR_ID"
+                                                        ng-options="Item.MC_COLOR_ID as Item.COLOR_NAME_EN for Item in itmPly.itemsColorList"
+                                                        ng-required="vm.form.MC_STYLE_H_ID>0"></select>
+                                            </td>
+
+                                            <td>
+                                                <input type="text" class="form-control" ng-model="itmPly.COLOR_COMBO_TXT" />
+                                            </td>
+                                            <td ng-class="{'has-error': (frmLayChart['MC_ORDER_CNTRY_ID-'+$index].$touched || frmLayChart.$submitted) && frmLayChart['MC_ORDER_CNTRY_ID-'+$index].$error.required}">
+                                                <select class="form-control" name="MC_ORDER_CNTRY_ID-{{$index}}" ng-model="itmPly.MC_ORDER_CNTRY_ID"
+                                                        ng-options="Item.MC_ORDER_CNTRY_ID as Item.COUNTRY_NAME_EN for Item in itmPly.itemsCountryList"
+                                                        ng-required="vm.form.MC_STYLE_H_ID>0"></select>
+                                            </td>
+
+
+                                            <td ng-class="{'has-error': (frmLayChart['PLY_QTY-'+$index].$touched || frmLayChart.$submitted) && frmLayChart['PLY_QTY-'+$index].$error.required}">
+                                                <input type="text" class="form-control" name="PLY_QTY-{{$index}}" ng-model="itmPly.PLY_QTY" autocomplete="off"
+                                                       ng-required="vm.form.MC_STYLE_H_ID>0" ng-change="vm.onChangePlyQty()" />
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" name="FAB_ROLL_WT" ng-model="itmPly.FAB_ROLL_WT" autocomplete="off" />
+                                            </td>
+                                            <td ng-class="{'has-error': (frmLayChart['PLY_DYE_LOT_NO-'+$index].$touched || frmLayChart.$submitted) && frmLayChart['PLY_DYE_LOT_NO-'+$index].$error.required}">
+                                                <input type="text" class="form-control" name="PLY_DYE_LOT_NO-{{$index}}" ng-model="itmPly.DYE_LOT_NO" autocomplete="off" ng-required="vm.form.MC_STYLE_H_ID>0" />
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-xs blue" title="Add" ng-click="vm.addRow(itmPly)"><i class="fa fa-plus"></i></button>
+                                                <button class="btn btn-xs red" title="Remove" ng-click="vm.removeRow($index, vm.form.itemsCutInfoPly)" ng-show="$index>0"><i class="fa fa-remove"></i></button>
+                                            </td>
+                                        </tr>
+
+                                        <tr class="warning" style="border: solid 2px lightgray;">
+                                            <td colspan="4"><b>Total</b></td>
+                                            <td><b>{{vm.form.TOT_PLY_QTY}}</b></td>
+                                            <td colspan="4"></td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+
+                            </fieldset>
+
+                            <div style="text-align:right" ng-show="vm.form.GMT_MRKR_ID>0">
+                                <label class="control-label checkbox-inline">
+                                    <input type="checkbox" name="HAS_GRADING" ng-model="vm.form.HAS_GRADING" ng-true-value="'Y'" ng-false-value="'N'" ng-change="vm.onChangeHasGrading()" /> Size Grading?
+                                </label>
+                            </div>
+                        </div>
+                                                
+                    </div>
+
+                    <div class="row" ng-show="vm.form.HAS_GRADING=='Y'">
+
+                        <div class="col-md-12">
+
+                            <fieldset class="custom-fieldset" ng-disabled="(vm.form.IS_FINALIZED=='Y' && vm.userLevelData[0].USER_LEVEL!='AUTHORITY')">
+                                <legend class="custom-legend">Size Grading</legend>
+
+                                <table class="table table-condensed table-striped table-bordered" @*style="border-collapse: collapse; overflow:scroll;"*@>
+                                    <thead>
+                                        <tr class="site-table-header">
+                                            <th style="border: solid 2px lightgray; width: 15%;"><b>order#</b></th>
+                                            <th style="border: solid 2px lightgray; width: 12%;"><b>Color</b></th>
+                                            <th style="border: solid 2px lightgray; width: 5%;"><b>ItmCombo</b></th>
+                                            <th style="border: solid 2px lightgray; width: 15%;"><b>Country</b></th>
+                                            <th style="border: solid 2px lightgray; width: 15%;">Item</th>
+                                            <th style="border: solid 2px lightgray; width: 6%;"><b>Size</b></th>
+                                            <th style="border: solid 2px lightgray; width: 7%;"><b>Lot#</b></th>
+                                            <th style="border: solid 2px lightgray; width: 5%;"><b>SL-1</b></th>
+                                            <th style="border: solid 2px lightgray; width: 5%;"><b>SL-2</b></th>
+                                            <th style="border: solid 2px lightgray; width: 7%;"><b>Roll SL#</b></th>
+                                            <th style="border: solid 2px lightgray; width: 5%;"><b>Qty</b></th>
+                                            <th style="border: solid 2px lightgray; width: 8%;"><b>Action</b></th>
+                                        </tr>
+
+                                    </thead>
+
+                                    <tbody class="clstdMtex">
+
+                                        <tr ng-repeat="itmGrd in vm.form.itemsCutInfoGrd track by $index" style="border: solid 2px lightgray;">
+
+
+                                            <td ng-class="{'has-error': (frmLayChart['MC_ORDER_SHIP_ID_GRD-'+$index].$touched || frmLayChart.$submitted) && frmLayChart['MC_ORDER_SHIP_ID_GRD-'+$index].$error.required}">
+
+
+                                                <select class="form-control" name="MC_ORDER_SHIP_ID_GRD-{{$index}}" ng-model="itmGrd.MC_ORDER_SHIP_ID"
+                                                        ng-options="Item.MC_ORDER_SHIP_ID as Item.ORDER_NO + (Item.IS_MULTI_SHIP_DT=='Y'?'-' + Item.SHIP_DESC:'') for Item in itmGrd.itemsOrdShipList"
+                                                        ng-change="vm.onChangeOrdShip(itmGrd, $index, 'GRD')"
+                                                        ng-required="vm.form.MC_STYLE_H_ID>0 && vm.form.HAS_GRADING=='Y'"></select>
+                                            </td>
+                                            <td ng-class="{'has-error': (frmLayChart['GMT_COLOR_ID_GRD-'+$index].$touched || frmLayChart.$submitted) && frmLayChart['GMT_COLOR_ID_GRD-'+$index].$error.required}">
+                                                <select class="form-control" name="GMT_COLOR_ID_GRD-{{$index}}" ng-model="itmGrd.GMT_COLOR_ID"
+                                                        ng-options="Item.MC_COLOR_ID as Item.COLOR_NAME_EN for Item in itmGrd.itemsColorList"
+                                                        ng-change="vm.onChangeOrdColor(itmGrd, itmGrd.GMT_COLOR_ID, $index)"
+                                                        ng-required="vm.form.MC_STYLE_H_ID>0 && vm.form.HAS_GRADING=='Y'"></select>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" ng-model="itmGrd.COLOR_COMBO_TXT" />
+                                            </td>
+
+
+                                            <td ng-class="{'has-error': (frmLayChart['MC_ORDER_CNTRY_ID_GRD-'+$index].$touched || frmLayChart.$submitted) && frmLayChart['MC_ORDER_CNTRY_ID_GRD-'+$index].$error.required}">
+                                                <select class="form-control" name="MC_ORDER_CNTRY_ID_GRD-{{$index}}" ng-model="itmGrd.MC_ORDER_CNTRY_ID"
+                                                        ng-options="Item.MC_ORDER_CNTRY_ID as Item.COUNTRY_NAME_EN for Item in itmGrd.itemsCountryList"
+                                                        ng-required="vm.form.MC_STYLE_H_ID>0 && vm.form.HAS_GRADING=='Y'"></select>
+                                            </td>
+
+
+                                            <td ng-class="{'has-error': (frmLayChart['MC_STYLE_D_ITEM_ID_GRD-'+$index].$touched || frmLayChart.$submitted) && frmLayChart['MC_STYLE_D_ITEM_ID_GRD-'+$index].$error.required}">
+                                                <select class="form-control" name="MC_STYLE_D_ITEM_ID_GRD-{{$index}}" ng-model="itmGrd.MC_STYLE_D_ITEM_ID"
+                                                        ng-options="Item.MC_STYLE_D_ITEM_ID as Item.ITEM_NAME_EN for Item in itmGrd.itemsStyleItemList"
+                                                        ng-required="vm.form.MC_STYLE_H_ID>0 && vm.form.HAS_GRADING=='Y'"></select>
+                                            </td>
+                                            <td ng-class="{'has-error': (frmLayChart['MC_SIZE_ID_GRD-'+$index].$touched || frmLayChart.$submitted) && frmLayChart['MC_SIZE_ID_GRD-'+$index].$error.required}">
+                                                <select class="form-control" name="MC_SIZE_ID_GRD-{{$index}}" ng-model="itmGrd.MC_SIZE_ID"
+                                                        ng-options="Item.MC_SIZE_ID as Item.SIZE_CODE for Item in itmGrd.itemsSizeList"
+                                                        ng-required="vm.form.MC_STYLE_H_ID>0 && vm.form.HAS_GRADING=='Y'"></select>
+                                            </td>
+                                            <td ng-class="{'has-error': (frmLayChart['DYE_LOT_NO-'+$index].$touched || frmLayChart.$submitted) && frmLayChart['DYE_LOT_NO-'+$index].$error.required}">
+                                                <input type="text" class="form-control" name="DYE_LOT_NO-{{$index}}" ng-model="itmGrd.DYE_LOT_NO" autocomplete="off" ng-required="vm.form.HAS_GRADING=='Y'" />
+                                            </td>
+                                            <td ng-class="{'has-error': (frmLayChart['GRD_SL1-'+$index].$touched || frmLayChart.$submitted) && frmLayChart['GRD_SL1-'+$index].$error.required}">
+                                                <input type="text" class="form-control" name="GRD_SL1-{{$index}}" ng-model="itmGrd.GRD_SL1" autocomplete="off" ng-required="vm.form.HAS_GRADING=='Y'" />
+                                            </td>
+                                            <td ng-class="{'has-error': (frmLayChart['GRD_SL2-'+$index].$touched || frmLayChart.$submitted) && frmLayChart['GRD_SL2-'+$index].$error.required}">
+                                                <input type="text" class="form-control" name="GRD_SL2-{{$index}}" ng-model="itmGrd.GRD_SL2" autocomplete="off" ng-required="vm.form.HAS_GRADING=='Y'" />
+                                            </td>
+                                            <td ng-class="{'has-error': (frmLayChart['ROLL_SL-'+$index].$touched || frmLayChart.$submitted) && frmLayChart['ROLL_SL-'+$index].$error.required}">
+                                                <input type="text" class="form-control" name="ROLL_SL-{{$index}}" ng-model="itmGrd.ROLL_SL" autocomplete="off" ng-required="vm.form.HAS_GRADING=='Y'" />
+                                            </td>
+                                            <td ng-class="{'has-error': (frmLayChart['QTY_IN_BNDL-'+$index].$touched || frmLayChart.$submitted) && frmLayChart['QTY_IN_BNDL-'+$index].$error.required}">
+                                                <input type="text" class="form-control" name="QTY_IN_BNDL-{{$index}}" ng-model="itmGrd.QTY_IN_BNDL" autocomplete="off" ng-required="vm.form.HAS_GRADING=='Y'" />
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-xs blue" title="Add" ng-click="vm.addRowGrd(itmGrd)"><i class="fa fa-plus"></i></button>
+                                                <button class="btn btn-xs red" title="Remove" ng-click="vm.removeRow($index, vm.form.itemsCutInfoGrd)" ng-show="$index>0"><i class="fa fa-remove"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+
+                            </fieldset>
+
+                        </div>
+                    </div>
+
+                    <div class="row" style="padding-top:10px">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="col-md-6">
+                                    <button type="button" class="btn btn-sm green" ng-click="frmLayChart.$submitted=true; vm.batchSave()" ng-show="vm.form.GMT_CUT_INFO_ID<1"
+                                            @*ng-class="{'disabled':!frmLayChart.$valid}"*@>
+                                        Save
+                                    </button>
+                                    <button type="button" class="btn btn-sm yellow-gold" ng-click="frmLayChart.$submitted=true; vm.batchSave()" ng-show="vm.form.GMT_CUT_INFO_ID>0"
+                                            ng-class="{'disabled':!frmLayChart.$valid||(vm.form.IS_FINALIZED=='Y' && vm.userLevelData[0].USER_LEVEL!='AUTHORITY')}">
+                                        Update
+                                    </button>
+                                    
+                                    <a class="btn btn-sm blue" href="/Cutting/Cutting/LayChart?a=368/#/laychtH/0?pMC_BYR_ACC_GRP_ID={{vm.form.MC_BYR_ACC_GRP_ID}}&pMC_STYLE_H_ID={{vm.form.MC_STYLE_H_ID}}"><i class="fa fa-plus"></i> New Lay Chart</a>
+                                    
+                                </div>
+
+                                <div class="col-md-6" style="text-align:right" ng-show="vm.form.GMT_CUT_INFO_ID>0">
+                                    <button type="button" class="btn btn-sm blue" ng-click="vm.procBndlCard()" ng-disabled="(vm.form.IS_FINALIZED=='Y' && vm.userLevelData[0].USER_LEVEL!='AUTHORITY')">Finalize and Process Bundle Card</button>
+                                    
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <a class="btn btn-sm blue-hoki" href="/Cutting/Cutting/CuttingList?a=376/#/cutList?pGMT_CUT_INFO_ID={{vm.form.GMT_CUT_INFO_ID}}&pMC_BYR_ACC_GRP_ID={{vm.form.MC_BYR_ACC_GRP_ID}}&pMC_STYLE_H_EXT_ID={{vm.form.MC_STYLE_H_EXT_ID}}&pMC_ORDER_H_ID={{vm.form.MC_ORDER_H_ID}}&pMC_ORDER_SHIP_ID={{vm.form.MC_ORDER_SHIP_ID}}&pGMT_COLOR_ID={{vm.form.GMT_COLOR_ID}}">Next Step</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                </div>
+
+            </div>
+            @*<pre>{{frmLayChart.$error|json}}</pre>*@
+            
+        </form>
+
+
+    </div>
+
+</div>
+
+
+
+@*<pre>{{vm.form|json}}</pre>*@
+
+
+
+<script>
+    $("#layStartTime").kendoDateTimePicker({
+        format: "dd/MMM/yyyy hh:mm tt" //"yyyy/MM/dd hh:mm tt"
+        //parseFormats: ["MMMM yyyy", "HH:mm"] //format also will be added to parseFormats
+    });
+
+    $("#layEndTime").kendoDateTimePicker({
+        format: "dd/MMM/yyyy hh:mm tt" //"yyyy/MM/dd hh:mm tt"
+        //parseFormats: ["MMMM yyyy", "HH:mm"] //format also will be added to parseFormats
+    });
+</script>

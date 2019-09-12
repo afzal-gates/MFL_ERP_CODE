@@ -1,0 +1,204 @@
+﻿@model ERP.Model.HrShiftTeamModel
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+@*<script src="~/Scripts/angular.js" type="text/javascript"></script>*@
+@*<script src="~/Content/assets/global/plugins/angularjs/angular.min.js" type="text/javascript"></script>*@
+@*<script src="~/Content/kendo/js/kendo.all.min.js"></script>*@
+
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<div ng-controller="HrShiftTeam1Controller as vm">
+    <div @*class="modal-header"*@>
+        <h4 class="modal-title" style="border-bottom: 1px solid #BDBDBD; padding: 5px; ">&nbsp;&nbsp;&nbsp;Shift Team</h4>
+
+    </div>
+
+
+    <form name="frmShiftTeam" ng-submit="vm.submit(frmShiftTeam.$valid, vm.isInsert, vm.myForm)" novalidate>
+       
+        @*<div class="modal-body">*@
+        <div class="form-body">
+
+            @Html.ValidationSummary(true)
+
+            <div class="row">
+
+                <div class="col-md-12" ng-show="">
+
+                    <input type="hidden" name="HR_SHIFT_TEAM_ID" ng-model="vm.myForm.HR_SHIFT_TEAM_ID" />
+
+                    <div class="form-group" style="margin-top:10px">
+                        <label class="control-label col-md-offset-1 col-md-3">
+                            Shift Plan
+                        </label>
+                        <div class="col-md-7">
+                            <input type="hidden" class="form-control" name="HR_SHIFT_PLAN_ID" ng-model="vm.myForm.HR_SHIFT_PLAN_ID" />
+                            <select kendo-drop-down-list name="HR_SHIFT_PLAN_ID" class="form-control" ng-init="vm.myForm.HR_SHIFT_PLAN_ID=vm.shiftPlanId.HR_SHIFT_PLAN_ID"
+                                    options="vm.shiftPlanListData" ng-model="vm.myForm.HR_SHIFT_PLAN_ID" required disabled></select>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-12">                    
+
+                    <div class="form-group" style="margin-top:10px">
+                        <label class="control-label col-md-offset-1 col-md-3">
+                            Company
+                            <span class="required" aria-required="true">*</span>
+                        </label>
+                        <div class="col-md-7">
+                            <input type="hidden" class="form-control" name="HR_COMPANY_ID" ng-model="vm.myForm.HR_COMPANY_ID" />
+                            <select kendo-drop-down-list name="HR_COMPANY_ID" class="form-control"
+                                    options="vm.companyListData" ng-model="vm.myForm.HR_COMPANY_ID" required></select>
+                            @Html.ValidationMessageFor(model => model.HR_COMPANY_ID)
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-12" ng-show="">
+
+                    <div class="form-group" style="margin-top:10px">
+                        <label class="control-label col-md-offset-1 col-md-3">
+                            Team Code
+                        </label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" name="SHIFT_TEAM_CODE" ng-model="vm.myForm.SHIFT_TEAM_CODE" disabled />
+                        </div>
+                    </div>
+                </div>
+
+                @*<div class="col-md-12">
+                        <div class="form-group " style="margin-top:10px">
+                            <label class="control-label col-md-offset-1 col-md-3">
+                                Test
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control" name="TEST" ng-model="vm.TEST" required />
+                            </div>
+                        </div>
+                    </div>*@
+
+                <div class="col-md-12">
+                    <div class="form-group " style="margin-top:10px">
+                        <label class="control-label col-md-offset-1 col-md-3">
+                            Team Name [E]
+                            <span class="required" aria-required="true">*</span>
+                        </label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" name="SHIFT_TEAM_NAME_EN" ng-model="vm.myForm.SHIFT_TEAM_NAME_EN" required />
+                            @Html.ValidationMessageFor(model => model.SHIFT_TEAM_NAME_EN)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group " style="margin-top:10px">
+                        <label class="control-label col-md-offset-1 col-md-3">
+                            Team Name [B]
+                            <span class="required" aria-required="true">*</span>
+                        </label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control banglafont" name="SHIFT_TEAM_NAME_BN" ng-model="vm.myForm.SHIFT_TEAM_NAME_BN" required />
+                            @Html.ValidationMessageFor(model => model.SHIFT_TEAM_NAME_BN)
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-12">
+                    <div class="form-group " style="margin-top:10px">
+                        <label class="control-label col-md-offset-1 col-md-3">
+                            Roll Sequence#
+                            <span class="required" aria-required="true">*</span>
+                        </label>
+                        <div class="col-md-7">
+                            <input type="text" data-val="true" class="form-control" id="ROLL_SEQ_NO" name="ROLL_SEQ_NO"
+                                   ng-model="vm.myForm.ROLL_SEQ_NO"
+                                   data-val-number="Please input number value."
+                                   required />
+
+                           
+                            @*@Html.TextBoxFor(model => model.ROLL_SEQ_NO, new { @class = "form-control", required = "required" })*@
+                            @Html.ValidationMessageFor(model => model.ROLL_SEQ_NO)
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-12">
+                    <div class="form-group " style="margin-top:10px">
+                        <label class="control-label col-md-offset-1 col-md-3">
+                        </label>
+                        <div class="col-md-7">
+                            @*<input type="checkbox" name="IS_ACTIVE" ng-model="IS_ACTIVE" ng-if="IS_ACTIVE=='Y'" ng-init="IS_ACTIVE='Y'" ng-true-value="'Y'" ng-false-value="'N'" checked>*@
+                            <input type="checkbox" name="IS_ACTIVE" ng-model="vm.myForm.IS_ACTIVE" ng-init="vm.myForm.IS_ACTIVE='Y'" ng-true-value="'Y'" ng-false-value="'N'">&nbsp;Active?
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-12">
+                    <div class="form-group " style="margin-top:10px">
+                        <label class="control-label col-md-offset-1 col-md-3">
+                        </label>
+                        <div class="col-md-7">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-actions">
+
+                        <div class="col-md-offset-4 col-md-6">
+                            <button type="submit" class="btn green" ng-if="vm.isInsert"><i class="fa fa-check"></i> Save</button>
+                            <button type="submit" class="btn yellow-gold" ng-if="!vm.isInsert"><i class="fa fa-check"></i> Update</button>
+
+                            <button type="button" class="btn blue" @*ng-if="TRAN_MODE==2"*@ ng-click="vm.TranCancel()">Cancel</button>
+                            <button type="button" class="btn default" @*ng-if="TRAN_MODE==2"*@ ng-click="vm.close()">Close</button>
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+
+                <div class="col-md-12">
+                    <div class="form-group " style="margin-top:10px">
+                        <label class="control-label col-md-offset-1 col-md-3">
+                        </label>
+                        <div class="col-md-7">
+                        </div>
+                    </div>
+                </div>
+
+                @*<div class="modal-footer">
+                        <button type="submit" class="btn green"><i class="fa fa-check"></i>Save</button>
+                        <button class="btn btn-primary" ng-click="ok()">OK</button>
+                        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+                    </div>*@
+
+
+            </div>
+
+
+
+
+        </div>
+        @*</div>*@
+
+    </form>
+
+
+    <div style="padding:0px 10px 10px 10px;">
+        <kendo-grid k-options="vm.gridOptions" k-rebind="vm.gridOptions"></kendo-grid>
+    </div>
+
+</div>

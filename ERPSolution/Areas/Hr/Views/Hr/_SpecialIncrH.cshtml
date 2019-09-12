@@ -1,0 +1,126 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 13px;
+    }
+</style>
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Hr</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+@*<pre>{{form|json}}</pre>*@
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" @*ng-bind="vm.Title"*@>
+            {{vm.Title}}&nbsp;<span style="color:#ff4600" ng-show="form.HR_YR_INCR_H_ID>0"><b>[ {{form.BATCH_APVRL_STATUS}}@*- {{form.USER_LEVEL}}*@ ]</b></span>
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+
+    <div class="portlet-body form">
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <form class="form-horizontal" role="form" name="frmIncrProposal" novalidate>
+            <div class="form-body clearfix">
+                <div class="row" style="margin:auto">
+
+                    <div class="row" style="margin:auto;" ng-show="vm.errors">
+                        <div class="alert alert-danger" role="alert">
+                            @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                            <div style="padding: 0px 0px 15px 25px; ">
+                                <b>Please fix the following errors ....</b>
+                            </div>
+                            <ul ng-repeat="field in vm.errors">
+                                <li ng-repeat="error in field" ng-bind="error"></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-md-10" style="padding-left:0px;padding-right:0px;">
+                        <input type="hidden" name="HR_YR_INCR_H_ID" ng-model="vm.form.HR_YR_INCR_H_ID" />
+
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend"><span aria-required="true" class="required" style="color:red">*</span>Incriment Memo</legend>
+
+                            <div kendo-grid id="incrMemoGrid" k-options="vm.incrMemoGridOption" k-data-source="vm.incrMemoGridDataSource"></div>
+                           
+                        </fieldset>
+                    </div>
+                    
+                    <div class="col-md-2" style="padding-right:0px">
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend">Search & Add to Grid</legend>
+                        
+                                                        @*<div class="form-group">
+            <label class="control-label col-md-5">
+                Employee Code
+            </label>
+            <div class="col-md-7" >
+                <input type="text" ng-model="vm.form.EMPLOYEE_CODE" placeholder="Search..."
+                       typeahead="item.EMPLOYEE_CODE as item.EMPLOYEE_CODE for item in emoloyeeAuto($viewValue)"
+            typeahead-min-length="3" typeahead-wait-ms="1000"
+                       typeahead-on-select="onSelectItem($item)" typeahead-loading="loadingLocationsEmp" class="form-control" />
+                <i ng-show="loadingLocationsEmp" class="glyphicon glyphicon-refresh"></i>
+            </div>
+
+        </div>*@
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Employee Code                                        
+                                    </label>
+                                    <input type="text" ng-model="vm.form.EMPLOYEE_CODE" placeholder="Search..."
+                                           typeahead="item.EMPLOYEE_CODE as item.EMPLOYEE_CODE for item in emoloyeeAuto($viewValue)"
+                                           typeahead-min-length="3" typeahead-wait-ms="1000"
+                                           typeahead-on-select="onSelectItem($item)" typeahead-loading="loadingLocationsEmp" class="form-control" />
+                                    <i ng-show="loadingLocationsEmp" class="glyphicon glyphicon-refresh"></i>
+                                </div>
+
+                            </div>
+                            
+
+                        </fieldset>
+                    </div>                
+                </div>
+
+                @*<pre>{{vm.form|json}}</pre>*@
+                @*<pre>{{form|json}}</pre>*@
+                
+                @*{{vm.IS_NEXT}}*@
+                <div class="portlet-body" data-ui-view="SpecialIncrH@Dtl" ></div>
+               
+            </div>
+        </form>
+
+
+
+    </div>
+
+</div>
+
+

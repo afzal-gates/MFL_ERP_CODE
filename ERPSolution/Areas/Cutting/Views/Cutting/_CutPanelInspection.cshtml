@@ -1,0 +1,383 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Cutting</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption">
+            {{vm.Title}}
+        </div>
+        <div class="tools">
+        </div>
+
+        <div class="actions">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+        <table class="table table-condensed table-striped table-bordered" style="padding-left: 5px; padding-right: 5px; margin-bottom: 3px;">
+            <tbody>
+                <tr>
+                  
+
+                    <td style="width: 10%; padding-bottom: 0px; padding-bottom: 0px;">
+                        <select class="form-control" kendo-drop-down-list name="GMT_PROD_PLN_CLNDR_ID" k-option-label="'-- Select Date --'"
+                                k-data-text-field="'CALENDAR_DT_TXT'" k-data-value-field="'GMT_PROD_PLN_CLNDR_ID'"
+                                k-auto-bind="'true'" k-ng-delay="vm.clndrDateDs" k-data-source="vm.clndrDateDs" ng-model="vm.GMT_PROD_PLN_CLNDR_ID" k-filter="'contains'"
+                                k-on-data-bound="vm.ClndrListOnBound(kendoEvent)" k-on-change="vm.ClndrListOnChange(kendoEvent)"></select>
+                    </td>
+
+                    <td style="width: 20%; padding-bottom: 0px; padding-bottom: 0px;">
+                        <form name="CutPanelInspectionForm" ng-submit="vm.submitData(BARCODE, CutPanelInspectionForm.$valid)">
+                            <div class="form-group" ng-class="{'has-error': CutPanelInspectionForm.$invalid }">
+                                <input type="text" class="form-control" ng-disabled="!vm.GMT_PROD_PLN_CLNDR_ID" ng-model="BARCODE" name="BARCODE" style="height:28px;" autocomplete="off" focus-me="true" @*check-uniq-cut-panel-inspection*@ placeholder="Bundle Card" ng-maxlength="18" ng-minlength="18">
+                                <button type="submit" style="display:none;"></button>
+                            </div>
+                        </form>
+                    </td>
+
+
+
+                    <td style="width: 40%;  border-left: hidden; padding-bottom: 0px;">
+                        <div class="help-block" style="background-color: red; font-size: 13px; color: white; padding: 5px; " ng-if="CutPanelInspectionForm.BARCODE.$dirty && CutPanelInspectionForm.BARCODE.$error.AlreadyScanned">
+                            <b>Bundle Already Scanned</b>
+                        </div>
+                        <div class="help-block" style="background-color: red; font-size: 13px; color: white; padding: 5px; " ng-if="vm.errors">
+                            <b>{{vm.errors}}</b>
+                        </div>
+                        <div class="help-block" style="background-color: red; font-size: 13px; color: white; padding: 5px; " ng-if="CutPanelInspectionForm.BARCODE.$dirty && ( CutPanelInspectionForm.BARCODE.$error.maxlength||CutPanelInspectionForm.BARCODE.$error.minlength)">
+                            <b>Invalid Barcode</b>
+                        </div>
+                    </td>
+
+
+                    <td style="width: 30%; text-align: right; border-left: hidden; padding-bottom: 0px;">
+
+                        <h4 class="block" style="margin:0px;">
+                            <span class="label label-primary">
+                                <b>{{vm.totalBndlPending}}</b>
+                            </span>
+                            Not OK(Having Reject Panel)
+                            <a class="btn btn-xs purple-intense" ng-click="vm.openDefectModal()" ng-disabled="vm.totalBndlPending==0">
+                                <i class="fa fa-list-alt"></i> Finalize
+                            </a>
+                        </h4>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+   
+        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;" ng-if="vm.LastBundle.GMT_CUT_PNL_INSPTN_H_ID">
+            <legend class="custom-legend">Last Scanned Bundle(Scan)</legend>
+            <table class="table table-condensed table-striped table-bordered" style="padding:5px;">
+                <tbody>
+                    <tr>
+                        <td style="width:8%">
+                            Part:<b>{{vm.LastBundle.GARM_PART_NAME}}</b>
+                        </td>
+
+                        <td style="width:8%">
+                            <b>Buyer</b>
+                        </td>
+
+                        <td style="width: 8%">
+                            {{vm.LastBundle.BYR_ACC_GRP_NAME_EN}}
+                        </td>
+
+                        <td style="width: 16%" colspan="2">
+                            <b>Style</b>
+                        </td>
+
+                        <td style="width:16%" colspan="2">
+                            {{vm.LastBundle.WORK_STYLE_NO}}
+                        </td>
+
+                        <td style="width: 8%">
+                            <b>Order</b>
+                        </td>
+
+
+                        <td style="width: 8%">
+                            {{vm.LastBundle.ORDER_NO}}
+                        </td>
+                        <td style="width: 4%">
+                            <b>Item</b>
+                        </td>
+
+                        <td style="width: 12%" colspan="2">
+                            {{vm.LastBundle.ITEM_NAME_EN}}
+                        </td>
+
+
+                        <td style="width: 4%">
+                            Cntry
+                        </td>
+
+                        <td style="width: 4%">
+                            {{vm.LastBundle.COUNTRY_NAME_EN}}
+                        </td>
+
+
+
+                    </tr>
+
+                    <tr>
+
+                        <td style="width: 8%">
+                            <b>Color</b>
+                        </td>
+
+                        <td style="width:16%" colspan="2">
+                            {{vm.LastBundle.COLOR_NAME_EN}}
+                        </td>
+                        <td style="width:5%;color:red;">
+                            <b>CutNo</b>
+                        </td>
+
+                        <td style="width:5%">
+                            {{vm.LastBundle.CUTNG_NO}}
+                        </td>
+
+
+                        <td style="width: 5%; color: red; ">
+                            <b>Size</b>
+                        </td>
+
+
+                        <td style="width:8%">
+                            {{vm.LastBundle.SIZE_CODE}}
+                        </td>
+                        <td style="width: 8%; color: red;">
+                            <b>Bundle No</b>
+                        </td>
+
+
+                        <td style="width:8%">
+                            {{vm.LastBundle.BUNDLE_NO}}
+                        </td>
+
+                        <td style="width: 4%; color: red;">
+                            <b>Serial</b>
+                        </td>
+
+                        <td style="width: 12%;" colspan="2">
+                            {{vm.LastBundle.SL_RANGE_TXT}}
+                        </td>
+
+
+                        <td style="width: 8%; color: red;">
+                            <b>Quantity</b>
+
+                        </td>
+
+
+                        <td style="width: 8%">
+                            {{vm.LastBundle.QTY_IN_BNDL}}
+                        </td>
+
+
+                    </tr>
+                    <tr>
+                        <td colspan="14" align="center">
+                            <a class="btn btn-xs btn-block btn-default" style="width:50%;" ng-click="vm.cutPanelInsActions(vm.LastBundle.GMT_CUT_PNL_INSPTN_H_ID,'Delete','Are You Sure?', 1003)">
+                                <i class="fa fa-times"></i> Remove
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </fieldset>
+
+
+        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 5px;">
+            <legend class="custom-legend">Scanned Bundle List</legend>
+
+            <table class="table table-condensed table-striped table-bordered" style="padding:5px;" ng-repeat="item in vm.dataList">
+
+                <thead>
+                    <tr>
+                        <th colspan="10" style="font-weight:900;">
+                            Part: {{item.GARM_PART_NAME}} >> Buyer: {{item.BYR_ACC_GRP_NAME_EN}}>> Style: {{item.STYLE_NO}}>> Order: {{item.ORDER_NO}}>> Color: {{item.COLOR_NAME_EN}}>>Cutting No: {{item.CUTNG_NO}}
+                        </th>
+
+
+                    </tr>
+                    <tr>
+                        <th colspan="10" style="border: 1px solid #cecece">
+                            <div class="row" style="padding:0px;">
+
+                                <div class="col-md-3" style="text-align:left;">
+                                    <h4 class="block" style="margin:0px;">
+                                        Total Bundle: Cutting => <span class="label label-success">
+                                            <b>{{item.TTL_BNDL_CUTTING}}</b>
+                                        </span>
+                                    </h4>
+                                </div>
+
+                                <div class="col-md-3" style="text-align:right;">
+                                    <h4 class="block" style="margin:0px;">
+                                        Total Bundle: OK
+                                        <span class="label label-primary">
+                                            <b>{{item.TTL_BNDL_OK}}</b>
+                                        </span>
+                                    </h4>
+                                </div>
+
+                                <div class="col-md-3" style="text-align:right;">
+                                    <h4 class="block" style="margin:0px;">
+                                        <span class="label label-primary">
+                                            <b>{{item.TTL_BNDL_CUTTING-item.TTL_BNDL_INSPECTED-item.TTL_BNDL_OK}}</b>
+                                        </span>
+                                        Pending
+                                        <a class="btn btn-xs bg-grey-cascade" ng-click="vm.markPendingAsProduction(item)" ng-if="(item.TTL_BNDL_CUTTING-item.TTL_BNDL_INSPECTED-item.TTL_BNDL_OK) > 0">
+                                            <i class="fa fa-eraser"></i> Mark as QC Pass
+                                        </a>
+                                    </h4>
+                                </div>
+
+
+                                <div class="col-md-3" style="text-align:right;">
+                                    <h4 class="block" style="margin:0px;">
+                                        Total Bundle: Rejected Panel => <span class="label label-primary">
+                                            <b>{{item.TTL_BNDL_INSPECTED}}</b>
+                                        </span>
+                                    </h4>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+
+                    <tr>
+                        <th style="width:5%;">
+                            <small>
+                                
+                            </small>
+
+                        </th>
+                        <th style="width:10%;">
+                            <small>
+                                Barcode
+                            </small>
+                        </th>
+
+                        <th style="width:20%;">
+                            <small>
+                                Item
+                            </small>
+
+                        </th>
+
+                        <th style="width:10%;">
+                            <small>
+                                Country
+                            </small>
+
+                        </th>
+
+                        <th style="width:10%;">
+                            <small>
+                                Size
+                            </small>
+
+                        </th>
+
+                        <th style="width:5%;">
+                            <small>
+                                B.No
+                            </small>
+
+                        </th>
+
+                        <th style="width:5%;">
+                            <small>
+                                Lot No
+                            </small>
+
+                        </th>
+
+                        <th style="width:15%;">
+                            <small>
+                                Serial
+                            </small>
+
+                        </th>
+
+
+                        <th style="width:5%;">
+                            <small>
+                                Bndl Qty
+                            </small>
+
+                        </th>
+                        <th style="width:5%;">
+                            <small>
+                                Action
+                            </small>
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="itm in item.details">
+                        <td>
+                            <a class="btn btn-xs btn-danger" ng-click="vm.cutPanelInsActions(itm.GMT_CUT_PNL_INSPTN_H_ID,'Delete','Are You Sure?', 1003)">
+                                <i class="fa fa-times"></i> Remove
+                            </a>
+                        </td>
+
+                        <td>
+                            {{itm.BUNDLE_BARCODE}}
+                        </td>
+
+                        <td>
+                            {{itm.ITEM_NAME_EN}}
+                        </td>
+
+                        <td>
+                            {{itm.COUNTRY_NAME_EN}}
+                        </td>
+
+                        <td>
+                            {{itm.SIZE_CODE}}
+                        </td>
+                        <td>
+                            {{itm.BUNDLE_NO}}
+                        </td>
+
+                        <td>
+                            {{itm.DYE_LOT_NO}}
+                        </td>
+
+                        <td>
+                            {{itm.SL_RANGE_TXT}}
+
+                        </td>
+
+                        <td>
+                            {{itm.QTY_IN_BNDL}}
+                        </td>
+                        <td>
+                            <a class="btn btn-xs" ng-click="vm.cutPanelInsActions(itm.GMT_CUT_PNL_INSPTN_H_ID,'Mark AS OK','Are You Sure?', 1002)">
+                                <i class="fa fa-eraser"></i> Mark AS OK
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </fieldset>
+
+    </div>
+</div>

@@ -1,0 +1,513 @@
+﻿<form class="form-horizontal" role="form" name="StyleOrderForm" ng-submit="vm.submitData(vm.form,token)" novalidate>
+    <div class="form-body clearfix">
+
+        <input id="access_token" data-ng-model="token" type="hidden"
+               data-ng-init="token='@Session["access_token"]'" />
+
+        <div class="form-group">
+            <label class="col-md-4 control-label">
+                Job #
+            </label>
+            <div class="col-md-6">
+                <input type="text" name="JOB_TRAC_NO" ng-model="vm.form.JOB_TRAC_NO" class="form-control" style="background-color:hsl(0, 0%, 87%);font-weight:bold" readonly />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4 control-label">
+                Working Style #
+            </label>
+            <div class="col-md-6">
+                <input type="text" name="WORK_STYLE_NO" ng-model="vm.form.WORK_STYLE_NO" class="form-control" required />
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="col-md-4 control-label">
+                PO #
+            </label>
+            <div class="col-md-4">
+                <input type="text" name="ORDER_NO" ng-model="vm.form.ORDER_NO" class="form-control" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" />
+
+                <p ng-show="vm.form.NO_GMT_ITEM_ENTRY==0 && vm.form.IS_PROV == 'N'" class="help-block error" style="color:red;">
+                    No Garment Item Entries Found.To continue without item, please check "Projection Only"
+                </p>
+                <p class="badge badge-danger" ng-repeat="itm in vm.ordListByOrder"><span class="label label-primary">{{ itm.ORDER_NO }}</span> Style:({{ itm.WORK_STYLE_NO  }})</p>
+            </div>
+            <div class="col-md-4">
+                <div class="checkbox-list">
+                    <label class="checkbox-inline" style="margin-left:20px">
+                        <span><input type="checkbox" name="IS_PROV"  ng-model="vm.form.IS_PROV" ng-true-value="'Y'" ng-false-value="'N'">  Projection Only</span>
+
+                    </label>
+                </div>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <label class="col-md-4 control-label">
+                <span aria-required="true" class="required">*</span>
+                {{ vm.form.LK_ORD_TYPE_ID==311 ? 'Dev. Start' : 'Confirmed' }} Date
+            </label>
+            <div class="col-md-4">
+                <input type="text" class="form-control" ng-click="ConfirmDate_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                       name="ORD_CONF_DT" ng-model="vm.form.ORD_CONF_DT" is-open="ConfirmDate_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close"
+                       required />
+                <p ng-show="StyleOrderForm.ORD_CONF_DT.$invalid && !StyleOrderForm.ORD_CONF_DT.$pristine" class="help-block error">Please select Order Confirmed Date.</p>
+
+            </div>
+        </div>
+
+
+        <div class="form-group" ng-if="vm.form.IS_PROV=='Y'">
+            <label class="col-md-4 control-label">
+                <span aria-required="true" class="required">*</span>
+                Order Doc Recv Deadline
+            </label>
+            <div class="col-md-4">
+                <input type="text" class="form-control" ng-click="TGT_ORD_DOC_RCV_DTopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                       name="TGT_ORD_DOC_RCV_DT" ng-model="vm.form.TGT_ORD_DOC_RCV_DT" is-open="TGT_ORD_DOC_RCV_DTopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close"
+                       required />
+                <p ng-show="StyleOrderForm.TGT_ORD_DOC_RCV_DT.$invalid && !StyleOrderForm.TGT_ORD_DOC_RCV_DT.$pristine" class="help-block error">Please select Order Doc Recv Deadline</p>
+
+            </div>
+        </div>
+
+
+
+
+        <div class="form-group">
+            <label class="col-md-4 control-label">
+                <span aria-required="true" class="required">*</span>
+                {{ vm.form.LK_ORD_TYPE_ID==311 ? 'Delivery' : 'Shipment' }} Date
+            </label>
+            <div class="col-md-4">
+                <input type="text" class="form-control" ng-click="vm.shipmentDateOpen($event)" datepicker-popup="{{vm.dtFormat}}"
+                       name="SHIP_DT" ng-model="vm.form.SHIP_DT" is-open="vm.shipmentDateOpened" datepicker-options="vm.dateOptions"
+                       ng-change="vm.shipDateOnBlur();"
+                       date-disabled="disabled(date, mode)" min-date="vm.form.ORD_CONF_DT" close-text="Close" required />
+
+                <p ng-show="StyleOrderForm.SHIP_DT.$invalid && !StyleOrderForm.SHIP_DT.$pristine" class="help-block error">Please select Shipment Date.</p>
+
+                <a class="btn btn-xs btn-link" style="padding-top:5px;" ng-disabled="!vm.form.SHIP_DT" 
+                   ng-click="vm.openModalCapacityBkStatus(vm.form.SHIP_DT)"> <i class="fa fa-pie-chart"></i> Booking Status
+                </a>
+                
+                <a class="btn btn-xs btn-link" style="padding-top:5px;" ng-disabled="!vm.form.SHIP_DT"
+                   ng-click="vm.printByrWiseCapctyAlloc(vm.form.SHIP_DT)">
+                    <i class="fa fa-file"></i> B/A Alloc Status
+                </a>
+
+            </div>
+
+            <div class="col-md-1">
+                <div class="checkbox-list">
+                    <label class="checkbox-inline" style="margin-left:20px">
+                        <span><input type="checkbox" ng-model="vm.form.IS_MULTI_SHIP_DT" ng-true-value="'Y'" ng-false-value="'N'">  Multi?</span>
+                    </label>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4 control-label">
+                Lead Time (Days)
+               
+            </label>
+            <div class="col-md-4">
+                <input type="number" class="form-control" name="LEAD_TIME" ng-model="vm.form.LEAD_TIME" readonly />
+            </div>
+        </div>
+
+
+        <div class="form-group" ng-show="vm.form.IS_MULTI_SHIP_DT=='N'">
+            <div class="col-md-offset-4 col-md-6">
+                <table class="table table-condensed table-striped table-bordered">
+                    <thead>
+                        <tr class="site-table-header">
+                            <th style="padding-top: 3px; padding-bottom: 3px">Category</th>
+                            <th style="padding-top: 3px; padding-bottom: 3px">Qty</th>
+                            <th style="padding-top: 3px; padding-bottom: 3px">SMV</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="itm in vm.form.cap_itms">
+                            <td style="padding:0px;width:30%">{{itm.GMT_TYP_NAME}}</td>
+                            <td style="padding: 0px; width: 40%">
+                                <input type="number" min="0" ng-change="vm.calculateOq(vm.form)" ng-model-options="{ debounce: { 'default': 1000, 'blur': 0 } }" class="form-control" ng-model="itm.ORDER_QTY" />
+                            </td>
+                            <td style="padding: 0px; width: 30%" ng-class="{'has-error': (SMV_FORM.SMV.$touched || StyleOrderForm.$submitted) && (SMV_FORM.SMV.$error.required||SMV_FORM.SMV.$error.number||SMV_FORM.SMV.$error.max)}">
+                                <ng-form name="SMV_FORM">
+                                    <input type="number" min="0" name="SMV" class="form-control" ng-model="itm.SMV" max="999" />
+                                </ng-form>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-4 control-label">
+                <span aria-required="true" class="required">*</span>
+
+                {{ vm.form.LK_ORD_TYPE_ID==311 ? 'Quantity' : 'Order Quantity' }}
+            </label>
+            <div class="col-md-3">
+                <input type="number" min="1" readonly name="TOT_ORD_QTY" ng-model="vm.form.TOT_ORD_QTY" class="form-control" required />
+                <p ng-show="StyleOrderForm.TOT_ORD_QTY.$invalid && !StyleOrderForm.TOT_ORD_QTY.$pristine" class="help-block error">Please input Order Qty</p>
+            </div>
+
+            <div class="col-md-3">
+                <select kendo-drop-down-list name="QTY_MOU_ID" class="form-control"
+                        options="vm.MOUList" id="QTY_MOU_ID" ng-model="vm.form.QTY_MOU_ID" required></select>
+            </div>
+
+        </div>
+
+
+
+        <div class="form-group">
+            <label class="col-md-4 control-label">
+                <span aria-required="true" class="required">*</span>
+                Unit Price
+            </label>
+            <div class="col-md-3">
+                <input type="number" min="0.01" name="UNIT_PRICE" ng-model="vm.form.UNIT_PRICE" class="form-control" ng-required="vm.form.LK_ORD_TYPE_ID!=311" />
+                <p ng-show="StyleOrderForm.UNIT_PRICE.$invalid && !StyleOrderForm.UNIT_PRICE.$pristine" class="help-block error">Please input Unit Price</p>
+            </div>
+
+            <div class="col-md-3">
+                <select kendo-drop-down-list name="RF_CURRENCY_ID" class="form-control"
+                        options="vm.StyleRF_CurrencyList" id="RF_CURRENCY_ID" ng-model="vm.form.RF_CURRENCY_ID" ng-required="vm.form.LK_ORD_TYPE_ID!=311"></select>
+                <p ng-show="StyleOrderForm.RF_CURRENCY_ID.$invalid && !StyleOrderForm.RF_CURRENCY_ID.$pristine" class="help-block error">Please select Currrency</p>
+            </div>
+
+
+        </div>
+
+
+
+        <div class="form-group">
+            <label class="col-md-4 control-label">
+                Order Value ({{vm.CurrCode}})
+            </label>
+            <div class="col-md-4">
+                <input type="text" name="TOT_ORD_VALUE" ng-model="vm.form.TOT_ORD_VALUE" class="form-control" readonly />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4 control-label">
+                <span aria-required="true" class="required">*</span>
+                {{vm.CurrCode}} to Local
+            </label>
+            <div class="col-md-4">
+                <input type="number" name="CURR_CONV_LOC" min="0.001" ng-model="vm.form.CURR_CONV_LOC" class="form-control" required />
+            </div>
+
+            <div class="col-md-1">
+            </div>
+
+
+        </div>
+
+
+
+        <div class="form-group">
+            <label class="col-md-4 control-label">
+                Order Status
+            </label>
+            <div class="col-md-6">
+                <select kendo-drop-down-list name="LK_ORD_STATUS_ID" id="LK_ORD_STATUS_ID" class="form-control"
+                        options="vm.orderStatusList" k-on-data-bound="onSelectIOrderStatus(kendoEvent)" k-template="templateOrderStatus" ng-model="vm.form.LK_ORD_STATUS_ID" required ng-disabled="vm.form.LK_ORD_TYPE_ID==311"></select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4 control-label">
+                TNA Template
+            </label>
+
+            <div class="col-md-6">
+
+                <select class="form-control" kendo-drop-down-list name="MC_TNA_TMPLT_H_ID" k-option-label="'-- Select Template--'"
+                        k-data-text-field="'TNA_TMPLT_CODE'" k-data-value-field="'MC_TNA_TMPLT_H_ID'" filter="contains"
+                        k-auto-bind="'true'" k-data-source="vm.TnaTempList" ng-model="vm.form.MC_TNA_TMPLT_H_ID" k-ng-delay="vm.TnaTempList" k-template="vm.template"
+                        k-on-data-bound="vm.onTnaTemplateDataBound(kendoEvent)"></select>
+            </div>
+        </div>
+
+        
+
+        <div class="form-group">
+            <label class="col-md-4 control-label">
+                <span aria-required="true" class="required">*</span>
+                Company
+            </label>
+
+            <div class="col-md-6">
+                <select class="form-control" kendo-drop-down-list name="HR_COMPANY_ID" k-options="vm.companyOpt" ng-model="vm.form.HR_COMPANY_ID"></select>
+                <p ng-show="StyleOrderForm.HR_COMPANY_ID.$invalid && !StyleOrderForm.HR_COMPANY_ID.$pristine" class="help-block error">Please select this</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4 control-label">
+                <span aria-required="true" class="required">*</span>
+                Production Unit
+            </label>
+
+            <div class="col-md-6">
+                <select class="form-control" kendo-drop-down-list name="PROD_UNIT_ID" k-options="vm.officeOpt" k-data-source="vm.officeDs" ng-model="vm.form.PROD_UNIT_ID" required></select>
+                <p ng-show="StyleOrderForm.PROD_UNIT_ID.$invalid && !StyleOrderForm.PROD_UNIT_ID.$pristine" class="help-block error">Please select this</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-4 control-label">
+                <span aria-required="true" class="required">*</span>Delivery To
+            </label>
+            <div class="col-md-6">
+                <select kendo-multi-select options='vm.countryList' id="HR_COUNTRY_ID_LST" style="border: 1px solid #898383;" name="HR_COUNTRY_ID_LST" ng-model='vm.form.HR_COUNTRY_ID_LST' class='form-control' ng-disabled="vm.form.IS_ORD_FINALIZED=='Y'" required></select>
+            </div>
+        </div>
+
+        <div class="form-group" ng-show="vm.form.IS_MULTI_SHIP_DT=='Y'">
+            <div class="col-md-offset-4 col-md-8">
+                <table class="table table-condensed table-striped table-bordered">
+                    <thead>
+                        <tr class="site-table-header">
+                            <th style="padding-top: 3px; padding-bottom: 3px">Shipment Name</th>
+                            <th style="padding-top: 3px; padding-bottom: 3px">Date</th>
+                            <th style="padding-top: 3px; padding-bottom: 3px">Category-Qty</th>
+                            <th style="padding-top: 3px; padding-bottom: 3px">&nbsp;</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr ng-repeat="itmOrdShipDT in vm.form.itmsOrdShipDT">
+                            <td style="padding:0px;width:20%">
+                                <input type="hidden" ng-model="itmOrdShipDT.SHIP_DT_INDEX" ng-bind="itmOrdShipDT.SHIP_DT_INDEX=$index" class="form-control" />
+
+                                <input type="text" name="SHIP_DESC" class="form-control"
+                                       ng-bind="itmOrdShipDT.SHIP_DESC='Shipment-'+{{$index+1}}"
+                                       ng-model="itmOrdShipDT.SHIP_DESC" readonly />
+                            </td>
+
+                            <td style="padding: 0px; width: 20%">
+                                <input type="text" class="form-control"
+                                       ng-click="vm.sizeShipmentDateOpen($event,$index)" datepicker-popup="{{vm.dtFormat}}"
+                                       name="SHIP_DT" ng-model="itmOrdShipDT.SHIP_DT" is-open="vm.sizeShipmentDateOpened[$index]" datepicker-options="vm.dateOptions"
+                                       date-disabled="disabled(date, mode)" close-text="Close"
+                                       ng-disabled="vm.form.itmsOrdShipDT.length==1" />
+                            </td>
+                            <td style="padding: 0px; width: 50%">
+                                <table class="table table-condensed table-striped table-bordered">
+                                    <thead>
+                                        <tr class="site-table-header">
+                                            <th style="padding-top: 3px; padding-bottom: 3px">Category</th>
+                                            <th style="padding-top: 3px; padding-bottom: 3px">Qty</th>
+                                            <th style="padding-top: 3px; padding-bottom: 3px">SMV</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="itm in itmOrdShipDT.cap_itms">
+                                            <td style="padding:0px;width:30%">{{itm.GMT_TYP_NAME}}</td>
+                                            <td style="padding: 0px; width: 40%">
+                                                <input type="number" min="0" class="form-control" ng-model="itm.ORDER_QTY" ng-change="vm.calculateOq(vm.form)" ng-model-options="{ debounce: { 'default': 1000, 'blur': 0 } }" />
+                                            <td style="padding: 0px; width: 30%" ng-class="{'has-error': (SMV_FORM.SMV.$touched || StyleOrderForm.$submitted) && (SMV_FORM.SMV.$error.required||SMV_FORM.SMV.$error.number||SMV_FORM.SMV.$error.max)}">
+                                                <ng-form name="SMV_FORM">
+                                                    <input type="number" min="0" name="SMV" class="form-control" ng-model="itm.SMV" max="999" />
+                                                </ng-form>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+                            </td>
+
+                            <td style="padding-top: 0px; padding-bottom: 0px; width: 10%">
+                                <a class="btn btn-xs blue" ng-disabled="vm.form.IS_ORD_FINALIZED=='Y'||vm.form.IS_MULTI_SHIP_DT=='N'" title="Add Shipment" ng-click="vm.addRow(itmOrdShipDT, vm.form.itmsOrdShipDT, 'itmsOrdShipDT')">
+                                    <i class="fa fa-plus"></i>
+                                </a>
+                                <a class="btn btn-xs red" ng-disabled="vm.form.IS_ORD_FINALIZED=='Y'||vm.form.itmsOrdShipDT.length==1" title="Remove Shipment" ng-click="vm.removeRow($index, vm.form.itmsOrdShipDT, true)">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+
+        <div class="form-group" ng-show="vm.form.LK_ORD_STATUS_ID==786">
+            <label class="col-md-4 control-label">
+                <span aria-required="true" class="required">*</span>OTP
+            </label>
+            <div class="col-md-3">
+                <input type="text" class="form-control" name="OTP_ORDR_BKNG_CHK" ng-model="vm.form.OTP_ORDR_BKNG_CHK" maxlength="4" autocomplete="off" ng-required="vm.form.LK_ORD_STATUS_ID==786" />
+               
+            </div>
+            <div class="col-md-4">
+                <button type="button" class="btn btn-sm blue" ng-show="vm.isShowResendOTP=='Y'" ng-click="vm.resendOTP()">Re-send OTP</button>
+                <span style="font-weight:bold;color:red;" ng-show="vm.isShowResendOTP=='N'">Please wait...</span>
+            </div>
+
+        </div>
+
+        <br />
+        <div class="form-group">
+            <label class="col-md-4 control-label">
+
+            </label>
+            <div class="col-md-8">
+                <span class="badge badge-danger" ng-if="vm.form.IS_ORD_FINALIZED=='Y' && vm.form.IS_PROV !='Y'">[Locked]</span>
+                <button type="submit" ng-disabled="vm.form.NO_GMT_ITEM_ENTRY==0 &&  vm.form.IS_PROV != 'Y' && vm.form.IS_ORD_FINALIZED=='Y'" @*ng-show="vm.form.LK_ORD_STATUS_ID!=786"*@ ng-if="vm.form.MC_ORDER_H_ID" class="btn btn-sm yellow-gold" ng-class="{'disabled':!StyleOrderForm.$valid}">Update</button>
+                <button type="submit" ng-disabled="vm.form.NO_GMT_ITEM_ENTRY==0 &&  vm.form.IS_PROV != 'Y' && vm.form.IS_ORD_FINALIZED=='Y'" @*ng-show="vm.form.LK_ORD_STATUS_ID!=786"*@ ng-if="!vm.form.MC_ORDER_H_ID" class="btn btn-sm green" ng-class="{'disabled':!StyleOrderForm.$valid}">Save</button>
+                <button type="button" class="btn btn-sm default" ui-sref="StyleH.OrderCon.Detail({MC_STYLE_H_ID:vm.StyleData.MC_STYLE_H_ID , pMC_STYLE_H_EXT_ID:vm.params.pMC_STYLE_H_EXT_ID, pMC_ORDER_H_ID:0})" ui-sref-opts="{reload : 'StyleH.OrderCon.Detail'}">Cancel</button>
+            </div>
+
+        </div>
+
+
+        <div class="row" style="margin:auto;padding-top:10px;" ng-if="vm.errors">
+            <div class="alert alert-warning" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                <ul ng-repeat="field in vm.errors">
+                    <li ng-repeat="error in field" ng-bind="error"></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+
+
+@*Start For OTP*@
+<script type="text/ng-template" id="StyleOrdConOtpModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <p style="padding-top:10px;">
+                        Warning!!!
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </p>
+
+
+                </div>
+            </div>
+            <div class="portlet-body">
+
+                <table class="table table-striped" style="border-collapse: collapse; overflow:scroll;">
+                    <thead>
+                        <tr class="danger" style="border: solid 1px black;">
+                            <th style="border: solid 1px black;" rowspan="3">GMT Type</th>
+
+                            <th ng-repeat="itmMonth in capBkData4OTP[0].CAP_MONTH_HDR_LIST" colspan="{{itmMonth.MONTH_COL_SPAN}}" style="border: solid 1px black; text-align: center;">
+                                <span>{{itmMonth.MONTH_NAME_EN}}</span>
+                            </th>
+                        </tr>
+
+                        <tr class="success" style="border: solid 1px black;">
+                            <th ng-repeat="itmWeek in capBkData4OTP[0].CAP_WEEK_HDR_LIST" @*colspan="3"*@ style="border: solid 1px black; text-align: center;">
+                                <span class="col-md-12">{{itmWeek.WK_NAME_EN}}</span>
+                            </th>
+                        </tr>
+
+                        <tr class="info" style="border: solid 1px black;">
+                            <th ng-repeat="itmWeek in capBkData4OTP[0].CAP_WEEK_HDR_LIST" style="border: solid 1px black; text-align: center;">
+                                <span class="col-md-4" style="border-right: 1px solid black">Plan</span>
+                                <span class="col-md-4" style="border-right: 1px solid black">Bk W Co</span>
+                                <span class="col-md-4">Bal</span>
+                            </th>
+                        </tr>                                                
+                    </thead>
+
+                    <tbody class="clstdMtex">
+                        <tr ng-repeat="itmGmtTyp in capBkData4OTP">
+                            <td style="border: solid 1px black; text-align: left;">{{itmGmtTyp.GMT_PRODUCT_TYP_NAME}}</td>
+
+                            <td ng-repeat="itm in itmGmtTyp.CAP_WEEK_DATA_LIST" style="border: solid 1px black; text-align: center;">                              
+                                <span class="col-md-4" style="border-right: 1px solid black">{{itm.PLAN_PROD_PCS}}</span>
+                                <span class="col-md-4" style="border-right: 1px solid black">{{itm.BK_WITH_CO_PCS}}</span>
+                                <span class="col-md-4">{{itm.BAL_PCS}}</span>
+                            </td>                           
+                        </tr>
+
+                        <tr>
+                            <td style="border: solid 1px black;" rowspan="3"><b>Total</b></td>
+
+                            <td ng-repeat="itmWeek in capBkData4OTP[0].CAP_WEEK_HDR_LIST" style="border: solid 1px black; text-align: center;">
+                                <span class="col-md-4" style="border-right: 1px solid black"><b>{{itmWeek.PLAN_PROD_PCS}}</b></span>
+                                <span class="col-md-4" style="border-right: 1px solid black"><b>{{itmWeek.BK_WITH_CO_PCS}}</b></span>
+                                <span class="col-md-4"><b>{{itmWeek.BAL_PCS}}</b></span>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <br />
+
+                <div style="font-weight:bold; font-size:30px;color:red">
+                    Capacity over booked !!! @*[Show details]   [Show Capacity Board]*@
+                    <br />   
+                    <br />                 
+                </div>
+
+                <div style="font-weight:bold; font-size:20px;" ng-show="capBkData4OTP[0].CAP_WEEK_DATA_LIST[0].IS_SC_ALLOWED=='Y' && IsExtraCapExceed=='N'">
+                    Need OTP to proceed. @*[Show details]   [Show Capacity Board]*@
+                    <br />
+                    Or, You can free space by re-allocating other Order or Changing Shipment Time
+                    <br />
+                    <br />
+                    Choose either one option
+                </div>
+                <div style="font-weight:bold; font-size:20px;" ng-show="capBkData4OTP[0].CAP_WEEK_DATA_LIST[0].IS_SC_ALLOWED=='Y' && IsExtraCapExceed=='Y'">
+                    <span style="font-weight:bold;color:red">Sorry! Extra booking capacity exceed</span>
+                    <br />
+                    You can free space by re-allocating other Order or Changing Shipment Time
+                    <br />
+                    <br />
+                </div>
+                <div style="font-weight:bold; font-size:20px;" ng-show="capBkData4OTP[0].CAP_WEEK_DATA_LIST[0].IS_SC_ALLOWED!='Y'">
+                    <span style="font-weight:bold;color:red">Sorry! Booking capacity exceed and s/c not allow for this buyer</span>
+                    <br />
+                    You can free space by re-allocating other Order or Changing Shipment Time
+                    <br />
+                    <br />
+                </div>
+
+
+                <form class="form-horizontal" role="form" name="BookingRevisionModal" novalidate @*ng-submit="save(Task,token,TaskForm.$valid)"*@>
+                    <input id="access_token" data-ng-model="token" type="hidden"
+                           data-ng-init="token='@Session["access_token"]'" />
+
+                    @*<div kendo-grid k-data-source="asortDataList" k-columns="asortColumns" k-selectable="true" k-on-change="selected = data" k-height="300" k-filterable="true" k-sortable="true"></div>*@
+
+                    
+
+                    @*<pre>{{ProcessLossModalForm.$valid}}</pre>*@
+
+                    <br />
+                    <div class="form-group form-actions">
+                        <div class="col-md-12">
+                            <button type="button" class="btn green btn-sm" ng-click="cancel()">Adjust Space</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <button type="button" class="btn yellow-gold btn-sm" ng-click="save()" ng-class="{'disabled':capBkData4OTP[0].CAP_WEEK_DATA_LIST[0].IS_SC_ALLOWED=='N'||IsExtraCapExceed=='Y'}">Request for OTP</button>                            
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+@*End For OTP*@

@@ -1,0 +1,1686 @@
+﻿@model ERP.Model.HR_EMPLOYEEModel
+
+@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Hr</a>
+
+    </li>
+    <li>
+        <a href="#">Employee Information</a>
+    </li>
+</ul>
+
+
+<script>
+
+    function changePhoto(input) {
+        var empCode = document.getElementsByName('EMPLOYEE_CODE');
+        
+        if (empCode[0].value == null || empCode[0].value=='') {
+            alert('Sorry! Please input employee code')
+        }
+        else {
+            readPhoto(input);
+        }        
+    };
+
+    function readPhoto(input) {
+        //alert('test');
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#empPhoto').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    };
+
+    function empPhotoLoad(p, f) {
+        alert('test');
+        $('#empPhoto').attr('src', '~/UPLOAD_DOCS/EMP_PHOTOS/)'+f+'.jpg');
+    }
+
+    //$("#ATT_FILE").change(function () {
+    //    alert('df');
+    //    readURL(this);
+    //});
+
+    function UploadPic() {        
+        var data = new FormData();
+
+        var files = $("#ATT_FILE").get(0).files;
+
+        // Add the uploaded image content to the form data collection
+        if (files.length > 0) {
+            data.append("UploadedImage", files[0]);
+        }
+
+        $.ajax({ 
+            method: 'post',
+            url: '/Hr/HrEmployee/UploadFiles',
+            contentType: false,
+            processData: false,
+            data: data
+        });
+        
+    }
+    
+    
+</script>
+
+
+<div class="portlet box blue-dark">
+
+    <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+           data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+    <div class="portlet-title">
+        <div class="caption">
+            @*<i class="fa fa-gift"></i>*@ Employee Information
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+        <div class="row">
+
+            <div class="col-md-12">
+
+                <form name="frmEmployee" class="form-horizontal" ng-class="{ loading:form.submitting }"
+                      @*enctype="multipart/form-data"*@
+                      ng-submit="vm.submit(frmEmployee.$valid,vm.form,vm.insert)" novalidate>
+
+                    <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+                           data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+                    <input type="hidden" ng-model="vm.form.PAGE_NAME" ng-init="vm.form.PAGE_NAME='EmployeeEntry'" />
+
+                    <div class="form-body">
+
+
+                        <div class="row" style="background-color:#ccc;padding-top:0px;margin-top:-10px;margin-left:-10px;margin-right:-10px;">
+
+                            <input type="hidden" class="form-control" name="HR_EMPLOYEE_ID" ng-model="vm.form.HR_EMPLOYEE_ID" />
+                            @*<img src="~/UPLOAD_DOCS/EMP_PHOTOS/GBN-25300.jpg" />*@
+                            @*<img src="{{vm.form.EMP_PHOTO_PATH}}" />*@
+                            @*<img id="empPhoto1" src="{{vm.form.EMP_PHOTO_PATH}}" />*@
+
+                            <div class="col-md-2" style="padding-left:25px;">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Employee Code
+                                        @*<span class="required" aria-required="true">*</span>*@
+                                    </label>
+                                    <input type="text" class="form-control" style="background-color:lavender" name="EMPLOYEE_CODE" ng-model="vm.form.EMPLOYEE_CODE" @*ng-disabled="!vm.insert"*@ readonly />
+                                </div>
+                            </div>
+
+                            <div class="col-md-2" style="padding-left:30px;">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Proxi#
+                                        @*<span class="required" aria-required="true">*</span>*@
+                                    </label>
+                                    <input type="text" class="form-control" name="TA_PROXI_ID" ng-model="vm.form.TA_PROXI_ID" @*ng-disabled="!vm.insert"*@ maxlength="10" readonly />
+                                </div>
+                            </div>
+
+                            <div class="col-md-3" style="padding-left:30px;">
+                                <div class="form-group">
+                                    <label class="control-label">Company<span class="required" aria-required="true">*</span></label>
+                                    <select class="form-control" name="HR_COMPANY_ID" ng-model="vm.form.HR_COMPANY_ID"
+                                            ng-options="Item.HR_COMPANY_ID as Item.COMP_NAME_EN for Item in vm.companyListData" ng-disabled="!vm.insert" >
+                                        <option value="">-- Select Company --</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3" style="padding-left:30px;">
+                                <div class="form-group">
+                                    <label class="control-label">Office<span class="required" aria-required="true">*</span></label>
+                                    <select class="form-control" name="HR_OFFICE_ID" ng-model="vm.form.HR_OFFICE_ID"
+                                            ng-options="Item.HR_OFFICE_ID as Item.OFFICE_NAME_EN for Item in vm.officeListData">
+                                        <option value="">-- Select Office --</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2" style="padding-left:30px;">
+                                <div class="form-group" @*style="border:1px solid red"*@>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <img id="empPhoto1" src="~/UPLOAD_DOCS/EMP_PHOTOS/{{vm.form.EMPLOYEE_CODE}}.jpg" alt="No Photo" style="border:1px solid black; height:55px;width:50px" />
+                                </div>
+                            </div>
+                            
+                            @*<input type="text" class="form-control" name="EMPLOYEE_CODE" ng-model="vm.form.EMPLOYEE_CODE" disabled />*@
+
+                        </div>
+
+                        <tabset>
+
+                            <tab ng-repeat="tab in vm.tabs" heading="{{tab.title}}" active="tab.active" @*ui-sref="{{tab.url}}"*@ disabled="tab.disabled" ng-click="alert(tab.title)">
+                                @*<div data-ui-view class="shuffle-animation"></div>*@
+
+                                @* =================== Start Personal Detail ===================== *@
+                                <div ng-if="tab.title=='Personal Information'">
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    First Name[E]
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <input type="text" class="form-control" name="EMP_FIRST_NAME_EN" ng-model="vm.form.EMP_FIRST_NAME_EN" ng-change="vm.fullNameE()" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Last Name[E]
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <input type="text" class="form-control" name="EMP_LAST_NAME_EN" ng-model="vm.form.EMP_LAST_NAME_EN" @*ng-init="vm.form.EMP_LAST_NAME_EN=''"*@ ng-change="vm.fullNameE()" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Full Name [E]
+                                                    <span class="required" aria-required="true">*</span>
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control" name="EMP_FULL_NAME_EN" ng-model="vm.form.EMP_FULL_NAME_EN" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Nick Name [E]
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <input type="text" class="form-control" name="EMP_NICKNM_EN" ng-model="vm.form.EMP_NICKNM_EN" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Father's/Husband's Name [E]
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control" name="FATHER_NAME_EN" ng-model="vm.form.FATHER_NAME_EN" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Mother's Name [E]
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control" name="MOTHER_NAME_EN" ng-model="vm.form.MOTHER_NAME_EN" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Guardian Name [E]
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control" name="GUARDIAN_NAME_EN" ng-model="vm.form.GUARDIAN_NAME_EN" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Relation with Guardian
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <select class="form-control" name="LK_RELATION_ID" ng-model="vm.form.LK_RELATION_ID"
+                                                            ng-options="Item.LOOKUP_DATA_ID as Item.LK_DATA_NAME_EN for Item in vm.relationListData">
+                                                        <option value="">-- Select Relation --</option>
+                                                    </select>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    National ID#
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control" name="NATIONAL_ID" ng-model="vm.form.NATIONAL_ID" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    TIN#
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control" name="TIN_NO" ng-model="vm.form.TIN_NO" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Date of Birth
+                                                </label>
+
+                                                <div class="col-md-5 input-group">
+                                                    <input type="text" class="form-control" name="BIRTH_DT" ng-model="vm.form.BIRTH_DT"
+                                                           style="padding-right:0px;"
+                                                           datepicker-popup="dd-MMM-yyyy" is-open="vm.birthDateOpened"
+                                                           @*max-date="vm.today"
+                                           datepicker-options="vm.dateOptions"*@ close-text="Close" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn-calendar" ng-click="vm.birthDateOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Nationality
+                                                </label>
+                                                <div class="col-md-5">
+                                                    @*<input type="text" class="form-control" name="LK_NTLTY_ID" ng-model="vm.form.LK_NTLTY_ID" />*@
+                                                    <select class="form-control" name="LK_NTLTY_ID" ng-model="vm.form.LK_NTLTY_ID"
+                                                            ng-options="Item.LOOKUP_DATA_ID as Item.LK_DATA_NAME_EN for Item in vm.nationalityListData">
+                                                        <option value="">-- Select Nationality --</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Religion
+                                                </label>
+                                                <div class="col-md-5">
+                                                    @*<input type="text" class="form-control" name="LK_RELIGION_ID" ng-model="vm.form.LK_RELIGION_ID" />*@
+                                                    <select class="form-control" name="LK_RELIGION_ID" ng-model="vm.form.LK_RELIGION_ID"
+                                                            ng-options="Item.LOOKUP_DATA_ID as Item.LK_DATA_NAME_EN for Item in vm.religionListData">
+                                                        <option value="">-- Select Religion --</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Gender
+                                                </label>
+                                                <div class="col-md-5">
+                                                    @*<input type="text" class="form-control" name="LK_GENDER_ID" ng-model="vm.form.LK_GENDER_ID" />*@
+                                                    <select class="form-control" name="LK_GENDER_ID" ng-model="vm.form.LK_GENDER_ID"
+                                                            ng-options="Item.LOOKUP_DATA_ID as Item.LK_DATA_NAME_EN for Item in vm.genderListData">
+                                                        <option value="">-- Select Gender --</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Marital Status
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <select class="form-control" name="LK_MRTL_STATUS_ID" ng-model="vm.form.LK_MRTL_STATUS_ID"
+                                                            ng-options="Item.LOOKUP_DATA_ID as Item.LK_DATA_NAME_EN for Item in vm.maritalStatusListData"
+                                                            ng-change="vm.onChangeMaritalStatus()">
+                                                        <option value="">-- Select Marital Status --</option>
+                                                    </select>
+
+                                                </div>
+
+                                                <label class="control-label col-md-2">
+                                                    #of Child
+                                                </label>
+                                                <div class="col-md-1" style="padding-left:0px">
+                                                    <input type="text" class="form-control" name="NO_OF_CHILD" ng-model="vm.form.NO_OF_CHILD" ng-disabled="vm.form.LK_MRTL_STATUS_ID!=8" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Blood Group
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <select class="form-control" name="LK_BLD_GRP_ID" ng-model="vm.form.LK_BLD_GRP_ID"
+                                                            ng-options="Item.LOOKUP_DATA_ID as Item.LK_DATA_NAME_EN for Item in vm.bloodGroupListData">
+                                                        <option value="">-- Select Blood Group --</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Personal Mobile#
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <input type="text" class="form-control" name="MOB_NO_PRS" ng-model="vm.form.MOB_NO_PRS" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Home Phone# & Ext.
+                                                </label>
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control" name="HOME_PHONE" ng-model="vm.form.HOME_PHONE" />
+                                                </div>
+                                                <div class="col-md-2" style="margin-left: -30px; width:14%">
+                                                    <input type="text" class="form-control" name="HOME_PHONE_EXT" ng-model="vm.form.HOME_PHONE_EXT" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Personal Email
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control" name="EMAIL_ID_PRS" ng-model="vm.form.EMAIL_ID_PRS" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6"></div>
+                                    </div>
+
+                                    <div class="row" ng-show="">
+                                        <div class="col-md-6">
+                                            <fieldset class="custom-fieldset">
+                                                <legend class="custom-legend">Passport Information</legend>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">
+                                                        Passport#
+                                                    </label>
+                                                    <div class="col-md-8">
+                                                        <input type="text" class="form-control" name="PASSPORT_NO" ng-model="vm.form.PASSPORT_NO" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">
+                                                        Issue Place
+                                                    </label>
+                                                    <div class="col-md-8">
+                                                        <input type="text" class="form-control" name="PASS_ISS_PLACE" ng-model="vm.form.PASS_ISS_PLACE" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">
+                                                        Issue Date
+                                                    </label>
+                                                    <div class="col-md-4 input-group">
+                                                        @*<input type="text" class="form-control" name="PASS_ISSUE_DT" ng-model="vm.form.PASS_ISSUE_DT" />*@
+                                                        <input type="text" class="form-control" name="PASS_ISSUE_DT" ng-model="vm.form.PASS_ISSUE_DT"
+                                                               style="margin-left:15px;"
+                                                               @*ng-init="vm.form.PASS_ISSUE_DT=(vm.today | date:vm.dtFormat)"*@
+                                                               datepicker-popup="{{vm.dtFormat}}" is-open="vm.passportIssueDateOpened"
+                                                               @*date-grater-than="{{vm.form.TO_DATE | date:vm.dtFormat}}"*@
+                                                               max-date="vm.today"
+                                                               @*ng-change="vm.form.TO_DATE=(vm.form.FROM_DATE | date:vm.dtFormat)"*@
+                                                               @*date-disabled="disabled(date, mode)"*@
+                                                               datepicker-options="vm.dateOptions" close-text="Close" />
+                                                        <span class="input-group-btn">
+                                                            <button type="button" class="btn-calendar" style="margin-left:15px;" ng-click="vm.passportIssueDateOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">
+                                                        Expire Date
+                                                    </label>
+                                                    <div class="col-md-4 input-group">
+                                                        @*<input type="text" class="form-control" name="PASS_EXPIRE_DT" ng-model="vm.form.PASS_EXPIRE_DT" />*@
+                                                        <input type="text" class="form-control" name="PASS_EXPIRE_DT" ng-model="vm.form.PASS_EXPIRE_DT"
+                                                               style="margin-left:15px;"
+                                                               @*ng-init="vm.form.PASS_EXPIRE_DT=(vm.today | date:vm.dtFormat)"*@
+                                                               datepicker-popup="{{vm.dtFormat}}" is-open="vm.passportExpireDateOpened"
+                                                               @*date-grater-than="{{vm.form.TO_DATE | date:vm.dtFormat}}"*@
+                                                               min-date="vm.today"
+                                                               @*ng-change="vm.form.TO_DATE=(vm.form.FROM_DATE | date:vm.dtFormat)"*@
+                                                               @*date-disabled="disabled(date, mode)"*@
+                                                               datepicker-options="vm.dateOptions" close-text="Close" />
+                                                        <span class="input-group-btn">
+                                                            <button type="button" class="btn-calendar" style="margin-left:15px;" ng-click="vm.passportExpireDateOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                            </fieldset>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <fieldset class="custom-fieldset">
+                                                <legend class="custom-legend">Driving License</legend>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">
+                                                        License#
+                                                    </label>
+                                                    <div class="col-md-8">
+                                                        <input type="text" class="form-control" name="DRIV_LIC_NO" ng-model="vm.form.DRIV_LIC_NO" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">
+                                                        Expire Date
+                                                    </label>
+                                                    <div class="col-md-4 input-group">
+                                                        <input type="text" class="form-control" name="DRIV_LIC_EXPIRE_DT" ng-model="vm.form.DRIV_LIC_EXPIRE_DT"
+                                                               style="margin-left:15px;"
+                                                               @*ng-init="vm.form.PASS_ISSUE_DT=(vm.today | date:vm.dtFormat)"*@
+                                                               datepicker-popup="{{vm.dtFormat}}" is-open="vm.licenseExpireDateOpened"
+                                                               @*date-grater-than="{{vm.form.TO_DATE | date:vm.dtFormat}}"*@
+                                                               @*max-date="vm.today"*@
+                                                               @*ng-change="vm.form.TO_DATE=(vm.form.FROM_DATE | date:vm.dtFormat)"*@
+                                                               @*date-disabled="disabled(date, mode)"*@
+                                                               datepicker-options="vm.dateOptions" close-text="Close" />
+                                                        <span class="input-group-btn">
+                                                            <button type="button" class="btn-calendar" style="margin-left:15px;" ng-click="vm.licenseExpireDateOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                @* =================== End Personal Detail ===================== *@
+
+
+
+                                @* =================== Start Job Detail ===================== *@
+                                <div ng-if="tab.title=='Job Detail'">
+
+                                    @*<div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">
+                                Company
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <select class="form-control" name="HR_COMPANY_ID" ng-model="vm.form.HR_COMPANY_ID"
+                                        ng-options="Item.HR_COMPANY_ID as Item.COMP_NAME_EN for Item in vm.companyListData"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">
+                                Office
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <select class="form-control" name="HR_OFFICE_ID" ng-model="vm.form.HR_OFFICE_ID"
+                                        ng-options="Item.HR_OFFICE_ID as Item.OFFICE_NAME_EN for Item in vm.officeListData"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Core Department
+                                                    <span class="required" aria-required="true">*</span>
+                                                    @*{{vm.insert}}-{{vm.isCurrMonthJoinDt}}*@
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <select kendo-drop-down-list name="CORE_DEPT_ID" class="form-control"
+                                                            k-data-text-field="'DEPARTMENT_NAME_EN'" k-data-value-field="'HR_DEPARTMENT_ID'"
+                                                            k-auto-bind="'true'" k-options="vm.parentDepartmentListData" k-data-source="vm.coreDeptDataSource" ng-model="vm.form.CORE_DEPT_ID"
+                                                            ng-disabled="(!vm.insert && vm.isCurrMonthJoinDt=='N') && @Session["multiScUserId"]!=5"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Section
+                                                    <span class="required" aria-required="true">*</span>
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <select kendo-drop-down-list id="HR_DEPARTMENT_ID" name="HR_DEPARTMENT_ID" class="form-control"
+                                                            k-data-text-field="'DEPARTMENT_NAME_EN'" k-data-value-field="'HR_DEPARTMENT_ID'"
+                                                            k-auto-bind="'true'" k-options="vm.departmentListData" k-data-source="vm.subDeptDataSource"
+                                                            ng-model="vm.form.HR_DEPARTMENT_ID" ng-disabled="(!vm.insert && vm.isCurrMonthJoinDt=='N') && @Session["multiScUserId"]!=5"></select>
+                                                    @*<select class="form-control" name="HR_DEPARTMENT_ID" ng-model="vm.form.HR_DEPARTMENT_ID"
+                                        ng-options="Item.HR_DEPARTMENT_ID as Item.DEPARTMENT_NAME_EN for Item in vm.departmentListData">
+                                    <option value="">-- Select Section --</option>
+                                </select>*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Designation
+                                                    <span class="required" aria-required="true">*</span>
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <select id="dropdownlist" kendo-drop-down-list name="HR_DESIGNATION_ID" class="form-control"
+                                                            options="vm.designationListData" ng-model="vm.form.HR_DESIGNATION_ID"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Grade
+                                                </label>
+                                                <div class="col-md-4">
+                                                    <select kendo-drop-down-list name="HR_GRADE_ID" class="form-control"
+                                                            options="vm.gradeListData" ng-model="vm.form.HR_GRADE_ID" ng-required="false" disabled></select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label">
+                                                    Appoint. Issue Date
+                                                    @*<span class="required" aria-required="true">*</span>*@
+                                                </label>
+
+                                                <div class="col-md-4 input-group">
+                                                    <input type="text" class="form-control" name="APNT_ISSUE_DT" ng-model="vm.form.APNT_ISSUE_DT"
+                                                           style="padding-right: 0px;"
+                                                           @*ng-init="vm.form.APNT_ISSUE_DT=(vm.today | date:vm.dtFormat)"*@
+                                                           datepicker-popup="{{vm.dtFormat}}" is-open="vm.apptIssueDateOpened"
+                                                           @*date-grater-than="{{vm.form.TO_DATE | date:vm.dtFormat}}"*@
+                                                           max-date="vm.today"
+                                                           datepicker-options="vm.dateOptions" close-text="Close" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn-calendar" ng-click="vm.apptIssueDateOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Apponitment Status
+                                                </label>
+                                                <div class="col-md-4">
+                                                    <select class="form-control" name="LK_APNT_STATUS_ID" ng-model="vm.form.LK_APNT_STATUS_ID"
+                                                            ng-options="Item.LOOKUP_DATA_ID as Item.LK_DATA_NAME_EN for Item in vm.appointmentStatusListData">
+                                                        <option value="">-- Select Appointment Status --</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label">
+                                                    Joining Date
+                                                    <span class="required" aria-required="true">*</span>                                                    
+                                                </label>
+
+                                                <div class="col-md-4 input-group">                                                    
+                                                    <input type="text" class="form-control" name="JOINING_DT" ng-model="vm.form.JOINING_DT" ng-change="vm.changeProbtionPeriod();vm.onChngJoinDt4CurrMonth()"
+                                                           style="padding-right:0px;"
+                                                           @*ng-init="vm.form.JOINING_DT=(vm.today | date:vm.dtFormat)"*@
+                                                           datepicker-popup="{{vm.dtFormat}}" is-open="vm.joiningDateOpened"
+                                                           datepicker-options="vm.dateOptions" close-text="Close" ng-disabled="!vm.insert" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn-calendar" ng-click="vm.joiningDateOpen($event)" ng-disabled="!vm.insert"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label">
+                                                    Confirm Date
+                                                    @*<span class="required" aria-required="true">*</span>*@
+                                                </label>
+
+                                                <div class="col-md-4 input-group">
+                                                    <input type="text" class="form-control" name="CONFIRM_DT" ng-model="vm.form.CONFIRM_DT"
+                                                           style="padding-right:0px;"
+                                                           @*ng-init="vm.form.CONFIRM_DT=(vm.today | date:vm.dtFormat)"*@
+                                                           datepicker-popup="{{vm.dtFormat}}" is-open="vm.confirmDateOpened"
+                                                           datepicker-options="vm.dateOptions" close-text="Close" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn-calendar" @*style="margin-left:15px;"*@ ng-click="vm.confirmDateOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Probation Period
+                                                </label>
+                                                <div class="col-md-2" style="width:14%">
+                                                    <input type="text" class="form-control" name="PROBATION_PERIOD" ng-model="vm.form.PROBATION_PERIOD" ng-change="vm.changeProbtionPeriod()" />
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <select class="form-control" name="PR_PERIOD_TYPE_ID" ng-model="vm.form.PR_PERIOD_TYPE_ID" ng-change="vm.changeProbtionPeriod()"
+                                                            style="margin-left:-30px;"
+                                                            ng-options="Item.HR_PERIOD_TYPE_ID as Item.PERIOD_TYPE_NAME_EN for Item in vm.periodTypeListData">
+                                                        <option value="">-- Select Probtion Period --</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Probation End Date
+                                                </label>
+                                                <div class="col-md-4 input-group">
+                                                    <input type="text" class="form-control" name="PROBATION_DT" ng-model="vm.form.PROBATION_DT"
+                                                           style="padding-right: 0px;"
+                                                           @*ng-init="vm.form.PROBATION_DT=(vm.today | date:vm.dtFormat)"*@
+                                                           datepicker-popup="{{vm.dtFormat}}" @*is-open="vm.apptIssueDateOpened"*@
+                                                           datepicker-options="vm.dateOptions" close-text="Close" readonly />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn-calendar" ng-click="" disabled><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Office Mobile#
+                                                </label>
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control" name="MOB_NO_OFF" ng-model="vm.form.MOB_NO_OFF" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Work Phone# & Ext.
+                                                </label>
+                                                <div class="col-md-3" style="padding-right:0px;">
+                                                    <input type="text" class="form-control" name="WORK_PHONE" ng-model="vm.form.WORK_PHONE" />
+                                                </div>
+                                                <div class="col-md-1" style="padding-left:0px; ">
+                                                    <input type="text" class="form-control" name="WORK_PHONE_EXT" ng-model="vm.form.WORK_PHONE_EXT" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Office Email
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control" name="EMAIL_ID_OFF" ng-model="vm.form.EMAIL_ID_OFF" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Floor & Line#
+                                                </label>
+                                                <div class="col-md-2" style="padding-right:0px">
+                                                    <select kendo-drop-down-list name="LK_FLOOR_ID" class="form-control" @*ng-disabled="vm.isManagementType!=true"*@
+                                                            options="vm.floorListData" ng-model="vm.form.LK_FLOOR_ID"></select>
+                                                </div>
+                                                <div class="col-md-2" style="padding-left: 0px">
+                                                    @*<input type="text" class="form-control" name="LINE_NO" ng-model="vm.form.LINE_NO" />*@
+                                                    <select kendo-drop-down-list name="LINE_NO" class="form-control" @*ng-disabled="vm.isManagementType!=true"*@
+                                                            options="vm.lineListData" ng-model="vm.form.LINE_NO"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <fieldset class="custom-fieldset">
+                                                <legend class="custom-legend">Team Assign</legend>
+
+                                                <div class="form-group" style="margin-left:-25px">
+                                                    <label class="control-label col-md-4">
+                                                        Shift Plan
+                                                    </label>
+                                                    <div class="col-md-8">
+                                                        <select kendo-drop-down-list name="HR_SHIFT_PLAN_ID" class="form-control"
+                                                                options="vm.shiftPlanListData" ng-model="vm.form.HR_SHIFT_PLAN_ID" ng-disabled="!vm.insert">
+                                                            <option value="">-- Select Shift Plan --</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" style="margin-left:-25px">
+                                                    <label class="control-label col-md-4">
+                                                        Team
+                                                    </label>
+                                                    <div class="col-md-4">
+                                                        <select class="form-control" name="HR_SHIFT_TEAM_ID" ng-model="vm.form.HR_SHIFT_TEAM_ID"
+                                                                ng-options="Item.HR_SHIFT_TEAM_ID as Item.SHIFT_TEAM_NAME_EN for Item in vm.shiftTeamListData" ng-disabled="!vm.insert">
+                                                            <option value="">-- Select Team --</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div class="col-md-6">
+                                            @*<div class="form-group">
+                            <label class="control-label col-md-4">
+                                Duty Hours
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="DUTY_HOUR" ng-model="vm.form.DUTY_HOUR" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-4">
+                                Gross Salary
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="GROSS_SALARY" ng-model="vm.form.GROSS_SALARY" />
+                            </div>
+                        </div>*@
+                                            @*<div class="form-group" style="padding-right: 14px;">
+                            <label class="col-md-4 control-label"></label>
+                            <fieldset class="custom-fieldset">
+                                <legend class="custom-legend">Salary Breakup</legend>
+                                <div class="radio-list">
+                                    <div class="col-md-8">
+                                        <label class="radio-inline" style="padding-left:15px;"><input type="radio" ng-value="'N'" ng-model="vm.form.IS_OT_HRLY">None</label>
+                                        <label class="radio-inline" style="padding-left:15px;"><input type="radio" ng-value="'H'" ng-model="vm.form.IS_OT_HRLY">Hourly</label>
+                                        <label class="radio-inline" style="padding-left:15px;"><input type="radio" ng-value="'D'" ng-model="vm.form.IS_OT_HRLY">Daily</label>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>*@
+
+                                            @*<div class="form-group" ng-if="vm.isSalBreakup">
+                            <label class="col-md-4 control-label">Salary Breakup</label>
+                            <div class="col-md-8" >
+                                <textarea class="form-control" name="SALARY_BREAKUP" ng-model="vm.form.SALARY_BREAKUP" rows="3" disabled></textarea>
+                            </div>
+                        </div>*@
+
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Job Status
+                                                    <span class="required" aria-required="true">*</span>
+                                                </label>
+                                                <div class="col-md-4">
+                                                    <select class="form-control" name="LK_JOB_STATUS_ID" ng-model="vm.form.LK_JOB_STATUS_ID" ng-disabled="!vm.insert"
+                                                            ng-options="Item.LOOKUP_DATA_ID as Item.LK_DATA_NAME_EN for Item in vm.jobStatusListData">
+                                                        <option value="">-- Select Job Status --</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                </label>
+                                                <div class="col-md-4">
+                                                    <label class="checkbox-inline">
+                                                        <input type="checkbox" name="IS_TRANSPORT" ng-model="vm.form.IS_TRANSPORT" ng-true-value="'Y'" ng-false-value="'N'">Avail Transport?
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                </label>
+                                                <div class="col-md-4">
+                                                    <label class="checkbox-inline">
+                                                        <input type="checkbox" name="IS_HOUSING" ng-model="vm.form.IS_HOUSING" ng-true-value="'Y'" ng-false-value="'N'">Avail Housing?
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row">
+                                        <div class="col-md-6" @*style="border: 1px solid red"*@>
+
+                                        </div>
+                                        <div class="col-md-6">
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                @* =================== End Job Detail ===================== *@
+
+
+
+
+                                @* =================== Start Contract Detail ===================== *@
+                                <div ng-if="tab.title=='Contract Detail'">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <fieldset class="custom-fieldset">
+                                                <legend class="custom-legend">Present Address</legend>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">
+                                                        Address [E]
+                                                        <span class="required" aria-required="true">*</span>
+                                                    </label>
+                                                    <div class="col-md-8">
+                                                        <input type="text" class="form-control" name="PRE_ADDRESS_EN" ng-model="vm.form.PRE_ADDRESS_EN" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">
+                                                        Country
+                                                        <span class="required" aria-required="true">*</span>
+                                                    </label>
+                                                    <div class="col-md-5">
+                                                        <select class="form-control" name="HR_COUNTRY_ID" ng-model="vm.form.HR_COUNTRY_ID"
+                                                                ng-options="Item.HR_COUNTRY_ID as Item.COUNTRY_NAME_EN for Item in vm.countryListData">
+                                                            <option value="">-- Select Country --</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">
+                                                        Division
+                                                        <span class="required" aria-required="true">*</span>
+                                                    </label>
+                                                    <div class="col-md-5">
+                                                        @*{{vm.form.PRE_DIVISION_ID}}*@
+                                                        <select kendo-drop-down-list name="PRE_DIVISION_ID" class="form-control"
+                                                                options="vm.geoDevisionListData" ng-model="vm.form.PRE_DIVISION_ID"></select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">
+                                                        District
+                                                        <span class="required" aria-required="true">*</span>
+                                                    </label>
+                                                    <div class="col-md-5">
+                                                        @*{{vm.form.PRE_DISTRICT_ID}}*@
+                                                        <select kendo-drop-down-list id="PRE_DISTRICT_ID" name="PRE_DISTRICT_ID" class="form-control"
+                                                                options="vm.geoDistrictListData" ng-model="vm.form.PRE_DISTRICT_ID"></select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">
+                                                        Thana
+                                                        <span class="required" aria-required="true">*</span>
+                                                    </label>
+                                                    <div class="col-md-5">
+                                                        @*{{vm.form.PRE_UPOZILA_ID}}*@
+                                                        <select kendo-drop-down-list id="PRE_UPOZILA_ID" name="PRE_UPOZILA_ID" class="form-control"
+                                                                options="vm.preUpozilaListData" ng-model="vm.form.PRE_UPOZILA_ID"></select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">
+                                                        Postal Code
+                                                        <span class="required" aria-required="true">*</span>
+                                                    </label>
+                                                    <div class="col-md-3">
+                                                        <input type="text" class="form-control" name="PRE_POSTAL_CODE" ng-model="vm.form.PRE_POSTAL_CODE" />
+                                                    </div>
+                                                </div>
+
+                                            </fieldset>
+
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <fieldset class="custom-fieldset">
+                                                <legend class="custom-legend">Permanent Address</legend>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-offset-4 col-md-8">
+                                                        <button type="button" class="btn default" ng-click="vm.copyPresentAddress()">Same as Present Address</button>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">
+                                                        Address [E]
+                                                    </label>
+                                                    <div class="col-md-8">
+                                                        <input type="text" class="form-control" name="PERM_ADDRESS_EN" ng-model="vm.form.PERM_ADDRESS_EN" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">
+                                                        Division
+                                                        @*<span class="required" aria-required="true">*</span>*@
+                                                    </label>
+                                                    <div class="col-md-5">
+                                                        @*{{vm.form.PERM_DIVISION_ID}}*@
+                                                        <select kendo-drop-down-list name="PERM_DIVISION_ID" class="form-control"
+                                                                options="vm.permDevisionListData" ng-model="vm.form.PERM_DIVISION_ID"></select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">
+                                                        District
+                                                        @*<span class="required" aria-required="true">*</span>*@
+                                                    </label>
+                                                    <div class="col-md-5">
+                                                        @*{{vm.form.PERM_DISTRICT_ID}}*@
+                                                        <select kendo-drop-down-list id="PERM_DISTRICT_ID" name="PERM_DISTRICT_ID" class="form-control"
+                                                                options="vm.geoDistrictListData" ng-model="vm.form.PERM_DISTRICT_ID"></select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">
+                                                        Thana
+                                                        @*<span class="required" aria-required="true">*</span>*@
+                                                    </label>
+                                                    <div class="col-md-5">
+                                                        @*{{vm.form.PERM_UPOZILA_ID}}*@
+                                                        <select kendo-drop-down-list id="PERM_UPOZILA_ID" name="PERM_UPOZILA_ID" class="form-control"
+                                                                options="vm.preUpozilaListData" ng-model="vm.form.PERM_UPOZILA_ID"></select>
+                                                    </div>
+                                                </div>
+
+                                                @*<div class="form-group">
+                                <label class="control-label col-md-4">
+                                    District
+                                </label>
+                                <div class="col-md-5">
+                                    <select class="form-control" name="PERM_DISTRICT_ID" ng-model="vm.form.PERM_DISTRICT_ID"
+                                            ng-options="Item.HR_GEO_DISTRICT_ID as Item.DISTRICT_NAME_EN for Item in vm.districtListData">
+                                        <option value="">-- Select District --</option>
+                                    </select>
+                                </div>
+                            </div>*@
+
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">
+                                                        Postal Code
+                                                    </label>
+                                                    <div class="col-md-3">
+                                                        <input type="text" class="form-control" name="PERM_POSTAL_CODE" ng-model="vm.form.PERM_POSTAL_CODE" />
+                                                    </div>
+                                                </div>
+
+
+                                            </fieldset>
+                                        </div>
+                                    </div>
+
+                                    <p></p>
+
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+
+                                        </div>
+                                        <div class="col-md-6">
+
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+
+                                        </div>
+                                        <div class="col-md-6">
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                @* =================== End Contract Detail ===================== *@
+
+
+                                @* =================== Start Nominee Detail ===================== *@
+                                <div ng-if="tab.title=='Nominee Detail'">
+
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <fieldset class="custom-fieldset">
+                                                <legend class="custom-legend">Nominees Info</legend>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">
+                                                            Name [E]
+                                                            <span class="required" aria-required="true">*</span>
+                                                        </label>
+                                                        <div class="col-md-8">
+                                                            <input type="text" class="form-control" name="NOM_NAME_EN" ng-model="vm.nomForm.NOM_NAME_EN" required />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">
+                                                            Address [E]
+                                                            <span class="required" aria-required="true">*</span>
+                                                        </label>
+                                                        <div class="col-md-8">
+                                                            <textarea class="form-control" rows="2" name="NOM_ADDRESS_EN" ng-model="vm.nomForm.NOM_ADDRESS_EN" required></textarea>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">
+                                                            Contract#
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" class="form-control" name="NOM_MOB_NO" ng-model="vm.nomForm.NOM_MOB_NO" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">
+                                                            Relation<span class="required" aria-required="true">*</span>
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <select class="form-control" kendo-drop-down-list name="LK_RELATION_ID" required
+                                                                    k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'" k-option-label="'-- Select Relation --'"
+                                                                    k-auto-bind="'true'" k-options="vm.nomRelationOptions" ng-model="vm.nomForm.LK_RELATION_ID"
+                                                                    @*k-on-select="vm.onSelectCompany(kendoEvent)"*@></select>
+
+                                                            @*<select class="form-control" name="LK_RELATION_ID" ng-model="vm.nomForm.LK_RELATION_ID"
+                                                                    ng-options="Item.LOOKUP_DATA_ID as Item.LK_DATA_NAME_EN for (key,Item) in vm.nomRelationListData" ng-change="vm.onChangeNomRelation(Item.LOOKUP_DATA_ID)" required>
+                                                                <option value="">-- Select Relation --</option>
+                                                            </select>*@                                                            
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">
+                                                            Share (%)<span class="required" aria-required="true">*</span>
+                                                        </label>
+                                                        <div class="col-md-2">
+                                                            <input type="number" class="form-control" name="PCT_SHARE" ng-model="vm.nomForm.PCT_SHARE" min="0" max="100" required />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">
+                                                            Name [B]
+                                                        </label>
+                                                        <div class="col-md-8">
+                                                            <input type="text" class="form-control banglafont" name="NOM_NAME_BN" ng-model="vm.nomForm.NOM_NAME_BN" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">
+                                                            Address [B]
+                                                        </label>
+                                                        <div class="col-md-8">
+                                                            <textarea class="form-control" rows="2" name="NOM_ADDRESS_BN banglafont" ng-model="vm.nomForm.NOM_ADDRESS_BN"></textarea>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">
+                                                            Photo
+                                                        </label>
+                                                        <div class="col-md-3">
+                                                            <div class="thumbnail" style="height: 135px;">
+                                                                <img id="Key" data-ng-src="data:image/png;base64,{{vm.nomForm.NOM_IMG}}" alt="No Image" style="height: 130px;">
+
+                                                                @*<p style="padding-top: 3px;">
+                                            <a class="btn btn-xs red" ng-click="vm.removeKeyImage()" style="float:right;margin-right:0px;">
+                                                <i class="fa fa-times"></i>
+                                            </a>
+                                        </p>*@
+
+                                                                <input type="file" id="NOM_IMG_FILE" accept="image/*" base-sixty-four-input ng-model="vm.nomForm.NOM_IMG_FILE">
+                                                                @*<p class="help-block">Nominee Photo</p>*@
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <div class="col-md-offset-4 col-md-8">
+                                                            <button type="button" class="btn btn-sm blue" ng-click="vm.addNomRow()" ng-show="vm.nomForm.HR_EMP_NOMINEE_ID==-1"
+                                                                    ng-disabled="(vm.nomForm.PCT_SHARE<=0||vm.nomForm.PCT_SHARE>100||vm.nomForm.PCT_SHARE==null||vm.nomForm.PCT_SHARE=='')||(vm.nomForm.NOM_NAME_EN==null||vm.nomForm.NOM_NAME_EN=='')||
+                                                                        (vm.nomForm.NOM_ADDRESS_EN==null||vm.nomForm.NOM_ADDRESS_EN=='')||(vm.nomForm.LK_RELATION_ID==null||vm.nomForm.LK_RELATION_ID=='')">
+                                                                Add to Grid
+                                                            </button>
+                                                            <button type="button" class="btn btn-sm yellow-gold" ng-click="vm.updateNomRow(vm.nomForm)" ng-show="vm.nomForm.HR_EMP_NOMINEE_ID>=0"
+                                                                    ng-disabled="(vm.nomForm.PCT_SHARE<=0||vm.nomForm.PCT_SHARE>100||vm.nomForm.PCT_SHARE==null||vm.nomForm.PCT_SHARE=='')||(vm.nomForm.NOM_NAME_EN==null||vm.nomForm.NOM_NAME_EN=='')||
+                                                                        (vm.nomForm.NOM_ADDRESS_EN==null||vm.nomForm.NOM_ADDRESS_EN=='')||(vm.nomForm.LK_RELATION_ID==null||vm.nomForm.LK_RELATION_ID=='')">
+                                                                Update to Grid
+                                                            </button>
+                                                            <button type="button" class="btn btn-sm blue-hoki" ng-click="vm.resetNomRow()">Cancel</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <kendo-grid k-options="vm.nomineeGridOption" k-data-source="vm.nomineeGridDataSource"></kendo-grid>
+                                                    </div>
+                                                </div>
+
+                                            </fieldset>
+
+                                        </div>
+
+
+                                    </div>
+
+
+
+                                    <p></p>
+
+                                    <div class="row">
+                                        <div class="col-md-6"></div>
+                                        <div class="col-md-6"></div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6"></div>
+                                        <div class="col-md-6"></div>
+                                    </div>
+
+
+                                </div>
+                                @* =================== End Nominee Detail ===================== *@
+
+
+                                @* =================== Start Document ===================== *@
+
+                                <div ng-if="tab.title=='Document'">
+                                    <div class="row">
+                                        <div class="col-md-12">
+
+
+                                            @*{{vm.form.EMP_PHOTO_PREVIEW}}*@
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3">
+                                                    Employee Photo
+                                                </label>
+                                                <div class="col-md-7">
+                                                    @*<img id="empPhoto" ng-src="data:image/jpeg;base64,{{vm.form.EMP_PHOTO_PREVIEW}}" alt="No Photo" style="border:1px solid black; height:140px;width:130px" />*@
+                                                    @*{{vm.form.EMPLOYEE_CODE}}*@
+                                                    <img id="empPhoto" src="~/UPLOAD_DOCS/EMP_PHOTOS/{{vm.form.EMPLOYEE_CODE}}.jpg" @*onload='location.reload(true);'*@ @*onload="empPhotoLoad(this,vm.form.EMPLOYEE_CODE)"*@ alt="No Photo" style="border:1px solid black; height:140px;width:130px" />
+                                                </div>
+
+                                                <label for="attachment" class="col-md-3 control-label"></label>
+                                                <div class="col-md-7">
+                                                    <span class="btn btn-default fileinput-button">
+                                                        @*<i class="fa fa-plus"></i>*@
+                                                        <span>
+                                                            Browse file...
+                                                        </span>
+                                                        <input type="file" id="ATT_FILE" name="ATT_FILE" class="fileinput-button" accept="image/*" data-ak-file-model="vm.form.ATT_FILE" onchange="changePhoto(this);" />
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            @*<div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="button" class="btn btn-primary" value="TestSave" data-ng-click="vm.submit(frmEmployee.$valid,vm.form,vm.insert)" />
+                            </div>
+                        </div>*@
+
+
+                                        </div>
+
+                                    </div>
+                                    <p></p>
+                                </div>
+
+                                @* =================== End Document ===================== *@
+
+
+                                @* =================== Start Pay/Deduction ============== *@
+                                <div ng-if="tab.title=='Allowance/Deduction1'" >
+                                    <div class="row">
+
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-2">
+                                                    Gross Salary
+                                                </label>
+                                                <div class="col-md-2 input-group">
+                                                    <input type="text" class="form-control" name="GROSS_SALARY" ng-model="vm.form.GROSS_SALARY" ng-focus="vm.getGrossSal()" ng-blur="vm.salBreakup()" />
+
+                                                    @*<span class="input-group-btn">
+                                    <button type="button" class="btn-calendar" ng-click="vm.salBreakup(vm.form.GROSS_SALARY)"><i class="fa fa-eye"> Show</i></button>
+                                </span>*@
+
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group" ng-if="!vm.isAddAnother">
+                                                <label class="control-label col-md-2">&nbsp;</label>
+                                                <div class="col-md-4">
+                                                    <button type="button" class="btn btn-default" ng-click="vm.addAnotherEmpPayElement()">Add Another...</button>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group" ng-if="vm.isAddAnother">
+                                                <label class="control-label col-md-2">
+                                                    Pay Element
+                                                    @*<span class="required" aria-required="true">*</span>*@
+                                                </label>
+                                                <div class="col-md-4">
+                                                    <select kendo-drop-down-list id="HR_PAY_ELEMENT_ID" name="HR_PAY_ELEMENT_ID" class="form-control"
+                                                            options="vm.payElementData" ng-model="vm.form.HR_PAY_ELEMENT_ID"></select>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <button type="button" class="btn btn-default" ng-click="vm.addEmpPayElement()">Add</button>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-2">
+                                                    &nbsp;
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <div id="payGrid" kendo-grid ng-show="vm.isEmpPayShow"></div>
+                                                </div>
+                                            </div>
+
+
+                                            @*<div class="form-group">
+                            <label class="control-label col-md-2">
+                                &nbsp;
+                            </label>
+                            <div class="col-md-6">
+                                <div class="form-body">
+
+                                    <table class="table" style="border:1px solid gray">
+                                        <thead>
+                                            <tr>
+                                                <th style="border:1px solid gray">
+                                                    Type
+                                                </th>
+                                                <th style="border:1px solid gray">
+                                                    Allowance
+                                                </th>
+
+                                                <th style="border:1px solid gray">
+                                                    Amount
+                                                </th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+
+                                            <tr ng-repeat="data in vm.empPayElementData">
+                                                <td>
+                                                    <input type="text" ng-model="data.PAY_ELM_TYPE_NAME_EN" disabled />
+                                                </td>
+                                                <td>
+                                                    <input type="text" ng-model="data.PAY_ELEMENT_NAME_EN" disabled />
+                                                </td>
+                                                <td>
+                                                    <input type="text" ng-model="data.PAY_AMT" />
+                                                </td>
+                                            </tr>
+
+
+
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+                            </div>
+                        </div>*@
+
+
+                                        </div>
+
+                                    </div>
+                                    <p></p>
+                                </div>
+                                @* =================== End Pay/Deduction ============== *@
+
+
+                                @* =================== Start Optional ===================== *@
+                                <div ng-if="tab.title=='Optional'">
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    First Name [B]
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control banglafont" name="EMP_FIRST_NAME_BN" ng-model="vm.form.EMP_FIRST_NAME_BN" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Last Name [B]
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control banglafont" name="EMP_LAST_NAME_BN" ng-model="vm.form.EMP_LAST_NAME_BN" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Full Name [B]
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control banglafont" name="EMP_FULL_NAME_BN" ng-model="vm.form.EMP_FULL_NAME_BN" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Nick Name [B]
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control banglafont" name="EMP_NICKNM_BN" ng-model="vm.form.EMP_NICKNM_BN" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Present Address [B]
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control banglafont" name="PRE_ADDRESS_BN" ng-model="vm.form.PRE_ADDRESS_BN" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Permanent Address [B]
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control banglafont" name="PERM_ADDRESS_BN" ng-model="vm.form.PERM_ADDRESS_BN" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Father's Name [B]
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control banglafont" name="FATHER_NAME_BN" ng-model="vm.form.FATHER_NAME_BN" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Mother's Name [B]
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control banglafont" name="MOTHER_NAME_BN" ng-model="vm.form.MOTHER_NAME_BN" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">
+                                                    Guardian Name [B]
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control banglafont" name="GUARDIAN_NAME_BN" ng-model="vm.form.GUARDIAN_NAME_BN" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6"></div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6"></div>
+                                        <div class="col-md-6"></div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6"></div>
+                                        <div class="col-md-6"></div>
+                                    </div>
+
+
+                                </div>
+                                @* =================== End Optional ===================== *@
+
+                            </tab>
+
+
+                        </tabset>
+
+
+                    </div>
+
+
+                    
+
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <div class="col-md-offset-2">
+                                &nbsp;&nbsp;
+                                <button type="button" class="btn blue button-previous" ng-if="vm.tabID>=1" ng-click="vm.previousTab()"><i class="m-icon-swapleft m-icon-white"></i> Back</button>
+                                @*<button type="button" class="btn blue button-previous" ng-if="vm.tabID<1" ng-click="vm.previousTab()" disabled><i class="m-icon-swapleft m-icon-white"></i> Back</button>*@
+
+                                <button type="button" class="btn blue button-next" ng-if="vm.tabID<=4" ng-click="vm.nextTab()">Continue <i class="m-icon-swapright m-icon-white"></i></button>
+                                @*<button type="button" class="btn blue button-next" ng-if="vm.tabID>1" ng-click="vm.nextTab()" disabled>Continue <i class="m-icon-swapright m-icon-white"></i></button>*@
+
+
+                                <button type="submit" class="btn green" ng-if="vm.insert && vm.tabID>4"><i class="fa fa-check"></i> Save</button>
+                                <button type="submit" class="btn yellow-gold" ng-if="!vm.insert && vm.tabID>4"><i class="fa fa-check"></i> Update</button>
+
+                                @*<div class="form-group">
+                            <div class="col-md-1">
+                                <p></p>
+                                <a id="sample_editable_1_new" class="btn green" ng-click="vm.addNew()">
+                                    Add New <i class="fa fa-plus"></i>
+                                </a>
+                                <p></p>
+                            </div>
+                        </div>*@
+
+
+                                &nbsp;&nbsp;&nbsp;
+                                <button type="button" class="btn default" ng-click="vm.addNew()">Add New <i class="fa fa-plus"></i></button>
+                                <button type="button" class="btn default" ng-click="vm.backToList('EmployeeEntry')"><i class="m-icon-swapleft"></i> Back To List</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    @*<pre>{{vm.form|json}}</pre>*@
+
+                    <p>
+
+                        <div ng-if="vm.errors" style="padding: 0px 15px 0px 15px;">
+                            <div class="alert alert-danger">
+                                <div style="padding: 0px 0px 15px 25px; ">
+                                    <b>Please fix the following errors ....</b>
+                                </div>
+                                <div class="field-validation-error" ng-repeat="err in vm.errors">
+                                    <ul>
+                                        <li class="" ng-repeat="e in err">
+                                            {{e}}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+                    </p>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+
+@*<div class="form-actions">
+    <button type="button" class="btn blue button-previous" ng-if="vm.tabID>=1" ng-click="vm.previousTab()"><i class="m-icon-swapleft m-icon-white"></i> Back</button>
+    <button type="button" class="btn blue button-previous" ng-if="vm.tabID<1" ng-click="vm.previousTab()" disabled><i class="m-icon-swapleft m-icon-white"></i> Back</button>
+
+    <button type="button" class="btn blue button-next" ng-if="vm.tabID<1" ng-click="vm.nextTab()">Continue <i class="m-icon-swapright m-icon-white"></i></button>
+    <button type="button" class="btn blue button-next" ng-if="vm.tabID>0" ng-click="vm.nextTab()" disabled>Continue <i class="m-icon-swapright m-icon-white"></i></button>
+</div>*@
+
+
+    
+
+    @*<div class="form-actions">
+        <div class="row">
+            <div class="col-md-offset-3 col-md-6">
+                <button type="submit" class="btn green" ng-if="vm.insert"><i class="fa fa-check"></i> Save</button>
+                <button type="submit" class="btn yellow-gold" ng-if="!vm.insert"><i class="fa fa-check"></i> Update</button>
+
+                <button type="button" class="btn blue" ng-click="vm.TranCancel()">Cancel</button>
+
+                <button type="button" class="btn blue button-next" ng-click="vm.nextTab()">Continue</button>
+                <button type="button" class="btn default" ng-click="vm.backToList()">Back To List</button>
+
+
+                <a href="javascript:;" class="btn blue button-next">
+                    Continue <i class="m-icon-swapright m-icon-white"></i>
+                </a>
+
+            </div>
+        </div>
+    </div>*@
+
+

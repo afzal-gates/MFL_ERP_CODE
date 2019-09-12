@@ -1,0 +1,443 @@
+﻿@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+
+<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 13px;
+    }
+</style>
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Commercial</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+        <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+               data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class=" form-group">
+
+                <div class="col-md-12 form-horizontal">
+
+                    <fieldset class="custom-fieldset col-md-4">
+                        <legend class="custom-legend"><b>PO List</b></legend>
+                        <div class="input-icon right" style="padding-bottom:3px;">
+                            <i class="icon-magnifier"></i>
+                            <input type="text" class="form-control form-control-solid" ng-model="q" placeholder="search..." ng-change="vm.PoMasterList.filter( { field:'PO_NO_IMP', operator :'contains', value: q })" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }">
+                        </div>
+
+
+                        <div kendo-list-view
+                             k-selectable="'single'"
+                             k-data-source="vm.PoMasterList"
+                             k-on-change="vm.onChangePO(dataItem)">
+                            <div k-template>
+                                <table style="width:100%; height:100%;">
+                                    <tr class="clstdMtex">
+                                        <td class="clstdMtex">{{dataItem.PO_NO_IMP}}</td>
+                                        <td class="clstdMtex">{{dataItem.PO_DT_IMP|date:'dd-MM-yyyy'}}</td>
+                                        <td class="clstdMtex">{{dataItem.INCO_TERM_NAME_EN}}</td>
+                                        <td class="clstdMtex">{{dataItem.PAYM_TERM_NAME_EN}}</td>
+                                    </tr>
+                                </table>
+                                <dd class="k-state-default" style="padding: 5px; border-bottom: solid 1px; border-color: lightgray; ">
+
+                                </dd>
+                            </div>
+                        </div>
+                        <div kendo-pager k-data-source="vm.PoMasterList" style="height:210px;"></div>
+                    </fieldset>
+                    <fieldset class="custom-fieldset col-md-8" style="width:66%">
+                        <legend class="custom-legend"><b>Master Information</b></legend>
+                        <div><label id="lblMsg"></label></div>
+                        <form class="form-horizontal" role="form" name="frmKnitMachinOperatorAssign" novalidate>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">
+                                        Supplier
+                                    </label>
+                                    <div class="col-md-3">
+
+                                        <select class="form-control required requiredSub" kendo-drop-down-list name="SCM_SUPPLIER_ID" id="SCM_SUPPLIER_ID"
+                                                k-option-label="'-- Select Supplier --'" k-data-text-field="'SUP_TRD_NAME_EN'" k-data-value-field="'SCM_SUPPLIER_ID'"
+                                                k-auto-bind="'true'" k-data-source="vm.supplierList" k-delay="vm.supplierList"
+                                                k-filter="'contains'" ng-model="vm.form.SCM_SUPPLIER_ID" k-on-change="vm.loadPendingRequest(kendoEvent)"></select>
+
+                                        <input type="hidden" name="CM_IMP_PI_H_ID" ng-model="vm.form.CM_IMP_PI_H_ID" class="form-control" />
+                                    </div>
+
+                                    <div class="col-md-6">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group">
+
+                                    <label class="control-label col-md-3">
+                                        <span aria-required="true" class="required">*</span>
+                                        PI No
+                                    </label>
+                                    <div class="col-md-3">
+
+                                        <input type="text" name="PI_NO_IMP" ng-model="vm.form.PI_NO_IMP" class="form-control required" />
+
+                                    </div>
+                                    <label class="control-label col-md-2">
+                                        <span aria-required="true" class="required"></span>
+                                        PI Date
+                                    </label>
+                                    <div class="col-md-2">
+
+                                        <input type="text" name="PI_DT_IMP" ng-model="vm.form.PI_DT_IMP" class="form-control required" max-date="vm.today"
+                                               ng-click="PI_DT_IMP_LNopen($event)" datepicker-popup="{{vm.dtFormat}}" is-open="PI_DT_IMP_LNopened"
+                                               datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="row" ng-if="vm.form.IS_REVISE == true">
+                                <div class="form-group">
+
+
+                                    <label class="control-label col-md-3">
+                                        <span aria-required="true" class="required">*</span>
+                                        Revised #
+                                    </label>
+                                    <div class="col-md-3">
+
+                                        <input type="text" name="REVISION_NO" ng-model="vm.form.REVISION_NO" class="form-control required" />
+
+                                    </div>
+                                    <label class="control-label col-md-2">
+                                        <span aria-required="true" class="required"></span>
+                                        Revised Date
+                                    </label>
+                                    <div class="col-md-2">
+
+                                        <input type="text" name="REVISION_DT" ng-model="vm.form.REVISION_DT" class="form-control required" max-date="vm.today"
+                                               ng-click="REVISION_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}" is-open="REVISION_DT_LNopened"
+                                               datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row" ng-if="vm.form.IS_REVISE == true">
+                                <div class="form-group">
+
+                                    <label class="control-label col-md-3">
+                                        <span aria-required="true" class="required">*</span>
+                                        Reason for Revised
+                                    </label>
+                                    <div class="col-md-8">
+                                        <textarea name="REV_REASON" ng-model="vm.form.REV_REASON" class="form-control required" />
+                                    </div>
+                                    @*PI_REV_AMT*@
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group">
+
+                                    <label class="control-label col-md-3">
+                                        <span aria-required="true" class="required"></span>
+                                        PI Amount
+                                    </label>
+                                    <div class="col-md-2">
+
+                                        <input type="number" name="PI_NET_AMT" ng-model="vm.form.PI_NET_AMT" class="form-control double" />
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">
+                                        <span aria-required="true" class="required"></span>
+                                        Terms Description
+                                    </label>
+                                    <div class="col-md-8">
+                                        <textarea name="TERMS_DESC" ng-model="vm.form.TERMS_DESC" class="form-control" />
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Upload Files</label>
+                                    @*<div class="col-md-2">
+                                            <input type="text" class="form-control" name="DOC_NAME_EN" ng-model="vm.file.DOC_NAME_EN">
+                                        </div>*@
+
+                                    <div class="col-md-3">
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div class="input-group">
+                                                <div class="form-control uneditable-input span3" data-trigger="fileinput" style="padding-top: 0px;padding-bottom: 0px;height: 26px;">
+                                                    <i class="fa fa-file fileinput-exists"></i>&nbsp; <span class="fileinput-filename"></span>
+                                                </div>
+                                                <span class="input-group-addon btn default btn-file" style="padding-bottom: 0px;padding-top: 0px;">
+                                                    <span class="fileinput-new btn-circle">
+                                                        <i class="fa fa-paperclip"></i>
+                                                    </span>
+                                                    <span class="fileinput-exists">
+                                                        <i class="fa fa-exchange"></i>
+                                                    </span>
+                                                    <input type="hidden" value="" name="..."><input type="file" name="" accept="image/*,application/pdf" data-ak-file-model="vm.file.ATT_FILE">
+                                                </span>
+                                                <a class="input-group-addon btn green fileinput-exists" data-dismiss="fileinput" ng-click="vm.addToDocGrid(vm.file)">
+                                                    <i class="fa fa-plus"></i>
+                                                </a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group" ng-if="vm.form.items.length>0">
+                                    <label class="control-label col-md-3">
+                                        Selected Files
+                                    </label>
+                                    <div class="col-md-6" @*ng-repeat="item in vm.form.items"*@>
+                                        <div class="table-scrollable">
+                                            <table class="table table-striped table-bordered table-condensed table-advance table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>
+                                                            SL
+                                                        </th>
+                                                        @*<th class="hidden-xs">
+                                                                Doc Title
+                                                            </th>*@
+
+                                                        <th class="hidden-xs">
+                                                            File Name
+                                                        </th>
+
+                                                        <th>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="item in vm.form.items" ng-if="item.REMOVE!='Y'">
+                                                        <td class="hidden-xs">
+                                                            {{$index+1}}
+                                                        </td>
+                                                        @*<td class="hidden-xs">
+                                                                {{item.DOC_NAME_EN}}
+                                                            </td>*@
+
+                                                        <td class="hidden-xs">
+                                                            {{item.ATT_FILE.name||item.RPT_PATH_URL}}
+                                                        </td>
+
+                                                        <td>
+                                                            <a href="/UPLOAD_DOCS/IMP_PI_DOCS/{{item.RPT_PATH_URL}}" target="_blank" class="btn btn-xs green">View</a> <a class="btn btn-xs orange" ng-click="vm.removeAddedDoc($index)">
+                                                                <i class="fa fa-trash-o"></i> Remove
+                                                            </a>
+
+
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </fieldset>
+                    <br />
+                    <fieldset class="custom-fieldset col-md-12">
+                        <legend class="custom-legend"><b>PO Details</b></legend>
+
+
+                        <table class="clsTableMtex">
+                            <tr class="clstheadMtex">
+                                <td class="clstdMtex" title="Select All">
+
+                                    <input type="checkbox" ng-model="vm.form.IS_SELECT" ng-click="vm.SelectAll(vm.form.IS_SELECT)" />
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Requisition #</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Order Info</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Yarn Item</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Brand</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Lot Ref.</b>
+                                </td>
+
+                                <td class="clstdMtex">
+                                    <b>Delivery Date</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>HS Code</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Order Qty</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Unit Price</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Amount</b>
+                                </td>
+                            </tr>
+
+
+                            <tr class="clstdMtex" ng-repeat="item in vm.RequisitionItemList">
+                                <td class="clstdMtex" title="Select">
+                                    <input type="checkbox" ng-model="item.IS_SELECT" ng-disabled="(item.CM_IMP_PI_H_ID>0) && (item.CM_IMP_PI_H_ID!=vm.form.CM_IMP_PI_H_ID)" />
+                                    
+                                </td>
+                                <td class="clstdMtex" style="min-width:150px;">
+                                    {{item.PURC_REQ_NO}}
+                                    <input type="hidden" ng-model="item.CM_IMP_PO_D_YRN_ID" />
+                                </td>
+                                <td class="clstdMtex">
+                                    {{item.ORDER_DTL}}
+                                </td>
+                                <td class="clstdMtex" style="min-width:150px;">
+                                    {{item.ITEM_NAME_EN}}
+                                    <input type="hidden" ng-model="item.INV_ITEM_ID" />
+
+                                </td>
+                                <td class="clstdMtex">
+                                    {{item.BRAND_NAME_EN}}
+                                </td>
+                                <td class="clstdMtex">
+                                    {{item.LOT_REF_NO}}
+                                </td>
+
+                                <td class="clstdMtex">
+                                    {{item.DELV_TGT_DT|date:'dd-MM-yyyy'}}
+
+                                </td>
+
+                                <td class="clstdMtex">
+                                    <input type="text" ng-model="item.HS_CODE" />
+                                </td>
+                                <td class="clstdMtex">
+                                    <input type="number" ng-model="item.CONF_QTY" style="max-width:60px; text-align:right;" />Kg
+
+                                </td>
+
+                                <td class="clstdMtex">
+                                    <input type="number" ng-model="item.CONF_RATE" style="max-width: 60px; text-align: right;" />
+                                    @*{{item.CONF_RATE}}*@
+                                </td>
+
+                                <td class="clstdMtex">
+                                    {{(item.CONF_QTY*item.CONF_RATE)|number:2}}
+                                </td>
+
+                            </tr>
+                        </table>
+                        <br />
+                        <div class="form-group">
+                            <div style="text-align:right;padding-right:100px;">
+                                <button type="button" class="btn btn-sm green" ng-if="vm.EDIT==0" ng-click="vm.AddToGrid();">Add to PI</button>
+                                <button type="button" class="btn btn-sm yellow-gold" ng-if="vm.EDIT>0" ng-click="vm.updateToGrid();">Update PI</button>
+                                <button type="button" class="btn btn-sm default" ng-click="vm.clearGrid();">Cancel</button>
+
+                            </div>
+
+                        </div>
+
+                        <br />
+
+                        <div class="form-group" style="padding-left:15px;">
+                            <div kendo-grid k-options="vm.gridOptions" k-data-source="vm.importOrderList" style="width:98%"></div>
+
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="control-label col-md-9">
+                                    <span aria-required="true" class="required"></span>
+                                    Net PI Amount
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" style="text-align:right;padding-right:10px;" readonly name="PI_NET_AMT" ng-model="vm.form.PI_NET_AMT" class="form-control" />
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                    <br />
+
+                    <div class="row">
+                        <div class="form-group">
+
+                            <div class="col-md-4" style="padding-left:30px;">
+                                <button type="button" class="btn btn-sm blue" ui-sref="ImpLcPIList">Back To List</button>
+                                <button type="button" ng-if="vm.form.CM_IMP_PI_H_ID>0 && vm.form.IS_REVISE == true" class="btn btn-sm green" ng-click="vm.reviseAll(vm.form, vm.antiForgeryToken);">Revise</button>
+                                <button type="button" ng-if="vm.form.CM_IMP_PI_H_ID>0 && vm.form.IS_REVISE == false" class="btn btn-sm green" ng-click="vm.updateAll(vm.form, vm.antiForgeryToken);">Update</button>
+                                <button type="button" ng-if="vm.form.CM_IMP_PI_H_ID>0 && vm.form.IS_REVISE == false" class="btn btn-sm yellow-gold" ng-click="vm.submitAll(vm.form, vm.antiForgeryToken);">Submit</button>
+                                <button type="button" ng-if="!vm.form.CM_IMP_PI_H_ID>0 && vm.form.IS_REVISE == false" class="btn btn-sm green" ng-click="vm.submitAll(vm.form, vm.antiForgeryToken);">Save</button>
+                                @*<button type="button" class="btn btn-sm default" ng-click="vm.clearAll(vm.form);">Cancel</button>*@
+                                <button type="button" class="btn btn-sm blue" ui-sref="ImpLcPI({pCM_IMP_PI_H_ID:0})" ui-sref-opts="{inherit: false, reload: true}">Cancel</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

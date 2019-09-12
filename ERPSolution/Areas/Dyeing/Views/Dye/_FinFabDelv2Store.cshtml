@@ -1,0 +1,141 @@
+﻿<style>
+    #MyGridID .k-grouping-row p {
+        color: #0b0fb9;
+        background-color: lightgoldenrodyellow;
+    }
+
+    #MyGridID .k-grid-header .k-header {
+        background-color: #5e738b;
+    }
+</style>
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Dyeing Finishing</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        <input id="access_token" data-ng-model="token" type="hidden"
+               data-ng-init="token='@Session["access_token"]'" />
+        <input ng-model="vm.form.CREATED_BY" type="hidden"
+               data-ng-init="vm.form.CREATED_BY='@Session["multiScUserId"]'" />
+
+        <input id="access_token" ng-model="vm.form.LAST_UPDATED_BY" type="hidden"
+               ng-init="vm.form.LAST_UPDATED_BY='@Session["multiScUserId"]'" />
+
+        <fieldset class="custom-fieldset">
+            <legend class="custom-legend"><b>Search</b></legend>
+            <div>
+                <div>
+                    <table class="clsTable">
+                        <tbody class="clsthead">
+                            <tr class="clstd">
+
+                                <td class="clstd">
+                                    <b>Buyer A/C</b>
+                                </td>
+
+                                <td class="clstd">
+
+                                    <b>Style #</b>
+                                </td>
+                                <td class="clstd">
+
+                                    <b>Order #</b>
+                                </td>
+                                <td class="clstd">
+                                    <b>Shipment Month</b>
+                                </td>
+                                <td class="clstd">
+                                    <b>Type</b>
+                                </td>
+                                <td class="clstd">
+
+                                    <b>Action</b>
+                                </td>
+                            </tr>
+                            <tr class="clstd">
+
+                                <td class="clstd">
+                                    <select kendo-drop-down-list name="MC_BYR_ACC_GRP_ID" class="form-control"
+                                            k-options="vm.buyerAcGrpList" id="MC_BYR_ACC_GRP_ID" ng-model="vm.form.MC_BYR_ACC_GRP_ID" required></select>
+
+                                </td>
+
+
+                                <td class="clstd">
+                                    <select class="form-control" kendo-drop-down-list name="MC_FAB_PROD_ORD_H_ID" k-option-label="'--Style --'"
+                                            k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_FAB_PROD_ORD_H_ID'" k-filter="'Contains'"
+                                            k-template="template" k-value-template="valueTemplate"
+                                            k-auto-bind="'true'" k-data-source="vm.StyleExtDs" ng-model="vm.form.MC_FAB_PROD_ORD_H_ID"
+                                            @*k-on-change="onFabOrderChange(kendoEvent)"*@></select>
+
+                                </td>
+                                <td class="clstd">
+                                    <select class="form-control" kendo-drop-down-list name="MC_FAB_PROD_ORD_H_ID" k-option-label="'--Order# --'"
+                                            k-data-text-field="'ORDER_NO_LST'" k-data-value-field="'MC_FAB_PROD_ORD_H_ID'" k-filter="'Contains'"
+                                            k-template="templateOh" k-value-template="valueTemplateOh"
+                                            k-auto-bind="'true'" k-data-source="vm.FabOederByOhDs" ng-model="vm.form.MC_FAB_PROD_ORD_H_ID"
+                                            required style="width:100%;"></select>
+
+                                </td>
+                                <td class="clstd">
+                                    <select class="form-control" kendo-drop-down-list name="MONTHOF" k-option-label="'-- Select Month --'"
+                                            k-data-text-field="'MONTHOF'" k-data-value-field="'MONTHOF'" k-filter="'contains'"
+                                            k-auto-bind="'true'" k-data-source="vm.shipMonthList" k-ng-delay="vm.shipMonthList" ng-model="vm.form.MONTHOF"
+                                            k-on-change="vm.onChangeShipMonth(kendoEvent)"></select>
+                                </td>
+                                <td class="clstd">
+                                    <select kendo-drop-down-list name="RF_FAB_PROD_CAT_ID" id="RF_FAB_PROD_CAT_ID" class="form-control"
+                                            options="vm.productionTypeList" ng-model="vm.form.RF_FAB_PROD_CAT_ID"></select>
+
+                                </td>
+                                <td class="clstd">
+                                    <button class="btn btn-sm blue" ng-click="vm.SearchPendingSubLot();"><i class='fa fa-search'></i> Show</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+        </fieldset>
+
+        <fieldset class="custom-fieldset">
+            <legend class="custom-legend"><b>Batch Lot Data</b></legend>
+
+            <div kendo-grid k-options="vm.gridOptions" style="border-color:black;" k-data-source="vm.QcRollLotList" id="MyGridID"></div>
+
+        </fieldset>
+
+
+    </div>
+</div>

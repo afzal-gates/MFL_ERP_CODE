@@ -1,0 +1,269 @@
+﻿<div class="modal-body">
+    <div class="portlet grey-cascade box">
+        <div class="portlet-title">
+            <div>
+                <h3 style="padding-top:10px;margin-top:3px;">
+                    Notify Party
+                    <span class="pull-right"><i class="fa fa-times red" ng-click="vm.cancel()"></i></span>
+                </h3>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+                <div class="page-splash">
+                    <div class="page-splash-message">
+                        <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class=" form-group">
+                    @*<div class="col-md-3" style="padding-right:0px">
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend">Select Buyer</legend>
+
+                            <div class="input-icon right" style="padding-bottom:3px;">
+                                <i class="icon-magnifier"></i>
+                                <input type="text" class="form-control form-control-solid" ng-model="q" placeholder="search..." ng-change="vm.buyerList.filter( { field:'BUYER_NAME_EN', operator :'contains', value: q })" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }">
+                            </div>
+
+                            <div kendo-list-view
+                                 k-selectable="'single'"
+                                 k-data-source="vm.buyerList"
+                                 k-on-change="vm.getBuyerNotifyPartyList(dataItem)">
+                                <div k-template>
+                                    <dd class="k-state-default" style="padding: 5px; border-bottom: solid 1px; border-color: lightgray; ">
+                                        {{dataItem.BUYER_NAME_EN}}
+                                    </dd>
+                                </div>
+                            </div>
+                            <div kendo-pager k-data-source="vm.buyerList"></div>
+
+                        </fieldset>
+                    </div>*@
+
+                    <div class="col-md-12" style="padding-left:0px;">
+
+                        @*===================== New Entry ==========================*@
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend"><b>Master Data</b></legend>
+                            <div><label id="lblMsg"></label></div>
+                            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+
+                                <form class="form-horizontal" role="form" name="frmKnitMachinOperatorAssign" novalidate>
+
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">
+                                                Buyer Name
+                                            </label>
+                                            <div class="col-md-3">
+                                                <select class="form-control required" kendo-drop-down-list name="MC_BUYER_ID" id="MC_BUYER_ID"
+                                                        k-option-label="'-- Select Buyer --'" ng-disabled="vm.form.MC_BUYER_ID>0"
+                                                        k-data-text-field="'BUYER_NAME_EN'" k-data-value-field="'MC_BUYER_ID'"
+                                                        k-auto-bind="'true'" k-data-source="vm.buyerList" k-ng-delay="vm.buyerList" k-filter="'contains'"
+                                                        ng-model="vm.form.MC_BUYER_ID"></select>
+
+                                                @*<select kendo-drop-down-list name="MC_BUYER_ID" class="form-control"
+                                                        options="vm.buyerList" ng-model="vm.form.MC_BUYER_ID"></select>*@
+
+                                                @*<input type="text" name="BUYER_NAME_EN" ng-model="vm.form.BUYER_NAME_EN" class="form-control required" readonly />
+                                                <input type="hidden" name="MC_BUYER_ID" ng-model="vm.form.MC_BUYER_ID" class="form-control" />*@
+                                                <input type="hidden" name="CM_NOTIFY_PARTY_ID" ng-model="vm.form.CM_NOTIFY_PARTY_ID" class="form-control" />
+                                            </div>
+                                            <label class="control-label col-md-2">
+                                                Code
+                                            </label>
+                                            <div class="col-md-2">
+                                                <input type="text" name="NTF_PARTY_CODE" ng-model="vm.form.NTF_PARTY_CODE" class="form-control" readonly />
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+
+                                            <label class="control-label col-md-3">
+                                                <span aria-required="true" class="required">*</span>
+                                                Party Name(EN)
+                                            </label>
+                                            <div class="col-md-3">
+                                                <input type="text" name="NTF_PARTY_NAME_EN" ng-model="vm.form.NTF_PARTY_NAME_EN" class="form-control required" />
+                                            </div>
+
+                                            <label class="control-label col-md-2">
+                                                <span aria-required="true" class="required">*</span>
+                                                Party Name(BN)
+                                            </label>
+                                            <div class="col-md-3">
+                                                <input type="text" name="NTF_PARTY_NAME_BN" ng-model="vm.form.NTF_PARTY_NAME_BN" class="form-control" />
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+
+
+                                            <label class="control-label col-md-3">
+                                                <span aria-required="true" class="required">*</span>
+                                                Address
+                                            </label>
+                                            <div class="col-md-3">
+
+                                                <input type="text" name="ADDRESS_EN" ng-model="vm.form.ADDRESS_EN" class="form-control" />
+                                                @*ADDRESS_BN*@
+                                            </div>
+
+                                            <label class="control-label col-md-2">
+                                                <span aria-required="true" class="required"></span>
+                                                Country
+                                            </label>
+                                            <div class="col-md-3">
+                                                <select kendo-drop-down-list name="HR_COUNTRY_ID" class="form-control"
+                                                        options="vm.CountryList" ng-model="vm.form.HR_COUNTRY_ID"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">
+                                                <span aria-required="true" class="required"></span>
+                                                Post Code
+                                            </label>
+                                            <div class="col-md-3">
+
+                                                <input type="text" name="POST_CODE" ng-model="vm.form.POST_CODE" class="form-control" />
+
+                                            </div>
+
+                                            <label class="control-label col-md-2">
+                                                <span aria-required="true" class="required"></span>
+                                                PO Box No
+                                            </label>
+                                            <div class="col-md-3">
+
+                                                <input type="text" name="PO_BOX_NO" ng-model="vm.form.PO_BOX_NO" class="form-control" />
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">
+                                                <span aria-required="true" class="required"></span>
+                                                Work Phone #
+                                            </label>
+                                            <div class="col-md-3">
+
+                                                <input type="text" name="WORK_PHONE" ng-model="vm.form.WORK_PHONE" class="form-control" />
+
+                                            </div>
+
+                                            <label class="control-label col-md-2">
+                                                <span aria-required="true" class="required"></span>
+                                                Mobile #
+                                            </label>
+                                            <div class="col-md-3">
+
+                                                <input type="text" name="MOB_PHONE" ng-model="vm.form.MOB_PHONE" class="form-control" />
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">
+                                                <span aria-required="true" class="required"></span>
+                                                Fax #
+                                            </label>
+                                            <div class="col-md-3">
+
+                                                <input type="text" name="FAX_NO" ng-model="vm.form.FAX_NO" class="form-control" />
+
+                                            </div>
+
+                                            <label class="control-label col-md-2">
+                                                <span aria-required="true" class="required"></span>
+                                                E-mail
+                                            </label>
+                                            <div class="col-md-3">
+
+                                                <input type="text" name="EMAIL_ID" ng-model="vm.form.EMAIL_ID" class="form-control" />
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">
+                                                <span aria-required="true" class="required"></span>
+                                                Web Url
+                                            </label>
+                                            <div class="col-md-3">
+
+                                                <input type="text" name="WEB_URL" ng-model="vm.form.WEB_URL" class="form-control" />
+
+                                            </div>
+
+                                            <label class="control-label col-md-2">
+                                                <span aria-required="true" class="required"></span>
+                                                Is Active?
+                                            </label>
+                                            <div class="col-md-1">
+
+                                                <input type="checkbox" name="IS_ACTIVE" ng-model="vm.form.IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'" class="" />
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-7">
+                                                <button type="button" ng-if="vm.form.CM_NOTIFY_PARTY_ID>0" class="btn btn-sm yellow-gold" ng-click="vm.submitAll(vm.form);">Update</button>
+                                                <button type="button" ng-if="!vm.form.CM_NOTIFY_PARTY_ID>0" class="btn btn-sm green" ng-click="vm.submitAll(vm.form);">Save</button>
+                                                <button type="button" class="btn btn-sm default" ng-click="vm.clearAll(vm.form);">Cancel</button>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+
+                                    <fieldset class="custom-fieldset">
+                                        <legend class="custom-legend"><b>Notify Party List</b></legend>
+
+                                        <div class="form-group" style="padding-left:15px;">
+                                            <div kendo-grid k-options="vm.gridOptions" k-data-source="vm.NotifyList" style="width:98%"></div>
+
+                                        </div>
+
+                                    </fieldset>
+                                </form>
+
+
+                            </div>
+                        </fieldset>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

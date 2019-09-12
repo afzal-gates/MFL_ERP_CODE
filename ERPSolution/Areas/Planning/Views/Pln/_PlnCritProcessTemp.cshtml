@@ -1,0 +1,143 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Garments</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="col-md-12">
+    <div class="form-group">
+        <label class="control-label col-md-1" style="text-align:right;">
+            <span aria-required="true" class="required">*</span>
+            Buyer
+        </label>
+        <div class="col-md-2">
+            <select kendo-drop-down-list name="MC_BUYER_ID" class="form-control"
+                    options="vm.buyerListDs" id="BuyerDropDown" ng-model="vm.form.MC_BUYER_ID" required></select>
+        </div>
+
+        <label class="control-label col-md-1" style="text-align:right;">
+            <span aria-required="true" class="required">*</span>
+            Templates
+        </label>
+        <div class="col-md-5">
+            <select class="form-control" kendo-multi-select name="MC_TNA_TMPLT_H_ID" k-option-label="'--Select Templates --'"
+                    k-data-text-field="'TEMPLATE_NAME'" k-data-value-field="'MC_TNA_TMPLT_H_ID'" k-filter="'Contains'"
+                    k-auto-bind="'true'" k-data-source="vm.TnaTemplatesDs" ng-model="vm.form.MC_TNA_TMPLT_H_LST" k-on-change="vm.onChangeTnaSelect(kendoEvent,vm.form)"
+                    style="width:100%;"></select>
+        </div>
+
+
+        <label class="control-label col-md-1 " style="text-align:right;">
+            Same As:
+        </label>
+        <div class="col-md-2">
+            <select kendo-drop-down-list name="MC_BUYER_ID" class="form-control"
+                    options="vm.buyerListDsCopy" id="BuyerDropDown" ng-model="vm.form.MC_BUYER_ID_COPY" ng-disabled=" !vm.form.MC_TNA_TMPLT_H_LST"></select>
+        </div>
+
+
+    </div>
+</div>
+<hr class="divide40" />
+<form novalidate name="TaskRoutingForm" class="form-horizontal">
+    <div class="row" style="margin:auto;">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-6" style="padding:2px;margin:auto;" ng-repeat="(idx,item) in vm.items.templates">
+            <table class="table table-condensed table-striped table-bordered">
+
+                <thead>
+                    <tr>
+                        <th colspan="4" class="col-md-11" style="text-align: center; border-bottom: 1px solid #cecece; background-color: #818181; color: white; ">{{ item.LK_ORDER_TYPE+' ||'+item.TNA_TMPLT_CODE }}|| Pre-Sew: {{ item.STD_LEAD_TIME- item.SHIP_AFTER_SEW - item.IN_BTWN_SEW }}|| Post-Sew: {{ item.SHIP_AFTER_SEW + item.IN_BTWN_SEW }} </th>
+                        <th class="col-md-1" style="text-align: center; border-bottom: 1px solid #cecece; background-color: #818181; color: white;"><i style="cursor:pointer;" class="fa fa-times" ng-click="vm.onDeleteTemp(vm.items.templates,idx)" ng-disabled="$first"></i></th>
+                    </tr>
+
+                    <tr>
+                        <th colspan="5" class="col-md-12" style="text-align: center; border-bottom: 1px solid #cecece; background-color: #818181; color: white; " title="Copy from:">
+                            <select ng-model="item.MC_TNA_TMPLT_H_ID_CPY" ng-change="vm.onTemplateChange(item,vm.items.templates)" ng-options="option.MC_TNA_TMPLT_H_ID as option.TEMPLATE_NAME for option in vm.onFindtemplateDs(item)" class="form-control" />
+                        </th>
+
+                    </tr>
+
+
+                    <tr>
+                        <th class="col-md-1" style="text-align:center;">
+                            SL
+                        </th>
+                        <th class="col-md-4" style="text-align:center;">
+                            Task
+                        </th>
+                        <th class="col-md-1" style="text-align:center;">
+                            S.Dys
+                        </th>
+                        <th class="col-md-4" style="text-align:center;">
+                            Preceding Tasks
+                        </th>
+                        @*<th class="col-md-1" style="text-align:center;">
+                            Alw+-
+                        </th>*@
+                        <th class="col-md-1" style="text-align:center;">
+                            CP?
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="(id,itm) in item.tasks" ng-class="{'success': itm.STD_DAYS  > 0,  'danger': ( !itm.STD_DAYS || itm.STD_DAYS  < 1) }">
+                        <td style="padding:0px;">
+                            {{ itm.DISPLAY_ORDER }}
+                        </td>
+                        <td style="padding:0px;">
+                            <strong>{{ itm.TA_TASK_NAME_EN }}</strong>
+                        </td>
+                        <td style="padding:0px;" ng-class="{'has-error': (STD_DAYS_FORM_FORM.STD_DAYS.$touched || TaskRoutingForm.$submitted) && (STD_DAYS_FORM.STD_DAYS.$error.required||STD_DAYS_FORM.STD_DAYS.$error.min)}">
+                            <ng-form name="STD_DAYS_FORM">
+                                <input class="form-control" type="number" name="STD_DAYS" ng-model="itm.STD_DAYS" min="0" />
+                            </ng-form>
+                        </td>
+
+                        <td style="padding:0px;">
+                            <select ng-model="itm.PRIOR_TNA_TASK_D_ID" name="PRIOR_TNA_TASK_D_ID" ng-options="option.MC_TNA_TASK_D_ID as option.TA_TASK_NAME_EN for option in vm.tnaTaskOptions" class="form-control" />
+                        </td>
+
+                        @*<td style="padding:0px;" ng-class="{'has-error': (MAX_DLAY_ALOW_FORM.MAX_DLAY_ALOW.$touched || TaskRoutingForm.$submitted) && (MAX_DLAY_ALOW_FORM.MAX_DLAY_ALOW.$error.required||MAX_DLAY_ALOW_FORM.MAX_DLAY_ALOW.$error.min)}">
+                <ng-form name="MAX_DLAY_ALOW_FORM">
+                    <input class="form-control" type="number" name="MAX_DLAY_ALOW" ng-model="itm.MAX_DLAY_ALOW" min="0" required />
+                </ng-form>
+            </td>*@
+                        <td style="text-align: center; padding: 0px;">
+                            <span class="label label-sm" ng-class="{'label-success': itm.IS_CRITICAL_PROC== 'Y' }"><input type="checkbox" ng-model="itm.IS_CRITICAL_PROC" ng-true-value="'Y'" ng-false-value="'N'"></span>
+                            @*<i style="cursor:pointer;color:red;" class="fa fa-times" title="Delete" ng-click="item.tasks.splice(id,1)" ng-disabled="$first"></i>
+                <i style="cursor:pointer;color:darkslateblue;" title="Add Record" class="fa fa-plus" ng-click="item.tasks.push({ MAX_DLAY_ALOW : 0 })" ng-if="$last"></i>*@
+                        </td>
+
+
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+    <div class="row form-actions" style="margin:auto;">
+        <button type="button" class="btn btn-sm green" ng-click="vm.submitData(vm.items,TaskRoutingForm.$valid);TaskRoutingForm.$submitted=true">Save</button>
+        <button type="button" class="btn btn-sm default" ng-click="vm.onCancel(vm.form.MC_BUYER_ID)">Cancel</button>
+    </div>
+</form>

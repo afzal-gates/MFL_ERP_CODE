@@ -1,0 +1,177 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 12px;
+    }
+</style>
+
+
+
+
+<div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+    <div class="page-splash">
+        <div class="page-splash-message">
+            <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+        </div>
+    </div>
+</div>
+
+
+<form class="form-horizontal form-body">
+    <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+    @*Session["multiLoginEmpCode"] = obUser.EMPLOYEE_CODE;
+        Session["multiLoginEmpName"] = obUser.EMP_FULL_NAME_EN;*@
+
+    <div class="row">
+
+        
+
+        <div class="col-md-12">
+                
+            <div class="col-md-8" style="padding-left:0px">
+                <fieldset class="custom-fieldset" style="margin-bottom:5px">
+                    <legend></legend>
+
+                    <div class="row" style="margin:auto;" ng-show="vm.errors">
+                        <div class="alert alert-danger" role="alert">
+                            @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                            <div style="padding: 0px 0px 15px 25px; ">
+                                <b>Please fix the following errors ....</b>
+                            </div>
+                            <ul ng-repeat="field in vm.errors">
+                                <li ng-repeat="error in field" ng-bind="error"></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-1">
+                            Store
+                        </label>
+                        <div class="col-md-4">
+                            <select kendo-drop-down-list name="SCM_STORE_ID" id="SCM_STORE_ID" class="form-control"
+                                    options="vm.storeList" ng-model="vm.form.SCM_STORE_ID" required></select>
+                            @*<input type="text" class="form-control" data-ng-model="vm.form.RECEIVED_BY" data-ng-init="vm.form.RECEIVED_BY='@Session["multiLoginEmpCode"], @Session["multiLoginEmpName"], @Session["multiLoginEmpDesigName"]'" readonly />*@
+                        </div>
+
+                        <label class="control-label col-md-1">
+                            Date
+                        </label>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" ng-click="vm.rcvDateOpen($event)" datepicker-popup="{{vm.dtFormat}}" ng-change="vm.onChangeProdDate()"
+                                   name="RCV_DT" ng-model="vm.form.RCV_DT" is-open="vm.rcvDateOpened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" required />
+                        </div>
+
+                        <label class="control-label col-md-1">
+                            Roll#
+                        </label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" id="FAB_ROLL_NO" name="FAB_ROLL_NO" ng-model="vm.form.FAB_ROLL_NO" autocomplete="off" />
+                        </div>
+
+                    </div>
+                </fieldset>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="form-group" style="background-color: yellow; text-align: left; font-size: 30px">
+                    <b><span>&nbsp;No of Roll:</span><span style="color:red">&nbsp;&nbsp;{{vm.rollRcvGridDataSource.total()}}&nbsp;&nbsp;</span></b>                   
+                </div>
+                <div class="form-group" style="background-color: yellow; text-align: left; font-size: 30px">
+                    <b><span>&nbsp;Total &nbsp;&nbsp;WT:</span><span style="color: red">&nbsp;&nbsp;{{vm.TOT_RCV_ROLL_WT}}&nbsp;&nbsp;</span></b>                  
+                </div>
+            </div>
+
+            <table class="table table-condensed table-bordered" style="margin-bottom:5px" ng-show="vm.selectedItem">
+                <tr>
+                    <td><b>Knit Card#:</b> {{vm.selectedItem.JOB_CRD_NO}}<br /><b>Roll#:</b> {{vm.selectedItem.FAB_ROLL_NO}}</td>
+                    <td><b>Buyer:</b> {{vm.selectedItem.BUYER_SNAME}}<br /><b>Style#: {{vm.selectedItem.STYLE_NO}}</b></td>
+                    <td><b>Machine#:</b> {{vm.selectedItem.KNT_MACHINE_NO}}<br /><b>Dia x Gauge:</b> {{vm.selectedItem.MC_DIA}} x {{vm.selectedItem.MC_GG}}</td>
+                    <td><b>Operator:</b> {{vm.selectedItem.EMP_FULL_NAME_EN}}<br /><b>Shift:</b> {{vm.selectedItem.SCHEDULE_NAME_EN}}</td>
+                    <td><b>Color:</b> {{vm.selectedItem.COLOR_NAME_EN}}<br /><b>Fab.Type:</b> {{vm.selectedItem.FAB_TYPE_SNAME}}</td>
+                    <td><b>Fib.Comp.:</b> {{vm.selectedItem.FIB_COMP_CODE}}<br /><b>Fin.Dia:</b> {{vm.selectedItem.ACT_FIN_DIA}}" {{vm.selectedItem.FIN_DIA_TYPE}}</td>
+                    <td><b>Fin.GSM:</b> {{vm.selectedItem.ACT_FIN_GSM}}<br /><b>Weight(Kg):</b> {{vm.selectedItem.RCV_ROLL_WT}}</td>
+                    <td><b>Yarn:</b> {{vm.selectedItem.KNT_YRN_LOT_DESC}}<br /><b>Roll Grade:</b> {{vm.selectedItem.GRADE_NO}}</td>
+                </tr>
+            </table>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div kendo-grid id="rcvGrid" k-options="vm.rollRcvGridOption" k-data-source="vm.rollRcvGridDataSource"></div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    @*<button type="button" ng-disabled="vm.rollRcvGridDataSource.length()<0" class="btn btn-sm green" ng-click="vm.submitData(token,'N')">
+                        Save
+                    </button>*@
+                    
+                    @*<div class="col-md-2">
+                        <button type="button" ng-disabled="vm.rollRcvGridDataSource.length()<0" class="btn btn-sm blue" ng-click="vm.submitData(token,'Y')">
+                            Finalize
+                        </button>
+                    </div>*@
+
+                    <div class="col-md-offset-1 col-md-9" >
+                        <fieldset class="custom-fieldset" >
+                            <legend class="custom-legend">Print Parameter</legend>
+
+                            
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">
+                                    Report Type
+                                </label>
+                                <div class="col-md-10">
+                                    <div class="radio-list" style="margin-left:20px">
+                                        <label class="radio-inline" ng-repeat="item in vm.rptList">
+                                            <span class="checked"><input type="radio" name="REPORT_CODE" ng-model="vm.form.REPORT_CODE" ng-value="item.REPORT_CODE"></span>{{item.REPORT_NAME}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">
+                                    Prod.Type
+                                </label>
+                                <div class="col-md-8">
+                                    <select class="form-control" kendo-multi-select name="RF_FAB_PROD_CAT_ID_LST" k-placeholder="'Search...'"
+                                            k-data-text-field="'FAB_PROD_CAT_SNAME'" k-data-value-field="'RF_FAB_PROD_CAT_ID'"
+                                            k-data-source="vm.prodCatDataSource" ng-model="vm.form.RF_FAB_PROD_CAT_ID_LST" ng-change="vm.onChangeProdCat()"></select>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" ng-disabled="vm.rollRcvGridDataSource.length()<0" class="btn btn-sm blue" ng-click="vm.printChallan()">
+                                        <i class="fa fa-print"></i> Print Challan
+                                    </button>
+                                </div>
+                            </div>
+
+                                
+                            
+
+                        </fieldset>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</form>
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,531 @@
+﻿<style>
+    .dropdown-header {
+        border-width: 0 0 1px 0;
+        text-transform: uppercase;
+    }
+
+        .dropdown-header > span {
+            display: inline-block;
+            padding: 10px;
+        }
+
+            .dropdown-header > span:first-child {
+                width: 10px;
+            }
+
+    .selected-value {
+        display: inline-block;
+        vertical-align: middle;
+        width: 24px;
+        height: 24px;
+        background-size: 100%;
+        margin-right: 5px;
+        border-radius: 50%;
+    }
+
+    #customers-list .k-item {
+        line-height: 1em;
+        min-width: 300px;
+    }
+
+    /* Material Theme padding adjustment*/
+
+    .k-material #customers-list .k-item,
+    .k-material #customers-list .k-item.k-state-hover,
+    .k-materialblack #customers-list .k-item,
+    .k-materialblack #customers-list .k-item.k-state-hover {
+        padding-left: 5px;
+        border-left: 0;
+    }
+
+    #customers-list .k-item > span {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        display: inline-block;
+        vertical-align: top;
+        margin: 20px 10px 10px 5px;
+    }
+
+        #customers-list .k-item > span:first-child {
+            -moz-box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            -webkit-box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            margin: 5px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+
+    #customers-list h3 {
+        font-size: 1.2em;
+        font-weight: normal;
+        margin: 0 0 1px 0;
+        padding: 0;
+    }
+
+    #customers-list p {
+        margin: 0;
+        padding: 0;
+        font-size: .8em;
+    }
+
+
+    /*///////////////////////*/
+    .k-treeview .k-in {
+        padding: 5px;
+    }
+
+    #ItemCategTreeview .k-sprite {
+        background-image: url("/Content/assets/global/img/coloricons-sprite.png");
+    }
+
+    .rootfolder {
+        background-position: 0 0;
+    }
+
+    .folder {
+        background-position: 0 -16px;
+    }
+
+    .pdf {
+        background-position: 0 -32px;
+    }
+
+    .html {
+        background-position: 0 -48px;
+    }
+
+    .image {
+        background-position: 0 -64px;
+    }
+
+    /*.demo-section {
+        float: left;
+        width: 200px;
+        margin: 0 60px 0 0;
+    }*/
+</style>
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Dyeing Finishing</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+    <form name="formData" class="form-horizontal" style="background-color: white;">
+        <div class="portlet-body">
+
+
+            <div class="form-group">
+                <div class="col-md-8" style="padding-right:5px;">
+                    <fieldset class=" custom-fieldset" ng-disabled="true">
+                        <legend class="custom-legend"><b>Requisition Info</b></legend>
+                        
+                        <div class="form-group">
+
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required"></span>
+                                Floor
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control required" kendo-drop-down-list name="HR_PROD_FLR_ID" k-option-label="'-- Select Floor --'"
+                                        k-data-text-field="'FLOOR_DESC_EN'" k-data-value-field="'HR_PROD_FLR_ID'"
+                                        k-auto-bind="'true'" k-data-source="vm.floorList" k-ng-delay="vm.floorList" k-filter="'contains'"
+                                        ng-model="vm.form.HR_PROD_FLR_ID" k-on-change="vm.getLine();" ng-disabled="true"></select>
+
+                            </div>
+                            <div class="col-md-1"></div>
+                            <label class="col-md-2 control-label">
+                                <span aria-required="true" class="required"></span>
+                                Line
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control required" kendo-drop-down-list name="HR_PROD_LINE_ID" k-option-label="'-- Select Line --'"
+                                        k-data-text-field="'LINE_NO'" k-data-value-field="'HR_PROD_LINE_ID'"
+                                        k-auto-bind="'true'" k-data-source="vm.lineList" k-ng-delay="vm.lineList" k-filter="'contains'"
+                                        ng-model="vm.form.HR_PROD_LINE_ID" ng-disabled="true"></select>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">
+                                <span aria-required="true" class="required"></span>
+                                Buyer
+                            </label>
+                            <div class="col-md-3">
+                                <select kendo-drop-down-list id="MC_BYR_ACC_GRP_ID" name="MC_BYR_ACC_GRP_ID" class="form-control requiredSub"
+                                        options="vm.buyerAcGrpList" ng-model="vm.form.MC_BYR_ACC_GRP_ID" ng-disabled="true"></select>
+
+                            </div>
+
+
+                            <div class="col-md-1"></div>
+
+                            <label class="col-md-2 control-label">
+                                <span aria-required="true" class="required"></span>
+                                Style/Order #
+                            </label>
+                            <div class="col-md-3">
+                                <select kendo-drop-down-list name="MC_STYLE_H_EXT_ID" class="form-control required requiredSub" k-filter="'contains'" k-option-label="'-- Select One --'"
+                                        k-template="vm.styleExtTemplate" k-value-template="vm.styleExtValueTemplate" ng-k-delay="vm.OrderDs"
+                                        k-data-source="vm.OrderDs" k-options="vm.OrderDs" ng-model="vm.form.MC_ORDER_H_ID"
+                                        k-data-text-field="'ORDER_NO'" k-data-value-field="'MC_ORDER_H_ID'" k-on-select="vm.getShipmentList(kendoEvent);"
+                                        k-auto-bind="'true'"></select>
+                                @*<select kendo-drop-down-list name="STYLE_NO" id="STYLE_NO" class="form-control requiredSub3"
+                                        k-filter="'contains'" k-option-label="'-- Select Style No--'" k-template="vm.templateStyle" k-value-template="vm.valueTemplateStyle"
+                                        k-data-source="vm.StyleExtDs" ng-k-delay="vm.StyleExtDs" ng-model="vm.form.MC_STYLE_H_EXT_ID"
+                                        k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_STYLE_H_EXT_ID'" k-on-select="vm.getOrderList(kendoEvent)"
+                                        k-auto-bind="'true'" ng-disabled="true"></select>*@
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            @*<label class="control-label col-md-2">
+                                <span aria-required="true" class="required"></span>
+                                Order #
+                            </label>
+                            <div class="col-md-3">
+
+                                <select class="form-control" kendo-drop-down-list name="MC_ORDER_H_ID" id="MC_ORDER_H_ID" k-option-label="'-- Select Order --'"
+                                        k-data-text-field="'ORDER_NO'" k-data-value-field="'MC_ORDER_H_ID'" k-template="vm.templateOrder" k-value-template="vm.valueTemplateOrder"
+                                        k-auto-bind="'true'" k-data-source="vm.OrderDs" k-ng-delay="vm.OrderDs" k-filter="'contains'" k-on-select="vm.getShipmentList(kendoEvent);"
+                                        ng-model="vm.form.MC_ORDER_H_ID" ng-disabled="true"></select>
+                            </div>
+                            <div class="col-md-1"></div>*@
+
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required"></span>
+                                Shipment Date
+                            </label>
+                            <div class="col-md-2">
+
+                                <select class="form-control" kendo-drop-down-list name="MC_ORDER_SHIP_ID" id="MC_ORDER_SHIP_ID" k-option-label="'-- Select Shipment Date --'"
+                                        k-data-text-field="'SHIP_DT'" k-data-value-field="'MC_ORDER_SHIP_ID'" k-template="vm.template" k-value-template="vm.valueTemplate"
+                                        k-auto-bind="'true'" k-data-source="vm.shipmentDateDs" k-ng-delay="vm.shipmentDateDs" k-filter="'contains'"
+                                        ng-model="vm.form.MC_ORDER_SHIP_ID" ng-disabled="true"></select>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required"></span>
+                                Rqd Process
+                            </label>
+                            <div class="col-md-3">
+
+                                <select kendo-drop-down-list id="DF_PROC_TYPE_ID" name="DF_PROC_TYPE_ID" class="form-control requiredSub"
+                                        options="vm.processTypeList" ng-model="vm.form.DF_PROC_TYPE_ID" ng-disabled="true"></select>
+
+                            </div>
+                            <div class="col-md-1"></div>
+
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required"></span>
+                                Wash Qty(Pcs)
+                            </label>
+                            <div class="col-md-2">
+
+                                <input type="number" class="form-control" name="WASH_RQD_QTY" id="WASH_RQD_QTY" ng-model="vm.form.WASH_RQD_QTY" ng-disabled="true" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required"></span>
+                                Target (Pcs)/Hrs
+                            </label>
+                            <div class="col-md-2">
+
+                                <input type="number" class="form-control" name="TGT_HR_PROD_QTY" id="TGT_HR_PROD_QTY" ng-model="vm.form.TGT_HR_PROD_QTY" ng-disabled="true" />
+
+                            </div>
+
+                            <div class="col-md-1">
+                            </div>
+                            <label class="col-md-3 control-label">
+                                <span aria-required="true" class="required"></span>
+                                Target (Pcs)/Day
+                            </label>
+                            <div class="col-md-2">
+                                <input type="number" class="form-control" name="TGT_DAY_PROD_QTY" id="TGT_DAY_PROD_QTY" ng-model="vm.form.TGT_DAY_PROD_QTY" ng-disabled="true" />
+
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+
+                            <label class="control-label col-md-2 ">
+                                <span aria-required="true" class="required"></span>
+                                Start Date
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control required" ng-click="TGT_ST_DT_LNopen($event)" ng-focus="TGT_ST_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                       name="TGT_ST_DT" max-date="vm.today" ng-model="vm.form.TGT_ST_DT" is-open="TGT_ST_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close"
+                                       ng-disabled="true" />
+
+                            </div>
+
+                            <div class="col-md-1">
+                            </div>
+                            <div class="col-md-1">
+                            </div>
+
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required"></span>
+                                Close Date
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control required" ng-click="TGT_END_DT_LNopen($event)" ng-focus="TGT_END_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                       name="TGT_END_DT" min-date="vm.today" ng-model="vm.form.TGT_END_DT" is-open="TGT_END_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close"
+                                       ng-disabled="true" />
+
+                            </div>
+                        </div>
+
+                    </fieldset>
+
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend"><b>Production Info</b></legend>
+                        <div><label id="lblMsg"></label></div>
+
+
+                        <div class="form-group">
+
+                            <label class="control-label col-md-2 ">
+                                <span aria-required="true" class="required">*</span>
+                                Production Date
+                            </label>
+                            <div class="col-md-3">
+                                <input kendo-date-time-picker k-ng-model="vm.form.PROD_DT" id="PROD_DT" name="PROD_DT" k-max="vm.today"
+                                       k-options="datePickerOptions" class="form-control" />
+                            </div>
+
+                            <div class="col-md-1">
+                                <a class="btn btn-xs yellow-gold" ng-click="vm.loadStart();"><i class="fa fa-clock-o"></i> Now</a>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>
+                                Shift:
+                            </label>
+                            <div class="col-md-3">
+
+                                <select kendo-drop-down-list name="HR_SCHEDULE_H_ID" id="HR_SCHEDULE_H_ID"
+                                        class="form-control required" ng-disabled="vm.form.HR_SCHEDULE_H_ID>0"
+                                        options="vm.shiftList" ng-model="vm.form.HR_SCHEDULE_H_ID"></select>
+
+                            </div>
+
+                            <div class="col-md-1">
+                            </div>
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>
+                                Operator:
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control required" kendo-drop-down-list name="OPERATOR_ID" id="OPERATOR_ID" k-option-label="'-- Select Operator --'"
+                                        k-data-text-field="'EMP_FULL_NAME_EN'" k-data-value-field="'HR_EMPLOYEE_ID'"
+                                        k-auto-bind="'true'" k-data-source="vm.operatorDataSource" k-ng-delay="vm.operatorDataSource"
+                                        k-filter="'contains'" ng-model="vm.form.OPERATOR_ID"></select>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group">
+                           
+                            <label class="col-md-2 control-label">
+                                <span aria-required="true" class="requiredSub">*</span>
+                                Machine
+                            </label>
+                            <div class="col-md-3">
+
+                                <select kendo-drop-down-list name="DF_MACHINE_ID" id="DF_MACHINE_ID" class="form-control required"
+                                        options="vm.machineList" ng-model="vm.form.DF_MACHINE_ID"></select>
+                            </div>
+                            <label class="col-md-3 control-label">
+                                <span aria-required="true" class="required">*</span>
+                                Process
+                            </label>
+                            <div class="col-md-3">
+                                <select kendo-drop-down-list name="DF_PROC_TYPE_ID" id="DF_PROC_TYPE_ID" class="form-control required"
+                                        options="vm.processList" ng-model="vm.form.DF_PROC_TYPE_ID" ng-change="vm.searchMappingList()"></select>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>
+                                Wash Qty(Pcs)
+                            </label>
+                            <div class="col-md-2">
+
+                                <input type="number" name="WASH_QTY" id="WASH_QTY" ng-model="vm.form.WASH_QTY" class="form-control" />
+
+                            </div>
+
+                            <div class="col-md-1">
+                            </div>
+                            <div class="col-md-1">
+                            </div>
+                            <label class="col-md-2 control-label">
+                                <span aria-required="true" class="required">*</span>
+                                Ref Challan
+                            </label>
+                            <div class="col-md-3">
+                                <input type="text" name="REF_GT_PASS_NO" id="REF_GT_PASS_NO" ng-model="vm.form.REF_GT_PASS_NO" class="form-control" />
+
+
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label class="control-label col-md-2 ">
+                                <span aria-required="true" class="required"></span>
+                                Remarks
+                            </label>
+                            <div class="col-md-9">
+                                <textarea id="REMARKS" name="REMARKS" ng-model="vm.form.REMARKS" class="form-control"></textarea>
+                            </div>
+
+                        </div>
+
+
+
+                    </fieldset>
+
+                </div>
+
+                <div class="col-md-4" style="padding-left:5px;">
+                    <fieldset class=" custom-fieldset">
+                        <legend class="custom-legend"><b>Total</b></legend>
+
+                        <div class="form-group">
+                            <div class="col-md-1"></div>
+
+                            <label class="control-label col-md-5">
+                                <span aria-required="true" class="required">*</span>
+                                Today's Target:
+                            </label>
+                            <div class="col-md-6">
+                                <input type="text" ng-model="vm.form.TGT_DAY_PROD_QTY" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-1"></div>
+
+                            <label class="control-label col-md-5">
+                                <span aria-required="true" class="required">*</span>
+                                Today's Production:
+                            </label>
+                            <div class="col-md-6">
+                                <input type="text" ng-model="vm.form.TODAY_PROD_QTY" />
+                            </div>
+                        </div>
+                        <div style="border-top:1px solid grey; padding-bottom:5px;">
+
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-1"></div>
+
+                            <label class="control-label col-md-5">
+                                <span aria-required="true" class="required">*</span>
+                                Due:
+                            </label>
+                            <div class="col-md-6">
+                                <input type="text" ng-model="vm.form.DUE_WASH_QTY" />
+                            </div>
+                        </div>
+
+                    </fieldset>
+
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend"><b>Production Log</b></legend>
+
+                        <table class="clsTableMtex">
+                            <thead class="clstheadMtex">
+                                <tr>
+                                    <th class="clstdMtex">SL</th>
+                                    <th class="clstdMtex">Date</th>
+                                    <th class="clstdMtex">Shift</th>
+                                    <th class="clstdMtex">Day Prod Qty</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in vm.productionList" ng-click="vm.loadProd(item);">
+                                    <td class="clstdMtex">{{$index+1}}</td>
+                                    <td class="clstdMtex">{{item.PROD_DT|date:'dd-MM-yyyy'}}</td>
+                                    <td class="clstdMtex">{{item.SCHEDULE_NAME_EN}}</td>
+                                    <td class="clstdMtex">{{item.WASH_QTY}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </fieldset>
+
+                </div>
+            </div>
+
+
+        </div>
+        <div style="padding:3px;">
+        </div>
+        <div class="form-group">
+            <div class="col-md-4">
+                <button type="button" class="btn btn-sm blue" ui-sref="DfGmtWashProdList">Back To List</button>
+                <button type="button" ng-if="vm.form.DF_GMT_WASH_PROD_ID>0" class="btn btn-sm yellow-gold" ng-disabled="!vm.form.RF_ACTN_STATUS_ID>0" ng-click="vm.submitAll(vm.form);">@*{{vm.form.NXT_ACTION_NAME}}*@ Submit</button>
+                <button type="button" ng-if="vm.form.DF_GMT_WASH_PROD_ID>0" class="btn btn-sm yellow-lemon" ng-disabled="!vm.form.RF_ACTN_STATUS_ID>0" ng-click="vm.submitAll(vm.form);"> Update</button>
+                @*<button type="button" ng-if="vm.form.DF_GMT_WASH_PROD_ID>0" class="btn btn-sm green" ng-disabled="vm.form.RF_ACTN_STATUS_ID>0" ng-click="vm.printRDLC(vm.form);"> Print</button>*@
+                <button type="button" ng-if="!vm.form.DF_GMT_WASH_PROD_ID>0" class="btn btn-sm green" ng-click="vm.submitAll(vm.form);">Save</button>
+                <button type="button" class="btn btn-sm default" ui-sref="DfGmtWashProd({pGMT_DF_WASH_REQ_ID : 0,pDF_GMT_WASH_PROD_ID:0})" ui-sref-opts="{reload: true}">Cancel</button>
+
+            </div>
+
+            <label class="control-label col-md-1" style="padding-left:0px; padding-right:1px;">
+                <span aria-required="true" class="required">*</span>
+                Take Action
+            </label>
+            <div class="col-md-2" style="padding-left:0px; padding-right:1px;">
+                <select class="form-control" kendo-drop-down-list name="RF_ACTN_STATUS_ID" k-option-label="'-- Select Status --'"
+                        k-data-text-field="'ACTN_STATUS_NAME'" k-data-value-field="'RF_ACTN_STATUS_ID'" k-filter="'contains'"
+                        k-auto-bind="'true'" k-options="vm.actionOptions" k-data-source="vm.actionDataSource"
+                        ng-model="vm.form.RF_ACTN_STATUS_ID" required></select>
+            </div>
+
+        </div>
+        <div style="padding:3px;">
+        </div>
+    </form>
+</div>

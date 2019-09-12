@@ -1,0 +1,64 @@
+﻿
+<div class="modal-body">
+    <div class="portlet grey-cascade box">
+        <div class="portlet-title">
+            <div style="padding-top:2px;">
+                <h4 class="title">
+                    Buyer : <strong>{{data.BYR_ACC_NAME_EN}}</strong>&nbsp;&nbsp;
+                    Style # : <strong>{{data.STYLE_NO}}</strong>&nbsp;&nbsp;Order # : <strong>{{data.ORDER_NO}}</strong>
+                    Shipment: <strong>{{data.SHIP_DT|date:'dd-MMM-yyyy'}}</strong>&nbsp;&nbsp;
+                    Order Quantity # : <strong>{{data.SHIP_QTY}}</strong>&nbsp;&nbsp;
+                    <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                </h4>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <form role="form" name="ShipDateExtForm" class="form-horizontal" ng-submit="ShipDateExtForm.$submitted=true;save(data, ShipDateExtForm.$valid)">
+                <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;">
+                    <legend class="custom-legend">Shipment Date Extension</legend>
+                    <div class="form-body clearfix">
+                        <div class="row" style="margin:auto;padding-top:10px;">
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">
+                                    Current Ship Date
+                                </label>
+                                <div class="col-md-3">
+                                    {{data.SHIP_DT|date:'dd-MMM-yyyy'}}
+                                </div>
+                            </div>
+                            <div class="form-group" ng-class="{'has-error': (ShipDateExtForm.SHIP_DT_EXT_DT.$touched || ShipDateExtForm.$submitted) && ShipDateExtForm.SHIP_DT_EXT_DT.$error.required}">
+                                <label class="col-md-3 control-label">
+                                    Revised Ship Date (<span aria-required="true" class="custom-required">*</span>)
+
+                                </label>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" ng-click="SHIP_DTopen($event)" datepicker-popup="{{dtFormat}}"
+                                           name="ACCS_DELV_DT" ng-model="data.SHIP_DT_EXT_DT" is-open="SHIP_DTopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" required close-text="Close" />
+                                </div>
+                            </div>
+
+
+                            <div class="form-group" ng-class="{'has-error': (ShipDateExtForm.SHIP_DT_EXT_REASON.$touched || ShipDateExtForm.$submitted) && ShipDateExtForm.SHIP_DT_EXT_REASON.$error.required}">
+                                <label class="col-md-3 control-label">
+                                    <span aria-required="true" class="required">*</span>
+                                    Reason of Change
+                                </label>
+                                <div class="col-md-9">
+                                    <textarea rows="6" name="SHIP_DT_EXT_REASON" class="form-control" cols="50" ng-model="data.SHIP_DT_EXT_REASON" required></textarea>
+                                </div>
+                            </div>
+
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-5 col-md-offset-3">
+                                <button type="submit" class="btn btn-sm yellow-gold">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,405 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Security</a>
+
+    </li>
+    <li>
+        <a href="#">Menu Information</a>
+    </li>
+</ul>
+@{
+    ViewBag.Title = "MenuCreation";
+    
+}
+
+<div class="portlet box blue-dark" ng-controller="MenuController as vm">
+    <div class="portlet-title">
+        <div class="caption">
+            @*<i class="fa fa-gift"></i>*@ Menu Information
+        </div>
+        <div class="tools">
+            <a href="javascript:;" class="collapse">
+            </a>
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            <a href="javascript:;" class="remove">
+            </a>
+        </div>
+    </div>
+    <div class="portlet-body">
+
+        <div class="row">
+
+            <div class="col-md-3 portlet light" style="border:1px solid gray; margin-left:20px;">
+
+                <p style="color:green">Please select a node for transection</p>
+                <div id="menuTreeview" kendo-tree-view k-options="vm.menuOptions"
+                     k-on-change="selectedItem = dataItem" k-ng-delay="vm.menuOptions.dataSource">
+                </div>
+
+            </div>
+            <div class="col-md-7">
+                <form id="frmMenuCreation" name="frmMenuCreation" action="/Security/Menu/Save" method="post" class="form-horizontal" kendo-validator="validator">
+
+                    <div class="form-body">
+
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Action Mode</label>
+                            <div class="radio-list" >
+                                <div class="col-md-9">
+                                    <label class="radio-inline"><input type="radio" name="TranMode" id="NewMode" value="1" ng-init="TranMode=1" ng-model="TranMode">New</label>
+                                    <label class="radio-inline"><input type="radio" name="TranMode" id="EditMode" value="2" ng-model="TranMode">Edit</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="TranMode==1">
+                            <label class="control-label col-md-3">
+                                Sub Module
+                            </label>
+                            <div class="col-md-6">
+                                <select id="SC_SYSTEM_MODULE_ID" name="SC_SYSTEM_MODULE_ID" style="width: 435px"
+                                        kendo-drop-down-list k-options="vm.subModuleList"                                        
+                                        required data-required-msg="Please select sub module"></select>
+                                @*{{selectedItem.SC_SYSTEM_MODULE_ID}}*@
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="TranMode==2">
+                            <label class="control-label col-md-3">
+                                Sub Module
+                            </label>
+                            <div class="col-md-6">
+                                <select id="SC_SYSTEM_MODULE_ID" name="SC_SYSTEM_MODULE_ID" style="width: 435px"
+                                        kendo-drop-down-list k-options="vm.subModuleList"
+                                        value="{{selectedItem.SC_SYSTEM_MODULE_ID}}"                                        
+                                        required data-required-msg="Please select sub module"></select>
+                               
+                                
+                                 @*{{selectedItem.SC_SYSTEM_MODULE_ID}}*@
+                                
+                            </div>
+                        </div>
+
+
+                        <div class="form-group" ng-if="TranMode==1">
+                            <label class="control-label col-md-3">
+                                Parent Menu
+                            </label>
+                            <div class="col-md-9">
+                                <input type="hidden" name="PARENT_ID" value="{{selectedItem.SC_MENU_ID}}" />
+                                <input type="text" class="form-control" name="PARENT_NAME" value="{{selectedItem.text}}" disabled />
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="TranMode==2">
+                            <label class="control-label col-md-3">
+                                Parent Menu
+                            </label>
+                            <div class="col-md-9">
+                                <input type="hidden" name="PARENT_ID" value="{{selectedItem.PARENT_ID}}" />
+                                <input type="hidden" name="SC_MENU_ID" value="{{selectedItem.SC_MENU_ID}}" />
+                                <input type="text" class="form-control" name="PARENT_NAME" value="{{selectedItem.PARENT_NAME}}" disabled />
+                            </div>
+                        </div>                        
+
+                        <div class="form-group" ng-if="TranMode==1">
+                            <label class="control-label col-md-3">
+                                Menu Name
+                            </label>
+                            <div class="col-md-9">
+                                <input type="text" id="MENU_NAME_EN" name="MENU_NAME_EN" class="form-control" required data-required-msg="Please insert menu name"></input>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="TranMode==2">
+                            <label class="control-label col-md-3">
+                                Menu Name
+                            </label>
+                            <div class="col-md-9">
+                                <input type="text" id="MENU_NAME_EN" name="MENU_NAME_EN" class="form-control" value="{{selectedItem.MENU_NAME_EN}}" required data-required-msg="Please insert menu name"></input>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="TranMode==1">
+                            <label class="control-label col-md-3">
+                                Description
+                            </label>
+                            <div class="col-md-9">
+                                <textarea id="MENU_DESC" name="MENU_DESC" class="form-control" rows="3" ></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="TranMode==2">
+                            <label class="control-label col-md-3">
+                                Description
+                            </label>
+                            <div class="col-md-9">
+                                <textarea id="MENU_DESC" name="MENU_DESC" class="form-control" rows="3" value="{{selectedItem.MENU_DESC}}"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="TranMode==1">
+                            <label class="control-label col-md-3">
+                                Menu URL
+                            </label>
+                            <div class="col-md-9">
+                                <input type="text" id="MENU_URL" name="MENU_URL" class="form-control" required data-required-msg="Please insert mnnu URL"></input>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="TranMode==2">
+                            <label class="control-label col-md-3">
+                                Menu URL
+                            </label>
+                            <div class="col-md-9">
+                                <input type="text" id="MENU_URL" name="MENU_URL" class="form-control" required data-required-msg="Please insert mnnu URL" value="{{selectedItem.MENU_URL}}"></input>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group" ng-if="TranMode==1">
+                            <label class="control-label col-md-3">
+                                Security Level
+                            </label>
+                            <div class="col-md-9">                                
+                                <select id="SC_SECURITY_LEVEL_ID" name="SC_SECURITY_LEVEL_ID" style="width: 435px"
+                                        kendo-drop-down-list k-options="vm.securityLevelList"
+                                        required data-required-msg="Please select security level"></select>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="TranMode==2">
+                            <label class="control-label col-md-3">
+                                Security Level
+                            </label>
+                            <div class="col-md-9">                                
+                                <select id="SC_SECURITY_LEVEL_ID" name="SC_SECURITY_LEVEL_ID" style="width: 435px"
+                                        kendo-drop-down-list
+                                        k-options="vm.securityLevelList"
+                                        value="{{selectedItem.SC_SECURITY_LEVEL_ID}}" required data-required-msg="Please select security level">
+
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group" ng-if="TranMode==1">
+                            <label class="control-label col-md-3">
+                                Icon Path
+                            </label>
+                            <div class="col-md-9">
+                                <input type="text" id="ICON_PATH" name="ICON_PATH" class="form-control" required data-required-msg="Please input icon path"></input>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="TranMode==2">
+                            <label class="control-label col-md-3">
+                                Icon Path
+                            </label>
+                            <div class="col-md-9">
+                                <input type="text" id="ICON_PATH" name="ICON_PATH" class="form-control" required data-required-msg="Please input icon path" 
+                                       value="{{selectedItem.ICON_PATH}}"></input>
+                            </div>
+                        </div>
+
+
+
+                        
+                        <div class="form-group" ng-if="TranMode==1">
+                            <label class="control-label col-md-3">
+                                Menu Order
+                            </label>
+                            <div class="col-md-4">
+                                <input type="number" id="MENU_ORDER" name="MENU_ORDER" class="form-control" required data-required-msg="Please input menu order"></input>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="TranMode==2">
+                            <label class="control-label col-md-3">
+                                Menu Order
+                            </label>
+                            <div class="col-md-4">
+                                <input type="number" id="MENU_ORDER" name="MENU_ORDER" class="form-control" required data-required-msg="Please input menu order" value="{{selectedItem.MENU_ORDER}}"></input>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group" ng-if="TranMode==1">
+                            <label class="control-label col-md-3">
+                                Menu Level
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" id="MENU_LEVEL" name="MENU_LEVEL" class="form-control" value="{{selectedItem.MENU_LEVEL + 1}}" readonly required data-required-msg="Please insert menu level"></input>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="TranMode==2">                            
+                            <label class="control-label col-md-3">
+                                Menu Level
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" id="MENU_LEVEL" name="MENU_LEVEL" class="form-control" value="{{selectedItem.MENU_LEVEL}}" disabled></input>
+                            </div>
+                        </div>
+
+                           
+                        
+
+                        <div class="form-group" ng-if="TranMode==1">                            
+                            <div class="col-md-offset-3 col-md-1">
+                                <input type="checkbox" id="IS_LEAF" name="IS_LEAF"></input>
+                            </div>
+                            Leaf?                    
+                        </div>
+                        <div class="form-group" ng-if="TranMode==2">                            
+                            <div class="col-md-offset-3 col-md-1">
+                                <input type="checkbox" name="IS_LEAF" checked ng-if="selectedItem.IS_LEAF=='Y'" />
+                                <input type="checkbox" name="IS_LEAF" ng-if="selectedItem.IS_LEAF=='N'" />
+                                <input type="checkbox" name="IS_LEAF" ng-if="selectedItem==null" />
+                            </div>
+                            Leaf?
+                        </div>
+
+
+                        <div class="form-group" ng-if="TranMode==1">                            
+                            <div class="col-md-offset-3 col-md-1">
+                                <input type="checkbox" id="IS_OPEN_NEW_WINDOW" name="IS_OPEN_NEW_WINDOW"></input>
+                            </div>       
+                            Open New Window?                    
+                        </div>
+                        <div class="form-group" ng-if="TranMode==2">                            
+                            <div class="col-md-offset-3 col-md-1">
+                                <input type="checkbox" name="IS_OPEN_NEW_WINDOW" checked ng-if="selectedItem.IS_OPEN_NEW_WINDOW=='Y'" />
+                                <input type="checkbox" name="IS_OPEN_NEW_WINDOW" ng-if="selectedItem.IS_OPEN_NEW_WINDOW=='N'" />
+                                <input type="checkbox" name="IS_OPEN_NEW_WINDOW" ng-if="selectedItem==null" />
+                            </div>  
+                            Open New Window?
+                        </div>
+
+                        
+                        
+
+
+
+                        <div class="form-group" ng-if="TranMode==1">                            
+                            <div class="col-md-offset-3 col-md-1">
+                                <input type="checkbox" id="IS_REPORT" name="IS_REPORT"></input>
+                            </div>
+                            Report Menu?
+                        </div>                            
+                        <div class="form-group" ng-if="TranMode==2">                            
+                            <div class="col-md-offset-3 col-md-1">
+                                <input type="checkbox" name="IS_REPORT" checked ng-if="selectedItem.IS_REPORT=='Y'" />
+                                <input type="checkbox" name="IS_REPORT" ng-if="selectedItem.IS_REPORT=='N'" />
+                                <input type="checkbox" name="IS_REPORT" ng-if="selectedItem==null" />
+                            </div>
+                            Report Menu?                                                     
+                        </div>
+
+                        
+                        <div class="form-group" ng-if="TranMode==1">
+                            <div class="col-md-offset-3 col-md-1">
+                                <input type="checkbox" name="IS_ACTIVE" checked required data-required-msg="Please checked IsActive" />
+                                <span class="k-invalid-msg" data-for="IS_ACTIVE"></span>
+                            </div>
+                            Active?
+                        </div>
+                        <div class="form-group" ng-if="TranMode==2">
+                            <div class="col-md-offset-3 col-md-1">
+                                <input type="checkbox" name="IS_ACTIVE" checked ng-if="selectedItem.IS_ACTIVE=='Y'" />
+                                <input type="checkbox" name="IS_ACTIVE" ng-if="selectedItem.IS_ACTIVE=='N'" />
+                                <input type="checkbox" name="IS_ACTIVE" ng-if="selectedItem==null" />
+                            </div>
+                            Active?
+                        </div>
+
+
+                        <div class="form-actions" ng-if="TranMode==1">
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-6">
+                                    <button type="submit" class="btn green" ng-if="selectedItem.IS_LEAF=='N'"><i class="fa fa-check"></i> Save</button>
+                                    <button type="submit" class="btn green" ng-if="selectedItem.IS_LEAF=='Y'" disabled><i class="fa fa-check"></i> Save</button>
+                                    <button type="submit" class="btn green" ng-if="selectedItem==null" disabled><i class="fa fa-check"></i> Save</button>
+                                    <button type="reset" class="btn blue">Cancel</button>
+                                    @*<a href="@Url.Action("Index","LookupTables")" class="btn default">Back</a>*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-actions" ng-if="TranMode==2">
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-6">
+                                    <button type="submit" class="btn yellow" ng-if="selectedItem!=null"><i class="fa fa-check"></i> Update</button>
+                                    <button type="submit" class="btn yellow" ng-if="selectedItem==null" disabled><i class="fa fa-check"></i> Update</button>
+                                    <button type="reset" class="btn blue">Cancel</button>
+                                    @*<a href="@Url.Action("Index","LookupTables")" class="btn default">Back</a>*@
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+
+
+                    @*<div class="form-group">
+                            <div class="col-md-4">
+                                <div ng-show="selectedItem">
+                                    <h4>Selected: {{selectedItem.HR_DEPARTMENT_ID}}</h4>
+                                    <button class="k-button" ng-click="addAfter(selectedItem)">Add item below</button>
+                                    <button class="k-button" ng-click="addBelow(selectedItem)">Add child item</button>
+                                    <button class="k-button" ng-click="remove(selectedItem)">Delete</button>
+                                </div>
+                            </div>
+                        </div>*@
+                </form>
+
+            </div>
+
+
+        </div>
+
+
+
+
+
+
+        @*<div style="border:1px solid green" class="col-md-8">*@
+
+    </div>
+</div>
+
+
+<style scoped>
+    .k-treeview .k-in {
+        padding: 5px;
+    }
+
+    #menuTreeview .k-sprite {
+        background-image: url("/Content/assets/global/img/coloricons-sprite.png");
+    }
+        
+    .rootfolder {
+        background-position: 0 0;
+    }
+
+    .folder {
+        background-position: 0 -16px;
+    }
+
+    .pdf {
+        background-position: 0 -32px;
+    }
+
+    .html {
+        background-position: 0 -48px;
+    }
+
+    .image {
+        background-position: 0 -64px;
+    }
+
+    .demo-section {
+        float: left;
+        width: 200px;
+        margin: 0 60px 0 0;
+    }
+</style>

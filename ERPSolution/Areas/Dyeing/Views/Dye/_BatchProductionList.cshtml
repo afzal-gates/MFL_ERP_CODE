@@ -1,0 +1,173 @@
+﻿<style>
+    #grid tr td {
+        /* this makes the menu visibile */
+        overflow: visible;
+        z-index: 1;
+    }
+
+    #grid .k-grid-header {
+        padding-right: 0 !important;
+        z-index: 1;
+    }
+
+    .cellToolTip {
+        overflow: visible;
+    }
+</style>
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Dyeing</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        <input id="access_token" data-ng-model="token" type="hidden"
+               data-ng-init="token='@Session["access_token"]'" />
+        <input ng-model="vm.form.CREATED_BY" type="hidden"
+               data-ng-init="vm.form.CREATED_BY='@Session["multiScUserId"]'" />
+
+        <input id="access_token" ng-model="vm.form.LAST_UPDATED_BY" type="hidden"
+               ng-init="vm.form.LAST_UPDATED_BY='@Session["multiScUserId"]'" />
+        <div class="row" style="padding:5px">
+            <div class="col-md-1">
+                <a ui-sref="CheckRollInspection({})" class="btn btn-sm blue">
+                    <i class="fa fa-plus"></i> Add New
+                </a>
+            </div>
+        </div>
+
+        <div style="padding:5px;">
+
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend"><b>Searching Data</b></legend>
+                <table class="clsTable" style="width:100%">
+                    <tr class="clsthead">
+                        <td class="clstd">
+                            Buyer A/C
+                        </td>
+                        <td class="clstd">
+                            Style/Order #
+                        </td>
+
+                        <td class="clstd">
+                            Color
+                        </td>
+
+                        <td class="clstd">
+                            Batch #
+                        </td>
+                        
+                        <td class="clstd">
+                            QC Status
+                        </td>
+
+                        <td class="clstd">
+                            Filter On
+                        </td>
+
+                        <td class="clstd">
+                            From Date
+                        </td>
+                        <td class="clstd">
+                            To Date
+                        </td>
+                        <td class="clstd">
+                            Action
+                        </td>
+                    </tr>
+                    <tr class="clstd">
+
+                        <td class="clstd">
+                            <select kendo-drop-down-list name="MC_BYR_ACC_GRP_ID" id="MC_BYR_ACC_GRP_ID" class="form-control requiredSub"
+                                    options="vm.buyerAcGrpList" ng-model="vm.form.MC_BYR_ACC_GRP_ID"></select>
+                        </td>
+                        <td class="clstd">
+
+                            <input type="text" name="STYLE_ORDER_NO" ng-model="vm.form.STYLE_ORDER_NO" class="form-control" />
+                        </td>
+
+                        <td class="clstd">
+
+                            <select kendo-drop-down-list name="MC_COLOR_ID" id="MC_COLOR_ID" class="form-control requiredSub"
+                                    options="vm.colorList" ng-model="vm.form.MC_COLOR_ID"></select>
+                            @*<input type="text" name="DYE_MACHINE_NO" ng-model="vm.form.COLOR_NAME_EN" class="form-control" />*@
+                        </td>
+                        <td class="clstd">
+
+                            <input type="text" name="DYE_BATCH_NO" ng-model="vm.form.DYE_BATCH_NO" class="form-control" />
+
+                        </td>
+                        @*<td class="clstd">
+
+                            <select kendo-drop-down-list name="DYE_BT_STS_TYPE_ID" id="DYE_BT_STS_TYPE_ID" class="form-control requiredSub"
+                                    options="vm.statusList" ng-model="vm.form.DYE_BT_STS_TYPE_ID"></select>
+                        </td>*@
+                        <td class="clstd">
+
+                            <select kendo-drop-down-list name="LK_CHQ_RL_STS_ID" id="LK_CHQ_RL_STS_ID" class="form-control"
+                                    options="vm.rollStatusList" ng-model="vm.form.LK_CHQ_RL_STS_ID"></select>
+                        </td>
+
+                        <td class="clstd">
+
+                            <select kendo-drop-down-list name="DT_TYPE_ID" id="DT_TYPE_ID" class="form-control"
+                                    options="vm.filterDateList" ng-model="vm.form.DT_TYPE_ID"></select>
+                        </td>
+
+                        <td class="clstd">
+                            <input type="text" class="form-control required" ng-click="FROM_DATE_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                   name="FROM_DATE" max-date="vm.today" ng-model="vm.form.FROM_DATE" is-open="FROM_DATE_LNopened"
+                                   datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                        </td>
+
+                        <td class="clstd">
+                            <input type="text" class="form-control required" ng-click="TO_DATE_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                   name="TO_DATE" max-date="vm.today" ng-model="vm.form.TO_DATE" is-open="TO_DATE_LNopened"
+                                   datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                        </td>
+                       
+                        <td class="clstd" style="min-width:220px;">
+                            
+                            <a title="Load" ng-click="vm.searchData()" class="btn btn-sm default"><i class="fa fa-search"> Load</i></a> <a title="Load" ng-click="vm.clearData()" class="btn btn-sm default"><i class="fa fa-remove"> Clear</i></a> <a title="Load" ng-click="vm.printQCData()" class="btn btn-sm green"><i class="fa fa-print"> Print</i></a>
+                        </td>
+
+                    </tr>
+                </table>
+
+            </fieldset>
+            <div style="width:1400px;">
+                <kendo-grid id="grid" k-options="vm.gridOptions" k-data-source="vm.gridOptionsDS">
+
+                </kendo-grid>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,502 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a >
+            {{vm.Title}}
+        </a>
+    </li>
+</ul>
+
+
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">            
+        </div>
+        <div class="tools">
+            <a href="" class="collapse" data-original-title="" title="">
+            </a>
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;">
+            <legend class="custom-legend">
+
+                <b>Style Information</b>
+                
+            </legend>
+
+            <form class="form-horizontal" role="form" name="StyleMasterFabDev" novalidate ng-submit="vm.submitData(vm.form,token);StyleMasterFabDev.$submitted=true">
+
+                <div class="form-body" style="padding:0px;">
+
+
+                    <input id="access_token" data-ng-model="token" type="hidden"
+                           data-ng-init="token='@Session["access_token"]'" />
+
+                    <table class="table table-condensed table-bordered" style=" margin-bottom: 0px;">
+                        <tbody>
+                            <tr>
+
+                                <td class="col-md-1 text-right" style="border-right:none;">
+                                    <label class="control-label">
+                                        Buyer A/C
+                                    </label>
+
+
+                                </td>
+                                <td class="col-md-2">
+                                    <select kendo-drop-down-list name="MC_BYR_ACC_ID" class="form-control"
+                                            k-options="vm.buyerAcList" id="MC_BYR_ACC_ID" ng-model="vm.form.MC_BYR_ACC_ID" required></select>
+                                </td>
+
+                                <td class="col-md-1 text-right" style="border-right:none;">
+                                    <label class="control-label">
+                                        Buyer
+                                    </label>
+
+
+                                </td>
+                                <td class="col-md-2">
+                                    <select kendo-drop-down-list name="MC_BUYER_ID" class="form-control"
+                                            k-options="vm.buyerList" id="MC_BUYER_ID" ng-model="vm.form.MC_BUYER_ID" required></select>
+                                </td>
+
+                                <td class="col-md-1 text-right" style="border-right:none;">
+                                    <label class="control-label">
+                                        Inquiry #
+                                    </label>
+
+
+                                </td>
+                                <td class="col-md-2">
+                                    <select kendo-drop-down-list name="MC_INQR_H_ID" class="form-control"
+                                            options="vm.inquiryList" id="MC_INQR_H_ID" ng-model="vm.form.MC_INQR_H_ID" k-ng-delay="vm.inquiryList"></select>
+                                </td>
+
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td class="col-md-1 text-right" style="border-right:none;">
+                                    <label class="control-label">
+                                        Style/Article #
+                                    </label>
+
+                                </td>
+                                <td class="col-md-2">
+
+                                    <span class="col-md-12" style="padding-left:0px;padding-right:0px;">
+                                        <input type="text" name="STYLE_NO" ng-model="vm.form.STYLE_NO" class="form-control" placeholder="[Auto Generate]" readonly />
+                                    </span>
+
+                                    @*<span class="col-md-4" style="padding-left: 0px; padding-right: 0px;">
+                                        <input type="text" name="STYL_EXT_NO" ng-model="vm.form.STYL_EXT_NO" placeholder="Ext#" pattern="^[,\w]+$" class="form-control" />
+                                    </span>*@
+
+                                    <p ng-show="StyleMasterFabDev.STYL_EXT_NO.$invalid && !StyleMasterFabDev.STYL_EXT_NO.$pristine" class="help-block" style="color:red;">Invalid Ext. No. eg. AT,CA,N </p>
+
+                                </td>
+
+
+                                <td class="col-md-1 text-right" style="border-right:none;">
+                                    <label class="control-label">
+                                        Style Desc.
+                                    </label>
+
+                                </td>
+                                <td class="col-md-2">
+                                    <input type="text" name="STYLE_DESC" ng-model="vm.form.STYLE_DESC" class="form-control" />
+                                </td>
+
+                                <td class="col-md-1 text-right" style="border-right:none;">
+                                    <label class="control-label">
+                                        Status
+                                    </label>
+
+                                </td>
+
+                                <td class="col-md-2">
+                                    @*<select kendo-drop-down-list name="PARENT_ID" class="form-control"
+                                            options="vm.StyleRefList" id="PARENT_ID" ng-model="vm.form.PARENT_ID" k-ng-delay="vm.StyleRefList"></select>*@
+
+                                    <select kendo-drop-down-list name="LK_STYL_DEV_ID" class="form-control"
+                                            options="vm.DevelopedByList" id="LK_STYL_DEV_ID" ng-model="vm.form.LK_STYL_DEV_ID" ng-required></select>
+                                </td>
+
+
+
+                            </tr>
+
+                            @*<tr>
+
+        <td class="col-md-1 text-right" style="border-right:none;">
+            <label class="control-label">
+                Size Range
+            </label>
+
+
+        </td>
+        <td class="col-md-2" colspan="3" ng-class="{'has-error': (StyleMasterFabDev.MC_SIZE_LST.$touched || StyleMasterFabDev.$submitted) && StyleMasterFabDev.MC_SIZE_LST.$error.required}">
+            <select kendo-multi-select options='vm.SizeList' k-ng-delay="vm.SizeList" id="MC_SIZE_LST" style="border: 1px solid #898383;" name="MC_SIZE_LST" ng-model='vm.form.MC_SIZE_LST' class='form-control' required></select>
+
+        </td>
+        <td class="col-md-1 text-right" style="border-right:none;">
+            <label class="control-label">
+                Season
+            </label>
+
+
+        </td>
+        <td class="col-md-2">
+
+            <span class="col-md-8" style="padding-left:0px;padding-right:6px;">
+                <select kendo-drop-down-list name="LK_SEASON_ID" class="form-control"
+                        options="vm.seasonList" id="LK_SEASON_ID" ng-model="vm.form.LK_SEASON_ID"></select>
+            </span>
+
+            <span class="col-md-4" style="padding-left: 0px; padding-right: 0px; ">
+                <input type="text" name="SEASON_REF" ng-model="vm.form.SEASON_REF" class="form-control" placeholder="Ref#" />
+            </span>
+        </td>
+
+
+    </tr>*@
+
+                            @*<tr>
+        <td class="col-md-1 text-right" style="border-right:none;"></td>
+        <td class="col-md-2" colspan="3">
+
+            <span class="col-md-9" style="padding-left:0px;padding-right:3px;">
+
+                <div class="checkbox-list">
+                    <label class="checkbox-inline" style="margin-left:20px">
+                        <span><input type="checkbox" ng-model="vm.form.HAS_SET" ng-true-value="'Y'" ng-false-value="'N'">Top Btm Set?</span>
+                    </label>
+
+                    <label class="checkbox-inline" style="margin-left: 1px; padding-left: 20px;">
+                        <span><input type="checkbox" ng-model="vm.form.HAS_MODEL" ng-change="vm.form.HAS_MODEL=='Y'?vm.form.HAS_COMBO='N':''" ng-true-value="'Y'" ng-false-value="'N'">Model?</span>
+                    </label>
+
+                    <label class="checkbox-inline" style="margin-left: 1px; padding-left: 20px;">
+                        <span><input type="checkbox" ng-model="vm.form.HAS_COMBO" ng-change="vm.form.HAS_COMBO=='Y'?vm.form.HAS_MODEL='N':''" ng-true-value="'Y'" ng-false-value="'N'">Combo?</span>
+                    </label>
+
+                    <label class="checkbox-inline" style="margin-left: 1px; padding-left: 20px;">
+                        <span><input type="checkbox" ng-model="vm.form.HAS_MULTI_COL_PACK" ng-true-value="'Y'" ng-false-value="'N'">Colour Pair?</span>
+                    </label>
+
+                </div>
+                <p ng-show="StyleMasterFabDev.COMBO_NO.$invalid && !StyleMasterFabDev.COMBO_NO.$pristine" class="help-block" style="color:red;">Invalid Combo No. eg. A,B,C.</p>
+            </span>
+
+            <span class="col-md-3" style="padding-left: 0px; padding-right: 0px; " ng-if="vm.form.HAS_SET=='Y' && vm.form.HAS_MODEL=='Y'">
+                <input type="number" name="NO_OF_SET" ng-model="vm.form.NO_OF_SET" min="{{(vm.form.HAS_SET=='Y' && vm.form.HAS_MODEL=='Y')? 2 : 1 }}" max="{{(vm.form.HAS_SET=='Y' && vm.form.HAS_MODEL=='N')? 1 : 6 }}" class="form-control" placeholder="#OfSet" ng-blur="vm.SetItemList(vm.form)" required />
+            </span>
+
+            <span class="col-md-3" style="padding-left: 0px; padding-right: 0px; " ng-if="vm.form.HAS_SET=='Y' && vm.form.HAS_COMBO=='Y'">
+                <input type="text" name="COMBO_NO" ng-model="vm.form.items[0].COMBO_NO" class="form-control" placeholder="A,B,C" pattern="^[,\w]+$" required />
+            </span>
+
+        </td>
+
+        <td class="col-md-1 text-right" style="border-right:none;">
+            <label class="control-label">
+                Qty Unit
+            </label>
+
+        </td>
+        <td class="col-md-2">
+
+            <span class="col-md-6" style="padding-left:0px;padding-right:3px;">
+                <select kendo-drop-down-list name="QTY_MOU_ID" class="form-control"
+                        options="vm.MOUList" id="QTY_MOU_ID" ng-model="vm.form.QTY_MOU_ID"></select>
+            </span>
+
+            <span class="col-md-6" style="padding-left: 0px; padding-right: 0px;">
+                <input type="number" name="PCS_PER_PACK" ng-model="vm.form.PCS_PER_PACK" placeholder="PcsPerUnit" class="form-control" style="height:26.28px;" ng-required="(vm.form.QTY_MOU_ID==2||vm.form.QTY_MOU_ID==12||vm.form.HAS_MULTI_COL_PACK=='Y')" ng-disabled="!(vm.form.QTY_MOU_ID==2||vm.form.QTY_MOU_ID==12||vm.form.HAS_MULTI_COL_PACK=='Y')" />
+            </span>
+
+
+
+        </td>
+    </tr>*@
+
+                            <tr>
+                                <td class="col-md-1 text-right" style="border-right:none;">
+                                    <label class="control-label">
+                                        Supplier
+                                    </label>
+
+                                </td>
+                                <td class="col-md-2">
+
+                                    <select kendo-drop-down-list name="MANUF_ID" class="form-control"
+                                            options="vm.CompanyList" id="MANUF_ID" ng-model="vm.form.MANUF_ID" ng-required></select>
+                                </td>
+
+
+                                <td class="col-md-1 text-right" style="border-right:none;">
+                                    <label class="control-label">
+                                        Origin
+                                    </label>
+
+                                </td>
+                                <td class="col-md-2">
+                                    <select kendo-drop-down-list name="ORIGIN_ID" class="form-control"
+                                            options="vm.CountryList" id="ORIGIN_ID" ng-model="vm.form.ORIGIN_ID" ng-required></select>
+                                </td>
+
+
+
+                                <td class="col-md-1 text-right" style="border-right:none;">
+
+                                    <label class="control-label">
+                                        @*Status*@
+                                    </label>
+
+
+                                </td>
+                                <td class="col-md-2">
+                                    @*<select kendo-drop-down-list name="LK_STYL_DEV_ID" class="form-control"
+                                            options="vm.DevelopedByList" id="LK_STYL_DEV_ID" ng-model="vm.form.LK_STYL_DEV_ID" ng-required></select>*@
+                                </td>
+
+
+
+                                @*<td class="col-md-1 text-right" style="border-right:none;"></td>
+
+                            <td class="col-md-2">
+                                <div class="checkbox-list">
+                                    <label class="checkbox-inline" style="margin-left:20px">
+                                        <span><input type="checkbox" ng-true-value="'Y'" ng-false-value="'N'" ng-model="vm.form.IS_ACTIVE"></span> Active?
+                                    </label>
+
+                                    <label class="checkbox-inline" style="margin-left:20px">
+                                        <span><input type="checkbox" ng-model="vm.form.MORE"></span> More ?
+                                    </label>
+
+                                </div>
+                            </td>*@
+
+
+
+                            </tr>
+
+
+                            @*<tr>*@
+                            @*<td class="col-md-1 text-right" style="border-right:none;">
+
+                            <label class="control-label">
+                                Source
+                            </label>
+
+
+                        </td>
+                        <td class="col-md-2">
+                            <select kendo-drop-down-list name="LK_STYL_DEV_ID" class="form-control"
+                                    options="vm.DevelopedByList" id="LK_STYL_DEV_ID" ng-model="vm.form.LK_STYL_DEV_ID" required></select>
+                        </td>*@
+
+                            @*<td class="col-md-1 text-right" style="border-right:none;">
+                            <label class="control-label">
+                                Revision #
+                            </label>
+
+                        </td>
+
+                        <td class="col-md-2">
+
+                            <span class="col-md-6" style="padding-left:0px;padding-right:3px;">
+                                <input type="text" name="REVISION_NO" ng-model="vm.form.REVISION_NO" class="form-control" readonly />
+                            </span>
+                        </td>*@
+
+
+
+                            @*</tr>*@
+
+                        </tbody>
+                    </table>
+                    @*<table class="table table-condensed table-bordered" ng-if="vm.form.MORE">
+                    <tbody>
+                        <tr>
+                            <td class="col-md-1 text-right">
+
+                                <label class="control-label">
+                                    Brand
+                                </label>
+
+
+                            </td>
+                            <td class="col-md-1">
+                                <input type="text" name="BRAND_NAME" ng-model="vm.form.BRAND_NAME" class="form-control" />
+                            </td>
+
+
+                            <td class="col-md-1 text-right">
+
+                                <label class="control-label">
+                                    Concept Name
+                                </label>
+                            </td>
+                            <td class="col-md-1">
+                                <input type="text" name="CONCEPT_NAME" ng-model="vm.form.CONCEPT_NAME" class="form-control" />
+                            </td>
+
+                            <td class="col-md-5" colspan="2">
+                                <textarea rows="3" name="INSTRUCTION" class="form-control" cols="50" ng-model="vm.form.INSTRUCTION" placeholder="Instruction"></textarea>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>*@
+
+
+                    <br />
+
+
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <button type="submit" ng-if="vm.form.MC_STYLE_H_ID" class="btn btn-sm yellow-gold" ng-class="{'disabled':!StyleMasterFabDev.$valid}">Update</button>
+                            <button type="submit" ng-if="!vm.form.MC_STYLE_H_ID" class="btn btn-sm green" ng-class="{'disabled':!StyleMasterFabDev.$valid}">Save</button>
+                            <button class="btn btn-sm blue" ng-if="vm.form.MC_STYLE_H_ID && $state.is('StyleHFabDev')" ui-sref="StyleHFabDev.Fab({MC_STYLE_H_ID:vm.form.MC_STYLE_H_ID, MC_STYLE_D_FAB_ID:0})" ui-sref-opts="{reload: true, inherit: false}"><i class="fa fa-plus"></i> Fabrication</button>
+                            <button type="button" class="btn btn-sm default" ui-sref="StyleHFabDev({MC_STYLE_H_ID : 0})" ui-sref-opts="{reload: true}">Cancel</button>
+                        </div>
+                    </div>
+
+
+
+
+
+                    <div class="row" style="margin:auto;padding-top:10px;" ng-if="vm.errors">
+                        <div class="alert alert-warning" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                            <ul ng-repeat="field in vm.errors">
+                                <li ng-repeat="error in field" ng-bind="error"></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+            </form>
+
+            <div class="row" style="padding-bottom:5px;">
+                <div class="col-md-12" align="left">
+                    <a class="btn btn-xs blue" ui-sref="StyleListFabDev({ BAC: vm.form.MC_BYR_ACC_ID})">
+                        <i class="fa fa-list"></i> Fabric Development Style Gallery
+                    </a>
+                </div>
+            </div>
+
+            <tabset ng-if="vm.form.MC_STYLE_H_ID && (vm.fabState||vm.fabBookState)">
+
+                <tab heading="Fabrication" active="vm.fabState" ui-sref="StyleHFabDev.Fab({MC_STYLE_H_ID:vm.form.MC_STYLE_H_ID, MC_STYLE_D_FAB_ID:0})">
+                    <div data-ui-view="FabricationFabDev"></div>
+                </tab>
+
+                <tab heading="Fabric Booking" active="vm.fabBookState" ui-sref="StyleHFabDev.FabrBook({MC_STYLE_H_ID:vm.form.MC_STYLE_H_ID, MC_FAB_PROD_ORD_H_ID:0})">
+                    <div data-ui-view="FabricBookingFabDev"></div>
+                </tab>
+
+                @*<tab heading="Colour Specification" active="vm.colRefState" ui-sref="StyleHDev.ColRefDev({MC_STYLE_H_ID:vm.form.MC_STYLE_H_ID,MC_BUYER_ID:vm.form.MC_BUYER_ID})">
+                <div data-ui-view="ColRef"></div>
+            </tab>
+            <tab heading="Development Order" active="vm.orderConState" ui-sref="StyleHDev.OrderConDev({MC_STYLE_H_ID:vm.form.MC_STYLE_H_ID,pMC_STYLE_H_EXT_ID:0})">
+                <div data-ui-view="OrderCon"></div>
+            </tab>*@
+
+                @*<tab heading="Fabric Booking" active="vm.devFabBookingState" ui-sref="StyleHDev.DevFabBooking({MC_STYLE_H_ID:vm.form.MC_STYLE_H_ID,pMC_STYLE_H_EXT_ID:0})">
+                <div data-ui-view="devFabBooking"></div>
+            </tab>*@
+
+            </tabset>
+        </fieldset>
+    </div>
+</div>
+
+<script type="text/ng-template" id="SetItemEntryModal.html">
+    <input id="access_token" data-ng-model="token" type="hidden"
+           data-ng-init="token='@Session["access_token"]'" />
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h3 class="title">
+                        Model No Entry
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </h3>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <button class="btn btn-xs blue" ng-click="addNew()" style="padding-bottom:0px;"> Add New </button>
+                <br />
+                <br />
+                <table class="table table-condensed table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                #
+                            </th>
+                            <th>
+                                Model
+                            </th>
+                            <th>
+                                Description
+                            </th>
+                            <th>
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in SetItems">
+                            <td class="col-md-1">
+                                {{$index+1}}
+                            </td>
+                            <td class="col-md-2">
+                                <input type="text" ng-model="item.MODEL_NO" style="width:100px;" class="form-control" @*ng-disabled="HAS_COMBO=='N'"*@ />
+                            </td>
+                            <td class="col-md-3">
+                                <input type="text" ng-model="item.ITEM_NAME_EN" class="form-control" />
+                            </td>
+                            <td class="col-md-1">
+                                <a class="btn btn-xs red" ng-click="remove($index)">
+                                    <i class="fa fa-times"></i>
+
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col-md-4">
+                        <button type="button" class="btn btn-sm green" ng-click="save(SetItems)">Add</button>
+                        <button type="button" class="btn btn-sm default" ng-click="cancel()">Cancel</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</script>
+
+
+

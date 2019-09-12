@@ -1,0 +1,508 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Hr</a>
+
+    </li>
+    <li>
+        <a href="#">Shift Plan</a>
+    </li>
+</ul>
+
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+
+
+<div class="portlet box blue-dark" ng-controller="HrShiftPlanController as vm">
+
+    <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+           data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+    @* Start Title *@
+    <div class="portlet-title">
+        <div class="caption">
+            @*<i class="fa fa-gift"></i>*@ Shift Plan
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+    @* End Title *@
+
+
+    @* Start Form portlet-body *@
+    <div class="portlet-body form">
+        <div class="row">
+            
+            
+
+            @*<button class="btn btn-default" ng-click="open()">Open me!</button>*@
+            @*<button class="btn btn-default" ng-click="open('lg')">Large modal</button>
+            <button class="btn btn-default" ng-click="open('sm')">Small modal</button>*@
+            
+            
+
+
+            @* Start col-md-12 *@
+            <div class="col-md-12" >
+
+                <tabset>
+
+                    <tab ng-repeat="tab in vm.tabs" heading="{{tab.title}}" active="tab.active" disabled="tab.disabled">
+
+                        @* Start Entry Tab *@
+                        <div ng-if="tab.title=='Entry'">
+
+                            <form name="frmShiftPlan" novalidate class="form-horizontal " @*method="post"*@ ng-class="{ loading:form.submitting }"
+                                  ng-submit="vm.submit(frmShiftPlan.$valid,vm.form,vm.insert)">
+                                @*@using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-horizontal form-bordered", name="frmOffice" }))
+                                {*@
+                                <div class="form-body">
+                                    @Html.AntiForgeryToken()
+                                    @*<input ng-init="vm.form.__RequestVerificationToken='yc2ls3yxamsa4qufmlvmxgfohqs7x-aavcbkw3umboewdcjpuvmiuek5irvqyjzclenzqykprgteeaudfz8aqfpbbwiy44jftk7b9p1dbpu1'" ng-model="vm.form.__RequestVerificationToken" type="hidden">*@
+                                    
+                                                                        
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2">
+                                        </label>
+                                        <div class="col-md-5">
+                                            <input type="hidden" class="form-control" name="HR_SHIFT_PLAN_ID" ng-model="vm.form.HR_SHIFT_PLAN_ID" ng-show="" />
+                                        </div>
+                                    </div>
+
+
+                                    @*<div class="form-group" ng-class="{'has-error': (frmShiftPlan.HR_SHIFT_TYPE_ID.$error.required) && (frmShiftPlan.HR_SHIFT_TYPE_ID.$touched || frmShiftPlan.$submitted) }">
+                                        <label class="control-label col-md-2">
+                                            Shift Type
+                                            <span class="required" aria-required="true">*</span>
+                                        </label>
+                                        <div class="col-md-3">
+                                            <select kendo-drop-down-list name="HR_SHIFT_TYPE_ID" class="form-control"
+                                                    options="vm.shiftTypeListData" ng-model="vm.form.HR_SHIFT_TYPE_ID" required></select>
+
+                                            <div class="help-block help-block-error" ng-messages="frmShiftPlan.HR_SHIFT_TYPE_ID.$error" ng-if="frmShiftPlan.$submitted || frmShiftPlan.HR_SHIFT_TYPE_ID.$touched">
+                                                <div ng-message="required">Please select shift type</div>
+                                            </div>
+                                        </div>
+                                    </div>*@
+
+
+                                    <div class="form-group ">
+                                        <label class="control-label col-md-offset-1 col-md-2">
+                                            Plan Code
+                                        </label>
+                                        <div class="col-md-3">
+                                            <input type="text" class="form-control" name="SHIFT_PLAN_CODE" ng-model="vm.form.SHIFT_PLAN_CODE" disabled />
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="form-group" ng-class="{'has-error': (frmShiftPlan.SHIFT_PLAN_NAME_EN.$error.required) && (frmShiftPlan.SHIFT_PLAN_NAME_EN.$touched || frmShiftPlan.$submitted) }">
+                                        <label class="control-label col-md-offset-1 col-md-2">
+                                            Plan Name [E]
+                                            <span class="required" aria-required="true">*</span>
+                                        </label>
+                                        <div class="col-md-6">
+                                            <input type="text" class="form-control" name="SHIFT_PLAN_NAME_EN" ng-model="vm.form.SHIFT_PLAN_NAME_EN" required />
+
+                                            <div class="help-block help-block-error" ng-messages="frmShiftPlan.SHIFT_PLAN_NAME_EN.$error" ng-if="frmShiftPlan.$submitted || frmShiftPlan.SHIFT_PLAN_NAME_EN.$touched">
+                                                <div ng-message="required">Please input shift name [E]</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group" ng-class="{'has-error': (frmShiftPlan.SHIFT_PLAN_NAME_BN.$error.required) && (frmShiftPlan.SHIFT_PLAN_NAME_BN.$touched || frmShiftPlan.$submitted) }">
+                                        <label class="control-label col-md-offset-1 col-md-2">
+                                            Plan Name [B]
+                                            <span class="required" aria-required="true">*</span>
+                                        </label>
+                                        <div class="col-md-6">
+                                            <input type="text" class="form-control banglafont" name="SHIFT_PLAN_NAME_BN" ng-model="vm.form.SHIFT_PLAN_NAME_BN" required />
+
+                                            <div class="help-block help-block-error" ng-messages="frmShiftPlan.SHIFT_PLAN_NAME_BN.$error" ng-if="frmShiftPlan.$submitted || frmShiftPlan.SHIFT_PLAN_NAME_BN.$touched">
+                                                <div ng-message="required">Please input shift name [B]</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-offset-1 col-md-2">
+                                            Description
+                                        </label>
+                                        <div class="col-md-6">
+                                            <textarea class="form-control" name="SHIFT_PLAN_DESC" ng-model="vm.form.SHIFT_PLAN_DESC" rows="3"></textarea>
+                                        </div>
+                                    </div>
+
+                                    @*<div class="form-group" >
+                                        <div ng-class="{'has-error': (frmShiftPlan.DAY_WORK_HOURS.$error.required || frmShiftPlan.DAY_WORK_HOURS.$error.min || frmShiftPlan.DAY_WORK_HOURS.$error.max || frmShiftPlan.DAY_WORK_HOURS.$error.number) && (frmShiftPlan.DAY_WORK_HOURS.$touched || frmShiftPlan.$submitted) }">
+                                            <label class="control-label col-md-offset-1 col-md-2">
+                                                Work Hours
+                                                <span class="required" aria-required="true">*</span>
+                                            </label>
+                                            <div class="col-md-2">                                                
+                                                <input type="number" class="form-control" name="DAY_WORK_HOURS" ng-model="vm.form.DAY_WORK_HOURS" ng-change="{{vm.form.AVG_WK_HOURS=(vm.form.WORK_DAYS_WK * vm.form.DAY_WORK_HOURS)}}" min="0" max="24" required />
+                                                <div class="help-block help-block-error" ng-messages="frmShiftPlan.DAY_WORK_HOURS.$error" ng-if="frmShiftPlan.$submitted || frmShiftPlan.DAY_WORK_HOURS.$touched">
+                                                    <div ng-message="required">Please input work hours</div>
+                                                    <div ng-message="min">Please input minimum value [0]</div>
+                                                    <div ng-message="max">Please input maximum value [24]</div>
+                                                    <div ng-message="number">Please input number value</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>*@
+
+
+                                    @*<div class="form-group">
+                                        <div ng-class="{'has-error': (frmShiftPlan.WORK_DAYS_WK.$error.required || frmShiftPlan.WORK_DAYS_WK.$error.min || frmShiftPlan.WORK_DAYS_WK.$error.max || frmShiftPlan.WORK_DAYS_WK.$error.number) && (frmShiftPlan.WORK_DAYS_WK.$touched || frmShiftPlan.$submitted) }">
+                                            <label class="control-label col-md-offset-1 col-md-2">
+                                                Work Days in Week
+                                                <span class="required" aria-required="true">*</span>
+                                            </label>
+                                            <div class="col-md-2">
+                                                <input type="number" class="form-control" name="WORK_DAYS_WK" ng-model="vm.form.WORK_DAYS_WK" ng-change="{{vm.form.AVG_WK_HOURS=(vm.form.WORK_DAYS_WK * vm.form.DAY_WORK_HOURS)}}" min="0" max="7" required />
+                                                <div class="help-block help-block-error" ng-messages="frmShiftPlan.WORK_DAYS_WK.$error" ng-if="frmShiftPlan.$submitted || frmShiftPlan.WORK_DAYS_WK.$touched">
+                                                    <div ng-message="required">Please input work days in week</div>
+                                                    <div ng-message="min">Please input minimum value [0]</div>
+                                                    <div ng-message="max">Please input maximum value [7]</div>
+                                                    <div ng-message="number">Please input number value</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div ng-class="{'has-error': (frmShiftPlan.AVG_WK_HOURS.$error.required) && (frmShiftPlan.AVG_WK_HOURS.$touched || frmShiftPlan.$submitted) }">
+                                            <label class="control-label col-md-2">
+                                                Avg. Hours Per Week
+                                                <span class="required" aria-required="true">*</span>
+                                            </label>
+                                            <div class="col-md-2">
+                                                <input type="number" class="form-control" name="AVG_WK_HOURS" ng-model="vm.form.AVG_WK_HOURS" readonly required />
+                                                <div class="help-block help-block-error" ng-messages="frmShiftPlan.AVG_WK_HOURS.$error" ng-if="frmShiftPlan.$submitted || frmShiftPlan.AVG_WK_HOURS.$touched">
+                                                    <div ng-message="required">Please input avg. hours per week</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>*@
+
+                                    
+                                    <div class="form-group" >
+                                        <div ng-class="{'has-error': ((frmShiftPlan.TEAMS_REQ.$error.max || frmShiftPlan.TEAMS_REQ.$error.number) && (frmShiftPlan.TEAMS_REQ.$touched || frmShiftPlan.$submitted)) }">
+                                            <label class="control-label col-md-offset-1 col-md-2">
+                                                Team Required
+                                            </label>
+                                            <div class="col-md-2">
+                                                <input type="text" class="form-control" ui-mask="9" ng-init="vm.form.TEAMS_REQ=1" name="TEAMS_REQ" ng-model="vm.form.TEAMS_REQ" min="1" max="9" />
+                                                <div class="help-block help-block-error" ng-messages="frmShiftPlan.TEAMS_REQ.$error" ng-if="frmShiftPlan.$submitted || frmShiftPlan.TEAMS_REQ.$touched">
+                                                    <div ng-message="max">Please input maximum value [9]</div>
+                                                    <div ng-message="number">Please input number value</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            Time Coverage
+                                        </label>
+                                        <div class="col-md-2">
+                                            <input type="text" class="form-control" name="TIME_COVERAGE" ng-model="vm.form.TIME_COVERAGE" />
+                                        </div>
+                                    </div>
+
+                                    
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-offset-1 col-md-2">
+                                        </label>
+                                        <div class="col-md-2">
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="IS_ROLLING" ng-model="vm.form.IS_ROLLING" ng-init="vm.form.IS_ROLLING='N'" ng-true-value="'Y'" ng-false-value="'N'">&nbsp;Rolling?
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div ng-if="vm.form.IS_ROLLING=='Y'">
+
+                                        <div class="col-md-offset-1 col-md-10">
+                                            <h4 class="form-section">Rolling Pattern</h4>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <div class="col-md-offset-3 col-md-8" >
+                                                
+                                                <div class="radio-list col-md-2" style="margin-left: -15px; border-right: 1px solid #B3AFAF">
+
+                                                    <label ng-if="vm.insert" ng-repeat="rollingCycleID in vm.periodTypeListData" ng-init="vm.periodMsg=[{id:1,PERIOD_TYPE_NAME_EN:'Day(s)'},{id:2,PERIOD_TYPE_NAME_EN:'Week(s)'},{id:3,PERIOD_TYPE_NAME_EN:'Month(s)'},{id:4,PERIOD_TYPE_NAME_EN:'Year(s)'}]">
+                                                        <input type="radio" ng-init="vm.form.ROLLING_CYCLE_ID=1" ng-model="vm.form.ROLLING_CYCLE_ID" ng-click="vm.form.ROLLING_CYCLE_ID=rollingCycleID.HR_PERIOD_TYPE_ID;vm.form.PERIOD_TYPE_NAME_EN=rollingCycleID.PERIOD_TYPE_NAME_EN" value="{{rollingCycleID.HR_PERIOD_TYPE_ID}}" /> {{rollingCycleID.PERIOD_TYPE_NAME_EN_UNIT}}
+                                                    </label>
+                                                    <label ng-if="!vm.insert" ng-repeat="rollingCycleID in vm.periodTypeListData" ng-init="vm.periodMsg=[{id:1,PERIOD_TYPE_NAME_EN:'Day(s)'},{id:2,PERIOD_TYPE_NAME_EN:'Week(s)'},{id:3,PERIOD_TYPE_NAME_EN:'Month(s)'},{id:4,PERIOD_TYPE_NAME_EN:'Year(s)'}]">
+                                                        <input type="radio" ng-model="vm.form.ROLLING_CYCLE_ID" ng-click="vm.form.ROLLING_CYCLE_ID=rollingCycleID.HR_PERIOD_TYPE_ID;vm.form.PERIOD_TYPE_NAME_EN=rollingCycleID.PERIOD_TYPE_NAME_EN" value="{{rollingCycleID.HR_PERIOD_TYPE_ID}}" /> {{rollingCycleID.PERIOD_TYPE_NAME_EN_UNIT}}
+                                                    </label>
+                                                    
+                                                </div>
+                                                @*{{vm.periodMsg[vm.form.ROLLING_CYCLE_ID-1].PERIOD_TYPE_NAME_EN}}*@
+
+                                                <div class="col-md-7" @*style="border: 1px solid red"*@>
+                                                    <label class="control-label col-md-5" style="margin-left: -55px;">Recur every</label>
+                                                    <div class="col-md-3">
+                                                        <input type="text" class="form-control" ng-if="vm.insert" ui-mask="9" ng-init="vm.form.ROLLING_RECUR_VALUE=1" ng-model="vm.form.ROLLING_RECUR_VALUE" min="1" @*placeholder="1"*@ />
+                                                        <input type="text" class="form-control" ng-if="!vm.insert" ui-mask="9" ng-model="vm.form.ROLLING_RECUR_VALUE" min="1" max="9"  />
+                                                    </div>
+                                                    <label class="control-label col-md-4" style="margin-left:-30px;">{{vm.periodMsg[vm.form.ROLLING_CYCLE_ID-1].PERIOD_TYPE_NAME_EN + ' on'}}</label>
+                                                    <br />
+                                                    <br />
+                                                    <br />
+
+                                                    <div class="radio-list" style="margin-left: 25px;">
+
+                                                        <label class="radio-inline" ng-repeat="day in vm.dayListData" ng-if="vm.insert">
+                                                            <input type="radio" ng-init="vm.form.RF_CALENDAR_DAY_ID=1" ng-model="vm.form.RF_CALENDAR_DAY_ID" value="{{day.RF_CALENDAR_DAY_ID}}" /> {{day.CALENDAR_DAY_SNAME}}
+                                                        </label>
+                                                        <label class="radio-inline" ng-repeat="day in vm.dayListData" ng-if="!vm.insert">
+                                                            <input type="radio" ng-model="vm.form.RF_CALENDAR_DAY_ID" value="{{day.RF_CALENDAR_DAY_ID}}" /> {{day.CALENDAR_DAY_SNAME}}
+                                                        </label>
+                                                    </div>
+
+                                                </div>
+
+                                                
+
+                                            </div>
+                                            
+                                        </div>
+
+                                                                               
+
+                                        <div class="col-md-offset-1 col-md-10">
+                                            <h4 class="form-section"></h4>
+                                        </div>
+
+                                    </div>
+
+                                    
+
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-offset-1 col-md-2">
+                                        </label>
+                                        <div class="col-md-2">
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="IS_MULTI_SHIFT" ng-model="vm.form.IS_MULTI_SHIFT" ng-init="vm.form.IS_MULTI_SHIFT='N'" ng-true-value="'Y'" ng-false-value="'N'">&nbsp;Multi Shift?
+                                            </label>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-offset-1 col-md-2">
+                                        </label>
+                                        <div class="col-md-2">
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="IS_ACTIVE" ng-model="vm.form.IS_ACTIVE" ng-init="vm.form.IS_ACTIVE='Y'" ng-true-value="'Y'" ng-false-value="'N'">&nbsp;Active?
+                                            </label>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="form-actions">
+                                    <div class="row">
+                                        <div class="col-md-offset-3 col-md-6">
+                                            <button type="submit" class="btn green" ng-if="vm.insert"><i class="fa fa-check"></i> Save</button>
+                                            <button type="submit" class="btn yellow-gold" ng-if="!vm.insert"><i class="fa fa-check"></i> Update</button>
+
+                                            <button type="button" class="btn blue" @*ng-if="TRAN_MODE==2"*@ ng-click="vm.TranCancel()">Cancel</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                @*}*@
+                            </form>
+
+                        </div>
+                        @* End Entry Tab *@
+
+
+                        @* Start List Tab *@
+                        <div ng-if="tab.title=='List'" style="padding:10px 10px 10px 10px;">
+                           
+                            <kendo-grid id="planGrid" k-options="vm.gridOptions" @*k-rebind="gridOptions"*@></kendo-grid>
+
+                            @*<button type="button" ng-click="vm.gridTest()">test</button>*@
+                            
+                        </div>
+                        @* End List Tab *@
+                    </tab>
+
+                </tabset>
+
+
+            </div>
+            @* Start col-md-12 *@
+
+
+        </div>
+    </div>
+    @* End Form portlet-body *@
+
+
+
+</div>
+
+
+
+
+
+
+<script type="text/ng-template" id="ShiftTeamModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <p style="padding-top:10px;">
+                        Shift Team
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </p>
+
+
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <form class="form-horizontal" role="form" name="frmShiftTeamModal" novalidate @*ng-submit="save(Task,token,TaskForm.$valid)"*@>
+                    
+                    <div class="form-body clearfix">
+                        <input id="access_token" data-ng-model="token" type="hidden"
+                               data-ng-init="token='@Session["access_token"]'" />
+
+                        @*<div kendo-grid k-data-source="plDataList" k-columns="plColumns" k-editable="true" k-height="300" k-filterable="true" k-sortable="true"></div>*@
+
+
+                        <div class="form-group">
+                            <label for="selectPeriod" class="col-md-3 control-label">
+                                <span aria-required="true" class="required">*</span>Shift Plan
+                            </label>
+
+                            <div class="col-md-8" style="padding-top:5px;">
+                                <select class="form-control" kendo-drop-down-list name="HR_SHIFT_PLAN_ID" k-option-label="'-- Select Plan --'"
+                                        k-data-text-field="'SHIFT_PLAN_NAME_EN'" k-data-value-field="'HR_SHIFT_PLAN_ID'" k-filter="'contains'"
+                                        k-auto-bind="'true'" k-options="shiftPlanOptions" k-data-source="shiftPlanDataSource" @*k-ng-delay="vm.shiftPlanDataSource"*@
+                                        ng-model="HR_SHIFT_PLAN_ID" required disabled></select>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="selectPeriod" class="col-md-3 control-label">
+                                <span aria-required="true" class="required">*</span>Company
+                            </label>
+
+                            <div class="col-md-8" style="padding-top:5px;">
+                                <select class="form-control" kendo-drop-down-list name="HR_COMPANY_ID" k-option-label="'-- Select Company --'"
+                                        k-data-text-field="'COMP_NAME_EN'" k-data-value-field="'HR_COMPANY_ID'" k-filter="'contains'"
+                                        k-auto-bind="'true'" k-options="companyOptions" k-data-source="companyDataSource" @*k-ng-delay="vm.companyDataSource"*@
+                                        ng-model="HR_COMPANY_ID" required></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="selectPeriod" class="col-md-3 control-label">
+                                Team Code
+                            </label>
+
+                            <div class="col-md-4" style="padding-top:5px;">
+                                <input type="text" class="form-control" name="SHIFT_TEAM_CODE" ng-model="SHIFT_TEAM_CODE" disabled />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="selectPeriod" class="col-md-3 control-label">
+                                <span aria-required="true" class="required">*</span>Team Name [E]
+                            </label>
+
+                            <div class="col-md-8" style="padding-top:5px;">
+                                <input type="text" class="form-control" name="SHIFT_TEAM_NAME_EN" ng-model="SHIFT_TEAM_NAME_EN" required />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="selectPeriod" class="col-md-3 control-label">
+                                <span aria-required="true" class="required">*</span>Team Name [B]
+                            </label>
+
+                            <div class="col-md-8" style="padding-top:5px;">
+                                <input type="text" class="form-control banglafont" name="SHIFT_TEAM_NAME_BN" ng-model="SHIFT_TEAM_NAME_BN" required />
+                            </div>
+                        </div>
+
+                        <div class="form-group" @*ng-class="{'disabled':IS_ROLLING=='Y'}"*@ @*ng-disabled="IS_ROLLING=='Y'"*@>
+                            <label for="selectPeriod" class="col-md-3 control-label">
+                                <span aria-required="true" class="required">*</span>Roll Sequence#
+                            </label>
+
+                            <div class="col-md-2" style="padding-top:5px;">
+                                <input type="number" class="form-control" id="ROLL_SEQ_NO" name="ROLL_SEQ_NO" ng-model="ROLL_SEQ_NO" min="0" ng-disabled="IS_ROLLING=='Y'" required />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="selectPeriod" class="col-md-3 control-label">&nbsp;</label>
+
+                            <div class="col-md-8" style="padding-top:5px;">
+                                <label class="control-label checkbox-inline">
+                                    <input type="checkbox" name="IS_ACTIVE" ng-model="IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'" /> Active?
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div kendo-grid k-options="shiftTeamGridOptions" k-data-source="shiftTeamGridDataSource"></div>
+                            </div>
+                        </div>
+
+
+                        @*<pre>{{ProcessLossModalForm.$valid}}</pre>*@
+
+                        <div class="form-group" style="padding-top:5px;padding-bottom:5px;">
+                            <div class="col-md-12">
+                                <button type="button" class="btn green btn-sm" ng-click="save(token, frmShiftTeamModal.$valid)" ng-class="{'disabled':!frmShiftTeamModal.$valid}" ng-show="HR_SHIFT_TEAM_ID<1">Save</button>
+                                <button type="button" class="btn yellow-gold btn-sm" ng-click="save(token, frmShiftTeamModal.$valid)" ng-class="{'disabled':!frmShiftTeamModal.$valid}" ng-show="HR_SHIFT_TEAM_ID>0">Update</button>
+
+                                <button type="button" class="btn btn-default btn-sm" ng-click="cancelTran()">Cancel</button>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+
+

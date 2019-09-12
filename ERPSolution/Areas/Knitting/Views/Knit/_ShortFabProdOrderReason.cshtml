@@ -1,0 +1,129 @@
+﻿<fieldset class="custom-fieldset" ng-disabled="$parent.form.RF_ACTN_STATUS_ID>58">
+    <legend class="custom-legend"></legend>
+
+    <form class="form-horizontal" role="form" name="frmSrtFabDtlReason" novalidate>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                <span aria-required="true" class="required">*</span>Reason Type
+            </label>
+            <div class="col-md-4">
+                <select class="form-control" kendo-drop-down-list name="RF_SFAB_RSN_TYPE_ID" k-option-label="'--Select--'"
+                        ng-model="vm.srtReason.RF_SFAB_RSN_TYPE_ID" k-data-text-field="'SFAB_RSN_TYPE_NAME'" k-data-value-field="'RF_SFAB_RSN_TYPE_ID'"
+                        k-options="vm.reasonOption" k-data-source="vm.reasonDataSource" k-filter="'contains'" k-auto-bind="'true'"
+                        k-on-change="" ng-disabled="$parent.form.RF_ACTN_STATUS_ID>58" ></select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Description
+            </label>
+            <div class="col-md-10">
+                <textarea rows="2" class="form-control" name="REASON_DESC" ng-model="vm.srtReason.REASON_DESC"></textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-12 col-md-offset-2">
+
+                <button type="button" class="btn btn-sm green" ng-click="vm.addRow(vm.srtReason)" ng-show="vm.isAddToGrid == 'Y'"
+                        ng-disabled="(vm.srtReason.RF_SFAB_RSN_TYPE_ID==''||vm.srtReason.RF_SFAB_RSN_TYPE_ID==null||$parent.form.RF_ACTN_STATUS_ID>58)">
+                    Add
+                </button>
+                <button type="button" class="btn btn-sm yellow-gold" ng-click="vm.updateRow(vm.srtReason)" ng-show="vm.isAddToGrid == 'N'"
+                        ng-disabled="(vm.srtReason.RF_SFAB_RSN_TYPE_ID==''||vm.srtReason.RF_SFAB_RSN_TYPE_ID==null||$parent.form.RF_ACTN_STATUS_ID>58)">
+                    Update
+                </button>
+                <button type="button" class="btn btn-sm blue" ng-click="vm.cancelToGrid()">Cancel</button>
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-12">
+                <kendo-grid k-options="$parent.reasonGridOption" k-data-source="$parent.reasonGridDataSource"></kendo-grid>
+            </div>
+        </div>
+
+    </form>
+</fieldset>
+
+@*<div class="row" style="padding-top:5px;padding-bottom:5px">
+
+    </div>*@
+
+@*<div style="padding-top:5px;">
+        <kendo-grid k-options="vm.reasonGridOption" k-data-source="vm.reasonGridDataSource"></kendo-grid>
+    </div>*@
+
+
+@*<pre>{{vm.form|json}}</pre>*@
+
+
+
+
+
+
+
+
+
+
+@*Start For Booking Revision*@
+<script type="text/ng-template" id="NewSFabBkReasonEntryModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <p style="padding-top:10px;">
+                        Reason Type
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </p>
+
+
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="NewSFabBkReasonEntryModal" novalidate @*ng-submit="save(Task,token,TaskForm.$valid)"*@>
+                    <input id="access_token" data-ng-model="token" type="hidden"
+                           data-ng-init="token='@Session["access_token"]'" />
+
+                    @*<div kendo-grid k-data-source="asortDataList" k-columns="asortColumns" k-selectable="true" k-on-change="selected = data" k-height="300" k-filterable="true" k-sortable="true"></div>*@
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">
+                            <span aria-required="true" class="required">*</span>Reason
+                        </label>
+                        <div class="col-md-5" style="padding-top:5px;">
+                            <input type="text" class="form-control" name="SFAB_RSN_TYPE_NAME" ng-model="SFAB_RSN_TYPE_NAME" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-2">
+                            <label class="control-label checkbox-inline">
+                                <input type="checkbox" name="IS_ACTIVE" ng-model="IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'" /> Active?
+                            </label>
+                        </div>
+                    </div>
+
+                    @*<pre>{{ProcessLossModalForm.$valid}}</pre>*@
+
+                    <br />
+                    <div class="form-group form-actions">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="button" class="btn green btn-sm" ng-click="save(token, NewSFabBkReasonEntryModal.$invalid)" ng-class="{'disabled':!NewSFabBkReasonEntryModal.$valid}" ng-show="RF_SFAB_RSN_TYPE_ID<1">Save</button>
+                            <button type="button" class="btn yellow-gold btn-sm" ng-click="save(token, NewSFabBkReasonEntryModal.$invalid)" ng-class="{'disabled':!NewSFabBkReasonEntryModal.$valid}" ng-show="RF_SFAB_RSN_TYPE_ID>0">Update</button>
+
+                            <button type="button" class="btn btn-default btn-sm" ng-click="vm.tranCancel()">Cancel</button>
+                        </div>
+                    </div>
+
+                    <kendo-grid k-options="vm.reasonTypeGridOption" k-data-source="vm.reasonTypeGridDataSource"></kendo-grid>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+@*End For Booking Revision*@

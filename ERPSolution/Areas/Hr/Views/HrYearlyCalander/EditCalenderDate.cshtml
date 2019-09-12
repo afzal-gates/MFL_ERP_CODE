@@ -1,0 +1,162 @@
+﻿@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+
+<form class="form-horizontal" name="frnHolidayRange" novalidate="novalidate" 
+      @*ng-submit="vm.UpdateDateRange(frnHolidayRange.$valid,vm.form)"*@ @*kendo-validator=" validator"*@ @*ng-submit="validate($event)" *@>
+    
+    <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+           data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+    <div class="form-body">
+        @*{{vm.errors}}*@
+        <p></p>
+        
+        <div class="form-group">
+            <label class="control-label col-md-3">Company</label>
+            <div class="col-md-3">
+                <select class="form-control" name="HR_COMPANY_ID" ng-model="vm.form.HR_COMPANY_ID"
+                        ng-options="Item.HR_COMPANY_ID as Item.COMP_NAME_EN for Item in vm.companyData"></select>
+            </div>
+        </div>            
+        
+        
+        <div class="form-group">
+            <label class="control-label col-md-3">Fiscal Year</label>
+            <div class="col-md-3">
+                <select class="form-control" name="RF_FISCAL_YEAR_ID" ng-model="vm.form.RF_FISCAL_YEAR_ID"
+                        ng-options="Item.RF_FISCAL_YEAR_ID as Item.FY_NAME_EN for Item in vm.FiscalYearData"></select>
+            </div>
+        </div>
+       
+
+        <div class="form-group" @*ng-class="{'has-error': (frnHolidayRange.FROM_DATE.$error.required || frnHolidayRange.FROM_DATE.$error.date || frnHolidayRange.FROM_DATE.$error.dateGraterThanCheck) && (frnHolidayRange.FROM_DATE.$touched || frnHolidayRange.$submitted) }"*@>
+            <label class="col-md-3 control-label">
+                Form Date
+                <span class="required" aria-required="true">*</span>
+            </label>
+            <div class="col-md-2 input-group">
+                <input type="text" class="form-control" name="FROM_DATE" ng-model="vm.form.FROM_DATE"
+                       ng-init="vm.form.FROM_DATE=(vm.today | date:vm.dtFormat)"
+                       datepicker-popup="{{vm.dtFormat}}" is-open="vm.fromDateOpened"
+                       @*date-grater-than="{{vm.form.TO_DATE | date:vm.dtFormat}}"*@
+                       min-date="vm.today"
+                       ng-change="vm.form.TO_DATE=(vm.form.FROM_DATE | date:vm.dtFormat)"
+                       @*date-disabled="disabled(date, mode)"*@
+                       datepicker-options="vm.dateOptions" close-text="Close" />
+                <span class="input-group-btn">
+                    <button type="button" class="btn-calendar" ng-click="vm.fromDateOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+
+            </div>
+            <div class="col-md-offset-3 input-group" ng-if="vm.errors.FROM_DATE">
+                <div class="field-validation-error" ng-repeat="err in vm.errors.FROM_DATE">
+                    {{err}}
+                </div>
+            </div>            
+        </div>
+       
+
+        <div class="form-group" @*ng-class="{'has-error': (frnHolidayRange.TO_DATE.$error.required || frnHolidayRange.TO_DATE.$error.date || frnHolidayRange.TO_DATE.$error.dateGraterThanCheck) && (frnHolidayRange.TO_DATE.$touched || frnHolidayRange.$submitted) }"*@>
+            <label class="col-md-3 control-label">
+                To Date
+                <span class="required" aria-required="true">*</span>
+            </label>
+            <div class="col-md-2 input-group">
+                <input type="text" class="form-control" name="TO_DATE" ng-model="vm.form.TO_DATE" 
+                       ng-init="vm.form.TO_DATE=(vm.today | date:vm.dtFormat)"
+                       datepicker-popup="{{vm.dtFormat}}" is-open="vm.toDateOpened"
+                       @*date-grater-than="vm.form.FROM_DATE"*@
+                       min-date="vm.form.FROM_DATE"
+                       @*date-disabled="disabled(date, mode)"*@
+                       datepicker-options="vm.dateOptions" close-text="Close" />
+                <span class="input-group-btn">
+                    <button type="button" class="btn-calendar" ng-click="vm.toDateOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>                       
+            </div>
+            <div class="col-md-offset-3 input-group" ng-if="vm.errors.TO_DATE">
+                <div class="field-validation-error" ng-repeat="err in vm.errors.TO_DATE">
+                    {{err}}
+                </div>
+            </div>                        
+        </div>
+        
+
+        <div class="form-group" @*ng-class="{'has-error': (frnHolidayRange.HR_DAY_TYPE_ID.$error.required) && (frnHolidayRange.HR_DAY_TYPE_ID.$touched || frnHolidayRange.$submitted) }"*@>
+            <label class="col-md-3 control-label">
+                Day Type
+                <span class="required" aria-required="true">*</span>
+            </label>
+            <div class="col-md-2 input-group">
+                <select id="HR_DAY_TYPE_ID" name="HR_DAY_TYPE_ID" class="form-control" kendo-drop-down-list k-options="vm.holidayTypeList" ng-model="vm.form.HR_DAY_TYPE_ID" required></select>                
+                <div ng-if="vm.errors.HR_DAY_TYPE_ID">
+                    <div class="field-validation-error" ng-repeat="err in vm.errors.HR_DAY_TYPE_ID">
+                        {{err}}
+                    </div>
+                </div>                                    
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">
+            </label>
+            <div class="col-md-3">
+                <label class="checkbox-inline">
+                    <input type="checkbox" name="IS_GOVT_HOLIDAY" ng-model="vm.form.IS_GOVT_HOLIDAY" 
+                           ng-true-value="'Y'" ng-false-value="'N'" ng-click="vm.govtHolidayClick()" >Govt. Holiday Also?
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group " ng-if="vm.enable" @*ng-class="{'has-error': (frnHolidayRange.HR_HOLIDAY_ID.$error.commonHolidayCheck) && (frnHolidayRange.HR_HOLIDAY_ID.$touched || frnHolidayRange.$submitted) }"*@>
+            <label class="col-md-3 control-label">
+                Holiday
+                <span class="required" aria-required="true">*</span>
+            </label>
+            <div class="col-md-3 input-group">
+                <select id="HR_HOLIDAY_ID" name="HR_HOLIDAY_ID" class="form-control" kendo-drop-down-list 
+                        k-options="vm.commonHolidayList"
+                        ng-model="vm.form.HR_HOLIDAY_ID" common-holiday-validator></select>
+                <div ng-if="vm.errors.HR_HOLIDAY_ID">
+                    <div class="field-validation-error" ng-repeat="err in vm.errors.HR_HOLIDAY_ID">
+                        {{err}}
+                    </div>
+                </div>  
+                
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="col-md-3 control-label">Remarks</label>
+            <div class="col-md-3 input-group">
+                <textarea class="form-control" name="REMARKS" ng-model="vm.form.REMARKS" rows="3"></textarea>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div @*class="form-actions"*@>
+        <div class="row">
+            <div class="col-md-offset-3 col-md-9">
+                <button type="button" class="btn green" ng-click="vm.UpdateDateRange(frnHolidayRange.$valid,vm.form)"><i class="fa fa-check"></i>Save</button>
+                <button type="button" class="btn blue" ng-click="vm.TranCancel()">Cancel</button>
+                <button type="button" class="btn default" ng-click="vm.YearlyCalendarView()">Back to View</button>
+                @*<a href="@Url.Action("Index","LookupTables")" class="btn default">Back</a>*@
+            </div>
+        </div>
+    </div>
+    <p></p>
+
+    @*<ul>
+            <li class="status {{ validationClass }}">{{ validationMessage }} </li>
+        </ul>*@
+</form>
+

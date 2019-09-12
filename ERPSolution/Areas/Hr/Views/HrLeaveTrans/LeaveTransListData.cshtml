@@ -1,0 +1,129 @@
+﻿   <div class="row">
+    <div class="col-md-12" style="padding-top:20px;">
+        <fieldset class="custom-fieldset">
+            <legend class="custom-legend">Leave Balance Details</legend>
+                <table class="table table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th rowspan="2">
+                                Leave Type
+                            </th>
+
+                            <th colspan="2" class="text-center">
+                                Entitlement
+                            </th>
+
+                            <th colspan="2" class="text-center">
+                                Taken
+                            </th>
+                            <th colspan="2" class="text-center">
+                                Adjust
+                            </th>
+                            <th colspan="2" class="text-center">
+                                Balance
+                            </th>
+                            <th>
+                                Action
+                            </th>
+                        </tr>
+
+                        <tr style="width:10px;">
+
+
+                            <td class="text-right">
+                                Day
+                            </td>
+
+                            <td class="text-right">
+                                Hour
+                            </td>
+
+                            <td class="text-right">
+                                Day
+                            </td>
+                            <td class="text-right">
+                                Hour
+                            </td>
+
+                            <td class="text-right">
+                                Day
+                            </td>
+
+                            <td class="text-right">
+                                Hour
+
+                            </td>
+                            <td class="text-right">
+                                Day
+                            </td>
+                            <td class="text-right">
+                                Hour
+                            </td>
+                            <td>
+                              
+                            </td>
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in vm.leaveBalance">
+                      
+                                <td>
+                                    {{item.LV_TYPE_NAME_EN}}
+                                </td>
+                                <td class="text-right">
+                                    {{item.MAX_DAY_LV_CY}}
+                                </td>
+
+                                <td class="text-right">
+                                    0
+                                </td>
+
+                                <td class="text-right">
+                                    {{item.TAKE_DAY_CY}}
+                                </td>
+
+                                <td class="text-right">
+                                    {{item.TAKE_HR_CY}}
+                                </td>
+
+                                <td class="text-right">
+                                    {{item.ADJ_DAY_CY}}
+                                </td>
+
+                                <td class="text-right">
+                                    {{item.ADJ_HR_CY}}
+                                </td>
+
+                                <td class="text-right">
+                                    {{item.BAL_DAY_CY}}
+                                </td>
+
+                                <td class="text-right">
+                                    {{item.BAL_HR_CY}}
+                                </td>
+                                <td>
+                                    <form action="/Hr/HrReport/PreviewReport" method="post" target="_blank">
+                                        
+                                        <input type="hidden" name="REPORT_CODE" value="RPT-1007" ng-if="item.HR_LEAVE_TYPE_ID==5" />
+
+                                        <input type="hidden" name="REPORT_CODE" value="RPT-1009" ng-if="item.HR_LEAVE_TYPE_ID!=5 && item.EMPLOYEE_TYPE_ID==2" />
+
+                                        <input type="hidden" name="REPORT_CODE" value="RPT-1009" ng-if="item.HR_LEAVE_TYPE_ID!=5 && item.EMPLOYEE_TYPE_ID==8" />
+
+                                        <input type="hidden" name="HR_LEAVE_TYPE_ID" value="{{item.HR_LEAVE_TYPE_ID}}" />
+                                        <input type="hidden" name="HR_COMPANY_ID" value="{{vm.Params.HR_COMPANY_ID}} " />
+                                        <input type="hidden" name="RF_FISCAL_YEAR_ID" value="{{vm.Params.RF_FISCAL_YEAR_ID}} " />
+                                        <input type="hidden" name="HR_EMPLOYEE_ID" value="{{vm.Params.HR_EMPLOYEE_ID}} " />
+
+                                        <button type="submit" class="btn blue m-icon btn-small" ng-class="{'disabled':item.BAL_DAY_CY<=0}">
+                                            Print <i class="m-icon-swapright m-icon-white"></i>
+                                        </button>
+                                    </form>
+                               </td>
+                        </tr>
+                    </tbody>
+                </table>
+        </fieldset>
+    </div>
+</div>

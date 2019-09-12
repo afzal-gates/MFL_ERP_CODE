@@ -1,0 +1,593 @@
+﻿<div class="modal-body">
+    <div class="portlet grey-cascade box">
+        <div class="portlet-title">
+            <div>
+                <h3 style="padding-top:10px;margin-top:3px;">
+                    Knitting Program
+                    <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                </h3>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <table class="table table-condensed table-striped table-bordered" style="padding: 5px;margin-bottom: 5px;">
+                <thead>
+
+                    <tr class="site-table-header">
+                        <th style="width:10%;">
+                            <small>
+                                Buyer A/C
+                            </small>
+
+                        </th>
+
+                        <th style="width:10%;">
+                            <small>
+                                Style #
+                            </small>
+
+                        </th>
+
+                        <th style="width:15%;">
+                            <small>
+                                Order #
+                            </small>
+
+                        </th>
+
+
+                        <th style="width:20%;">
+                            <small>
+                                Fabrication
+                            </small>
+
+                        </th>
+
+                        <th style="width:15%;">
+                            <small>
+                                Color Name
+                            </small>
+
+                        </th>
+
+
+                        <th style="width:6%;">
+                            <small>
+                                Fin Dia
+                            </small>
+
+                        </th>
+
+                        <th style="width:6%;">
+                            <small>
+                                Req Qty
+                            </small>
+
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>
+                            {{data.BYR_ACC_NAME_EN}}
+                        </td>
+
+                        <td>
+                            {{data.WORK_STYLE_NO}}
+                        </td>
+
+                        <td>
+                            {{data.ORDER_NO_LIST}}
+                        </td>
+
+
+                        <td>
+                            <a style="padding:3px;">
+                                <b>{{data.COLOR_NAME_EN}}</b> ({{data.FAB_TYPE_NAME}})
+                                <span style="display:block;font-style:italic;font-size:smaller;"> {{ data.LK_FBR_GRP_TXT }} - {{ data.FIB_COMP_NAME}}- {{ data.FEDER_TYPE_NAME }}</span>
+                            </a>
+
+                            {{data.FABRIC_SNAME}}
+                            <a class="btn btn-xs grey-mint" style="display:block;" ng-click="vm.editFabrication(data);" ng-if="data.KNT_PLAN_H_ID < 1">
+                                <i class="fa fa-pencil"></i> Change Fabrication
+                            </a>
+                        </td>
+
+                        <td>
+                            {{data.COLOR_NAME_EN}}
+                        </td>
+
+                        <td>
+                            {{data.FIN_DIA_N_DIA_TYPE}}
+                        </td>
+
+                        <td>
+                            {{data.RQD_GFAB_QTY +' '+data.MOU_CODE}}
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+            <form role="form" name="KnitPlanParameter" class="form-horizontal" @*kendo-validator="validator"*@>
+                <div class="form-group">
+                    @*<label class="col-md-1 control-label">
+                    Plan Ref#
+                </label>
+                <div class="col-md-2">
+                    <input type="text" class="form-control" ng-model="data.KNT_PLAN_NO" disabled />
+                </div>*@
+
+                    <label class="col-md-1 control-label">
+                        Plan DT
+                    </label>
+                    <div class="col-md-1" style="padding-right:0px;padding-left:0px;" ng-class="{'has-error': (KnitPlanParameter.KNT_PLAN_DT.$touched || KnitPlanParameter.$submitted) && KnitPlanParameter.KNT_PLAN_DT.$error.required}">
+                        <input type="text" class="form-control" ng-click="vm.KNT_PLAN_DT_OPEN($event)" datepicker-popup="{{vm.dtFormat}}"
+                               name="KNT_PLAN_DT" ng-model="data.KNT_PLAN_DT" is-open="vm.KNT_PLAN_DT_OPENED" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" required close-text="Close" />
+                    </div>
+                    <label class="col-md-1 control-label">
+                        DiaXGauge
+                    </label>
+                    <div class="col-md-3" ng-class="{'has-error': (KnitPlanParameter.KNT_MC_DIA_ID.$touched || KnitPlanParameter.$submitted) && (KnitPlanParameter.KNT_MC_DIA_ID.$error.required||KnitPlanParameter.LK_MC_GG_ID.$error.required)}">
+                        <div class="col-md-6" style="padding-left:0px;padding-right:0px;">
+                            <select class="form-control" kendo-drop-down-list name="KNT_MC_DIA_ID" k-option-label="'--M/C Dia--'" k-filter="'Contains'"
+                                    k-data-text-field="'MC_DIA'" k-data-value-field="'KNT_MC_DIA_ID'"
+                                    k-auto-bind="'true'" k-data-source="vm.machineDiaDs" k-ng-delay="vm.machineDiaDs" ng-model="data.KNT_MC_DIA_ID" required></select>
+                        </div>
+                        <div class="col-md-6">
+                            <select class="form-control" kendo-drop-down-list name="LK_MC_GG_ID" k-option-label="'--Gauge--'" k-filter="'contains'"
+                                    k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'"
+                                    k-auto-bind="'true'" k-data-source="vm.MachineGaugeListDs" k-ng-delay="vm.MachineGaugeListDs" ng-model="data.LK_MC_GG_ID" required></select>
+                        </div>
+
+                    </div>
+
+                    <label class="col-md-1 control-label">
+                        Fin Dia
+                    </label>
+                    <div class="col-md-3" ng-class="{'has-error':
+                                   (KnitPlanParameter.LK_DIA_TYPE_ID.$touched||KnitPlanParameter.DIA_MOU_ID.$touched||KnitPlanParameter.FIN_DIA.$touched||KnitPlanParameter.$submitted) &&
+                                  (   KnitPlanParameter.DIA_MOU_ID.$error.required
+                                    ||KnitPlanParameter.LK_DIA_TYPE_ID.$error.required
+                                    ||KnitPlanParameter.LK_MC_GG_ID.$error.required
+                                    ||KnitPlanParameter.FIN_DIA.$error.required
+                                    ||KnitPlanParameter.FIN_DIA.$error.min
+                                  )}">
+
+                        <div class="col-md-4" style="padding-left:0px;padding-right:3px;">
+                            <input type="number" name="FIN_DIA" class="form-control" ng-required="!(data.RF_FAB_PROD_CAT_ID==1||data.RF_FAB_PROD_CAT_ID==3)" ng-model="data.FIN_DIA" min="{{(data.RF_FAB_PROD_CAT_ID==1||data.RF_FAB_PROD_CAT_ID==3)?0:1}}" />
+                        </div>
+
+                        <div class="col-md-4" style="padding-left:0px;padding-right:3px;">
+                            <select class="form-control" kendo-drop-down-list name="DIA_MOU_ID" k-option-label="'-- Select --'"
+                                    k-data-text-field="'MOU_CODE'" k-data-value-field="'RF_MOU_ID'"
+                                    k-data-source="vm.mouList" ng-model="data.DIA_MOU_ID" required></select>
+                        </div>
+                        <div class="col-md-4" style="padding-left:0px;padding-right:0px;">
+                            <select class="form-control" kendo-drop-down-list name="LK_DIA_TYPE_ID" k-option-label="'-- Select --'"
+                                    k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'"
+                                    k-data-source="vm.diaTypeList" ng-model="data.LK_DIA_TYPE_ID" required></select>
+                        </div>
+
+                    </div>
+                    <label class="col-md-1 control-label">
+                        Fin GSM
+                    </label>
+                    <div class="col-md-1" ng-class="{'has-error': (KnitPlanParameter.FIN_GSM.$touched || KnitPlanParameter.$submitted) && (KnitPlanParameter.FIN_GSM.$error.required||KnitPlanParameter.FIN_GSM.$error.min)}">
+                        <input type="text" class="form-control" readonly="readonly" ng-model="data.FIN_GSM" required />
+                    </div>
+
+                    @*<label class="col-md-1 control-label">
+                    Gauge
+                </label>
+                <div class="col-md-1" ng-class="{'has-error': (KnitPlanParameter.LK_MC_GG_ID.$touched || KnitPlanParameter.$submitted) && KnitPlanParameter.LK_MC_GG_ID.$error.required}">
+                    <select class="form-control" kendo-drop-down-list name="LK_MC_GG_ID" k-option-label="'--Gauge--'" k-filter="'contains'"
+                            k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'"
+                            k-auto-bind="'true'" k-data-source="vm.MachineGaugeListDs" k-ng-delay="vm.MachineGaugeListDs" ng-model="data.LK_MC_GG_ID" required></select>
+                </div>*@
+
+                </div>
+                <div class="form-group">
+                    <label class="col-md-1 control-label">
+                        Rate
+                    </label>
+                    <div class="col-md-4" style="padding-right:0px;padding-left:0px;" ng-class="{'has-error': (KnitPlanParameter.MC_FAB_PROC_RATE_ID.$touched || KnitPlanParameter.$submitted) && KnitPlanParameter.MC_FAB_PROC_RATE_ID.$error.required}">
+                        <select class="form-control" kendo-drop-down-list name="MC_FAB_PROC_RATE_ID" k-option-label="'-- Rate --'"
+                                k-data-text-field="'FAB_PROC_NAME'" k-data-value-field="'MC_FAB_PROC_RATE_ID'" k-filter="'contains'"
+                                k-auto-bind="'true'" k-data-source="vm.RateDs"
+                                ng-model="data.MC_FAB_PROC_RATE_ID"
+                                k-on-data-bound="vm.onRateOnBound(kendoEvent,data)" k-template="vm.rateTemplate" k-value-template="vm.rateTemplate" ng-disabled="data.IS_FINALIZED=='Y'"></select>
+                    </div>
+
+                    <div class="col-md-4" style="padding-left:0px;">
+                        <div class="checkbox-list">
+                            <label class="checkbox-inline" style="margin-left:20px;margin-top:-10px;">
+                                <span><input type="checkbox" ng-model="data.IS_FINALIZED_SC" ng-true-value="'Y'" ng-false-value="'N'" ng-disabled="data.IS_FINALIZED=='Y'"></span> Finalized?
+                            </label>
+
+                            <label class="checkbox-inline" style="margin-top:-10px;">
+                                <span><input type="checkbox" ng-model="data.IS_PLAN_NOTE" ng-true-value="'Y'" ng-false-value="'N'"></span> Note?
+                            </label>
+
+                            <label class="checkbox-inline" style="margin-top:-10px;">
+                                <span><input type="checkbox" ng-model="data.IS_FDR_OPT" ng-true-value="'Y'" ng-false-value="'N'"></span> Is Feeder Plan?
+                            </label>
+
+                            <label class="checkbox-inline" style="margin-top:-10px;">
+                                <span><input type="checkbox" ng-model="data.IS_KNT_CLOSED" ng-disabled="(data.GFAB_PROD_QTY/(data.RQD_GFAB_QTY-data.GFAB_ADJ_QTY)) < 0.8" ng-true-value="'Y'" ng-false-value="'N'"></span> Closed?
+                            </label>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-show="data.IS_KNT_CLOSED=='Y'">
+                    <label class="col-md-1 control-label">
+                        Closed Notes
+                    </label>
+                    <div class="col-md-10">
+                        <textarea rows="5" name="KNT_CLOSE_NOTE" class="form-control" cols="50" ng-model="data.KNT_CLOSE_NOTE"></textarea>
+                    </div>
+                </div>
+                <div class="form-group" ng-show="data.IS_PLAN_NOTE=='Y'">
+                    <label class="col-md-1 control-label">
+                        Plan Note
+                    </label>
+                    <div class="col-md-10">
+                        <textarea rows="5" name="PLAN_NOTE" class="form-control" cols="50" ng-model="data.PLAN_NOTE"></textarea>
+                    </div>
+                </div>
+
+                <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)"><h4 style="margin:0px;">{{alert.msg}}</h4></alert>
+
+                <p class="block" style="margin: 0px; font-size: 14px;text-align:right; background-color: rgb(236, 233, 248); padding-left: 2px;">
+                    Required Qty:
+                    <b>{{data.RQD_GFAB_QTY}}</b>
+
+                    &nbsp;
+                    Adjusted Qty:
+                    <b style="color: blue;">{{data.GFAB_ADJ_QTY}}</b>
+
+                    &nbsp;
+                    Production:
+                    <b style="color:blue;">{{data.GFAB_PROD_QTY}}</b>
+                    <span class="badge badge-primary"><b>{{(data.GFAB_PROD_QTY/(data.RQD_GFAB_QTY-data.GFAB_ADJ_QTY))*100|number:2 }}</b></span>
+
+                    &nbsp;
+                    Left To KP :
+                    <b style="color:red;">{{data.BAL_GFAB_QTY}}</b>
+                </p>
+            </form>
+            <br />
+
+            <form name="YarnDetails">
+                <div class="row" style="margin:auto;" ng-if="data.IS_FBP_VISIBLE=='Y'">
+                    <div class="form-group">
+                        <label class="col-md-1 control-label">
+                            Assign Qty
+                        </label>
+                        <div class="col-md-4">
+                            <input type="number" class="form-control" ng-model="data.ASSIGN_QTY" ng-change="vm.onQtyChange()" />
+                        </div>
+                    </div>
+                </div>
+
+                <table class="table table-condensed table-striped table-bordered" style="padding:5px;">
+                    <thead>
+                        <tr class="site-table-header">
+                            <th style="width:20%;">
+                                <small>
+                                    Yarn
+                                </small>
+
+                            </th>
+                            <th style="width:2%;">
+                                <small>
+                                    Dbl?
+                                </small>
+
+                            </th>
+
+                            <th style="width:10%;">
+                                <small>
+                                    Brand
+                                </small>
+
+                            </th>
+
+                            <th style="width:10%;">
+                                <small>
+                                    Yarn Lot
+                                </small>
+
+                            </th>
+
+
+                            <th style="width:10%;" ng-if="(data.IS_FBP_VISIBLE=='Y'||data.RF_FAB_TYPE_ID==33)">
+                                <small>
+                                    Part
+                                </small>
+
+                            </th>
+
+                            <th style="width:10%;">
+                                <small>
+                                    Stitch Len
+                                </small>
+                            </th>
+
+                            <th style="width:5%;" ng-if="data.IS_FDR_OPT=='Y'">
+                                <small>
+                                    No of Feeder
+                                </small>
+                            </th>
+
+
+                            <th style="width:5%;" ng-if="data.IS_FBP_VISIBLE=='Y' || data.IS_ELA_MXD=='Y'||data.RF_FAB_TYPE_ID==33">
+                                <small>
+                                    Ratio(%)
+                                </small>
+
+                            </th>
+
+                            <th style="width:6%;">
+                                <small>
+                                    Assi.Yrn
+                                </small>
+
+                            </th>
+                            <th style="width:4%;" ng-if="(data.RF_FAB_PROD_CAT_ID==1||data.RF_FAB_PROD_CAT_ID==3)">
+                                <small>
+                                    Yrn Src
+                                </small>
+                            </th>
+
+                            <th style="width:15%;">
+                                <small>
+                                    Note
+                                </small>
+
+                            </th>
+                            <th style="width:5%;">
+                                <small>Action</small>
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+
+                        <tr ng-repeat="item in data.items">
+                            <td ng-class="{'has-error': (YarnDetails['YARN_ITEM_ID-'+$index].$touched || YarnDetails.$submitted) && YarnDetails['YARN_ITEM_ID-'+$index].$error.required}">
+                                <select class="form-control" kendo-drop-down-list name="YARN_ITEM_ID-{{$index}}" k-option-label="'-- Select Yarn Item --'" ng-disabled="item.KNT_PLAN_D_ID>0"
+                                        k-data-text-field="'ITEM_NAME_EN'" k-data-value-field="'YARN_ITEM_ID'" k-filter="'contains'"
+                                        k-auto-bind="'true'" k-data-source="vm.yarnItemListDs[$index]" k-ng-delay="vm.yarnItemListDs[$index]" ng-model="item.YARN_ITEM_ID"
+                                        k-on-change="vm.onChangeYarnItem(item,kendoEvent,true,$index)" required k-template="vm.Yarntemplate" k-on-data-bound="vm.onBoundYarnItem(item,true,$index)"></select>
+                            </td>
+
+                            <td>
+                                <input type="checkbox" name="IS_DBL_PLY" ng-model="item.IS_DBL_PLY" ng-true-value="'Y'" ng-false-value="'N'" />
+                            </td>
+
+
+                            <td ng-class="{'has-error': (YarnDetails['RF_BRAND_ID-'+$index].$touched || YarnDetails.$submitted) && YarnDetails['RF_BRAND_ID-'+$index].$error.required}">
+                                <select class="form-control" kendo-drop-down-list name="RF_BRAND_ID-{{$index}}" k-option-label="'-- Select Brand --'" ng-disabled="item.KNT_PLAN_D_ID>0"
+                                        k-data-text-field="'BRAND_NAME_EN'" k-data-value-field="'RF_BRAND_ID'"
+                                        k-auto-bind="'true'" k-data-source="item.brandListDs" k-ng-delay="item.brandListDs" ng-model="item.RF_BRAND_ID"
+                                        k-on-change="vm.onChangeBrnad(item,kendoEvent,true,$index)" k-on-data-bound="vm.onBoundBrnad(item,true,$index)"></select>
+                            </td>
+
+                            <td ng-class="{'has-error': (YarnDetails['KNT_YRN_LOT_ID-'+$index].$touched || YarnDetails.$submitted) && YarnDetails['KNT_YRN_LOT_ID-'+$index].$error.required}">
+                                <select class="form-control" kendo-drop-down-list name="KNT_YRN_LOT_ID-{{$index}}" k-option-label="'-- Yarn Lot --'" ng-disabled="item.KNT_PLAN_D_ID>0"
+                                        k-data-text-field="'YRN_LOT_NO'" k-data-value-field="'KNT_YRN_LOT_ID'" k-filer="'contains'"
+                                        k-auto-bind="'true'" k-data-source="item.yarnLotListDs" k-ng-delay="item.yarnLotListDs" ng-model="item.KNT_YRN_LOT_ID"
+                                        k-on-change="vm.onChangeYarnLot(item,kendoEvent,true,$index)" k-on-data-bound="vm.onBoundYarnLot(item,true,$index)" required k-template="vm.template" k-value-template="vm.value_template"></select>
+                            </td>
+
+                            <td ng-if="(data.IS_FBP_VISIBLE=='Y'||data.RF_FAB_TYPE_ID==33)" ng-class="{'has-error': (YarnDetails['RF_BRAND_ID-'+$index].$touched || YarnDetails.$submitted) && YarnDetails['RF_BRAND_ID-'+$index].$error.required}">
+                                <select class="form-control" kendo-drop-down-list name="LK_YFAB_PART_ID-{{$index}}" k-option-label="'-- Select Gauge--'"
+                                        k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'"
+                                        k-auto-bind="'true'" k-data-source="vm.PartListDs" ng-model="item.LK_YFAB_PART_ID"
+                                        k-on-change="vm.onChangeYarnPart(item,kendoEvent,true,$index)" k-ng-delay="vm.PartListDs" required></select>
+                            </td>
+                            <td ng-class="{'has-error': (YarnDetails['STITCH_LEN-'+$index].$touched || YarnDetails.$submitted) && YarnDetails['STITCH_LEN-'+$index].$error.required}">
+                                <input type="number" class="form-control" name="STITCH_LEN-{{$index}}" ng-model="item.STITCH_LEN" ng-change="vm.onChangeSL(item)" required />
+                            </td>
+
+
+                            <td ng-if="data.IS_FDR_OPT=='Y'" ng-class="{'has-error': (YarnDetails['NO_OF_FDR-'+$index].$touched || YarnDetails.$submitted) && (YarnDetails['NO_OF_FDR-'+$index].$error.required||YarnDetails['NO_OF_FDR-'+$index].$error.min)}">
+                                <input type="number" class="form-control" name="NO_OF_FDR-{{$index}}" ng-model="item.NO_OF_FDR" required min="1" />
+                            </td> 
+                            <td ng-if="(data.IS_FBP_VISIBLE=='Y'|| data.IS_ELA_MXD=='Y'||data.RF_FAB_TYPE_ID==33||data.IS_FDR_OPT=='Y')" ng-class="{'has-error': (YarnDetails['RATIO_QTY-'+$index].$touched || YarnDetails.$submitted) && YarnDetails['RATIO_QTY-'+$index].$error.required}">
+                                <input type="number" class="form-control" name="RATIO_QTY-{{$index}}" min="0" ng-model="item.RATIO_QTY" required />
+                            </td>
+
+
+
+
+                            <td ng-class="{'has-error': (YarnDetails['RQD_YRN_QTY-'+$index].$touched || YarnDetails.$submitted) && (YarnDetails['RQD_YRN_QTY-'+$index].$error.required||YarnDetails['RQD_YRN_QTY-'+$index].$error.min||YarnDetails['RQD_YRN_QTY-'+$index].$error.max)}">
+                                <input type="number" ng-init="(data.IS_FBP_VISIBLE=='N' && item.KNT_PLAN_D_ID<0)?item.RQD_YRN_QTY=(data.RQD_GFAB_QTY-data.GFAB_ADJ_QTY):item.RQD_YRN_QTY=item.RQD_YRN_QTY" class="form-control" name="RQD_YRN_QTY-{{$index}}" min="{{item.ALOC_QTY}}" max="{{data.RQD_GFAB_QTY - data.GFAB_ADJ_QTY}}" ng-model="item.RQD_YRN_QTY" required />
+                            </td>
+
+                            <td ng-if="(data.RF_FAB_PROD_CAT_ID==1||data.RF_FAB_PROD_CAT_ID==3)">
+                                <input type="checkbox" name="IS_USE_WIP" ng-model="item.IS_USE_WIP" ng-true-value="'Y'" ng-false-value="'N'" /> WIP
+                            </td>
+
+
+                            <td>
+                                <input type="text" class="form-control" name="YRN_NOTE" ng-model="item.YRN_NOTE" />
+                            </td>
+
+
+                            <td>
+                                <a class="btn btn-xs red" ng-if="$index>0" ng-click="vm.removeItem(data.items,$index)">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                                <a class="btn btn-xs blue-madison" ng-if="$index==(data.items.length-1)" ng-click="vm.addToList(item);">
+                                    <i class="fa fa-plus"></i>
+                                </a>
+                            </td>
+                        </tr>
+
+
+                    </tbody>
+                </table>
+
+                @*<table class="table table-condensed table-striped table-bordered" style="padding:5px;">
+                    <thead>
+                        <tr class="site-table-header">
+                            <th style="width:20%;">
+                                <small>
+                                    Yarn
+                                </small>
+
+                            </th>
+                            <th style="width:2%;">
+                                <small>
+                                    Dbl?
+                                </small>
+
+                            </th>
+
+
+                            <th style="width:10%;">
+                                <small>
+                                    Brand
+                                </small>
+
+                            </th>
+
+                            <th style="width:10%;">
+                                <small>
+                                    Yarn Lot
+                                </small>
+
+                            </th>
+
+
+                            <th style="width:10%;" ng-if="data.IS_FBP_VISIBLE=='Y'">
+                                <small>
+                                    Part
+                                </small>
+
+                            </th>
+
+                            <th style="width:10%;">
+                                <small>
+                                    Stitch Len
+                                </small>
+                            </th>
+
+                            <th style="width:5%;" ng-if="data.IS_FBP_VISIBLE=='Y'">
+                                <small>
+                                    Ratio(%)
+                                </small>
+
+                            </th>
+
+                            <th style="width:10%;">
+                                <small>
+                                    Req Yarn
+                                </small>
+
+                            </th>
+
+                            <th style="width:15%;">
+                                <small>
+                                    Note
+                                </small>
+
+                            </th>
+                            <th style="width:5%;">
+                                <small>Action</small>
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+
+                        <tr ng-repeat="item in data.items">
+                            <td ng-class="{'has-error': (YarnDetails['YARN_ITEM_ID-'+$index].$touched || YarnDetails.$submitted) && YarnDetails['YARN_ITEM_ID-'+$index].$error.required}">
+                                <select class="form-control" kendo-drop-down-list name="YARN_ITEM_ID-{{$index}}" k-option-label="'-- Select Yarn Item --'"
+                                        k-data-text-field="'ITEM_NAME_EN'" k-data-value-field="'YARN_ITEM_ID'" k-filter="'contains'"
+                                        k-auto-bind="'true'" k-data-source="vm.yarnItemListDs[$index]" k-ng-delay="vm.yarnItemListDs[$index]" ng-model="item.YARN_ITEM_ID"
+                                        k-on-change="vm.onChangeYarnItem(item,kendoEvent,true,$index)" required k-template="vm.Yarntemplate" k-on-data-bound="vm.onBoundYarnItem(item,true,$index)"></select>
+                            </td>
+
+                            <td>
+                                <input type="checkbox" name="IS_DBL_PLY" ng-model="item.IS_DBL_PLY" ng-true-value="'Y'" ng-false-value="'N'" />
+                            </td>
+
+
+                            <td ng-class="{'has-error': (YarnDetails['RF_BRAND_ID-'+$index].$touched || YarnDetails.$submitted) && YarnDetails['RF_BRAND_ID-'+$index].$error.required}">
+                                <select class="form-control" kendo-drop-down-list name="RF_BRAND_ID-{{$index}}" k-option-label="'-- Select Brand --'"
+                                        k-data-text-field="'BRAND_NAME_EN'" k-data-value-field="'RF_BRAND_ID'"
+                                        k-auto-bind="'true'" k-data-source="item.brandListDs" k-ng-delay="item.brandListDs" ng-model="item.RF_BRAND_ID"
+                                        k-on-change="vm.onChangeBrnad(item,kendoEvent,true,$index)" k-on-data-bound="vm.onBoundBrnad(item,true,$index)"></select>
+                            </td>
+
+                            <td ng-class="{'has-error': (YarnDetails['KNT_YRN_LOT_ID-'+$index].$touched || YarnDetails.$submitted) && YarnDetails['KNT_YRN_LOT_ID-'+$index].$error.required}">
+                                <select class="form-control" kendo-drop-down-list name="KNT_YRN_LOT_ID-{{$index}}" k-option-label="'-- Yarn Lot --'"
+                                        k-data-text-field="'YRN_LOT_NO'" k-data-value-field="'KNT_YRN_LOT_ID'" k-filer="'contains'"
+                                        k-auto-bind="'true'" k-data-source="item.yarnLotListDs" k-ng-delay="item.yarnLotListDs" ng-model="item.KNT_YRN_LOT_ID"
+                                        k-on-change="vm.onChangeYarnLot(item,kendoEvent,true,$index)" k-on-data-bound="vm.onBoundYarnLot(item,true,$index)" required k-template="vm.template" k-value-template="vm.value_template"></select>
+                            </td>
+
+                            <td ng-if="data.IS_FBP_VISIBLE=='Y'" ng-class="{'has-error': (YarnDetails['RF_BRAND_ID-'+$index].$touched || YarnDetails.$submitted) && YarnDetails['RF_BRAND_ID-'+$index].$error.required}">
+                                <select class="form-control" kendo-drop-down-list name="LK_YFAB_PART_ID-{{$index}}" k-option-label="'-- Select Gauge--'"
+                                        k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'"
+                                        k-auto-bind="'true'" k-data-source="vm.PartListDs" ng-model="item.LK_YFAB_PART_ID"
+                                        k-on-change="vm.onChangeYarnPart(item,kendoEvent,true,$index)" k-ng-delay="vm.PartListDs" required></select>
+                            </td>
+                            <td ng-class="{'has-error': (YarnDetails['STITCH_LEN-'+$index].$touched || YarnDetails.$submitted) && YarnDetails['STITCH_LEN-'+$index].$error.required}">
+                                <input type="number" class="form-control" name="STITCH_LEN-{{$index}}" ng-model="item.STITCH_LEN" ng-change="vm.onChangeSL(item)" required />
+                            </td>
+
+
+                            <td ng-if="data.IS_FBP_VISIBLE=='Y'" ng-class="{'has-error': (YarnDetails['RATIO_QTY-'+$index].$touched || YarnDetails.$submitted) && YarnDetails['RATIO_QTY-'+$index].$error.required}">
+                                <input type="number" class="form-control" name="RATIO_QTY-{{$index}}" min="0" ng-model="item.RATIO_QTY" required />
+                            </td>
+
+
+
+
+                            <td ng-class="{'has-error': (YarnDetails['RQD_YRN_QTY-'+$index].$touched || YarnDetails.$submitted) && (YarnDetails['RQD_YRN_QTY-'+$index].$error.required||YarnDetails['RQD_YRN_QTY-'+$index].$error.min||YarnDetails['RQD_YRN_QTY-'+$index].$error.max)}">
+                                <input type="number" ng-init="(data.IS_FBP_VISIBLE=='N' && item.KNT_PLAN_D_ID<0)?item.RQD_YRN_QTY=data.RQD_GFAB_QTY:item.RQD_YRN_QTY=item.RQD_YRN_QTY" class="form-control" name="RQD_YRN_QTY-{{$index}}" min="{{item.ALOC_QTY}}" max="{{data.RQD_GFAB_QTY}}" ng-model="item.RQD_YRN_QTY" required />
+                            </td>
+
+                            <td>
+                                <input type="text" class="form-control" name="YRN_NOTE" ng-model="item.YRN_NOTE" />
+                            </td>
+
+
+                            <td>
+                                <a class="btn btn-xs red" ng-if="$index>0" ng-click="vm.removeItem($index)">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                                <a class="btn btn-xs blue-madison" ng-if="$index==(data.items.length-1)" ng-click="vm.addToList(item);">
+                                    <i class="fa fa-plus"></i>
+                                </a>
+                            </td>
+                        </tr>
+
+
+                    </tbody>
+                </table>*@
+
+            </form>
+
+            <br />
+            <div class="row" style="padding-left:3px;">
+                <div class="col-md-10">
+                    <span class="badge badge-danger" ng-if="data.IS_KNT_CLOSED_ORI=='Y'">[Closed]</span>
+                    <button type="button" class="btn btn-sm yellow-gold" ng-disabled="data.IS_KNT_CLOSED_ORI=='Y'" ng-if="data.KNT_PLAN_H_ID > 0 " ng-click="vm.submitData(data,KnitPlanParameter.$valid,'N',YarnDetails.$valid);KnitPlanParameter.$submitted= true;YarnDetails.$submitted = true">Update</button>
+                    <button type="button" class="btn btn-sm green" ng-if="data.KNT_PLAN_H_ID <= 0" ng-click="vm.submitData(data,KnitPlanParameter.$valid,'N',YarnDetails.$valid);KnitPlanParameter.$submitted= true;YarnDetails.$submitted = true">Save</button>
+                    <button type="button" class="btn btn-sm default" ng-click="cancel()">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

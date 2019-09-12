@@ -1,0 +1,205 @@
+﻿
+<style>
+    .table thead tr th {
+        font-size: 10px;
+    }
+
+    .table tbody tr th {
+        font-size: 9px;
+    }
+
+</style>
+    <!-- BEGIN PAGE CONTENT-->
+<div class="portlet light" style="padding-top:0px;">
+    <div class="portlet-body" style="padding-top:5px;">
+        <div class="invoice">
+            <div class="row" style="margin:auto;">
+                <div class="col-xs-2 col-md-2 col-lg-2" style="text-align:right;">
+                </div>
+
+                <div class="col-xs-8 col-md-8 col-lg-8" style="text-align:center;">
+                    <h4 style="margin:3px;"><b>Knit Y/D Satement</b></h4>
+                </div>
+                <div class="col-xs-2 col-md-2 col-lg-2" style="text-align:right;">
+                    <a class="btn btn-sm btn-default hidden-print margin-bottom-5" onclick="javascript:window.print();">
+                        <i class="fa fa-print"></i> Print
+                    </a>
+                </div>
+
+            </div>
+
+
+            <div class="row">
+                <div class="row" style="margin:auto;">
+                    <div class="col-xs-6 col-md-6 col-lg-6">
+                        <ul class="list-unstyled">
+                            <li>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-xs-6 col-md-6 col-lg-6">
+                        <ul class="list-unstyled">
+                            <li style="float:right;">
+                                <b>Print Date:</b> &nbsp;&nbsp;
+                                {{vm.toDay|date:'dd-MMM-yyyy'}}
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div class="row" style="margin:auto;font-size:x-small;">
+                    <div class="col-xs-12 col-md-12 col-lg-12">
+                        <table class="table table-condensed table-striped custom-table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:8%;">
+                                        <b>Buyer A/C</b>
+                                    </th>
+                                    <th style="width:8%;">
+                                        <b>Style No.</b>
+                                    </th>
+                                    <th style="width:8%;">
+                                        <b>Order No.</b>
+                                    </th>
+
+                                    <th style="width:5%;">
+                                        <b>Shipment</b>
+                                    </th>
+                                    <th style="width:5%;">
+                                        <b>Booking Rev Date</b>
+                                    </th>
+
+                                    <th style="width:10%;">
+                                        <b>Yarn Desc.</b>
+                                    </th>
+                                    <th style="width:10%;">
+                                        <b>Y/D Factory</b>
+                                    </th>
+                                    <th style="width:5%;">
+                                        <b>Prog. Ref</b>
+                                    </th>
+                                    <th style="width:5%;">
+                                        <b>Prog. Sent Date</b>
+                                    </th>
+                                    <th style="width:8%;">
+                                        <b>Color</b>
+                                    </th>
+                                    <th style="width:5%;">
+                                        <b>Issued</b>
+                                    </th>
+                                    <th style="width:5%;">
+                                        <b>Tot.Rcv</b>
+                                    </th>
+                                    <th style="width:5%;">
+                                        <b>Recv</b>
+                                    </th>
+                                    <th style="width:10%;">
+                                        <b>Bag</b>
+                                    </th>
+                                    <th style="width:6%;">
+                                        <b>Batch #</b>
+                                    </th>
+                                    <th style="width:5%;">
+                                        <b>Work Order</b>
+                                    </th>
+                                    <th style="width:10%;">
+                                        <b>Date Recv</b>
+                                    </th>
+                                </tr>
+
+
+
+
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in vm.datas">
+                                    <td rowspan="{{item.ORDH_ID_SPAN}}" ng-if="item.ORDH_ID_SL==1">
+                                        {{item.BYR_ACC_NAME_EN}}
+                                    </td>
+                                    <td rowspan="{{item.ORDH_ID_SPAN}}" ng-if="item.ORDH_ID_SL==1">
+                                        {{item.STYLE_NO}}
+                                    </td>
+                                    <td rowspan="{{item.ORDH_ID_SPAN}}" ng-if="item.ORDH_ID_SL==1">
+                                        {{item.MC_ORDER_NO_LST}}
+                                    </td>
+                                    <td rowspan="{{item.ORDH_ID_SPAN}}" ng-if="item.ORDH_ID_SL==1">
+                                        {{item.SHIP_DT|date:'dd-MMM-yyyy'}}
+                                    </td>
+                                    <td rowspan="{{item.ORDH_ID_SPAN}}" ng-if="item.ORDH_ID_SL==1">
+                                        {{item.PROD_ORD_DT|date:'dd-MMM-yyyy'}}
+                                    </td>
+                                    <td rowspan="{{item.ORDH_ID_SPAN}}" ng-if="item.ORDH_ID_SL==1">
+                                        <p style="display:block;" ng-repeat="itm in item.yarns"> {{itm.YARN}}</p>
+                                    </td>
+
+
+                                    <td rowspan="{{item.ORDH_ID_SUP_SPAN}}" ng-if="item.ORDH_ID_SUP_SL==1">
+                                        {{item.SUP_TRD_NAME_EN}}
+                                    </td>
+
+                                    <td rowspan="{{item.ORDH_ID_PROG_SPAN}}" ng-if="item.ORDH_ID_PROG_SL==1">
+                                        {{item.PRG_REF_NO}}
+                                    </td>
+                                    <td rowspan="{{item.ORDH_ID_PROG_SPAN}}" ng-if="item.ORDH_ID_PROG_SL==1">
+                                        {{item.PRG_ISS_DT|date:'dd-MMM-yyyy'}}
+                                    </td>
+
+
+                                    <td rowspan="{{item.ORDH_ID_COLOR_SPAN}}" ng-if="item.ORDH_ID_COLOR_SL==1">
+                                        {{item.YD_COLOR_NAME}}
+                                    </td>
+                                    <td rowspan="{{item.ORDH_ID_COLOR_SPAN}}" ng-if="item.ORDH_ID_COLOR_SL==1">
+                                        {{item.RQD_YD_QTY}}
+                                    </td>
+                                    <td rowspan="{{item.ORDH_ID_COLOR_SPAN}}" ng-if="item.ORDH_ID_COLOR_SL==1">
+                                        {{item.TOT_RCV_YD_QTY}}
+                                    </td>
+                                    <td>
+                                        {{item.RCV_YD_QTY}}
+                                    </td>
+                                    <td>
+                                        {{item.RCV_PACK_QTY+' '+item.PACK_MOU}}
+                                    </td>
+                                    <td>
+                                        {{item.YD_BATCH_NO}}
+                                    </td>
+                                    <td rowspan="{{item.ORDH_ID_PROG_SPAN}}" ng-if="item.ORDH_ID_PROG_SL==1">
+                                        {{item.CL_WO_REF_NO}}
+                                    </td>
+                                    <td rowspan="{{item.ORDH_ID_PROG_SPAN}}" ng-if="item.ORDH_ID_PROG_SL==1">
+                                        {{item.CHALAN_DT|date:'dd-MMM-yyyy'}}
+                                    </td>
+
+
+
+
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+
+                <div class="row" style="margin:auto;">
+                    <div class="col-xs-2 col-md-2 col-lg-2" style="text-align:right;">
+                    </div>
+
+                    <div class="col-xs-8 col-md-8 col-lg-8" style="text-align:center;">
+                      
+                    </div>
+                    <div class="col-xs-2 col-md-2 col-lg-2" style="text-align:right;">
+                        page : {{vm.params.pageNo}}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END PAGE CONTENT-->
+
+
+

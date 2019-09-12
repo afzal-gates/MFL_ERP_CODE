@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="dsRequisitionDetails" targetNamespace="http://tempuri.org/dsRequisitionDetails.xsd" xmlns:mstns="http://tempuri.org/dsRequisitionDetails.xsd" xmlns="http://tempuri.org/dsRequisitionDetails.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="ConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="ConnectionString (Web.config)" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.ConnectionString.ConnectionString" Provider="System.Data.OracleClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="dsRequisitionDetailsTableAdapter" GeneratorDataComponentClassName="dsRequisitionDetailsTableAdapter" Name="dsRequisitionDetails" UserDataComponentName="dsRequisitionDetailsTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="ConnectionString (Web.config)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT 
+                STR_REQ_NO, STR_REQ_DT, LOAD_TIME, 
+                UN_LOAD_TIME, REMARKS, RQD_QTY, RD.RQD_QTY_K, RD.RQD_QTY_G, RD.RQD_QTY_M,
+                ITEM_NAME_EN, MOU_CODE, 
+                STORE_NAME_EN, COMP_NAME_EN, 
+                DEPARTMENT_NAME_EN, UF.LOGIN_ID REQ_BY, 
+                UT.LOGIN_ID ISSUE_BY, DYE_MACHINE_NO 
+            FROM DYE_STR_REQ_H RH
+                JOIN DYE_STR_REQ_D RD ON RH.DYE_STR_REQ_H_ID=RD.DYE_STR_REQ_H_ID
+                JOIN INV_ITEM I ON RD.DC_ITEM_ID=I.INV_ITEM_ID
+                LEFT JOIN RF_MOU MOU ON RD.QTY_MOU_ID=MOU.RF_MOU_ID
+                LEFT JOIN SCM_STORE S ON RH.REQ_STORE_ID=S.SCM_STORE_ID
+                LEFT JOIN HR_COMPANY C ON RH.HR_COMPANY_ID=C.HR_COMPANY_ID
+                LEFT JOIN HR_DEPARTMENT D ON RH.HR_DEPARTMENT_ID=D.HR_DEPARTMENT_ID
+                LEFT JOIN SC_USER UF ON RH.STR_REQ_BY=UF.SC_USER_ID
+                LEFT JOIN SC_USER UT ON RH.STR_REQ_TO=UT.SC_USER_ID
+                LEFT JOIN DYE_MACHINE MA ON RH.DYE_MACHINE_ID=MA.DYE_MACHINE_ID</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="STR_REQ_NO" DataSetColumn="STR_REQ_NO" />
+              <Mapping SourceColumn="STR_REQ_DT" DataSetColumn="STR_REQ_DT" />
+              <Mapping SourceColumn="LOAD_TIME" DataSetColumn="LOAD_TIME" />
+              <Mapping SourceColumn="UN_LOAD_TIME" DataSetColumn="UN_LOAD_TIME" />
+              <Mapping SourceColumn="REMARKS" DataSetColumn="REMARKS" />
+              <Mapping SourceColumn="RQD_QTY" DataSetColumn="RQD_QTY" />
+              <Mapping SourceColumn="ITEM_NAME_EN" DataSetColumn="ITEM_NAME_EN" />
+              <Mapping SourceColumn="MOU_CODE" DataSetColumn="MOU_CODE" />
+              <Mapping SourceColumn="STORE_NAME_EN" DataSetColumn="STORE_NAME_EN" />
+              <Mapping SourceColumn="COMP_NAME_EN" DataSetColumn="COMP_NAME_EN" />
+              <Mapping SourceColumn="DEPARTMENT_NAME_EN" DataSetColumn="DEPARTMENT_NAME_EN" />
+              <Mapping SourceColumn="REQ_BY" DataSetColumn="REQ_BY" />
+              <Mapping SourceColumn="ISSUE_BY" DataSetColumn="ISSUE_BY" />
+              <Mapping SourceColumn="DYE_MACHINE_NO" DataSetColumn="DYE_MACHINE_NO" />
+              <Mapping SourceColumn="RQD_QTY_K" DataSetColumn="RQD_QTY_K" />
+              <Mapping SourceColumn="RQD_QTY_G" DataSetColumn="RQD_QTY_G" />
+              <Mapping SourceColumn="RQD_QTY_M" DataSetColumn="RQD_QTY_M" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="dsRequisitionDetails" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="dsRequisitionDetails" msprop:Generator_UserDSName="dsRequisitionDetails">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="dsRequisitionDetails" msprop:Generator_TableClassName="dsRequisitionDetailsDataTable" msprop:Generator_TableVarName="tabledsRequisitionDetails" msprop:Generator_RowChangedName="dsRequisitionDetailsRowChanged" msprop:Generator_TablePropName="_dsRequisitionDetails" msprop:Generator_RowDeletingName="dsRequisitionDetailsRowDeleting" msprop:Generator_RowChangingName="dsRequisitionDetailsRowChanging" msprop:Generator_RowEvHandlerName="dsRequisitionDetailsRowChangeEventHandler" msprop:Generator_RowDeletedName="dsRequisitionDetailsRowDeleted" msprop:Generator_RowClassName="dsRequisitionDetailsRow" msprop:Generator_UserTableName="dsRequisitionDetails" msprop:Generator_RowEvArgName="dsRequisitionDetailsRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="STR_REQ_NO" msprop:Generator_ColumnVarNameInTable="columnSTR_REQ_NO" msprop:Generator_ColumnPropNameInRow="STR_REQ_NO" msprop:Generator_ColumnPropNameInTable="STR_REQ_NOColumn" msprop:Generator_UserColumnName="STR_REQ_NO">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="30" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="STR_REQ_DT" msprop:Generator_ColumnVarNameInTable="columnSTR_REQ_DT" msprop:Generator_ColumnPropNameInRow="STR_REQ_DT" msprop:Generator_ColumnPropNameInTable="STR_REQ_DTColumn" msprop:Generator_UserColumnName="STR_REQ_DT" type="xs:dateTime" />
+              <xs:element name="LOAD_TIME" msprop:Generator_ColumnVarNameInTable="columnLOAD_TIME" msprop:Generator_ColumnPropNameInRow="LOAD_TIME" msprop:Generator_ColumnPropNameInTable="LOAD_TIMEColumn" msprop:Generator_UserColumnName="LOAD_TIME" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="UN_LOAD_TIME" msprop:Generator_ColumnVarNameInTable="columnUN_LOAD_TIME" msprop:Generator_ColumnPropNameInRow="UN_LOAD_TIME" msprop:Generator_ColumnPropNameInTable="UN_LOAD_TIMEColumn" msprop:Generator_UserColumnName="UN_LOAD_TIME" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="REMARKS" msprop:Generator_ColumnVarNameInTable="columnREMARKS" msprop:Generator_ColumnPropNameInRow="REMARKS" msprop:Generator_ColumnPropNameInTable="REMARKSColumn" msprop:Generator_UserColumnName="REMARKS" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="200" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="RQD_QTY" msprop:Generator_ColumnVarNameInTable="columnRQD_QTY" msprop:Generator_ColumnPropNameInRow="RQD_QTY" msprop:Generator_ColumnPropNameInTable="RQD_QTYColumn" msprop:Generator_UserColumnName="RQD_QTY" type="xs:decimal" minOccurs="0" />
+              <xs:element name="ITEM_NAME_EN" msprop:Generator_ColumnVarNameInTable="columnITEM_NAME_EN" msprop:Generator_ColumnPropNameInRow="ITEM_NAME_EN" msprop:Generator_ColumnPropNameInTable="ITEM_NAME_ENColumn" msprop:Generator_UserColumnName="ITEM_NAME_EN">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="250" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="MOU_CODE" msprop:Generator_ColumnVarNameInTable="columnMOU_CODE" msprop:Generator_ColumnPropNameInRow="MOU_CODE" msprop:Generator_ColumnPropNameInTable="MOU_CODEColumn" msprop:Generator_UserColumnName="MOU_CODE" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="STORE_NAME_EN" msprop:Generator_ColumnVarNameInTable="columnSTORE_NAME_EN" msprop:Generator_ColumnPropNameInRow="STORE_NAME_EN" msprop:Generator_ColumnPropNameInTable="STORE_NAME_ENColumn" msprop:Generator_UserColumnName="STORE_NAME_EN" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="COMP_NAME_EN" msprop:Generator_ColumnVarNameInTable="columnCOMP_NAME_EN" msprop:Generator_ColumnPropNameInRow="COMP_NAME_EN" msprop:Generator_ColumnPropNameInTable="COMP_NAME_ENColumn" msprop:Generator_UserColumnName="COMP_NAME_EN" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="100" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="DEPARTMENT_NAME_EN" msprop:Generator_ColumnVarNameInTable="columnDEPARTMENT_NAME_EN" msprop:Generator_ColumnPropNameInRow="DEPARTMENT_NAME_EN" msprop:Generator_ColumnPropNameInTable="DEPARTMENT_NAME_ENColumn" msprop:Generator_UserColumnName="DEPARTMENT_NAME_EN" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="80" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="REQ_BY" msprop:Generator_ColumnVarNameInTable="columnREQ_BY" msprop:Generator_ColumnPropNameInRow="REQ_BY" msprop:Generator_ColumnPropNameInTable="REQ_BYColumn" msprop:Generator_UserColumnName="REQ_BY" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="30" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ISSUE_BY" msprop:Generator_ColumnVarNameInTable="columnISSUE_BY" msprop:Generator_ColumnPropNameInRow="ISSUE_BY" msprop:Generator_ColumnPropNameInTable="ISSUE_BYColumn" msprop:Generator_UserColumnName="ISSUE_BY" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="30" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="DYE_MACHINE_NO" msprop:Generator_ColumnVarNameInTable="columnDYE_MACHINE_NO" msprop:Generator_ColumnPropNameInRow="DYE_MACHINE_NO" msprop:Generator_ColumnPropNameInTable="DYE_MACHINE_NOColumn" msprop:Generator_UserColumnName="DYE_MACHINE_NO" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="RATE" msprop:Generator_ColumnVarNameInTable="columnRATE" msprop:Generator_ColumnPropNameInRow="RATE" msprop:Generator_ColumnPropNameInTable="RATEColumn" msprop:Generator_UserColumnName="RATE" type="xs:string" minOccurs="0" />
+              <xs:element name="RQD_QTY_K" msprop:Generator_ColumnVarNameInTable="columnRQD_QTY_K" msprop:Generator_ColumnPropNameInRow="RQD_QTY_K" msprop:Generator_ColumnPropNameInTable="RQD_QTY_KColumn" msprop:Generator_UserColumnName="RQD_QTY_K" type="xs:decimal" minOccurs="0" />
+              <xs:element name="RQD_QTY_G" msprop:Generator_ColumnVarNameInTable="columnRQD_QTY_G" msprop:Generator_ColumnPropNameInRow="RQD_QTY_G" msprop:Generator_ColumnPropNameInTable="RQD_QTY_GColumn" msprop:Generator_UserColumnName="RQD_QTY_G" type="xs:decimal" minOccurs="0" />
+              <xs:element name="RQD_QTY_M" msprop:Generator_ColumnVarNameInTable="columnRQD_QTY_M" msprop:Generator_ColumnPropNameInRow="RQD_QTY_M" msprop:Generator_ColumnPropNameInTable="RQD_QTY_MColumn" msprop:Generator_UserColumnName="RQD_QTY_M" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,181 @@
+﻿<div class="modal-body">
+    <div class="portlet grey-cascade box">
+        <div class="portlet-title">
+            <div>
+                <h3 style="padding-top:10px;margin-top:3px;">
+                    Edit Fabrication
+                    <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                </h3>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <ng-form class="form-horizontal" role="form" name="FabricDetails" novalidate>
+                <div class="form-body" style="padding:0px;">
+                    <table class="table" style=" margin-bottom: 0px;border:none;">
+                        <tbody>
+
+                            <tr>
+                                <td class="col-md-1 text-right">
+                                    <label class="control-label">
+                                        Composition
+                                    </label>
+                                </td>
+                                <td class="col-md-3" ng-class="{'has-error': (FabricDetails.RF_FIB_COMP_ID.$touched || FabricDetails.$submitted) && FabricDetails.RF_FIB_COMP_ID.$error.required}">
+
+                                    <select kendo-drop-down-list name="RF_FIB_COMP_ID" class="form-control"
+                                            options="vm.FabricCompList" id="RF_FIB_COMP_ID" ng-model="vm.Fab.RF_FIB_COMP_ID" required></select>
+                                </td>
+                            </tr>
+
+                            <tr ng-if="vm.IS_FEEDER_TYPE">
+                                <td class="col-md-1 text-right">
+                                    <label class="control-label">
+                                        FeederType/Brand
+                                    </label>
+
+
+                                </td>
+                                <td class="col-md-3">
+
+                                    <span class="col-md-4" style="padding-left:0px;" ng-class="{'has-error': (FabricDetails.LK_FEDER_TYPE_ID.$touched || FabricDetails.$submitted) && FabricDetails.LK_FEDER_TYPE_ID.$error.required}">
+                                        <select kendo-drop-down-list name="LK_FEDER_TYPE_ID" class="form-control"
+                                                options="vm.FeederTypeList" id="LK_FEDER_TYPE_ID" ng-model="vm.Fab.LK_FEDER_TYPE_ID" ng-required="vm.IS_FEEDER_TYPE"></select>
+                                    </span>
+
+
+                                    <span class="col-md-4" style="padding-left: 0px; padding-right: 0px;" ng-class="{'has-error': (FabricDetails.LK_ELA_BRAND_ID.$touched || FabricDetails.$submitted) && FabricDetails.LK_ELA_BRAND_ID.$error.required}">
+                                        <select kendo-drop-down-list name="LK_ELA_BRAND_ID" class="form-control" ng-model="vm.Fab.LK_ELA_BRAND_ID"
+                                                options="vm.ElaBrandList" id="LK_ELA_BRAND_ID" ng-required="vm.IS_FEEDER_TYPE"></select>
+                                    </span>
+
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="col-md-1 text-right" rowspan="2">
+                                    <label class="control-label">
+                                        <br />
+                                        <br />
+                                        Fiber Feature
+                                    </label>
+
+
+                                </td>
+                                <td class="col-md-3">
+                                    <span class="col-md-6" style="padding-left:5px;padding-right:5px;">
+                                        Spin Finish
+                                        <select kendo-drop-down-list name="LK_SPN_PRCS_ID" class="form-control" ng-disabled="true"
+                                                options="vm.SpinFinList" id="LK_SPN_PRCS_ID" ng-model="vm.Fab.LK_SPN_PRCS_ID"></select>
+                                    </span>
+
+                                    <span class="col-md-6" style="padding-left:0px;padding-right:3px;">
+                                        Cotton Type
+                                        <select kendo-drop-down-list name="LK_COTN_TYPE_ID" class="form-control" ng-disabled="true"
+                                                options="vm.CotnTypeList" id="LK_COTN_TYPE_ID" ng-model="vm.Fab.LK_COTN_TYPE_ID"></select>
+                                    </span>
+
+
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="col-md-3">
+
+                                    <div class="checkbox-list">
+                                        <label class="checkbox-inline" style="margin-left:20px">
+                                            <span><input type="checkbox" ng-model="vm.Fab.IS_SLUB" ng-disabled="true" ng-true-value="'Y'" ng-false-value="'N'"> Slub?</span>
+                                        </label>
+
+                                        <label class="checkbox-inline" style="margin-left:20px">
+                                            <span><input type="checkbox" ng-model="vm.Fab.IS_MELLANGE" ng-disabled="true" ng-true-value="'Y'" ng-false-value="'N'"> Mellange?</span>
+                                        </label>
+
+                                    </div>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-1 text-right">
+                                    <label class="control-label">
+                                        Fabric Type
+                                    </label>
+
+
+                                </td>
+                                <td class="col-md-3" ng-class="{'has-error': (FabricDetails.RF_FAB_TYPE_ID.$touched || FabricDetails.$submitted) && FabricDetails.RF_FAB_TYPE_ID.$error.required}">
+                                    <span ng-class="(vm.IS_FKNIT||vm.IS_DRP_NDL)?'col-md-7':'col-md-12'" style="padding-left:5px;padding-right:5px;">
+                                        <select kendo-drop-down-list name="RF_FAB_TYPE_ID" class="form-control"
+                                                options="vm.FabricTypeList" id="RF_FAB_TYPE_ID" ng-model="vm.Fab.RF_FAB_TYPE_ID" required></select>
+                                    </span>
+
+                                    <span class="col-md-5" style="padding-left:5px;padding-right:5px;" ng-if="vm.IS_FKNIT" ng-class="{'has-error': (FabricDetails.LK_FK_DGN_TYP_ID.$touched || FabricDetails.$submitted) && FabricDetails.LK_FK_DGN_TYP_ID.$error.required}">
+                                        <select kendo-drop-down-list name="LK_FK_DGN_TYP_ID" class="form-control"
+                                                options="vm.ColCuffDesType" id="LK_FK_DGN_TYP_ID" ng-model="vm.Fab.LK_FK_DGN_TYP_ID" required></select>
+                                    </span>
+
+                                    <span class="col-md-5" style="padding-left:5px;padding-right:5px;" ng-if="vm.IS_DRP_NDL" ng-class="{'has-error': (FabricDetails.DROP_NDL_DESC.$touched || FabricDetails.$submitted) && FabricDetails.DROP_NDL_DESC.$error.required}">
+                                        <input type="text" class="form-control" name="DROP_NDL_DESC" ng-model="vm.Fab.DROP_NDL_DESC" placeholder="Ex. 2x2" required />
+                                    </span>
+
+                                    <div class="radio-list" style="margin-left:20px">
+                                        <label class="radio-inline" ng-repeat="itm in vm.FabGroup">
+                                            <span class="checked"><input type="radio" ng-disabled="true" ng-model="vm.Fab.LK_FBR_GRP_ID" ng-value="itm.LOOKUP_DATA_ID"></span> {{itm.LK_DATA_NAME_EN}}
+                                        </label>
+                                    </div>
+
+
+
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="col-md-1 text-right">
+                                    <label class="control-label">
+                                        Fabric {{vm.Fab.WT_MOU_ID==24||vm.Fab.WT_MOU_ID==23 ? 'Width' : 'Weight'}}
+                                    </label>
+                                </td>
+                                <td class="col-md-3" ng-class="{'has-error': (FabricDetails.FB_WT_MIN.$touched || FabricDetails.$submitted) && FabricDetails.FB_WT_MIN.$error.required}">
+                                    <span class="col-md-4" style="padding-left:5px;padding-right:5px;">
+                                        <input type="number" min="0" ng-disabled="true" name="FB_WT_MIN" ng-model="vm.Fab.FB_WT_MIN" max="999" class="form-control" ng-change="vm.changed(vm.Fab.FB_WT_MIN)" placeholder="{{vm.Fab.WT_MOU_ID==24?'':'low'}}" required />
+                                    </span>
+
+                                    <span class="col-md-4" style="padding-left: 5px; padding-right: 5px;" ng-hide="vm.Fab.WT_MOU_ID==24||vm.Fab.WT_MOU_ID==23">
+                                        <input type="number" ng-disabled="true" name="FB_WT_MAX" min="{{vm.Fab.FB_WT_MIN}}" max="999" ng-model="vm.Fab.FB_WT_MAX" class="form-control" placeholder="High" required />
+                                    </span>
+
+
+                                    <span class="col-md-4" style="padding-left: 5px; padding-right: 5px;">
+                                        <select ng-disabled="true"  ng-model="vm.Fab.WT_MOU_ID" class="form-control" ng-options="item.RF_MOU_ID as item.MOU_NAME_EN for item in vm.mouUnits"></select>
+                                    </span>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-1 text-right">
+                                    <label class="control-label">
+                                        Fabric Description
+                                    </label>
+
+
+                                </td>
+                                <td class="col-md-3">
+                                    <textarea rows="2" ng-disabled="true"  name="FABRIC_DESC" class="form-control" cols="50" ng-model="vm.Fab.FABRIC_DESC" required></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-1 text-right"></td>
+                                <td class="col-md-3">
+                                    <button type="button" ng-click="vm.submitData(vm.Fab,FabricDetails.$valid);FabricDetails.$submitted=true;" class="btn btn-sm yellow-gold" ng-class="{'disabled':!FabricDetails.$valid}">Update</button>
+                                    <button type="button" class="btn btn-sm default" ng-click="vm.cancel()">Cancel</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </ng-form>
+
+        </div>
+    </div>
+</div>
+
+

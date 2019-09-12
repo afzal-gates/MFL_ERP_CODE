@@ -1,0 +1,672 @@
+﻿@*@model ERP.Model.HR_SCHEDULE_HModel*@
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Hr</a>
+
+    </li>
+    <li>
+        <a href="#">Hr Reports</a>
+    </li>
+</ul>
+
+
+@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+<input type="hidden" name="userid" ng-model="vm.loginUserID" ng-init="vm.loginUserID=@Session["multiScUserId"]" value="@Session["multiScUserId"]" />
+
+<div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+    <div class="page-splash">
+        <div class="page-splash-message">
+            <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+        </div>
+    </div>
+</div>
+
+
+<div class="portlet box blue-dark" @*ng-controller="HrReportController as vm"*@>
+    
+    <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+           data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+    <div class="portlet-title">
+        <div class="caption">
+            @*<i class="fa fa-gift"></i>*@ Hr Reports
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <form class="form-horizontal form-body" @*action="/CrystalReportViewer.aspx"*@ action="/Hr/HrReport/PreviewReport" method="post" target="_blank">           
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="col-md-offset-0 col-md-10">
+                        <p></p>
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend">Selection of Parameters</legend>
+
+                            <input type="hidden" name="LOGIN_ID" ng-model="vm.LOGIN_ID" data-ng-init="vm.LOGIN_ID='@Session["multiLoginId"]'" />
+                            @*<input type="hidden" name="REPORT_CODE" value="{{vm.form.REPORT_CODE}}" ng-model="vm.form.REPORT_CODE" />*@
+                            <input type="hidden" name="REPORT_CODE" ng-model="vm.form.REPORT_CODE" ng-init="vm.form.REPORT_CODE=vm.rptList[0].RPT_CODE" />
+                            <input type="hidden" name="SALARY_PART_PCT" value="{{vm.form.SALARY_PART_PCT}}" ng-model="vm.form.SALARY_PART_PCT" />
+
+                            <p></p>
+                            <div class="col-md-6" style="padding-left:5px;">
+                                <fieldset class=" custom-fieldset">
+                                    <div class="radio-list" >                                       
+                                        <label class="radio" style="padding-left:30px;" ng-repeat="itm in vm.rptList">                                            
+                                            <input type="radio" name="RPT_CODE" ng-model="itm.RPT_CODE" value="{{vm.rptList[0].RPT_CODE}}" ng-click="vm.rptOnChange(itm,$index)">{{itm.RPT_NAME_EN}}
+                                        </label>
+                                    </div>
+                                        @*{{vm.form.REPORT_CODE}}*@
+                                    
+
+                                    @*<div class="radio-list" ng-if="vm.LOGIN_ID=='adminhr'">
+                                        <label class="radio" style="padding-left:30px;"><input type="radio" name="REPORT_CODE" ng-value="'RPT-1000'" ng-model="vm.form.REPORT_CODE">Employee Job Card</label>
+                                        <label class="radio" style="padding-left:30px;"><input type="radio" name="REPORT_CODE" ng-value="'RPT-1042'" ng-model="vm.form.REPORT_CODE">Job Card - Dual Employee</label>
+                                        <label class="radio" style="padding-left:30px;"><input type="radio" name="REPORT_CODE" ng-value="'RPT-1015'" ng-model="vm.form.REPORT_CODE">Leave Balance Statement</label>
+                                        <label class="radio" style="padding-left:30px;"><input type="radio" name="REPORT_CODE" ng-value="'RPT-1020'" ng-model="vm.form.REPORT_CODE">Salary Sheet Report</label>
+                                        <label class="radio" style="padding-left:30px;"><input type="radio" name="REPORT_CODE" ng-value="'RPT-1021'" ng-model="vm.form.REPORT_CODE">Pay Slip Report</label>
+                                        <label class="radio" style="padding-left:30px;"><input type="radio" name="REPORT_CODE" ng-value="'RPT-1046'" ng-model="vm.form.REPORT_CODE">EL Encashment</label>
+                                    </div>*@
+
+                                </fieldset>
+                            </div>
+
+
+                            @*{{vm.loginUserID}}*@
+                            <div class="col-md-6">
+
+                                <div class="form-group" ng-if="vm.isCompany==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Company
+                                    </label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="HR_COMPANY_ID" class="form-control" @*ng-disabled="vm.isManagementType!=true"*@
+                                                options="vm.companyList" ng-model="vm.form.HR_COMPANY_ID"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isOffice==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Office</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list id="HR_OFFICE_ID" name="HR_OFFICE_ID" class="form-control"
+                                                options="vm.officeListData" ng-model="vm.form.HR_OFFICE_ID"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isFiscalYear==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Fiscal Year
+                                    </label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="RF_FISCAL_YEAR_ID" class="form-control"
+                                                options="vm.FiscalYearData" ng-model="vm.form.RF_FISCAL_YEAR_ID"></select>
+
+                                        <input type="text" name="FY_NAME_EN" ng-model="vm.form.FY_NAME_EN" ng-hide="true" />
+
+
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group" ng-if="vm.isMonth==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Month
+                                    </label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="RF_CAL_MONTH_ID" class="form-control"
+                                                options="vm.monthsListData" ng-model="vm.form.RF_CAL_MONTH_ID"></select>                                        
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isPayPeriod==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Pay Period</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list id="ACC_PAY_PERIOD_ID" name="ACC_PAY_PERIOD_ID" class="form-control"
+                                                options="vm.openPeriodListData" ng-model="vm.form.ACC_PAY_PERIOD_ID1"></select>
+                                    </div>
+                                    @*{{vm.form.ACC_PAY_PERIOD_ID}}*@
+                                </div>
+                                
+                                <div class="form-group" ng-if="vm.isPayPeriodMonth==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Pay Period</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list id="ACC_PAY_PERIOD_ID_MONTH" name="ACC_PAY_PERIOD_ID_MONTH" class="form-control"
+                                                options="vm.openPeriodListData" ng-model="vm.form.ACC_PAY_PERIOD_ID1"></select>
+                                    </div>
+                                    @*{{vm.form.ACC_PAY_PERIOD_ID}}*@
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isPayElement==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Pay Element</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list id="HR_PAY_ELEMENT_ID" name="HR_PAY_ELEMENT_ID" class="form-control"
+                                                options="vm.payElementData" ng-model="vm.form.HR_PAY_ELEMENT_ID"></select>
+                                    </div>
+                                    @*{{vm.form.ACC_PAY_PERIOD_ID}}*@
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isPayType==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Pay Type</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list id="PAY_TYPE_ID" name="PAY_TYPE_ID" class="form-control"
+                                                options="vm.payTypeListData" ng-model="vm.form.PAY_TYPE_ID"></select>
+                                    </div>
+                                    @*{{vm.form.PAY_TYPE_ID}}*@
+                                </div>
+                                                                
+                                <div class="form-group" ng-if="vm.isBonusType==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Bonus Type
+                                    </label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <input type="hidden" name="BONUS_TYPE_NAME" ng-model="vm.form.BONUS_TYPE_NAME" value="{{vm.form.LK_FB_TYPE_ID==null||vm.form.LK_FB_TYPE_ID==''?'':vm.form.BONUS_TYPE_NAME}}" />
+                                        <select kendo-drop-down-list id="LK_FB_TYPE_ID" name="LK_FB_TYPE_ID" class="form-control" @*ng-disabled="vm.isManagementType!=true"*@
+                                                options="vm.bonusTypeListData" ng-model="vm.form.LK_FB_TYPE_ID"></select>
+                                        @*{{vm.form.BONUS_TYPE_NAME}}*@
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isManagementType==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Employee Type
+                                    </label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="HR_MANAGEMENT_TYPE_ID" class="form-control" @*ng-disabled="vm.isManagementType!=true"*@
+                                                options="vm.managementTypeList" ng-model="vm.form.HR_MANAGEMENT_TYPE_ID"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isOtType==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        OT Type
+                                    </label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="HR_OT_TYPE_ID" class="form-control" @*ng-disabled="vm.isManagementType!=true"*@
+                                                options="vm.otTypeListData" ng-model="vm.form.HR_OT_TYPE_ID"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isDesigGrp==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Designation Group
+                                    </label>
+                                    <div class="col-md-5" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="HR_DESIGNATION_GRP_ID" class="form-control"
+                                                options="vm.desigGrpList" ng-model="vm.form.HR_DESIGNATION_GRP_ID"></select>
+                                    </div>
+                                    
+                                    <div class="col-md-3" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="ASSIGN_OPERATOR_ID" class="form-control"
+                                                options="vm.assignOperatorListData" ng-model="vm.form.ASSIGN_OPERATOR_ID"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isIncrMemo==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Incr. Authorization#
+                                    </label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list class="form-control" name="HR_INCR_MEMO_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                                k-data-text-field="'AUTH_NO'" k-data-value-field="'HR_INCR_MEMO_ID'"
+                                                k-auto-bind="'true'" k-options="vm.incrMemoListOption" k-data-source="vm.incrMemoListDataSource" ng-model="vm.form.HR_INCR_MEMO_ID"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isSection==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Department
+                                    </label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="CORE_DEPT_ID" class="form-control"
+                                                options="vm.parentDepartmentListData" ng-model="vm.form.CORE_DEPT_ID"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isSection==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Section
+                                    </label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list id="HR_DEPARTMENT_ID" name="HR_DEPARTMENT_ID" class="form-control" @*ng-disabled="vm.isManagementType!=true"*@
+                                                options="vm.subdepartmentListData" ng-model="vm.form.HR_DEPARTMENT_ID"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isDesigGrade==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Desig. Grade
+                                    </label>
+                                    <div class="col-md-5" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="HR_GRADE_ID" class="form-control"
+                                                options="vm.gradeListData" ng-model="vm.form.HR_GRADE_ID"></select>
+
+                                    </div>
+                                </div>
+
+                                
+                                <div class="form-group" ng-if="vm.isTeam==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Team
+                                    </label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="HR_SHIFT_TEAM_ID" class="form-control" @*ng-disabled="vm.isManagementType!=true"*@
+                                                options="vm.shiftTeamListData" ng-model="vm.form.HR_SHIFT_TEAM_ID"></select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group" ng-if="vm.isFloor==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Floor & Line
+                                    </label>
+                                    <div class="col-md-4" style="padding-right:10px;">
+                                        <input type="hidden" name="FLOOR_NAME" ng-model="vm.form.FLOOR_NAME" value="{{vm.form.LK_FLOOR_ID==null||vm.form.LK_FLOOR_ID==''?'':vm.form.FLOOR_NAME}}" />
+                                        <select kendo-drop-down-list name="LK_FLOOR_ID" class="form-control" @*ng-disabled="vm.isManagementType!=true"*@
+                                                options="vm.floorListData" ng-model="vm.form.LK_FLOOR_ID"></select>
+
+                                    </div>
+                                    <div class="col-md-4" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="LINE_NO" class="form-control" @*ng-disabled="vm.isManagementType!=true"*@
+                                                options="vm.lineListData" ng-model="vm.form.LINE_NO"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isSalPart==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Salary Part
+                                    </label>
+                                    <div class="col-md-4" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="SAL_PART_ID" class="form-control" @*ng-disabled="vm.isManagementType!=true"*@
+                                                options="vm.salPartOprion" ng-model="vm.form.SAL_PART_ID"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isGender==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Gender
+                                    </label>
+                                    <div class="col-md-4" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="LK_GENDER_ID" class="form-control"
+                                                options="vm.genderListData" ng-model="vm.form.LK_GENDER_ID"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isDiscpActType==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Discp. Action Type
+                                    </label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select class="form-control" kendo-drop-down-list name="HR_DSPLN_ACT_TYPE_ID" k-option-label="'-- Select --'"
+                                                k-data-text-field="'DA_TYPE_NAME_EN'" k-data-value-field="'HR_DSPLN_ACT_TYPE_ID'"
+                                                k-data-source="vm.discpActTypeList" ng-model="vm.form.HR_DSPLN_ACT_TYPE_ID"></select>
+                                    </div>
+                                </div>
+
+
+
+
+
+
+                                <div class="form-group" ng-if="vm.isSalesPosStore==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Sales Store/Shop
+                                    </label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+
+                                        <select kendo-drop-down-list name="PS_STORE_ID" class="form-control" ng-model="vm.form.PS_STORE_ID"
+                                                options="vm.saleStoreDs"></select>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isSalesPoint==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Sales Point/Counter
+                                    </label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+
+                                        <select kendo-drop-down-list name="PS_COUNTR_ID" class="form-control" ng-model="vm.form.PS_COUNTR_ID"
+                                                options="vm.salePointDs"></select>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group" ng-if="vm.isCustomerType==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Customer Type
+                                    </label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="LK_CUST_TYPE_ID" class="form-control" ng-model="vm.form.LK_CUST_TYPE_ID"
+                                                options="vm.customerTypeDs"></select>
+
+                                    </div>
+                                </div>
+
+
+
+
+
+
+                                <div class="form-group" ng-if="vm.isEmployee==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Employee
+                                    </label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <input type="hidden" name="HR_EMPLOYEE_ID" ng-model="vm.form.HR_EMPLOYEE_ID" value="{{vm.form.HR_EMPLOYEE_ID}}" />
+
+                                        <input type="text" ng-model="vm.form.EMPLOYEE_CODE" placeholder="Search..."
+                                               typeahead="item.EMPLOYEE_CODE as item.EMPLOYEE_CODE for item in emoloyeeAuto($viewValue)"
+                                               typeahead-min-length="3" typeahead-wait-ms="1000"
+                                               typeahead-on-select="onSelectItem($item)" typeahead-loading="loadingLocations" class="form-control">
+                                        <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+                                        @*<select kendo-drop-down-list name="HR_EMPLOYEE_ID" class="form-control"
+                                            options="vm.employeeDataList" ng-model="vm.form.HR_EMPLOYEE_ID"></select>*@
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.hasUserAccount==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Who's Print
+                                    </label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="HAS_USER_ACCOUNT" ng-model="vm.form.HAS_USER_ACCOUNT" class="form-control"
+                                                options="vm.hasUserAccountListData"></select>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group" ng-if="vm.isJobStatus==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Job Status
+
+                                    </label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="LK_JOB_STATUS_ID" ng-model="vm.form.LK_JOB_STATUS_ID" class="form-control"
+                                                options="vm.jobStatusListData"></select>                                        
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isMultiJobStatus==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Job Status
+
+                                    </label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select class="form-control" kendo-multi-select name="LK_JOB_STATUS_ID_LIST" k-placeholder="'Search...'"
+                                                k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'"
+                                                k-data-source="vm.jobStatusDataSource" ng-model="vm.form.LK_JOB_STATUS_ID_LIST"
+                                                ng-change="vm.onChangeMultiJobStatus()"></select>
+                                    </div>
+                                    @*{{vm.form.LK_JOB_STATUS_LST}}*@
+                                </div>
+
+
+                                <div class="form-group" ng-if="vm.isTaFlag==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Attendance Status
+                                    </label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        @*<input type="hidden" name="TA_FLAG" ng-model="vm.form.TA_FLAG" value="{{vm.form.TA_FLAG}}" />*@
+                                        <select kendo-drop-down-list name="TA_FLAG" ng-model="vm.form.TA_FLAG" class="form-control" @*ng-disabled="vm.isManagementType!=true"*@
+                                                options="vm.taFlagListData"></select>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group" ng-if="vm.isEmpDutyNature==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Shift Duty?
+                                    </label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        
+                                        <select kendo-drop-down-list name="IS_SHIFT" ng-model="vm.form.IS_SHIFT" class="form-control" @*ng-disabled="vm.isManagementType!=true"*@
+                                                options="vm.empDutyNatureListData"></select>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group" ng-if="vm.isDayType==true && vm.LOGIN_ID!='adminhr'" >
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Jobcard Type
+                                    </label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <input type="hidden" name="DAY_TYPE" ng-model="vm.form.DAY_TYPE" value="{{vm.form.DAY_TYPE}}" />
+                                        <select kendo-drop-down-list name="TA_FLAG" class="form-control" ng-model="vm.form.TA_FLAG"
+                                                options="vm.jobCardTypeListData"></select>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isReportType==true && vm.LOGIN_ID!='adminhr'">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Report Type
+                                    </label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        @*<input type="hidden" name="REPORT_TYPE_ID" ng-model="vm.form.REPORT_TYPE_ID" value="{{vm.form.REPORT_TYPE_ID}}" />*@
+
+                                        <select kendo-drop-down-list name="REPORT_TYPE_ID" ng-model="vm.form.REPORT_TYPE_ID" class="form-control" @*ng-disabled="vm.isManagementType!=true"*@
+                                                value="{{vm.form.REPORT_TYPE_ID}}"
+                                                options="vm.reportTypeListData"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.LOGIN_ID=='adminhr'">                                    
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="REPORT_TYPE_ID" ng-model="vm.form.REPORT_TYPE_ID" class="form-control" ng-show="false"
+                                                ng-init="vm.form.REPORT_TYPE_ID=2"
+                                                options="vm.reportTypeListData"></select>                                                                                    
+                                    </div>                                    
+                                </div>
+
+                                    <div class="form-group" ng-if="vm.isBank==true">
+                                        <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                            Bank
+                                        </label>
+                                        <div class="col-md-8" style="padding-right:10px;">
+                                            <select kendo-drop-down-list name="RF_BANK_ID" class="form-control" @*ng-disabled="vm.isManagementType!=true"*@
+                                                    options="vm.bankListData" ng-model="vm.form.RF_BANK_ID"></select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" ng-if="vm.isGrossSalary==true">
+                                        <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                            Gross Salary
+                                        </label>
+                                        <div class="col-md-8" style="padding-right:10px;">
+                                            <input type="text" class="form-control" name="PAY_AMOUNT" ng-model="vm.form.PAY_AMOUNT" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" ng-if="vm.isNumOfDay==true">
+                                        <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                            No. of Days
+                                        </label>
+                                        <div class="col-md-8" style="padding-right:10px;">
+                                            <input type="text" class="form-control" name="NO_OF_DAYS" ng-model="vm.form.NO_OF_DAYS" />
+                                        </div>
+                                    </div>
+
+
+                                <div class="form-group" ng-if="vm.isItemCategory==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Item Category
+                                    </label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="INV_ITEM_CAT_ID" class="form-control"
+                                                options="vm.itemCategoryDs" ng-model="vm.form.INV_ITEM_CAT_ID"></select>
+                                    </div>
+                                </div>
+
+
+
+                                    <div class="form-group" ng-if="vm.isItem==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">
+                                        Item
+                                    </label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <input type="text" id="ITEM_CODE" ng-model="vm.form.ITEM_CODE" placeholder="Search..." @*ng-disabled="vm.isEmployee!=true"*@
+                                               @*style="background-color:blue;color:white"*@
+                                               typeahead="item.ITEM_CODE_NAME as item.ITEM_CODE_NAME for item in itemAuto($viewValue)"
+                                               typeahead-min-length="3" typeahead-wait-ms="1000"
+                                               typeahead-on-select="onSelectInvItem($item)" typeahead-loading="loadingLocationsItm" class="form-control" />
+                                        <i ng-show="loadingLocationsItm" class="glyphicon glyphicon-refresh"></i>
+
+                                        @*<select kendo-drop-down-list class="form-control" name="HR_INCR_MEMO_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                                k-data-text-field="'AUTH_NO'" k-data-value-field="'HR_INCR_MEMO_ID'"
+                                                k-auto-bind="'true'" k-options="vm.incrMemoListOption" k-data-source="vm.incrMemoListDataSource" ng-model="vm.form.HR_INCR_MEMO_ID"></select>*@
+                                    </div>
+                                </div>
+
+                                    <div class="form-group" ng-show="vm.isFormDate==true">
+                                        <label class="control-label col-md-4" style="padding-right:0px">
+                                            From Date
+                                        </label>
+                                        <div class="col-md-6 input-group">
+                                            <input type="text" class="form-control" name="FROM_DATE" ng-model="vm.form.FROM_DATE" value="{{vm.form.FROM_DATE}}"
+                                                   style="padding-right:0px;"
+                                                   datepicker-popup="{{vm.dtFormat}}" is-open="vm.fromDateOpened"
+                                                   max-date="vm.today"
+                                                   datepicker-options="vm.dateOptions" close-text="Close" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn-calendar" ng-click="vm.fromDateOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" ng-show="vm.isToDate==true">
+                                        <label class="control-label col-md-4" style="padding-right:0px">
+                                            To Date
+                                        </label>
+                                        <div class="col-md-6 input-group">
+                                            <input type="text" class="form-control" name="TO_DATE" ng-model="vm.form.TO_DATE"
+                                                   style="padding-right:0px;"
+                                                   datepicker-popup="{{vm.dtFormat}}" is-open="vm.toDateOpened"
+                                                   max-date="vm.today"
+                                                   datepicker-options="vm.dateOptions" close-text="Close" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn-calendar" ng-click="vm.toDateOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" ng-show="vm.isOutTimeWt==true">
+                                        <label class="control-label col-md-4" style="padding-right:0px">
+                                            Out Time From
+                                        </label>
+                                        <div class="col-md-2" style="padding-right:0px">
+                                            <input type="time" class="form-control" name="FROM_OUT_TIME_WT" ng-model="vm.form.FROM_OUT_TIME_WT" />
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="IS_FROM_OVERLAP" ng-model="vm.form.IS_FROM_OVERLAP" ng-true-value="'Y'" ng-false-value="'N'" value="{{vm.form.IS_FROM_OVERLAP}}" />Day Overlap?
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                <div class="form-group" ng-show="vm.isOutTimeWt==true">
+                                    <label class="control-label col-md-4" style="padding-right:0px">
+                                        Out Time To
+                                    </label>                                    
+                                    <div class="col-md-2" style="padding-right: 0px">
+                                        <input type="time" class="form-control" name="TO_OUT_TIME_WT" ng-model="vm.form.TO_OUT_TIME_WT" />
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="IS_TO_OVERLAP" ng-model="vm.form.IS_TO_OVERLAP" ng-true-value="'Y'" ng-false-value="'N'" value="{{vm.form.IS_TO_OVERLAP}}" />Day Overlap?
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-show="vm.isExtraOtTime==true">
+                                    <label class="control-label col-md-4" style="padding-right:0px">
+                                        Extra OT Time
+                                    </label>
+                                    <div class="col-md-2" style="padding-right: 0px">
+                                        <input type="text" class="form-control" name="OT_HR_TIME" ng-model="vm.form.OT_HR_TIME" placeholder="hh:mi" />
+                                    </div>                                    
+                                </div>
+
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label"></label>
+                                        <div class="col-md-6">
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="IS_EXCEL_FORMAT" ng-model="vm.form.IS_EXCEL_FORMAT" ng-true-value="'Y'" ng-false-value="'N'" value="{{vm.form.IS_EXCEL_FORMAT}}" />Export to Excel?
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <p>&nbsp;</p>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px"></label>
+                                        <div class="col-md-8" style="padding-right:0px;">
+                                            <button type="button" class="btn btn-sm blue" ng-click="vm.preview()"><i class="fa fa-file-text-o"></i> Preview</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            <p>&nbsp;</p>
+                        </fieldset>
+                        <p>&nbsp;</p>
+
+                    </div>
+                    <div class="col-md-4">
+                    </div>
+
+                </div>
+
+            </div>
+        </form>
+
+        @*<div class="form-group">
+            <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px"></label>
+            <div class="col-md-8" style="padding-right:0px;">
+                <button type="submit" class="btn btn-default" ng-click="vm.readTemplate()"><i class="fa fa-file-text-o"></i> Preview</button>
+            </div>
+        </div>*@
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+

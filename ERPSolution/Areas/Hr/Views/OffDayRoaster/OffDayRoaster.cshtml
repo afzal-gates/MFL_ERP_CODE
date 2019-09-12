@@ -1,0 +1,137 @@
+﻿@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Hr</a>
+
+    </li>
+    <li>
+        <a href="#">Offday Duty Roaster</a>
+    </li>
+</ul>
+
+
+
+<div class="portlet box blue-dark">
+
+    <div class="portlet-title">
+        <div class="caption">
+            @*<i class="fa fa-gift"></i>*@ Offday Duty Roaster
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <form class="form-search">
+            <fieldset class="custom-fieldset" style="padding-top:0px;">
+                <legend class="custom-legend">Search By</legend>
+
+                <div class="form-group">
+                    @*<label class="col-md-1 control-label">
+                        Company
+                    </label>*@
+                    <div class="col-md-2">
+                        Company
+                        <select class="form-control" ng-model="vm.form.HR_COMPANY_ID" ng-options="item.HR_COMPANY_ID as item.COMP_NAME_EN for item in vm.companyData"></select>
+                    </div>
+                    @*<label class="col-md-1 control-label">
+                        Department
+                    </label>*@
+
+                    <div class="col-md-2">
+                        Department
+                        <select kendo-drop-down-list name="PARENT_ID" class="form-control"
+                                options="vm.parentDepartmentListData" ng-model="vm.form.PARENT_ID" ng-disabled="vm.enableDept"></select>
+                    </div>
+
+                    @*<label class="col-md-1 control-label">
+                        Section
+                    </label>*@
+
+                    <div class="col-md-2">
+                        Section
+                        <select class="form-control" name="HR_DEPARTMENT_ID" ng-model="vm.form.HR_DEPARTMENT_ID"
+                                ng-options="Item.HR_DEPARTMENT_ID as Item.DEPARTMENT_NAME_EN for Item in vm.departmentListData" ng-disabled="vm.enableDept"></select>
+                    </div>
+                    @*<label class="col-md-1 control-label">
+                        Employee
+                    </label>*@
+                    <div class="col-md-2">
+                        Employee
+                        <input type="text" ng-model="vm.form.EMPLOYEE_CODE" placeholder="Search..." typeahead-min-length="3" typeahead-wait-ms="1000" typeahead="item.EMPLOYEE_CODE as item.EMPLOYEE_CODE for item in emoloyeeAuto($viewValue)" typeahead-on-select="onSelectItem($item)" typeahead-loading="loadingLocations" class="form-control" ng-disabled="!vm.enableDept">
+                        <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+
+
+                    </div>
+
+                    @*<div class="col-md-2">
+                        Effective From
+                        <div class="input-group">
+                            <input type="text" class="form-control" max-date="vm.toDay" datepicker-popup="{{vm.dtFormat}}" ng-model="vm.form.EFFECTIVE_FROM" is-open="EFFECTIVE_FROMopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" ng-disabled="vm.showExpiredDate" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn-calendar" ng-click="EFFECTIVE_FROMopen($event)" ng-disabled="vm.showExpiredDate"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                    </div>*@
+
+
+
+
+                    <div class="col-md-4">
+                        <br />
+
+                        <div ng-click="vm.employeeData(vm.form)" class="btn btn-sm purple" ng-class="(vm.form.HR_COMPANY_ID && vm.form.PARENT_ID && vm.form.HR_DEPARTMENT_ID)||vm.form.HR_EMPLOYEE_ID?'':'disabled'">
+                            <i class="fa fa-refresh"></i>
+                            <span class="hidden-480">
+                                Load
+                            </span>
+                        </div>
+
+                        <div ng-click="vm.newSchedule()" class="btn btn-sm blue" ng-disabled="!vm.enableDept">
+                            @*<i class="fa fa-plus"></i>*@
+                            <span class="hidden-480">
+                                By Section
+                            </span>
+                        </div>
+
+                        <div ng-click="vm.newScheduleByEmployee()" class="btn btn-sm blue" ng-disabled="vm.enableDept">
+                            @*<i class="fa fa-plus"></i>*@
+                            <span class="hidden-480">
+                                By Employee
+                            </span>
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+            </fieldset>
+        </form>
+
+        <div ui-view class="shuffle-animation">
+        </div>
+
+    </div>
+</div>

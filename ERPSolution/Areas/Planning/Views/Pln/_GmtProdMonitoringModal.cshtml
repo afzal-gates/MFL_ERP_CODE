@@ -1,0 +1,58 @@
+﻿<div class="modal-body">
+    <div class="portlet grey-cascade box">
+        <div class="portlet-title">
+            <div style="padding-top:2px;">
+                <h4 class="title">
+                    Style # : <strong>{{data.STYLE_NO}}</strong>&nbsp;&nbsp;Order # : <strong>{{data.ORDER_NO}}</strong>&nbsp;&nbsp;Buyer : <strong>{{data.BYR_ACC_NAME_EN}}</strong>&nbsp;&nbsp;Order Confirm: <strong>{{data.ORD_CONF_DT|date:'dd-MMM-yyyy'}}</strong>&nbsp;&nbsp;
+                    Shipment: <strong>{{data.SHIP_DT|date:'dd-MMM-yyyy'}}</strong>&nbsp;&nbsp;
+                    Item Name: <strong>{{data.ITEM_NAME_EN}}</strong>&nbsp;&nbsp;
+                    Order Quantity # : <strong>{{data.ORDER_QTY}}</strong>&nbsp;&nbsp;
+                    Allocation Qty: <strong>{{data.ALLOCATED_QTY}}</strong>&nbsp;&nbsp;
+                    Allocation% <strong style="color: darkblue;"> {{ ((data.ALLOCATED_QTY/data.ORDER_QTY)*100|number:1) }} %</strong>&nbsp;&nbsp;
+                    Production: <strong>{{data.TTL_PROD}}</strong>&nbsp;&nbsp;
+                    Production% :# <strong style="color: darkblue;"> {{ ((data.TTL_PROD/data.ORDER_QTY)*100|number:1) }}%</strong>&nbsp;&nbsp;
+                    <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                </h4>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div class="row" style="margin:auto;">
+
+                <table class="table table-condensed table-striped table-bordered">
+                    <tr>
+                        <td rowspan="2">Date</td>
+                        <td ng-repeat="col in data.lines" style="color: darkblue;">
+                            L={{col.LINE_CODE}}, &nbsp; Allo={{col.ALLOCATED_QTY}}, 
+                            Prod={{col.TTL_PROD}}&nbsp;(OutOfPlan={{col.INITIAL_PROD_QTY }})&nbsp;,&nbsp;%={{(col.TTL_PROD/col.ALLOCATED_QTY)*100|number:1}}%
+                            <span style="display:block;" class="text-warning" ng-if="col.OUT_OF_PLAN_PROD_REC">
+                                {{ col.OUT_OF_PLAN_PROD_REC }}
+                            </span>
+
+                        </td>
+                    </tr>
+
+                    <tr class="site-table-header">
+                        <td ng-repeat="col in data.lines">
+                            <span class="col-xs-3 col-md-3 col-lg-3">Plan</span>
+                            <span class="col-xs-3 col-md-3 col-lg-3">Production</span>
+                            <span class="col-xs-6 col-md-6 col-lg-6">Std||Req Effi.</span>
+                        </td>
+                    </tr>
+
+                    <tr ng-repeat="row in data.datas">
+                        <td style="padding-top: 2px; padding-bottom: 2px;">{{ row.CALENDAR_DT|date:'dd-MMM-yyyy'}}</td>
+                        <td style="padding-top: 2px; padding-bottom: 2px;"  ng-repeat="col in data.lines" ng-class="{'active': row[col.LINE_CODE]['STS_FLAG'] =='Y' }">
+                            <span style="font-style:italic;" class="col-xs-3 col-md-3 col-lg-3" ng-hide="row[col.LINE_CODE]['REQ_PROD_QTY'] < 0">{{ row[col.LINE_CODE]['REQ_PROD_QTY'] }}</span>
+                            <span style="color: darkblue;" class="col-xs-3 col-md-3 col-lg-3" ng-hide="row[col.LINE_CODE]['TOT_PROD'] < 0">{{ row[col.LINE_CODE]['TOT_PROD'] }}</span>
+                            <span class="col-xs-6 col-md-6 col-lg-6" ng-hide="row[col.LINE_CODE]['REQ_EFF']  < 0">
+                                <span style="color: darkgreen;">{{ row[col.LINE_CODE]['RF_PLAN_EFF'] }}%</span> ||
+                                <span style="color: darkblue;">{{ row[col.LINE_CODE]['REQ_EFF'] }}% <small>({{  row[col.LINE_CODE]['REQ_PER_HR'] }}/Hr)</small></span>
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+    </div>
+ </div>

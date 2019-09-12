@@ -1,0 +1,711 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#">Bulk Fabric Booking</a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" @*ng-bind="vm.Title"*@>
+            {{vm.Title}}&nbsp;<span style="color:#ff4600" ng-show="vm.form.IS_BFB_FINALIZED == 'Y'"><b>[ Record Locked ]</b></span>
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+
+        <ng-form class="form-horizontal" role="form" name="bulkFabBooking" novalidate>
+
+            <div class="form-body clearfix">
+                <div class="row" style="margin:auto;">
+                  
+                    <div>
+                        <div class="row" style="margin:auto;" ng-show="vm.errors">
+                            <div class="alert alert-danger" role="alert">
+                                @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                                <div style="padding: 0px 0px 15px 25px; ">
+                                    <b>Please fix the following errors ....</b>
+                                </div>
+                                <ul ng-repeat="field in vm.errors">
+                                    <li ng-repeat="error in field" ng-bind="error"></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        
+
+                        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;" ng-disabled="vm.form.IS_BFB_FINALIZED=='Y'">
+                            <legend class="custom-legend"> Key Information</legend>
+
+                            <input type="hidden" name="MC_BLK_FAB_REQ_H_ID" ng-model="vm.form.MC_BLK_FAB_REQ_H_ID" class="form-control" />
+
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">
+                                    Booking Ref.#
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" name="BLK_FAB_REQ_NO" ng-model="vm.form.BLK_FAB_REQ_NO" readonly />
+                                </div>
+
+                                <label class="col-md-2 control-label">
+                                    <span aria-required="true" class="required">*</span>Booking Date
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" ng-click="vm.bookingDateOpen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                           name="BLK_FAB_REQ_DT" ng-model="vm.form.BLK_FAB_REQ_DT" is-open="vm.bookingDateOpened" datepicker-options="dateOptions"
+                                           date-disabled="disabled(date, mode)" required close-text="Close" ng-disabled="true" required />
+                                    @*<input kendo-date-time-picker k-ng-model="vm.form.BLK_FAB_REQ_DT" name="BLK_FAB_REQ_DT" 
+                                           k-options="vm.datePickerOptions" data-k-format="'dd/MM/yyyy hh:mm tt'" k-interval="5"
+                                           style="width: 100%;" ng-disabled="vm.form.IS_BFB_FINALIZED=='Y'" required />*@
+                                </div>
+                            </div>
+                           
+                            
+                            
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">
+                                    Progarm By
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="hidden" name="BLK_FAB_REQ_BY" ng-model="vm.form.BLK_FAB_REQ_BY" data-ng-init="vm.form.BLK_FAB_REQ_BY='@Session["multiLoginEmpId"]'" />
+                                    <textarea ng-model="vm.form.EMPLOYEE_PROFILE" rows="1" class="form-control"
+                                              data-ng-init="vm.form.EMPLOYEE_PROFILE='@Session["multiLoginEmpName"]' + ', '+'@Session["multiLoginEmpDesigName"]'+', '+'@Session["multiLoginEmpCoreDeptName"]'" ng-disabled="true" />
+                                </div>
+
+                                <label class="col-md-2 control-label">
+                                    <span aria-required="true" class="required">*</span>Buyer A/C
+                                </label>
+                                <div class="col-md-4">
+                                    <select kendo-drop-down-list name="MC_BYR_ACC_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'" required
+                                            @*k-data-source="vm.buyerAcList"*@ k-options="vm.buyerAcList" ng-model="vm.form.MC_BYR_ACC_ID"
+                                            k-data-text-field="'BYR_ACC_NAME_EN'" k-data-value-field="'MC_BYR_ACC_ID'"
+                                            ng-disabled="vm.form.IS_BFB_FINALIZED=='Y'"
+                                            k-auto-bind="'true'" @*k-on-data-bound="vm.getBuyerAccWiseStyleList(kendoEvent)"*@ k-on-select="vm.getBuyerAccWiseStyleList(kendoEvent)"></select>
+                                </div>
+                            </div>
+
+                            @*<hr style="border-top: 1px solid silver;" />*@
+                            
+                            <div class="form-group">
+                                
+                                <label class="col-md-2 control-label">
+                                    <span aria-required="true" class="required">*</span>Style#
+                                </label>
+                                <div class="col-md-4">
+                                    @*{{vm.form.HAS_SET}}*@
+                                    @*{{vm.form.MC_STYLE_H_ID}}*@
+                                    @*{{vm.form.MC_STYLE_H_EXT_ID}}*@
+                                    <select kendo-drop-down-list name="MC_STYLE_H_EXT_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'" required
+                                            k-data-source="vm.buyerAccWiseStyleDataSource" ng-model="vm.form.MC_STYLE_H_EXT_ID"
+                                            k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_STYLE_H_EXT_ID'"
+                                            ng-disabled="vm.form.IS_BFB_FINALIZED=='Y'"
+                                            k-auto-bind="'true'" @*k-on-data-bound="vm.WorkStyleListByUserBuyerAcc(kendoEvent)"*@ k-on-select="vm.WorkStyleListByUserBuyerAcc(kendoEvent)"></select>
+
+                                    <input type="hidden" name="MC_STYLE_H_ID" ng-model="vm.form.MC_STYLE_H_ID" class="form-control" />
+
+                                    @*<span class="alert-danger" style="font-size:20px;font-weight:bold" ng-show="vm.isPlsWait==true">Please wait....</span>*@
+                                </div>
+
+                                <label class="col-md-2 control-label">
+                                    Style Name
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" name="STYLE_DESC" ng-model="vm.form.STYLE_DESC" readonly />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                                             
+                                <label class="col-md-2 control-label">
+                                    <span aria-required="true" class="required">*</span>Order#
+                                </label>
+                                <div class="col-md-4">
+                                    @*{{vm.form.IS_MULTI_SHIP_DT}}*@
+                                    @*{{vm.MC_ORDER_LIST}}*@
+                                    @*{{vm.form.MC_ORDER_H_ID_LST}}*@
+                                    <select class="form-control" kendo-multi-select name="MC_ORDER_H_ID_LST" k-placeholder="'Search...'" required
+                                            k-data-text-field="'ORDER_NO'" k-data-value-field="'MC_ORDER_H_ID'"
+                                            k-data-source="vm.styleWiseOrderList" ng-model="vm.form.MC_ORDER_H_ID_LST"
+                                            k-value-primitive="false" ng-disabled="vm.form.IS_BFB_FINALIZED=='Y'"
+                                            k-auto-bind="'false'" @*k-on-data-bound="vm.getOrderWiseItemList()"*@ k-on-close="vm.getOrderWiseItemList()"></select>
+                                </div> 
+                                                              
+
+                                <label class="col-md-2 control-label">
+                                    Currency
+                                </label>
+                                <div class="col-md-2">
+                                    <select kendo-drop-down-list name="RF_CURRENCY_ID" class="form-control"
+                                            ng-disabled="vm.form.IS_BFB_FINALIZED=='Y'"
+                                            options="vm.currencyList" id="RF_CURRENCY_ID" ng-model="vm.form.RF_CURRENCY_ID"></select>
+                                </div>
+
+                                @*<label class="col-md-1 control-label" style="padding-left:0px;padding-right:0px;">
+                                    Conv. Loc.
+                                </label>
+                                <div class="col-md-1">
+                                    <input type="number" class="form-control" name="CURR_CONV_LOC" ng-model="vm.form.CURR_CONV_LOC" placeholder="Conv. Local Value" />
+                                   
+                                </div>*@
+                            </div>
+
+                            @*<div class="form-group">                                
+                                <label class="col-md-2 control-label">
+                                    Buyer
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" name="BUYER_NAME_EN" ng-model="vm.form.BUYER_NAME_EN" readonly />
+                                </div>  
+                                
+                                <label class="col-md-2 control-label">
+                                    <span aria-required="true" class="required">*</span>Order #
+                                </label>
+                                <div class="col-md-4">
+                                    <select kendo-drop-down-list name="MC_ORDER_H_ID" class="form-control" k-option-label="'-- Select Order --'"
+                                            k-data-source="vm.workStyleWiseOrderList" ng-model="vm.form.MC_ORDER_H_ID" k-data-text-field="'ORDER_NO'"
+                                            k-data-value-field="'MC_ORDER_H_ID'" k-on-data-bound="" k-on-change="vm.orderWiseItemList()"></select>
+                                </div>                              
+                            </div>*@
+
+                            @*<div class="form-group">
+                                <label class="col-md-2 control-label">
+                                    Job #
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" name="JOB_TRAC_NO" ng-model="vm.form.JOB_TRAC_NO" readonly />
+                                </div>
+
+                                <label class="col-md-2 control-label">
+                                    Days Remaining
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" name="DAYS_REMAINING" ng-model="vm.form.DAYS_REMAINING" readonly />
+                                </div>
+                            </div>*@
+
+                            @*<hr style="border-top: 1px solid silver;" />*@
+
+                            <div class="form-group">
+                                @*<label class="col-md-2 control-label">
+                                    Item Name
+                                </label>
+                                <div class="col-md-4">
+                                    <select kendo-drop-down-list name="MC_STYLE_D_ITEM_ID" class="form-control" k-option-label="'-- Select Item --'"
+                                            k-template="vm.ItemTemplate" k-value-template="vm.ItemValueTemplate" k-data-source="vm.orderWiseItemListData" ng-model="vm.form.MC_STYLE_D_ITEM_ID" 
+                                            k-data-text-field="'ITEM_NAME_EN'"  k-data-value-field="'MC_STYLE_D_ITEM_ID'" k-on-data-bound="" k-on-change=""></select>
+                                </div>*@
+
+                                <label class="col-md-2 control-label checkbox-inline">
+                                    @*<input type="checkbox" name="IS_MULTI_MODEL" ng-model="vm.form.IS_MULTI_MODEL" ng-true-value="'Y'" ng-false-value="'N'" />*@ 
+                                    <span aria-required="true" class="required">*</span>Item/Model #
+                                </label>
+                                <div class="col-md-10">
+                                    <select class="form-control" kendo-multi-select name="STYLE_D_ITEM_LST" k-placeholder="'Search...'" required
+                                            k-data-text-field="'ITEM_NAME_EN'" k-data-value-field="'MC_STYLE_D_ITEM_ID'"
+                                            k-data-source="vm.orderWiseItemList" ng-model="vm.form.STYLE_D_ITEM_LST"
+                                            ng-disabled="vm.form.IS_BFB_FINALIZED=='Y'"
+                                            k-auto-bind="'true'" k-on-close="vm.styleDitemList()"></select>
+                                    @*{{vm.form.STYLE_D_ITEM_LST}}*@
+                                    
+                                </div>
+                            </div>   
+                            @*{{STYLE_D_ITEM_LST}}*@
+                            <div class="form-group" @*ng-show="vm.form.IS_YD=='Y'"*@>
+                                <label class="col-md-2 control-label">
+                                    Cutting Wastage %
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="number" class="form-control" name="PCUT_WSTG" ng-model="vm.form.PCUT_WSTG" />
+                                </div>
+
+                                <label class="col-md-2 control-label">&nbsp;</label>
+
+                                <label class="col-md-2 control-label">
+                                    YD Wastage %
+                                </label>
+                                <div class="col-md-1">
+                                    <input type="number" class="form-control" name="PYD_WSTG" ng-model="vm.form.PYD_WSTG" />
+                                </div>
+
+                                <label class="col-md-2 control-label">
+                                    AOP Wastage %
+                                </label>
+                                <div class="col-md-1">
+                                    <input type="number" class="form-control" name="PAOP_WSTG" ng-model="vm.form.PAOP_WSTG" />
+                                </div>
+
+                                @*<label class="col-md-2 control-label checkbox-inline">
+                                    <input type="checkbox" name="IS_REVISION" ng-model="vm.form.IS_REVISION" ng-true-value="'Y'" ng-false-value="'N'" /> Revision?
+                                </label>*@
+
+                            </div>                         
+
+                        </fieldset>
+                        
+                        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;" ng-if="vm.IS_COPY!='Y'" ng-show="vm.form.REVISION_NO>0" ng-disabled="vm.form.IS_BFB_FINALIZED=='Y'">
+                            <legend class="custom-legend"> Revision Information</legend>
+
+                            <div class="form-group" @*ng-if="vm.form.REVISION_NO!=null"*@>
+                                <label class="col-md-2 control-label">
+                                    Revision#
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" name="REVISION_NO" ng-model="vm.form.REVISION_NO" readonly />
+                                </div>
+
+                                <label class="col-md-offset-2 col-md-2 control-label">
+                                    @*<span aria-required="true" class="required">*</span>*@Revision Date
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" ng-click="vm.revisionDateOpen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                           name="REVISION_DT" ng-model="vm.form.REVISION_DT" is-open="vm.revisionDateOpened" datepicker-options="dateOptions"
+                                           date-disabled="disabled(date, mode)" close-text="Close" readonly />
+                                    @*<input kendo-date-time-picker k-ng-model="vm.form.REVISION_DT" name="REVISION_DT"
+                    k-options="vm.datePickerOptions" data-k-format="'dd/MM/yyyy hh:mm tt'" k-interval="5" style="width: 100%;"
+                    ng-disabled="vm.form.IS_BFB_FINALIZED=='Y'" />*@
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">
+                                    Reason
+                                </label>
+                                <div class="col-md-10">
+                                    <textarea ng-model="vm.form.REV_REASON" rows="2" class="form-control" />
+                                </div>
+                            </div>
+
+                        </fieldset>
+
+                        <br />
+                        
+                        @*<tabset>
+                            <tab heading="Consumption Entry" active="vm.bulkFabBkDtlState" ui-sref="BulkFabBkEntry.Dtl">
+                                <div data-ui-view="BulkFabBkDtl"></div>
+                            </tab>
+
+                            <tab heading="Process Data" active="vm.processConsDtlState" ui-sref="BulkFabBkEntry.ProcessConsData">
+                                <div data-ui-view="ProcessConsDtl"></div>
+                            </tab>
+                        </tabset>*@
+
+                            <div class="portlet-body" data-ui-view="BulkFabBkDtl"></div>
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label class="control-label">
+                                        Remarks Top
+                                    </label>
+                                    <textarea class="form-control" name="REMARKS_TOP" ng-model="vm.form.REMARKS_TOP" rows="2" ng-disabled="vm.form.IS_BFB_FINALIZED=='Y'"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label class="control-label">
+                                        Remarks Bottom
+                                    </label>
+                                    <textarea class="form-control" name="REMARKS" ng-model="vm.form.REMARKS" rows="2" ng-disabled="vm.form.IS_BFB_FINALIZED=='Y'"></textarea>
+                                </div>
+                            </div>
+
+
+                            <div class="row" style="margin:auto;" ng-show="vm.errors">
+                                <div class="alert alert-danger" role="alert">
+                                    @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                                    <div style="padding: 0px 0px 15px 25px; ">
+                                        <b>Please fix the following errors ....</b>
+                                    </div>
+                                    <ul ng-repeat="field in vm.errors">
+                                        <li ng-repeat="error in field" ng-bind="error"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                    </div>
+
+                    @*{{bulkFabBooking.MC_ORDER_H_ID_LST.$error}}*@
+
+                    <div class="row" style="margin:auto;">
+                        <div @*class="col-md-12"*@ style="padding-top:10px;">
+                            <div class="col-md-9" align="left" style="padding-left: 0px; padding-top: 10px;">
+                                
+                                <button type="button" ng-if="vm.IS_COPY=='Y'" class="btn btn-sm blue-chambray" ng-click="vm.submitData(vm.form,token)"
+                                        ng-class="{'disabled':bulkFabBooking.MC_BYR_ACC_ID.$error.required||bulkFabBooking.BLK_FAB_REQ_DT.$error.required||bulkFabBooking.MC_STYLE_H_EXT_ID.$error.required}">
+                                    Save
+                                </button>
+                                
+                                <button type="button" ng-if="vm.IS_COPY!='Y' && (vm.form.MC_BLK_FAB_REQ_H_ID<1||vm.form.MC_BLK_FAB_REQ_H_ID==null)" class="btn btn-sm green" ng-click="vm.submitData(vm.form,token)"
+                                        ng-class="{'disabled':bulkFabBooking.MC_BYR_ACC_ID.$error.required||bulkFabBooking.BLK_FAB_REQ_DT.$error.required||bulkFabBooking.MC_STYLE_H_EXT_ID.$error.required||
+                                                                vm.form.IS_BFB_FINALIZED=='Y'}">
+                                    Save
+                                </button>
+                                <button type="button" ng-if="vm.IS_COPY!='Y' && vm.form.MC_BLK_FAB_REQ_H_ID>0" class="btn btn-sm yellow-gold" ng-click="vm.submitData(vm.form,token)"
+                                        ng-class="{'disabled':bulkFabBooking.MC_BYR_ACC_ID.$error.required||bulkFabBooking.BLK_FAB_REQ_DT.$error.required||bulkFabBooking.MC_STYLE_H_EXT_ID.$error.required||
+                                                                vm.form.IS_BFB_FINALIZED=='Y'}">
+                                    Update
+                                </button>
+
+                                <button type="button" class="btn btn-sm blue" ng-click="vm.cancel()">Cancel</button>
+                                @*<button type="button" class="btn btn-sm blue" ng-click="vm.cancel()">Add Booking <i class="fa fa-plus"></i></button>*@
+
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <button type="button" class="btn btn-sm purple" ng-click="processLossModal(vm.form.MC_BLK_FAB_REQ_H_ID)"
+                                        ng-disabled="vm.IS_COPY=='Y'||vm.form.MC_BLK_FAB_REQ_H_ID<1||vm.form.IS_BFB_FINALIZED=='Y'">
+                                    Process Loss
+                                </button>
+                                <button type="button" class="btn btn-sm purple" ng-click="collarCuffModal(vm.form.MC_BLK_FAB_REQ_H_ID, vm.form.MC_STYLE_H_ID)"
+                                        ng-disabled="vm.IS_COPY=='Y'||vm.form.MC_BLK_FAB_REQ_H_ID<1||vm.form.IS_BFB_FINALIZED=='Y'">
+                                    Collar/Cuff Meas
+                                </button>
+
+
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@*{{vm.form.HAS_PLOSS}}*@
+                                <button type="button" class="btn btn-sm blue" ng-click="vm.bookingProcess(vm.form,token)"
+                                        ng-disabled="vm.IS_COPY=='Y'||vm.form.MC_BLK_FAB_REQ_H_ID<1 || vm.form.HAS_PLOSS=='N'||vm.form.IS_BFB_FINALIZED=='Y'">
+                                    Process
+                                </button>
+                                                                
+                                <div class="btn-group" dropdown>
+                                    <button id="split-button" type="button" class="btn btn-sm blue" ng-click="vm.printBookingRecord(vm.form.REVISION_NO)" ng-disabled="vm.form.MC_BLK_FAB_REQ_H_ID<1 || vm.form.HAS_PLOSS=='N'">Print</button>
+                                    <button type="button" class="btn btn-sm blue" dropdown-toggle ng-disabled="vm.form.MC_BLK_FAB_REQ_H_ID<1 || vm.form.HAS_PLOSS=='N'">
+                                        <span class="caret"></span>
+                                        <span class="sr-only">Split button!</span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="split-button">
+                                        <li role="menuitem" ng-repeat="itm in vm.revisionList">
+                                            <a ng-click="vm.printBookingRecord(itm.REVISION_NO)">{{itm.REV_REASON}}</a>
+                                        </li>
+
+                                        @*<li role="menuitem"><a ng-click="vm.printBookingRecord(0)">Action</a></li>
+                                        <li role="menuitem"><a href="#">Another action</a></li>
+                                        <li role="menuitem"><a href="#">Something else here</a></li>
+                                        <li class="divider"></li>
+                                        <li role="menuitem"><a href="#">Separated link</a></li>*@
+                                    </ul>
+                                </div>
+
+
+                                @*<button type="button" class="btn btn-sm btn-default" ng-click="rowCategoryModal(vm.form.MC_BLK_FAB_REQ_H_ID)" ng-disabled="vm.form.MC_BLK_FAB_REQ_H_ID<1">Set Display Order</button>*@
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <button type="button" class="btn btn-sm blue-hoki" ng-click="vm.lsitView()">Back to List</button>
+                                <button type="button" class="btn btn-sm btn-success" ng-click="bookingRevisionModal(vm.form.MC_BLK_FAB_REQ_H_ID)" ng-show="vm.form.IS_BFB_FINALIZED=='Y' && vm.form.MC_TNA_TASK_STATUS_ID==36"
+                                        ng-disabled="vm.IS_COPY=='Y'||vm.form.MC_BLK_FAB_REQ_H_ID<1 || vm.form.MC_BLK_FAB_REQ_H_ID==''||vm.form.IS_BFB_FINALIZED!='Y'||vm.form.MC_TNA_TASK_STATUS_ID!=36">
+                                    Revise
+                                </button>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                @*<button type="button" class="btn btn-sm red" ng-click="vm.bookingFinalize(vm.form,token)"
+                                        ng-disabled="vm.form.MC_BLK_FAB_REQ_H_ID<1 || vm.form.MC_BLK_FAB_REQ_H_ID==''||vm.form.IS_BFB_FINALIZED=='Y'">
+                                    Finalize
+                                </button>*@
+                                <a class='btn btn-sm purple' href='/Merchandising/Mrc/BudgetSheet?a=93/#/BudgetSheet/{{vm.form.MC_BLK_FAB_REQ_H_ID}}/{{vm.form.MC_STYLE_H_ID}}/{{vm.form.MC_STYL_BGT_H_ID}}' ng-disabled="vm.IS_COPY=='Y'||vm.form.MC_BLK_FAB_REQ_H_ID<1 || vm.form.MC_STYLE_H_ID<1"><i class='fa fa-edit'> Budget Sheet</i></a>
+                                @*<button type="button" class="btn btn-sm blue" ng-show="vm.form.MC_BLK_FAB_REQ_H_ID>0" ng-click="vm.send4BulkBudgetAprvl(vm.form.MC_BLK_FAB_REQ_H_ID, token)">Send for Approval</button>*@
+                                
+                            </div>
+
+                            <div class="col-md-3" style="padding-right:0px;">
+                                <fieldset class="custom-fieldset" style="padding-top:0px;padding-bottom:0px;">
+                                    <legend class="custom-legend" style="margin-bottom:0px;">Page Setup</legend>
+                                    <div class="radio-list" style="margin-left:20px">
+                                        <label class="radio-inline" ng-repeat="item in vm.pageSizeList">
+                                            <span class="checked"><input type="radio" ng-model="vm.PAGE_SIZE_NAME" ng-value="item.PAGE_SIZE_NAME" required></span>{{item.PAGE_SIZE_NAME}}
+                                        </label>
+                                    </div>
+                                </fieldset>
+                            </div>
+
+                            @*<div class="col-md-offset-1 col-md-6">
+                    <button type="button" class="btn btn-sm btn-default" ng-click="vm.CopyOrder();vm.CopyOrder1()">Add Order</button>
+                    <button type="button" class="btn btn-sm btn-default" ng-click="vm.cancel()">Add Fresh Order</button>
+                </div>*@
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </ng-form>
+
+        @*<pre>{{vm.form|json}}</pre>*@
+
+        @*<pre>{{bulkFabBooking.$error|json}}</pre>*@
+    </div>
+</div>
+
+
+
+
+
+@*Start For Process Model*@
+<script type="text/ng-template" id="ProcessLossModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <p style="padding-top:10px;">
+                        Process Loss
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </p>
+
+
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="ProcessLossModalForm" novalidate @*ng-submit="save(Task,token,TaskForm.$valid)"*@>
+                    <input id="access_token" data-ng-model="token" type="hidden"
+                           data-ng-init="token='@Session["access_token"]'" />
+
+                    <div kendo-grid k-data-source="plDataList" k-columns="plColumns" @*k-selectable="true"*@ k-editable="true" @*k-on-change="selected = data"*@ k-height="300" k-filterable="true" k-sortable="true"></div>
+
+                    @*<div class="form-group">
+                        <label for="selectPeriod" class="col-md-4 control-label">Period</label>
+
+                        <div class="col-md-8" style="padding-top:5px;">
+                            <select kendo-drop-down-list id="ACC_PAY_PERIOD_ID" name="ACC_PAY_PERIOD_ID" class="form-control"
+                                    options="companyOpenPeriodList" ng-model="ACC_PAY_PERIOD_ID"></select>
+                        </div>
+                    </div>*@
+                    @*<pre>{{ProcessLossModalForm.$valid}}</pre>*@
+
+                    <br />
+                    <div class="form-group form-actions">
+                        <div class="col-md-12">
+                            <button type="button" class="btn green btn-sm" ng-click="save(token, ProcessLossModalForm.$valid)" @*ng-class="{'disabled':!HrReportModalForm.$valid}" ng-disabled="formInvalid"*@>Save</button>
+                            <button type="button" class="btn btn-default btn-sm" ng-click="cancel()">Cancel</button>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="/UPLOAD_DOCS/OTHER_DOCS/DYEING_PROCESS_LOSS.pdf" target="_blank" class="btn btn-sm blue">
+                                Loss Chart
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+@*End For Process Model*@
+
+
+
+@*Start For Collar/Cuff Measurement Model*@
+<script type="text/ng-template" id="CollarCuffMeasModal.html">
+    <div class="modal-body" id="x">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <p style="padding-top:10px;">
+                        Collar/Cuff Measurement
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </p>
+
+
+                </div>
+            </div>
+            <div class="portlet-body">
+
+                <div style="padding:2px;">
+                    <kendo-grid options="gridOptions" id="IDOrderScmDS" k-data-source="OrderScmList">
+                        <div k-detail-template ng-init="detailExpand(dataItem);" ng-hide="!dataItem.MC_STYLE_H_ID>0">
+                            <div>
+
+                                <div class="row" style="padding-left: 5px; padding-right: 5px;">
+
+                                    <input type="hidden" id="MC_STYLE_H_ID" name="MC_STYLE_H_ID" ng-model="dataItem.MC_STYLE_H_ID" />
+
+                                    <div>
+                                        <fieldset class="custom-fieldset" ng-hide="!dataItem.MC_STYLE_H_ID>0">
+                                            <legend class="custom-legend"><b>Collar & Cuff Measurement</b></legend>
+                                            <table class="table table-striped" style="border-collapse: collapse;" ng-if="dataItem.MC_STYLE_H_ID>=0">
+                                                <thead>
+                                                    <tr style="border: solid 2px lightgray; ">
+                                                        <td style="border: solid 2px lightgray; " rowspan="2">Part</td>
+                                                        <td ng-repeat="itmSize in dataItem.uniqueOrderSize" style="border: solid 2px lightgray; text-align: center; ">
+                                                            {{itmSize.SIZE_CODE}}
+                                                        </td>
+
+                                                    </tr>
+
+                                                </thead>
+
+                                                <tbody>
+                                                    <tr ng-repeat="itmGmtPart in dataItem.GMTPart" style="border: solid 2px lightgray; ">
+
+                                                        <td style="width:50px;">
+                                                            {{itmGmtPart.GARM_PART_NAME}}
+                                                        </td>
+
+                                                        <td ng-repeat="itmSize in dataItem.itmGmtPart[$index]" style="padding-left:0px;padding-right:0px;text-align:center">
+                                                            {{itmSize.MESUREMENT}}
+
+                                                            @*<div class="=row">
+                                                                <div class="col-md-4" style="padding:2px;">
+                                                                    <input type="number" min="0" max="999" placeholder="Length" class="form-control" style="min-width:50px;max-width:80px;" name="MEAS_LENGTH" ng-model="itmSize.MEAS_LENGTH" />
+                                                                </div>
+
+                                                                <label class="col-md-1" style="padding:5px;">X</label>
+                                                                <div class="col-md-4" style="padding:2px;">
+                                                                    <input type="number" min="0" max="999" placeholder="Width" style="min-width:50px;max-width:80px;" class="form-control" name="MEAS_WIDTH" ng-model="itmSize.MEAS_WIDTH" />
+                                                                </div>
+
+                                                                <input type="hidden" name="RF_GARM_PART_ID" ng-model="itmSize.RF_GARM_PART_ID" />
+                                                                <input type="hidden" name="MC_SIZE_ID" ng-model="itmSize.MC_SIZE_ID" />
+                                                                <input type="hidden" name="MC_STYL_CLCF_MEAS_ID" ng-model="itmSize.MC_STYL_CLCF_MEAS_ID" />
+
+                                                                <input type="hidden" name="MC_STYLE_H_ID" ng-model="itmSize.MC_STYLE_H_ID" />
+
+                                                            </div>*@
+
+
+                                                        </td>
+
+                                                    </tr>
+                                                </tbody>
+
+                                            </table>
+
+
+                                            @*<br />
+                                            <div class="form-group form-actions">
+                                                <div class="col-md-2">
+                                                    <button type="button" class="btn green btn-sm" ng-disabled="dataItem.IS_FINALIZED_CC=='N' && dataItem.IS_FIRST>0" ng-if="dataItem.FINALIZED<1" ng-click=" vm.submitSizeAll(dataItem)">Save</button>
+                                                    <button type="button" class="btn yellow-gold btn-sm" ng-disabled="dataItem.IS_FINALIZED_CC=='Y'" ng-if=" dataItem.FINALIZED<1 && dataItem.IS_FIRST>0" ng-click=" vm.submitSizeAll(dataItem)">Update</button>
+                                                    <button type="button" class="btn green btn-sm" ng-if="dataItem.IS_FIRST>0 && dataItem.FINALIZED>0" ng-click="vm.submitSizeAll(dataItem)">Revise</button>
+                                                    
+
+                                                </div>
+                                                <div class="col-md-4" ng-if="dataItem.IS_FIRST>0 && dataItem.FINALIZED<=0">
+                                                    <label class="col-md-3"><input type="checkbox" id="IS_FINALIZED_CC" name="IS_FINALIZED_CC" ng-model="dataItem.IS_FINALIZED_CC" ng-true-value="'Y'" ng-false-value="'N'" /> Finalize?</label>
+
+                                                </div>
+                                            </div>*@
+                                        </fieldset>
+                                    </div>
+                                    @*</script>*@
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </kendo-grid>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+@*End For Collar/Cuff Measurement Model*@
+
+
+
+@*Start For Report Row Category ID Model*@
+<script type="text/ng-template" id="ReportRowCategoryModal.html" >
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <p style="padding-top:10px;">
+                        Report Display Order
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </p>
+
+
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="ReportRowCategoryForm" novalidate @*ng-submit="save(Task,token,TaskForm.$valid)"*@>
+                    <input id="access_token" data-ng-model="token" type="hidden"
+                           data-ng-init="token='@Session["access_token"]'" />
+                   
+                    <div kendo-grid k-data-source="ReportRowCategoryDataList" k-columns="rowCategoryColumns" k-selectable="true" @*k-on-change="selected = data"*@ k-height="300"></div>
+
+                    <br />
+                    <div class="form-group form-actions">
+                        <div class="col-md-12">
+                            <button type="button" class="btn green btn-sm" ng-click="save(token, ReportRowCategoryForm.$valid)" @*ng-class="{'disabled':!HrReportModalForm.$valid}" ng-disabled="formInvalid"*@>Save</button>
+                            <button type="button" class="btn btn-default btn-sm" ng-click="cancel()">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+@*End For Report Row Category ID Model*@
+
+
+
+@*Start For Booking Revision*@
+<script type="text/ng-template" id="BookingRevisionModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <p style="padding-top:10px;">
+                        Bulk Booking Revision
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </p>
+
+
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="BookingRevisionModal" novalidate @*ng-submit="save(Task,token,TaskForm.$valid)"*@>
+                    <input id="access_token" data-ng-model="token" type="hidden"
+                           data-ng-init="token='@Session["access_token"]'" />
+
+                    @*<div kendo-grid k-data-source="asortDataList" k-columns="asortColumns" k-selectable="true" k-on-change="selected = data" k-height="300" k-filterable="true" k-sortable="true"></div>*@
+
+                    <div class="form-group">
+                        <label for="selectPeriod" class="col-md-2 control-label">
+                            <span aria-required="true" class="required">*</span>Date
+                        </label>
+                        <div class="col-md-5" style="padding-top:5px;">
+                            <input type="text" class="form-control" ng-click="RevisionDate_LNopen($event)" datepicker-popup="{{dtFormat}}"
+                                   name="REVISION_DT" ng-model="REVISION_DT" is-open="RevisionDate_LNopened"
+                                   datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close"
+                                   ng-disabled="true" required />
+                            @*<input kendo-date-time-picker k-ng-model="REVISION_DT" name="REVISION_DT" 
+                                   k-options="datePickerOptions" data-k-format="'dd/MM/yyyy hh:mm tt'" k-interval="5" style="width: 100%;" required />*@
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="selectPeriod" class="col-md-2 control-label">Reason</label>
+                        <div class="col-md-10" style="padding-top:5px;">
+                            <textarea class="form-control" ng-model="REV_REASON" rows="2"></textarea>
+                        </div>
+                    </div>
+
+                    @*<pre>{{ProcessLossModalForm.$valid}}</pre>*@
+
+                    <br />
+                    <div class="form-group form-actions">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="button" class="btn green btn-sm" ng-click="save(token, BookingRevisionModal.$valid)" ng-class="{'disabled':!BookingRevisionModal.$valid}" ng-disabled="formInvalid">Save</button>
+                            <button type="button" class="btn btn-default btn-sm" ng-click="cancel()">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+@*End For Booking Revision*@

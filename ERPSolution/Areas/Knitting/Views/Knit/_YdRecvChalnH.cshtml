@@ -1,0 +1,230 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 12px;
+    }
+
+    #grid tr td {
+        /* this makes the menu visibile */
+        overflow: visible;
+    }
+
+    #grid .k-grid-header {
+        padding-right: 0 !important;
+    }
+</style>
+
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Knitting</a>
+
+    </li>
+    <li>
+        <a href="#">{{vm.Title}}</a>
+    </li>
+</ul>
+
+
+<div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+    <div class="page-splash">
+        <div class="page-splash-message">
+            <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+        </div>
+    </div>
+</div>
+
+
+<div class="portlet box blue-dark" @*ng-controller="HrReportController as vm"*@>
+    
+    
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">            
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <form name="frmYdRecvChaln" class="form-horizontal form-body" >           
+            <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+            
+            <div class="row">
+                <div class="col-md-12">
+
+                    <fieldset class="custom-fieldset" style="margin-bottom:5px" ng-disabled="vm.form.IS_FINALIZED=='Y'">
+                        <legend class="custom-legend">Challan Information</legend>
+
+                        <div class="row" style="margin:auto;" ng-show="vm.errors">
+                            <div class="alert alert-danger" role="alert">
+                                @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                                <div style="padding: 0px 0px 15px 25px; ">
+                                    <b>Please fix the following errors ....</b>
+                                </div>
+                                <ul ng-repeat="field in vm.errors">
+                                    <li ng-repeat="error in field" ng-bind="error"></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-1">Challan#<span aria-required="true" class="required">*</span></label>
+                            <div class="col-md-2" ng-class="{'has-error': (frmYdRecvChaln.CHALAN_NO.$touched || frmYdRecvChaln.$submitted) && frmYdRecvChaln.CHALAN_NO.$error.required}">
+                                <input type="text" class="form-control" name="CHALAN_NO" ng-model="vm.form.CHALAN_NO" required />
+                            </div>
+
+                            <label class="control-label col-md-offset-1 col-md-1">Date<span aria-required="true" class="custom-required">*</span></label>
+                            <div class="col-md-2" ng-class="{'has-error': (frmYdRecvChaln.CHALAN_DT.$touched || frmYdRecvChaln.$submitted) && frmYdRecvChaln.CHALAN_DT.$error.required}">
+                                <input type="text" class="form-control" ng-click="vm.chlnDateOpen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                       name="CHALAN_DT" ng-model="vm.form.CHALAN_DT" is-open="vm.chlnDateOpened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" required />
+                            </div>
+
+                            <label class="control-label col-md-offset-1 col-md-1">Gate Pass#</label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" name="GATE_PASS_NO" ng-model="vm.form.GATE_PASS_NO" />
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-1">Prog#<span aria-required="true" class="custom-required">*</span></label>
+                            <div class="col-md-3" ng-class="{'has-error': (frmYdRecvChaln.KNT_YD_PRG_H_ID.$touched || frmYdRecvChaln.$submitted) && frmYdRecvChaln.KNT_YD_PRG_H_ID.$error.required}">
+                                <select class="form-control" kendo-drop-down-list name="KNT_YD_PRG_H_ID" k-option-label="'--Yd Program --'"
+                                        k-data-text-field="'PRG_REF_NO'" k-data-value-field="'KNT_YD_PRG_H_ID'" k-filter="'Contains'"
+                                        k-auto-bind="'true'" k-data-source="KntYdProgramDs" ng-model="vm.form.KNT_YD_PRG_H_ID" k-on-change="vm.onChaneProgramRef(kendoEvent)"
+                                        required ng-disabled="vm.form.IS_FINALIZED=='Y'" style="width:100%;"></select>
+                                @*<span class="badge badge-success">{{vm.form.SUP_TRD_NAME_EN}}</span>*@
+                            </div>
+
+                            <label class="control-label col-md-1">Supplier</label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" name="SUP_TRD_NAME_EN" ng-model="vm.form.SUP_TRD_NAME_EN" readonly />
+                            </div>
+
+                            <label class="control-label col-md-1">Invoice#</label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" name="INVOICE_NO" ng-model="vm.form.INVOICE_NO" />
+                            </div>
+
+                            @*<label class="control-label col-md-1">Work Ref#<span aria-required="true" class="custom-required">*</span></label>
+                <div class="col-md-2" ng-class="{'has-error': (frmYdRecvChaln.CL_WO_REF_NO.$touched || frmYdRecvChaln.$submitted) && frmYdRecvChaln.CL_WO_REF_NO.$error.required}">
+                    <input type="text" class="form-control" name="CL_WO_REF_NO" ng-model="vm.form.CL_WO_REF_NO" required />
+                </div>*@
+                        </div>
+
+                        <div class="form-group">
+                            
+                            <label class="control-label col-md-1">Store<span aria-required="true" class="custom-required">*</span></label>
+                            <div class="col-md-3" ng-class="{'has-error': (frmYdRecvChaln.SCM_STORE_ID.$touched || frmYdRecvChaln.$submitted) && frmYdRecvChaln.SCM_STORE_ID.$error.required}">
+                                <select class="form-control" kendo-drop-down-list name="SCM_STORE_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                        k-data-text-field="'STORE_NAME_EN'" k-data-value-field="'SCM_STORE_ID'"
+                                        k-auto-bind="'true'" k-options="vm.storeOption" k-data-source="vm.storeDataSource" ng-model="vm.form.SCM_STORE_ID"
+                                        ng-disabled="vm.form.IS_FINALIZED=='Y'" required></select>
+                            </div>
+
+                            <div class="col-md-1">
+                                <label class="control-label checkbox-inline">
+                                    <input type="checkbox" name="IS_TRANSFER" ng-model="vm.form.IS_TRANSFER" ng-true-value="'Y'" ng-false-value="'N'" /> Transfer?
+                                </label>
+                            </div>
+                            <div class="col-md-3" ng-class="{'has-error': (frmYdRecvChaln.TR_PARTY_ID.$touched || frmYdRecvChaln.$submitted) && frmYdRecvChaln.TR_PARTY_ID.$error.required}">
+                                <select class="form-control" kendo-drop-down-list name="TR_PARTY_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                        k-data-text-field="'SUP_TRD_NAME_EN'" k-data-value-field="'SCM_SUPPLIER_ID'"
+                                        k-auto-bind="'true'" k-options="vm.supplierOption" k-data-source="vm.supplierDataSource" ng-model="vm.form.TR_PARTY_ID"
+                                        ng-disabled="vm.form.IS_TRANSFER!='Y'||vm.form.IS_FINALIZED=='Y'" ng-required="vm.form.IS_TRANSFER=='Y'"></select>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-1">Remarks</label>
+                            <div class="col-md-11">
+                                <textarea class="form-control" name="REMARKS" ng-model="vm.form.REMARKS" rows="2"></textarea>
+                            </div>
+                        </div>
+
+
+                    </fieldset>
+
+                    @*<pre>{{vm.form|json}}</pre>*@
+
+                    <fieldset class="custom-fieldset" style="margin-bottom:5px" ng-disabled="vm.form.IS_FINALIZED=='Y'">
+                        <legend class="custom-legend">Challan Details</legend>
+
+                        <div kendo-grid id="delvGrid" k-options="vm.chlnDtlOptions" k-data-source="vm.chlnDtlDataSource"></div>
+                    </fieldset>
+                    
+                </div>
+
+
+                <div class="col-md-12" style="padding-left:32px" >
+                    <div class="form-group">
+                        <button type="button" @*ng-disabled="rollDelvGridDataSource.length()<0"*@ class="btn btn-sm green" ng-show="vm.form.KNT_YD_RCV_CHL_H_ID<1" ng-click="vm.submitData(token,'N')"
+                                ng-class="{'disabled':!frmYdRecvChaln.$valid||vm.form.KNT_YD_RCV_CHL_H_ID==null||vm.form.SCM_STORE_ID==null||
+                                          vm.form.CHALAN_NO==null||vm.form.CHALAN_DT==null||vm.form.IS_FINALIZED=='Y'}">
+                            Save
+                        </button>
+                        <button type="button" @*ng-disabled="rollDelvGridDataSource.length()<0"*@ class="btn btn-sm yellow-gold" ng-show="vm.form.KNT_YD_RCV_CHL_H_ID>0" ng-click="vm.submitData(token,'N')"
+                                ng-class="{'disabled':!frmYdRecvChaln.$valid||vm.form.KNT_YD_RCV_CHL_H_ID==null||vm.form.SCM_STORE_ID==null||
+                                          vm.form.CHALAN_NO==null||vm.form.CHALAN_DT==null||vm.form.IS_FINALIZED=='Y'}">
+                            Update
+                        </button>
+
+                        <button type="button" @*ng-disabled="rollDelvGridDataSource.length()<0"*@ class="btn btn-sm blue" ng-show="vm.form.KNT_YD_RCV_CHL_H_ID>0" ng-click="vm.submitData(token,'Y')"
+                                ng-class="{'disabled':!frmYdRecvChaln.$valid||vm.form.KNT_YD_RCV_CHL_H_ID==null||vm.form.SCM_STORE_ID==null||
+                                          vm.form.CHALAN_NO==null||vm.form.CHALAN_DT==null||vm.form.IS_FINALIZED=='Y'}">
+                            Finalize
+                        </button>
+
+                        <a class="btn btn-sm blue" href="/Knitting/Knit/YdRecvChaln?a=437/#/ydRcvChlnH/0">Cancel</a>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+
+
+                        @*<button type="button" class="btn btn-sm blue" ng-click="vm.printChallan()" ng-show="$parent.form.KNT_YD_RCV_CHL_H_ID>0"
+                        ng-class="{'disabled':$parent.form.KNT_SC_PRG_RCV_ID==null||$parent.form.SCM_STORE_ID==null||
+                                      $parent.form.CHALAN_NO==null||$parent.form.CHALAN_DT==null||vm.rollDelvGridDataSource.length()<0}">
+                    <i class="fa fa-print"></i> Print Challan
+                </button>*@
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <a class="btn btn-sm blue-hoki" href="/Knitting/Knit/YdRecvChaln?a=437/#/ydRcvChlnList?pSCM_SUPPLIER_ID={{vm.form.SCM_SUPPLIER_ID}}">Back to List</a>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </form>
+
+       
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+

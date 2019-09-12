@@ -1,0 +1,143 @@
+﻿<form class="form-horizontal" role="form" name="frmSrtFabDtlResp" novalidate>
+    <div class="form-body clearfix">
+        <div class="row" style="margin:auto;">
+
+            <fieldset class="custom-fieldset" ng-disabled="($parent.form.RF_ACTN_STATUS_ID==60 && $parent.form.USER_CORR_AFTER_APPROVE!='CORR_AFTER_APPROVE')">
+                <legend class="custom-legend"></legend>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">
+                        <span aria-required="true" class="required">*</span>Responsible Department
+                    </label>
+                    <div class="col-md-4">
+                        <select class="form-control" kendo-drop-down-list name="RF_RESP_DEPT_ID" k-option-label="'--Select--'"
+                                ng-model="vm.srtResp.RF_RESP_DEPT_ID" k-data-text-field="'RESP_DEPT_NAME'" k-data-value-field="'RF_RESP_DEPT_ID'"
+                                k-options="vm.respDeptOption" k-data-source="vm.respDeptDataSource" k-filter="'contains'" k-auto-bind="'true'"
+                                k-on-change="" ng-disabled="($parent.form.RF_ACTN_STATUS_ID==60 && $parent.form.USER_CORR_AFTER_APPROVE!='CORR_AFTER_APPROVE')"></select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">
+                        Percentage Share
+                    </label>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control" name="PCT_DIST_QTY" ng-model="vm.srtResp.PCT_DIST_QTY" placeholder="%" ng-change="vm.onChangePctDist()" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">
+                        Share Dist. Qty
+                    </label>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control" name="DIST_QTY" ng-model="vm.srtResp.DIST_QTY" placeholder="Qty in Kg" readonly />
+                    </div>
+                </div>
+
+
+
+
+                <div class="form-group">
+                    <div class="col-md-12 col-md-offset-2">
+
+                        <button type="button" class="btn btn-sm green" ng-click="vm.addRow(vm.srtResp)" ng-show="vm.srtResp.KNT_SRT_FAB_REQ_D3_ID<1"
+                                ng-disabled="($parent.form.RF_ACTN_STATUS_ID==60 && $parent.form.USER_CORR_AFTER_APPROVE!='CORR_AFTER_APPROVE')||
+                                vm.srtResp.RF_RESP_DEPT_ID==''||vm.srtResp.RF_RESP_DEPT_ID==null">
+                            Add
+                        </button>
+                        <button type="button" class="btn btn-sm yellow-gold" ng-click="vm.updateRow(vm.srtResp)" ng-show="vm.srtResp.KNT_SRT_FAB_REQ_D3_ID>0"
+                                ng-disabled="($parent.form.RF_ACTN_STATUS_ID==60 && $parent.form.USER_CORR_AFTER_APPROVE!='CORR_AFTER_APPROVE')||
+                                vm.srtResp.RF_RESP_DEPT_ID==''||vm.srtResp.RF_RESP_DEPT_ID==null">
+                            Update
+                        </button>
+                        <button type="button" class="btn btn-sm blue" ng-click="vm.cancelToGrid()">Cancel</button>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <kendo-grid k-options="$parent.respGridOption" k-data-source="$parent.respGridDataSource"></kendo-grid>
+                    </div>
+                </div>
+            </fieldset>
+
+            
+
+            @*<pre>{{vm.form|json}}</pre>*@
+
+
+        </div>
+    </div>
+</form>
+
+
+
+
+
+
+
+
+@*Start For New Responsable Department*@
+<script type="text/ng-template" id="NewSFabBkRespDeptEntryModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <p style="padding-top:10px;">
+                        Responsable Department
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </p>
+
+
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="NewSFabBkRespDeptEntryModal" novalidate @*ng-submit="save(Task,token,TaskForm.$valid)"*@>
+                    <input id="access_token" data-ng-model="token" type="hidden"
+                           data-ng-init="token='@Session["access_token"]'" />
+
+                    @*<div kendo-grid k-data-source="asortDataList" k-columns="asortColumns" k-selectable="true" k-on-change="selected = data" k-height="300" k-filterable="true" k-sortable="true"></div>*@
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">
+                            <span aria-required="true" class="required">*</span>Dept Name
+                        </label>
+                        <div class="col-md-5" style="padding-top:5px;">
+                            <input type="text" class="form-control" name="RESP_DEPT_NAME" ng-model="RESP_DEPT_NAME" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-2">
+                            <label class="control-label checkbox-inline">
+                                <input type="checkbox" name="IS_ACTIVE" ng-model="IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'" /> Active?
+                            </label>
+                        </div>
+                    </div>
+
+                    @*<pre>{{ProcessLossModalForm.$valid}}</pre>*@
+
+                    <br />
+                    <div class="form-group form-actions">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="button" class="btn green btn-sm" ng-click="save(token, NewSFabBkRespDeptEntryModal.$invalid)" ng-class="{'disabled':!NewSFabBkRespDeptEntryModal.$valid}" ng-show="RF_RESP_DEPT_ID<1">Save</button>
+                            <button type="button" class="btn yellow-gold btn-sm" ng-click="save(token, NewSFabBkRespDeptEntryModal.$invalid)" ng-class="{'disabled':!NewSFabBkRespDeptEntryModal.$valid}" ng-show="RF_RESP_DEPT_ID>0">Update</button>
+
+                            <button type="button" class="btn btn-default btn-sm" ng-click="vm.tranCancel()">Cancel</button>
+                        </div>
+                    </div>
+
+                    <kendo-grid k-options="vm.respDeptGridOption" k-data-source="vm.respDeptGridDataSource"></kendo-grid>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+@*End For New Responsable Department*@
+
+
+
+

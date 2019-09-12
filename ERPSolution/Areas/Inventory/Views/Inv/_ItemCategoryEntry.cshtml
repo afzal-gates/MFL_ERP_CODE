@@ -1,0 +1,257 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Inventory</a>
+
+    </li>
+    <li>
+        <a href="#">Item Category</a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        
+
+        @*<form class="form-horizontal" role="form" name="BuyerForm" novalidate ng-submit="vm.submitBuyerData(vm.form,token)">*@
+
+            <div class="form-body clearfix">
+                <div class="row" style="margin:auto;">
+                   
+                    <div class="col-md-4 portlet light" @*style="border: 1px solid gray; margin-left: 20px;"*@>
+
+                        <p style="color:green">Please select a node for transaction</p>
+                        <div id="ItemCategTreeview" kendo-tree-view k-options="vm.thingsOptions"
+                             style="height:600px;overflow:scroll;"
+                             k-on-change="selectedItem = dataItem"
+                             k-ng-delay="vm.thingsOptions.dataSource">
+                        </div>
+                                                
+                    </div>
+
+                    <div class="col-md-8">
+                        <form name="frmItemCategory" class="form-horizontal" role="form" @*ng-submit="vm.submitData(vm.form,token)"*@ novalidate>
+
+                            <div class="form-body">
+
+                                <input id="access_token" data-ng-model="token" type="hidden"
+                                       data-ng-init="token='@Session["access_token"]'" value="" />
+
+                                @*<meta http-equip="Authorization" name="Bearer @Session["access_token"]" />*@
+
+                                <input name="CREATED_BY" ng-model="vm.CREATED_BY" type="hidden"
+                                       data-ng-init="vm.CREATED_BY='@Session["multiScUserId"]'" value="@Session["multiScUserId"]" />
+
+                                <input name="LAST_UPDATED_BY" ng-model="vm.LAST_UPDATED_BY" type="hidden"
+                                       ng-init="vm.LAST_UPDATED_BY='@Session["multiScUserId"]'" value="@Session["multiScUserId"]" />
+
+
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Action Mode</label>
+                                    <div class="radio-list">
+                                        <div class="col-md-8">
+                                            <label class="radio-inline"><input type="radio" name="ACTION_MODE" ng-model="vm.ACTION_MODE" value="1" ng-click="vm.actionModeSelection()">New</label>
+                                            <label class="radio-inline"><input type="radio" name="ACTION_MODE" ng-model="vm.ACTION_MODE" value="2" ng-click="vm.actionModeSelection()">Edit</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">
+                                        Code
+                                    </label>
+                                    <div class="col-md-3">
+                                        <input type="text" ng-model="vm.form.ITEM_CAT_CODE" name="ITEM_CAT_CODE" class="form-control" readonly />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">
+                                        Parent Category
+                                    </label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" name="PARENT_NAME" ng-model="vm.form.PARENT_NAME" disabled />
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">
+                                        Category Name [En]
+                                    </label>
+                                    <div class="col-md-8">
+                                        <input type="text" ng-model="vm.form.ITEM_CAT_NAME_EN" name="ITEM_CAT_NAME_EN" class="form-control" required data-required-msg="Please insert category name [En]"></input>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">
+                                        Category Name [Bn]
+                                    </label>
+                                    <div class="col-md-8">
+                                        <input type="text" ng-model="vm.form.ITEM_CAT_NAME_BN" name="ITEM_CAT_NAME_BN" class="form-control banglafont" required data-required-msg="Please insert category name [Bn]"></input>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">
+                                        Short Name
+                                    </label>
+                                    <div class="col-md-5">
+                                        <input type="text" ng-model="vm.form.ITEM_CAT_SNAME" name="ITEM_CAT_SNAME" class="form-control"></input>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">
+                                        Display Order
+                                    </label>
+                                    <div class="col-md-2">
+                                        <input type="text" ng-model="vm.form.ITEM_CAT_ORDER" name="ITEM_CAT_ORDER" class="form-control"></input>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-show="vm.form.ITEM_CAT_LEVEL==1">
+                                    <label class="control-label col-md-3">
+                                        Code Prefix
+                                    </label>
+                                    <div class="col-md-2">
+                                        <input type="text" ng-model="vm.form.ITEM_CAT_PREFIX" name="ITEM_CAT_PREFIX" class="form-control"></input>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">
+                                        Level
+                                    </label>
+                                    <div class="col-md-2">
+                                        <input type="text" ng-model="vm.form.ITEM_CAT_LEVEL" name="ITEM_CAT_LEVEL" class="form-control" readonly></input>
+                                    </div>
+
+                                    @*<div class="col-md-6" style="text-align:right">
+                                        <button type="button" class="btn btn-xs blue" ng-click="onAdd()"><i class="fa fa-plus"></i> New Brand</button>
+                                    </div>*@
+                                </div>
+
+                                                                
+                                    
+                                <div class="form-group" ng-show="(vm.ACTION_MODE==1&&vm.selectedItem.PARENT_ID==0)||(vm.ACTION_MODE==2&&vm.selectedItem.PARENT_ID==1)">
+                                    <label class="control-label col-md-3">
+                                        Brand Assign
+                                    </label>
+                                    <div class="col-md-9">
+                                        @*<fieldset class="custom-fieldset">
+                <legend class="custom-legend">Brand Assign</legend>*@
+                                        <dualmultiselect options="demoOptions" ng-model="vm.form.RF_BRAND_ID_LIST"></dualmultiselect>
+                                        @*</fieldset>*@
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <div class="col-md-offset-3 col-md-1">
+                                        <input type="checkbox" ng-model="vm.form.IS_LEAF" name="IS_LEAF" ng-true-value="'Y'" ng-false-value="'N'"></input>
+                                    </div>
+                                    Leaf?
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-offset-3 col-md-1">
+                                        <input type="checkbox" ng-model="vm.form.IS_ACTIVE" name="IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'" />
+                                        <span class="k-invalid-msg" data-for="IS_ACTIVE"></span>
+                                    </div>
+                                    Active?
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="row">
+                                        @*<pre>{{vm.selectedItem||json}}</pre>*@
+                                        
+                                        <div class="col-md-offset-3 col-md-6">
+                                            &nbsp;
+                                            <button type="button" class="btn green" ng-if="!vm.form.INV_ITEM_CAT_ID" ng-disabled="vm.selectedItem.IS_LEAF=='Y'" ng-click="vm.submitData(vm.form,token)"><i class="fa fa-check"></i> Save</button>
+                                            <button type="button" class="btn yellow-gold" ng-if="vm.form.INV_ITEM_CAT_ID" ng-click="vm.submitData(vm.form,token)"><i class="fa fa-check"></i> Update</button>
+
+                                            <button type="button" class="btn blue" ng-click="vm.TranCancel()">Cancel</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row" style="margin:auto;padding-top:10px;" ng-if="vm.errors">                                                                        
+                                    <div class="col-md-offset-3 alert alert-danger" role="alert">
+                                        @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                                        <div style="padding: 0px 0px 15px 25px; ">
+                                            <b>Please fix the following errors ....</b>
+                                        </div>
+                                        <ul ng-repeat="field in vm.errors">
+                                            <li ng-repeat="error in field" ng-bind="error"></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+
+                            </div>
+                        </form>
+                    </div>
+
+
+                </div>
+            </div>
+        @*</form>*@
+    </div>
+</div>
+
+
+<style scoped>
+    .k-treeview .k-in {
+        padding: 5px;
+    }
+
+    #ItemCategTreeview .k-sprite {
+        background-image: url("/Content/assets/global/img/coloricons-sprite.png");
+    }
+
+    .rootfolder {
+        background-position: 0 0;
+    }
+
+    .folder {
+        background-position: 0 -16px;
+    }
+
+    .pdf {
+        background-position: 0 -32px;
+    }
+
+    .html {
+        background-position: 0 -48px;
+    }
+
+    .image {
+        background-position: 0 -64px;
+    }
+
+    .demo-section {
+        float: left;
+        width: 200px;
+        margin: 0 60px 0 0;
+    }
+</style>

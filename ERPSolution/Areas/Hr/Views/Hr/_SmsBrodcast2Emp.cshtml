@@ -1,0 +1,262 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 13px;
+    }
+</style>
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Hr</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+@*<pre>{{form|json}}</pre>*@
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" @*ng-bind="vm.Title"*@>
+            {{vm.Title}}@*&nbsp;<span style="color:#ff4600" ng-show="form.HR_YR_INCR_H_ID>0"><b>[ {{form.BATCH_APVRL_STATUS}} ]</b></span>*@
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+
+    <div class="portlet-body form">
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <form class="form-horizontal" role="form" name="frmSmsBroadcast2Emp" novalidate>
+            <div class="form-body clearfix">
+                <div class="row" style="margin:auto">
+
+                    <div class="row" style="margin:auto;" ng-show="vm.errors">
+                        <div class="alert alert-danger" role="alert">
+                            @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                            <div style="padding: 0px 0px 15px 25px; ">
+                                <b>Please fix the following errors ....</b>
+                            </div>
+                            <ul ng-repeat="field in vm.errors">
+                                <li ng-repeat="error in field" ng-bind="error"></li>
+                            </ul>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-4" style="padding-left:0px">
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend">Type</legend>
+
+                            <div class="form-group">                                
+                                <div class="col-md-12">
+                                    <div class="radio-list" >
+                                        <label  style="margin-left:20px;margin-bottom:3px;" ng-repeat="item in vm.smsTypeList">
+                                            <span class="checked" ><input type="radio" name="SMS_TYPE_ID" ng-model="vm.form.SMS_TYPE_ID" ng-value="item.SMS_TYPE_ID" required /></span>&nbsp;{{item.SMS_TYPE_NAME}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </fieldset>
+
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend">Parameter Spec</legend>
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="radio-list">
+                                        <label style="margin-left: 20px; margin-bottom: 3px;" ng-repeat="item in vm.paramSpecTypeList">
+                                            <span class="checked"><input type="radio" name="PARAM_SPEC_TYPE_ID" ng-model="vm.form.PARAM_SPEC_TYPE_ID" ng-value="item.PARAM_SPEC_TYPE_ID" required /></span>&nbsp;{{item.PARAM_SPEC_TYPE_NAME}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </div>
+
+                    
+                    <div class="col-md-7" style="padding-left:0px;padding-right:0px;">
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend">Parameters</legend>
+
+                            @*<div class="form-group" ng-show="vm.form.SMS_TYPE_ID==1">
+                                <label class="control-label col-md-3">
+                                    SMS Text
+                                </label>
+                                <div class="col-md-9">
+                                    <textarea class="form-control" rows="2" name="" ng-model="vm.form.SMS_TEXT"></textarea>
+                                </div>
+                            </div>*@
+
+
+                            <div class="form-group" @*ng-show="!vm.isEmployee"*@>
+                                <label class="control-label col-md-3">
+                                    Company
+                                </label>
+                                <div class="col-md-6">
+                                    <select class="form-control" kendo-multi-select name="HR_COMPANY_ID_LIST" k-placeholder="'Search...'" ng-show="vm.form.SMS_TYPE_ID==1"
+                                            k-data-text-field="'COMP_NAME_EN'" k-data-value-field="'HR_COMPANY_ID'"
+                                            k-data-source="vm.compDataSource" ng-model="vm.form.HR_COMPANY_ID_LIST"></select>
+
+                                    <select class="form-control" kendo-drop-down-list name="HR_COMPANY_ID" ng-show="vm.form.SMS_TYPE_ID!=1"
+                                            k-data-text-field="'COMP_NAME_EN'" k-data-value-field="'HR_COMPANY_ID'" k-option-label="'-- Select --'"
+                                            k-auto-bind="'true'" k-options="vm.compOptions" k-data-source="vm.compDataSource" ng-model="vm.form.HR_COMPANY_ID"
+                                            @*k-on-select="vm.onSelectCompany(kendoEvent)"*@></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-show="vm.form.SMS_TYPE_ID!=1">
+                                <label class="control-label col-md-3">
+                                    Period
+                                </label>
+                                <div class="col-md-5">
+                                    <select kendo-drop-down-list id="ACC_PAY_PERIOD_ID" name="ACC_PAY_PERIOD_ID" class="form-control"
+                                            options="vm.compPeriodOption" k-data-source="vm.compPeriodDataSource" ng-model="vm.form.ACC_PAY_PERIOD_ID"></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" @*ng-show="!vm.isEmployee"*@>
+                                <label class="control-label col-md-3">
+                                    Office
+                                </label>
+                                <div class="col-md-9">
+                                    <select class="form-control" kendo-multi-select name="HR_OFFICE_ID_LIST" k-placeholder="'Search...'"
+                                            k-data-text-field="'OFFICE_NAME_EN'" k-data-value-field="'HR_OFFICE_ID'"
+                                            k-data-source="vm.officeDataSource" ng-model="vm.form.HR_OFFICE_ID_LIST"></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-show="vm.isSubDepartment">
+                                <label class="control-label col-md-3">
+                                    Section
+                                </label>
+                                <div class="col-md-9">
+                                    <select class="form-control" kendo-multi-select name="HR_DEPARTMENT_ID_LIST" k-placeholder="'Search...'"
+                                            k-data-text-field="'DEPARTMENT_NAME_EN'" k-data-value-field="'HR_DEPARTMENT_ID'"
+                                            k-data-source="vm.sectionDataSource" ng-model="vm.form.HR_DEPARTMENT_ID_LIST"></select>                                   
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-show="vm.isTeam">
+                                <label class="control-label col-md-3">
+                                    Team
+                                </label>
+                                <div class="col-md-9">
+                                    <select class="form-control" kendo-multi-select name="HR_SHIFT_TEAM_ID_LIST" k-placeholder="'Search...'"
+                                            k-data-text-field="'SHIFT_TEAM_NAME_EN'" k-data-value-field="'HR_SHIFT_TEAM_ID'"
+                                            k-data-source="vm.shiftTeamDataSource" ng-model="vm.form.HR_SHIFT_TEAM_ID_LIST"></select>                                    
+                                </div>
+                            </div>
+
+                            @*<div class="form-group">
+                                <label class="control-label col-md-3">
+                                    Floor & Line
+                                </label>
+                                <div class="col-md-5">
+                                    <select class="form-control" kendo-drop-down-list name="N_HR_PROD_FLR_ID" required
+                                            k-data-text-field="'FLOOR_DESC_EN'" k-data-value-field="'HR_PROD_FLR_ID'" k-option-label="'-- Select --'"
+                                            k-auto-bind="'true'" k-options="vm.prodFloorOption" k-data-source="vm.prodFloorDataSource" ng-model="vm.form.N_HR_PROD_FLR_ID" ></select>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <select class="form-control" kendo-drop-down-list name="N_HR_PROD_FLR_ID" required
+                                            k-data-text-field="'LINE_NO'" k-data-value-field="'HR_PROD_LINE_ID'" k-option-label="'-- Select --'"
+                                            k-auto-bind="'true'" k-options="vm.prodLineOption" k-data-source="vm.prodLineDataSource" ng-model="vm.form.N_HR_PROD_LINE_ID"></select>
+                                </div>
+                            </div>*@
+
+                            <div class="form-group" ng-show="vm.isFloor">
+                                <label class="control-label col-md-3">
+                                    Floor & Line
+                                </label>
+                                <div class="col-md-5">
+                                    <select class="form-control" kendo-multi-select name="LK_FLOOR_ID_LIST" k-placeholder="'Search...'"
+                                            k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LK_FLOOR_ID'"
+                                            k-data-source="vm.lkFloorDataSource" ng-model="vm.form.LK_FLOOR_ID_LIST"></select>                                   
+                                </div>
+                                <div class="col-md-4">
+                                    <select class="form-control" kendo-multi-select name="LINE_NO_LIST" k-placeholder="'Search...'"
+                                            k-data-text-field="'Text'" k-data-value-field="'Value'"
+                                            k-data-source="vm.lkLineDataSource" ng-model="vm.form.LINE_NO_LIST"></select>                                    
+                                </div>
+
+                            </div>
+
+                            <div class="form-group" ng-show="vm.isManagementType">
+                                <label class="control-label col-md-3">
+                                    Employee Type
+                                </label>
+                                <div class="col-md-9">
+                                    <select class="form-control" kendo-multi-select name="HR_MANAGEMENT_TYPE_ID_LIST" k-placeholder="'Search...'"
+                                            k-data-text-field="'MNG_TYPE_NAME_EN'" k-data-value-field="'HR_MANAGEMENT_TYPE_ID'"
+                                            k-data-source="vm.employeeTypeDataSource" ng-model="vm.form.HR_MANAGEMENT_TYPE_ID_LIST"></select>                                    
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-show="vm.isEmployee">
+                                <label class="col-md-3 control-label" style="padding-left:0px;">Employee Code</label>
+                                <div class="col-md-4">
+                                    <input type="text" ng-model="vm.form.EMPLOYEE_CODE" placeholder="Search..."
+                                           typeahead="item.EMPLOYEE_CODE as item.EMPLOYEE_CODE for item in emoloyeeAuto($viewValue)"
+                                           typeahead-min-length="3" typeahead-wait-ms="1000"
+                                           typeahead-on-select="onSelectItem($item)" typeahead-loading="loadingLocationsEmp" class="form-control" />
+                                    <i ng-show="loadingLocationsEmp" class="glyphicon glyphicon-refresh"></i>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-show="vm.isEmployee && vm.empListData.length>0">
+                                <div class="col-md-12 col-md-offset-0" >
+                                    <div id="empGrid" kendo-grid></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-offset-3 col-md-10">
+                                    <button type="button" class="btn blue btn-sm" ng-click="vm.send()" ><i class="fa fa-download"></i> Download</button>
+                                    
+
+                                    <button type="button" class="btn btn-default btn-sm" ng-click="vm.tranCancel()">Cancel</button>
+
+                                    @*<button type="button" class="btn btn-default btn-sm" ng-click="vm.tranCancel()">View History</button>*@
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </div>
+                                                    
+                </div>
+
+                @*<pre>{{vm.form|json}}</pre>*@
+                @*<pre>{{form|json}}</pre>*@
+                
+             
+                @*<div class="portlet-body" data-ui-view="IncrimentProposalH@Dtl" ></div>*@
+               
+            </div>
+        </form>
+
+
+
+    </div>
+
+</div>
+

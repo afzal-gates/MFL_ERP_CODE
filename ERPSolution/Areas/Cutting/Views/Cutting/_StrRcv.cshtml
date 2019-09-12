@@ -1,0 +1,130 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 12px;
+    }
+
+    .k-grid-content {
+        height: 200px;
+    }
+</style>
+
+
+
+
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Cutting</a>
+
+    </li>
+    <li>
+        <a href="#">{{vm.Title}}</a>
+    </li>
+</ul>
+
+
+<div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+    <div class="page-splash">
+        <div class="page-splash-message">
+            <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+        </div>
+    </div>
+</div>
+
+
+<div class="portlet box blue-dark" @*ng-controller="HrReportController as vm"*@>
+
+
+    <div class="portlet-title">
+        <div class="caption" @*ng-bind="vm.Title"*@>
+            {{vm.Title}}&nbsp;
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <form class="form-horizontal form-body" name="frmMarkerReq">
+            <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+
+            <div class="row" style="margin:auto;" ng-show="vm.errors">
+                <div class="alert alert-danger" role="alert">
+                    @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                    <div style="padding: 0px 0px 15px 25px; ">
+                        <b>Please fix the following errors ....</b>
+                    </div>
+                    <ul ng-repeat="field in vm.errors">
+                        <li ng-repeat="error in field" ng-bind="error"></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-12">
+
+                    <div class="form-group">
+                        <label class="control-label col-md-1">
+                            Barcode
+                        </label>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" name="DYE_BATCH_NO" ng-model="vm.style.BARCODE_NO" ng-init="vm.style.BARCODE_NO=19288836679" />
+                        </div>                        
+                    </div>
+
+                    <div class="form-group">                       
+                        <div class="col-md-12" >
+                            <pre style="color:red;margin-bottom:0px"><b>Buyer A/C=>Lindex&nbsp;&nbsp;Style=>8128-7541209-013&nbsp;&nbsp;Order=>105885&nbsp;&nbsp;Color=>Black</b></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <fieldset class="custom-fieldset">
+                                <legend class="custom-legend">&nbsp;</legend>
+
+                                <div kendo-grid k-options="vm.layGridOption" k-data-source="vm.layGridDataSource"></div>
+
+                            </fieldset>
+                        </div>
+                    </div>
+
+                    
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group form-actions" style="padding-left:14px;padding-top:10px;">
+                        <div class="col-md-10">
+                            <button type="button" class="btn blue btn-sm" ng-click="" >Store Recv Only</button>
+                            <button type="button" class="btn blue btn-sm" ng-click="">Store Recv and Sewing Line Input</button>
+                            <button type="button" class="btn blue btn-sm" ng-click="">Store Recv and Print/Embr Delivery</button>
+                        </div>
+                    </div>
+                </div>                                              
+
+            </div>            
+
+        </form>
+
+    </div>
+
+</div>
+

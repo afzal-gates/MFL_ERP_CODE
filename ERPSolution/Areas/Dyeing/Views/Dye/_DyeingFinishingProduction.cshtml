@@ -1,0 +1,554 @@
+﻿
+<style>
+    .rowColor {
+        background-color: yellow;
+        /*color: red;*/
+    }
+
+
+    .tooltipafzal {
+        /*position: fixed;
+        display: block;
+        border-bottom: 1px dotted black;
+
+
+        color: red;*/
+        position: relative;
+    }
+
+        .tooltipafzal .tooltipafzaltext {
+            visibility: hidden;
+            display: none;
+            /*width: 120px;*/
+            background-color: black;
+            color: red;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 1;
+            bottom: 60%;
+            left: 65%;
+            margin-left: -60px;
+        }
+
+            .tooltipafzal .tooltipafzaltext::after {
+                content: "";
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                color: red;
+                margin-left: -5px;
+                border-width: 5px;
+                border-style: solid;
+                border-color: black transparent transparent transparent;
+            }
+
+        .tooltipafzal:hover .tooltipafzaltext {
+            visibility: visible;
+            color: red;
+            display: block;
+            padding: 5px;
+        }
+</style>
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Dyeing</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+    <form name="formData" class="form-horizontal" style="background-color: white;">
+        <div class="portlet-body">
+
+            <fieldset class="custom-fieldset" ng-if="!IS_MAIN">
+                <legend class="custom-legend"><b>Dyeing Finishing</b></legend>
+                <div><label id="lblMsgSub"></label></div>
+
+                <div class="form-group">
+
+                    <div class="col-md-2">
+
+                    </div>
+                    <div class="col-md-8">
+                        <table style="width:100%">
+                            <tbody>
+                                <tr>
+                                    <td style="text-align:center; font-size:x-large;" colspan="6"><b>Dyeing Finishing</b></td>
+                                </tr>
+                                <tr style="min-height:50px;">
+                                    <td><b style="color:white;">.</b></td>
+                                    <td><b></b></td>
+                                    <td style="border-right: solid 1px black; text-align: center; font-size: xx-small;"><b></b></td>
+                                    <td style="border-left: solid 1px black; text-align: center; font-size: xx-small;"><b></b></td>
+                                    <td><b></b></td>
+                                    <td><b style="color:white;">.</b></td>
+                                </tr>
+                                <tr style="min-height:50px;">
+                                    <td><b style="color:white;">.</b></td>
+                                    <td style="border-left: solid 1px black; border-top: solid 1px black; text-align: center; font-size: xx-small; color: white;"><b>.</b></td>
+                                    <td style="border-top: solid 1px black; text-align: center; font-size: xx-small; "><b></b></td>
+                                    <td style="border-top: solid 1px black; text-align: center; font-size: xx-small; "><b></b></td>
+                                    <td style="border-right: solid 1px black; border-top: solid 1px black; text-align: center; font-size: xx-small; color: white;"><b>.</b></td>
+
+                                    <td><b style="color:white;">.</b></td>
+
+                                </tr>
+                                <tr style="min-height:150px;">
+                                    <td style="text-align: center; font-size: x-large; width: 33%; padding: 0px; min-height: 150px;" colspan="2">
+                                        <button type="button" style="width: 100%; height: 250px; font-size: x-large; color: white; background-color: #0c2852" class="btn btn-large default" ng-click="vm.activeDIA(1)"><b>Open Line</b></button>
+                                    </td>
+                                    <td style="text-align: center; font-size: x-large; width: 34%; color: white; min-height: 150px;" colspan="2">.</td>
+                                    <td style="font-size: x-large; width: 33%; padding: 0px; min-height: 150px;" colspan="2">
+                                        <button type="button" style="width: 100%; height: 250px; font-size: x-large; color: white; background-color: #0c2852" class="btn btn-large default" ng-click="vm.activeDIA(2)"><b>Tube Line</b></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <div class="col-md-2">
+
+                    </div>
+                </div>
+
+            </fieldset>
+
+            <fieldset class="custom-fieldset" ng-if="IS_DIA">
+                <legend class="custom-legend" style="text-align:center;"><b></b></legend>
+                <div class="form-group">
+
+                    <div class="col-md-2">
+
+                    </div>
+                    <div class="col-md-8">
+                        <table style="width:100%">
+                            <tbody>
+                                <tr>
+                                    <td style="text-align:center; font-size:x-large;" colspan="6"><b>{{vm.Title}}</b></td>
+                                </tr>
+                                <tr style="min-height:50px;">
+                                    <td><b style="color:white;">.</b></td>
+                                    <td><b></b></td>
+                                    <td style="border-right: solid 1px black; text-align: center; font-size: xx-small;"><b></b></td>
+                                    <td style="border-left: solid 1px black; text-align: center; font-size: xx-small;"><b></b></td>
+                                    <td><b></b></td>
+                                    <td><b style="color:white;">.</b></td>
+                                </tr>
+                                <tr style="min-height:50px;">
+                                    <td><b style="color:white;">.</b></td>
+                                    <td style="border-left: solid 1px black; border-top: solid 1px black; text-align: center; font-size: xx-small; color: white;"><b>.</b></td>
+                                    <td style="border-top: solid 1px black; text-align: center; font-size: xx-small; "><b></b></td>
+                                    <td style="border-top: solid 1px black; text-align: center; font-size: xx-small; "><b></b></td>
+                                    <td style="border-right: solid 1px black; border-top: solid 1px black; text-align: center; font-size: xx-small; color: white;"><b>.</b></td>
+
+                                    <td><b style="color:white;">.</b></td>
+
+                                </tr>
+                                <tr style="min-height:150px;">
+                                    <td style="text-align: center; font-size: x-large; width: 33%; padding: 0px; min-height: 150px;" colspan="2">
+                                        <button type="button" style="width: 100%; height: 250px; font-size: x-large; color: white; background-color: #597eb6;" class="btn btn-large default" ng-click="vm.activeOpen()"><b>Open DIA</b></button>
+                                    </td>
+                                    <td style="text-align: center; font-size: x-large; width: 34%; color: white; min-height: 150px;" colspan="2">.</td>
+                                    <td style="text-align: center; font-size: x-large; width: 33%; padding: 0px; min-height: 150px;" colspan="2">
+                                        <button type="button" style="width: 100%; height: 250px; font-size: x-large; color: white; background-color: #597eb6" class="btn btn-large default" ng-click="vm.activeTube()"><b>Tube DIA</b></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <div class="col-md-2">
+
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="custom-fieldset" ng-if="IS_PRODUCTION">
+                <legend class="custom-legend" style="text-align:center;"><b>{{MC_TYPE}}</b></legend>
+                <div><label id="lblMsg"></label></div>
+
+                <div class="form-group">
+
+                    <label class="control-label col-md-2">
+                        <span aria-required="true" class="required">*</span>
+                        Batch Card #:
+                    </label>
+                    <div class="col-md-2">
+                        <input type="text" name="DYE_BATCH_NO" ng-model="vm.form.DYE_BATCH_NO" class="form-control required" auto-focus ng-keyup="vm.getProductionList();" />
+                        <input type="hidden" name="DYE_BT_CARD_H_ID" ng-model="vm.form.DYE_BT_CARD_H_ID" />
+                        <input type="hidden" name="DF_BT_SUB_LOT_ID" ng-model="vm.form.DF_BT_SUB_LOT_ID" />
+                        @*{{vm.form.LK_DIA_TYPE_ID}}*@
+
+                    </div>
+
+                    <div class="col-md-3">
+
+                        <a class="btn btn-sm green" ng-click="vm.getProductionList();"><i class="fa fa-search"></i> Load</a>
+                        <a class="btn btn-sm blue" ng-click="vm.changeDIA(vm.form.LK_DIA_TYPE_ID);"><i class="fa fa-refresh"></i> Toggle Dia</a>
+                        <input type="checkbox" id="IS_CC" style="border: 0px; width: 10%; height: 1.5em;" ng-model="vm.form.IS_CC" /><label for="IS_CC"><b> Is Flat Knit</b></label>
+                    </div>
+
+                    <label class="control-label col-md-1">
+                        Date:
+                    </label>
+                    <div class="col-md-2">
+
+                        <input kendo-date-time-picker k-ng-model="vm.form.PROD_DT" id="PROD_DT" name="PROD_DT" k-max="vm.today"
+                               k-options="datePickerOptions" class="form-control required" />
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">
+                        Shift:
+                    </label>
+                    <div class="col-md-3">
+
+                        <select kendo-drop-down-list name="HR_SCHEDULE_H_ID" id="HR_SCHEDULE_H_ID"
+                                class="form-control required" ng-disabled="vm.form.HR_SCHEDULE_H_ID>0"
+                                options="vm.shiftList" ng-model="vm.form.HR_SCHEDULE_H_ID"></select>
+
+                    </div>
+
+                    <div class="col-md-1">
+                    </div>
+                    <label class="control-label col-md-2">
+                        Operator:
+                    </label>
+                    <div class="col-md-3">
+                        <select class="form-control required" kendo-drop-down-list name="OPERATOR_ID" id="OPERATOR_ID" k-option-label="'-- Select Operator --'"
+                                k-data-text-field="'EMP_FULL_NAME_EN'" k-data-value-field="'HR_EMPLOYEE_ID'"
+                                k-auto-bind="'true'" k-data-source="vm.operatorDataSource" k-ng-delay="vm.operatorDataSource"
+                                k-filter="'contains'" ng-model="vm.form.OPERATOR_ID"></select>
+
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">
+                        Fabric Group
+                    </label>
+                    <div class="col-md-3">
+                        
+                        <select kendo-multi-select name="LK_FBR_GRP_LST" class="form-control"
+                                options="vm.FabGroupList" ng-model="vm.form.LK_FBR_GRP_LST" style="height:30px;"></select>
+
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <a class="btn btn-sm yellow-gold" ng-click="vm.getProductionList();"><i class="fa fa-refresh"></i> Re-Load</a>
+                        @*<input type="checkbox" id="IS_CC" style="border: 0px; width: 10%; height: 1.5em;" ng-model="vm.form.IS_CC" />*@@*<label for="IS_CC"><b> Is Flat Knit</b></label>*@
+                    </div>
+
+                </div>
+
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend"><b>Batch Details</b></legend>
+
+                    <div class="form-group">
+
+                        <label class="control-label col-md-1">
+                            <span aria-required="true" class="required">*</span>
+                            Buyer
+                        </label>
+                        <div class="col-md-2">
+                            <input type="text" name="BUYER_NAME_EN" ng-model="vm.form.BUYER_NAME_EN" readonly="readonly" class="form-control" />
+
+                        </div>
+                        <label class="control-label col-md-2" style="padding:0px;">
+                            <span aria-required="true" class="required">*</span>
+                            Style #
+                        </label>
+                        <div class="col-md-2">
+                            <input type="text" name="STYLE_NO" ng-model="vm.form.STYLE_NO" readonly="readonly" class="form-control" />
+
+                            <input type="hidden" name="MC_STYLE_H_ID" ng-model="vm.form.MC_STYLE_H_ID" />
+                        </div>
+
+                        <label class="control-label col-md-2">
+                            <span aria-required="true" class="required">*</span>
+                            Order #
+                        </label>
+                        <div class="col-md-2">
+                            <input type="text" name="ORDER_NO" ng-model="vm.form.ORDER_NO" readonly="readonly" class="form-control" />
+
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label class="control-label col-md-1">
+                            <span aria-required="true" class="required">*</span>
+                            Color
+                        </label>
+                        <div class="col-md-2">
+                            <input type="text" name="COLOR_NAME_EN" ng-model="vm.form.COLOR_NAME_EN" readonly="readonly" class="form-control" />
+                            <input type="hidden" name="FAB_COLOR_ID" ng-model="vm.form.FAB_COLOR_ID" />
+                            <input type="hidden" name="RF_FAB_TYPE_ID" ng-model="vm.form.RF_FAB_TYPE_ID" />
+                            <input type="hidden" name="MC_FAB_PROD_ORD_H_ID" ng-model="vm.form.MC_FAB_PROD_ORD_H_ID" />
+
+                        </div>
+                        <label class="control-label col-md-2" style="padding:0px;">
+                            <span aria-required="true" class="required">*</span>
+                            Lot #
+                        </label>
+                        <div class="col-md-2">
+                            <input type="text" name="DYE_LOT_NO" ng-model="vm.form.DYE_LOT_NO" readonly="readonly" class="form-control" />
+
+                        </div>
+
+                        <label class="control-label col-md-2">
+                            <span aria-required="true" class="required">*</span>
+                            Batch Qty
+                        </label>
+                        <div class="col-md-2">
+                            <input type="text" name="DYE_BATCH_QTY" ng-model="vm.form.DYE_BATCH_QTY" readonly="readonly" class="form-control" />
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <label class="control-label col-md-1">
+                            <span aria-required="true" class="required">*</span>
+                            Dia Type
+                        </label>
+                        <div class="col-md-2">
+                            <input type="hidden" name="DIA_TYPE" ng-model="vm.form.DIA_TYPE" />
+                            <input type="text" name="DIA_TYPE_NAME" ng-model="vm.form.DIA_TYPE_NAME" readonly="readonly" class="form-control" />
+
+                        </div>
+                        <label class="control-label col-md-2" style="padding:0px;">
+                            <span aria-required="true" class="required">*</span>
+                            Fabric Type
+                        </label>
+                        <div class="col-md-2">
+                            <input type="text" name="FAB_TYPE_NAME" ng-model="vm.form.FAB_TYPE_NAME" readonly="readonly" class="form-control" />
+
+                        </div>
+
+
+
+                        <label class="control-label col-md-2">
+                            <span aria-required="true" class="required">*</span>
+                            DIA Qty({{vm.form.DIA_TYPE_NAME}})
+                        </label>
+                        <div class="col-md-1">
+
+                            <input type="text" name="BATCH_QTY" ng-model="vm.form.BATCH_QTY" readonly="readonly" class="form-control" />
+                        </div>
+                        <div class="col-md-1">
+                            {{DIA_INV}}: {{vm.form.ACT_BATCH_QTY-vm.form.BATCH_QTY}} Kg
+                            @*<a class="btn btn-success green" ng-click="vm.submitAll(vm.form,'N');">Complete</a>*@
+                        </div>
+                    </div>
+
+                </fieldset>
+
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend"><b>Fabrics Details</b></legend>
+                    <div class="form-group" style="margin:auto;">
+
+                        <div class="form-body clearfix">
+                            <table style="width:100%;" class="clsTableMtex">
+                                <thead>
+                                    <tr class="clstheadMtex">
+                                        <th class="clstdMtex">SL No</th>
+                                        <th class="clstdMtex">Fabric Details</th>
+                                        @*<th class="clstdMtex">F/T</th>
+                                        <th class="clstdMtex">F/C</th>
+                                        <th class="clstdMtex">Dia Type</th>*@
+                                        <th class="clstdMtex">Dia Qty(Rqd)</th>
+                                        <th class="clstdMtex">Dia Qty(Issue)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr class="clstdMtex" ng-repeat="item in vm.BatchFabricList">
+                                        <td class="clstdMtex">{{$index+1}}
+                                        @*{{item}}*@
+                                        </td>
+                                        <td class="clstdMtex">
+                                            {{item.FAB_ITEM_DESC}}
+                                            <input type="hidden" ng-model="item.KNT_STYL_FAB_ITEM_H_ID" />
+                                            <input type="hidden" ng-model="item.LK_DIA_TYPE_ID" />
+                                        </td>
+                                        @*<td class="clstdMtex">{{item.FAB_TYPE_SNAME}}</td>
+                                        <td class="clstdMtex">{{item.FIB_COMP_NAME}}</td>
+                                        <td class="clstdMtex">{{item.LK_DIA_TYPE_NAME}} </td>*@
+                                        <td class="clstdMtex">{{item.RQD_QTY}} Kg</td>
+                                        <td class="clstdMtex">{{item.ISSUE_QTY}} Kg</td>
+                                        
+                                    </tr>
+                                </tbody>
+                            </table>
+                            @*<div kendo-grid k-options="vm.BatchFabricList" id="IDBatchFabricDS" k-data-source="vm.BatchFabricList"></div>*@
+
+                        </div>
+                    </div>
+
+                </fieldset>
+
+
+                <fieldset class="custom-fieldset">
+
+                    <legend class="custom-legend"><b>Special Instruction</b></legend>
+                    <div class="form-group">
+
+                        <div class="form-group" ng-repeat="dta in vm.df_data">
+                            <label class="col-md-3 control-label">
+                                <b>{{dta.PROCESS_GROUP_NAME}}</b>
+                            </label>
+                            <div class="col-md-9">
+                                <div class="checkbox-list">
+                                    <label class="checkbox-inline" ng-repeat="dt in dta.items">
+                                        <span><input type="checkbox" ng-model="dt.IS_SELECTED" ng-true-value="'Y'" ng-false-value="'N'"> {{dt.DF_PROC_TYPE_NAME}}</span>
+                                    </label>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </fieldset>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend"><b>Machine & Process Info</b></legend>
+
+                            <div style="width:98%; text-align:right;">
+                                <a class="btn btn-success yellow-gold" ng-click="vm.submitAll(vm.form,'Y');">Finalized</a>
+                            </div>
+
+                            <table style="width:100%;" class="clsTableMtex">
+                                <thead>
+                                    <tr class="clstheadMtex">
+                                        <th class="clstdMtex">Seq No</th>
+                                        <th class="clstdMtex">Process Name</th>
+                                        <th class="clstdMtex">Machine Info</th>
+                                        <th class="clstdMtex">Select Process</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr class="clstdMtex" ng-repeat="item in vm.machineList" ng-style="item.IS_DONE=='Y' && {'background-color':'skyblue'}" ng-mouseover="item.open = true" ng-mouseleave="item.open = false">
+                                        <td class="clstdMtex">{{item.PROC_SEQ}}</td>
+                                        <td class="clstdMtex">{{item.DF_PROC_TYPE_NAME}}</td>
+                                        <td class="clstdMtex">
+                                            {{item.DF_MC_NAME}} ({{item.DF_MACHINE_NO}})<br />
+                                            <img id="Key" data-ng-src="data:image/png;base64,{{item.MC_IMAGE}}" alt="No Image Selected" style="height: 100px; width:150px;">
+
+                                            <input type="hidden" name="DF_MACHINE_ID" ng-model="item.DF_MACHINE_ID" />
+                                            <input type="hidden" name="DF_PROC_TYPE_ID" ng-model="item.DF_PROC_TYPE_ID" />
+
+                                        </td>
+
+                                        <td class="clstdMtex">
+                                            <input type="checkbox" style="width: 20%; height: 2em;" ng-disabled="item.IS_DONE=='Y' && item.IS_REPROCESS=='N'" ng-model="item.IS_SELECT" />
+
+                                            <a class="btn btn-success green" ng-if="item.IS_DONE=='N'" ng-show="item.open" ng-disabled="!item.IS_SELECT==true" ng-click="vm.submitAll(vm.form,'N');">Process Done</a>
+                                            <a class="btn btn-success red" ng-if="item.IS_DONE=='Y' && item.IS_REPROCESS=='N'" ng-click="vm.submitReprocess(vm.form,item);">Re-Process</a>
+                                            <a class="btn btn-success blue" ng-if="item.IS_REPROCESS=='Y'" ng-click="vm.submitAll(vm.form,'N');">Repeat Process</a>
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </fieldset>
+
+                    </div>
+                    <div class="col-md-6">
+
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend"><b>Process Log</b></legend>
+                            <table style="width:100%;" class="clsTableMtex">
+                                <thead>
+                                    <tr class="clstheadMtex">
+                                        <th class="clstdMtex">SL</th>
+                                        <th class="clstdMtex">Machine Name</th>
+                                        <th class="clstdMtex">Process</th>
+                                        <th class="clstdMtex">Production Date</th>
+                                        <th class="clstdMtex">Production Time</th>
+                                        <th class="clstdMtex">Operator</th>
+                                        <th class="clstdMtex">Qty (Kg)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="clstdMtex tooltipafzal" ng-repeat="dtl in vm.productionList" ng-class="{'rowColor':dtl.IS_REFINIS=='Y'}">
+
+                                        <td class="clstdMtex">{{$index+1}}</td>
+                                        <td class="clstdMtex">
+                                            {{dtl.DF_MC_NAME}}
+                                            <span class="tooltipafzaltext">{{dtl.IS_REFINIS=='Y'?'Re-Process':''}}</span>
+                                        </td>
+                                        <td class="clstdMtex">{{dtl.DF_PROC_TYPE_NAME}}</td>
+                                        <td class="clstdMtex">{{dtl.PROD_DT|date:'dd-MM-yyyy'}}</td>
+                                        <td class="clstdMtex">{{dtl.PROD_DT|date:'shortTime'}}</td>
+                                        <td class="clstdMtex">{{dtl.OPERATOR_NAME}}</td>
+                                        <td class="clstdMtex">{{dtl.BT_FIN_QTY}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </fieldset>
+                    </div>
+                </div>
+
+                <div style="padding:3px;">
+                </div>
+                <div style="padding:3px;">
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <button type="button" class="btn btn-sm blue" ui-sref="DyeingFinishingProduction" ui-sref-opts="{reload: true}">Home</button>
+                        @*<button type="button" class="btn btn-sm default" ng-click="vm.backPrevious();">Back</button>*@
+                    </div>
+                </div>
+            </fieldset>
+
+
+        </div>
+    </form>
+</div>
+
+
+
+<script type="text/ng-template" id="form.html">
+    <div>
+
+        <div class="form-group">
+            <label class="control-label">Please Select Next Process</label>
+
+
+            <select kendo-drop-down-list name="NXT_BT_STS_TYPE_ID" id="NXT_BT_STS_TYPE_ID" class="form-control required"
+                    options="statusTypeList" ng-model="NXT_BT_STS_TYPE_ID" ng-change="textChange()"></select>
+            @*<input autofocus ng-change="textChange()" type="password" ng-model="passCode" id="input-name" placeholder="Maintenance Pass Code..." class="form-control">*@
+        </div>
+
+    </div>
+</script>

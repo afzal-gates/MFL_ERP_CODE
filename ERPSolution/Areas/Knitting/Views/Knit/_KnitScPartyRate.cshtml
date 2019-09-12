@@ -1,0 +1,380 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 13px;
+    }
+</style>
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Knitting</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class=" form-group">
+                <div class="col-md-3" style="padding-right:0px">
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend">Rate Group List</legend>
+
+                        <div class="input-icon right" style="padding-bottom:3px;">
+                            <i class="icon-magnifier"></i>
+                            <input type="text" class="form-control form-control-solid" ng-model="q" placeholder="search..." ng-change="vm.rateGroupList.filter( { field:'FAB_PROC_GRP_NAME', operator :'contains', value: q })" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }">
+                        </div>
+
+                        <div kendo-list-view
+                             k-selectable="'single'"
+                             k-data-source="vm.rateGroupList"
+                             k-on-change="vm.onChangeRateGroup(dataItem)">
+                            <div k-template>
+                                <dd class="k-state-default" style="padding: 5px; border-bottom: solid 1px; border-color: lightgray; ">
+                                    {{dataItem.FAB_PROC_GRP_NAME}}
+                                </dd>
+                            </div>
+                        </div>
+                        <div kendo-pager k-data-source="vm.rateGroupList"></div>
+
+                    </fieldset>
+                    <br />
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend">Quatation List</legend>
+
+                        <div class="input-icon right" style="padding-bottom:3px;">
+                            <i class="icon-magnifier"></i>
+                            <input type="text" class="form-control form-control-solid" ng-model="q" placeholder="search..." ng-change="vm.quatationList.filter( { field:'QUOT_REF_NO', operator :'contains', value: q })" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }">
+                        </div>
+
+                        <div kendo-list-view
+                             k-selectable="'single'"
+                             k-data-source="vm.quatationList"
+                             k-on-change="vm.onChangeQuatation(dataItem)">
+                            <div k-template>
+                                <dd class="k-state-default" style="padding: 5px; border-bottom: solid 1px; border-color: lightgray; ">
+                                    <b>{{dataItem.QUOT_REF_NO}}</b> &emsp;&emsp;&emsp;&emsp;
+                                    <a class="btn btn-xs green" ng-click="vm.printScPartyRateQuatationWise(dataItem);">
+                                        <i class="fa fa-print"> Print </i>
+                                    </a>
+                                </dd>
+                                
+                            </div>
+                        </div>
+                        <div kendo-pager k-data-source="vm.quatationList"></div>
+
+                    </fieldset>
+                </div>
+
+                <div class="col-md-9" style="padding-left:0px;">
+
+                    @*===================== New Entry ==========================*@
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend"><b>Master Data</b></legend>
+                        <div><label id="lblMsg"></label></div>
+                        <div class="row" style="padding-left: 5px; padding-right: 5px;">
+
+                            <form class="form-horizontal" role="form" name="frmKnitMachinOperatorAssign" novalidate>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            Rate Group
+                                        </label>
+                                        <div class="col-md-3">
+                                            <input type="text" name="FAB_PROC_GRP_NAME" ng-model="vm.form.FAB_PROC_GRP_NAME" class="form-control required" readonly />
+                                            <input type="hidden" name="SCM_SC_QUOT_RATE_H_ID" ng-model="vm.form.SCM_SC_QUOT_RATE_H_ID" class="form-control" />
+                                            <input type="hidden" name="MC_FAB_PROC_GRP_ID" ng-model="vm.form.MC_FAB_PROC_GRP_ID" class="form-control" />
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <span aria-required="true" class="required">*</span>
+                                            S/C Party
+                                        </label>
+                                        <div class="col-md-3">
+                                            <select kendo-drop-down-list name="SCM_SUPPLIER_ID" class="form-control required"
+                                                    options="vm.supplierList" ng-model="vm.form.SCM_SUPPLIER_ID" ng-change="vm.getSupplierRateInfo();"></select>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            Quatation #
+                                        </label>
+                                        <div class="col-md-3">
+                                            <input type="text" name="QUOT_REF_NO" ng-model="vm.form.QUOT_REF_NO" class="form-control required" />
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <span aria-required="true" class="required">*</span>
+                                            Quatation Date
+                                        </label>
+                                        <div class="col-md-3">
+                                            <input type="text" class="form-control required" ng-click="QUOT_REF_DT_LNopen($event)"
+                                                   datepicker-popup="{{vm.dtFormat}}" name="QUOT_REF_DT" max-date="vm.today" ng-model="vm.form.QUOT_REF_DT"
+                                                   is-open="QUOT_REF_DT_LNopened" datepicker-options="dateOptions"
+                                                   date-disabled="disabled(date, mode)" close-text="Close" />
+                                        </div>
+                                    </div>
+                                </div>
+                                @*<div class="row">
+                                    <div class="form-group">
+
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required">*</span>
+                                            Revision #
+                                        </label>
+                                        <div class="col-md-3">
+                                            <input type="text" name="REVISION_NO" ng-model="vm.form.REVISION_NO" class="form-control" />
+
+                                        </div>
+                                        <label class="control-label col-md-2">
+                                            <span aria-required="true" class="required">*</span>
+                                            Revision Date
+                                        </label>
+                                        <div class="col-md-3">
+                                            <input type="text" class="form-control" ng-click="REVISED_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                                   name="REVISED_DT" max-date="vm.today" ng-model="vm.form.REVISED_DT" is-open="REVISED_DT_LNopened"
+                                                   datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+
+                                        </div>
+                                    </div>
+                                </div>*@
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required">*</span>
+                                            Currency
+                                        </label>
+                                        <div class="col-md-3">
+                                            <select kendo-drop-down-list name="RF_CURRENCY_ID" class="form-control required"
+                                                    options="vm.currencyList" ng-model="vm.form.RF_CURRENCY_ID"></select>
+
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <span aria-required="true" class="required">*</span>
+                                            Status
+                                        </label>
+                                        <div class="col-md-3">
+                                            <select kendo-drop-down-list name="LK_APRVL_STATUS_ID" class="form-control required requiredDDL"
+                                                    options="vm.statusList" ng-model="vm.form.LK_APRVL_STATUS_ID"></select>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">Doc Path</label>
+                                        <div class="col-md-3">
+                                            <input type="text" class="form-control" name="QUOT_DOC_PATH" ng-model="vm.file.QUOT_DOC_PATH">
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                <div class="input-group">
+                                                    <div class="form-control uneditable-input span3" data-trigger="fileinput" style="padding-top: 0px;padding-bottom: 0px;height: 26px;">
+                                                        <i class="fa fa-file fileinput-exists"></i>&nbsp; <span class="fileinput-filename"></span>
+                                                    </div>
+                                                    <span class="input-group-addon btn default btn-file" style="padding-bottom: 0px;padding-top: 0px;">
+                                                        <span class="fileinput-new btn-circle">
+                                                            <i class="fa fa-paperclip"></i>
+                                                        </span>
+                                                        <span class="fileinput-exists">
+                                                            <i class="fa fa-exchange"></i>
+                                                        </span>
+                                                        <input type="hidden" value="" name="..."><input type="file" name="" accept="image/*,application/pdf" data-ak-file-model="vm.file.ATT_FILE">
+                               
+                                                    </span>
+                                                    <a class="input-group-addon btn green fileinput-exists" data-dismiss="fileinput" ng-click="vm.addToGridPath(vm.file)" ng-disabled="!vm.file.QUOT_DOC_PATH">
+                                                        <i class="fa fa-plus"></i>
+                                                    </a>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group" ng-if="vm.form.items.length>0">
+                                        <label class="control-label col-md-3">
+                                            Selected Docs
+                                        </label>
+                                        <div class="col-md-5" @*ng-repeat="item in vm.form.items"*@>
+                                            <div class="table-scrollable">
+                                                <table class="table table-striped table-bordered table-condensed table-advance table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>
+                                                                SL
+                                                            </th>
+                                                            <th class="hidden-xs">
+                                                                Doc Title
+                                                            </th>
+
+                                                            <th class="hidden-xs">
+                                                                File Name
+                                                            </th>
+
+                                                            <th>
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="item in vm.form.items" ng-if="item.REMOVE!='Y'">
+                                                            <td class="hidden-xs">
+                                                                {{$index+1}}
+                                                            </td>
+                                                            <td class="hidden-xs">
+                                                                {{item.QUOT_DOC_PATH}}
+                                                            </td>
+
+                                                            <td class="hidden-xs">
+                                                                {{item.ATT_FILE.name||item.DOC_PATH_REF}}
+                                                            </td>
+                                                            <td>
+                                                                <a href="/UPLOAD_DOCS/SC_PARTY_DOC/{{item.DOC_PATH_REF||item.QUOT_DOC_PATH}}" target="_blank" class="btn btn-xs green">
+                                                                    View
+                                                                </a>
+
+                                                                <a class="btn btn-xs orange" ng-click="vm.removeAddedDoc($index)">
+                                                                    <i class="fa  fa-trash-o"></i> Remove
+                                                                </a>
+
+
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required">*</span>
+                                            Remarks
+                                        </label>
+                                        <div class="col-md-7">
+
+                                            <textarea id="REMARKS" name="REMARKS" ng-model="vm.form.REMARKS" class="form-control"></textarea>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <fieldset class="custom-fieldset">
+                                    <legend class="custom-legend"><b>Quatation Rate Detail</b></legend>
+                                    <div class="form-group" style="padding-left: 10px; padding-right: 10px; font-size:10pt;">
+                                        <table class="clsTableMtex">
+                                            <thead class="clstheadMtex">
+                                                <tr>
+                                                    <th class="clstdMtex">Rate Details</th>
+                                                    <th class="clstdMtex">Rate</th>
+                                                    <th class="clstdMtex">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+
+                                                    <td class="clstdMtex">
+                                                        <select class="form-control requiredSub" kendo-drop-down-list name="MC_FAB_PROC_RATE_ID" k-option-label="'-- Select Rate --'"
+                                                                k-data-text-field="'FAB_PROC_NAME'" k-data-value-field="'MC_FAB_PROC_RATE_ID'" k-filter="'contains'"
+                                                                k-auto-bind="'true'" k-data-source="vm.rateList" k-ng-delay="vm.rateList"
+                                                                ng-model="vm.formItem.MC_FAB_PROC_RATE_ID"></select>
+                                                        <input type="hidden" ng-model="vm.formItem.SCM_SC_QUOT_RATE_D_ID" />
+                                                    </td>
+
+                                                    <td class="clstdMtex">
+                                                        <input type="number" name="PROD_RATE" ng-model="vm.formItem.PROD_RATE" min="0.01" class="form-control requiredSub" />
+                                                    </td>
+
+                                                    <td class="clstdMtex">
+                                                        <input type="button" ng-if="!vm.formItem.uid" ng-click="vm.addToGrid()" title="Add" value="Add" class="btn btn-primary green"  style="padding:5px;" />
+                                                        <input type="button" ng-if="vm.formItem.uid" ng-click="vm.addToGrid()" title="Add" value="Update" class="btn btn-primary yellow-gold" style="padding:5px;" />
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <div class="form-group" style="padding-left:15px;">
+                                            <div kendo-grid k-options="vm.gridOptionsRate" k-data-source="vm.quatatitionRateDtlList" style="width:98%"></div>
+
+                                        </div>
+
+                                    </div>
+                                </fieldset>
+
+
+                                <fieldset class="custom-fieldset">
+                                    <legend class="custom-legend"><b>Supplier Rate Detail</b></legend>
+                                    <div class="form-group" style="padding-left: 10px; padding-right: 10px; font-size:10pt;">
+                                        
+                                        <div class="form-group" style="padding-left:15px;">
+                                            <div kendo-grid k-options="vm.gridOptions" k-data-source="vm.rateDtlList" style="width:98%"></div>
+
+                                        </div>
+
+                                    </div>
+                                </fieldset>
+                            </form>
+
+
+                        </div>
+                    </fieldset>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <button type="button" ng-if="vm.form.SCM_SC_QUOT_RATE_H_ID>0" class="btn btn-sm yellow-gold" ng-click="vm.submitAll(vm.form);">Update</button>
+                            <button type="button" ng-if="!vm.form.SCM_SC_QUOT_RATE_H_ID>0" class="btn btn-sm green" ng-click="vm.submitAll(vm.form);">Save</button>
+                            <button type="button" class="btn btn-sm default" ui-sref="KnitScPartyRate()" ui-sref-opts="{reload: true}">Cancel</button>
+
+                            <button type="button" ng-if="vm.form.SCM_SC_QUOT_RATE_H_ID>0" class="btn btn-sm blue" ng-click="vm.printPartyRate(vm.form);">Print</button>
+                            <button type="button" ng-if="vm.form.SCM_SUPPLIER_ID>0" class="btn btn-sm blue" ng-click="vm.printScPartyRate(vm.form);">Print S/C</button>
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

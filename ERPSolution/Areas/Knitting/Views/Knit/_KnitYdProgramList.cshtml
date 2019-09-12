@@ -1,0 +1,101 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Knitting</a>
+
+    </li>
+    <li>
+        <a href="#">Y/D Program List</a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body" id="PORTLET_BODY">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend"></legend>
+                    <div class="form-group">
+
+                        <div class="col-md-1">
+                            <button class="btn btn-sm blue" ui-sref="KnitYdProgram"> <i class="fa fa-plus"></i> Program</button>
+                        </div>
+
+                        <div class="col-md-2">
+                            <input type="text" placeholder="Search Program #" class="form-control" ng-model="vm.form.PRG_REF_NO" />
+                        </div>
+
+                        <label class="col-md-1" style="padding-right:0px;text-align:right;">
+                            Buyer A/C
+                        </label>
+
+                        <div class="col-md-2">
+                            <select kendo-drop-down-list name="MC_BYR_ACC_ID" class="form-control"
+                                    k-options="buyerAcList" id="MC_BYR_ACC_ID" ng-model="vm.form.MC_BYR_ACC_ID" required></select>
+                        </div>
+
+                        <label class="col-md-1" style="padding-right:0px;">
+                            Style/Order
+                        </label>
+
+                        <div class="col-md-2">
+                            <select class="form-control" kendo-drop-down-list id="ORDER_LIST" name="MC_FAB_PROD_ORD_H_ID" k-option-label="'--Order# --'"
+                                    k-data-text-field="'ORDER_NO_LST'" k-data-value-field="'MC_FAB_PROD_ORD_H_ID'" k-filter="'Contains'"
+                                    k-template="templateOh" k-value-template="valueTemplateOh"
+
+                                    k-auto-bind="'true'" k-data-source="FabOederByOhDs" ng-model="vm.form.MC_FAB_PROD_ORD_H_ID"
+                                    required style="width:100%;"></select>
+                        </div>
+
+                        <label class="col-md-1" style="padding-right:0px;">
+                            Party
+                        </label>
+
+                        <div class="col-md-1" style="padding-left:0px;padding-right:0px;">
+                            <select class="form-control" kendo-drop-down-list name="SCM_SUPPLIER_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                    k-data-text-field="'SUP_SNAME'" k-data-value-field="'SCM_SUPPLIER_ID'"
+                                    k-auto-bind="'true'" k-data-source="vm.supplierListDs" ng-model="vm.form.SCM_SUPPLIER_ID"></select>
+                        </div>
+                                               
+                        <div class="col-md-1">
+                            <button class="btn btn-sm" ng-click="vm.onSearch(vm.form)">Show</button>
+                        </div>
+
+
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+
+        <br />
+         <div style="margin:auto;">   
+            <kendo-grid k-options="vm.YdProgramHeaderOpt" k-data-source="vm.YdProgramHeaderDs" style="padding-top:0px;"></kendo-grid>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+

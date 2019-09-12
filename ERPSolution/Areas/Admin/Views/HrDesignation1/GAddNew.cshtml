@@ -1,0 +1,194 @@
+﻿@model ERP.Model.HrDesigModel
+
+@{
+    ViewBag.Title = "AddNew";
+}
+
+<div class="portlet box blue-dark" ng-controller="DesigController as vm">
+    <div class="portlet-title">
+        <div class="caption">
+            @*<i class="fa fa-gift"></i>*@Designation Information [Add New]
+        </div>
+        @*<div class="tools">
+                <a href="javascript:;" class="collapse">
+                </a>
+                <a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>
+                <a href="javascript:;" class="remove">
+                </a>
+            </div>*@
+    </div>
+    <div class="portlet-body">
+
+        @*<div class="row">
+                <div class="col-md-12">
+
+                    <div class="form-group">
+                        Department
+                       <select kendo-drop-down-list name="HR_DEPARTMENT_ID" options="vm.departmentList" ng-model="ShowDepartment"></select>
+                        <input type="button" class="btn green" value="Show" ng-click="ShowDesignationList()" />
+                    </div>
+                    <div id="grid"></div>
+
+                </div>
+
+
+            </div>*@
+
+
+
+        <div class="row">
+
+            <div class="col-md-12">
+                <form id="frmDesignation" name="frmDesignation" class="form-horizontal" method="post" action="\Admin\HrDesignation\GAddNew" kendo-validator="validator">
+
+                    <div class="form-body">
+
+                        <p>&nbsp;</p>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">
+                                Department
+                            </label>
+                            <div class="col-md-7">
+                                <select kendo-drop-down-list name="HR_DEPARTMENT_ID" options="vm.departmentList" ng-model="HR_DEPARTMENT_ID"
+                                        class="form-control" ng-change="OnChangeHR_DEPARTMENT_ID()" required data-required-msg="Please select department"></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">
+                                Designation Code
+                            </label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control" name="DESIGNATION_CODE" disabled />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">
+                                Designation Name[E]
+                            </label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control" name="DESIGNATION_NAME_EN" required data-required-msg="Please input designation name [E]" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">
+                                Designation Name[B]
+                            </label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control banglafont" name="DESIGNATION_NAME_BN" />
+                                <span class="k-invalid-msg" data-for="DEPARTMENT_NAME_BN"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">
+                                Short Name
+                            </label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control" name="DESIGNATION_SNAME" required data-required-msg="Please input short name" />
+                                <span class="k-invalid-msg" data-for="DESIGNATION_SNAME"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">
+                                Description
+                            </label>
+                            <div class="col-md-7">
+                                <textarea class="form-control" name="DESIGNATION_DESC" rows="3"></textarea>
+                                <span class="k-invalid-msg" data-for="DESIGNATION_DESC"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">
+                                Designation Group
+                            </label>
+                            <div class="col-md-7">
+                                <select kendo-drop-down-list class="form-control" name="HR_DESIGNATION_GRP_ID" ng-model="HR_DESIGNATION_GRP_ID"
+                                        ng-change="OnChangeHR_DESIGNATION_GRP_ID()"
+                                        options="vm.designationGrpList" required data-required-msg="Please select designation group"></select>
+                                <span class="k-invalid-msg" data-for="HR_DESIGNATION_GRP_ID"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">
+                                Management Type
+                            </label>
+                            <div class="col-md-7">
+                                <select kendo-drop-down-list class="form-control" name="HR_MANAGEMENT_TYPE_ID" options="vm.managementTypeList"></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">
+                                Grade
+                            </label>
+                            <div class="col-md-3">
+                                <select kendo-drop-down-list class="form-control" name="HR_GRADE_ID" options="vm.gradeList"></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">
+                                Designation Order
+                            </label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" name="DESIG_ORDER" required data-required-msg="Please input designation order"></input>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">
+                            </label>
+                            <div class="col-md-3">
+                                <input type="checkbox" name="IS_GAJETED" />Gajeted?
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">
+                            </label>
+                            <div class="col-md-3">
+                                <input type="checkbox" name="IS_ACTIVE" checked required data-required-msg="Please checked IsActive" />Active?
+                                <span class="k-invalid-msg" data-for="IS_ACTIVE"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-6">
+                                    <button type="submit" class="btn green"><i class="fa fa-check"></i> Save</button>
+                                    <button type="reset" class="btn blue">Cancel</button>
+                                    <a href="@Url.Action("GIndex","HrDesignation")" class="btn default">Back</a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </form>
+
+            </div>
+
+
+        </div>
+
+
+
+
+
+
+        @*<div style="border:1px solid green" class="col-md-8">*@
+
+    </div>
+</div>

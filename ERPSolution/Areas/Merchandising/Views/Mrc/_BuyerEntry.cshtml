@@ -1,0 +1,223 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#">Buyer Master</a>
+    </li>
+</ul>
+
+
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+<div class="portlet-body form">
+
+    <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+        <div class="page-splash">
+            <div class="page-splash-message">
+                <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+            </div>
+        </div>
+    </div>
+    <input id="access_token" data-ng-model="token" type="hidden"
+           data-ng-init="token='@Session["access_token"]'" />
+
+    <form class="form-horizontal" role="form" name="BuyerForm" novalidate ng-submit="vm.submitBuyerData(vm.form,token)">
+
+        <div class="form-body clearfix">
+            <div class="row" style="margin:auto;padding-top:10px;">
+
+                <input ng-model="vm.form.CREATED_BY" type="hidden"
+                       data-ng-init="vm.form.CREATED_BY='@Session["multiScUserId"]'" />
+
+                <input id="access_token" ng-model="vm.form.LAST_UPDATED_BY" type="hidden"
+                       ng-init="vm.form.LAST_UPDATED_BY='@Session["multiScUserId"]'" />
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label">
+                        <span aria-required="true" class="required">*</span>
+                        Buyer Code
+                    </label>
+                    <div class="col-md-3">
+                        <input type="text" name="BUYER_CODE" ng-model="vm.form.BUYER_CODE" class="form-control" required />
+                    </div>
+
+                    <div class="col-md-5">
+                        <div ng-messages="BuyerForm.BUYER_CODE.$error" ng-if="BuyerForm.$submitted || BuyerForm.BUYER_CODE.$touched">
+                            <div ng-message="required" class="field-validation-error">The field Buyer code is required</div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label">
+                        <span aria-required="true" class="required">*</span>
+                        Buyer Name (En)
+                    </label>
+                    <div class="col-md-3">
+                        <input type="text" name="BUYER_NAME_EN" ng-model="vm.form.BUYER_NAME_EN" class="form-control" required />
+                    </div>
+                    <div class="col-md-5">
+                        <div ng-messages="BuyerForm.BUYER_NAME_EN.$error" ng-if="BuyerForm.$submitted || BuyerForm.BUYER_NAME_EN.$touched">
+                            <div ng-message="required" class="field-validation-error">The field Buyer Name[E] is required</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label">
+                        Buyer Name(Bn)
+                    </label>
+                    <div class="col-md-3">
+                        <input type="text" name="BUYER_NAME_BN" ng-model="vm.form.BUYER_NAME_BN" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label">
+                        <span aria-required="true" class="required">*</span>
+                        Buyer Short Name
+                    </label>
+                    <div class="col-md-3">
+                        <input type="text" name="BUYER_SNAME" ng-model="vm.form.BUYER_SNAME" class="form-control" required />
+                    </div>
+                    <div class="col-md-5">
+                        <div ng-messages="BuyerForm.BUYER_SNAME.$error" ng-if="BuyerForm.$submitted || BuyerForm.BUYER_SNAME.$touched">
+                            <div ng-message="required" class="field-validation-error">The field Buyer Name[E] is required</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Buyer Profile</label>
+                    <div class="col-md-5">
+                        <textarea rows="3" name="BUYER_DESC" class="form-control" cols="50" ng-model="vm.form.BUYER_DESC"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label">
+                     <span aria-required="true" class="required">*</span>
+                    Address For PI</label>
+                    <div class="col-md-5">
+                        <textarea rows="3" name="ADDRESS_PI" class="form-control" cols="50" ng-model="vm.form.ADDRESS_PI" required></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-5 col-md-offset-3">
+                        <div ng-messages="BuyerForm.ADDRESS_PI.$error" ng-if="BuyerForm.$submitted || BuyerForm.ADDRESS_PI.$touched">
+                            <div ng-message="required" class="field-validation-error">The field Buyer Address is required</div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label">
+                        Contact Person
+                    </label>
+                    <div class="col-md-3">
+                        <input type="text" name="BUYER_CP_REF" ng-model="vm.form.BUYER_CP_REF" class="form-control" />
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="control-label col-md-3">
+                        <span aria-required="true" class="required">*</span>
+                    Country</label>
+                    <div class="col-md-3">
+                        <select kendo-drop-down-list name="HR_COUNTRY_ID" class="form-control"
+                                options="vm.CountryList" ng-model="vm.form.HR_COUNTRY_ID"></select>
+                    </div>
+
+                    <div class="col-md-5">
+                        <div ng-messages="BuyerForm.HR_COUNTRY_ID.$error" ng-if="BuyerForm.$submitted || BuyerForm.HR_COUNTRY_ID.$touched">
+                            <div ng-message="required" class="field-validation-error">Please select Country</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label"><span aria-required="true" class="required">*</span>Registration Period </label>
+                    <div class="col-md-3 input-group">
+                        <input type="text" class="form-control" name="REG_PERIOD" datepicker-popup="{{format}}" ng-model="vm.form.REG_PERIOD" is-open="REG_PERIODopened" datepicker-options="dateOptions" close-text="Close" required />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn-calendar" ng-click="REG_PERIODopen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-5 col-md-offset-3">
+                        <div ng-messages="BuyerForm.REG_PERIOD.$error" ng-if="BuyerForm.$submitted || BuyerForm.REG_PERIOD.$touched">
+                            <div ng-message="required" class="field-validation-error">Please choose Registration Period</div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label">
+                        Display Order
+                    </label>
+                    <div class="col-md-1">
+                        <input type="number" name="DISPLAY_ORDER" ng-model="vm.form.DISPLAY_ORDER" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label" style="padding-top: 12px;">
+                        Is Active ?
+                    </label>
+                    <div class="col-md-4">
+                        <div class="checkbox-list">
+                            <label class="checkbox-inline" style="margin-left:20px">
+                                <span><input type="checkbox" ng-model="vm.form.IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-3">
+                        <button type="button" class="btn btn-sm blue" ui-sref="BuyerList">Back To List</button>
+                        <button type="submit" ng-if="vm.form.MC_BUYER_ID" class="btn btn-sm yellow-gold" ng-class="{'disabled':!BuyerForm.$valid}">Update</button>
+                        <button type="submit" ng-if="!vm.form.MC_BUYER_ID" class="btn btn-sm green" ng-class="{'disabled':!BuyerForm.$valid}">Save</button>
+                        @*<button type="button" class="btn btn-sm purple" ng-if="vm.form.MC_BUYER_ID" ng-click="vm.openOfficeMappingModal(vm.form)">Link to Office</button>*@
+                        <button type="button" class="btn btn-sm default" ui-sref="BuyerEntry({MC_BUYER_ID : null})" ui-sref-opts="{reload: true}">Cancel</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin:auto;padding-top:10px;" ng-if="vm.errors">
+                <div class="alert alert-warning" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                    <ul ng-repeat="field in vm.errors">
+                        <li ng-repeat="error in field" ng-bind="error"></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</div>
+
+
+

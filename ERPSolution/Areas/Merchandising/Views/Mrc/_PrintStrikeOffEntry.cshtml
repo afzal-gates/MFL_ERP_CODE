@@ -1,0 +1,359 @@
+﻿
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+    </li>
+    <li>
+        <a href="#">Request For Print Design and Strike Off Program</a>
+    </li>
+</ul>
+<style>
+    .table-scrollable {
+        width: 98.5% !important;
+    }
+    .thumbnail {
+        border: 0px !important;
+    }
+</style>
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+
+        <form class="form-horizontal" role="form" name="LapdipForm" @*ng-submit="vm.submitData(vm.form,token)"*@ novalidate>
+
+            <div class="form-body clearfix">
+                <div class="row" style="margin:auto;">
+
+                    <input ng-model="vm.form.CREATED_BY" type="hidden" data-ng-init="vm.form.CREATED_BY='@Session["multiScUserId"]'" />
+                    <input id="access_token" ng-model="vm.form.LAST_UPDATED_BY" type="hidden" ng-init="vm.form.LAST_UPDATED_BY='@Session["multiScUserId"]'" />
+
+                    <div class="col-md-12">
+
+                        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;">
+                            <legend class="custom-legend"> Program Parameter</legend>
+
+                            <input type="hidden" name="MC_PRNSO_REQ_H_ID" ng-model="vm.form.MC_PRNSO_REQ_H_ID" class="form-control" />
+
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">
+                                    <span aria-required="true" class="required">*</span>Buyer Acc
+                                </label>
+                                <div class="col-md-4">
+                                    <select kendo-drop-down-list name="MC_BYR_ACC_ID" class="form-control" options="vm.buyerAccList" ng-model="vm.form.MC_BYR_ACC_ID"></select>
+                                </div>
+                                <label class="col-md-2 control-label">
+                                    <span aria-required="true" class="required">*</span>Buyer
+                                </label>
+                                <div class="col-md-4">
+                                    <select kendo-drop-down-list name="MC_BUYER_ID" id="ddlbuyerList" class="form-control" options="vm.buyerList" ng-model="vm.form.MC_BUYER_ID"></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">
+                                    Program No.
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" name="PRNSO_REQ_NO" ng-model="vm.form.PRNSO_REQ_NO" class="form-control" readonly />
+                                </div>
+                                <label class="col-md-2 control-label"></label>
+                                <label class="col-md-2 control-label">
+                                    <span aria-required="true" class="required">*</span>Date of Requisition
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" ng-model="vm.form.PRNSO_REQ_DT" ng-click="PRNSO_REQ_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                           name="PRNSO_REQ_DT" is-open="PRNSO_REQ_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                                </div>
+                                <label class="col-md-2 control-label"></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">
+                                    <span aria-required="true" class="required">*</span>Program By
+                                </label>
+                                <div class="col-md-4">
+                                    <select kendo-drop-down-list name="PRNSO_REQ_BY" class="form-control" options="vm.userList" ng-model="vm.form.PRNSO_REQ_BY" ng-init="vm.form.PRNSO_REQ_BY='@Session["multiScUserId"]'" readonly></select>
+                                </div>
+                                <label class="col-md-2 control-label">
+                                    <span aria-required="true" class="required">*</span>Request To
+                                </label>
+                                <div class="col-md-4">
+                                    <select kendo-multi-select name="PRNSO_REQ_TO_LST" id="mulRequesto" class="form-control" options="vm.userListForAttnUser" ng-model="vm.form.PRNSO_REQ_TO_LST" required></select>
+                                </div>
+                                <div class="col-md-5">
+                                    <div ng-messages="LapdipForm.PRNSO_REQ_TO_LST.$error" ng-if="LapdipForm.$submitted || LapdipForm.PRNSO_REQ_TO_LST.$touched">
+                                        <div ng-message="required" class="field-validation-error">required</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">
+                                    <span aria-required="true" class="required">*</span> Company
+                                </label>
+                                <div class="col-md-4">
+                                    <select kendo-drop-down-list id="HR_COMPANY_ID" name="HR_COMPANY_ID" class="form-control" options="vm.companyList" ng-model="vm.form.HR_COMPANY_ID"></select>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div class="col-md-12">
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend">List of Style, Order and Instruction for Print design and Strike-Off</legend>
+                            <input type="hidden" name="MC_PRNSO_REQ_D_ID" ng-model="vm.formStyle.MC_PRNSO_REQ_D_ID" class="form-control" />
+
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">
+                                        Style No.
+                                    </label>
+                                    <div class="col-md-8">
+                                        <select kendo-drop-down-list name="MC_STYLE_H_ID" id="ddlStyleNoList" class="form-control" options="vm.StyleData" ng-model="vm.formStyle.MC_STYLE_H_ID"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">
+                                        <span aria-required="true" class="required">*</span>Order No.
+                                    </label>
+                                    <div class="col-md-8">
+                                        <select kendo-drop-down-list name="MC_ORDER_H_ID" id="ddlOrderNo" class="form-control" options="vm.orderNolist" ng-model="vm.formStyle.MC_ORDER_H_ID" required></select>
+                                        <div ng-messages="LapdipSpec.MC_ORDER_H_ID.$error" ng-if="LapdipSpec.$submitted || LapdipSpec.MC_ORDER_H_ID.$touched">
+                                            <div ng-message="required" class="field-validation-error">required</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">
+                                        <span aria-required="true" class="required">*</span>Sample Type
+                                    </label>
+                                    <div class="col-md-8">
+                                        <select kendo-drop-down-list name="RF_SMPL_TYPE_ID" id="ddlSampleType" class="form-control" options="vm.sampleTypeList" ng-model="vm.formStyle.RF_SMPL_TYPE_ID" required></select>
+                                        <div ng-messages="LapdipSpec.RF_SMPL_TYPE_ID.$error" ng-if="LapdipSpec.$submitted || LapdipSpec.RF_SMPL_TYPE_ID.$touched">
+                                            <div ng-message="required" class="field-validation-error">required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">
+                                        Item
+                                    </label>
+                                    <div class="col-md-8">
+                                        <select kendo-drop-down-list name="MC_STYLE_D_ITEM_ID" id="ddlItemList" class="form-control" options="vm.itemList" ng-model="vm.formStyle.MC_STYLE_D_ITEM_ID"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">
+                                        Print Type
+                                    </label>
+                                    <div class="col-md-8">
+                                        <oi-multiselect ng-options="item.LK_DATA_NAME_EN for item in vm.printTypeList track by item.LOOKUP_DATA_ID"
+                                                        ng-model="vm.formStyle.LK_PRN_TYPE_LST"
+                                                        @*class="custom-oi-multiselect-search"*@
+                                                        multiple
+                                                        placeholder="Search...">
+                                        </oi-multiselect>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">
+                                        <span aria-required="true" class="required">*</span>Print Color
+                                    </label>
+                                    <div class="col-md-8">
+                                        <oi-multiselect id="ddlColorbyBuyer" ng-options="item.COLOR_NAME_EN for item in vm.colorList track by item.MC_COLOR_ID"
+                                                        ng-model="vm.formStyle.PRN_COLOR_LST"
+                                                        @*class="custom-oi-multiselect-search"*@
+                                                        multiple
+                                                        placeholder="Search...">
+                                        </oi-multiselect>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">
+                                        Req. Qty
+                                    </label>
+                                    <div class="col-md-2">
+                                        <input type="text" name="RQD_QTY" ng-model="vm.formStyle.RQD_QTY" class="form-control" />
+                                    </div>
+                                    <label class="col-md-2 control-label">
+                                        Unit
+                                    </label>
+                                    <div class="col-md-4">
+                                        <select kendo-drop-down-list name="QTY_MOU_ID" id="ddlMouQty" class="form-control" options="vm.RF_MouList" ng-init="vm.formStyle.QTY_MOU_ID=1" ng-model="vm.formStyle.QTY_MOU_ID" required></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">
+                                        Priority
+                                    </label>
+                                    <div class="col-md-8">
+                                        <select kendo-drop-down-list name="LK_PRIORITY_ID" class="form-control" options="vm.priorityList" ng-model="vm.formStyle.LK_PRIORITY_ID"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">
+                                        <span aria-required="true" class="required">*</span>Sp. Instruction
+                                    </label>
+                                    <div class="col-md-8">
+                                        <textarea rows="2" class="form-control" name="SP_INSTRUCTION" ng-model="vm.formStyle.SP_INSTRUCTION" />
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">
+                                        <span aria-required="true" class="required">*</span>Material Description
+                                    </label>
+                                    <div class="col-md-8">
+                                        <input type="text" name="FABRICATION" disabled="disabled" ng-model="vm.formstyle.FABRICATION" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">
+                                        Nature of Work
+                                    </label>
+                                    <div class="col-md-8">
+                                        <input type="text" name="NatureOfWork" disabled="disabled" ng-model="vm.formStyle.NatureOfWork" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">
+                                        <span aria-required="true" class="required">*</span>Shipment Date
+                                    </label>
+                                    <div class="col-md-8">
+                                        <input type="text" name="SHIP_DT" disabled="disabled" ng-model="vm.formStyle.SHIP_DT" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">
+                                        Old Style #
+                                    </label>
+                                    <div class="col-md-8">
+                                        <input type="text" name="OLD_STYLE_REF" disabled="disabled" ng-model="vm.formStyle.OLD_STYLE_REF" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">
+                                        Image
+                                    </label>
+                                    <div class="col-md-8">
+                                        <div class="thumbnail" style="height: 200px;">
+                                            <img id="imgKeyImage" src="#" alt="No Photo" style="border:1px solid black; height:215px; width:310px" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-8 col-md-offset-2" style="left: 10px;">                                    
+                                    <button type="submit" id="btnAdd" ng-click="vm.styleItemAdd()" class="btn btn-sm green" @*ng-class="{'disabled':!BuyerForm.$valid}"*@>Add</button>
+                                    <button type="submit" id="btnUpdateAdd" style="display:none;" ng-click="vm.styleUpdate(vm.formStyle)" class="btn btn-sm green">Update</button>
+                                    <button type="submit" ng-click="vm.cancel()" class="btn btn-sm green">Cancel</button>
+                                </div>
+                            </div>
+
+                            <div class="row" style="padding-top: 5px; margin-left: 0px;">
+                                <div class="table-scrollable">
+                                    <table class="table table-condensed table-bordered">
+                                        <tr>
+                                            <td style="width:200px;">Style #</td>
+                                            <td style="width:200px;">Order #</td>
+                                            <td style="width:200px;">Sample Type</td>
+                                            <td style="width:200px;">Item</td>
+                                            <td style="width:80px;">Qty.</td>
+                                            <td style="width:80px;">Unit</td>
+                                            <td style="width:150px;">Image</td>
+                                            <td style="width:300px;">Sp. Instruction</td>
+                                            <td style="width:150px;">Action</td>
+                                        </tr>
+                                        <tbody ng-repeat="item in vm.obGrid">
+                                            <tr @*ng-hide="item.REMOVE==-2"*@>
+                                                <td>
+                                                    {{item.STYLE_NO}}
+                                                </td>
+                                                <td>
+                                                    {{item.ORDER_NO}}
+                                                </td>
+                                                <td>
+                                                    {{item.SMPL_TYPE_NAME}}
+                                                </td>
+                                                <td>
+                                                    {{item.ITEM_NAME_EN}}
+                                                </td>
+                                                <td>
+                                                    {{item.RQD_QTY}}
+                                                </td>
+                                                <td>
+                                                    {{item.MOU_CODE}}
+                                                </td>
+                                                <td>
+                                                    @*<img id="imgKeyImage" src="{{item.ImgSrc}}" alt="No Photo" style="border:1px solid black; height:70px; width:70px" />*@
+                                                    {{item.LK_PRIORITY_NAME}}
+                                                </td>
+                                                <td>
+                                                    {{item.SP_INSTRUCTION}}
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-xs blue" ng-click="vm.EditStyleRow($index,item,vm.obGrid)">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                    <a class="btn btn-xs red" ng-click="vm.removeStyleRow($index,vm.obGrid,true)">
+                                                        <i class="fa fa-times"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12" style="padding-top:10px;">
+                            <div class="col-md-4" align="left">
+                                <button type="button" id="btnSave" class="btn btn-sm green" ng-class="{'disabled':!LapdipForm.$valid || LapdipSpec.$invalid}" ng-click="vm.submitData(vm.form,token)">Save</button>
+                                <button type="button" style="display:none" id="btnUpdate" class="btn btn-sm green" ng-click="vm.UpdateBatchData(vm.form,token)">Update</button>
+                                <button type="button" disabled="disabled" id="btnSubmit" class="btn btn-sm green" ng-click="vm.updateSubmitData(vm.form,token)">Submit</button>
+                                <button type="button" class="btn btn-sm blue" ng-click="vm.lsitView()">Back to list</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+

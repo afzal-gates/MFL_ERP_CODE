@@ -1,0 +1,344 @@
+﻿Content-Type: text/html; charset=utf-8
+
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style media="all" type="text/css">
+        table td {
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+    @*<h4 style="margin:5px;"><span style="color: #5e9ca0;">Excess Requisition</span></h4>*@      
+    
+
+    <p>Dear Concern</p>
+    <p>A new Short Fabric Booking for style# <b>@Model.data.fabList[0].STYLE_NO</b>, order# <b>@Model.data.fabList[0].MC_ORDER_NO_LST</b> has been created as below. Please, take necessary action as soon as possible.</p>
+
+    <table border="1" cellpadding="0" cellspacing="0" style="width: 900px; border: solid 1px #8a8a8a;">
+        @*<caption style="text-align: left; color: #5738b5; padding-top: 10px; padding-bottom: 5px;">@Model.data.fabList[0].BYR_ACC_GRP_NAME_EN</caption>*@
+        <thead>
+            <tr style="background-color: bisque">
+                <th style=" text-align: left;"><span style="color: black; font-size: 14px;"><strong>Buyer</strong></span></th>
+                <th style=" text-align: left;"><span style="color: black; font-size: 14px;"><strong>Style</strong></span></th>
+                <th style=" text-align: left;"><span style="color: black; font-size: 14px;"><strong>Order#</strong></span></th>
+                <th style=" text-align: left;"><span style="color: black; font-size: 14px;"><strong>Order Qty</strong></span></th>                
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@Model.data.fabList[0].BYR_ACC_GRP_NAME_EN</td>
+                <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@Model.data.fabList[0].STYLE_NO</td>
+                <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@Model.data.fabList[0].MC_ORDER_NO_LST</td>
+                <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@Model.data.fabList[0].TOT_ORD_QTY</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    @*Fabric Detail*@
+    <table border="1" cellpadding="0" cellspacing="0" style="width: 900px; border: solid 1px #8a8a8a;">
+        <caption style="text-align: left;font-style:italic; color: #5738b5; padding-top: 10px; padding-bottom: 5px;"><strong>Fabric Detail</strong></caption>
+        <thead>
+            <tr style="background-color:bisque">
+                <th style=" text-align: left;" rowspan="3"><span style="color: black; font-size: 14px;"><strong>Color</strong></span></th>
+                <th style=" text-align: left;" rowspan="3"><span style="color: black; font-size: 14px;"><strong>Dye Lot#</strong></span></th>
+                @foreach (var itmDia in Model.data.fabList[0].itemsDiaList)
+                {
+                    <th style="text-align: center;" ><span style="color: black; font-size: 14px;"><strong>@itmDia.FIN_DIA</strong></span></th>    
+                }
+                <th style=" text-align: left;" rowspan="3"><span style="color: black; font-size: 14px;"><strong>Total</strong></span></th>
+            </tr>
+
+            <tr style="background-color:bisque">
+                @foreach (var itmDia in Model.data.fabList[0].itemsDiaList)
+                {
+                    <th style="text-align: center;"><span style="color: black; font-size: 14px;"><strong>@itmDia.FAB_TYPE_SNAME</strong></span></th>
+                }
+            </tr>
+
+            <tr style="background-color:bisque">
+                @foreach (var itmDia in Model.data.fabList[0].itemsDiaList)
+                {
+                    <th style="text-align: center;"><span style="color: black; font-size: 14px;"><strong>@itmDia.QTY_MOU_CODE</strong></span></th>
+                }
+            </tr>                        
+        </thead>
+
+        <tbody>
+            @{
+                int vFabRowCount = 1;
+                                    
+                foreach (var itmColor in Model.data.fabList)
+                {
+                    if (vFabRowCount % 2 == 0)
+                    {
+                        <tr style="background-color: #e5e5e5;">
+                            <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itmColor.COLOR_NAME_EN</td>
+                            <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itmColor.DYE_LOT_NO</td>
+                            @foreach (var itmDia in itmColor.itemsDiaList)
+                            {
+                                <td style="text-align: center; border: solid 1px #8a8a8a; font-size: 12px; font-weight: 700;">@itmDia.RQD_FAB_QTY</td>
+                            }
+                            <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itmColor.ROW_TOT_RQD_FAB_QTY</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr style="background-color: white;">
+                            <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itmColor.COLOR_NAME_EN</td>
+                            <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itmColor.DYE_LOT_NO</td>
+                            @foreach (var itmDia in itmColor.itemsDiaList)
+                            {
+                                <td style="text-align: center; border: solid 1px #8a8a8a; font-size: 12px; font-weight: 700;">@itmDia.RQD_FAB_QTY</td>
+                            }
+                            <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itmColor.ROW_TOT_RQD_FAB_QTY</td>
+                        </tr>
+                    }
+                    vFabRowCount = vFabRowCount + 1;
+                }             
+            }
+                  
+            <tr>
+                <td colspan="2" style="text-align:left; border:solid 1px #8a8a8a;font-size:12px;font-weight:700;"><strong>Total</strong></td>
+                @{
+                    decimal grandTotSumQty = 0;
+                    foreach (var itm in Model.data.fabList[0].itemsDiaList)
+                    {
+                        decimal diaWiseSumFabQty = 0;
+
+                        foreach (var x in Model.data.fabList)
+                        {
+                            foreach (var x1 in x.itemsDiaList)
+                            {
+                                if (x1.DIA_INDEX == itm.DIA_INDEX)
+                                {
+                                    diaWiseSumFabQty = diaWiseSumFabQty + x1.RQD_FAB_QTY;
+                                    grandTotSumQty = grandTotSumQty + x1.RQD_FAB_QTY;
+                                }
+                            }
+                        
+                        }
+                        <td style="text-align: center; border: solid 1px #8a8a8a; font-size: 12px; font-weight: 700;">@diaWiseSumFabQty</td>                                    
+                    } 
+                    <td style="text-align:left; border:solid 1px #8a8a8a;font-size:12px;font-weight:700;"><strong>@grandTotSumQty</strong></td>
+                }
+            </tr>        
+            
+        </tbody>
+    </table>
+
+    
+
+    @*Collar/Cuff Detail*@
+    @{
+        int vCollarCount = 0;
+        int vCuffCount = 0;
+                           
+    
+        if (Model.data.clcfList.Count > 0)
+        {
+            
+            foreach (var itm in Model.data.clcfList[0].itemsDtl)
+            {
+                if(itm.RF_GARM_PART_ID==10)
+                {
+                    vCollarCount = vCollarCount + 1;
+                }
+                else
+                {
+                    vCuffCount = vCuffCount + 1;
+                }
+            }
+            @*<label>@vCollarCount</label>*@
+            
+            <table border="1" cellpadding="0" cellspacing="0" style="width: 900px; border: solid 1px #8a8a8a;">
+                <caption style="text-align: left;font-style:italic; color: #5738b5; padding-top: 10px; padding-bottom: 5px;"><strong>Collar/Cuff Detail</strong></caption>
+                <thead>
+                    <tr style="background-color:bisque">
+                        <th style=" text-align: left;" rowspan="2"><span style="color: black; font-size: 14px;"><strong>Color</strong></span></th>
+
+                        <th style=" text-align: center;" colspan="@vCollarCount"><span style="color: black; font-size: 14px;"><strong>Collar</strong></span></th>
+                        <th style=" text-align: center;" colspan="@vCuffCount"><span style="color: black; font-size: 14px;"><strong>Cuff</strong></span></th>
+
+                        <th style=" text-align: left;" rowspan="2"><span style="color: black; font-size: 14px;"><strong>Total</strong></span></th>
+                    </tr>
+
+                    <tr style="background-color:bisque">
+                        @foreach (var itmDia in Model.data.clcfList[0].itemsDtl)
+                        {
+                            <td style="text-align: center; border: solid 1px #8a8a8a; color: black; font-size: 12px; font-weight: 700;">@itmDia.MESUREMENT</td>
+                        }
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @{
+                        int vClcfRowCount = 1;
+                        foreach (var itmColor in Model.data.clcfList)
+                        {
+                            if (vClcfRowCount % 2 == 0)
+                            { 
+                                <tr style="background-color: #e5e5e5;">
+                                    <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itmColor.COLOR_NAME_EN</td>
+                                    @foreach (var itmDia in itmColor.itemsDtl)
+                                    {
+                                        <td style="text-align: center; border: solid 1px #8a8a8a; font-size: 12px; font-weight: 700;">@itmDia.RQD_PC_QTY</td>
+                                    }
+                                    <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itmColor.ROW_TOT_RQD_PC_QTY</td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr style="background-color: white;">
+                                    <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itmColor.COLOR_NAME_EN</td>
+                                    @foreach (var itmDia in itmColor.itemsDtl)
+                                    {
+                                        <td style="text-align: center; border: solid 1px #8a8a8a; font-size: 12px; font-weight: 700;">@itmDia.RQD_PC_QTY</td>
+                                    }
+                                    <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itmColor.ROW_TOT_RQD_PC_QTY</td>
+                                </tr>
+                            }
+                            vClcfRowCount = vClcfRowCount + 1;
+                        }
+                    }
+                    <tr>
+                        <td style="text-align:left; border:solid 1px #8a8a8a;font-size:12px;font-weight:700;"><strong>Total</strong></td>
+                        @{
+                            decimal grandTotClcfSumQty = 0;
+                            foreach (var itm in Model.data.clcfList[0].itemsDtl)
+                            {
+                                decimal measWiseClcfSumQty = 0;
+
+                                foreach (var x in Model.data.clcfList)
+                                {
+                                    foreach (var x1 in x.itemsDtl)
+                                    {
+                                        if (x1.MESUREMENT_INDEX == itm.MESUREMENT_INDEX)
+                                        {
+                                            measWiseClcfSumQty = measWiseClcfSumQty + x1.RQD_PC_QTY;
+                                            grandTotClcfSumQty = grandTotClcfSumQty + x1.RQD_PC_QTY;
+                                        }
+                                    }
+
+                                }
+                                <td style="text-align: center; border: solid 1px #8a8a8a; font-size: 12px; font-weight: 700;">@measWiseClcfSumQty</td>
+                            }
+                            <td style="text-align:left; border:solid 1px #8a8a8a;font-size:12px;font-weight:700;"><strong>@grandTotClcfSumQty</strong></td>
+                        }
+                    </tr>
+
+
+                    
+                </tbody>
+            </table>
+        }
+    }
+
+
+
+    @*Reason Detail*@
+    @if (Model.data.rsnList.Count > 0)
+    {
+        <table border="1" cellpadding="0" cellspacing="0" style="width: 900px; border: solid 1px #8a8a8a;">
+            <caption style="text-align: left;font-style:italic; color: #5738b5; padding-top: 10px; padding-bottom: 5px;"><strong>Reason Detail</strong></caption>
+            <thead>
+                <tr style="background-color: bisque">
+                    <th style=" text-align: left;"><span style="color: black; font-size: 14px;"><strong>Type</strong></span></th>
+                    <th style=" text-align: left;"><span style="color: black; font-size: 14px;"><strong>Description</strong></span></th>
+                </tr>           
+            </thead>
+
+            <tbody>
+                @{
+                    int vRsnRowCount=1;
+                    foreach (var itmRsn in Model.data.rsnList)
+                    {
+                        if (vRsnRowCount % 2 == 0)
+                        {
+                            <tr style="background-color: #e5e5e5;">
+                                <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itmRsn.SFAB_RSN_TYPE_NAME</td>
+                                <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itmRsn.REASON_DESC</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr style="background-color: white;">
+                                <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itmRsn.SFAB_RSN_TYPE_NAME</td>
+                                <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itmRsn.REASON_DESC</td>
+                            </tr>
+                        }
+                        vRsnRowCount = vRsnRowCount + 1;
+                    }
+                }
+                
+            </tbody>
+        </table>
+    }
+
+
+
+    @*Responsibility Detail*@
+    @if (Model.data.respList.Count > 0)
+    {
+        <table border="1" cellpadding="0" cellspacing="0" style="width: 900px; border: solid 1px #8a8a8a;">
+            <caption style="text-align: left;font-style:italic; color: #5738b5; padding-top: 10px; padding-bottom: 5px;"><strong>Responsibility Detail</strong></caption>
+            <thead>
+                <tr style="background-color:bisque">
+                    <th style=" text-align: left;"><span style="color: black; font-size: 14px;"><strong>Department</strong></span></th>
+                    <th style=" text-align: left;"><span style="color: black; font-size: 14px; "><strong>% Share</strong></span></th>
+                    <th style=" text-align: left;"><span style="color: black; font-size: 14px; "><strong>Share Qty</strong></span></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @{
+                    int vRespRowCount=1;
+                    foreach (var itmResp in Model.data.respList)
+                    {
+                        if (vRespRowCount % 2 == 0)
+                        {
+                            <tr style="background-color: #e5e5e5;">
+                                <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itmResp.RESP_DEPT_NAME</td>
+                                <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itmResp.PCT_DIST_QTY</td>
+                                <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itmResp.DIST_QTY</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr style="background-color: white;">
+                                <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itmResp.RESP_DEPT_NAME</td>
+                                <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itmResp.PCT_DIST_QTY</td>
+                                <td style="border:solid 1px #8a8a8a;font-size:12px;font-weight:700;">@itmResp.DIST_QTY</td>
+                            </tr>
+                        }
+                        vRespRowCount = vRespRowCount + 1;
+                    }
+                }
+                
+            </tbody>
+        </table>
+    }
+    <label style="color:black;font-size:14px;"><strong>Remarks: </strong> @Model.data.fabList[0].REMARKS</label>
+    
+    <br />
+    <br />
+    
+
+    <p>
+        <strong>Prepared By: </strong>@Model.data.fabList[0].EMP_FULL_NAME_EN, @Model.data.fabList[0].DESIGNATION_NAME_EN, @Model.data.fabList[0].CORE_DEPARTMENT_NAME
+    </p>
+
+   
+    <br />
+    <br />
+    <span style="display: block; font-size: 10px; font-style: italic;">
+        N.B: No need to reply. This mail is auto generated from MultiTex ERP server.
+    </span>
+   
+</body>
+</html>
+
+

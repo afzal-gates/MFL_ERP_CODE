@@ -1,0 +1,244 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 12px;
+    }
+</style>
+
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Knitting</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+
+<div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+    <div class="page-splash">
+        <div class="page-splash-message">
+            <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+        </div>
+    </div>
+</div>
+
+<div class="portlet box blue-dark">
+
+
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <form class="form-horizontal form-body" name="frmMcNeedleBroken">
+            <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    <fieldset class="custom-fieldset" style="margin-bottom:5px">
+                        <legend class="custom-legend">Key Information</legend>
+
+                        <div class="row" style="margin:auto;" ng-show="vm.errors">
+                            <div class="alert alert-danger" role="alert">
+                                @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                                <div style="padding: 0px 0px 15px 25px; ">
+                                    <b>Please fix the following errors ....</b>
+                                </div>
+                                <ul ng-repeat="field in vm.errors">
+                                    <li ng-repeat="error in field" ng-bind="error"></li>
+                                </ul>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>
+                                Company
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control" kendo-drop-down-list name="HR_COMPANY_ID" k-option-label="'-- Select Company --'"
+                                        k-data-text-field="'COMP_NAME_EN'" k-data-value-field="'HR_COMPANY_ID'" k-filter="'contains'"
+                                        k-auto-bind="'true'" k-options="vm.companyOptions" k-data-source="vm.companyDataSource" @*k-ng-delay="vm.styleList"*@
+                                        ng-disabled="vm.form.IS_FINALIZED=='Y'"
+                                        ng-model="vm.form.HR_COMPANY_ID" required></select>
+                            </div>
+
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>
+                                Office/Unit
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control" kendo-drop-down-list name="HR_OFFICE_ID" k-option-label="'-- Select Office --'"
+                                        k-data-text-field="'OFFICE_NAME_EN'" k-data-value-field="'HR_OFFICE_ID'" k-filter="'contains'"
+                                        k-auto-bind="'true'" k-options="vm.officeOptions" k-data-source="vm.officeDataSource" @*k-ng-delay="vm.styleList"*@
+                                        ng-disabled="vm.form.IS_FINALIZED=='Y'"
+                                        ng-model="vm.form.HR_OFFICE_ID" required></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>
+                                Shift
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control" kendo-drop-down-list name="HR_SCHEDULE_H_ID" k-option-label="'-- Select Shift --'"
+                                        k-data-text-field="'SCHEDULE_NAME_EN'" k-data-value-field="'HR_SCHEDULE_H_ID'" k-filter="'contains'"
+                                        k-auto-bind="'true'" k-options="vm.scheduleOption" k-data-source="vm.scheduleDataSource" @*k-ng-delay="vm.styleList"*@
+                                        ng-disabled="vm.form.IS_FINALIZED=='Y'"
+                                        ng-model="vm.form.HR_SCHEDULE_H_ID" required></select>
+                            </div>
+
+
+                            <label class="control-label col-md-2">
+                                M/C Type
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control" kendo-drop-down-list name="KNT_MC_TYPE_ID" k-option-label="'-- Select Type --'"
+                                        k-data-text-field="'MC_TYPE_NAME_EN'" k-data-value-field="'KNT_MC_TYPE_ID'" k-filter="'contains'"
+                                        k-auto-bind="'true'" k-options="vm.mcTypeOption" k-data-source="vm.mcTypeDataSource" @*k-ng-delay="vm.styleList"*@
+                                        ng-disabled="vm.form.IS_FINALIZED=='Y'"
+                                        ng-model="vm.form.KNT_MC_TYPE_ID"></select>
+
+                                @*<input type="text" class="form-control" name="MC_TYPE_NAME_EN" ng-model="vm.form.MC_TYPE_NAME_EN" readonly />*@
+                            </div>
+                            @*<label class="control-label col-md-2">
+                                Report By
+                            </label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" name="REPORT_BY_NAME" ng-model="vm.form.REPORT_BY_NAME" data-ng-init="vm.form.REPORT_BY_NAME='@Session["multiLoginEmpName"]'" readonly />
+                            </div>*@
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                Reference No
+                            </label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" name="TRAN_REF_NO" placeholder="[Auto Gen]" ng-model="vm.form.TRAN_REF_NO" readonly />
+                            </div>
+
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>
+                                Date of Transaction
+                            </label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control required" ng-click="vm.TRAN_REF_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                       name="TRAN_REF_DT" max-date="vm.today" is-open="vm.TRAN_REF_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close"
+                                       ng-disabled="vm.form.IS_FINALIZED=='Y'"
+                                       ng-model="vm.form.TRAN_REF_DT" required />
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                Remarks
+                            </label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" name="REMARKS" ng-model="vm.form.REMARKS" rows="2" ng-disabled="vm.form.IS_FINALIZED=='Y'"></textarea>
+                            </div>
+
+                        </div>
+
+                    </fieldset>
+
+
+
+                    <div class="portlet-body" data-ui-view="KntMcNeedleBroken.Dtl"></div>
+                    
+
+
+
+
+                </div>
+
+                <div class="col-md-12" style="padding-top:5px; padding-right:30px">
+                    <div class="form-group" @*style="text-align:right"*@>
+                        <div class="col-md-6">
+                            <button class="btn btn-sm green" type="button" ng-click="vm.submitData(token, 'N')" ng-show="vm.form.KNT_MCN_NDL_BRK_H_ID<1"
+                                    ng-class="{'disabled':frmMcNeedleBroken.$invalid||vm.form.IS_FINALIZED=='Y'}">
+                                Save
+                            </button>
+
+                            <button class="btn btn-sm yellow-gold" type="button" ng-click="vm.submitData(token, 'N')" ng-show="vm.form.KNT_MCN_NDL_BRK_H_ID>0"
+                                    ng-class="{'disabled':frmMcNeedleBroken.$invalid||vm.form.IS_FINALIZED=='Y'}">
+                                Update
+                            </button>
+
+                            <button class="btn btn-sm blue" type="button" ng-click="vm.cancel()">
+                                Cancel
+                            </button>
+
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <button type="button" @*ng-disabled="rollDelvGridDataSource.length()<0"*@ class="btn btn-sm blue" ng-show="form.KNT_MCN_NDL_BRK_H_ID>0" ng-click="vm.submitData(token, 'Y')"
+                                    ng-class="{'disabled':frmMcNeedleBroken.$invalid||vm.form.IS_FINALIZED=='Y'}">
+                                Finalize
+                            </button>
+
+                            @*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <button type="button" class="btn btn-sm green" ng-show="vm.form.IS_REVISE=='Y'" ng-click="vm.reviseData(token, 'Y')">
+                                Revise
+                            </button>*@
+
+                            
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <button class="btn btn-sm blue-hoki" type="button" ng-click="vm.backToList()"
+                                    @*ng-class="{'disabled':$parent.frmSampleProduction.$invalid||$parent.IS_PROD_SUBMIT=='Y'||$parent.HAS_DATA_PROD_GRID=='N'}"*@>
+                                Back
+                            </button>
+
+                            
+                        </div>
+
+                        
+                    </div>
+                </div>
+
+                @*<pre>{{frmOilReq4SubStr.$error|json}}</pre>*@
+                @*<pre>{{vm.form|json}}</pre>*@
+
+            </div>
+        </form>
+
+
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+

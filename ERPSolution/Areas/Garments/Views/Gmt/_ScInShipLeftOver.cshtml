@@ -1,0 +1,238 @@
+﻿<style>
+    tbody {
+        height: 1000px; /* Just for the demo          */
+        overflow-y: auto; /* Trigger vertical scroll    */
+        overflow-x: hidden; /* Hide the horizontal scroll */
+    }
+
+    .blue.btn:active, .blue.btn.active {
+        background-image: none;
+        background-color: #5b6e8c;
+    }
+</style>
+
+
+
+
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Garments</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="row" style="padding-top: 10px;font-size:14px;">
+            <div class="col-md-8">
+
+
+
+                <div class="btn-group btn-group">
+                    @*<input type="hidden" class="form-control" datepicker-popup="{{format}}" ng-model="dt" is-open="opened" max-date="minDate" ng-change="vm.onDateSelect(dt)" datepicker-options="dateOptions" close-text="Close" />
+                    <span style="color:white;text-align:right;"><b><i class="glyphicon glyphicon-calendar"></i></b></span>
+                    <span style="color: yellow; text-align: right; border: 1px solid white; ">&nbsp;&nbsp;<b>{{dt|date:'dd-MMM-yyyy'}}</b>&nbsp;&nbsp;</span>*@
+                    <span style="color: yellow; text-align: right; border: 1px solid white; ">&nbsp;&nbsp;<b>24-Jul-2018</b>&nbsp;&nbsp;</span>
+
+                    <span style="color: white; cursor: pointer;" ng-click="open($event)"><b>Change</b></span>
+                </div>
+
+                <div class="btn-group btn-group" style="padding:3px;">
+                    <a class="btn default btn-xs blue">
+                        Finishing In
+                    </a>
+
+                    <a class="btn default btn-xs">
+                        Sub-Contract In-House
+                    </a>
+                    <a class="btn default btn-xs">
+                        Left Over
+                    </a>
+
+                    <a class="btn default btn-xs">
+                        Finishing Rejection
+                    </a>
+                    <a class="btn default btn-xs">
+                        Ex-Factory
+                    </a>
+                </div>
+
+                <div class="btn-group btn-group" style="padding:3px;">
+                    <a class="btn default btn-xs blue">
+                        Floor: A
+                    </a>
+                    <a class="btn default btn-xs">
+                        Floor: B
+                    </a>
+                </div>
+
+
+
+            </div>
+
+
+            <div class="col-md-4" align="right">
+                <div class="btn-group btn-group">
+                    <a class="btn green-meadow btn-xs" ng-click="vm.refresh()">
+                        <i class="fa fa-refresh"></i> Refresh
+                    </a>
+                </div>
+
+                <button class="btn btn-xs" ng-click="vm.openConfigModal()">
+                    <span class="item"> <span aria-hidden="true" class="icon-settings"></span>&nbsp; Setting</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <details>
+            <summary><span class="badge badge-primary"> 1st Hour</span></summary>
+            <table class="table table-condensed table-striped table-bordered" style="padding:5px;">
+                <thead>
+                    <tr style="border: 1px solid #cecece">
+                        <th style="width:100%;" colspan="6">
+                            <select class="form-control" kendo-drop-down-list name="MC_DELV_WH_ID" k-option-label="'--Style/Order --'"
+                                    k-data-text-field="'BUYER_NAME_EN'" k-data-value-field="'MC_DELV_WH_ID'"
+                                    k-auto-bind="'true'" k-data-source="vm.ProgramTypeDs" ng-model="form.MC_DELV_WH_ID"></select>
+                        </th>
+
+                    </tr>
+
+
+                    <tr style="border: 1px solid #cecece">
+                        <th style="width:30%;">
+                            &nbsp;&nbsp;&nbsp;  Buyer: Lindex>> Style: 21212 10001>> Order: 99999099999
+                        </th>
+                        <th style="width:7%;">XS</th>
+                        <th style="width:7%;">S</th>
+                        <th style="width:7%;">M</th>
+                        <th style="width:7%;">L</th>
+                        <th style="width:7%;">XL</th>
+
+
+                    </tr>
+
+
+
+                    <tr style="border: 1px solid #cecece">
+                        <th style="width:30%;">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   Item: Long Slv T-Shirt => Country: Sewden => Color: Blue Mellange
+                        </th>
+
+                        <td>
+
+                            <span class="bade badge-roundless badge-primary" style="margin-bottom:3px;display:block;color:white;"><small><b>122/200(60%)</b></small></span>
+                            <input type="number" class="form-control" />
+                        </td>
+                        <td>
+                            <span class="bade badge-roundless badge-primary" style="margin-bottom:3px;display:block;color:white;"><small><b>122/200(60%)</b></small></span>
+                            <input type="number" class="form-control" />
+                        </td>
+                        <td>
+                            <span class="bade badge-roundless badge-primary" style="margin-bottom:3px;display:block;color:white;"><small><b>122/200(60%)</b></small></span>
+                            <input type="number" class="form-control" />
+                        </td>
+
+                        <td>
+                            <span class="bade badge-roundless badge-primary" style="margin-bottom:3px;display:block;color:white;"><small><b>122/200(60%)</b></small></span>
+                            <input type="number" class="form-control" />
+                        </td>
+                        <td>
+                            <span class="bade badge-roundless badge-primary" style="margin-bottom:3px;display:block;color:white;"><small><b>122/200(60%)</b></small></span>
+                            <input type="number" class="form-control" />
+                        </td>
+
+                    </tr>
+
+                </thead>
+            </table>
+        </details>
+
+
+        <details open="open">
+            <summary><span class="badge badge-primary"> 2nd Hour</span></summary>
+            <table class="table table-condensed table-striped table-bordered" style="padding:5px;">
+                <thead>
+                    <tr style="border: 1px solid #cecece">
+                        <th style="width:100%;" colspan="6">
+                            <select class="form-control" kendo-drop-down-list name="MC_DELV_WH_ID" k-option-label="'--Style/Order --'"
+                                    k-data-text-field="'BUYER_NAME_EN'" k-data-value-field="'MC_DELV_WH_ID'"
+                                    k-auto-bind="'true'" k-data-source="vm.ProgramTypeDs" ng-model="form.MC_DELV_WH_ID"></select>
+                        </th>
+
+                    </tr>
+
+
+                    <tr style="border: 1px solid #cecece">
+                        <th style="width:30%;">
+                            &nbsp;&nbsp;&nbsp;  Buyer: Lindex>> Style: 21212 10001>> Order: 99999099999
+                        </th>
+                        <th style="width:7%;">XS</th>
+                        <th style="width:7%;">S</th>
+                        <th style="width:7%;">M</th>
+                        <th style="width:7%;">L</th>
+                        <th style="width:7%;">XL</th>
+
+
+                    </tr>
+
+
+
+                    <tr style="border: 1px solid #cecece">
+                        <th style="width:30%;">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   Item: Long Slv T-Shirt => Country: Sewden => Color: Blue Mellange
+                        </th>
+
+                        <td>
+
+                            <span class="bade badge-roundless badge-primary" style="margin-bottom:3px;display:block;color:white;"><small><b>122/200(60%)</b></small></span>
+                            <input type="number" class="form-control" />
+                        </td>
+                        <td>
+                            <span class="bade badge-roundless badge-primary" style="margin-bottom:3px;display:block;color:white;"><small><b>122/200(60%)</b></small></span>
+                            <input type="number" class="form-control" />
+                        </td>
+                        <td>
+                            <span class="bade badge-roundless badge-primary" style="margin-bottom:3px;display:block;color:white;"><small><b>122/200(60%)</b></small></span>
+                            <input type="number" class="form-control" />
+                        </td>
+
+                        <td>
+                            <span class="bade badge-roundless badge-primary" style="margin-bottom:3px;display:block;color:white;"><small><b>122/200(60%)</b></small></span>
+                            <input type="number" class="form-control" />
+                        </td>
+                        <td>
+                            <span class="bade badge-roundless badge-primary" style="margin-bottom:3px;display:block;color:white;"><small><b>122/200(60%)</b></small></span>
+                            <input type="number" class="form-control" />
+                        </td>
+
+                    </tr>
+
+                </thead>
+            </table>
+        </details>
+
+         <table class="table table-condensed table-striped table-bordered" style="padding-left: 5px; padding-right: 5px; margin-bottom: 3px;">
+                    <tbody>
+                        <tr>
+                            <td style="width: 100%; padding-bottom: 5px;" align="left">
+                                <button class="btn btn-sm bg-yellow-gold"> Update</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+</div>
+</div>

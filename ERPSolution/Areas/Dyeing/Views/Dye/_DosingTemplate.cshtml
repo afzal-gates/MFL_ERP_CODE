@@ -1,0 +1,289 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 13px;
+    }
+</style>
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Dyeing</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class=" form-group">
+                <div class="col-md-3" style="padding-right:0px">
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend">Template List</legend>
+
+                        <div class="input-icon right" style="padding-bottom:3px;">
+                            <i class="icon-magnifier"></i>
+                            <input type="text" class="form-control form-control-solid" ng-model="q" placeholder="search..." ng-change="vm.labdipMasterList.filter( { field:'DOSE_TMPLT_NAME_EN', operator :'contains', value: q })" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }">
+                        </div>
+
+                        <div kendo-list-view
+                             k-selectable="'single'"
+                             k-data-source="vm.labdipMasterList"
+                             k-on-change="vm.onChangeMachine(dataItem)">
+                            <div k-template>
+                                <dd class="k-state-default" style="padding: 5px; border-bottom: solid 1px; border-color: lightgray; ">
+                                    {{dataItem.DOSE_TMPLT_NAME_EN}}
+                                </dd>
+                            </div>
+                        </div>
+                        <div kendo-pager k-data-source="vm.labdipMasterList"></div>
+
+                    </fieldset>
+                </div>
+
+                <div class="col-md-9" style="padding-left:0px;">
+
+                    @*===================== New Entry ==========================*@
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend"><b>Detail Template</b></legend>
+                        <div><label id="lblMsg"></label></div>
+                        <div class="row" style="padding-left: 5px; padding-right: 5px;">
+
+                            <form class="form-horizontal" role="form" name="frmKnitMachinOperatorAssign" novalidate>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-1">
+                                        </div>
+                                        <label class="control-label col-md-3">
+                                            Template Code
+                                        </label>
+                                        <div class="col-md-4">
+                                            <input type="text" name="DOSE_TMPLT_CODE" ng-model="vm.form.DOSE_TMPLT_CODE" class="form-control" readonly />
+                                            <input type="hidden" name="DYE_DOSE_TMPLT_H_ID" ng-model="vm.form.DYE_DOSE_TMPLT_H_ID" class="form-control" />
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-1">
+                                        </div>
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required">*</span>
+                                            Template Name
+                                        </label>
+                                        <div class="col-md-7">
+                                            <input type="text" name="DOSE_TMPLT_NAME_EN" ng-model="vm.form.DOSE_TMPLT_NAME_EN" class="form-control required" />
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-1">
+                                        </div>
+                                        <label class="control-label col-md-3">
+                                            Short Name
+                                        </label>
+                                        <div class="col-md-4">
+                                            <input type="text" name="DOSE_TMPLT_SNAME" ng-model="vm.form.DOSE_TMPLT_SNAME" class="form-control" />
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-1">
+                                        </div>
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required">*</span>
+                                            Dyeing Method
+                                        </label>
+                                        <div class="col-md-7">
+                                            <select kendo-drop-down-list name="LK_DYE_MTHD_ID" class="form-control required"
+                                                    options="vm.DyeMethodList" ng-model="vm.form.LK_DYE_MTHD_ID" ng-change="vm.DYMethodRearange();"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-1">
+                                        </div>
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required">*</span>
+                                            Color Group
+                                        </label>
+                                        <div class="col-md-7">
+                                            <select kendo-multi-select options='vm.colorGroupList' k-filter="contains" id="MC_COLOR_GRP_LST" style="border: 1px solid #898383;"
+                                                    ng-model='vm.form.MC_COLOR_GRP_LST' class='required'></select>
+
+                                            @*<select kendo-drop-down-list kendo-multi-select name="MC_COLOR_GRP_ID" class="form-control"
+                                            options="vm.colorGroupList" ng-model="vm.form.MC_COLOR_GRP_ID"></select>*@
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-1">
+                                        </div>
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required">*</span>
+                                            Template Type
+                                        </label>
+                                        <div class="col-md-7">
+                                            <select kendo-drop-down-list name="LK_DC_TMPLT_TYPE_ID" class="form-control required"
+                                                    options="vm.TemplateTypeList" ng-model="vm.form.LK_DC_TMPLT_TYPE_ID"></select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-1">
+                                        </div>
+                                        <label class="control-label col-md-3">
+                                            <span aria-required="true" class="required">*</span>
+                                            Is Finalize?
+                                        </label>
+                                        <div class="col-md-1">
+                                            <input type="checkbox" name="IS_FINALIZED" ng-model="vm.form.IS_FINALIZED" ng-true-value="'Y'" ng-false-value="'N'" />
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <fieldset class="custom-fieldset">
+                                    <legend class="custom-legend"><b>Agents</b></legend>
+                                    <div class="form-group" style="padding-left: 10px; padding-right: 10px; font-size:10pt;">
+                                        <table class="clsTableMtex">
+                                            <thead class="clstheadMtex">
+                                                <tr>
+                                                    <th class="clstdMtex">Step No</th>
+                                                    <th class="clstdMtex">Dye Method</th>
+                                                    <th class="clstdMtex">Dye Phase</th>
+                                                    <th class="clstdMtex">Dye Process</th>
+                                                    <th class="clstdMtex">Dyes/Chemical Agent</th>
+                                                    <th class="clstdMtex">Is Lab-dip</th>
+                                                    <th class="clstdMtex">Is LN BRK</th>
+
+                                                    <th class="clstdMtex">Dose</th>
+                                                    <th class="clstdMtex">Unit</th>
+                                                    <th class="clstdMtex">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+
+                                                    <td class="clstdMtex">
+                                                        <input type="number" name="STEP_NO" style="max-width:50px;" ng-model="vm.formItem.STEP_NO" min="1" class="form-control required" />
+                                                        <input type="hidden" name="DYE_DOSE_TMPLT_D_ID" ng-model="vm.formItem.DYE_DOSE_TMPLT_D_ID" />
+                                                        <input type="hidden" name="DYE_DOSE_TMPLT_H_ID" ng-model="vm.formItem.DYE_DOSE_TMPLT_H_ID" />
+
+                                                    </td>
+                                                    <td class="clstdMtex">
+                                                        <select class="form-control" kendo-drop-down-list name="LK_DYE_MTHD_ID" k-option-label="'-- Select Method --'"
+                                                                k-data-text-field="'DYE_MTHD_NAME'" k-data-value-field="'LK_DYE_MTHD_ID'" k-filter="'contains'"
+                                                                k-auto-bind="'true'" k-data-source="vm.DyeMethodListForDC" k-ng-delay="vm.DyeMethodListForDC"
+                                                                ng-model="vm.formItem.LK_DYE_MTHD_ID" ng-disabled="vm.formItem.LK_DYE_MTHD_ID==vm.form.LK_DYE_MTHD_ID && vm.formItem.LK_DYE_MTHD_ID>=1"></select>
+                                                    </td>
+
+                                                    <td class="clstdMtex">
+                                                        <select class="form-control" kendo-drop-down-list name="DYE_PRD_PHASE_TYPE_ID" k-option-label="'-- Select Phase --'"
+                                                                k-data-text-field="'PRD_PHASE_NAME'" k-data-value-field="'DYE_PRD_PHASE_TYPE_ID'"
+                                                                k-auto-bind="'true'" k-data-source="vm.dyePhaseTypeList" k-ng-delay="vm.dyePhaseTypeList"
+                                                                ng-model="vm.formItem.DYE_PRD_PHASE_TYPE_ID"></select>
+                                                    </td>
+                                                    <td class="clstdMtex">
+                                                        <select class="form-control" kendo-drop-down-list name="DYE_PROC_OPR_TYPE_ID" k-option-label="'-- Select Process --'"
+                                                                k-data-text-field="'PROC_OPR_NAME'" k-data-value-field="'DYE_PROC_OPR_TYPE_ID'"
+                                                                k-auto-bind="'true'" k-data-source="vm.dyeProcessTypeList" k-ng-delay="vm.dyeProcessTypeList"
+                                                                ng-model="vm.formItem.DYE_PROC_OPR_TYPE_ID"></select>
+                                                    </td>
+                                                    <td class="clstdMtex">
+
+                                                        <select class="form-control requiredSub" kendo-drop-down-list name="DC_AGENT_ID" id="DC_AGENT_ID" k-option-label="'-- Select Category --'"
+                                                                k-data-text-field="'ITEM_CAT_NAME_EN'" k-data-value-field="'INV_ITEM_CAT_ID'"
+                                                                k-auto-bind="'true'" k-data-source="vm.itemCategoryList" k-delay="vm.itemCategoryList"
+                                                                k-filter="'contains'" ng-model="vm.formItem.DC_AGENT_ID"></select>
+
+                                                        @*<select class="form-control requiredSub" kendo-drop-down-list name="DC_AGENT_ID" id="DC_AGENT_ID" k-option-label="'-- Select Agent --'"
+                                                        k-data-text-field="'ITEM_CAT_NAME_EN'" k-data-value-field="'INV_ITEM_CAT_ID'"
+                                                        k-auto-bind="'true'" k-data-source="vm.itemCategoryList" k-delay="vm.itemCategoryList" k-filter="'contains'"
+                                                        ng-model="vm.form.DC_AGENT_ID"></select>*@
+
+                                                    </td>
+                                                    <td class="clstdMtex">
+                                                        <input type="checkbox" name="IS_LABDIP" ng-model="vm.formItem.IS_LABDIP" ng-true-value="'Y'" ng-false-value="'N'" style="max-width:100px;" />
+                                                    </td>
+                                                    <td class="clstdMtex">
+                                                        <input type="checkbox" name="IS_LN_BRK" ng-model="vm.formItem.IS_LN_BRK" ng-true-value="'Y'" ng-false-value="'N'" style="max-width:100px;" />
+                                                    </td>
+
+                                                    <td class="clstdMtex">
+                                                        <input type="number" name="DOSE_QTY" ng-model="vm.formItem.DOSE_QTY" min="0.00001" style="max-width:100px;" class="form-control required" />
+                                                    </td>
+                                                    <td class="clstdMtex">
+                                                        <select class="form-control requiredSub" style="min-width: 50px; max-width: 160px;" kendo-drop-down-list name="DOSE_MOU_ID"
+                                                                id="DOSE_MOU_ID" k-option-label="'-- MOU --'" k-data-text-field="'MOU_CODE'" k-data-value-field="'RF_MOU_ID'"
+                                                                k-auto-bind="'true'" k-data-source="vm.mOUList" k-filter="'contains'" ng-model="vm.formItem.DOSE_MOU_ID"></select>
+                                                    </td>
+                                                    <td class="clstdMtex">
+                                                        <input type="button" ng-if="!vm.formItem.uid" ng-click="vm.addToGridC()" title="Add" value="Add" class="btn btn-primary green" style="padding:5px;" />
+                                                        <input type="button" ng-if="vm.formItem.uid" ng-click="vm.addToGridC()" title="Add" value="Update" class="btn btn-primary yellow-gold" style="padding:5px;" />
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <div class="form-group" style="padding-left:15px;">
+                                            <div kendo-grid k-options="vm.gridOptionsRecipeItem" id="IDBrandDS" k-data-source="vm.recipeItemList" style="width:98%"></div>
+
+                                        </div>
+
+                                    </div>
+                                </fieldset>
+                            </form>
+
+
+                        </div>
+                    </fieldset>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <button type="button" ng-if="!vm.form.DYE_STR_REQ_H_ID>0" class="btn btn-sm green" ng-click="vm.submitAll(vm.form);">Save</button>
+                            <button type="button" class="btn btn-sm default" ui-sref="DosingTemplate()" ui-sref-opts="{reload: true}">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

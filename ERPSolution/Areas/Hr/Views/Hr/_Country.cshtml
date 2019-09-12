@@ -1,0 +1,151 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">HR</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+    <form name="formData" class="form-horizontal" style="background-color: white;">
+        <div class="portlet-body">
+
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend"><b>Basic Data</b></legend>
+                <div><label id="lblMsgSub"></label></div>
+                <div class="row" style="padding-left: 5px; padding-right: 5px;">
+
+                    <div class="row">
+                        <div class="form-group">
+
+                            <div class="col-md-1">
+                            </div>
+                            <label class="control-label col-md-2 ">
+                                <span aria-required="true" class="required"></span>
+                                Code
+                            </label>
+                            <div class="col-md-3">
+
+                                <input type="text" name="COUNTRY_CODE" ng-model="vm.form.COUNTRY_CODE" readonly="readonly" class="form-control" />
+                                <input type="hidden" name="HR_COUNTRY_ID" ng-model="vm.form.HR_COUNTRY_ID" class="form-control" />
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div style="padding:3px;">
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+
+                            <div class="col-md-1">
+                            </div>
+                            <label class="control-label col-md-2 ">
+                                <span aria-required="true" class="required">*</span>
+                                Country Name(EN)
+                            </label>
+                            <div class="col-md-3">
+
+                                <input type="text" name="COUNTRY_NAME_EN" ng-model="vm.form.COUNTRY_NAME_EN" class="form-control required" />
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div style="padding:3px;">
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+
+                            <div class="col-md-1">
+                            </div>
+                            <label class="control-label col-md-2 ">
+                                <span aria-required="true" class="required"></span>
+                                Country Name(BN)
+                            </label>
+                            <div class="col-md-3">
+
+                                <input type="text" name="COUNTRY_NAME_BN" ng-model="vm.form.COUNTRY_NAME_BN" class="form-control" />
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div style="padding:3px;">
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+
+                            <div class="col-md-1">
+                            </div>
+                            <label class="control-label col-md-2 ">
+                                <span aria-required="true" class="required">*</span>
+                                Region
+                            </label>
+                            <div class="col-md-3">
+                                <select kendo-drop-down-list id="LK_REGION_ID" name="LK_REGION_ID" class="form-control required"
+                                        options="vm.regionList" ng-model="vm.form.LK_REGION_ID"></select>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div style="padding:3px;">
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+
+                            <div class="col-md-1">
+                            </div>
+                            <label class="control-label col-md-2 ">
+                                <span aria-required="true" class="required">*</span>
+                                Is Active
+                            </label>
+                            <div class="col-md-1">
+
+                                <input type="checkbox" name="IS_ACTIVE" ng-model="vm.form.IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'" class="" />
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-3">
+                        </div>
+                        <div class="col-md-6">
+                            <button type="button" ng-if="vm.form.uid" class="btn btn-sm yellow" ng-click="vm.submitAll(vm.form)">Update</button>
+                            <button type="button" ng-if="!vm.form.uid" class="btn btn-sm green" ng-click="vm.submitAll(vm.form)">Save</button>
+                            <button type="button" class="btn btn-sm" ng-click="vm.reset()">Clear</button>
+                        </div>
+                    </div>
+                    <div style="padding:3px;">
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+
+                            <div class="col-md-12" style="padding-left: 40px; padding-right: 40px;">
+                                <div kendo-grid k-options="vm.gridOptions" id="gridOptionID" k-data-source="vm.countryList"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+        </div>
+
+    </form>
+</div>

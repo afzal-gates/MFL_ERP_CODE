@@ -1,0 +1,584 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 12px;
+    }
+
+    .k-grid-content {
+        height: 200px;
+    }
+
+</style>
+
+
+
+
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Cutting</a>
+
+    </li>
+    <li>
+        <a href="#">{{vm.Title}}</a>
+    </li>
+</ul>
+
+
+<div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+    <div class="page-splash">
+        <div class="page-splash-message">
+            <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+        </div>
+    </div>
+</div>
+
+
+<div class="portlet box blue-dark" @*ng-controller="HrReportController as vm"*@>
+    
+    
+    <div class="portlet-title">
+        <div class="caption" @*ng-bind="vm.Title"*@>  
+            {{vm.Title}}&nbsp;
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <form class="form-horizontal form-body" name="frmMarkerReq">
+            <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+
+            <div class="row" style="margin:auto;" ng-show="vm.errors">
+                <div class="alert alert-danger" role="alert">
+                    @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                    <div style="padding: 0px 0px 15px 25px; ">
+                        <b>Please fix the following errors ....</b>
+                    </div>
+                    <ul ng-repeat="field in vm.errors">
+                        <li ng-repeat="error in field" ng-bind="error"></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row">
+                  
+                <div class="col-md-12">
+                    
+                    <fieldset class="custom-fieldset" style="margin-bottom:5px" ng-disabled="vm.form.RF_ACTN_STATUS_ID==102">
+                        <legend class="custom-legend">Key Information</legend>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                Req#
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" name="MRKR_REQ_NO" ng-model="vm.form.MRKR_REQ_NO" disabled />
+                            </div>
+
+                            <label class="control-label col-md-2 col-md-offset-2">
+                                <span aria-required="true" class="required">*</span>Req Date
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" ng-click="vm.reqDateOpen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                       name="MRKR_REQ_DT" ng-model="vm.form.MRKR_REQ_DT" is-open="vm.reqDateOpened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                Req By
+                            </label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" name="REQ_BY_NAME_DUMMY" ng-model="vm.form.REQ_BY_NAME_DUMMY"
+                                       data-ng-init="vm.form.REQ_BY_NAME_DUMMY='@Session["multiLoginEmpName"]'" ng-show="vm.form.GMT_MRKR_REQ_ID<1" readonly />
+
+                                <input type="text" class="form-control" name="REQ_BY_NAME" ng-model="vm.form.REQ_BY_NAME"
+                                       ng-show="vm.form.GMT_MRKR_REQ_ID>0" readonly />
+                            </div>
+
+                            <label class="control-label col-md-2 col-md-offset-1">
+                                <span aria-required="true" class="required">*</span>Company
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control" kendo-drop-down-list name="HR_COMPANY_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                        k-data-text-field="'COMP_NAME_EN'" k-data-value-field="'HR_COMPANY_ID'"
+                                        k-auto-bind="'true'" k-options="vm.companyOptions" k-data-source="vm.companyDataSource" ng-model="vm.form.HR_COMPANY_ID"
+                                        ng-disabled="vm.form.RF_ACTN_STATUS_ID==102" required></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>Cutting Floor
+                            </label>
+                            <div class="col-md-3">
+                                <select kendo-drop-down-list name="HR_PROD_FLR_ID" class="form-control"
+                                        k-options="vm.mcLocationOption" k-data-source="vm.mcLocationDataSource" ng-model="vm.form.HR_PROD_FLR_ID"
+                                        ng-disabled="vm.form.RF_ACTN_STATUS_ID==102" required></select>
+                            </div>
+
+                            <label class="control-label col-md-2 col-md-offset-1">
+                                <span aria-required="true" class="required">*</span>Cutting Table
+                            </label>
+                            <div class="col-md-2">
+                                <select kendo-drop-down-list name="GMT_CUT_TABLE_ID" class="form-control"
+                                        k-options="vm.cuttingTableOption" k-data-source="vm.cuttingTableDataSource" ng-model="vm.form.GMT_CUT_TABLE_ID"
+                                        ng-disabled="vm.form.RF_ACTN_STATUS_ID==102" required></select>
+                            </div>
+
+                            <div class="col-md-2">
+                                <label class="control-label checkbox-inline">
+                                    <input type="checkbox" name="IS_SHOW_REMARKS" ng-model="vm.form.IS_SHOW_REMARKS" ng-true-value="'Y'" ng-false-value="'N'" /> Remarks?
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-show="vm.form.IS_SHOW_REMARKS=='Y'">
+                            <label class="control-label col-md-2">Remarks</label>
+                            <div class="col-md-10">
+                                <textarea class="form-control" name="REMARKS" ng-model="vm.form.REMARKS" rows="2" ></textarea>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                                                             
+                </div>
+                
+                <div class="col-md-12">
+                    <fieldset class="custom-fieldset" style="margin-bottom:5px" ng-disabled="vm.form.RF_ACTN_STATUS_ID==102">
+                        <legend class="custom-legend">Style Information</legend>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                Buyer A/C
+                            </label>
+                            <div class="col-md-3">
+                                <select kendo-drop-down-list name="MC_BYR_ACC_GRP_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                        k-options="vm.buyerAcGrpOption" k-data-source="vm.buyerAcGrpDataSource" k-ng-delay="vm.buyerAcGrpDataSource"
+                                        ng-model="vm.form.MC_BYR_ACC_GRP_ID" k-auto-bind="'true'"
+                                        ng-disabled="vm.form.RF_ACTN_STATUS_ID==102"></select>
+                            </div>
+
+                            <label class="control-label col-md-offset-1 col-md-2">
+                                Style/Order
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control" kendo-drop-down-list name="MC_STYLE_H_EXT_ID" k-option-label="'-- Select --'"
+                                        k-template="vm.templateOh" k-value-template="vm.valueTemplateOh" k-filter="'contains'"
+                                        k-auto-bind="'true'" k-options="vm.OrdStyleExtOption" k-data-source="vm.OrdStyleExtDataSource" k-ng-delay="vm.OrdStyleExtDataSource"
+                                        ng-model="vm.form.MC_STYLE_H_EXT_ID" ng-disabled="vm.form.RF_ACTN_STATUS_ID==102"></select>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                GMT Color
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control" kendo-drop-down-list name="MC_COLOR_ID" k-option-label="'-- Select --'"
+                                        k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'MC_COLOR_ID'" k-filter="'contains'"
+                                        k-auto-bind="'true'" k-options="vm.OrdColorOption" k-data-source="vm.OrdColorDataSource" k-ng-delay="vm.OrdColorDataSource"
+                                        ng-model="vm.form.GMT_COLOR_ID" @*k-on-change="vm.getDataByOrderColorId(kendoEvent)"*@
+                                        ng-disabled="vm.form.RF_ACTN_STATUS_ID==102"></select>
+                            </div>
+
+                        </div>
+
+
+
+                        @*<div class="form-group">
+                <label class="control-label col-md-4">
+                    <span aria-required="true" class="required">*</span>Item
+                </label>
+                <div class="col-md-8">
+                    <select class="form-control" kendo-drop-down-list name="MC_COLOR_ID" k-option-label="'-- Select --'"
+                            k-data-text-field="'ITEM_NAME_EN'" k-data-value-field="'MC_STYLE_D_ITEM_ID'" k-filter="'contains'"
+                            k-auto-bind="'true'" k-options="vm.OrdItemOption" k-data-source="vm.OrdItemDataSource" k-ng-delay="vm.OrdItemDataSource"
+                            ng-model="vm.style.MC_STYLE_D_ITEM_ID" ></select>
+                </div>
+            </div>*@
+
+
+
+
+                        @*<div class="form-group">
+                <label class="control-label col-md-4">
+                    <span aria-required="true" class="required">*</span>Dye Lot#
+                </label>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" name="DYE_BATCH_NO" ng-model="vm.style.DYE_BATCH_NO" />
+                </div>
+            </div>*@
+
+                        @*<div class="form-group">
+                <label class="control-label col-md-4">&nbsp;</label>
+                <div class="col-md-4">
+                    <input type="button" class="btn btn-sm blue" value="Show" ng-click="vm.showMrkrList()" />
+                </div>
+            </div>*@
+
+
+
+                    </fieldset>
+
+                    
+                    <div class="form-group">
+                        <label class="control-label col-md-4">
+                            <span aria-required="true" class="required">*</span>Marker
+                        </label>
+                        <div class="col-md-4">
+                            <select class="form-control" kendo-drop-down-list name="GMT_MRKR_ID" k-option-label="'-- Select --'"
+                                    k-data-text-field="'MRKR_SH_DESC'" k-data-value-field="'GMT_MRKR_ID'" k-filter="'contains'"
+                                    k-auto-bind="'true'" k-options="vm.mrkrListOption" k-data-source="vm.mrkrListDataSource" k-ng-delay="vm.mrkrListDataSource"
+                                    ng-model="vm.form.GMT_MRKR_ID"
+                                    ng-disabled="vm.form.RF_ACTN_STATUS_ID==102" required></select>
+                        </div>
+                        <div class="col-md-2" >
+                            <button class="btn btn-sm blue" ng-click="vm.markerModal()"
+                                    ng-disabled="vm.form.MC_BYR_ACC_GRP_ID<1||vm.form.MC_STYLE_H_EXT_ID<1||vm.form.GMT_COLOR_ID<1||vm.form.RF_ACTN_STATUS_ID==102">
+                                <i class="fa fa-plus"></i> New Marker
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">
+                            <span aria-required="true" class="required">*</span>Req Qty
+                        </label>
+                        <div class="col-md-1">
+                            <input type="number" class="form-control" name="MRKR_RQD_QTY" ng-model="vm.form.MRKR_RQD_QTY" min="1" ng-disabled="vm.form.RF_ACTN_STATUS_ID==102" autocomplete="off" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">                        
+                        <div class="col-md-offset-4 col-md-5">
+                            <button type="button" class="btn btn-sm green" ng-click="vm.save()" ng-show="vm.form.GMT_MRKR_REQ_ID<1"
+                                    ng-class="{'disabled':!frmMarkerReq.$valid||vm.form.RF_ACTN_STATUS_ID==102}">
+                                Save
+                            </button>
+                            <button type="button" class="btn btn-sm yellow-gold" ng-click="vm.save()" ng-show="vm.form.GMT_MRKR_REQ_ID>0"
+                                    ng-class="{'disabled':!frmMarkerReq.$valid||vm.form.RF_ACTN_STATUS_ID==102}">
+                                Update
+                            </button>
+                            @*<button type="button" class="btn btn-sm blue" ng-click="vm.cancel()">Cancel</button>*@
+                            <a class="btn btn-sm blue" href="/Cutting/Cutting/MrkrReq?a=363/#/mrkrReqH/0?pMC_BYR_ACC_GRP_ID={{vm.form.MC_BYR_ACC_GRP_ID}}&pMC_STYLE_H_EXT_ID={{vm.form.MC_STYLE_H_EXT_ID}}&pMC_ORDER_H_ID={{vm.form.MC_ORDER_H_ID}}&pGMT_COLOR_ID={{vm.form.GMT_COLOR_ID}}"><i class="fa fa-plus"></i> New Requisition</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <button type="button" class="btn btn-sm blue" ng-click="vm.submit()" ng-disabled="vm.form.RF_ACTN_STATUS_ID==102">Submit</button>
+
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <a class="btn btn-sm blue" href="/Cutting/Cutting/MrkrReq?a=363/#/mrkrReqList?pMC_BYR_ACC_GRP_ID={{vm.form.MC_BYR_ACC_GRP_ID}}&pMC_STYLE_H_EXT_ID={{vm.form.MC_STYLE_H_EXT_ID}}">Back to List</a>
+                            @*<button type="button" class="btn btn-sm blue-hoki" ng-click="vm.backToList()">Back to List</button>*@
+                        </div>
+                    </div>
+
+                </div>
+                
+            </div>
+                       
+        </form>
+
+       
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+@*Start For New Marker*@
+<script type="text/ng-template" id="MarkerModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <p style="padding-top:10px;">
+                        Marker Creation
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="vm.cancel()"></i></span>
+                    </p>
+
+
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="MarkerModal" novalidate @*ng-submit="save(Task,token,TaskForm.$valid)"*@>
+                    <input id="access_token" data-ng-model="token" type="hidden"
+                           data-ng-init="token='@Session["access_token"]'" />
+
+                    @*<div kendo-grid k-data-source="asortDataList" k-columns="asortColumns" k-selectable="true" k-on-change="selected = data" k-height="300" k-filterable="true" k-sortable="true"></div>*@
+
+                    <div class="col-md-12">
+
+                        <pre style="color:red;"><b>Buyer A/C=>{{vm.form.BYR_ACC_GRP_NAME_EN}}&nbsp;&nbsp;Style=>{{vm.form.STYLE_NO}}&nbsp;&nbsp;Order=>{{vm.form.ORDER_NO}}&nbsp;&nbsp;Color=>{{vm.form.COLOR_NAME_EN}}</b></pre>
+
+                        <fieldset class="custom-fieldset" style="min-width:inherit;">
+                            <legend class="custom-legend">Marker Information</legend>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    Ref#
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" name="MRKR_REF_NO" ng-model="vm.form.MRKR_REF_NO" readonly />
+                                </div>
+
+                                <label class="control-label col-md-offset-2 col-md-2">
+                                    <span aria-required="true" class="required">*</span>Short Description
+                                </label>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" name="MRKR_SH_DESC" ng-model="vm.form.MRKR_SH_DESC" autocomplete="off" required />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    GMT Part
+                                </label>
+                                <div class="col-md-9">
+                                    <select class="form-control" kendo-multi-select name="RF_GARM_PART_ID_LIST" k-placeholder="'Search...'"
+                                            k-data-text-field="'GARM_PART_NAME'" k-data-value-field="'RF_GARM_PART_ID'"
+                                            k-data-source="vm.gmtPartDataSource" ng-model="vm.form.RF_GARM_PART_ID_LIST"
+                                            k-on-close="vm.onCloseGmtPart()"></select>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    <span aria-required="true" class="required">*</span>Fabrication
+                                </label>
+                                <div class="col-md-4">
+                                    <select class="form-control" kendo-drop-down-list name="MC_STYLE_D_FAB_ID" k-option-label="'--Select--'"
+                                            ng-model="vm.form.MC_STYLE_D_FAB_ID" k-data-text-field="'FABRIC_DESC'" k-data-value-field="'MC_STYLE_D_FAB_ID'"
+                                            k-options="vm.styleFabricOption" k-data-source="vm.styleFabricDataSource" k-filter="'contains'" k-auto-bind="'true'"
+                                            k-on-change="vm.fabOnChange(kendoEvent)" required></select>
+                                </div>
+
+                                <label class="control-label col-md-2">
+                                    <span aria-required="true" class="required">*</span>Main/Support
+                                </label>
+                                <div class="col-md-3">
+                                    <div class="radio-list" style="margin-left:20px">
+                                        <label class="radio-inline" ng-repeat="item in vm.mainSupportList">
+                                            <span class="checked"><input type="radio" name="IS_MAIN_SUPPORT" ng-model="vm.form.IS_MAIN_SUPPORT" ng-value="item.IS_MAIN_SUPPORT" required></span>{{item.MAIN_SUPPORT_NAME}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    Fabric Group
+                                </label>
+                                <div class="col-md-3">
+                                    <select class="form-control" kendo-drop-down-list name="DF_FAB_GRP_ID" k-option-label="'-- Select --'"
+                                            k-data-text-field="'ITEM_NAME_EN'" k-data-value-field="'DF_FAB_GRP_ID'" k-filter="'contains'"
+                                            k-auto-bind="'true'" k-options="vm.OrdItemOption" k-data-source="vm.OrdItemDataSource" k-ng-delay="vm.OrdItemDataSource"
+                                            ng-model="vm.form.DF_FAB_GRP_ID" @*k-on-change="vm.getDataByOrderColorId(kendoEvent)"*@></select>
+                                </div>
+
+                                <label class="control-label col-md-offset-1 col-md-2">
+                                    <span aria-required="true" class="required">*</span>Way of Marker
+                                </label>
+                                <div class="col-md-3">
+                                    <select class="form-control" kendo-drop-down-list name="LK_WAY_TYPE_ID"
+                                            k-auto-bind="'true'" k-options="vm.mrkrWayTypeList"
+                                            ng-model="vm.form.LK_WAY_TYPE_ID" required></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    <span aria-required="true" class="required">*</span>Type of Marker
+                                </label>
+                                <div class="col-md-3">
+                                    <select class="form-control" kendo-drop-down-list name="LK_MRKR_TYPE_ID"
+                                            k-auto-bind="'true'" k-options="vm.mrkrTypeList"
+                                            ng-model="vm.form.LK_MRKR_TYPE_ID" required></select>
+                                </div>
+
+                                <label class="control-label col-md-offset-1 col-md-2">
+                                    Booking Dia
+                                </label>
+                                <div class="col-md-2">
+                                    @*<input type="text" class="form-control" name="BK_FIN_DIA" ng-model="vm.form.BK_FIN_DIA" />*@
+
+                                    <select kendo-drop-down-list name="FIN_DIA_N_DIA_TYPE" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                            k-auto-bind="'true'" ng-model="vm.form.FIN_DIA_N_DIA_TYPE"
+                                            k-data-text-field="'FIN_DIA_N_DIA_TYPE'" k-data-value-field="'FIN_DIA_N_DIA_TYPE'"
+                                            k-options="vm.bookingDiaOption" k-data-source="vm.bookingDiaDataSource" ></select>
+                                </div>                                
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    <span aria-required="true" class="required">*</span>Wrk/Dia
+                                </label>
+                                <div class="col-md-1">
+                                    <input type="number" class="form-control" name="WRK_FIN_DIA" ng-model="vm.form.WRK_FIN_DIA" autocomplete="off" required />
+                                </div>
+
+                                <label class="control-label col-md-1">
+                                    <span aria-required="true" class="required">*</span>Cut/Dia
+                                </label>
+                                <div class="col-md-1">
+                                    <input type="number" class="form-control" name="CUT_FIN_DIA" ng-model="vm.form.CUT_FIN_DIA" autocomplete="off" required />
+                                </div>
+
+                                <label class="control-label col-md-offset-1 col-md-2">
+                                    Marker Length
+                                </label>
+                                <div class="col-md-1">
+                                    <input type="number" class="form-control" name="MRKR_LEN" ng-model="vm.form.MRKR_LEN" autocomplete="off" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    Max no of Ply
+                                </label>
+                                <div class="col-md-1">
+                                    <input type="number" class="form-control" name="MAX_PLY_QTY" ng-model="vm.form.MAX_PLY_QTY" autocomplete="off" />
+                                </div>
+
+                                <label class="control-label col-md-offset-3 col-md-2">
+                                    Marker Width
+                                </label>
+                                <div class="col-md-1">
+                                    <input type="number" class="form-control" name="MRKR_WDT" ng-model="vm.form.MRKR_WDT" autocomplete="off" />
+                                </div>
+
+                                @*<div class="col-md-2">
+                        <label class="control-label checkbox-inline">
+                            <input type="checkbox" name="IS_PATERN" ng-model="vm.form.IS_PATERN" ng-true-value="'Y'" ng-false-value="'N'" /> Pattarn?
+                        </label>
+                    </div>*@
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    Consumption/Dz
+                                </label>
+                                <div class="col-md-1">
+                                    <input type="number" class="form-control" name="CONS_PER_DZ" ng-model="vm.form.CONS_PER_DZ" autocomplete="off" />
+                                </div>
+
+                                <label class="control-label col-md-offset-3 col-md-2">
+                                    Marker Efficiency(%)
+                                </label>
+                                <div class="col-md-1">
+                                    <input type="number" class="form-control" name="PCT_MRKR_EFFC" ng-model="vm.form.PCT_MRKR_EFFC" min="1" max="100" autocomplete="off" />
+                                </div>
+
+                                @*<div class="col-md-2">
+                        <label class="control-label checkbox-inline">
+                            <input type="checkbox" name="IS_APROVED" ng-model="vm.form.IS_APROVED" ng-true-value="'Y'" ng-false-value="'N'" /> Approve?
+                        </label>
+                    </div>*@
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-7">
+                                    <details ng-repeat="itm in vm.form.itemsOrdItm" ng-open="true" style="padding-bottom:5px" @*ng-click="vm.styleQtyChange($index)"*@>
+                                        <br />
+                                        <summary class="large_bold_black">
+                                            <b>{{itm.ITEM_NAME_EN}}</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            @*<a ng-click='gmtPartModal(item.MC_STYLE_H_ID, $index)' class='btn btn-xs blue' ng-show="vm.showGMTPartDia==item.index"><i class='fa fa-plus'> GMT Part</i></a>*@
+                                        </summary>
+                                        @*<input type="hidden" ng-init="itm.index=$index" ng-model="itm.index" />*@
+
+                                        <table class="table table-condensed table-striped table-bordered" @*style="border-collapse: collapse; overflow:scroll;"*@>
+                                            <thead>
+                                                <tr class="site-table-header">
+                                                    <th style="border: solid 2px lightgray; width: 25%;">Size</th>
+                                                    <th style="border: solid 2px lightgray; width: 25%;"><b>O/Qty</b></th>                                                    
+                                                    <th style="border: solid 2px lightgray; width: 25%;"><b>Ratio GRP</b></th>
+                                                    <th style="border: solid 2px lightgray; width: 25%;"><b>Ratio</b></th>
+                                                </tr>
+
+                                            </thead>
+
+                                            <tbody class="clstdMtex">
+
+                                                <tr ng-repeat="itmSize in itm.itemsOrdSizeRatio" style="border: solid 2px lightgray;" @*style="border: solid 2px lightgray;"*@>
+                                                    <td>{{itmSize.SIZE_CODE}}</td>
+                                                    <td>{{itmSize.SIZE_QTY}}</td>
+                                                    <td>
+                                                        <select class="form-control" name="GMT_MRKR_RATIO_GRP_ID" ng-model="itmSize.GMT_MRKR_RATIO_GRP_ID" ng-options="Item.GMT_MRKR_RATIO_GRP_ID as Item.GRP_TEXT for Item in itmSize.itemsRatioGrpList"></select>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control" name="RATIO_QTY" ng-model="itmSize.RATIO_QTY" autocomplete="off" />
+                                                    </td>                                                    
+                                                </tr>
+                                            </tbody>
+
+                                        </table>
+
+
+                                    </details>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin:auto;" ng-show="vm.errors">
+                                <div class="alert alert-danger" role="alert">
+                                    @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                                    <div style="padding: 0px 0px 15px 25px; ">
+                                        <b>Please fix the following errors ....</b>
+                                    </div>
+                                    <ul ng-repeat="field in vm.errors">
+                                        <li ng-repeat="error in field" ng-bind="error"></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </fieldset>
+
+                    </div>
+
+                    
+
+                    @*<pre>{{ProcessLossModalForm.$valid}}</pre>*@
+
+                    <div class="form-group">&nbsp;</div>
+
+                    <div class="form-group form-actions" style="padding-left:14px;padding-top:10px;">
+                        <div class="col-md-10">
+                            <button type="button" class="btn green btn-sm" ng-click="vm.save()"
+                                    ng-class="{'disabled':vm.form.MC_STYLE_D_FAB_ID<1||vm.form.LK_WAY_TYPE_ID<1||vm.form.LK_MRKR_TYPE_ID<1||
+                                    vm.form.CUT_FIN_DIA==null||vm.form.MRKR_SH_DESC==null||vm.form.IS_MAIN_SUPPORT==null}">
+                                Save
+                            </button>
+                            <button type="button" class="btn btn-default btn-sm" ng-click="vm.cancel()">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+@*End For New Marker*@

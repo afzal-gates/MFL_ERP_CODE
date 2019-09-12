@@ -1,0 +1,254 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#">Buyer Office Master</a>
+    </li>
+</ul>
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        <input id="access_token" data-ng-model="token" type="hidden"
+               data-ng-init="token='@Session["access_token"]'" />
+
+        <form class="form-horizontal" role="form" name="OfficeForm" novalidate ng-submit="vm.submitOfficeData(vm.form,token)">
+
+            <div class="form-body clearfix">
+                <div class="row" style="margin:auto;padding-top:10px;">
+
+                    <input ng-model="vm.form.CREATED_BY" type="hidden"
+                           data-ng-init="vm.form.CREATED_BY='@Session["multiScUserId"]'" />
+
+                    <input id="access_token" ng-model="vm.form.LAST_UPDATED_BY" type="hidden"
+                           ng-init="vm.form.LAST_UPDATED_BY='@Session["multiScUserId"]'" />
+
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            <span aria-required="true" class="required">*</span> Office Name (En)
+                        </label>
+                        <div class="col-md-3">
+                            <input type="text" name="BOFF_NAME_EN" ng-model="vm.form.BOFF_NAME_EN" class="form-control" required />
+                        </div>
+                        <div class="col-md-5">
+                            <div ng-messages="OfficeForm.BOFF_NAME_EN.$error" ng-if="OfficeForm.$submitted || OfficeForm.BOFF_NAME_EN.$touched">
+                                <div ng-message="required" class="field-validation-error">The field Office Name(En) is required</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            Office Name (Bn)
+                        </label>
+                        <div class="col-md-3">
+                            <input type="text" name="BOFF_NAME_BN" ng-model="vm.form.BOFF_NAME_BN" class="form-control banglafont" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                           <span aria-required="true" class="required">*</span>Office Type
+                        </label>
+
+                        <div class="col-md-5">
+                            <div class="radio-list" style="margin-left:20px">
+                                <label class="radio-inline" ng-repeat="item in vm.officeType">
+                                    <span class="checked"><input type="radio" ng-model="vm.form.LK_BOFF_TYPE_ID" name="LK_BOFF_TYPE_ID" ng-value="item.LOOKUP_DATA_ID" required></span>{{item.LK_DATA_NAME_EN}}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div ng-messages="OfficeForm.LK_BOFF_TYPE_ID.$error" ng-if="OfficeForm.$submitted || OfficeForm.LK_BOFF_TYPE_ID.$touched">
+                                <div ng-message="required" class="field-validation-error">Choose Offic Type Field</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                          <span aria-required="true" class="required">*</span> Office Address (En)</label>
+                        <div class="col-md-5">
+                            <textarea rows="3" name="ADDRESS_EN" class="form-control" cols="50" ng-model="vm.form.ADDRESS_EN" required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-5 col-md-offset-3">
+                            <div ng-messages="OfficeForm.ADDRESS_EN.$error" ng-if="OfficeForm.$submitted || OfficeForm.ADDRESS_EN.$touched">
+                                <div ng-message="required" class="field-validation-error">The field Office Address[E] is required</div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">OfficeAddress (Bn)</label>
+                        <div class="col-md-5">
+                            <textarea rows="3" name="ADDRESS_BN" class="form-control" cols="50" ng-model="vm.form.ADDRESS_BN"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3"><span aria-required="true" class="required">*</span>Country</label>
+                        <div class="col-md-3">
+                            <select kendo-drop-down-list name="HR_COUNTRY_ID" class="form-control"
+                                    options="vm.CountryList" ng-model="vm.form.HR_COUNTRY_ID"></select>
+                        </div>
+
+                        <div class="col-md-5">
+                            <div ng-messages="OfficeForm.HR_COUNTRY_ID.$error" ng-if="OfficeForm.$submitted || OfficeForm.HR_COUNTRY_ID.$touched">
+                                <div ng-message="required" class="field-validation-error">Please select Country</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            Post Code
+                        </label>
+                        <div class="col-md-3">
+                            <input type="text" name="POST_CODE" ng-model="vm.form.POST_CODE" class="form-control"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            PO Box #
+                        </label>
+                        <div class="col-md-3">
+                            <input type="text" name="PO_BOX_NO" ng-model="vm.form.PO_BOX_NO" class="form-control"/>
+                        </div>
+                        <div class="col-md-5">
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3">
+                            Time Zone</label>
+                        <div class="col-md-3">
+                            <select kendo-drop-down-list name="HR_TIMEZONE_ID" class="form-control"
+                                    options="vm.TimeZoneList" ng-model="vm.form.HR_TIMEZONE_ID"></select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            Phone (Work)
+                        </label>
+                        <div class="col-md-3">
+                            <input type="text" name="WORK_PHONE" ng-model="vm.form.WORK_PHONE" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            Mobile No
+                        </label>
+                        <div class="col-md-3">
+                            <input type="text" name="MOB_PHONE" ng-model="vm.form.MOB_PHONE" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            Fax
+                        </label>
+                        <div class="col-md-3">
+                            <input type="text" name="FAX_NO" ng-model="vm.form.FAX_NO" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            Email
+                        </label>
+                        <div class="col-md-3">
+                            <input type="email" name="EMAIL_ID" ng-model="vm.form.EMAIL_ID" class="form-control" />
+                        </div>
+
+                        <div class="col-md-5">
+                            <div ng-messages="OfficeForm.EMAIL_ID.$error" ng-if="OfficeForm.$submitted || OfficeForm.EMAIL_ID.$touched">
+                                <div ng-message="email" class="field-validation-error">Please choose valid email address</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            Web
+                        </label>
+                        <div class="col-md-3">
+                            <input type="url" name="WEB_URL" ng-model="vm.form.WEB_URL" class="form-control" />
+                        </div>
+
+                        <div class="col-md-5">
+                            <div ng-messages="OfficeForm.WEB_URL.$error" ng-if="OfficeForm.$submitted || OfficeForm.WEB_URL.$touched">
+                                <div ng-message="url" class="field-validation-error">Please choose valid web address</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" style="padding-top: 12px;">
+                            Is Active ?
+                        </label>
+                        <div class="col-md-4">
+                            <div class="checkbox-list">
+                                <label class="checkbox-inline" style="margin-left:20px">
+                                    <span><input type="checkbox" ng-model="vm.form.IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <div class="row">
+                        <div class="col-md-4 col-md-offset-3">
+                            <button type="button" class="btn btn-sm blue" ui-sref="OfficeList">Back To List</button>
+                            <button type="submit" ng-if="vm.form.MC_BUYER_OFF_ID" class="btn btn-sm yellow-gold" ng-class="{'disabled':!OfficeForm.$valid}">Update</button>
+                            <button type="submit" ng-if="!vm.form.MC_BUYER_OFF_ID" class="btn btn-sm green" ng-class="{'disabled':!OfficeForm.$valid}">Save</button>
+                            
+                            <button type="button" class="btn btn-sm default" ui-sref="OfficeEntry({ MC_BUYER_OFF_ID : null })" ui-sref-opts="{reload: true}">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:auto;padding-top:10px;" ng-if="vm.errors">
+                    <div class="alert alert-warning" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                        <ul ng-repeat="field in vm.errors">
+                            <li ng-repeat="error in field" ng-bind="error"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+

@@ -1,0 +1,359 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#">Buyer Wise Trim & Accessories</a>
+    </li>
+</ul>
+
+
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <input id="access_token" data-ng-model="token" type="hidden"
+               data-ng-init="token='@Session["access_token"]'" />
+
+        <div class="row" style="margin:auto;">
+            <div class="col-md-12">
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend">Search By</legend>
+                    <label class="col-md-1 control-label">
+                        Buyer
+                    </label>
+                    <div class="col-md-3">
+                        <select kendo-drop-down-list name="MC_BUYER_ID" class="form-control"
+                                options="vm.buyerList" id="MC_BUYER_ID" ng-model="vm.form.MC_BUYER_ID" required></select>
+                    </div>
+
+                    <label class="col-md-1 control-label">
+                        Buyer A/C
+                    </label>
+                    <div class="col-md-3">
+                        <select class="form-control" kendo-drop-down-list name="BYR_ACC_NAME_EN" k-option-label="'-- Select Buyer --'"
+                                k-data-text-field="'BYR_ACC_NAME_EN'" k-data-value-field="'MC_BYR_ACC_ID'"
+                                k-auto-bind="'true'" k-data-source="vm.BuyerAcc" ng-model="vm.form.MC_BYR_ACC_ID"
+                                k-on-data-bound="vm.buyerAccListOnBound(kendoEvent)"></select>
+                    </div>
+
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-sm blue" ng-disabled="!vm.form.MC_BUYER_ID||!vm.form.MC_BYR_ACC_ID" ng-click="vm.getItemData(vm.form.MC_BUYER_ID,null,vm.form.MC_BYR_ACC_ID)">
+                            Load
+                        </button>
+                    </div>
+                </fieldset>
+            </div>
+
+        </div>
+        <br />
+        <div class="row" style="margin:auto;">
+
+            <div class="col-md-3">
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend">Buyer List with Trim & Accessories</legend>
+
+                    <div>
+                        <div kendo-list-view
+                             k-selectable="'single'"
+                             k-data-source="vm.dataSource"
+                             k-ng-delay="vm.dataSource"
+                             k-on-change="vm.onSelectMapedBuyer(dataItem);vm.getItemData(dataItem.MC_BUYER_ID,null,dataItem.MC_BYR_ACC_ID);">
+
+                            <div k-template>
+                                <dd class="k-state-default" style="padding: 5px; border-bottom: solid 1px; border-color: lightgray; ">
+                                    {{dataItem.BUYER_NAME_EN+' | '+ dataItem.BYR_ACC_NAME_EN}}
+                                </dd>
+                            </div>
+                        </div>
+                        <div kendo-pager k-data-source="vm.dataSource"></div>
+                    </div>
+
+                </fieldset>
+            </div>
+
+            <div class="col-md-9">
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend">Trim & Accessories</legend>
+                    <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 250px;">
+                        <div class="scroller" style="height: 350px; overflow: hidden; width: auto;" data-always-visible="1" data-rail-visible1="0" data-handle-color="#D7DCE2" data-initialized="1" slimscroll="{height: 400,alwaysVisible:true,allowPageScroll:true}">
+
+
+                            <form class="form-horizontal" role="form" name="BuyerBomForm" novalidate ng-submit="vm.submitData(vm.form.MC_BUYER_ID,vm.ItemData,token,vm.form.MC_BYR_ACC_ID)" ng-if="vm.ItemData.length>0">
+                                <div class="table-scrollable">
+                                    <table class="table table-condensed table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th class="col-md-2">
+                                                    Category
+                                                </th>
+                                                <th class="col-md-10">
+                                                    Item Specification
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <tr ng-repeat="item in vm.ItemData">
+                                                <td>
+
+                                                    <b><i>{{item.ITEM_CAT_NAME_EN}}</i></b>
+                                                    <input type="hidden" ng-init="item.index=$index" ng-model="item.index" />
+                                                </td>
+                                                <td>
+                                                    <table class="table table-condensed table-striped table-bordered" style="padding:0px;">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="col-md-3">
+                                                                    <small>
+                                                                        Item Name
+                                                                    </small>
+
+                                                                </th>
+                                                                <th class="col-md-1">
+                                                                    <small>
+                                                                        Cons.Ut.
+                                                                    </small>
+                                                                </th>
+
+
+                                                                <th class="col-md-1">
+                                                                    <small>
+                                                                        Purc.Ut
+                                                                    </small>
+                                                                </th>
+
+                                                                <th class="col-md-1">
+                                                                    <small>
+                                                                        Rate
+                                                                    </small>
+                                                                </th>
+
+                                                                <th class="col-md-1">
+                                                                    <input type="checkbox" ng-model="item.IS_COMMON" ng-change="vm.setCommonChecked(item,item.IS_COMMON)" ng-true-value="'Y'" ng-false-value="'N'" />
+                                                                    <small>All</small>
+                                                                    <small>
+                                                                        Cmn?
+                                                                    </small>
+                                                                </th>
+
+                                                                <th class="col-md-1">
+                                                                    <small>Remarks</small>
+                                                                </th>
+                                                                <th class="col-md-1">
+                                                                    Cons Type
+                                                                </th>
+                                                                <th class="col-md-1">
+                                                                    Nom Sup
+                                                                </th>
+
+                                                                <th class="col-md-1">
+                                                                    <a ng-click='vm.add(item)' class='btn btn-xs blue'><i class='fa fa-plus'> </i></a>
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+
+                                                        <tbody>
+                                                            <tr ng-repeat="itm in item.inv_items_view">
+                                                                <td>
+
+                                                                    <span ng-if="itm.ITEM_NAME_EN && !itm.edit">
+                                                                        {{itm.ITEM_NAME_EN}}
+                                                                    </span>
+                                                                    <span ng-if="!itm.ITEM_NAME_EN" ng-class="{'danger':BuyerBomForm['INV_ITEM_ID-{{item.index+'-'+$index}}'].$invalid}">
+
+                                                                        <select kendo-drop-down-list
+                                                                                options="vm.ItemListForDD" name="INV_ITEM_ID-{{item.index+'-'+$index}}" ng-model="itm.INV_ITEM_ID" ng-change="vm.onItemChange(itm,item)" required class="form-control"></select>
+                                                                    </span>
+
+                                                                    <span ng-if="itm.edit" ng-class="{'danger':BuyerBomForm['INV_ITEM_ID-{{item.index+'-'+$index}}'].$invalid}">
+
+                                                                        <select kendo-drop-down-list
+                                                                                options="vm.ItemListForDD" name="INV_ITEM_ID-{{item.index+'-'+$index}}" ng-model="itm.INV_ITEM_ID" ng-change="vm.onItemChange(itm,item)" required class="form-control"></select>
+                                                                    </span>
+
+
+                                                                </td>
+
+                                                                <td ng-class="{'danger':BuyerBomForm['CONS_MOU_ID-{{item.index+'-'+$index}}'].$invalid}">
+                                                                    <select kendo-drop-down-list name="CONS_MOU_ID-{{item.index+'-'+$index}}"
+                                                                            options="vm.MOUList" id="CONS_MOU_ID" ng-model="itm.CONS_MOU_ID" required class="form-control"></select>
+                                                                </td>
+
+
+                                                                <td ng-class="{'danger':BuyerBomForm['QTY_MOU_ID-{{item.index+'-'+$index}}'].$invalid}">
+
+                                                                    <select kendo-drop-down-list name="QTY_MOU_ID-{{item.index+'-'+$index}}"
+                                                                            options="vm.MOUList" id="QTY_MOU_ID" ng-model="itm.PURCH_MOU_ID" required class="form-control"></select>
+
+                                                                </td>
+
+                                                                <td ng-class="{'danger':BuyerBomForm['RATE_EST-{{item.index+'-'+$index}}'].$invalid}">
+                                                                    <input type="number" name="RATE_EST-{{item.index+'-'+$index}}" min="0.001" ng-model="itm.RATE_EST" class="form-control" required />
+                                                                </td>
+
+                                                                <td>
+                                                                    <input type="checkbox" ng-model="itm.IS_COMMON" ng-true-value="'Y'" ng-false-value="'N'" />
+                                                                </td>
+
+                                                                <td>
+                                                                    <input type="text" name="REMARKS" ng-model="itm.REMARKS" class="form-control" />
+
+                                                                <td>
+
+                                                                    <select kendo-drop-down-list name="LK_ACS_CONS_TYPE_ID-{{item.index+'-'+$index}}"
+                                                                            options="vm.ConsList" id="LK_ACS_CONS_TYPE_ID" ng-model="itm.LK_ACS_CONS_TYPE_ID" required class="form-control"></select>
+
+                                                                </td>
+
+                                                                <td>
+                                                                    <input type="checkbox" name="IS_SUPL_NOM" ng-model="itm.IS_SUPL_NOM" ng-true-value="'Y'" ng-false-value="'N'" /><span><a ng-if="itm.IS_SUPL_NOM=='Y'" ng-click='vm.openSuplierModal(itm)' class='btn btn-xs green'><i class='fa fa-edit'></i> O</a></span>
+                                                                    <input type="hidden" name="NOM_SUP_LST" ng-model="itm.NOM_SUP_LST" />
+                                                                </td>
+                                                </td>
+                                                <td>
+                                                    <a ng-click='vm.remove(item,itm)' class='btn btn-xs red'><i class='fa fa-times'> </i></a>
+                                                    <a class='btn btn-xs blue' ng-click="vm.editItem(item,itm)" ng-disabled="!itm.ITEM_NAME_EN"><i class='fa' ng-class="{'fa-pencil': !itm.edit,'fa-ban':itm.edit}"> </i></a>
+
+                                                </td>
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+                                    </td>
+                                    </tr>
+
+
+                                    </tbody>
+
+                                    </table>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <button type="submit" class="btn btn-sm green" ng-class="{'disabled':BuyerBomForm.$invalid}">Save</button>
+                                        <button type="button" class="btn btn-sm default" ng-click="vm.cancel(vm.form.MC_BUYER_ID,vm.form.MC_BYR_ACC_ID)">Cancel</button>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+        </div>
+
+        <br />
+    </div>
+</div>
+
+
+
+<script type="text/ng-template" id="NominatedSupplierView.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h3 class="title">
+                        Nominated Supplier
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel(vm.form)"></i></span>
+                    </h3>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="CtrlTemplateForm" novalidate>
+                    <div class="form-body clearfix">
+                        <div class="row" style="margin:auto;padding-top:10px;">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">
+                                    <span aria-required="true" class="required">*</span>
+                                    Supplier Name
+                                </label>
+                                <div class="col-md-4">
+                                    <select class="form-control" kendo-drop-down-list name="SCM_SUPPLIER_ID" id="SCM_SUPPLIER_ID" k-option-label="'-- Select Supplier --'"
+                                            k-data-text-field="'SUP_TRD_NAME_EN'" k-data-value-field="'SCM_SUPPLIER_ID'" k-auto-bind="'true'" k-data-source="supplierList"
+                                            k-ng-delay="supplierList" k-filter="'contains'" ng-model="form.SCM_SUPPLIER_ID"></select>
+
+                                </div>
+                                <label class="col-md-2 control-label">
+                                    <span aria-required="true" class="required">*</span>
+                                    Rate
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="number" name="RATE" ng-model="form.RATE" class="form-control" required />
+                                    <input type="hidden" ng-model="form.MC_BYR_NOM_SUP_ID" />
+                                    <input type="hidden" ng-model="form.MC_BYR_ACC_ID" />
+                                    <input type="hidden" ng-model="form.INV_ITEM_ID" />
+
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="row">
+                                <div class="col-md-6 col-md-offset-5">
+                                    <button type="button" ng-if="IS_EDIT>0" ng-click="save(form)" class="btn btn-sm yellow-gold" ng-class="{'disabled':!CtrlTemplateForm.$valid}">Update</button>
+                                    <button type="button" ng-if="IS_EDIT==0" ng-click="save(form)" class="btn btn-sm green" ng-class="{'disabled':!CtrlTemplateForm.$valid}">Save</button>
+                                    <button type="button" class="btn btn-sm default" ng-click="cancel()">Cancel</button>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="row">
+                                <table style="width:100%" class="clsTableMtex">
+                                    <thead class="clstheadMtex">
+                                        <tr>
+                                            <th class="clstdMtex">Supplier Name</th>
+                                            <th class="clstdMtex">Rate</th>
+                                            <th class="clstdMtex">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="obj in SupplierRateList">
+                                            <td class="clstdMtex">{{obj.SUP_TRD_NAME_EN}}</td>
+                                            <td class="clstdMtex">{{obj.RATE}}</td>
+                                            <td class="clstdMtex">
+                                                <a ng-click='removeItem(obj)' class='btn btn-xs red'><i class='fa fa-times'> Remove</i></a>
+                                                <a class='btn btn-xs blue' ng-click="editItem(obj)"><i class='fa fa-pencil'> Edit</i></a>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <div class="row" style="margin:auto;padding-top:10px;" ng-if="vm.errors">
+                                <div class="alert alert-warning" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                                    <ul ng-repeat="field in vm.errors">
+                                        <li ng-repeat="error in field" ng-bind="error"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+

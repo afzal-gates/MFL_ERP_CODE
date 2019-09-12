@@ -1,0 +1,176 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 12px;
+    }
+
+    .k-grid-content {
+        width: 100%;
+    }
+
+
+    #Format01GridGrid tr td {
+        /* this makes the menu visibile */
+        overflow: visible;
+    }
+
+    #Format01GridGrid .k-grid-header {
+        padding-right: 0 !important;
+    }
+    
+</style>
+
+
+
+@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>    
+    <li>
+        <a href="#">{{vm.Title}}</a>
+    </li>
+</ul>
+
+<div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+    <div class="page-splash">
+        <div class="page-splash-message">
+            <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title"></div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+            </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+            </a>
+            <a href="javascript:;" class="reload">
+            </a>*@
+            @*<a href="javascript:;" class="remove">
+            </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body">
+        
+            <div class="form-body clearfix">
+                <div class="row" style="margin:auto;padding-top:10px;">
+
+
+                    <input id="access_token" data-ng-model="token" type="hidden"
+                           data-ng-init="token='@Session["access_token"]'" />
+
+                    <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+                           data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+                    <fieldset class="custom-fieldset col-md-2">
+                        <legend class="custom-legend">File Type</legend>
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="radio-list">
+                                    <label class="radio" ng-repeat="item in vm.uploadFormatList">
+                                        <span class="checked"><input type="radio" name="UPLOAD_FORMAT_ID" ng-model="vm.file.UPLOAD_FORMAT_ID" ng-value="item.UPLOAD_FORMAT_ID" ></span>{{item.UPLOAD_FORMAT_NAME}}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="custom-fieldset col-md-8">
+                        <legend class="custom-legend">Upload</legend>
+                        
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Attach File</label>
+                            <div class="col-md-9">
+                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                                    <div class="input-group">
+                                        <div class="form-control uneditable-input span3" data-trigger="fileinput" style="padding-top: 0px;padding-bottom: 0px;height: 26px;">
+                                            <i class="fa fa-file fileinput-exists"></i>&nbsp; <span class="fileinput-filename"></span>
+                                        </div>
+                                        <span class="input-group-addon btn default btn-file" style="padding-bottom: 0px;padding-top: 0px;">
+                                            <span class="fileinput-new btn-circle">
+                                                <i class="fa fa-paperclip"></i>
+                                            </span>
+                                            <span class="fileinput-exists">
+                                                <i class="fa fa-exchange"></i>
+                                            </span>
+                                            <input type="hidden" value="" name="..." /><input type="file" name="" accept=".csv" data-ak-file-model="vm.file.ATT_FILE" />
+                                        </span>
+                                        @*<a class="input-group-addon btn green fileinput-exists" data-dismiss="fileinput" ng-click="vm.addToGrid(vm.file)" ng-disabled="!vm.form.DOC_REF_NO">
+                                        <i class="fa fa-plus"></i>
+                                    </a>*@
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">&nbsp;</label>
+                            <div class="col-md-8">
+                                <button type="button" class="btn btn-sm blue-hoki fileinput-exists" ng-click="vm.showStyleOrderFileData()">Show File Data</button>
+                                <button type="button" class="btn btn-sm blue fileinput-exists" ng-click="vm.submitData()" ng-disabled="">Upload</button>
+                            </div>
+
+                        </div>
+
+
+                    </fieldset>
+
+                                       
+
+                    <div class="row" style="margin:auto;padding-top:10px;" ng-if="vm.errors.length>0">
+                        <div class="alert alert-warning" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                            <ul ng-repeat="field in vm.errors">
+                                <li ng-repeat="error in field" ng-bind="error"></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12" style="text-align:right">
+                            <a class="label label-sm label-warning" ng-click="vm.nextData()">&nbsp;&nbsp;&nbsp;Next&nbsp;&nbsp;&nbsp;</a>
+                            <a class="label label-sm label-success" ng-click="vm.previousData()">Previous</a>
+                            @*<button type="button" class="btn btn-sm blue" ng-click="vm.showStyleOrderFileData()">Next</button>
+                            <button type="button" class="btn btn-sm blue" ng-click="vm.submitData()" ng-disabled="">Previous</button>*@
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-show="vm.file.UPLOAD_FORMAT_ID==1">
+                    <kendo-grid id="Format01GridGrid" k-options="vm.format01GridOption" k-data-source="vm.format01GridDataSource"></kendo-grid>
+                </div>
+                <div ng-show="vm.file.UPLOAD_FORMAT_ID==2">
+                    <kendo-grid id="Format02GridGrid" k-options="vm.format02GridOption" k-data-source="vm.format02GridDataSource"></kendo-grid>
+                </div>
+            </div>
+        
+    </div>
+</div>

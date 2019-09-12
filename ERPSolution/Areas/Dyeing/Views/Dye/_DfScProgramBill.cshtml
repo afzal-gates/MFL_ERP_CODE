@@ -1,0 +1,220 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Knitting</a>
+
+    </li>
+    <li>
+        <a href="#">{{vm.Title}}</a>
+    </li>
+</ul>
+
+
+<div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+    <div class="page-splash">
+        <div class="page-splash-message">
+            <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+        </div>
+    </div>
+</div>
+
+
+<div class="portlet box blue-dark">
+
+
+    <div class="portlet-title">
+        <div class="caption" @*ng-bind="vm.Title"*@>
+            {{vm.Title}}&nbsp;<span style="color:#ff4600"><b>[ {{form.EVENT_NAME}} ]</b></span>&nbsp;<span style="color:#ff4600" ng-show="form.IS_ACTIVE == 'N'"><b>[ Inactive ]</b></span>
+        </div>
+        <div class="tools">
+
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <form class="form-horizontal form-body" name="frmScoBillProc">
+            <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+
+            <div class="row" style="margin:auto;" ng-show="vm.errors">
+                <div class="alert alert-danger" role="alert">
+                    <div style="padding: 0px 0px 15px 25px; ">
+                        <b>Please fix the following errors ....</b>
+                    </div>
+                    <ul ng-repeat="field in vm.errors">
+                        <li ng-repeat="error in field" ng-bind="error"></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-12">
+                    <fieldset class="custom-fieldset" style="margin-bottom:5px" ng-disabled="form.RF_ACTN_STATUS_ID == 75">
+                        <legend class="custom-legend">Bill Info</legend>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>From Party
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control" kendo-drop-down-list name="SCM_SUPPLIER_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                        k-data-text-field="'SUP_TRD_NAME_EN'" k-data-value-field="'SCM_SUPPLIER_ID'"
+                                        k-auto-bind="'true'" k-options="vm.supplierOption" k-data-source="vm.supplierDataSource" ng-model="vm.form.SCM_SUPPLIER_ID"
+                                        required></select>
+                            </div>
+
+                            <label class="control-label col-md-1">
+                                <span aria-required="true" class="required">*</span>Bill#
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" name="BILL_NO" ng-model="vm.form.BILL_NO" />
+                            </div>
+
+                            <label class="control-label col-md-1">
+                                <span aria-required="true" class="required">*</span>Bill Date
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control required" ng-click="BILL_DT_LNopen($event)" ng-focus="BILL_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                       name="BILL_DT" max-date="vm.today" ng-model="vm.form.BILL_DT" is-open="BILL_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close"
+                                       required />
+                                @*<input type="text" class="form-control" ng-click="vm.billDateOpen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                    name="BILL_DT" ng-model="vm.form.BILL_DT" is-open="vm.billDateOpened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />*@
+                            </div>
+                        </div>
+
+                    </fieldset>
+
+                    <fieldset class="custom-fieldset" style="margin-bottom:5px" ng-show="vm.form.REVISION_NO>0">
+                        <legend class="custom-legend">Bill Revision Information</legend>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-1">Revision#</label>
+                            <div class="col-md-1">
+                                <input type="text" class="form-control" name="REVISION_NO" ng-model="vm.form.REVISION_NO" disabled />
+                            </div>
+
+                            <label class="control-label col-md-1">Corr.Type</label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" name="CORR_TYPE_NAME" ng-model="vm.form.CORR_TYPE_NAME" disabled />
+                            </div>
+
+                            <label class="control-label col-md-1">Prev.Amt</label>
+                            <div class="col-md-1">
+                                <input type="text" class="form-control" name="PREV_BILL_AMT" ng-model="vm.form.PREV_BILL_AMT" disabled />
+                            </div>
+                            <label class="control-label col-md-1">Curr.Amt</label>
+                            <div class="col-md-1">
+                                <input type="text" class="form-control" name="CURR_BILL_AMT" ng-model="vm.form.CURR_BILL_AMT" disabled />
+                            </div>
+                            <label class="control-label col-md-1">Corr.Amt</label>
+                            <div class="col-md-1">
+                                <input type="text" class="form-control" name="REV_AMT" ng-model="vm.form.REV_AMT" disabled />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-1">Description</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" name="OTH_RSN_DESC" ng-model="vm.form.OTH_RSN_DESC" disabled />
+                            </div>
+
+                            <div class="col-md-2" @*style="background-color:aqua"*@>
+                                <div class="col-md-6" style="text-align:right">
+                                    <label class="control-label checkbox-inline">
+                                        <input type="checkbox" name="IS_DM_CM" ng-model="vm.form.IS_DM_CM" ng-true-value="'DM'" ng-false-value="'CM'" disabled /> DM
+                                    </label>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="control-label checkbox-inline">
+                                        <input type="checkbox" name="IS_DM_CM" ng-model="vm.form.IS_DM_CM" ng-true-value="'CM'" ng-false-value="'DM'" disabled /> CM
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </fieldset>
+
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="col-md-3" ng-class="{'col-md-pull-0' : !Showed, 'col-md-3' : Showed }" ng-hide="!Showed" style="padding-right:0px;">
+                        <fieldset class="custom-fieldset" style="min-width:inherit" ng-disabled="form.RF_ACTN_STATUS_ID==75||form.RF_ACTN_STATUS_ID==12||(form.RF_ACTN_STATUS_ID==12 && form.ACTION_USER_TYPE=='SENDER')">
+                            <legend class="custom-legend">Receive Challan</legend>
+
+                            <div kendo-grid k-options="vm.delvChlnOptions" k-data-source="vm.delvChlnDataSource"></div>
+
+                            <div class="col-md-12" style="text-align:right;padding-right:0px;padding-top:5px">
+                                <button type="button" class="btn btn-sm blue" ng-click="vm.includeBill()">Include Bill</button>
+                            </div>
+                        </fieldset>
+
+                    </div>
+
+
+                    <div class="col-md-9" ng-class="{'col-md-9' : Showed, 'col-md-12' : !Showed }">
+                        <a class="btn btn-xs btn-link" ng-click="Showed= !Showed"><i class="fa" ng-class="{'fa-chevron-left' : Showed, 'fa-chevron-right' : !Showed }"></i> {{Showed?'Hide':'Show'}} Receive Challan List</a>
+
+                        <fieldset class="custom-fieldset" ng-disabled="form.RF_ACTN_STATUS_ID==75||(form.RF_ACTN_STATUS_ID==12 && form.ACTION_USER_TYPE=='SENDER')">
+                            <legend class="custom-legend">Bill Detail</legend>
+
+                            <div kendo-grid k-options="vm.billDtlOptions" k-data-source="vm.billDtlDataSource"></div>
+                        </fieldset>
+                        <div class="form-group">
+                            <div class="col-md-4" style="padding-top:5px">
+
+                                <button type="button" class="btn btn-sm green" ng-click="vm.submitData(token, 'N')" ng-show="vm.form.DF_SCO_FP_BILL_H_ID<1"
+                                        ng-class="{'disabled': vm.billDtlDataSource.data().length<1}">
+                                    Save
+                                </button>
+                                <button type="button" class="btn btn-sm yellow-gold" ng-click="vm.submitData(token, 'N')" ng-show="vm.form.DF_SCO_FP_BILL_H_ID>0"
+                                        ng-class="{'disabled': vm.billDtlDataSource.data().length<1}">
+                                    Update
+                                </button>
+
+                                <a class="btn btn-sm blue" href="/Dyeing/Dye/DfScProgramBillList?a=395/#/DfScProgramBill?pDF_SCO_FP_BILL_H_ID=0">Cancel</a>
+
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <button type="button" class="btn btn-sm blue-hoki" ng-click="vm.backToList()">Back to List</button>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <button type="button" class="btn btn-sm blue" ng-click="vm.submitData(token, 'Y')" ng-show="$parent.form.RF_ACTN_STATUS_ID==74">Finalize</button>
+
+                            </div>
+
+                            <label class="control-label col-md-2" style="padding-top:5px">
+                                <span aria-required="true" class="required">*</span>
+                                Take Action
+                            </label>
+                            <div class="col-md-3" style="padding-top:5px" ng-if="vm.form.RF_ACTN_VIEW>0">
+                                <select kendo-drop-down-list name="RF_ACTN_STATUS_ID" id="RF_ACTN_STATUS_ID" class="form-control required"
+                                        options="vm.statusList" ng-model="vm.form.RF_ACTN_STATUS_ID" required></select>
+                            </div>
+
+                            <div class="col-md-3" style="padding-top:5px" ng-if="!vm.form.RF_ACTN_VIEW>0">
+
+                                <input type="text" ng-model="vm.form.ACTN_STATUS_NAME" style="width: 100%;" readonly="readonly" />
+                                <input type="hidden" ng-model="vm.form.RF_ACTN_STATUS_ID" />
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-show="vm.IS_NEXT=='Y'">
+
+            </div>
+
+        </form>
+
+
+
+    </div>
+
+</div>

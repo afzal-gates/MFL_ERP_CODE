@@ -1,0 +1,138 @@
+﻿<style>
+    #grid tr td {
+        /* this makes the menu visibile */
+        overflow: visible;
+    }
+
+    #grid .k-grid-header {
+        padding-right: 0 !important;
+    }
+</style>
+
+
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>From</th>
+            <th>To</th>
+            <th>Is G/F Fab?</th>
+            <th>Order Type</th>
+            <th>Buyer A/C</th>
+            <th>Work Style/Order#</th>
+            @*<th>Order#</th>*@
+            <th>Fab. Color</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="width:10%">
+                <input type="text" class="form-control" ng-click="vm.fromDateOpen($event)" datepicker-popup="{{vm.dtFormat}}" ng-change="vm.onChangeProdDate()" placeholder="Start date"
+                       name="FROM_DT" ng-model="search.FROM_DT" is-open="vm.fromDateOpened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" required />
+            </td>
+            <td style="width:10%">
+                <input type="text" class="form-control" ng-click="vm.toDateOpen($event)" datepicker-popup="{{vm.dtFormat}}" ng-change="vm.onChangeProdDate()" placeholder="End date"
+                       name="TO_DT" ng-model="search.TO_DT" is-open="vm.toDateOpened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" required />
+            </td>
+
+            <td style="width:10%">
+                <select kendo-drop-down-list name="IS_G_F" id="IS_G_F" class="form-control"
+                        options="gfFabricList" ng-model="search.IS_G_F"></select>
+            </td>
+
+            <td style="width:10%">
+                <select kendo-drop-down-list name="RF_FAB_PROD_CAT_ID" id="RF_FAB_PROD_CAT_ID" class="form-control"
+                        options="productionTypeList" ng-model="search.RF_FAB_PROD_CAT_ID"></select>
+            </td>
+            <td style="width:10%">
+                <select kendo-drop-down-list name="MC_BYR_ACC_ID" class="form-control"
+                        k-options="buyerAcList" id="MC_BYR_ACC_ID" ng-model="search.MC_BYR_ACC_ID"></select>
+            </td>
+            @*<td style="width:10%">
+                    <select class="form-control" kendo-drop-down-list name="MONTHOF" k-option-label="'-- Select Month --'"
+                            k-data-text-field="'MONTHOF'" k-data-value-field="'MONTHOF'" k-filter="'contains'"
+                            k-auto-bind="'true'" k-data-source="shipMonthList" k-ng-delay="shipMonthList" ng-model="search.MONTHOF"
+                            k-on-change="onChangeShipMonth(kendoEvent)"></select>
+                </td>*@
+            <td style="width:10%">
+                @*{{search.MC_FAB_PROD_ORD_H_ID}}*@
+                <select class="form-control" kendo-drop-down-list name="MC_FAB_PROD_ORD_H_ID" k-option-label="'--Style --'"
+                        k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_FAB_PROD_ORD_H_ID'" k-filter="'Contains'"
+                        k-template="template" k-value-template="valueTemplate"
+                        k-auto-bind="'true'" k-data-source="StyleExtDs" ng-model="search.MC_FAB_PROD_ORD_H_ID"
+                        k-on-change="onFabOrderChange(kendoEvent)" required></select>
+            </td>
+            @*<td style="width:10%">
+                    <select class="form-control" kendo-drop-down-list name="MC_FAB_PROD_ORD_H_ID" k-option-label="'--Order# --'"
+                            k-data-text-field="'ORDER_NO_LST'" k-data-value-field="'MC_FAB_PROD_ORD_H_ID'" k-filter="'Contains'"
+                            k-template="templateOh" k-value-template="valueTemplateOh"
+                            k-auto-bind="'true'" k-data-source="FabOederByOhDs" ng-model="search.MC_FAB_PROD_ORD_H_ID"
+                            required style="width:100%;"></select>
+
+                </td>*@
+            <td style="width:10%">
+                <select class="form-control" kendo-drop-down-list name="MC_COLOR_ID" k-option-label="'--Color--'"
+                        k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'MC_COLOR_ID'" k-filter="'Contains'"
+                        @*k-value-template="valueTemplateOh"*@
+                        k-auto-bind="'true'" k-data-source="orderColorDs" ng-model="search.MC_COLOR_ID"
+                        required style="width:100%;"></select>
+
+            </td>
+
+            @*<td style="width:10%">
+                    <select kendo-drop-down-list name="RF_YRN_CNT_ID" class="form-control"
+                            options="vm.YarnCountList" id="RF_YRN_CNT_ID" ng-model="vm.form.RF_YRN_CNT_ID" required></select>
+                </td>
+                <td style="width:15%">
+                    <select kendo-drop-down-list name="RF_FIB_COMP_ID" class="form-control"
+                            options="vm.FabricCompList" id="RF_FIB_COMP_ID" ng-model="vm.form.RF_FIB_COMP_ID" required></select>
+                </td>
+                <td style="width:10%">
+                    <select kendo-drop-down-list name="LK_SPN_PRCS_ID" class="form-control"
+                            options="vm.SpinFinList" id="LK_SPN_PRCS_ID" ng-model="vm.form.LK_SPN_PRCS_ID"></select>
+                </td>
+                <td style="width:10%">
+                    <select kendo-drop-down-list name="LK_COTN_TYPE_ID" class="form-control"
+                            options="vm.CotnTypeList" id="LK_COTN_TYPE_ID" ng-model="vm.form.LK_COTN_TYPE_ID"></select>
+                </td>
+                <td style="width: 5%; text-align: center;">
+                    <div style="border: 1px solid hsl(0, 2%, 53%); padding-top: 2px; padding-bottom: 3px">
+                        <input type="checkbox" name="IS_SLUB" ng-model="vm.form.IS_SLUB" ng-true-value="'Y'" ng-false-value="'N'" />
+                    </div>
+                </td>
+                <td style="width:5%;text-align:center">
+                    <div style="border: 1px solid hsl(0, 2%, 53%); padding-top: 2px; padding-bottom: 3px; ">
+                        <input type="checkbox" name="IS_MELLANGE" ng-model="vm.form.IS_MELLANGE" ng-true-value="'Y'" ng-false-value="'N'" />
+                    </div>
+                </td>
+                <td style="width:15%">
+                    <select class="form-control" kendo-drop-down-list name="RF_BRAND_ID" id="RF_BRAND_ID" k-option-label="'-- Select Brand --'"
+                            k-data-text-field="'BRAND_NAME_EN'" k-data-value-field="'RF_BRAND_ID'"
+                            k-auto-bind="'true'" k-options="vm.catBrandOption" k-data-source="vm.categoryBrandDataSource" k-filter="'contains'" ng-model="vm.form.RF_BRAND_ID"></select>
+                </td>
+                <td style="width: 10%; padding: 5px 0px 5px 0px">
+                    <select class="form-control" kendo-drop-down-list name="KNT_YRN_LOT_ID" id="KNT_YRN_LOT_ID" k-option-label="'-- Select Lot --'"
+                            k-data-text-field="'YRN_LOT_NO'" k-data-value-field="'KNT_YRN_LOT_ID'"
+                            k-auto-bind="'true'" k-options="vm.brandLotOption" k-data-source="vm.brandWiseYarnLOtDataSource" k-filter="'contains'" ng-model="vm.form.KNT_YRN_LOT_ID"></select>
+
+                </td>
+                <td style="width: 10%">
+                    <select kendo-drop-down-list name="SCM_STORE_ID" id="SCM_STORE_ID" class="form-control"
+                            options="vm.storeList" ng-model="vm.form.SCM_STORE_ID" required></select>
+                </td>*@
+            <td style="width:10%">
+                <button type="button" class="btn btn-sm blue" ng-click="vm.getDailyProd()" title="Search"><i class="fa fa-search"></i> </button>
+                @*<button type="button" class="btn btn-sm blue" ng-click="vm.printYarnCurrStock()" ng-show="vm.yarnCurrStockDs.data().length>0"><i class="fa fa-print"></i> Print</button>*@
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+<div kendo-grid k-options="vm.dailyProdOpt" k-data-source="vm.DailyProdDs"></div>
+
+
+
+
+

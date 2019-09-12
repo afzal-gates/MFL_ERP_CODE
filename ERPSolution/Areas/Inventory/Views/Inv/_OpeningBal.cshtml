@@ -1,0 +1,207 @@
+﻿
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Inventory</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <form class="form-horizontal" role="form" name="frmMcnNeedleOpnBal" novalidate>
+
+            <div class="form-body clearfix">
+                <div class="row" style="margin:auto;">
+
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend"><b>Company Data</b></legend>
+
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="row-border">
+                                    <th style="width:35%">
+                                        <span aria-required="true" class="required">*</span>
+                                        Company
+                                    </th>
+                                    <th style="width:35%">
+                                        <span aria-required="true" class="required">*</span>
+                                        Store
+                                    </th>
+                                    <th style="width:15%">
+                                        <span aria-required="true" class="required">*</span>
+                                        OB Date
+                                    </th>
+
+                                    <th style="width:15%"></th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <select kendo-drop-down-list name="HR_COMPANY_ID" id="HR_COMPANY_ID" class="form-control required"
+                                                options="vm.companyList" ng-model="vm.form.HR_COMPANY_ID" ng-change="vm.getStoreByID();"></select>
+                                    </td>
+                                    <td>
+                                        <select class="form-control required" kendo-drop-down-list name="SCM_STORE_ID" id="SCM_STORE_ID" k-option-label="'-- Select Store --'"
+                                                k-data-text-field="'STORE_NAME_EN'" k-data-value-field="'SCM_STORE_ID'"
+                                                k-auto-bind="'true'" k-filter="'contains'" ng-model="vm.form.SCM_STORE_ID"
+                                                k-data-source="vm.reqSourceList"></select>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control required" ng-click="OB_RCV_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                               name="OB_RCV_DT" max-date="vm.today" ng-model="vm.form.OB_RCV_DT" is-open="OB_RCV_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)"
+                                               close-text="Close" ng-disabled="vm.isExistsOpnBal=='Y'" required />
+                                    </td>
+
+                                    <td>
+                                        <button type="button" class="btn btn-sm blue" ng-click="vm.loadOpnBalList()">Load</button> <a ng-click="vm.printOB()" class="btn btn-sm green"><i class="fa fa-print">Print</i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        @*</div>*@
+                    </fieldset>
+
+                    <fieldset class="custom-fieldset" ng-show="vm.IS_NEXT=='Y'">
+                        <legend class="custom-legend"><b>Details Data</b></legend>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="row-border">
+                                    <td style="width: 20%;">
+                                        <b><span aria-required="true" class="required">*</span>Category</b>
+                                    </td>
+
+                                    <td style="width: 25%;">
+                                        <b><span aria-required="true" class="required">*</span>Item</b>
+                                    </td>
+
+                                    <td style="width: 10%;">
+                                        <b><span aria-required="true" class="required">*</span>Opening Qty</b>
+                                    </td>
+                                    <td style="width: 10%;">
+                                        <b>UoM</b>
+                                    </td>
+
+                                    <td style="width: 10%;">
+                                        <b>Unit Price</b>
+                                    </td>
+
+                                    <td style="width: 10%;">
+                                        <b>Cost Price</b>
+                                    </td>
+
+                                    <td style="width: 10%;">
+                                        <b>Currency</b>
+                                    </td>
+                                    <td style="width: 15%;">
+                                        <b>Action</b>
+                                    </td>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <select class="form-control required" kendo-drop-down-list name="INV_ITEM_CAT_ID" id="INV_ITEM_CAT_ID" k-option-label="'-- Select Category --'"
+                                                k-data-text-field="'ITEM_CAT_NAME_EN'" k-data-value-field="'INV_ITEM_CAT_ID'" ng-disabled="vm.form.KNT_YRN_RCV_OB_ID>0"
+                                                k-auto-bind="'true'" k-filter="'contains'" ng-model="vm.form.INV_ITEM_CAT_ID"
+                                                k-options="vm.categoryOptions" k-data-source="vm.categoryDataSource" required></select>
+                                    </td>
+
+                                    <td>
+                                        <select class="form-control required" kendo-drop-down-list name="INV_ITEM_ID" id="INV_ITEM_ID" k-option-label="'-- Select Item --'"
+                                                k-data-text-field="'ITEM_NAME_EN'" k-data-value-field="'INV_ITEM_ID'" ng-disabled="vm.form.KNT_YRN_RCV_OB_ID>0"
+                                                k-auto-bind="'true'" k-filter="'contains'" ng-model="vm.form.INV_ITEM_ID"
+                                                k-options="vm.itemOptions" k-data-source="vm.itemDataSource" required></select>
+                                    </td>
+
+                                    <td>
+                                        <input type="number" name="OB_RCV_QTY" ng-model="vm.form.OB_RCV_QTY" class="form-control" @*ng-change="vm.TotalPriceAmount()"*@ required />
+
+                                    </td>
+                                    <td>
+                                        <select class="form-control" style="min-width: 50px; max-width: 160px;" kendo-drop-down-list name="QTY_MOU_ID" id="QTY_MOU_ID" k-option-label="'--UoM--'"
+                                                k-data-text-field="'MOU_CODE'" k-data-value-field="'RF_MOU_ID'"
+                                                k-auto-bind="'true'" k-data-source="vm.mOUList" k-filter="'contains'" ng-model="vm.form.QTY_MOU_ID" ng-disabled="vm.form.QTY_MOU_ID>0"></select>
+
+                                    </td>
+
+                                    <td>
+                                        <input type="number" name="UNIT_PRICE" ng-model="vm.form.UNIT_PRICE" @*ng-change="vm.TotalPriceAmount()"*@ class="form-control" />
+
+                                    </td>
+                                    <td>
+                                        <input type="number" name="COST_PRICE" ng-model="vm.form.COST_PRICE" class="form-control" />
+
+                                    </td>
+
+                                    <td>
+                                        <select kendo-drop-down-list name="RF_CURRENCY_ID" id="RF_CURRENCY_ID" class="form-control required"
+                                                options="vm.currencyList" ng-model="vm.form.RF_CURRENCY_ID"></select>
+                                    </td>
+                                    
+                                    <td>
+
+                                        <div class="row">
+
+                                            <div class="col-md-12">
+                                                <button type="button" ng-if="vm.form.uid" class="btn btn-sm yellow-gold" ng-click="vm.submitAll(vm.form)"
+                                                        ng-class="{'disabled':frmMcnNeedleOpnBal.$invalid}">
+                                                    Update
+                                                </button>
+                                                <button type="button" ng-if="!vm.form.uid" class="btn btn-sm green" ng-click="vm.submitAll(vm.form)"
+                                                        ng-class="{'disabled':frmMcnNeedleOpnBal.$invalid}">
+                                                    Save
+                                                </button>
+                                                <button type="button" class="btn btn-sm" ng-click="vm.reset()">Clear</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div>
+                            <div kendo-grid k-options="vm.gridOptionsItem" k-data-source="vm.rcvItemGridDataSource"></div>
+                        </div>
+
+                    </fieldset>
+                    <br />
+                    <div class="row">
+
+                        <div class="col-md-4">
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+
+</div>

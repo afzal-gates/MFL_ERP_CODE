@@ -1,0 +1,67 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 13px;
+    }
+</style>
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Commercial</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class=" form-group">
+                <div class="col-md-2" style="padding-right:0px">
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend">Select Reference</legend>
+                        <ul class="nav nav-pills nav-stacked">
+                            <li ui-sref-active="active" ng-repeat="item in vm.tableList" ui-sref="ReferenceType.{{item.TABLE_NAME}}">
+                                <a>
+                                    <b>{{item.ALIS_NAME}}</b>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </fieldset>
+                </div>
+
+                <div class="col-md-10" style="padding-left:2.5px;">
+                    <div class="portlet-body" data-ui-view="sub-view"></div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+</div>

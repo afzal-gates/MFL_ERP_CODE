@@ -1,0 +1,444 @@
+﻿<style>
+    .dropdown-header {
+        border-width: 0 0 1px 0;
+        text-transform: uppercase;
+    }
+
+        .dropdown-header > span {
+            display: inline-block;
+            padding: 10px;
+        }
+
+            .dropdown-header > span:first-child {
+                width: 10px;
+            }
+
+    .selected-value {
+        display: inline-block;
+        vertical-align: middle;
+        width: 24px;
+        height: 24px;
+        background-size: 100%;
+        margin-right: 5px;
+        border-radius: 50%;
+    }
+
+    #customers-list .k-item {
+        line-height: 1em;
+        min-width: 300px;
+    }
+
+    /* Material Theme padding adjustment*/
+
+    .k-material #customers-list .k-item,
+    .k-material #customers-list .k-item.k-state-hover,
+    .k-materialblack #customers-list .k-item,
+    .k-materialblack #customers-list .k-item.k-state-hover {
+        padding-left: 5px;
+        border-left: 0;
+    }
+
+    #customers-list .k-item > span {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        display: inline-block;
+        vertical-align: top;
+        margin: 20px 10px 10px 5px;
+    }
+
+        #customers-list .k-item > span:first-child {
+            -moz-box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            -webkit-box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+            margin: 5px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+
+    #customers-list h3 {
+        font-size: 1.2em;
+        font-weight: normal;
+        margin: 0 0 1px 0;
+        padding: 0;
+    }
+
+    #customers-list p {
+        margin: 0;
+        padding: 0;
+        font-size: .8em;
+    }
+
+
+    /*///////////////////////*/
+    .k-treeview .k-in {
+        padding: 5px;
+    }
+
+    #ItemCategTreeview .k-sprite {
+        background-image: url("/Content/assets/global/img/coloricons-sprite.png");
+    }
+
+    .rootfolder {
+        background-position: 0 0;
+    }
+
+    .folder {
+        background-position: 0 -16px;
+    }
+
+    .pdf {
+        background-position: 0 -32px;
+    }
+
+    .html {
+        background-position: 0 -48px;
+    }
+
+    .image {
+        background-position: 0 -64px;
+    }
+
+    /*.demo-section {
+        float: left;
+        width: 200px;
+        margin: 0 60px 0 0;
+    }*/
+</style>
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Dyeing</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+    <form name="formData" class="form-horizontal" style="background-color: white;">
+        <div class="portlet-body">
+
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend"><b>Master Data</b></legend>
+                <div><label id="lblMsg"></label></div>
+
+                <div class="form-group">
+                    <div class="col-md-1">
+                    </div>
+                    <label class="control-label col-md-2">
+                        <span aria-required="true" class="required"></span>
+                        Requisition No
+                    </label>
+                    <div class="col-md-2">
+                        <input type="text" name="STR_REQ_NO" placeholder="[Auto Gen]" ng-model="vm.form.STR_REQ_NO" readonly="readonly" class="form-control" />
+                        <input type="hidden" id="DYE_STR_REQ_H_ID" name="DYE_STR_REQ_H_ID" ng-model="vm.form.DYE_STR_REQ_H_ID" />
+                        <input type="hidden" id="RF_REQ_TYPE_ID" name="RF_REQ_TYPE_ID" ng-model="vm.form.RF_REQ_TYPE_ID" />
+
+                    </div>
+
+                    <div class="col-md-1">
+                    </div>
+                    <label class="col-md-2 control-label">
+                        <span aria-required="true" class="required">*</span>
+                        Date of Requisition
+                    </label>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control required" ng-click="STR_REQ_DT_LNopen($event)" ng-focus="STR_REQ_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                               name="STR_REQ_DT" max-date="vm.today" ng-model="vm.form.STR_REQ_DT" is-open="STR_REQ_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close"
+                               required />
+
+                    </div>
+                </div>
+                <div class="form-group">
+
+                    <div class="col-md-1">
+                    </div>
+                    <label class="control-label col-md-2 ">
+                        <span aria-required="true" class="required">*</span>
+                        Company
+                    </label>
+                    <div class="col-md-2">
+                        <select kendo-drop-down-list name="HR_COMPANY_ID" id="HR_COMPANY_ID" class="form-control required"
+                                options="vm.companyList" ng-model="vm.form.HR_COMPANY_ID" tabindex="5" required></select>
+
+                    </div>
+
+                    <div class="col-md-1">
+                    </div>
+
+                    <label class="control-label col-md-2">
+                        <span aria-required="true" class="required">*</span>
+                        Department
+                    </label>
+                    <div class="col-md-2">
+                        <select kendo-drop-down-list name="HR_DEPARTMENT_ID" id="HR_DEPARTMENT_ID" class="form-control required" ng-init="vm.form.HR_DEPARTMENT_ID='@Session["multiLoginEmpCoreDeptId"]'"
+                                options="vm.departmentList" ng-model="vm.form.HR_DEPARTMENT_ID" tabindex="5" required></select>
+                        <input type="hidden" id="REQ_STORE_ID" name="REQ_STORE_ID" ng-model="vm.form.REQ_STORE_ID" />
+                        <input type="hidden" id="ISS_STORE_ID" name="ISS_STORE_ID" ng-model="vm.form.ISS_STORE_ID" />
+
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <div class="col-md-1"></div>
+
+                    <label class="control-label col-md-2">
+                        <span aria-required="true" class="required">*</span>
+                        Requesting Store
+                    </label>
+                    <div class="col-md-2">
+
+                        <select kendo-drop-down-list name="REQ_STORE_ID" id="REQ_STORE_ID" class="form-control required requiredSub"
+                                options="vm.reqSourceList" ng-model="vm.form.REQ_STORE_ID"></select>
+
+                    </div>
+
+                    <div class="col-md-1"></div>
+
+                    <label class="col-md-2 control-label">
+                        <span aria-required="true" class="required"></span>
+                        Receiving Store
+                    </label>
+                    <div class="col-md-2">
+                        <select kendo-drop-down-list name="ISS_STORE_ID" id="ISS_STORE_ID" class="form-control required requiredSub"
+                                options="vm.issueStoreList" ng-model="vm.form.ISS_STORE_ID"></select>
+
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-1"></div>
+
+                    <label class="col-md-2 control-label">
+                        <span aria-required="true" class="required"></span>
+                        Requisition To
+                    </label>
+                    <div class="col-md-2">
+                        <select id="customers" kendo-drop-down-list options="vm.userList" ng-model="vm.form.STR_REQ_TO" class="form-control required" style="width:100%;"></select>
+
+
+                    </div>
+                    <div class="col-md-1"></div>
+                    <label class="control-label col-md-2">
+                        <span aria-required="true" class="required">*</span>
+                        Template
+                    </label>
+                    <div class="col-md-2">
+
+                        <select class="form-control" kendo-drop-down-list name="DYE_DOSE_TMPLT_H_ID" id="DYE_DOSE_TMPLT_H_ID" k-option-label="'-- Select Template --'"
+                                k-data-text-field="'DOSE_TMPLT_NAME_EN'" k-data-value-field="'DYE_DOSE_TMPLT_H_ID'"
+                                k-auto-bind="'true'" k-data-source="vm.TemplateList" k-ng-delay="vm.TemplateList" k-filter="'contains'" k-on-change="vm.machineWashDetail();"
+                                ng-model="vm.form.DYE_DOSE_TMPLT_H_ID"></select>
+                    </div>
+
+
+                </div>
+
+
+                <div class="form-group">
+                    <div class="col-md-1"></div>
+
+                    <label class="col-md-2 control-label">
+                        <span aria-required="true" class="required"></span>
+                        Requisition Type
+                    </label>
+                    <div class="col-md-3">
+                        <select kendo-drop-down-list name="RF_REQ_TYPE_ID" id="RF_REQ_TYPE_ID" class="form-control required requiredSub"
+                                options="vm.reqTypeList" ng-model="vm.form.RF_REQ_TYPE_ID"></select>
+
+                    </div>                    
+                </div>
+                
+                <div class="form-group">
+
+                    <div class="col-md-1">
+                    </div>
+                    <label class="control-label col-md-2 ">
+                        <span aria-required="true" class="required"></span>
+                        Remarks<input type="checkbox" ng-model="IS_REMARKS" />
+                    </label>
+                    <div class="col-md-7">
+                        <textarea id="REMARKS" name="REMARKS" ng-if="IS_REMARKS" ng-model="vm.form.REMARKS" class="form-control"></textarea>
+                    </div>
+
+                </div>
+
+                <div style="padding:3px;">
+                </div>
+
+            </fieldset>
+
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend"><b>Details Data</b></legend>
+
+                <table class="clsTableMtex" style="width:100%">
+                    <tr class="clstheadMtex">
+                        <td class="clstdMtex">
+                            Re-arrange
+                        </td>
+                        <td class="clstdMtex">
+                            SL #
+                        </td>
+                        <td class="clstdMtex">
+                            Agent
+                        </td>
+                        <td class="clstdMtex">
+                            Item Name
+                        </td>
+
+                        <td class="clstdMtex">
+                            KG
+                        </td>
+                        <td class="clstdMtex">
+                            GM
+                        </td>
+                        <td class="clstdMtex">
+                            MG
+                        </td>
+                        <td class="clstdMtex">
+                            Total(GM)
+                        </td>
+                        <td class="clstdMtex">
+                            Sub Stock
+                        </td>
+                        <td class="clstdMtex">
+                            Central Stock
+                        </td>
+                        <td class="clstdMtex">
+                            Action
+                        </td>
+                    </tr>
+                    <tr class="clstdMtex" ng-repeat="preItem in vm.recipeItemList">
+                        <td class="clstdMtex" style="width:5%">
+                            <a title="Up" ng-click="vm.moveArray(preItem,$index-1)" class="btn btn-xs green-haze"><i class="fa fa-arrow-up"></i></a>
+                            <a title="Down" ng-click="vm.moveArray(preItem,$index+1)" class="btn btn-xs green-haze"><i class="fa fa-arrow-down"></i></a>
+                        </td>
+                        <td class="clstdMtex" style="width:5%">
+                            {{$index+1}}
+                        </td>
+                        <td class="clstdMtex">
+
+                            <select kendo-drop-down-list name="DC_AGENT_ID" id="DC_AGENT_ID" class="form-control required" style="max-width:200px;" k-auto-bind="'true'" @*ng-disabled="preItem.DYE_DOSE_TMPLT_D_ID>0"*@
+                                    options="vm.itemCategoryList" ng-model="preItem.DC_AGENT_ID" k-on-change="vm.getItemListByCatID(preItem,$index)"></select>
+
+                            <input type="hidden" ng-model="preItem.DYE_STR_REQ_D_ID" />
+
+                        </td>
+                        <td class="clstdMtex" ng-init="vm.getItemListByCategory(preItem);">
+
+                            <select class="form-control requiredSub" kendo-drop-down-list name="INV_ITEM_ID-{{$index}}" k-option-label="'-- Select Dyes Chemical --'"
+                                    k-data-text-field="'ITEM_NAME_EN'" k-data-value-field="'INV_ITEM_ID'" style="max-width:250px;"
+                                    k-auto-bind="'true'" k-data-source="preItem.itemList" k-delay="preItem.itemList"
+                                    k-filter="'contains'" ng-model="preItem.INV_ITEM_ID" k-on-change="vm.getStockQty(preItem)"></select>
+
+                        </td>
+
+                        <td class="clstdMtex">
+                            <input type="number" ng-model="preItem.RQD_QTY_K" style="width: 100%; text-align: right" ng-change="vm.PreItemCalcRecord(preItem);" />
+                        </td>
+                        <td class="clstdMtex">
+                            <input type="number" ng-model="preItem.RQD_QTY_G" style="width: 100%; text-align: right" min="0" max="999" ng-change="vm.PreItemCalcRecord(preItem);" />
+                        </td>
+                        <td class="clstdMtex">
+                            <input type="number" ng-model="preItem.RQD_QTY_M" style="width: 100%; text-align: right" min="0" max="999" ng-change="vm.PreItemCalcRecord(preItem);" />
+                        </td>
+                        <td class="clstdMtex" style="text-align:right;">
+                            @*{{preItem.RQD_QTY|number:2}}*@
+                            <input type="number" ng-model="preItem.RQD_QTY" class="double" readonly style="width:200px; text-align: right"/>
+                        </td>
+                        <td class="clstdMtex" style="text-align:right;">
+                            {{preItem.SUB_STK}}
+                        </td>
+                        <td class="clstdMtex" style="text-align:right;">
+                            {{preItem.CENTRAL_STK}}
+                        </td>
+                        <td class="clstdMtex" style="width:80px;">
+                            <a title="Delete" ng-click="vm.removeExtraRecord(preItem)" class="btn btn-xs red"><i class="fa fa-remove"></i></a>
+
+                            <a title="Up" ng-click="vm.addAllNewRecoed(tp.DYE_PRD_PHASE_TYPE_ID,$index-1)" class="btn btn-xs green"><i class="fa fa-level-up"></i></a>
+                            <a title="Down" ng-click="vm.addAllNewRecoed(tp.DYE_PRD_PHASE_TYPE_ID,$index)" class="btn btn-xs green"><i class="fa fa-level-down"></i></a>
+                        </td>
+
+                    </tr>
+                </table>
+
+
+
+                <div style="padding:3px;">
+                </div>
+
+                <div style="padding:3px;">
+                </div>
+
+                @*<div style="padding:2px;">
+                        <div kendo-grid k-options="vm.gridOptionsItem" id="IDRequisitionDS" k-data-source="vm.ReceiveItemList"></div>
+                    </div>*@
+
+            </fieldset>
+        </div>
+        <div style="padding:3px;">
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <button type="button" class="btn btn-sm blue" ui-sref="DCIssueRequisitionList">Back To List</button>
+                <button type="button" ng-if="vm.form.DYE_STR_REQ_H_ID>0" class="btn btn-sm yellow-gold" ng-disabled="!vm.form.RF_ACTN_STATUS_ID>0" ng-click="vm.submitAll(vm.form);"> Submit</button>
+                <button type="button" ng-if="vm.form.DYE_STR_REQ_H_ID>0" class="btn btn-sm yellow-lemon" ng-disabled="!vm.form.RF_ACTN_STATUS_ID>0" ng-click="vm.updateAll(vm.form);"> Update</button>
+                <button type="button" ng-if="vm.form.DYE_STR_REQ_H_ID>0" class="btn btn-sm green" ng-click="vm.printRDLC(vm.form);"> Print</button>
+                <button type="button" ng-if="!vm.form.DYE_STR_REQ_H_ID>0" class="btn btn-sm green" ng-disabled="!vm.form.RF_ACTN_STATUS_ID>0" ng-click="vm.submitAll(vm.form);">Save</button>
+                <button type="button" class="btn btn-sm default" ui-sref="DCIssueRequisition({pDYE_STR_REQ_H_ID : 0})" ui-sref-opts="{reload: true}">Cancel</button>
+
+            </div>
+
+            <label class="control-label col-md-1">
+                <span aria-required="true" class="required">*</span>
+                Take Action
+            </label>
+            <div class="col-md-2" ng-if="vm.form.RF_ACTN_VIEW>0">
+                <select kendo-drop-down-list name="RF_ACTN_STATUS_ID" id="RF_ACTN_STATUS_ID" class="form-control required"
+                        options="vm.statusList" ng-model="vm.form.RF_ACTN_STATUS_ID" required></select>
+            </div>
+
+            <div class="col-md-2" ng-if="!vm.form.RF_ACTN_VIEW>0">
+
+                <input type="text" ng-model="vm.form.ACTN_STATUS_NAME" style="width: 100%;" readonly="readonly" />
+                <input type="hidden" ng-model="vm.form.RF_ACTN_STATUS_ID" />
+
+            </div>
+
+            @*<label class="control-label col-md-1 ">
+                    <span aria-required="true" class="required"></span>
+                    Load
+                </label>
+                <div class="col-md-2">
+                    <input kendo-date-time-picker k-ng-model="form.LOAD_TIME" k-max="vm.today" k-options="datePickerOptions" ng-disabled="!vm.form.DYE_STR_REQ_H_ID>0" class="form-control" style="width: 100%;" />
+
+                </div>
+                <label class="control-label col-md-1 ">
+                    <span aria-required="true" class="required"></span>
+                    Unload
+                </label>
+                <div class="col-md-2">
+                    <input kendo-date-time-picker k-ng-model="form.UNLOAD_TIME" k-max="vm.today" k-options="datePickerOptions" ng-disabled="!vm.form.DYE_STR_REQ_H_ID>0" class="form-control" style="width: 100%;" />
+
+                </div>*@
+        </div>
+        <div style="padding:3px;">
+        </div>
+    </form>
+</div>

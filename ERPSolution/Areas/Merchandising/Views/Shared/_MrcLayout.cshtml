@@ -1,0 +1,395 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- BEGIN CONTENT -->
+<div class="page-content-wrapper">
+    <div class="page-content">
+
+
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row">
+            <div class="col-md-12">
+                @RenderBody()
+            </div>
+        </div>
+        <!-- END PAGE CONTENT-->
+
+        <script type="text/ng-template" id="CapacityBookingStatus.html">
+            <div class="modal-body">
+                <div class="portlet grey-cascade box">
+
+                    <div id="splash-page" data-ng-show="showSplash" class="dissolve-animation">
+                        <div class="page-splash">
+                            <div class="page-splash-message">
+                                <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="portlet-title">
+                        <div style="padding-top:2px;">
+                            <h4 class="title">
+                                Capacity Booking Status
+                                <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+
+                        <fieldset class="custom-fieldset" ng-repeat="item in chartDatas">
+
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <h4 style="margin:0px;"><b>{{item.title}}</b></h4>
+                                </div>
+                            </div>
+
+                            <div class="row" style="padding:0px;">
+                                <div class="col-md-12" style="padding:5px;">
+                                    <table class="table table-condensed table-bordered">
+                                        <thead>
+                                            <tr class="site-table-header">
+                                                <th>
+                                                    Category
+                                                </th>
+                                                <th>
+                                                    Criteria
+                                                </th>
+                                                <th>
+                                                    Plan
+                                                </th>
+                                                <th>
+                                                    Booked
+                                                </th>
+                                                <th>
+                                                    %
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td rowspan="3" style="font-weight: bold; text-align: right;">
+                                                    <h3>Basic</h3>
+                                                </td>
+                                                <td style="color: deepskyblue; font-weight: 800;">
+                                                    Pcs
+                                                </td>
+                                                <td style="color: deepskyblue; font-weight: 800;">
+                                                    {{ item.series[0].data.length>0?item.series[0].data[0]:0}}
+                                                </td>
+                                                <td style="color: deepskyblue; font-weight: 800;">
+                                                    {{ item.series[1].data.length>0?item.series[1].data[0]:0}}
+                                                </td>
+
+                                                <td style="color: deepskyblue; font-weight: 800;">
+                                                    {{(item.series[0].data.length>0 && item.series[1].data.length>0)?((item.series[1].data[0]/item.series[0].data[0])*100|number : 2) :0}} %
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    SAH
+                                                </td>
+                                                <td>
+                                                    {{ item.series[2].data.length>0?item.series[2].data[0]:0}}
+                                                </td>
+                                                <td>
+                                                    {{ item.series[3].data.length>0?item.series[3].data[0]:0}}
+                                                </td>
+
+                                                <td style="font-weight:800;">
+                                                    {{(item.series[2].data.length>0 && item.series[3].data.length>0)?((item.series[3].data[0]/item.series[2].data[0])*100|number : 2) :0}} %
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    FOB
+                                                <td>
+                                                    {{ item.series[4].data.length>0?item.series[4].data[0]:0}}
+                                                </td>
+                                                <td>
+                                                    {{ item.series[5].data.length>0?item.series[5].data[0]:0}}
+                                                </td>
+
+                                                <td style="font-weight:800;">
+                                                    {{(item.series[4].data.length>0 && item.series[5].data.length>0)?((item.series[5].data[0]/item.series[4].data[0])*100|number : 2) :0}} %
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td rowspan="3" style="font-weight: bold; text-align: right;">
+
+                                                    <h3>Fency</h3>
+                                                </td>
+                                                <td style="color: deepskyblue; font-weight: 800;">
+                                                    Pcs
+                                                </td>
+                                                <td style="color: deepskyblue; font-weight: 800;">
+                                                    {{ item.series[0].data.length>1?item.series[0].data[1]:0}}
+                                                </td>
+                                                <td style="color: deepskyblue; font-weight: 800;">
+                                                    {{ item.series[1].data.length>1?item.series[1].data[1]:0}}
+                                                </td>
+
+                                                <td style="color: deepskyblue; font-weight: 800;">
+                                                    {{(item.series[0].data.length>1 && item.series[1].data.length>1)?((item.series[1].data[1]/item.series[0].data[1])*100|number : 2) :0}} %
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    SAH
+                                                </td>
+                                                <td>
+                                                    {{ item.series[2].data.length>1?item.series[2].data[1]:0}}
+                                                </td>
+                                                <td>
+                                                    {{ item.series[3].data.length>1?item.series[3].data[1]:0}}
+                                                </td>
+
+                                                <td style="font-weight:800;">
+                                                    {{(item.series[2].data.length>1 && item.series[3].data.length>1)?((item.series[3].data[1]/item.series[2].data[1])*100|number : 2) :0}} %
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    FOB
+                                                <td>
+                                                    {{ item.series[4].data.length>1?item.series[4].data[1]:0}}
+                                                </td>
+                                                <td>
+                                                    {{ item.series[5].data.length>1?item.series[5].data[1]:0}}
+                                                </td>
+
+                                                <td style="font-weight:800;">
+                                                    {{(item.series[4].data.length>1 && item.series[5].data.length>1)?((item.series[5].data[1]/item.series[4].data[1])*100|number : 2) :0}} %
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td rowspan="3" style="font-weight: bold; text-align: right;">
+
+                                                    <h3>Polo</h3>
+                                                </td>
+                                                <td style="color: deepskyblue; font-weight: 800;">
+                                                    Pcs
+                                                </td>
+                                                <td style="color: deepskyblue; font-weight: 800;">
+                                                    {{ item.series[0].data.length>2?item.series[0].data[2]:0}}
+                                                </td>
+                                                <td style="color: deepskyblue; font-weight: 800;">
+                                                    {{ item.series[1].data.length>2?item.series[1].data[2]:0}}
+                                                </td>
+
+                                                <td style="color: deepskyblue; font-weight: 800;">
+                                                    {{(item.series[0].data.length>2 && item.series[1].data.length>2)?((item.series[1].data[2]/item.series[0].data[2])*100|number : 2) :0}} %
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    SAH
+                                                </td>
+                                                <td>
+                                                    {{ item.series[2].data.length>2?item.series[2].data[2]:0}}
+                                                </td>
+                                                <td>
+                                                    {{ item.series[3].data.length>2?item.series[3].data[2]:0}}
+                                                </td>
+
+                                                <td style="font-weight:800;">
+                                                    {{(item.series[2].data.length>2 && item.series[3].data.length>2)?((item.series[3].data[2]/item.series[2].data[2])*100|number : 2) :0}} %
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    FOB
+                                                <td>
+                                                    {{ item.series[4].data.length>2?item.series[4].data[2]:0}}
+                                                </td>
+                                                <td>
+                                                    {{ item.series[5].data.length>2?item.series[5].data[2]:0}}
+                                                </td>
+
+                                                <td style="font-weight:800;">
+                                                    {{(item.series[4].data.length>2 && item.series[5].data.length>2)?((item.series[5].data[2]/item.series[4].data[2])*100|number : 2) :0}} %
+                                                </td>
+                                            </tr>
+
+                                            <tr class="bg-grey-mint">
+                                                <td rowspan="3" style="font-weight:bold;text-align:right;">
+
+                                                    <h3>Total</h3>
+
+                                                </td>
+                                                <td style="color: purple; font-weight: 800;">
+                                                    Pcs
+                                                </td>
+                                                <td style="color: purple; font-weight: 800;">
+                                                    {{ item.TTL_PLN_PCS}}
+                                                </td>
+                                                <td style="color: purple; font-weight: 800;">
+                                                    {{ item.TTL_BKD_PCS}}
+                                                </td>
+
+                                                <td style="color: purple; font-weight: 800;">
+                                                    {{(item.TTL_BKD_PCS/item.TTL_PLN_PCS)*100|number : 2}} %
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+
+                                                <td style="color: darkblue; font-weight: 800;">
+                                                    SAH
+                                                </td>
+                                                <td style="color: darkblue; font-weight: 800;">
+                                                    {{ item.TTL_PLN_SAH}}
+                                                </td>
+                                                <td style="color: darkblue; font-weight: 800;">
+                                                    {{ item.TTL_BKD_SAH}}
+                                                </td>
+
+                                                <td style="color: darkblue; font-weight: 800;">
+                                                    {{(item.TTL_BKD_SAH/item.TTL_PLN_SAH)*100|number : 2}} %
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td style="color: yellowgreen; font-weight: 800;">
+                                                    FOB
+                                                </td>
+                                                <td style="color: yellowgreen; font-weight: 800;">
+                                                    {{ item.TTL_PLN_FOB}}
+                                                </td>
+                                                <td style="color: yellowgreen; font-weight: 800;">
+                                                    {{ item.TTL_BKD_FOB}}
+                                                </td>
+
+                                                <td style="color: yellowgreen; font-weight: 800;">
+                                                    {{(item.TTL_BKD_FOB/item.TTL_PLN_FOB)*100|number : 2}} %
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </fieldset>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </script>
+
+    </div>
+</div>
+<!-- END CONTENT -->
+@if (IsSectionDefined("scripts"))
+{
+    @section scripts{
+
+    }
+}
+
+
+@section angularscripts{
+    <script src="~/Areas/Merchandising/Client/app/config.mrcRoute.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/services/mrcDataService.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/buyerInfoController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/officeInfoController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/officeMappingModalController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/buyerListController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/sizeMasterController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/colourMasterController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/officeListController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/tnaTemplateController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/tnaTemplateDtlController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/tnaTemplateListController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/taskListController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/taskGroupModalController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/buyerAccModalController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/buyerAccModalController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/userBuerAccController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/inqItemController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/inqStyleController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/inquiryController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/inqComponentController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/inqItemListController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/inqComponentListController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/inqStyleListController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/inquiryListController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/itemCostHeadController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/StyleDItemController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/StyleMasterController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/styleDItemFabController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/styleDItemFabListController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/orderController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/smplFabBookController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/smplProdController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/smplBuyerFeedbackController.js?v=2"></script>
+
+    <script src="~/Areas/Merchandising/Client/app/controllers/styleListController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/ShowImageModalController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/labdipInfoController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/colourRefToBuyerController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/setItemEntryModalController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/labdipSubmissionController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/LabDipSubModalController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/orderConDtlController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/orderConController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/generateTnaModalController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/styleOrderConController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/tnaTaskPermissionController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/styleColRefToBuyerController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/colourMasterModalController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/bulkFabBkController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/blkBudgetAprvlController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/buyerSampleMappingController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/gsmYarnConfigController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/yarnItemController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/StyleBomController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/budgetSheetController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/rateChartController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/buyerBomController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/fiberConfigModalController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/tnAFollowupController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/tnAFollowupTaskController.js?v=2"></script>
+    @*<script src="~/Areas/Merchandising/Client/app/controllers/tnaUpdateModalController.js?v=2"></script>*@
+    <script src="~/Areas/Merchandising/Client/app/controllers/tempTaBkController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/styleOrderConControllerDtl.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/taBookingController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/taBookingItemController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/taBookingListController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/tNATaskStatusController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/orderSCMController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/collarCuffController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/styleDashboardController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/mrcReportController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/styleOrderConControllerDtlDev.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/tnaFollowupMatrixGridController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/generateDevTnaModalController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/dyeingProgramController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/styleFabDevController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/AccessoriesBookingListController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/AccessoriesBookingController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/additionalFabBkingController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/addFabBkingRptController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/mrcPmsAccController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/rateChartForInquiry.js?v=2"></script>
+
+    <script src="~/Areas/Merchandising/Client/app/controllers/mrcPmsController.js?v=2"></script>
+    @*========== Other Module's Service ==========*@
+    <script src="~/Areas/Knitting/Client/app/services/knittingDataService.js?v=2"></script>
+
+    @*========== Other Module's Controller ==========*@
+    <script src="~/Areas/Knitting/Client/app/controllers/DailyTrimsAccesoriesController.js?v=2"></script>
+
+
+    <script src="~/Areas/Merchandising/Client/app/controllers/ProjectionOrderListController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/ProjectionOrderController.js?v=2"></script>
+    <script src="~/Areas/Merchandising/Client/app/controllers/uploadStyleOrderController.js?v=2"></script>
+
+
+}

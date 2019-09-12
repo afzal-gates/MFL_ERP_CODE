@@ -1,0 +1,161 @@
+﻿<div class="row">
+
+    <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+        <div class="page-splash">
+            <div class="page-splash-message">
+                <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+
+        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;">
+            <legend class="custom-legend">
+
+                <b>Working Style</b>
+
+            </legend>
+
+            @*<pre>{{$parent.StyleData|json}}</pre>*@
+
+            <div style="padding:2px;" align="right">
+                <a title="Add New Working Style" ng-click="vm.openModalForExtionEnrty({})" class="btn btn-xs btn-success"><i class="fa fa-plus"></i> New/Repeat/Development</a>
+            </div>
+
+
+            <div style="padding:2px;">
+                <div kendo-grid k-options="vm.gridStyleExtOptions" k-data-source="vm.dsStyleExtentionList" id="idStyleExtentionList">
+
+
+                    <div k-detail-template>
+                        <div kendo-grid k-options="vm.gridStyleExtOptionsDtl(dataItem)"></div>                       
+                    </div>
+
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div class="col-md-6">
+        <fieldset class="custom-fieldset" style="padding-top: 0px; padding-bottom: 0px;" ng-show="vm.currentState ==='StyleH.OrderCon.Detail'">
+            <legend class="custom-legend">
+                <b>Order Information</b>
+            </legend>
+            <div data-ui-view="Detail"></div>
+
+        </fieldset>
+    </div>
+</div>
+
+
+<script type="text/ng-template" id="ModalForStyleExtEntry.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h3 class="title">
+                         Working Style
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel(vm.form)"></i></span>
+                    </h3>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="StyleExtEntryForm" ng-submit="save(form)" novalidate>
+                    
+                    <div class="form-body clearfix">
+
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">
+                                Order Type
+                            </label>
+                            <div class="col-md-8">
+                                <div class="radio-list" style="margin-left:20px">
+                                    <label class="radio-inline" ng-repeat="item in OrderTypeList">
+                                        <span class="checked"><input type="radio" name="LK_ORD_TYPE_ID" ng-model="form.LK_ORD_TYPE_ID" ng-value="item.LOOKUP_DATA_ID" required ng-disabled="item.Disabled"></span>{{item.LK_DATA_NAME_EN}}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                         <div class="form-group">
+                            <label class="col-md-4 control-label">
+                                Working Style #
+                            </label>
+                            <div class="col-md-6">
+                                <input type="text" name="WORK_STYLE_NO" ng-model="form.WORK_STYLE_NO" class="form-control" required />
+                            </div>
+                            <div class="col-md-1">
+                                <div class="checkbox-list">
+                                    <label class="checkbox-inline" style="margin-left:20px">
+                                        <span><input type="checkbox" ng-model="EXTENTION_AUTO" ng-change="generateExtionNumber(EXTENTION_AUTO,form.LK_ORD_TYPE_ID)" kendo-tooltip k-content="'Get Auto Number.''">  Auto?</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <br />
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">
+
+                            </label>
+                            <div class="col-md-6">
+                                <button type="submit" ng-if="form.MC_STYLE_H_EXT_ID" class="btn btn-sm yellow-gold" ng-class="{'disabled':!StyleExtEntryForm.$valid}">Update</button>
+                                <button type="submit" ng-if="!form.MC_STYLE_H_EXT_ID" class="btn btn-sm green" ng-class="{'disabled':!StyleExtEntryForm.$valid}">Save</button>
+                                <button type="button" class="btn btn-sm default" ng-click="cancel()">Cancel</button>
+                            </div>
+                        </div>
+                        
+                        <div class="row" style="margin:auto;padding-top:10px;" ng-if="vm.errors">
+                            <div class="alert alert-warning" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                                <ul ng-repeat="field in vm.errors">
+                                    <li ng-repeat="error in field" ng-bind="error"></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="ModalForMavigateExternalUrl.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h3 class="title">
+                        Working Style Selection
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel(vm.form)"></i></span>
+                    </h3>
+                </div>
+            </div>
+            <div class="portlet-body">
+
+                <div class="row" style="margin:auto;">
+                    <div style="padding:2px;">
+                        <div class="alert alert-warning" role="alert" ng-if="SHOW_ERR_MSG">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+
+                            Please select atleast one working style.
+
+                        </div>
+
+                        <div kendo-grid k-options="gridStyleExtOptions" k-data-source="dsStyleExtentionList" id="idStyleExtentionList">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row" style="padding-top:3px;">
+                    <div class="col-md-12">
+                        <button type="button" class="btn btn-sm blue" ng-click="save()"><i class="fa fa-external-link"></i> Go</button>
+                        <button type="button" class="btn btn-sm default" ng-click="cancel()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

@@ -1,0 +1,378 @@
+﻿
+<fieldset class="custom-fieldset" ng-repeat="item in vm.chartDatas">
+    <div class="row" style="padding:0px;">
+        <div class="col-md-5">
+
+            <table class="table table-condensed table-bordered">
+                <thead>
+                    <tr class="site-table-header">
+                        <th>
+                            Category
+                        </th>
+                        <th>
+                            Criteria
+                        </th>
+                        <th>
+                            Capacity
+                        </th>
+                        <th>
+                            Booked
+                        </th>
+                        <th>
+                           Bk%
+                        </th>
+                        <th>
+                            Line Load
+                        </th>
+                        <th>
+                            LnLoad%
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td rowspan="3" style="font-weight: bold; text-align: right;">
+                            <h3>Basic</h3>
+                        </td>
+                        <td style="color: deepskyblue; font-weight: 800;">
+                            Pcs
+                        </td>
+                        <td style="color: deepskyblue; font-weight: 800;">
+                            {{ item.series[0].data.length>0?item.series[0].data[0]:0}}
+                        </td>
+                        <td style="color: deepskyblue; font-weight: 800;">
+                            {{ item.series[1].data.length>0?item.series[1].data[0]:0}}
+                        </td>
+
+                        <td style="color: deepskyblue; font-weight: 800;">
+                            {{(item.series[0].data.length>0 && item.series[1].data.length>0)?((item.series[1].data[0]/item.series[0].data[0])*100|number : 2) :0}} %
+                        </td>
+
+                        <td style="color: deepskyblue; font-weight: 800;">
+                            {{ item.series[6].data.length>0?item.series[6].data[0]:0}}
+                        </td>
+
+                        <td style="color: deepskyblue; font-weight: 800;">
+                            {{(item.series[1].data.length>0 && item.series[6].data.length>0)?((item.series[6].data[0]/item.series[1].data[0])*100|number : 2) :0}} %
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            SAH
+                        </td>
+                        <td>
+                            {{ item.series[2].data.length>0?item.series[2].data[0]:0}}
+                        </td>
+                        <td>
+                            {{ item.series[3].data.length>0?item.series[3].data[0]:0}}
+                        </td>
+
+                        <td style="font-weight:800;">
+                            {{(item.series[2].data.length>0 && item.series[3].data.length>0)?((item.series[3].data[0]/item.series[2].data[0])*100|number : 2) :0}} %
+                        </td>
+
+                        <td style="color: deepskyblue; font-weight: 800;">
+                            
+                        </td>
+
+                        <td style="color: deepskyblue; font-weight: 800;">
+                           
+                        </td>
+
+
+                    </tr>
+                    <tr>
+                        <td>
+                            FOB
+                        <td>
+                            {{ item.series[4].data.length>0?item.series[4].data[0]:0}}
+                        </td>
+                        <td>
+                            {{ item.series[5].data.length>0?item.series[5].data[0]:0}}
+                        </td>
+
+                        <td style="font-weight:800;">
+                            {{(item.series[4].data.length>0 && item.series[5].data.length>0)?((item.series[5].data[0]/item.series[4].data[0])*100|number : 2) :0}} %
+                        </td>
+                        <td style="color: deepskyblue; font-weight: 800;">
+                            
+                        </td>
+
+                        <td style="color: deepskyblue; font-weight: 800;">
+                            
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="3" style="font-weight: bold; text-align: right;">
+
+                            <h3>Fency</h3>
+                        </td>
+                        <td style="color: deepskyblue; font-weight: 800;">
+                            Pcs
+                        </td>
+                        <td style="color: deepskyblue; font-weight: 800;">
+                            {{ item.series[0].data.length>1?item.series[0].data[1]:0}}
+                        </td>
+                        <td style="color: deepskyblue; font-weight: 800;">
+                            {{ item.series[1].data.length>1?item.series[1].data[1]:0}}
+                        </td>
+
+                        <td style="color: deepskyblue; font-weight: 800;">
+                            {{(item.series[0].data.length>1 && item.series[1].data.length>1)?((item.series[1].data[1]/item.series[0].data[1])*100|number : 2) :0}} %
+                        </td>
+
+
+                        <td style="color: deepskyblue; font-weight: 800;">
+                            {{ item.series[6].data.length>0?item.series[6].data[1]:0}}
+                        </td>
+
+                        <td style="color: deepskyblue; font-weight: 800;">
+                            {{(item.series[1].data.length>0 && item.series[6].data.length>0)?((item.series[6].data[1]/item.series[1].data[1])*100|number : 2) :0}} %
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            SAH
+                        </td>
+                        <td>
+                            {{ item.series[2].data.length>1?item.series[2].data[1]:0}}
+                        </td>
+                        <td>
+                            {{ item.series[3].data.length>1?item.series[3].data[1]:0}}
+                        </td>
+
+                        <td style="font-weight:800;">
+                            {{(item.series[2].data.length>1 && item.series[3].data.length>1)?((item.series[3].data[1]/item.series[2].data[1])*100|number : 2) :0}} %
+                        </td>
+
+                        <td style="color: deepskyblue; font-weight: 800;">
+                            
+                        </td>
+
+                        <td style="color: deepskyblue; font-weight: 800;">
+                            
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            FOB
+                        <td>
+                            {{ item.series[4].data.length>1?item.series[4].data[1]:0}}
+                        </td>
+                        <td>
+                            {{ item.series[5].data.length>1?item.series[5].data[1]:0}}
+                        </td>
+
+                        <td style="font-weight:800;">
+                            {{(item.series[4].data.length>1 && item.series[5].data.length>1)?((item.series[5].data[1]/item.series[4].data[1])*100|number : 2) :0}} %
+                        </td>
+
+                        <td style="color: deepskyblue; font-weight: 800;">
+                            
+                        </td>
+
+                        <td style="color: deepskyblue; font-weight: 800;">
+                            
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="3" style="font-weight: bold; text-align: right;">
+
+                            <h3>Polo</h3>
+                        </td>
+                        <td style="color: deepskyblue; font-weight: 800;">
+                            Pcs
+                        </td>
+                        <td style="color: deepskyblue; font-weight: 800;">
+                            {{ item.series[0].data.length>2?item.series[0].data[2]:0}}
+                        </td>
+                        <td style="color: deepskyblue; font-weight: 800;">
+                            {{ item.series[1].data.length>2?item.series[1].data[2]:0}}
+                        </td>
+
+                        <td style="color: deepskyblue; font-weight: 800;">
+                            {{(item.series[0].data.length>2 && item.series[1].data.length>2)?((item.series[1].data[2]/item.series[0].data[2])*100|number : 2) :0}} %
+                        </td>
+
+                        <td style="color: deepskyblue; font-weight: 800;">
+                            {{ item.series[6].data.length>0?item.series[6].data[2]:0}}
+                        </td>
+
+                        <td style="color: deepskyblue; font-weight: 800;">
+                            {{(item.series[1].data.length>0 && item.series[6].data.length>0)?((item.series[6].data[2]/item.series[1].data[2])*100|number : 2) :0}} %
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            SAH
+                        </td>
+                        <td>
+                            {{ item.series[2].data.length>2?item.series[2].data[2]:0}}
+                        </td>
+                        <td>
+                            {{ item.series[3].data.length>2?item.series[3].data[2]:0}}
+                        </td>
+
+                        <td style="font-weight:800;">
+                            {{(item.series[2].data.length>2 && item.series[3].data.length>2)?((item.series[3].data[2]/item.series[2].data[2])*100|number : 2) :0}} %
+                        </td>
+
+                        <td style="color: deepskyblue; font-weight: 800;">
+                            
+                        </td>
+
+                        <td style="color: deepskyblue; font-weight: 800;">
+                            
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            FOB
+                        <td>
+                            {{ item.series[4].data.length>2?item.series[4].data[2]:0}}
+                        </td>
+                        <td>
+                            {{ item.series[5].data.length>2?item.series[5].data[2]:0}}
+                        </td>
+
+                        <td style="font-weight:800;">
+                            {{(item.series[4].data.length>2 && item.series[5].data.length>2)?((item.series[5].data[2]/item.series[4].data[2])*100|number : 2) :0}} %
+                        </td>
+                        <td style="color: deepskyblue; font-weight: 800;">
+                            
+                        </td>
+
+                        <td style="color: deepskyblue; font-weight: 800;">
+                            
+                        </td>
+                    </tr>
+
+                    <tr class="bg-grey-mint">
+                        <td rowspan="3" style="font-weight:bold;text-align:right;">
+
+                            <h3>Total</h3>
+
+                        </td>
+                        <td style="color: purple; font-weight: 800;">
+                            Pcs
+                        </td>
+                        <td style="color: purple; font-weight: 800;">
+                            {{ item.TTL_PLN_PCS}}
+                        </td>
+
+                        <td style="color: purple; font-weight: 800;">
+                            {{ item.TTL_BKD_PCS}}
+                        </td>
+
+                        <td style="color: purple; font-weight: 800;">
+                            {{(item.TTL_BKD_PCS/item.TTL_PLN_PCS)*100|number : 2}} %
+                        </td>
+
+                        <td style="color: purple; font-weight: 800;">
+                            {{ item.TTL_LOAD_QTY}}
+                        </td>
+
+                        <td style="color: purple; font-weight: 800;">
+                            {{(item.TTL_LOAD_QTY/item.TTL_BKD_PCS)*100|number : 2}} %
+                        </td>
+                  
+                    </tr>
+
+                    <tr>
+
+                        <td style="color: darkblue; font-weight: 800;">
+                            SAH
+                        </td>
+                        <td style="color: darkblue; font-weight: 800;">
+                            {{ item.TTL_PLN_SAH}}
+                        </td>
+                        <td style="color: darkblue; font-weight: 800;">
+                            {{ item.TTL_BKD_SAH}}
+                        </td>
+
+                        <td style="color: darkblue; font-weight: 800;">
+                            {{(item.TTL_BKD_SAH/item.TTL_PLN_SAH)*100|number : 2}} %
+                        </td>
+                        <td style="color: darkblue; font-weight: 800;">
+                            
+                        </td>
+                        <td style="color: darkblue; font-weight: 800;">
+                            
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="color: yellowgreen; font-weight: 800;">
+                            FOB
+                        </td>
+                        <td style="color: yellowgreen; font-weight: 800;">
+                            {{ item.TTL_PLN_FOB}}
+                        </td>
+                        <td style="color: yellowgreen; font-weight: 800;">
+                            {{ item.TTL_BKD_FOB}}
+                        </td>
+
+                        <td style="color: yellowgreen; font-weight: 800;">
+                            {{(item.TTL_BKD_FOB/item.TTL_PLN_FOB)*100|number : 2}} %
+                        </td>
+                        <td style="color: yellowgreen; font-weight: 800;">
+                            
+                        </td>
+                        <td style="color: yellowgreen; font-weight: 800;">
+                           
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+            @*<div kendo-chart 
+                 k-title="{text:item.title}"
+                 k-legend="{ position: 'top' }"
+                 k-series-defaults="{ type: 'column' }"
+                 k-series="item.series"
+                 k-category-axis="categoryExis"
+                 k-value-axis="valueExis"
+                 k-series-hover="onSeriesHover"
+                 k-tooltip="tooltip"
+                 style="height: 300px;"></div>*@
+        </div>
+        
+        <div class="col-md-7">
+
+
+
+            <div class="input-icon right" style="padding-bottom:3px;">
+                <i class="icon-magnifier"></i>
+                <input type="text" class="form-control form-control-static" ng-model="q2" placeholder="Search by Buyer/Style/Order/Lines/Basic/Polo/Fancy/No Plan/Projected/ShipOut/Data Missing" ng-change="item.order_lists_ds.filter({logic: 'or', filters:[{ field:'STYLE_NO', operator :'contains', value: q2 }, { field:'BYR_ACC_NAME_EN', operator :'contains', value: q2 }, { field:'ORDER_NO', operator :'contains', value: q2 },{ field:'DATA_STATUS', operator :'contains', value: q2 },{ field:'PLAN_STATUS', operator :'contains', value: q2 }, { field:'LK_DATA_NAME_EN', operator :'contains', value: q2 }, { field:'LINE_CODE_LST', operator :'contains', value: q2 }]})" ng-model-options="{ debounce: { 'default': 1000, 'blur': 0 } }">
+            </div>
+
+
+            <kendo-grid k-options="vm.OrderListOpt" k-data-source="item.order_lists_ds"></kendo-grid>
+
+            @*<div class="row" style="padding-top:3px;">
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-sm green" ng-click="vm.save(item.order_lists_ds.data())">Save</button>
+                    <button type="button" class="btn btn-sm default" ng-click="vm.onReset()">Reset</button>
+                </div>
+            </div>*@
+        </div>
+
+    </div>
+</fieldset>
+ 
+
+
+
+
+
+
+
+

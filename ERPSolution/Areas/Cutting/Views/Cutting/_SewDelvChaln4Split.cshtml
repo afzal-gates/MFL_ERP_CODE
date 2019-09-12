@@ -1,0 +1,253 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Cutting</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption">
+            {{vm.Title}}
+        </div>
+        <div class="tools">
+        </div>
+
+        <div class="actions">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 5px;">
+            <legend class="custom-legend">Delivery Challan: Main</legend>
+            
+            <ng-form name="GmtCutSewingInputChallanForm">
+
+                <table class="table table-condensed table-striped borderless" style="margin-bottom:5px;">
+
+                    <thead>
+                        <tr style="border: 1px solid #cecece;">
+
+                            
+                            <th style="width: 10%; text-align: right;">
+                                Split from Challan#
+                            </th>
+                            <th style="width:10%">
+                                <input type="text" name="CHALAN_NO" ng-model="challan.CHALAN_NO" class="form-control" readonly />
+                            </th>
+                            <th style="width: 10%; text-align: right;">
+                                NoOfBag
+                            </th>
+                            <th style="width: 5%;" ng-class="{'has-error': (GmtCutSewingInputChallanForm.NO_OF_BAG.$touched || GmtCutSewingInputChallanForm.$submitted) && GmtCutSewingInputChallanForm.NO_OF_BAG.$error.required}">
+
+                                <input type="number" ng-disabled="challan.IS_FINALIZED=='Y'" name="NO_OF_BAG" ng-model="challan.NO_OF_BAG" class="form-control" required />
+
+                            </th>
+
+                            <th style="width:10%;text-align:right;">
+                                Delvery To
+                            </th>
+                            <th style="width:20%">
+                                <span class="col-md-7" style="padding-left:0px;padding-right:0px;" ng-class="{'has-error': (GmtCutSewingInputChallanForm.HR_PROD_LINE_ID.$touched || GmtCutSewingInputChallanForm.$submitted) && GmtCutSewingInputChallanForm.HR_PROD_LINE_ID.$error.required}">
+
+
+
+                                    <select ng-disabled="challan.IS_FINALIZED=='Y'" class="form-control" kendo-drop-down-list name="HR_PROD_LINE_ID" k-option-label="'--Select --'"
+                                            k-data-text-field="'LINE_CODE'" k-data-value-field="'HR_PROD_LINE_ID'"
+                                            k-auto-bind="'true'" k-data-source="DsLine" ng-model="challan.HR_PROD_LINE_ID" k-filter="'contains'" ng-required="challan.IS_TAG=='N'"></select>
+
+                                </span>
+                                <span class="col-md-5" style="padding-left:3px;padding-right:0px;">
+                                    <div class="checkbox-list">
+                                        <label class="checkbox-inline" style="margin-left:20px;margin-top:0px;">
+                                            <span><input ng-disabled="challan.IS_FINALIZED=='Y'" type="checkbox" ng-model="challan.IS_TAG" ng-true-value="'Y'" ng-false-value="'N'"></span> BagTag Only?
+                                        </label>
+                                    </div>
+                                </span>
+                            </th>
+
+                        </tr>
+
+                    </thead>
+                </table>
+
+                <table class="table table-condensed table-striped table-bordered" style="padding:5px;" ng-repeat="(key, item) in BundleDatas.datas">
+
+                    <thead>
+
+                        <tr style="border: 1px solid #cecece;" ng-if="key==0">
+                            <th style="border-right:hidden;">
+
+                            </th>
+                            <th colspan="7" style="color:navy; text-align:right;border-left:hidden;">
+                                Total Bundles: <b>{{BundleDatas.total_bundles}}</b>  >> Total Cutting Qty: <b>{{BundleDatas.total_cut_qty}}</b> >> Short/Addition: <b>{{BundleDatas.short_qty}}</b> >> Sent Qty: <b>{{BundleDatas.total_qty}}</b>
+                            </th>
+                        </tr>
+
+                        <tr style="border: 1px solid #cecece;">
+
+
+                            <th colspan="8">
+                                Buyer: {{item.BYR_ACC_GRP_NAME_EN}}>> Style: {{item.STYLE_NO}}>> Order: {{item.ORDER_NO}}>> Color: {{item.COLOR_NAME_EN}}>>Cutting No: {{item.CUTNG_NO}}
+                            </th>
+
+
+                        </tr>
+                        <tr>
+                            <th style="width:15%;">
+                                <small>
+                                    Item
+                                </small>
+
+                            </th>
+
+                            <th style="width:10%;">
+                                <small>
+                                    Country
+                                </small>
+
+                            </th>
+
+                            <th style="width:5%;">
+                                <small>
+                                    Split?
+                                </small>
+
+                            </th>
+
+                            <th style="width:10%;">
+                                <small>
+                                    Size
+                                </small>
+
+                            </th>
+
+                            <th style="width:5%;">
+                                <small>
+                                    # of Bundle
+                                </small>
+
+                            </th>
+
+                            <th style="width:5%;">
+                                <small>
+                                    Cutting Qty
+                                </small>
+
+                            </th>
+
+
+                            <th style="width:5%;">
+                                <small>
+                                    Short
+                                </small>
+
+                            </th>
+
+
+
+                            <th style="width:5%;">
+                                <small>
+                                    Sent
+                                </small>
+
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr ng-repeat="itm in item.details" ng-if="itm.NO_OF_BNDL_SCANNED > 0">
+                            <td rowspan="{{itm.ITEM_SPAN}}" ng-if="itm.ITEM_SL==1">
+                                {{itm.ITEM_NAME_EN}}
+                            </td>
+
+                            <td rowspan="{{itm.COUNTRY_SPAN}}" ng-if="itm.COUNTRY_SL==1">
+                                {{itm.COUNTRY_NAME_EN}}
+                            </td>
+
+                            <td>                                
+                                <input type="checkbox" name="IS_SPLIT" ng-model="itm.IS_SPLIT" ng-true-value="'Y'" ng-false-value="'N'" />                                
+                            </td>
+
+                            <td>
+                                {{itm.SIZE_CODE}}
+                            </td>
+
+
+                            <td>
+                                {{itm.NO_OF_BNDL_SCANNED}}
+                            </td>
+
+
+                            <td>
+                                {{itm.CUTTING_QTY}}
+                            </td>
+                            <td>
+                                {{itm.SHORT_QTY}}
+                            </td>
+                            <td>
+                                {{itm.FINAL_QTY}}
+                            </td>
+                        </tr>
+                    </tbody>
+
+
+
+
+                    <tfoot>
+                        <tr>
+                            <td colspan="4" style="text-align:right;">
+                                <strong>Sub Total</strong>
+                            </td>
+                            <td>
+                                <b> {{item.TTL_NO_OF_BNDL_SCANNED}}</b>
+
+                            </td>
+
+                            <td>
+                                <b> {{item.TTL_CUTTING_QTY}}</b>
+
+                            </td>
+                            <td>
+                                <b>{{item.TTL_SHORT_QTY}}</b>
+
+                            </td>
+                            <td>
+                                <b>{{item.TTL_FINAL_QTY}}</b>
+
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <table class="table table-condensed table-striped table-bordered" style="padding-left: 5px; padding-right: 5px; margin-bottom: 3px;">
+                    <tbody>
+                        <tr>
+                            <td style="width: 100%; padding-bottom: 5px;" align="left">
+                                <a class="btn btn-sm green" ng-class="{'disabled': GmtCutSewingInputChallanForm.$invalid || challan.IS_FINALIZED=='Y'}" ng-click="submitData(challan,GmtCutSewingInputChallanForm.$valid);GmtCutSewingInputChallanForm.$submitted=true;">Save</a>
+                                @*<a class="btn btn-sm bg-grey-silver"><i class="fa fa-print"></i> Print Bag Tag</a>*@
+                                @*<a class="btn btn-sm bg-blue" style="float:right;" ng-click="vm.printDelivChallan()"><i class="fa fa-print"></i> Print Delivery Challan</a>*@
+                                @*<a class="btn btn-sm bg-purple-plum" style="float:right;" ng-if="challan.GMT_CUT_SEW_DLV_CHL_ID > 0 && challan.HR_PROD_LINE_ID > 0" ng-click="FinalizeAndDeliver(challan, GmtCutSewingInputChallanForm.$valid)" ng-class="{'disabled': challan.IS_FINALIZED=='Y' }">Finalize & Deliver</a>*@
+                                
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </ng-form>
+        </fieldset>
+
+        @*<pre>{{challan|json}}</pre>
+        <pre>{{BundleDatas|json}}</pre>*@
+
+    </div>
+</div>
+
+

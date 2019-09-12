@@ -1,0 +1,417 @@
+﻿@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Security</a>
+
+    </li>
+    <li>
+        <a href="#">Create User Account</a>
+    </li>
+</ul>
+
+
+
+<div class="portlet box blue-dark">
+
+    <div class="portlet-title">
+        <div class="caption">
+            @*<i class="fa fa-gift"></i>*@ Create User Account
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+
+
+
+
+
+
+
+
+        <form class="form-horizontal" role="form" name="UserFrom" novalidate ng-submit="vm.submitData(UserFrom.$valid)">
+            <div class="form-body clearfix">
+                <br />
+                <div class="row">
+
+                    <div class="col-md-10">
+
+                        <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+                               data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+                        <input type="hidden" ng-init="vm.form.LOCKED_FLAG='N'" ng-model="vm.form.LOCKED_FLAG" />
+                        <input type="hidden" ng-init="vm.form.LOGON_FLAG='N'" ng-model="vm.form.LOGON_FLAG" />
+                        <div class="form-group" style="padding-bottom:5px;">
+                            <label class="col-md-4 control-label" style="padding-top:5px;"> User Type </label>
+                            <div class="col-md-6">
+                                <div class="radio-list" style="padding-left:20px;">
+                                    <label class="radio-inline">
+                                        <span><input type="radio" ng-model="vm.form.USER_TYPE" ng-value="'I'"></span>
+                                        Internal
+                                    </label>
+                                    <label class="radio-inline">
+                                        <span><input type="radio" ng-model="vm.form.USER_TYPE" ng-value="'E'"></span>
+                                        External
+                                    </label>
+                                    <label class="radio-inline">
+                                        <span><input type="radio" ng-model="vm.form.USER_TYPE" ng-value="'G'"></span>
+                                        Guest
+                                    </label>
+
+                                    <span ng-if="vm.errors.USER_TYPE" class="field-validation-error">
+                                        {{vm.errors.USER_TYPE[0]}}
+                                    </span>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
+                        <div class="form-group" style="margin-bottom:6px;" ng-if="vm.form.USER_TYPE=='I'">
+                            <label class="col-md-4 control-label"> Employee </label>
+                            <div class="col-md-3">
+
+
+                                <input type="text" ng-model="vm.form.EMPLOYEE_CODE" placeholder="Search..." typeahead="item.EMPLOYEE_CODE as item.EMPLOYEE_CODE for item in emoloyeeAuto($viewValue)" typeahead-on-select="onSelectItem($item)" typeahead-loading="loadingLocations" class="form-control">
+                                <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+
+                                <input type="hidden" name="HR_EMPLOYEE_ID" ng-model="vm.form.HR_EMPLOYEE_ID">
+                                <span ng-if="vm.errors.HR_EMPLOYEE_ID" class="field-validation-error">
+                                    {{vm.errors.HR_EMPLOYEE_ID[0]}}
+                                </span>
+                            </div>
+                        </div>
+
+
+                        <div ng-if="vm.form.USER_TYPE=='I' && vm.showEmployeeInfo" style="padding:15px;">
+
+
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Proxi ID</label>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" value="{{vm.employee.TA_PROXI_ID}}" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Name</label>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" value="{{vm.employee.EMP_FULL_NAME_EN}}" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Department</label>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" value="{{vm.employee.DEPARTMENT_NAME_EN}}" readonly>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Designation</label>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" value="{{vm.employee.DESIGNATION_NAME_EN}}" readonly>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group" ng-if="vm.form.USER_TYPE=='E'">
+                            <label class="col-md-4 control-label" style="margin-top:5px;"> Business Partner Type</label>
+                            <div class="col-md-7">
+                                <div class="radio-list" style="padding-left:20px;">
+                                    <label class="radio-inline">
+                                        <span><input type="radio" ng-model="vm.form.BP_TYPE" ng-value="'Buyer'"></span>
+                                        Buyer
+                                    </label>
+                                    <label class="radio-inline">
+                                        <span><input type="radio" ng-model="vm.form.BP_TYPE" ng-value="'Supplier'"></span>
+                                        Supplier
+                                    </label>
+
+                                    <label class="radio-inline">
+                                        <span><input type="radio" ng-model="vm.form.BP_TYPE" ng-value="'Buying House Staff'"></span>
+                                        Buying House Staff
+                                    </label>
+
+                                    <label class="radio-inline">
+                                        <span><input type="radio" ng-model="vm.form.BP_TYPE" ng-value="'Office Staff'"></span>
+                                        Agent Office Staff
+                                    </label>
+
+
+                                    <span ng-if="vm.errors.BP_TYPE" class="field-validation-error">
+                                        {{vm.errors.BP_TYPE[0]}}
+                                    </span>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="padding-top:7px;">
+                            <label class="col-md-4 control-label">User ID</label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" name="LOGIN_ID" ng-model="vm.form.LOGIN_ID" username-available-validator
+                                       ng-model-options="{ debounce : { 'default' : 500, blur : 0 } }" required pattern="^[-\w]+$">
+
+                                <div ng-messages="UserFrom.LOGIN_ID.$error" ng-if="UserFrom.$submitted || UserFrom.LOGIN_ID.$touched">
+                                    <div ng-message="required" class="field-validation-error">User ID field is required</div>
+                                    <div ng-message="pattern" class="field-validation-error">no whitespace allowed</div>
+                                    <div ng-message="usernameAvailable" class="field-validation-error">User ID already in use</div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Password</label>
+                            <div class="col-md-3">
+                                <input type="password" class="form-control" ng-model="pw" name="PASSWORD_SALT" id="pw" required>
+
+                                <ul id="strength" check-strength="pw"></ul>
+                                <div ng-messages="UserFrom.PASSWORD_SALT.$error" ng-if="UserFrom.$submitted || UserFrom.PASSWORD_SALT.$touched">
+                                    <div ng-message="required" class="field-validation-error">Password field is required</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-class="{'has-error':UserFrom.CONFIRMED_PASSWORD.$invalid}">
+                            <label class="col-md-4 control-label">Confirm Password</label>
+                            <div class="col-md-3">
+                                <input type="password" class="form-control" name="CONFIRMED_PASSWORD" ng-model="vm.form.CONFIRMED_PASSWORD" same-as='pw'>
+                                <span ng-if="UserFrom.CONFIRMED_PASSWORD.$invalid" class="field-validation-error">
+                                    Password does not match
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Memorable Word</label>
+                            <div class="col-md-2">
+                                <input type="text" name="MEMORABLE_TEXT" class="form-control" ng-model="vm.form.MEMORABLE_TEXT" minlength="8" maxlength="8" pattern="^[-\w]+$" required>
+                                <span ng-if="vm.errors.MEMORABLE_TEXT" class="field-validation-error">
+                                    {{vm.errors.MEMORABLE_TEXT[0]}}
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <div ng-messages="UserFrom.MEMORABLE_TEXT.$error" ng-if="UserFrom.$submitted || UserFrom.MEMORABLE_TEXT.$touched" class="col-md-5 col-md-offset-4">
+                                <div ng-message="required" class="field-validation-error">Momorable Word field is required</div>
+                                <div ng-message="minlength" class="field-validation-error">Please write momorable word in 8 Character</div>
+                                <div ng-message="pattern" class="field-validation-error">Alpha-numeric value is required</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-class="{'has-error':vm.errors.MEMORABLE_TEXT_REPEATED}" style="padding-bottom:10px;">
+                            <label class="col-md-4 control-label">Confirm Memorable Word</label>
+                            <div class="col-md-2">
+                                <input type="text" name="MEMORABLE_TEXT_REPEATED" class="form-control" ng-model="vm.form.MEMORABLE_TEXT_REPEATED">
+
+                                <span ng-if="vm.errors.MEMORABLE_TEXT_REPEATED" class="field-validation-error">
+                                    {{vm.errors.MEMORABLE_TEXT_REPEATED[0]}}
+                                </span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">User Full Name</label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="USER_NAME_EN" ng-model="vm.form.USER_NAME_EN" required>
+                                <span ng-if="vm.errors.USER_NAME_EN" class="field-validation-error">
+                                    {{vm.errors.USER_NAME_EN[0]}}
+                                </span>
+
+                                <div ng-messages="UserFrom.USER_NAME_EN.$error" ng-if="UserFrom.$submitted || UserFrom.USER_NAME_EN.$touched">
+                                    <div ng-message="required" class="field-validation-error">User full name field is required</div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Email</label>
+                            <div class="col-md-4">
+                                <input type="email" name="USER_EMAIL" class="form-control" ng-model="vm.form.USER_EMAIL" required>
+                                <span ng-if="vm.errors.USER_EMAIL" class="field-validation-error">
+                                    {{vm.errors.USER_EMAIL[0]}}
+                                </span>
+
+                                <div ng-messages="UserFrom.USER_EMAIL.$error" ng-if="UserFrom.$submitted || UserFrom.USER_EMAIL.$touched">
+                                    <div ng-message="required" class="field-validation-error">Email field is required</div>
+                                    <div ng-message="email" class="field-validation-error">Please input valid email</div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" style="margin-top:5px;"> User Role</label>
+                            <div class="col-md-7">
+                                <div class="radio-list" style="padding-left:15px;" ng-init="vm.form.IS_SYS_ADMIN='N'">
+                                    <label class="radio-inline">
+                                        <span><input type="radio" name="IS_SYS_ADMIN" ng-model="vm.form.IS_SYS_ADMIN" ng-value="'Y'" required></span>
+                                        System Admin
+                                    </label>
+                                    <label class="radio-inline">
+                                        <span><input type="radio" name="IS_SYS_ADMIN" ng-model="vm.form.IS_SYS_ADMIN" ng-value="'N'" required></span>
+                                        General User
+                                    </label>
+
+                                    <span ng-if="vm.errors.IS_SYS_ADMIN" class="field-validation-error">
+                                        {{vm.errors.IS_SYS_ADMIN[0]}}
+                                    </span>
+
+                                    <div ng-messages="UserFrom.IS_SYS_ADMIN.$error" ng-if="UserFrom.$submitted || UserFrom.IS_SYS_ADMIN.$touched">
+                                        <div ng-message="required" class="field-validation-error">User Role field is required</div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">
+                                Status
+                            </label>
+                            <div class="col-md-3" ng-init="vm.form.SC_USER_STATUS_ID=3">
+                                <select class="form-control" ng-model="vm.form.SC_USER_STATUS_ID">
+                                    <option value="1">Request for New User</option>
+                                    <option value="2">Pending for Approval</option>
+                                    <option value="3">Active</option>
+                                    <option value="4">Suspended</option>
+
+                                </select>
+                                <span ng-if="vm.errors.SC_USER_STATUS_ID" class="field-validation-error">
+                                    {{vm.errors.SC_USER_STATUS_ID[0]}}
+                                </span>
+
+                            </div>
+                        </div>
+
+                        <div class="portlet" style="margin-bottom:0px;">
+                            <div class="portlet-title" style="margin-bottom:0px;">
+                                <div class="caption" style=" height: 44px; padding-left: 150px;">
+                                    <h4 class=" title">
+                                        Account Options
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="form-group">
+
+                                    <div class="col-md-8 col-md-offset-4">
+                                        <div class="radio-list" ng-init="vm.form.IS_USER_NEVER_EXPIRE='Y'">
+                                            <label>
+                                                <span><input type="radio" ng-model="vm.form.IS_USER_NEVER_EXPIRE" ng-value="'Y'"></span>
+                                                Never
+                                            </label>
+                                            <label>
+                                                <span><input type="radio" ng-model="vm.form.IS_USER_NEVER_EXPIRE" ng-value="'N'"></span>
+                                                Expires on
+
+                                            </label>
+                                            <div class="col-md-4 input-group" ng-if="vm.form.IS_USER_NEVER_EXPIRE=='N'" style="position:relative;left:100px;bottom:20px;">
+                                                <input type="text" class="form-control" datepicker-popup="{{format}}" name="USER_EXPIRE_ON" ng-model="vm.form.USER_EXPIRE_ON" is-open="USER_EXPIRE_ONopened" min-date="vm.currentDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn-calendar" ng-click="USER_EXPIRE_ONopen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                                <span ng-if="vm.errors.USER_EXPIRE_ON" class="field-validation-error">
+                                                    {{vm.errors.USER_EXPIRE_ON[0]}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="portlet" style="margin-bottom:0px;">
+                            <div class="portlet-title">
+                                <div class="caption" style=" height: 44px; padding-left: 135px;">
+                                    <h4 class="title">Password Options</h4>
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="form-group">
+
+                                    <div class="col-md-8 col-md-offset-4">
+                                        <div class="checkbox-list">
+                                            <label>
+                                                <span><input type="checkbox" ng-disabled="vm.form.IS_PWD_SET_BY_ADMIN=='Y'" ng-model="vm.form.IS_PWD_CNG_LOGON" ng-true-value="'Y'" ng-false-value="'N'"></span>
+                                                User can change password at next login
+                                            </label>
+                                            <label>
+                                                <span><input type="checkbox" ng-disabled="vm.form.IS_PWD_CNG_LOGON=='Y'" ng-model="vm.form.IS_PWD_SET_BY_ADMIN" ng-true-value="'Y'" ng-false-value="'N'"></span>
+                                                User can not change password
+                                            </label>
+                                            <label>
+                                                <span><input type="checkbox" ng-model="vm.form.IS_PWD_NEVER_EXPIRE" ng-true-value="'Y'" ng-false-value="'N'"></span>
+                                                Password never expires
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                    </div>
+
+                </div>
+                            
+                <div class="form-actions">
+                    <div class="row">
+                        <div class="col-md-4 col-md-offset-4">
+                            <button type="button" class="btn btn-sm blue" ui-sref="UserList">Back To List</button>
+                            <button ng-if="vm.form.SC_USER_ID" type="button" ng-click="vm.updateData(UserFrom.$valid)" class="btn btn-sm yellow-gold">Update</button>
+
+                            <button ng-if="!vm.form.SC_USER_ID" type="submit" class="btn btn-sm green" ng-class="{'disabled':UserFrom.$invalid}">Save</button>
+
+                            <button type="button" class="btn btn-sm default" ui-sref="UserEntry({data:null})">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+</div>

@@ -1,0 +1,108 @@
+﻿
+@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Security</a>
+
+    </li>
+    <li>
+        <a href="#">Create User Account</a>
+    </li>
+</ul>
+
+
+
+<div class="portlet box blue-dark">
+
+    <div class="portlet-title">
+        <div class="caption">
+            @*<i class="fa fa-gift"></i>*@ User Account List
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div class="row" style="padding:10px">
+            <div class="col-md-1 col-md-offset-10">
+                <a ui-sref="UserEntry({data:null})" class="btn btn-sm purple">
+                    User Account <i class="fa fa-plus"></i>
+                </a>
+            </div>
+
+        </div>
+
+        <div style="padding:10px;">
+            <kendo-grid k-options="vm.gridOptions"></kendo-grid>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+<script type="text/ng-template" id="myModalContent.html">
+
+    <form class="form-horizontal" style="padding:20px;" name="modal" @*ng-if="!items.SC_ROLE_ID"*@>
+        <div class="modal-header">
+            <h5 class="modal-title">
+                {{items.SC_ROLE_ID?'Change':'Assign'}} Role for <b>{{items.LOGIN_ID}}</b>
+                <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+            </h5>
+        </div>
+
+        <div class="modal-body">
+
+
+            <input type="hidden" ng-init="data.SC_USER_ID=items.SC_USER_ID" ng-model="data.SC_USER_ID" />
+            <input type="hidden" ng-init="data.SC_USER_ROLE_ID=roles[0].SC_USER_ROLE_ID" ng-model="data.SC_USER_ROLE_ID" />
+
+            <div class="form-group">
+
+                <label class="col-md-2 control-label">
+                    Role
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-6">
+                    <select kendo-drop-down-list name="SC_ROLE_ID" class="form-control"
+                            options="RoleListData" ng-init="data.SC_ROLE_ID=items.SC_ROLE_ID" ng-model="data.SC_ROLE_ID" required></select>
+
+                    <div ng-messages="modal.SC_ROLE_ID.$error" ng-if="modal.$submitted || modal.SC_ROLE_ID.$touched">
+                        <div ng-message="required" class="field-validation-error">Role field is required</div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-sm green" ng-if="!items.SC_ROLE_ID" ng-click="save(data,validSave?modal.$valid:false)">Save</button>
+            <button class="btn btn-sm yellow-gold" ng-click="update(data,validSave?modal.$valid:false)" ng-if="items.SC_ROLE_ID">Update</button>
+        </div>
+    </form>
+
+</script>

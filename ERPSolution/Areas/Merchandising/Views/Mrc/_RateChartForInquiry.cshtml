@@ -1,0 +1,58 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption">
+            {{vm.Title}}
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+        <div class="row" style="margin:auto;">
+            <table class="table table-condensed table-striped table-bordered" style="font-size:12px;">
+                <thead>
+                    <tr class="site-table-header">
+                        <th style="width: 10%">RateGrp</th>
+                        <th style="width: 10%">RateDesc</th>
+                        <th style="width: 5%" ng-repeat="itm in vm.RateChart.ByrAccs">{{ itm.BYR_ACC_GRP_NAME_EN }}</th>
+                    </tr>
+                </thead>
+                <tbody style="font-weight:700">
+                    <tr ng-repeat="item in vm.RateChart.datas">
+                        <td rowspan="{{item.ROW_SPAN}}" ng-if="item.ROW_NUMBER==1">
+                            {{ item.LK_TABLE_NAME_EN }}
+                        </td>
+                        <td>{{ item.LK_DATA_NAME_EN }}</td>
+                        <td ng-repeat="itm in vm.RateChart.ByrAccs">
+                            <input type="number" class="form-control" ng-model="item[itm.MC_BYR_ACC_GRP_ID]['RATE']" name="RATE" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="{{ 2 + vm.RateChart.ByrAccs.length }}">
+                            <button type="button" style="float:left;" class="btn btn-sm green" ng-click="vm.submitData(vm.RateChart.datas)">Save</button>
+                            <button type="button" style="float:left;" class="btn btn-sm default">Reset</button>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+</div>

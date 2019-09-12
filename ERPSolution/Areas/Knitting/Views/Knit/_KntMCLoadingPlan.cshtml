@@ -1,0 +1,592 @@
+﻿@*<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>*@
+
+<style type="text/css">
+    .scheduler_default_rowheader {
+        background: -webkit-gradient(linear, left top, left bottom, from(#eeeeee), to(#dddddd));
+        background: -moz-linear-gradient(top, #eeeeee 0%, #dddddd);
+        background: -ms-linear-gradient(top, #eeeeee 0%, #dddddd);
+        background: -webkit-linear-gradient(top, #eeeeee 0%, #dddddd);
+        background: linear-gradient(top, #eeeeee 0%, #dddddd);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorStr="#eeeeee", endColorStr="#dddddd");
+    }
+    .scheduler_default_rowheader_inner {
+        border-right: 1px solid #ccc;
+    }
+
+    .scheduler_default_rowheadercol2 {
+        background: #ffffff;
+    }
+</style>
+<style>
+    #scheduler .scheduler_default_selected .scheduler_default_event_inner {
+        background-color: #d4cfcf;
+        background-image: -webkit-gradient(linear, 0 100%, 100% 0,color-stop(.25, rgba(255, 255, 255, .2)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .2)), color-stop(.75, rgba(255, 255, 255, .2)), color-stop(.75, transparent), to(transparent));
+        background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+        background-image: -moz-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+        background-image: -ms-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+        background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+        background-image: linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+        -webkit-background-size: 20px 20px;
+        -moz-background-size: 20px 20px;
+        background-size: 20px 20px;
+    }
+</style>
+
+<style>
+    .scheduler_default_cellparent, .scheduler_default_cell.scheduler_default_cell_business.scheduler_default_cellparent {
+        background: #ddd;
+    }
+</style>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption">
+            {{vm.Title}}
+        </div>
+        <div class="tools">
+        </div>
+        <div class="actions">
+            <a ui-sref="KntPendingLoadingPlan(vm.params)" class="btn blue-dark btn-sm">
+                Pending Knit Card  <i class="fa fa-share"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="portlet-body">
+        <div class="row" style="margin:auto;">
+            <form class="form-horizontal" ng-submit="onSearchEvent(qEvt)">
+
+                <div style="float:left; width:160px">
+                    <div class="form-group">
+                        <div class="col-md-8">
+                            <a onclick="picker.show(); return false;" class="btn btn-sm btn-link" id="start" style="color:red;padding-top:8px;padding-bottom:0px;">{{CurrentDTRange.today|date:'dd-MMM-yyyy'}}</a>
+                            <a class="btn btn-sm btn-link" ng-click="vm.ChangeDataByDate()" style="color: blue; padding-top: 0px; padding-bottom: 0px;">Today</a>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="form-group" style="margin-left: 160px">
+
+                    <div class="col-md-2" style="padding-left:0px;padding-right:5px;">
+                        <label class="control-label" style="text-align:left;">
+                            Company #
+                        </label>
+                        <select class="form-control" kendo-drop-down-list k-data-text-field="'COMP_NAME_EN'" k-option-label="'All'" k-data-value-field="'HR_COMPANY_ID'"
+                                k-auto-bind="'false'" k-data-source="companyDs" ng-model="vm.form.HR_COMPANY_ID" k-on-change="vm.onChangeCompany(kendoEvent)"></select>
+
+                    </div>
+
+
+                    @*<div class="col-md-1" style="padding-left:0px;padding-right:5px;">
+                        <label class="control-label" style="text-align:left;">
+                            Building
+                        </label>
+                        <select class="form-control" kendo-drop-down-list k-data-text-field="'BLDNG_CODE'" k-option-label="'All'" k-data-value-field="'HR_PROD_BLDNG_ID'"
+                                k-auto-bind="'false'" k-data-source="buildingds" ng-model="vm.form.HR_PROD_BLDNG_ID" k-on-change="onChangeBulding(kendoEvent,HR_COMPANY_ID)"></select>
+
+                    </div>
+
+                    <div class="col-md-1" style="padding-left:0px;padding-right:5px;">
+                        <label class="control-label" style="text-align:left;">
+                            Floor #
+                        </label>
+                        <select class="form-control" kendo-drop-down-list k-data-text-field="'name'" k-data-value-field="'id'"
+                                k-auto-bind="'false'" k-option-label="'All'" k-filter="'contains'" k-data-source="FloorDataDs"
+                                ng-model="vm.form.HR_PROD_FLR_ID" k-on-change="onChangeFloor(kendoEvent,HR_PROD_BLDNG_ID,HR_COMPANY_ID)"></select>
+
+                    </div>*@
+
+                    <div class="col-md-1" style="padding-left:0px;padding-right:5px;">
+                        <label class="control-label" style="text-align:left;">
+                            Dia
+                        </label>
+                        <select class="form-control" kendo-drop-down-list name="ACT_MC_DIA_ID" k-option-label="'All'" k-filter="'Contains'"
+                                k-data-text-field="'MC_DIA'" k-data-value-field="'KNT_MC_DIA_ID'"
+                                k-auto-bind="'true'" k-data-source="vm.machineDiaDs"
+                                ng-model="vm.form.KNT_MC_DIA_ID" k-on-change="vm.onChangeMcDia(kendoEvent,vm.form)"></select>
+                    </div>
+
+
+                    <div class="col-md-1" style="padding-left:0px;padding-right:5px;">
+                        <label class="control-label" style="text-align:left;">
+                            Machine #
+                        </label>
+                        <select class="form-control" kendo-drop-down-list k-data-text-field="'KNT_MACHINE_NO'" k-option-label="'All'" k-filter="'contains'" k-data-value-field="'KNT_MACHINE_ID'"
+                                k-auto-bind="'false'" k-data-source="MachineDs" ng-model="vm.form.KNT_MACHINE_ID" k-on-change="onChangeMachine(kendoEvent,vm.form)"></select>
+
+                    </div>
+
+                    <div class="col-md-3" style="padding-left:0px;padding-right:10px;">
+                        <label class="control-label" style="text-align:left;">
+                            Knit Card/Style#/Order
+                        </label>
+                        <div class="input-group">
+                            <input type="text" style="height:28px;" class="form-control" ng-model="qEvt" placeholder="Search KnitCard#,Style#,Order">
+                            <span class="input-group-btn">
+                                <button class="btn btn-sm" type="submit"><i class="fa fa-search"></i></button>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-1" style="padding-left:0px;padding-right:5px;">
+                        <label class="control-label" style="text-align:left;">
+                            Scale
+                        </label>
+
+                        <select class="form-control" kendo-drop-down-list k-data-text-field="'txt'" k-data-value-field="'val'"
+                                k-auto-bind="'false'" k-data-source="scaleDs" ng-model="scale"></select>
+
+                    </div>
+
+
+
+                    <div class="col-md-1" style="padding-left: 0px; padding-right: 5px;">
+
+                        <label class="control-label" style="text-align:left;">
+                            Range
+                        </label>
+                        <select class="form-control" kendo-drop-down-list k-data-text-field="'txt'" k-data-value-field="'val'"
+                                k-auto-bind="'false'" k-data-source="timeRangeDs" ng-model="TimeRange"></select>
+
+                    </div>
+                    <div class="col-md-1" style="padding-left:0px;padding-right:5px;">
+                        <label class="control-label" style="text-align:left;">
+                            Cell Width(%)
+                        </label>
+                        <input type="number" ng-init="cellWidth=schedulerConfig.cellWidth" class="form-control" step="5" min="15" max="45" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" ng-model="cellWidth" ng-change="schedulerConfig.cellWidth=cellWidth" />
+                    </div>
+
+                    <div class="col-md-1" style="padding-left: 0px; padding-right: 10px; text-align: right;padding-top:23px;">
+                        <button class="btn blue-hoki btn-xs" style="margin-right: 5px;" ui-sref="KntMCLoadingPlan" ui-sref-opts="{reload:true,inherit:false}" title="Refresh"><i class="fa fa-refresh"></i> Refresh</button>
+                        @*<button class="btn btn-xs" style="margin-right: 5px;" ng-click="clearSelection()" title="Clear Selection"><i class="fa fa-chain-broken"></i></button>*@
+                    </div>
+
+                </div>
+            </form>
+
+
+            @*<div style="float:left; width:160px">
+                <daypilot-navigator id="navigator" daypilot-config="navigatorConfig"></daypilot-navigator>
+            </div>*@
+            <div @*style="margin-left: 160px"*@ click-anywhere-but-here="clearSelection()">
+                <daypilot-scheduler id="scheduler" daypilot-config="schedulerConfig" daypilot-events="events"></daypilot-scheduler>
+            </div>
+
+        </div>
+
+        <div class="row" style="margin-top:5px;">
+            <div class="col-md-12" align="right">
+                <button type="button" class="btn btn-sm" ng-click="vm.printRequisitionList()"><i class="fa fa-file-pdf-o"></i> Today's Requisitions</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/ng-template" id="UnAssignQtyBatchModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h3 style="padding-top:10px;margin-top:3px;">
+                        Knit Card Cancellation 
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </h3>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="UnAssingKnitCard" novalidate>
+                    <table class="table table-condensed table-striped table-bordered" style="padding:5px;margin-bottom:5px;">
+                        <thead>
+                            <tr>
+                                <th style="width:5%;">
+                                    <small>
+                                        SL
+                                    </small>
+
+                                </th>
+
+                                <th style="width:35%;">
+                                    <small>
+                                        Knit Card Details
+                                    </small>
+
+                                </th>
+
+                                <th style="width:7%;">
+                                    <small>
+                                        Assigned
+                                    </small>
+
+                                </th>
+
+                                <th style="width:7%;">
+                                    <small>
+                                        UnAssigned
+                                    </small>
+
+                                </th>
+
+
+                                <th style="width:7%;">
+                                    <small>
+                                        Produced
+                                    </small>
+
+                                </th>
+                                <th style="width:8%;">
+                                    <small>
+                                        New
+                                    </small>
+
+                                </th>
+                                <th style="width:12%;">
+                                    <small>
+                                        Reason
+                                    </small>
+                                </th>
+
+                                <th style="width:1%;">
+                                    <small>
+                                        Act
+                                    </small>
+                                </th>
+
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr ng-repeat="item in knitCardList">
+
+                                <td style="width:5%;">
+                                    {{$index+1}}
+                                </td>
+
+                                <td style="width:35%;">
+                                    {{item.text}}
+                                </td>
+
+                                <td style="width:7%;">
+                                    {{item.ASIGN_QTY}}
+                                </td>
+
+                                <td style="width:7%;">
+                                    {{item.UN_ASIGN_QTY}}
+                                </td>
+
+
+                                <td style="width:7%;">
+                                    {{item.PROD_QTY}}
+                                </td>
+                                <td style="width:8%;" ng-class="{'has-error': (UnAssingKnitCard['NEW_RQSTD_QTY-'+$index].$touched || UnAssingKnitCard.$submitted) && (UnAssingKnitCard['NEW_UN_ASIGN_QTY-'+$index].$error.required||UnAssingKnitCard['NEW_UN_ASIGN_QTY-'+$index].$error.min||UnAssingKnitCard['NEW_UN_ASIGN_QTY-'+$index].$error.max)}">
+                                    <input class="form-control" ng-init="item.NEW_NEW_UN_ASIGN_QTY = item.NEW_UN_ASIGN_QTY" min="1" max="{{item.NEW_UN_ASIGN_QTY}}" type="number" name="NEW_UN_ASIGN_QTY-{{$index}}" ng-model="item.NEW_NEW_UN_ASIGN_QTY" required />
+                                </td>
+                                <td style="width:12%;">
+                                    <input type="text" class="form-control" name="REASON_DESC" ng-model="item.REASON_DESC" />
+                                </td>
+
+                                <td style="width:1%;">
+                                    <a class="btn btn-xs red" ng-click="remove(item.text,$index)">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <button type="button" class="btn btn-sm green" ng-click="save(knitCardList,UnAssingKnitCard.$valid);UnAssingKnitCard.$submitted=true;">Save</button>
+                            <button type="button" class="btn btn-sm default" ng-click="cancel()">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+
+
+
+<script type="text/ng-template" id="SplitKnitCardModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h3 style="padding-top:10px;margin-top:3px;">
+                        Knit Card Split
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </h3>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="SplitKnitCardModalForm" novalidate>
+                    <table class="table table-condensed table-striped table-bordered" style="padding:5px;margin-bottom:5px;">
+                        <thead>
+                            <tr>
+                                <th style="width:5%;">
+                                    <small>
+                                        SL
+                                    </small>
+
+                                </th>
+
+                                <th style="width:35%;">
+                                    <small>
+                                        Knit Card Details
+                                    </small>
+
+                                </th>
+
+                                <th style="width:7%;">
+                                    <small>
+                                        Assigned
+                                    </small>
+
+                                </th>
+
+                                <th style="width:7%;">
+                                    <small>
+                                        UnAssigned
+                                    </small>
+
+                                </th>
+
+
+                                <th style="width:7%;">
+                                    <small>
+                                        Produced
+                                    </small>
+
+                                </th>
+                                <th style="width:7%;">
+                                    <small>
+                                        Left
+                                    </small>
+
+                                </th>
+
+                                <th style="width:8%;">
+                                    <small>
+                                        1st
+                                    </small>
+                                </th>
+                                <th style="width:8%;">
+                                    <small>
+                                        2nd
+                                    </small>
+                                </th>
+
+                                <th style="width:1%;">
+                                    <small>
+                                        Act
+                                    </small>
+                                </th>
+
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr ng-repeat="item in knitCardList">
+
+                                <td style="width:5%;">
+                                    {{$index+1}}
+                                </td>
+
+                                <td style="width:35%;">
+                                    {{item.text}}
+                                </td>
+
+                                <td style="width:7%;">
+                                    {{item.ASIGN_QTY}}
+                                </td>
+
+                                <td style="width:7%;">
+                                    {{item.UN_ASIGN_QTY}}
+                                </td>
+
+
+                                <td style="width:7%;">
+                                    {{item.PROD_QTY}}
+                                </td>
+                                <td style="width:7%;">
+                                    {{item.ASIGN_QTY-item.UN_ASIGN_QTY-item.PROD_QTY}}
+                                </td>
+
+                                <td style="width:8%;">
+                                    <input class="form-control" ng-init="item.FIRST_SPLIT = item.ASIGN_QTY-item.UN_ASIGN_QTY-item.PROD_QTY" type="number" readonly ng-model="item.FIRST_SPLIT" />
+                                </td>
+                                <td style="width:8%;" ng-class="{'has-error': (SplitKnitCardModalForm['SECOND_SPLIT-'+$index].$touched || SplitKnitCardModalForm.$submitted) && (SplitKnitCardModalForm['SECOND_SPLIT-'+$index].$error.required||SplitKnitCardModalForm['SECOND_SPLIT-'+$index].$error.min||SplitKnitCardModalForm['SECOND_SPLIT-'+$index].$error.max)}">
+                                    <input class="form-control" ng-init="item.NEW_NEW_UN_ASIGN_QTY = item.NEW_UN_ASIGN_QTY" min="1" max="{{item.ASIGN_QTY-item.UN_ASIGN_QTY-item.PROD_QTY-1}}" type="number" name="SECOND_SPLIT-{{$index}}" ng-change="item.FIRST_SPLIT = item.ASIGN_QTY-item.UN_ASIGN_QTY-item.PROD_QTY;item.FIRST_SPLIT=item.FIRST_SPLIT-item.SECOND_SPLIT" ng-model="item.SECOND_SPLIT" required />
+                                </td>
+
+                                <td style="width:1%;">
+                                    <a class="btn btn-xs red" ng-click="remove(item.text,$index)">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <button type="button" class="btn btn-sm green" ng-click="save(knitCardList,SplitKnitCardModalForm.$valid);SplitKnitCardModalForm.$submitted=true;">Save</button>
+                            <button type="button" class="btn btn-sm default" ng-click="cancel()">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/javascript">
+    var picker = new DayPilot.DatePicker({
+        target: 'start',
+        pattern: 'dd-MMM-yyyy',
+        onTimeRangeSelected: function (args) {
+            window.ChangeDataByDate(args.start.value);
+        }
+    });
+</script>
+
+
+<script type="text/ng-template" id="KnitCardEdit.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h3 style="padding-top:10px;margin-top:3px;">
+                        Knit Card Edit
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </h3>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="KnittingPendingForm" novalidate>
+                    <p class="block" style="margin: 0px; font-size: 14px; background-color: #ece9f8;padding-left:2px;" ng-if="data">
+                        Knit Card# :
+                        <b>{{data.JOB_CRD_NO}}</b>
+
+                        &nbsp;
+                        Buyer Acc# :
+                        <b>{{data.BYR_ACC_NAME_EN}}</b>
+
+                        &nbsp;
+                        Order# :
+                        <b>{{data.ORDER_NO_LIST}}</b>
+
+                        &nbsp;
+
+
+
+                        Fabric Type # :
+                        <b>{{data.FAB_TYPE_NAME}}</b>
+
+                        &nbsp;
+
+                        Fabric Desc. :
+                        <b>{{data.FABRIC_SNAME}}</b>
+                        &nbsp;
+
+                        M/C DiaxGauge :
+                        <b>{{data.MC_DIA_GG}}</b>
+
+                        &nbsp;
+
+                        Fin Dia :
+                        <b>{{data.FIN_DIA_N_DIA_TYPE}}</b>
+                        &nbsp;
+
+                        Fin GSM :
+                        <b>{{data.FIN_GSM}}</b>
+                        &nbsp;
+                    </p>
+
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend">Knitting M/C Selection</legend>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">
+                                <b>M/C</b>
+
+                            </label>
+                            <div class="col-md-8" ng-class="{'has-error': (KnittingPendingForm.KNT_MACHINE_ID.$touched || KnittingPendingForm.$submitted) && KnittingPendingForm.KNT_MACHINE_ID.$error.required}">
+                                <select class="form-control" kendo-drop-down-list name="KNT_MACHINE_ID" k-option-label="'-- Select M/C--'"
+                                        k-data-text-field="'KNT_MACHINE_NO'" k-data-value-field="'KNT_MACHINE_ID'"
+                                        k-auto-bind="'true'" k-data-source="KnitMachineListDs" k-ng-delay="KnitMachineListDs" ng-model="data.KNT_MACHINE_ID" k-on-change="onMachineChange(kendoEvent)" required></select>
+                            </div>
+
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="custom-fieldset">
+
+                        <legend class="custom-legend">Knit Card</legend>
+
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">
+                                <b>Assign Qty</b>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="number" class="form-control" ng-init="data.ASIGN_QTY = data.ASIGN_QTY-UN_ASIGN_QTY" name="RQD_PRD_QTY" ng-model="data.ASIGN_QTY" required tabindex="1" readonly />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">
+                                <b>Start</b>
+                            </label>
+                            <div class="col-md-8" ng-class="{'has-error': (KnittingPendingForm.START_DT.$touched || KnittingPendingForm.$submitted) && KnittingPendingForm.START_DT.$error.required}">
+                                <input kendo-date-time-picker k-ng-model="data.START_DT" name="START_DT" k-options="datePickerOptions" data-k-format="'dd/MM/yyyy HH:mm'" k-interval="10" class="form-control" style="width: 100%;" required />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-4 control-label">
+                                <b>Target/day(24Hr)</b>
+                            </div>
+                            <div class="col-md-4" ng-class="{'has-error': (KnittingPendingForm.TG_D_PROD_QTY.$touched || KnittingPendingForm.$submitted) && KnittingPendingForm.TG_D_PROD_QTY.$error.required}">
+                                <input type="number" class="form-control" min="1" name="TG_D_PROD_QTY" ng-model="data.TG_D_PROD_QTY" required tabindex="0" />
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">
+                                <b>End</b>
+
+                            </label>
+                            <div class="col-md-8" ng-class="{'has-error': (KnittingPendingForm.END_DT.$touched || KnittingPendingForm.$submitted) && KnittingPendingForm.END_DT.$error.required}">
+                                <input kendo-date-time-picker k-ng-model="data.END_DT" name="END_DT"  data-k-format="'dd/MM/yyyy HH:mm'" k-interval="10" class="form-control" k-options="datePickerOptions" style="width: 100%;" disabled required tabindex="2" />
+                            </div>
+                        </div>
+                        
+
+                        <div class="form-group form-actions">
+                            <div class="col-md-offset-4 col-md-8">
+                                <button type="button" class="btn btn-sm yellow-gold" ng-disabled="!KnittingPendingForm.$valid" ng-click="save(data,KnittingPendingForm.$valid);KnittingPendingForm.$submitted=true">Update</button>
+                            </div>
+                        </div>
+
+                    </fieldset>
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+</script>

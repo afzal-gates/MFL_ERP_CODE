@@ -1,0 +1,164 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Hr</a>
+
+    </li>
+    <li>
+        <a href="#">Leave Application Form</a>
+    </li>
+</ul>
+
+
+<div class="portlet box blue-dark">
+
+    <div class="portlet-title">
+        <div class="caption">
+            @*<i class="fa fa-gift"></i>*@ Leave Application Form
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div class="col-md-12" style="padding-top:20px;">
+                <form action="/" method="post">
+                    <fieldset class="custom-fieldset" style="padding-top:2px">
+                        <legend class="custom-legend">
+                            Search For
+                        </legend>
+
+                        <div class="form-group">
+
+                            <label class="col-md-1 control-label text-align-reverse">
+                                Company
+                            </label>
+
+
+                            <div class="col-md-2">
+                                <select class="form-control" ng-model="vm.form.HR_COMPANY_ID" ng-options="item.HR_COMPANY_ID as item.COMP_NAME_EN for item in vm.companyData"></select>
+                            </div>
+
+                            <label class="col-md-1 control-label text-align-reverse">
+                                Year
+                            </label>
+                            <div class="col-md-2">
+                                <select class="form-control" ng-model="vm.form.RF_FISCAL_YEAR_ID" ng-options="item.RF_FISCAL_YEAR_ID as item.FY_NAME_EN for item in vm.FiscalYearData">
+                                    
+                                </select>
+                            </div>
+
+                            <label class="col-md-1 control-label text-align-reverse">
+                                Applicant
+                            </label>
+
+                            <div class="col-md-3">
+                                @*<select kendo-drop-down-list name="HR_EMPLOYEE_ID" class="form-control"
+                                        options="vm.EmployeeDataList" ng-model="vm.form.HR_EMPLOYEE_ID"></select>*@
+
+                                <input type="text" ng-model="vm.form.EMPLOYEE_CODE" placeholder="Search..." typeahead-min-length="3" typeahead-wait-ms="1000" typeahead="item.EMPLOYEE_CODE as item.EMPLOYEE_CODE for item in emoloyeeAuto($viewValue)" typeahead-on-select="onSelectItem($item)" typeahead-loading="loadingLocations" class="form-control">
+                                <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+
+
+                            </div>
+
+                            <div class="col-md-1" align="right">
+                                <div ng-click="vm.loadLeaveBalance(vm.form)" ng-class="vm.form.HR_COMPANY_ID && vm.form.RF_FISCAL_YEAR_ID && vm.form.HR_EMPLOYEE_ID?'btn default yellow-stripe':'btn default yellow-stripe disabled'">
+                                    <i class="fa fa-refresh"></i>
+                                    <span class="hidden-480">
+                                       Load
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div ng-if="vm.showEmployeeInfo">
+
+
+
+                            <div class="form-group">
+
+
+                                <label class="col-md-3 control-label"></label>
+                                <div class="col-md-6">
+                                    <span class="help-block">{{vm.employee.EMP_FULL_NAME_EN}},{{vm.employee.DESIGNATION_NAME_EN}},{{vm.employee.DEPARTMENT_NAME_EN}}</span>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        @*<div class="form-group">
+                            <label class="col-md-4 control-label">
+                                Company
+                            </label>
+                            <div class="col-md-8">
+                                <select class="form-control" ng-model="vm.form.HR_COMPANY_ID" ng-options="item.HR_COMPANY_ID as item.COMP_NAME_EN for item in vm.companyData"></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+
+                            <label class="col-md-4 control-label">
+                                Year
+                            </label>
+                            <div class="col-md-8">
+                                <select class="form-control" ng-model="vm.form.RF_FISCAL_YEAR_ID" ng-options="item.RF_FISCAL_YEAR_ID as item.FY_NAME_EN for item in vm.FiscalYearData"></select>
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label class="col-md-4 control-label">
+                                Applicant
+                            </label>
+
+                            <div class="col-md-8">
+                                <select kendo-drop-down-list name="HR_EMPLOYEE_ID" class="form-control"
+                                        options="vm.EmployeeDataList" ng-model="vm.form.HR_EMPLOYEE_ID" ng-change="vm.onChange(vm.form)"></select>
+                            </div>
+                        </div>
+
+
+                        <div class="form-actions">
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <div ng-click="vm.loadLeaveBalance(vm.form)" ng-class="vm.form.HR_COMPANY_ID && vm.form.RF_FISCAL_YEAR_ID && vm.form.HR_EMPLOYEE_ID?'btn default yellow-stripe':'btn default yellow-stripe disabled'">
+                                        <i class="fa fa-refresh"></i>
+                                        <span class="hidden-480">
+                                            Show Leave Balance
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>*@
+
+
+                    </fieldset>
+                </form>
+
+        </div>
+
+        <div class="col-md-12">
+
+            <div ui-view="data"></div>
+        </div>
+
+
+    </div>
+</div>

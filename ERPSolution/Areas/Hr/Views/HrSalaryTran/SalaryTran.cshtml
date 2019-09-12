@@ -1,0 +1,210 @@
+﻿@*@model ERP.Model.HR_SCHEDULE_HModel*@
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Hr</a>
+
+    </li>
+    <li>
+        <a href="#">Salary Transaction</a>
+    </li>
+</ul>
+
+
+
+@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+<div class="portlet box blue-dark">
+
+    <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+           data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+    <div class="portlet-title">
+        <div class="caption">
+            @*<i class="fa fa-gift"></i>*@ Salary Transaction
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+
+        <div class="row">
+
+            <div class="col-md-12">
+
+                <form name="frmSalaryTran" novalidate class="form-horizontal" method="post" ng-class="{ loading:form.submitting }"
+                      ng-submit="vm.submit(frmSalaryTran.$valid,vm.form,vm.insert)" @*kendo-validator=" validator"*@>
+
+                    <div class="form-body">
+
+
+                        <input type="hidden" class="form-control" name="HR_SAL_TRAN_H_ID" ng-model="vm.form.HR_SAL_TRAN_H_ID" />
+                        @*{{vm.form.HR_SAL_TRAN_H_ID}}*@
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Company</label>
+                            <div class="col-md-5">
+                                <select kendo-drop-down-list id="HR_COMPANY_ID" name="HR_COMPANY_ID" class="form-control" @*ng-disabled="vm.isManagementType!=true"*@
+                                        options="vm.companyList" ng-model="vm.form.HR_COMPANY_ID"></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Pay Period</label>
+                            <div class="col-md-5">
+                                @*{{vm.form.ACC_PAY_PERIOD_ID}}*@
+                                <select kendo-drop-down-list id="ACC_PAY_PERIOD_ID" name="ACC_PAY_PERIOD_ID" class="form-control"
+                                        options="vm.openPeriodListData" ng-model="vm.form.ACC_PAY_PERIOD_ID1"></select>
+                            </div>
+                        </div>
+
+                        <hr style="border-top: 1px solid green;" />
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Employee</label>
+                            <div class="col-md-2">                                
+                                <input type="text" ng-model="vm.form.EMPLOYEE_CODE" placeholder="Search..." @*ng-disabled="vm.isEmployee!=true"*@
+                                       typeahead="item.EMPLOYEE_CODE as item.EMPLOYEE_CODE for item in emoloyeeAuto($viewValue)"
+                                       typeahead-min-length="3" typeahead-wait-ms="1000"
+                                       typeahead-on-select="onSelectItem($item)" typeahead-loading="loadingLocations" class="form-control">
+                                <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+                            </div>                            
+                        </div>
+
+                        <div class="form-group" ng-if="vm.form.EMP_FULL_NAME_EN!=null">
+                            <label class="col-md-2 control-label">&nbsp;</label>
+                            <div class="col-md-8" style="width:auto;">
+                                <span class="form-control" style="background-color: hsl(0, 0%, 93%)">{{vm.form.EMP_FULL_NAME_EN}}&nbsp;</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="!vm.isNext">
+                            <label class="control-label col-md-2">&nbsp;</label>
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-default" ng-click="vm.next()">Next</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="vm.isNext">
+                            <label class="control-label col-md-2">Period Days</label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" name="PERIOD_DAYS" ng-model="vm.form.PERIOD_DAYS" ng-disabled="true" />
+                            </div>
+                        </div>
+
+                        @*<div class="form-group">
+                            <label class="control-label col-md-3">Present Days</label>
+                            <div class="col-md-1">
+                                <input type="text" class="form-control" name="PRE_DAYS" ng-model="vm.form.PRE_DAYS" ng-disabled="true" />
+                            </div>
+                        </div>*@
+
+
+                        <div class="form-group" ng-if="vm.isNext">
+                            <label class="control-label col-md-2">Absent Days</label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" name="ABS_DAYS" ng-model="vm.form.ABS_DAYS" ng-disabled="true" />
+                            </div>
+                        </div>
+
+                        @*<div class="form-group">
+                            <label class="control-label col-md-3">Leave Days</label>
+                            <div class="col-md-1">
+                                <input type="text" class="form-control" name="LEAVE_DAYS" ng-model="vm.form.LEAVE_DAYS" ng-disabled="true" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Holidays</label>
+                            <div class="col-md-1">
+                                <input type="text" class="form-control" name="HOLI_DAYS" ng-model="vm.form.HOLI_DAYS" ng-disabled="true" />
+                            </div>
+                        </div>*@
+                                                
+                        <div class="form-group" ng-if="!vm.isAddAnother && vm.isNext">
+                            <label class="control-label col-md-2">Pay Element</label>
+                            <div class="col-md-4">
+                                <button type="button" class="btn btn-default" ng-click="vm.addAnotherEmpPayElement()">Add More...</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="vm.isAddAnother">
+                            <label class="control-label col-md-2">
+                                Pay Element
+                                @*<span class="required" aria-required="true">*</span>*@
+                            </label>
+                            <div class="col-md-4">
+                                <select kendo-drop-down-list id="HR_PAY_ELEMENT_ID" name="HR_PAY_ELEMENT_ID" class="form-control"
+                                        options="vm.payElementData" ng-model="vm.form.HR_PAY_ELEMENT_ID"></select>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" class="btn btn-default" ng-click="vm.addEmpPayElement()">Add</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="vm.isNext">
+                            <label class="control-label col-md-2">&nbsp;</label>
+                            <div class="col-md-4">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" name="IS_SAL_OFF" ng-model="vm.form.IS_SAL_OFF" ng-true-value="'Y'" ng-false-value="'N'">Salary Off?
+                                </label>
+                            </div>
+                        </div>
+                        @*{{vm.form.IS_SAL_OFF}}*@
+                        <div class="form-group" ng-if="vm.isNext">
+                            <label class="control-label col-md-2">&nbsp;</label>
+                            <div class="col-md-4">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" name="IS_ADV_DED_OFF" ng-model="vm.form.IS_ADV_DED_OFF" ng-true-value="'Y'" ng-false-value="'N'">Advance Deduction Off?
+                                </label>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group" ng-show="vm.isNext">                            
+                            <div class="col-md-12 col-md-offset-0">
+                                <div id="salaryTranGrid" kendo-grid></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-show="vm.isNext">
+                            <div class="col-md-9 col-md-offset-2">
+                                <button type="submit" class="btn green" @*ng-if="vm.isInsert"*@><i class="fa fa-check"></i> Save</button>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </form>
+
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+

@@ -1,0 +1,308 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Hr</a>
+
+    </li>
+    <li>
+        <a href="#">Designation Group</a>
+    </li>
+</ul>
+
+@model ERP.Model.HrDesigGroupModel
+
+@{
+    ViewBag.Title = "Designation Group";
+}
+
+<div class="portlet box blue-dark" ng-controller="DesigGroupController as vm">
+
+    <div class="portlet-title">
+        <div class="caption">
+            @*<i class="fa fa-gift"></i>*@ Designation Group Information
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+            </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">*@
+            </a>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <div class="row">
+
+            <div class="col-md-3  portlet light" style="border: 1px solid gray; margin-left: 20px;">
+                <p style="color:green">Please select a node for transection</p>
+                <div kendo-tree-view k-options="vm.thingsOptions"
+                     k-on-change="selectedItem = dataItem" k-ng-delay="vm.thingsOptions.dataSource">
+                </div>
+
+            </div>
+            <div class="col-md-7">
+                <form id="frmDesigGroup" name="frmDesigGroup" action="/Hr/Admin/HrDesigGroup/Save" method="post" class="form-horizontal" kendo-validator="validator">
+
+                    <div class="form-body">
+
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Action Mode</label>
+                            <div class="radio-list" >
+                                <div class="col-md-9">
+                                    <label class="radio-inline"><input type="radio" name="TranMode" id="NewMode" value="1" ng-init="TranMode=1" ng-model="TranMode">New</label>
+                                    <label class="radio-inline"><input type="radio" name="TranMode" id="EditMode" value="2" ng-model="TranMode">Edit</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="TranMode==1">
+                            <label class="control-label col-md-3">
+                                Parent Group
+                            </label>
+                            <div class="col-md-9">
+                                <input type="hidden" name="PARENT_ID" value="{{selectedItem.HR_DESIGNATION_GRP_ID}}" required data-required-msg="Please select parent group" />
+                                <input type="text" class="form-control" name="PARENT_NAME" value="{{selectedItem.text}}" disabled />
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="TranMode==2">
+                            <label class="control-label col-md-3">
+                                Parent Group
+                            </label>
+                            <div class="col-md-9">
+                                <input type="hidden" name="PARENT_ID" value="{{selectedItem.PARENT_ID}}" />
+                                <input type="hidden" name="HR_DESIGNATION_GRP_ID" value="{{selectedItem.HR_DESIGNATION_GRP_ID}}" />
+                                <input type="text" class="form-control" name="PARENT_NAME" value="{{selectedItem.PARENT_NAME}}" disabled />
+                            </div>
+                        </div>
+
+                        @*<div class="form-group">
+                    <label class="control-label col-md-3">
+                        Sub Module
+                    </label>
+                    <div class="col-md-6">
+                        <select id="subModuleId" name="subModuleId" kendo-drop-down-list k-options="vm.subModuleList" required data-required-msg="Please select sub module"></select>
+                    </div>
+                </div>*@
+
+                        <div class="form-group" ng-if="TranMode==1">
+                            <label class="control-label col-md-3">
+                                Group Name [E]
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-9">
+                                <input type="text" id="DESIG_GRP_NAME_EN" name="DESIG_GRP_NAME_EN" class="form-control" required data-required-msg="Please input group name [E]"></input>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="TranMode==2">
+                            <label class="control-label col-md-3">
+                                Group Name [E]
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-9">
+                                <input type="text" id="DESIG_GRP_NAME_EN" name="DESIG_GRP_NAME_EN" class="form-control" value="{{selectedItem.DESIG_GRP_NAME_EN}}" required data-required-msg="Please input group name [E]"></input>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="TranMode==1">
+                            <label class="control-label col-md-3">
+                                Group Name [B]
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-9">
+                                <input type="text" id="DESIG_GRP_NAME_BN" name="DESIG_GRP_NAME_BN" class="form-control banglafont" required data-required-msg="Please input group name [B]"></input>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="TranMode==2">
+                            <label class="control-label col-md-3">
+                                Group Name [B]
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-9">
+                                <input type="text" id="DESIG_GRP_NAME_BN" name="DESIG_GRP_NAME_BN" class="form-control banglafont" value="{{selectedItem.DESIG_GRP_NAME_BN}}" required data-required-msg="Please input group name [B]"></input>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="TranMode==1">
+                            <label class="control-label col-md-3">
+                                Short Name
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-9">
+                                <input type="text" id="DESIG_GRP_SNAME" name="DESIG_GRP_SNAME" class="form-control" required data-required-msg="Please input group short name"></input>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="TranMode==2">
+                            <label class="control-label col-md-3">
+                                Short Name
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-9">
+                                <input type="text" id="DESIG_GRP_SNAME" name="DESIG_GRP_SNAME" class="form-control" value="{{selectedItem.DESIG_GRP_SNAME}}" required data-required-msg="Please input group short name"></input>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group" ng-if="TranMode==1">
+                            <label class="control-label col-md-3">
+                                Group Level
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" id="DESIG_GRP_LEVEL" name="DESIG_GRP_LEVEL" class="form-control" value="{{selectedItem.DESIG_GRP_LEVEL + 1}}" readonly required data-required-msg="Please insert group level"></input>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="TranMode==2">
+                            <label class="control-label col-md-3">
+                                Group Level
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" id="DESIG_GRP_LEVEL" name="DESIG_GRP_LEVEL" class="form-control" value="{{selectedItem.DESIG_GRP_LEVEL}}" disabled></input>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group" ng-if="TranMode==1">
+                            <label class="control-label col-md-3">
+                                Group Order
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-4">
+                                <input type="number" id="DSG_GRP_ORDER" name="DSG_GRP_ORDER" class="form-control"  required data-required-msg="Please insert display order"></input>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="TranMode==2">
+                            <label class="control-label col-md-3">
+                                Group Order
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-4">
+                                <input type="number" id="DSG_GRP_ORDER" name="DSG_GRP_ORDER" class="form-control" value="{{selectedItem.DSG_GRP_ORDER}}" required data-required-msg="Please insert display order"></input>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group" ng-if="TranMode==1">
+                            <label class="control-label col-md-3">                                
+                            </label>
+                            <div class="col-md-7">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" name="IS_LEAF" />
+                                    Leaf?
+                                </label>
+                                <span class="k-invalid-msg" data-for="IS_LEAF"></span>
+                            </div>
+                            
+                        </div>
+                        <div class="form-group" ng-if="TranMode==2">
+                            <label class="control-label col-md-3">                                
+                            </label>
+                            <div class="col-md-7">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" name="IS_LEAF" checked ng-if="selectedItem.IS_LEAF=='Y'" />
+                                    <input type="checkbox" name="IS_LEAF" ng-if="selectedItem.IS_LEAF=='N'" />
+                                    <input type="checkbox" name="IS_LEAF" ng-if="selectedItem==null" />
+                                    Leaf?
+                                </label>
+                            </div>
+                            
+                        </div>
+
+                        <div class="form-group" ng-if="TranMode==1">
+                            <label class="control-label col-md-3">                                
+                            </label>
+                            <div class="col-md-7">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" name="IS_ACTIVE" checked required data-required-msg="Please checked IsActive" />
+                                    Active?
+                                </label>
+                                <span class="k-invalid-msg" data-for="IS_ACTIVE"></span>
+                            </div>
+                            
+                        </div>
+                        <div class="form-group" ng-if="TranMode==2">
+                            <label class="control-label col-md-3">                                
+                            </label>
+                            <div class="col-md-7">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" name="IS_ACTIVE" checked ng-if="selectedItem.IS_ACTIVE=='Y'" />
+                                    <input type="checkbox" name="IS_ACTIVE" ng-if="selectedItem.IS_ACTIVE=='N'" />
+                                    <input type="checkbox" name="IS_ACTIVE" ng-if="selectedItem==null" />
+                                    Active?
+                                </label>
+                            </div>
+                            
+                        </div>
+
+
+
+
+                        <div class="form-actions" ng-if="TranMode==1">
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-6">
+                                    <button type="submit" class="btn green" ng-if="selectedItem.IS_LEAF=='N'"><i class=" fa fa-check"></i> Save</button>
+                                    <button type="submit" class="btn green" ng-if="selectedItem.IS_LEAF=='Y'" disabled><i class=" fa fa-check"></i> Save</button>
+                                    <button type="submit" class="btn green" ng-if="selectedItem==null" disabled><i class=" fa fa-check"></i> Save</button>
+                                    <button type="reset" class="btn blue">Cancel</button>
+                                    @*<a href="@Url.Action("Index","LookupTables")" class="btn default">Back</a>*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-actions" ng-if="TranMode==2">
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-6">
+                                    <button type="submit" class="btn yellow" ng-if="selectedItem!=null"><i class="fa fa-check"></i> Update</button>
+                                    <button type="submit" class="btn yellow" ng-if="selectedItem==null" disabled><i class="fa fa-check"></i> Update</button>
+                                    <button type="reset" class="btn blue">Cancel</button>
+                                    @*<a href="@Url.Action("Index","LookupTables")" class="btn default">Back</a>*@
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+
+
+                    @*<div class="form-group">
+                <div class="col-md-4">
+                    <div ng-show="selectedItem">
+                        <h4>Selected: {{selectedItem.HR_DEPARTMENT_ID}}</h4>
+                        <button class="k-button" ng-click="addAfter(selectedItem)">Add item below</button>
+                        <button class="k-button" ng-click="addBelow(selectedItem)">Add child item</button>
+                        <button class="k-button" ng-click="remove(selectedItem)">Delete</button>
+                    </div>
+                </div>
+            </div>*@
+                </form>
+
+            </div>
+
+
+        </div>
+
+
+
+
+
+
+        @*<div style="border:1px solid green" class="col-md-8">*@
+
+    </div>
+</div>
+
+
+
+
+<style scoped>
+    .k-treeview .k-in {
+        padding: 5px;
+    }
+</style>
+
+
+

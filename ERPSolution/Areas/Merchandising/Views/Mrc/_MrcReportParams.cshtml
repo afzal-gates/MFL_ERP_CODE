@@ -1,0 +1,233 @@
+﻿@*@model ERP.Model.HR_SCHEDULE_HModel*@
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising Reports</a>
+    </li>
+</ul>
+
+
+<div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+    <div class="page-splash">
+        <div class="page-splash-message">
+            <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+        </div>
+    </div>
+</div>
+
+
+<div class="portlet box blue-dark" @*ng-controller="HrReportController as vm"*@>
+    
+    
+    <div class="portlet-title">
+        <div class="caption">
+            @*<i class="fa fa-gift"></i>*@ Merchandising Reports
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <form class="form-horizontal form-body" >           
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="col-md-offset-0 col-md-10">
+                        <p></p>
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend">Selection of Parameters</legend>
+         
+
+                            <p></p>
+                            <div class="col-md-6" style="padding-left:5px;">
+                                <fieldset class=" custom-fieldset">
+                                    <div class="radio-list" @*ng-if="vm.LOGIN_ID!='adminhr'"*@>                                       
+                                        <label class="radio" style="padding-left:30px;" ng-repeat="itm in vm.rptList">                                            
+                                            <input type="radio" name="RPT_CODE" ng-model="itm.RPT_CODE" value="{{vm.rptList[0].RPT_CODE}}" ng-click="vm.rptOnChange(itm,$index)">{{itm.RPT_NAME_EN}}
+                                        </label>
+                                    </div>                                      
+                                </fieldset>
+                            </div>
+
+
+                            @*{{vm.loginUserID}}*@
+                            <div class="col-md-6">
+                                <input type="hidden" name="REPORT_CODE" ng-model="vm.form.REPORT_CODE" ng-init="vm.form.REPORT_CODE=vm.rptList[0].RPT_CODE" />
+
+                                <div class="form-group" ng-if="vm.isByrAcc==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Buyer A/C</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="MC_BYR_ACC_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                                k-options="vm.buyerAcList" ng-model="vm.form.MC_BYR_ACC_ID"
+                                                k-data-text-field="'BYR_ACC_NAME_EN'" k-data-value-field="'MC_BYR_ACC_ID'"
+                                                k-auto-bind="'true'" ></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.isStyle==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Style#</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="MC_STYLE_H_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                                k-options="vm.styleOption" k-data-source="vm.styleDataSource" ng-model="vm.form.MC_STYLE_H_ID"
+                                                k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_STYLE_H_ID'"
+                                                k-auto-bind="'true'"></select>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="form-group" ng-if="vm.isOrder==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Work Style/Order#</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="MC_STYLE_H_EXT_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                                k-template="vm.styleExtTemplate" k-value-template="vm.styleExtValueTemplate"
+                                                k-options="vm.styleExtOption" k-data-source="vm.styleExtDataSource" ng-model="vm.form.MC_STYLE_H_EXT_ID"
+                                                k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_STYLE_H_EXT_ID'"
+                                                k-auto-bind="'true'"></select>
+
+                                        @*<select kendo-drop-down-list name="MC_STYLE_H_EXT_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                                k-options="vm.styleExtOption" k-data-source="vm.styleExtDataSource" ng-model="vm.form.MC_STYLE_H_EXT_ID"                                                
+                                                k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_STYLE_H_EXT_ID'"
+                                                k-auto-bind="'true'"></select>*@
+                                    </div>
+                                </div>
+
+                                
+                                <div class="form-group" ng-if="vm.isBulkBooking==true">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px">Work Style/Order#</label>
+                                    <div class="col-md-8" style="padding-right:10px;">
+                                        <select kendo-drop-down-list name="MC_BLK_FAB_REQ_H_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                                k-options="vm.bulkBookingOption" k-data-source="vm.bulkBookingDataSource" ng-model="vm.form.MC_BLK_FAB_REQ_H_ID"
+                                                k-template="vm.bulkBookingTemplate" k-value-template="vm.bulkBookingValueTemplate"
+                                                k-data-text-field="'WORK_STYLE_NO_LST'" k-data-value-field="'MC_BLK_FAB_REQ_H_ID'"
+                                                k-auto-bind="'true'"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-show="vm.isDeptList==true">
+                                    <label for="selectPeriod" class="col-md-4 control-label">Resp. Dept</label>
+                                    <div class="col-md-8" style="padding-top:5px;">
+                                        <select class="form-control" kendo-drop-down-list name="HR_DEPARTMENT_ID" k-option-label="'-- Select Department --'"
+                                                k-data-text-field="'DEPARTMENT_NAME_EN'" k-data-value-field="'HR_DEPARTMENT_ID'"
+                                                k-auto-bind="'true'" k-data-source="vm.DeptListDs" ng-model="vm.form.HR_DEPARTMENT_ID" k-filter="'contains'"></select>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-show="vm.isMonth==true">
+                                    <label for="selectPeriod" class="col-md-4 control-label">Month</label>
+                                    <div class="col-md-8" style="padding-top:5px;">
+                                        <input type="text" class="form-control" datepicker-popup="MMM/yyyy" ng-click="FROM_MONTH_OPEN($event)" datepicker-options="{minMode: 'month', timezone: 'utc'}"
+                                               name="FROM_MONTH" ng-model="vm.form.FROM_MONTH" datepicker-mode="'month'" is-open="FROM_MONTH_OPENED"
+                                               required close-text="Close" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-show="vm.isFormDate==true">
+                                    <label class="control-label col-md-4" style="padding-right:0px">
+                                        From Date
+                                    </label>
+                                    <div class="col-md-6 input-group">
+                                        <input type="text" class="form-control" name="FROM_DATE" ng-model="vm.form.FROM_DATE" value="{{vm.form.FROM_DATE}}"
+                                               style="padding-right:0px;"
+                                               datepicker-popup="{{vm.dtFormat}}" is-open="vm.fromDateOpened"
+                                               max-date="vm.today"
+                                               datepicker-options="vm.dateOptions" close-text="Close" />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn-calendar" ng-click="vm.fromDateOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="form-group" ng-show="vm.isToDate==true">
+                                    <label class="control-label col-md-4" style="padding-right:0px">
+                                        To Date
+                                    </label>
+                                    <div class="col-md-6 input-group">
+                                        <input type="text" class="form-control" name="TO_DATE" ng-model="vm.form.TO_DATE"
+                                               style="padding-right:0px;"
+                                               datepicker-popup="{{vm.dtFormat}}" is-open="vm.toDateOpened"
+                                               max-date="vm.today"
+                                               datepicker-options="vm.dateOptions" close-text="Close" />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn-calendar" ng-click="vm.toDateOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label"></label>
+                                    <div class="col-md-6">
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="IS_EXCEL_FORMAT" ng-model="vm.form.IS_EXCEL_FORMAT" ng-true-value="'Y'" ng-false-value="'N'" value="{{vm.form.IS_EXCEL_FORMAT}}" />Export to Excel?
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <p>&nbsp;</p>
+                                <div class="form-group">
+                                    <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px"></label>
+                                    <div class="col-md-8" style="padding-right:0px;">
+                                        <button type="button" class="btn btn-sm blue" ng-click="vm.preview()"><i class="fa fa-file-text-o"></i> Preview</button>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <p>&nbsp;</p>
+                        </fieldset>
+                        <p>&nbsp;</p>
+
+                    </div>
+                    <div class="col-md-4">
+                    </div>
+
+                </div>
+
+            </div>
+        </form>
+
+        @*<div class="form-group">
+            <label class="control-label col-md-4" style="padding-left: 0px; padding-right: 0px"></label>
+            <div class="col-md-8" style="padding-right:0px;">
+                <button type="submit" class="btn btn-default" ng-click="vm.readTemplate()"><i class="fa fa-file-text-o"></i> Preview</button>
+            </div>
+        </div>*@
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+

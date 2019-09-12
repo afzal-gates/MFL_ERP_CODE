@@ -1,0 +1,122 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Commercial</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        <input id="access_token" data-ng-model="token" type="hidden"
+               data-ng-init="token='@Session["access_token"]'" />
+        <input ng-model="vm.form.CREATED_BY" type="hidden"
+               data-ng-init="vm.form.CREATED_BY='@Session["multiScUserId"]'" />
+
+        <input id="access_token" ng-model="vm.form.LAST_UPDATED_BY" type="hidden"
+               ng-init="vm.form.LAST_UPDATED_BY='@Session["multiScUserId"]'" />
+
+        <div class="row" style="padding:5px">
+            <div class="col-md-1">
+                <a ui-sref="LcUD({pCM_UD_H_ID : 0, pREVISE:0})" class="btn btn-sm blue">
+                    <i class="fa fa-plus"></i> Add New
+                </a>
+            </div>
+        </div>
+
+        <div style="padding:5px;">
+
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend"><b>Searching Data</b></legend>
+                <table class="clsTable">
+                    <thead class="clsthead">
+                        <tr>
+                            <th class="clstd">
+                                <span aria-required="true" class="required"></span>
+                                Import L/C No
+                            </th>
+                            <th class="clstd">
+                                <span aria-required="true" class="required"></span>
+                                Issue Date
+                            </th>
+                            <th class="clstd">
+                                <span aria-required="true" class="required"></span>
+                                Exp. LC/PI No
+                            </th>
+                            <th class="clstd">
+                                <span aria-required="true" class="required"></span>
+                                Company
+                            </th>
+                            <th class="clstd">
+                                <span aria-required="true" class="required"></span>
+                                Supplier
+                            </th>
+                            <th class="clstd">
+                                <span aria-required="true" class="required"></span>
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="clstr">
+                            <td class="clstd">
+                                <input type="text" name="IMP_LC_NO" ng-model="vm.form.IMP_LC_NO" class="form-control" />
+                            </td>
+                            <td class="clstd">
+                                <input type="text" class="form-control" ng-click="ISSUE_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                       name="ISSUE_DT" max-date="vm.today" ng-model="vm.form.ISSUE_DT" is-open="ISSUE_DT_LNopened"
+                                       datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+                            </td>
+                            <td class="clstd">
+                                <input type="text" name="LC_PI_NO" ng-model="vm.form.LC_PI_NO" class="form-control" />
+                            </td>
+
+                            <td class="clstd">
+
+                                <select kendo-drop-down-list name="HR_COMPANY_ID" class="form-control"
+                                        options="vm.companyList" ng-model="vm.form.HR_COMPANY_ID"></select>
+                            </td>
+
+                            <td class="clstd">
+                                <select class="form-control required" kendo-drop-down-list name="SCM_SUPPLIER_ID" id="SCM_SUPPLIER_ID"
+                                        k-option-label="'-- Select Supplier --'"
+                                        k-data-text-field="'SUP_TRD_NAME_EN'" k-data-value-field="'SCM_SUPPLIER_ID'"
+                                        k-auto-bind="'true'" k-data-source="vm.supplierList" k-ng-delay="vm.supplierList" k-filter="'contains'"
+                                        ng-model="vm.form.SCM_SUPPLIER_ID" k-on-change="vm.getSupplierInfo(kendoEvent);"></select>
+                            </td>
+
+                            <td class="clstd">
+                                <button type="button" class="btn btn-sm default" ng-click="vm.searchData()">Search</button>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+            <kendo-grid id="grid" k-options="vm.gridOptions" k-data-source="vm.gridOptionsDS"></kendo-grid>
+        </div>
+    </div>
+</div>

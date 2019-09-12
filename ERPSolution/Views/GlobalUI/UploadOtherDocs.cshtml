@@ -1,0 +1,203 @@
+﻿@{
+    Layout = "";
+}
+
+@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+<input id="access_token" data-ng-model="token" type="hidden"
+       data-ng-init="token='@Session["access_token"]'" />
+
+<input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+       data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+<div class="modal-body">
+    <div class="portlet grey-cascade box">
+        <div class="portlet-title">
+            <div>
+                <h3 style="padding-top:0px;">
+                    Upload Documents
+                    <span class="pull-right"><i class="fa fa-times red" style="cursor:pointer" ng-click="vm.cancel(vm.form)"></i></span>
+                </h3>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <form class="form-horizontal" role="form" name="BrandEntry" novalidate>
+
+                <div class="form-body clearfix">
+                    <div class="row" style="margin:auto;padding-top:10px;">
+
+
+                        <input id="access_token" data-ng-model="token" type="hidden"
+                               data-ng-init="token='@Session["access_token"]'" />
+
+
+                        <fieldset class="custom-fieldset col-md-4">
+                            <legend class="custom-legend">Search</legend>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">Buyer A/C</label>
+                                    <select kendo-drop-down-list name="MC_BYR_ACC_ID" id="MC_BYR_ACC_ID" class="form-control"
+                                            options="vm.searchBuyerAccList" ng-model="vm.search.MC_BYR_ACC_ID" @*ng-change="vm.styleListByBuyerAC(vm.form.MC_BYR_ACC_ID);"*@></select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">Style/Order</label>
+                                    <select class="form-control" kendo-drop-down-list name="MC_STYLE_H_EXT_ID" k-option-label="'-- Select Order --'"
+                                            k-template="vm.styleExtTemplate" k-value-template="vm.styleExtValueTemplate"
+                                            k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_STYLE_H_EXT_ID'" k-filter="'contains'"
+                                            k-auto-bind="'true'" k-options="vm.searchStyleExtOption" k-data-source="vm.searchStyleExtDataSource" @*k-ng-delay="vm.styleExtDataSource"*@
+                                            ng-model="vm.search.MC_STYLE_H_EXT_ID"
+                                            @*k-on-change="vm.getDataByStyleId(kendoEvent)"*@></select>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">Search Tag</label>
+                                    <input type="text" class="form-control" name="DOC_REF_NO" ng-model="vm.search.DOC_REF_NO" />
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-sm blue" ng-click="vm.searchUploadedDoc()">Search</button>
+                                </div>
+                            </div>
+
+                            
+                        </fieldset>
+
+                        
+                        <fieldset class="custom-fieldset col-md-7" ng-disabled="vm.pageAccess.IS_ONLY_VIEW=='Y'" @*ng-class="{'disabled': vm.pageAccess.IS_ONLY_VIEW=='Y'}"*@>
+                            <legend class="custom-legend">Upload Info</legend>
+
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Doc Type<span class="required" aria-required="true">*</span></label>
+                                <div class="col-md-8">
+                                    <select kendo-drop-down-list name="LK_DOC_TYPE_ID" id="LK_DOC_TYPE_ID" class="form-control"
+                                            options="vm.docTypeList" ng-model="vm.form.LK_DOC_TYPE_ID" @*ng-change="vm.styleListByBuyerAC(vm.form.MC_BYR_ACC_ID);"*@ required></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Buyer A/C</label>
+                                <div class="col-md-8">
+                                    <select kendo-drop-down-list name="MC_BYR_ACC_ID" id="MC_BYR_ACC_ID" class="form-control"
+                                            options="vm.buyerAccList" ng-model="vm.form.MC_BYR_ACC_ID" @*ng-change="vm.styleListByBuyerAC(vm.form.MC_BYR_ACC_ID);"*@></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Style/Order</label>
+                                <div class="col-md-8">
+                                    <select class="form-control" kendo-drop-down-list name="MC_STYLE_H_EXT_ID" k-option-label="'-- Select Order --'"
+                                            k-template="vm.styleExtTemplate" k-value-template="vm.styleExtValueTemplate"
+                                            k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_STYLE_H_EXT_ID'" k-filter="'contains'"
+                                            k-auto-bind="'true'" k-options="vm.styleExtOption" k-data-source="vm.styleExtDataSource" @*k-ng-delay="vm.styleExtDataSource"*@ ng-model="vm.form.MC_STYLE_H_EXT_ID"
+                                            @*k-on-change="vm.getDataByStyleId(kendoEvent)"*@></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Search Tag<span class="required" aria-required="true">*</span></label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" name="DOC_REF_NO" ng-model="vm.form.DOC_REF_NO" required />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Description<span class="required" aria-required="true">*</span></label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" name="DOC_DESC" ng-model="vm.form.DOC_DESC" required />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Attach</label>
+                                <div class="col-md-8">
+                                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                                        <div class="input-group">
+                                            <div class="form-control uneditable-input span3" data-trigger="fileinput" style="padding-top: 0px;padding-bottom: 0px;height: 26px;">
+                                                <i class="fa fa-file fileinput-exists"></i>&nbsp; <span class="fileinput-filename"></span>
+                                            </div>
+                                            <span class="input-group-addon btn default btn-file" style="padding-bottom: 0px;padding-top: 0px;">
+                                                <span class="fileinput-new btn-circle">
+                                                    <i class="fa fa-paperclip"></i>
+                                                </span>
+                                                <span class="fileinput-exists">
+                                                    <i class="fa fa-exchange"></i>
+                                                </span>
+                                                <input type="hidden" value="" name="..." /><input type="file" name="" accept="image/*,application/pdf" data-ak-file-model="vm.file.ATT_FILE" />
+                                            </span>
+                                            @*<a class="input-group-addon btn green fileinput-exists" data-dismiss="fileinput" ng-click="vm.addToGrid(vm.file)" ng-disabled="!vm.form.DOC_REF_NO">
+                                <i class="fa fa-plus"></i>
+                            </a>*@
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3">&nbsp;</label>
+                                <div class="col-md-8">
+                                    <button type="button" class="btn btn-sm blue fileinput-exists" ng-click="vm.submitData(vm.form)" ng-disabled="(!vm.form.DOC_REF_NO||!vm.form.DOC_DESC||!vm.form.LK_DOC_TYPE_ID)">Upload</button>
+                                </div>
+                                @*<a class="input-group-addon btn green fileinput-exists" data-dismiss="fileinput" ng-click="vm.addToGrid(vm.file)" ng-disabled="!vm.form.DOC_REF_NO">
+                    <i class="fa fa-plus"></i>
+                </a>*@
+                            </div>
+
+                            @*<div class="form-group">
+                <div class="col-md-12">
+                    <kendo-grid k-options="vm.docGridOption" k-data-source="vm.docGridDataSource"></kendo-grid>
+                </div>
+            </div>*@
+
+                            @*<div class="form-group">
+                <div class="col-md-12">
+
+                    <button type="button" class="btn btn-sm green" ng-click="vm.submitData(vm.form)">
+                        Upload
+                    </button>
+                    <button type="button" class="btn btn-sm blue" ng-click="vm.cancelToGrid()">Cancel</button>
+
+                </div>
+            </div>*@
+
+                        </fieldset>
+
+                        <fieldset class="custom-fieldset col-md-12">
+                            <legend class="custom-legend">Uploaded File</legend>
+                            <kendo-grid k-options="vm.docGridOption" k-data-source="vm.docGridDataSource"></kendo-grid>
+                        </fieldset>
+                        
+                       
+                   
+                    <div class="row" style="margin:auto;padding-top:10px;" ng-if="vm.errors.length>0">
+                        <div class="alert alert-warning" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                            <ul ng-repeat="field in vm.errors">
+                                <li ng-repeat="error in field" ng-bind="error"></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,151 @@
+﻿@model IEnumerable<ERP.Model.HrDesigModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $('#datatbl').dataTable({
+            "bPaginate": true,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": true,
+            "bAutoWidth": true
+        })
+    });
+</script>
+
+<div class="portlet box blue-dark" ng-controller="DesigController as vm">
+    <div class="portlet-title">
+        <div class="caption">
+            @*<i class="fa fa-gift"></i>*@Designation Information
+        </div>
+        @*<div class="tools">
+                <a href="javascript:;" class="collapse">
+                </a>
+                <a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>
+                <a href="javascript:;" class="remove">
+                </a>
+            </div>*@
+    </div>
+    <div class="portlet-body">
+
+        <div class="row">
+            
+            <div class="col-md-12">
+                <div class="form-body">
+
+                    <div class="form-group">                        
+                        <div class="col-md-12">                            
+                        </div>                        
+                    </div>
+                    
+                    <div class="form-group">
+                        @*<label class="control-label col-md-1">
+                            Department
+                        </label>*@
+                        <div style="float:left">Department</div>
+                        <div class="col-md-6">
+                            <select kendo-drop-down-list name="HR_DEPARTMENT_ID" options="vm.departmentList" ng-model="HR_DEPARTMENT_ID"
+                                    class="form-control" ng-change="OnChangeHR_DEPARTMENT_ID()" required data-required-msg="Please select department"></select>
+                        </div>
+                        @*<input type="submit" class="btn yellow-gold" value="Show" ng-click="ShowDesignationListTable()" />*@
+
+                        @*{{HR_DEPARTMENT_ID}}*@
+                        <a class="btn yellow-gold" href="/Admin/HrDesignation/DesignationListData?pShowDepartment={{HR_DEPARTMENT_ID}}&pType=1">Show</a>
+                        <a class="btn green" href="/Admin/HrDesignation/AddNew"><i class="fa fa-plus"></i> Add New</a>
+                        @*<button type="button" class="btn green" ng-click="TranAddNew()"><i class="fa fa-plus"></i> Add New</button>*@
+                    </div>  
+                    
+                    
+                    
+                    <p>&nbsp;</p>
+
+
+                    <table id="datatbl" class="table table-bordered table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Code
+                                </th>
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Designation Group
+                                </th>
+                                <th>
+                                    Management Type
+                                </th>
+                                <th>
+                                    Active?
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr class="odd gradex">
+                                    <td>
+                                        @Html.ActionLink(item.DESIGNATION_CODE, "Edit", new { Id = item.HR_DESIGNATION_ID })
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DESIGNATION_NAME_EN)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DESIG_GRP_NAME_EN)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.MNG_TYPE_NAME_EN)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.IS_ACTIVE)
+                                    </td>
+
+                                    <td>
+
+                                        <a href="@Url.Action("Edit", "HrDesignation", new { id = item.HR_DESIGNATION_ID })" title="Edit"><i class='fa fa-edit'></i></a> &nbsp;
+                                        @*<a class="fa fa-edit" data-toggle="modal" href="#responsive"></a>*@
+
+
+                                        @*@Html.ActionLink("Add Table Data", "LookupDataIndex", new { Id = item.LOOKUP_TABLE_ID }, new { @class = "ui tiny button" })*@
+                                        @*<a href="@Url.Action("LookupDataIndex", "LookupTables", new { id = item.LOOKUP_TABLE_ID })" title="Table Data"><i class='fa fa-external-link-square'></i></a>*@
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>                 
+
+                </div>
+
+                <p></p>
+
+                
+                                
+
+            </div>
+                @*<div style="border:1px solid green" class="col-md-8">*@            
+        </div>
+
+        @*<p>
+            <div id="grid" style="margin-left:10px;"></div>
+        </p>*@
+
+    </div>
+            
+</div>
+
+

@@ -1,0 +1,626 @@
+﻿
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Inventory</a>
+
+    </li>
+    <li>
+        <a href="#">Item List</a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+
+        @*<form class="form-horizontal" role="form" name="BuyerForm" novalidate ng-submit="vm.submitBuyerData(vm.form,token)">*@
+
+        <div class="form-body clearfix">
+            <div class="row" style="margin: auto; padding-left: 0px; padding-right: 0px;">
+
+                <div class="col-md-3" style="padding-left:0px;padding-right:0px;">
+
+                    @*<p style="color:green">Please select Category</p>*@
+                    <div id="ItemCategTreeview" kendo-tree-view k-options="vm.thingsOptions"
+                         style="height:300px;overflow:scroll;"
+                         k-on-change="selectedItem = dataItem"
+                         k-ng-delay="vm.thingsOptions.dataSource">
+                    </div>
+
+                    <br />
+                    <kendo-grid k-options="vm.gridOptions" id="itemGrid"></kendo-grid>
+
+                </div>
+
+                <div class="col-md-9">
+
+                    <form class="form-horizontal" role="form" name="frmItem" novalidate ng-submit="vm.submitData(vm.form,token)">
+
+                        <input ng-model="vm.CREATED_BY" type="hidden"
+                               data-ng-init="vm.CREATED_BY='@Session["multiScUserId"]'" />
+
+                        <input id="access_token" ng-model="vm.LAST_UPDATED_BY" type="hidden"
+                               ng-init="vm.LAST_UPDATED_BY='@Session["multiScUserId"]'" />
+
+                        <div class="form-body clearfix" style="padding-top:0px;">
+
+                            <div class="row">
+                                <div class="col-md-7" style="padding-left:0px;">
+                                    <fieldset class="custom-fieldset">
+                                        <legend class="custom-legend">Key Information</legend>
+
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                Item Code
+                                            </label>
+                                            <div class="col-md-4">
+                                                <input type="text" name="ITEM_CODE" ng-model="vm.form.ITEM_CODE" class="form-control" ng-disabled="true" />
+                                            </div>
+                                        </div>
+
+                                        @*<div class="form-group">
+                                                <label class="col-md-4 control-label">
+                                                    Bar Code
+                                                </label>
+                                                <div class="col-md-6">
+                                                    <input type="text" name="BAR_CODE" ng-model="vm.form.BAR_CODE" class="form-control" />
+                                                </div>
+                                            </div>*@
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                Name (En)
+                                                <span aria-required="true" class="required">*</span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                <input type="text" name="ITEM_NAME_EN" ng-model="vm.form.ITEM_NAME_EN" class="form-control" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                Name(Bn)
+                                            </label>
+                                            <div class="col-md-8">
+                                                <input type="text" name="ITEM_NAME_BN" ng-model="vm.form.ITEM_NAME_BN" class="form-control" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" ng-if="vm.form.INV_ITEM_ID>0">
+                                            <label class="col-md-4 control-label">
+                                                Category Name <span aria-required="true" class="required">*</span>
+                                            </label>
+                                            <div class="col-md-8">
+
+                                                <select kendo-drop-down-list id="INV_ITEM_CAT_ID" name="INV_ITEM_CAT_ID" class="form-control"
+                                                        k-options="vm.ItemCategoryList" ng-model="vm.form.INV_ITEM_CAT_ID"></select>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                Location Source
+                                            </label>
+                                            <div class="col-md-8">
+                                                <select kendo-drop-down-list name="LK_LOC_SRC_TYPE_ID" class="form-control"
+                                                        k-options="vm.sourceTypeList" ng-model="vm.form.LK_LOC_SRC_TYPE_ID"></select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                Brand
+                                            </label>
+                                            <div class="col-md-8">
+                                                <select kendo-drop-down-list id="RF_BRAND_ID" name="RF_BRAND_ID" class="form-control"
+                                                        k-options="vm.ItemBrandList" k-data-source="vm.brandDataSource" ng-model="vm.form.RF_BRAND_ID"></select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                Country of Orgin
+                                            </label>
+                                            <div class="col-md-8">
+                                                <select kendo-drop-down-list name="HR_COUNTRY_ID" class="form-control"
+                                                        options="vm.OrginCountryList" ng-model="vm.form.HR_COUNTRY_ID"></select>
+                                            </div>
+                                        </div>
+
+                                        @*<div class="form-group" >
+                                                <label class="col-md-4 control-label">
+                                                    Gross Weight
+                                                </label>
+                                                <div class="col-md-4">
+                                                    <input type="text" name="GROSS_WT" ng-model="vm.form.GROSS_WT" class="form-control" />
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <select kendo-drop-down-list name="GRS_MOU_ID" class="form-control"
+                                                            options="vm.MOUList" ng-model="vm.form.GRS_MOU_ID"></select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group" >
+                                                <label class="col-md-4 control-label">
+                                                    Net Weight
+                                                </label>
+                                                <div class="col-md-4">
+                                                    <input type="text" name="NET_WT" ng-model="vm.form.NET_WT" class="form-control" />
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <select kendo-drop-down-list name="NET_MOU_ID" class="form-control"
+                                                            options="vm.MOUList" ng-model="vm.form.NET_MOU_ID"></select>
+                                                </div>
+                                            </div>*@
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                Consump. Unit
+                                                <span aria-required="true" class="required">*</span>
+                                            </label>
+                                            <div class="col-md-4">
+                                                <select kendo-drop-down-list name="CONS_MOU_ID" class="form-control"
+                                                        options="vm.MOUList" ng-model="vm.form.CONS_MOU_ID"></select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                Purchase Unit
+                                                <span aria-required="true" class="required">*</span>
+                                            </label>
+                                            <div class="col-md-4">
+                                                <select kendo-drop-down-list name="PURCH_MOU_ID" class="form-control"
+                                                        options="vm.MOUList" ng-model="vm.form.PURCH_MOU_ID"></select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="checkbox-inline">
+                                                    <input type="checkbox" ng-model="vm.form.IS_WT_MACHINE" ng-true-value="'Y'" ng-false-value="'N'">WT Mechine?
+                                                </label>
+                                            </div>
+                                        </div>
+
+
+                                        @*<div class="form-group" ng-show="false">
+                                                <label class="col-md-4 control-label">
+                                                    Packing Unit
+                                                    <span aria-required="true" class="required">*</span>
+                                                </label>
+                                                <div class="col-md-4">
+                                                    <select kendo-drop-down-list name="PACK_MOU_ID" class="form-control"
+                                                            options="vm.MOUList" ng-model="vm.form.PACK_MOU_ID"></select>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label class="checkbox-inline">
+                                                        <input type="checkbox" ng-model="vm.form.IS_WT_MACHINE" ng-true-value="'Y'" ng-false-value="'N'">WT Mechine?
+                                                    </label>
+                                                </div>
+                                            </div>*@
+
+                                        <div class="form-group" ng-if="vm.form.IS_WT_MACHINE=='Y'">
+                                            <label class="col-md-4 control-label">
+                                                Wt Machine Unit
+                                            </label>
+                                            <div class="col-md-4">
+                                                <select kendo-drop-down-list name="WT_MOU_ID" class="form-control"
+                                                        options="vm.MOUList" ng-model="vm.form.WT_MOU_ID"></select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                Pack Ratio
+                                            </label>
+                                            <div class="col-md-2" style="padding-right:0px">
+                                                <input type="text" name="PACK_RATIO" ng-model="vm.form.PACK_RATIO" class="form-control" />
+                                            </div>
+                                            <div class="col-md-2" style="padding-left:0px;">
+                                                <select kendo-drop-down-list name="PACK_RATIO_MOU_ID" class="form-control"
+                                                        options="vm.MOUList" ng-model="vm.form.PACK_RATIO_MOU_ID"></select>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <span class="col-md-2" style="padding-left:0px;">Per</span>
+                                                <span class="col-md-10" style="padding-right:0px">
+                                                    <select kendo-drop-down-list name="PACK_MOU_ID" class="form-control"
+                                                            options="vm.MOUList" ng-model="vm.form.PACK_MOU_ID"></select>
+                                                </span>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                Status
+                                                <span aria-required="true" class="required">*</span>
+                                            </label>
+                                            <div class="col-md-4">
+                                                <select kendo-drop-down-list name="LK_ITEM_STATUS_ID" class="form-control"
+                                                        options="vm.ItemStatusList" ng-model="vm.form.LK_ITEM_STATUS_ID"></select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="checkbox-inline">
+                                                    <input type="checkbox" ng-model="vm.form.IS_RD_CHEM" ng-true-value="'Y'" ng-false-value="'N'">Is Re-Dyeing?
+                                                </label>
+                                            </div>
+
+
+                                        </div>
+
+                                        @*
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label">
+                                                    Purchase Unit
+                                                    <span aria-required="true" class="required">*</span>
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <select kendo-drop-down-list name="PURCH_MOU_ID" class="form-control"
+                                                            options="vm.MOUList" ng-model="vm.form.PURCH_MOU_ID"></select>
+                                                </div>
+                                            </div>
+                                        *@
+
+                                        @*<div class="form-group">
+                                                <label class="col-md-4 control-label">&nbsp;</label>
+                                                <div class="col-md-5">
+                                                    <label class="checkbox-inline">
+                                                        <input type="checkbox" ng-model="vm.form.IS_WT_MACHINE" ng-true-value="'Y'" ng-false-value="'N'">Weight Mechine?
+                                                    </label>
+                                                </div>
+                                            </div>*@
+
+                                    </fieldset>
+
+
+                                    <fieldset class="custom-fieldset">
+                                        <legend class="custom-legend">Qty & Pricing</legend>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                Currency
+                                            </label>
+                                            <div class="col-md-7">
+                                                <select kendo-drop-down-list name="RF_CURRENCY_ID" class="form-control"
+                                                        options="vm.CurrencyList" ng-model="vm.form.RF_CURRENCY_ID"></select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                Latest Pur. Price
+                                            </label>
+                                            <div class="col-md-3">
+                                                <input type="text" name="PURCH_PRICE" ng-model="vm.form.PURCH_PRICE" class="form-control" ng-change="vm.getCostPrice()" />
+                                            </div>
+
+                                            <label class="col-md-2 control-label">
+                                                Add %
+                                            </label>
+                                            <div class="col-md-2">
+                                                <input type="text" name="PCT_ADDL_PRICE" ng-model="vm.form.PCT_ADDL_PRICE" class="form-control" ng-change="vm.getCostPrice()" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                Cost Price
+                                            </label>
+                                            <div class="col-md-3">
+                                                <input type="text" name="COST_PRICE" ng-model="vm.form.COST_PRICE" class="form-control" readonly />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                Latest Sal. Price
+                                            </label>
+                                            <div class="col-md-3">
+                                                <input type="text" name="SALES_PRICE" ng-model="vm.form.SALES_PRICE" class="form-control" />
+                                            </div>
+                                        </div>
+
+                                        @*<div class="form-group">
+                                                <label class="col-md-4 control-label">
+                                                    Reserve Qty.
+                                                </label>
+                                                <div class="col-md-3">
+                                                    <input type="text" name="RSV_QTY" ng-model="vm.form.RSV_QTY" class="form-control" />
+                                                </div>
+                                            </div>*@
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                Reorder Qty.
+                                            </label>
+                                            <div class="col-md-3">
+                                                <input type="text" name="REORDER_QTY" ng-model="vm.form.REORDER_QTY" class="form-control" />
+                                            </div>
+                                        </div>
+
+                                    </fieldset>
+
+                                    @*
+                                        <fieldset class="custom-fieldset">
+                                            <legend class="custom-legend">Weight Dimension</legend>
+
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label">
+                                                    Gross Weight
+                                                </label>
+                                                <div class="col-md-3">
+                                                    <input type="text" name="GROSS_WT" ng-model="vm.form.GROSS_WT" class="form-control" />
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <select kendo-drop-down-list name="GRS_MOU_ID" class="form-control"
+                                                            options="vm.MOUList" ng-model="vm.form.GRS_MOU_ID"></select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label">
+                                                    Net Weight
+                                                </label>
+                                                <div class="col-md-3">
+                                                    <input type="text" name="NET_WT" ng-model="vm.form.NET_WT" class="form-control" />
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <select kendo-drop-down-list name="NET_MOU_ID" class="form-control"
+                                                            options="vm.MOUList" ng-model="vm.form.NET_MOU_ID"></select>
+                                                </div>
+                                            </div>
+
+                                        </fieldset>
+                                    *@
+
+                                </div>
+
+
+
+                                <div class="col-md-5" style="padding-left:0px;padding-right:0px;">
+                                    <fieldset class="custom-fieldset">
+                                        <legend class="custom-legend">Spec Details</legend>
+
+                                        <div class="form-group">
+                                            <label class="col-md-5 control-label">
+                                                Model #
+                                            </label>
+                                            <div class="col-md-7">
+                                                <input type="text" name="MODEL_NO" ng-model="vm.form.MODEL_NO" class="form-control" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-5 control-label">
+                                                Specification-1
+                                            </label>
+                                            <div class="col-md-7">
+                                                <textarea rows="3" name="ITEM_SPEC_1" ng-model="vm.form.ITEM_SPEC_1" class="form-control" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-5 control-label">
+                                                Specification-2
+                                            </label>
+                                            <div class="col-md-7">
+                                                <textarea rows="3" name="ITEM_SPEC_2" ng-model="vm.form.ITEM_SPEC_2" class="form-control" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-5 control-label">
+                                                Measurement
+                                            </label>
+                                            <div class="col-md-7">
+                                                <input type="text" name="MEASUREMENT" ng-model="vm.form.MEASUREMENT" class="form-control" />
+                                            </div>
+                                        </div>
+
+                                    </fieldset>
+
+                                    <fieldset class="custom-fieldset">
+                                        <legend class="custom-legend">Other Identification</legend>
+
+                                        <div class="form-group">
+                                            <label class="col-md-5 control-label">
+                                                Part #
+                                            </label>
+                                            <div class="col-md-7">
+                                                <input type="text" name="PART_NO" ng-model="vm.form.PART_NO" class="form-control" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-5 control-label">
+                                                Tag #
+                                            </label>
+                                            <div class="col-md-7">
+                                                <input type="text" name="TAG_NO" ng-model="vm.form.TAG_NO" class="form-control" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-5 control-label">
+                                                Bin #
+                                            </label>
+                                            <div class="col-md-7">
+                                                <input type="text" name="BIN_NO" ng-model="vm.form.BIN_NO" class="form-control" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-5 control-label">
+                                                HS Code
+                                            </label>
+                                            <div class="col-md-7">
+                                                <input type="text" name="HS_CODE" ng-model="vm.form.HS_CODE" class="form-control" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-5 control-label">
+                                                Marks
+                                            </label>
+                                            <div class="col-md-7">
+                                                <input type="text" name="MARKS" ng-model="vm.form.MARKS" class="form-control" />
+                                            </div>
+                                        </div>
+
+                                    </fieldset>
+
+
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <label class="control-label checkbox-inline">
+                                                        <input type="checkbox" name="IS_COMMON" ng-model="vm.form.IS_COMMON" ng-true-value="'Y'" ng-false-value="'N'" /> Common Item?
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <br />
+
+                                        <div class="col-md-12 col-md-offset-0">
+                                            <button type="submit" class="btn btn-sm green" ng-if="!vm.form.INV_ITEM_ID" ng-disabled="!vm.form.INV_ITEM_CAT_ID || vm.form.IS_LEAF=='N'"><i class="fa fa-check"></i> Save</button>
+                                            <button type="submit" class="btn btn-sm yellow-gold" ng-if="vm.form.INV_ITEM_ID" ng-disabled="!vm.form.INV_ITEM_CAT_ID  || vm.form.IS_LEAF=='N'"><i class="fa fa-check"></i> Update</button>
+                                            <button type="button" class="btn btn-sm blue" ng-click="vm.TranCancel()" ng-disabled="!vm.form.INV_ITEM_CAT_ID  || vm.form.IS_LEAF=='N'">Cancel</button>
+                                            &nbsp;&nbsp;&nbsp;
+                                            <button type="button" class="btn btn-sm blue" ng-click="vm.exportItemList()">Export Item List</button>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+
+                                <p style="clear:both;padding:0px;margin:0px">&nbsp;</p>
+
+
+
+                                <div class="row" style="margin:auto;" ng-if="vm.errors">
+                                    <div class="alert alert-danger" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                                        <div style="padding: 0px 0px 15px 25px; ">
+                                            <b>Please fix the following errors ....</b>
+                                        </div>
+                                        <ul ng-repeat="field in vm.errors">
+                                            <li ng-repeat="error in field" ng-bind="error"></li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+
+                    </form>
+
+
+
+
+
+                    @*<div class="row">
+                            <div class="portlet box purple">
+                                <div class="portlet-title">
+                                    <div class="caption" ng-bind="vm.Title">
+                                    </div>
+                                    <div class="tools">
+                                        <a href="" class="collapse" data-original-title="" title=""></a>
+                                    </div>
+                                    <div class="actions">
+                                        <a id="sample_editable_1_new" class="btn green" ng-click="vm.addNew()">
+                                            Add New <i class="fa fa-plus"></i>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="portlet-body form">
+                                    <form class="form-horizontal">
+                                        <div class="form-body clearfix">
+
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <kendo-grid k-options="vm.gridOptions" id="itemGrid"></kendo-grid>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>*@
+
+                </div>
+
+
+            </div>
+        </div>
+        @*</form>*@
+    </div>
+</div>
+
+
+<style scoped>
+    .k-treeview .k-in {
+        padding: 5px;
+    }
+
+    /*div.k-treeview {
+        overflow: auto;
+    }*/
+
+    #ItemCategTreeview .k-sprite {
+        background-image: url("/Content/assets/global/img/coloricons-sprite.png");
+    }
+
+    .rootfolder {
+        background-position: 0 0;
+    }
+
+    .folder {
+        background-position: 0 -16px;
+    }
+
+    .pdf {
+        background-position: 0 -32px;
+    }
+
+    .html {
+        background-position: 0 -48px;
+    }
+
+    .image {
+        background-position: 0 -64px;
+    }
+
+    .demo-section {
+        float: left;
+        width: 200px;
+        margin: 0 60px 0 0;
+    }
+</style>

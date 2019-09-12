@@ -1,0 +1,497 @@
+﻿
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Garments</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">            
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <form class="form-horizontal" role="form" name="frmProdCapctyMN" novalidate>
+            <div class="form-body clearfix" style="padding-top:5px;">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <div class="row" style="margin:auto;" ng-show="vm.errors">
+                            <div class="alert alert-danger" role="alert">
+                                @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                                <div style="padding: 0px 0px 15px 25px; ">
+                                    <b>Please fix the following errors ....</b>
+                                </div>
+                                <ul ng-repeat="field in vm.errors">
+                                    <li ng-repeat="error in field" ng-bind="error"></li>
+                                </ul>
+                            </div>
+                        </div>
+
+
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend">Key Information</legend>
+
+                            <div class="form-group">
+                                <label class="col-md-1 control-label">
+                                    <span aria-required="true" class="required">*</span>Company
+                                </label>
+
+
+                                <div class="col-md-2">
+                                    <select class="form-control" kendo-drop-down-list name="HR_COMPANY_ID" required
+                                            k-data-text-field="'COMP_NAME_EN'" k-data-value-field="'HR_COMPANY_ID'" k-option-label="'-- Select --'"
+                                            k-auto-bind="'true'" k-options="vm.companyOpt" ng-model="vm.form.HR_COMPANY_ID">
+                                           </select>
+                                </div>
+
+                                <label class="col-md-1 control-label">
+                                    <span aria-required="true" class="required">*</span>Office
+                                </label>
+                                <div class="col-md-2">
+                                    <select class="form-control" kendo-drop-down-list name="PROD_UNIT_ID" required
+                                            k-data-text-field="'OFFICE_NAME_EN'" k-data-value-field="'HR_OFFICE_ID'" k-option-label="'-- Select --'"
+                                            k-auto-bind="'true'" k-options="vm.officeOpt" k-data-source="vm.officeDs" ng-model="vm.form.PROD_UNIT_ID"></select>
+                                </div>
+
+                                @*<label class="col-md-1 control-label">
+                                    <span aria-required="true" class="required">*</span>Department
+                                </label>
+                                <div class="col-md-2">
+                                    <select kendo-drop-down-list id="HR_DEPARTMENT_ID" name="HR_DEPARTMENT_ID" class="form-control"
+                                            options="vm.sectionOption" ng-model="vm.form.CORE_DEPT_ID" required></select>
+                                </div>*@
+
+
+
+
+                                <label class="col-md-1 control-label">
+                                    <span aria-required="true" class="required">*</span>Year
+                                </label>
+                                <div class="col-md-2">
+                                    <select class="form-control" kendo-drop-down-list name="RF_FISCAL_YEAR_ID" required
+                                            k-data-text-field="'FY_NAME_EN'" k-data-value-field="'RF_FISCAL_YEAR_ID'" k-option-label="'-- Select --'"
+                                            k-auto-bind="'true'" k-options="vm.clndrYearOption" k-data-source="vm.clndrYearDataSource" ng-model="vm.form.RF_FISCAL_YEAR_ID"
+                                            @*k-on-select="vm.onSelectCompany(kendoEvent)"*@></select>
+                                </div>
+
+                                <label class="col-md-1 control-label">
+                                    <span aria-required="true" class="required">*</span>Month
+                                </label>
+                                <div class="col-md-2">
+                                    <select class="form-control" kendo-drop-down-list name="GMT_PROD_PLN_CLNDR_ID" required
+                                            k-data-text-field="'MONTH_NAME_EN'" k-data-value-field="'GMT_PROD_PLN_CLNDR_ID'" k-option-label="'-- Select --'"
+                                            k-auto-bind="'true'" k-options="vm.clndrMonthOption" k-data-source="vm.clndrMonthDataSource" ng-model="vm.form.GMT_PROD_PLN_CLNDR_ID"
+                                            @*k-on-select="vm.onSelectCompany(kendoEvent)"*@></select>
+                                </div>
+
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                @*<fieldset class="custom-fieldset col-md-4">
+                                    <legend class="custom-legend">Cal Method</legend>
+
+                                    <div class="radio-list" style="margin-left:20px">
+                                        <label class="radio-inline" ng-repeat="item in vm.calMethodList">
+                                            <span class="checked"><input type="radio" name="LK_CALC_MTHD_ID" ng-model="vm.form.LK_CALC_MTHD_ID" ng-value="item.LOOKUP_DATA_ID" required ng-disabled="true"></span>{{item.LK_DATA_NAME_EN}}
+                                        </label>
+                                    </div>
+                                </fieldset>*@
+
+                                <label class="col-md-1 control-label">
+                                    Cal Method
+                                </label>
+                                <div class="col-md-2">
+                                    <div class="radio-list" style="margin-left:20px">
+                                        <label class="radio-inline" ng-repeat="item in vm.calMethodList">
+                                           
+                                            <span class="checked"><input type="radio" name="LK_CALC_MTHD_ID" ng-model="vm.form.LK_CALC_MTHD_ID" ng-value="item.LOOKUP_DATA_ID" required ng-change="vm.onChangeCalMethod()"></span>{{item.LK_DATA_NAME_EN}}
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <label class="col-md-1 control-label">
+                                    Prod Category
+                                </label>
+                                <div class="col-md-2">
+                                    <select class="form-control" kendo-drop-down-list name="GMT_PRODUCT_TYP_ID" k-options="vm.prodTypeOption" k-data-source="vm.prodTypeDataSource" ng-model="vm.form.GMT_PRODUCT_TYP_ID"></select>
+                                </div>
+
+                                
+
+                            </div>
+                          
+                        </fieldset>
+
+                        <div class="row">
+                            <div class="col-md-4">
+
+                                <fieldset class="custom-fieldset" ng-show="vm.form.LK_CALC_MTHD_ID==609">
+                                    <legend class="custom-legend">By Minute</legend>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            # of Work Station/Line
+                                        </label>
+                                        <div class="col-md-6">
+                                            <input type="number" class="form-control" name="NO_LINE_OR_WS" ng-model="vm.form.NO_LINE_OR_WS" ng-change="vm.onChangePlnProdQty();vm.onChangePlnProdPcs();" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            Work Days in Month
+                                        </label>
+                                        <div class="col-md-6">
+                                            <input type="number" class="form-control" name="WORK_DAYS_IN_MN" ng-model="vm.form.WORK_DAYS_IN_MN" ng-change="vm.onChangePlnProdQty();vm.onChangePlnProdPcs();" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            Avg Manpower/Line
+                                        </label>
+                                        <div class="col-md-6">
+                                            <input type="number" class="form-control" name="PLAN_MP" ng-model="vm.form.PLAN_MP" ng-change="vm.onChangePlnProdQty();vm.onChangePlnProdPcs();" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            <span aria-required="true" class="required">*</span>WH
+                                        </label>
+                                        <div class="col-md-6">
+                                            <input type="number" class="form-control" name="AVG_WORK_HR" ng-model="vm.form.AVG_WORK_HR" ng-change="vm.onChangePlnProdQty();vm.onChangePlnProdPcs();" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            Avg SMV
+                                        </label>
+                                        <div class="col-md-6">
+                                            <input type="number" class="form-control" name="AVG_SMV" ng-model="vm.form.AVG_SMV" ng-change="vm.onChangePlnProdQty();vm.onChangePlnProdPcs();" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            Absentism (%)
+                                        </label>
+                                        <div class="col-md-6">
+                                            <input type="number" class="form-control" name="PCT_ABSENCE" ng-model="vm.form.PCT_ABSENCE" min="0" max="100" ng-change="vm.onChangePlnProdQty();vm.onChangePlnProdPcs();" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            Factory Efficiency
+                                        </label>
+                                        <div class="col-md-6">
+                                            <input type="number" class="form-control" name="FACT_EFICNCY" ng-model="vm.form.FACT_EFICNCY" ng-change="vm.onChangePlnProdQty();vm.onChangePlnProdPcs();" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            Carry Over (%)
+                                        </label>
+                                        <div class="col-md-6">
+                                            <input type="number" class="form-control" name="PCT_BACKLOG" ng-model="vm.form.PCT_BACKLOG" min="0" max="100" ng-change="vm.onChangePlnProdQty();vm.onChangePlnProdPcs();" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            <span aria-required="true" class="required">*</span>Plan {{vm.form.LK_CALC_MTHD_ID==609?' Min':'Pcs'}}
+                                        </label>
+                                        <div class="col-md-6">
+                                            <input type="number" class="form-control" name="PLAN_PROD_QTY" ng-model="vm.form.PLAN_PROD_QTY" readonly />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            Plan Prod Pcs
+                                        </label>
+                                        <div class="col-md-6">
+                                            <input type="number" class="form-control" name="PLAN_PROD_PCS" ng-model="vm.form.PLAN_PROD_PCS" readonly />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            Allow S/C Pcs
+                                        </label>
+                                        <div class="col-md-6">
+                                            <input type="number" class="form-control" name="ALLOW_SC_CAPACITY" ng-model="vm.form.ALLOW_SC_CAPACITY" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            AVG FOB
+                                        </label>
+                                        <div class="col-md-6">
+                                            <input type="number" class="form-control" name="AVG_FOB" ng-model="vm.form.AVG_FOB" ng-change="vm.onChangeAvgFob(vm.form)" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            TTL FOB
+                                        </label>
+                                        <div class="col-md-6">
+                                            <input type="number" class="form-control" name="TTL_TRG_FOB" ng-model="vm.form.TTL_TRG_FOB" />
+                                        </div>
+                                    </div>
+
+
+                                </fieldset>
+
+                                <fieldset class="custom-fieldset" ng-show="vm.form.LK_CALC_MTHD_ID==610">
+                                    <legend class="custom-legend">By Qty</legend>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            Work Days in Month
+                                        </label>
+                                        <div class="col-md-4">
+                                            <input type="number" class="form-control" name="WORK_DAYS_IN_MN" ng-model="vm.form.WORK_DAYS_IN_MN"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            <span aria-required="true" class="required">*</span>AvgWorkHours
+                                        </label>
+                                        <div class="col-md-4">
+                                            <input type="number" class="form-control" name="AVG_WORK_HR" ng-model="vm.form.AVG_WORK_HR" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            Prod Pcs/Month
+                                        </label>
+                                        <div class="col-md-4">
+                                            <input type="number" class="form-control" name="PLAN_PROD_PCS" ng-model="vm.form.PLAN_PROD_PCS" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            Allow S/C Pcs/Month
+                                        </label>
+                                        <div class="col-md-4">
+                                            <input type="number" class="form-control" name="ALLOW_SC_CAPACITY" ng-model="vm.form.ALLOW_SC_CAPACITY" />
+                                        </div>
+                                    </div>
+
+                                </fieldset>
+
+                            </div>
+                            <div class="col-md-3" style="padding-right:0px;">
+                                <fieldset class="custom-fieldset">
+                                    <legend class="custom-legend">Same/Copy for</legend>
+
+                                    <div class="col-md-12">
+                                        <kendo-grid id="desigGrpGrid" k-options="vm.clndrMonth4CopyOption" k-data-source="vm.clndrMonth4CopyDataSource"></kendo-grid>
+                                    </div>
+
+                                </fieldset>
+                            </div>
+                            <div class="col-md-5" style="padding-left:0px;">
+                                <fieldset class="custom-fieldset">
+                                    <legend class="custom-legend">Capacity Transfer</legend>
+                                    <div class="col-md-12">
+                                        <table class="table table-condensed table-hover">
+                                            <thead>
+                                                <tr class="site-table-header">
+                                                    <th style="width:10%">
+                                                        #
+                                                    </th>
+                                                    <th style="width:20%">
+                                                        From
+                                                    </th>
+                                                    <th style="width:20%">
+                                                        To
+                                                    </th>
+                                                    <th style="width:50%">
+                                                        Qty(PCS)
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="item in vm.form.items">
+                                                    <td>
+                                                        {{$index+1}}
+                                                    </td>
+                                                    <td>
+                                                        {{item.FROM_PROD_TYP_NAME}}
+                                                    </td>
+                                                    <td>
+                                                        {{item.TO_PROD_TYP_NAME}}
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" class="form-control" ng-disabled="item.GMT_CAPACITY_MN_ID<0" ng-model="item.TRNFER_QTY_PCS" />
+                                                    </td>
+                                                </tr>
+                                    
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </fieldset>
+
+                                <fieldset class="custom-fieldset">
+                                    <legend class="custom-legend">Weekly Capacity Adjustment</legend>
+                                    <div class="col-md-12">
+                                        <table class="table table-condensed table-hover">
+                                            <thead>
+                                                <tr class="site-table-header">
+                                                    <th style="width:10%">
+                                                        #
+                                                    </th>
+                                                    <th style="width:30%">
+                                                        Week
+                                                    </th>
+                                                    <th style="width:20%">
+                                                        Plan <br />
+                                                        Capacity(Pcs)
+                                                    </th>
+                                                    <th style="width:20%">
+                                                        Allowed <br />
+                                                         S/C (Pcs)
+                                                    </th>
+                                                    <th style="width:20%">
+                                                        Allow Addition<br />
+                                                        Qty (Pcs)
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="item in vm.form.wk_caps">
+                                                    <td>
+                                                        {{$index+1}}
+                                                    </td>
+                                                    <td>
+                                                        WK#{{item.YR_WK_NO}}  ( {{item.WK_START_DATE|date:'dd-MMM-yyyy'}}  -  {{item.WK_END_DATE|date:'dd-MMM-yyyy'}})
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" readonly class="form-control" ng-model="item.PLAN_PROD_PCS" name="PLAN_PROD_PCS" />
+                                                    </td>
+
+                                                    <td>
+                                                        <input type="number" readonly class="form-control" ng-model="item.ALLOW_SC_CAPACITY" name="ALLOW_SC_CAPACITY" />
+                                                    </td>
+
+                                                    <td>
+                                                        <input type="number" class="form-control" ng-model="item.ADDL_PLAN_QTY" name="ADDL_PLAN_QTY" />
+                                                    </td>
+
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </fieldset>
+
+
+                            </div>
+
+                        </div>
+                        
+
+
+                       
+                        <div class="col-md-12" style="padding-left:0px;padding-top:5px;">
+                            <div class="form-group">
+                                <div class="col-md-7">
+                                    <button type="button" class="btn btn-sm green" ng-click="vm.save()" ng-class="{'disabled':!frmProdCapctyMN.$valid}" ng-show="vm.form.GMT_CAPACITY_MN_ID<1">Save</button>
+                                    <button type="button" class="btn btn-sm yellow-gold" ng-click="vm.save()" ng-class="{'disabled':!frmProdCapctyMN.$valid}" ng-show="vm.form.GMT_CAPACITY_MN_ID>0">Update</button>
+                                    
+                                    <button type="button" class="btn btn-sm blue" ng-click="vm.cancel()">Cancel</button>
+
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <button class="btn btn-sm blue-hoki" type="button" ng-click="vm.backToList()">
+                                        Back to List
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+        
+
+        
+       
+    </div>
+</div>
+
+
+<style scoped>
+    .k-treeview .k-in {
+        padding: 5px;
+    }
+
+    /*div.k-treeview {
+        overflow: auto;
+    }*/
+
+    #ItemCategTreeview .k-sprite {
+        background-image: url("/Content/assets/global/img/coloricons-sprite.png");
+    }
+
+    .rootfolder {
+        background-position: 0 0;
+    }
+
+    .folder {
+        background-position: 0 -16px;
+    }
+
+    .pdf {
+        background-position: 0 -32px;
+    }
+
+    .html {
+        background-position: 0 -48px;
+    }
+
+    .image {
+        background-position: 0 -64px;
+    }
+
+    .demo-section {
+        float: left;
+        width: 200px;
+        margin: 0 60px 0 0;
+    }
+</style>

@@ -1,0 +1,235 @@
+﻿
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Garments</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">            
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+
+        
+
+        <div class="form-body clearfix">
+            <div class="row" style="margin: auto; padding-left: 0px; padding-right: 0px;">
+
+                <div class="col-md-4" style="padding-left:0px;padding-right:0px;">
+
+                    <form class="form-horizontal" role="form" name="frmProdCapctyClndrProc" novalidate>
+                        <div class="form-body clearfix" style="padding-top:5px;">
+                            <div class="row">
+                                <div class="col-md-12" style="padding-left:0px;">
+
+                                    <fieldset class="custom-fieldset">
+                                        <legend class="custom-legend">Process Parameter</legend>
+
+                                        <div class="form-group">
+                                            <label class="col-md-5 control-label">
+                                                <span aria-required="true" class="required">*</span>Clander Year
+                                            </label>
+                                            <div class="col-md-7">
+                                                <select kendo-drop-down-list name="RF_FISCAL_YEAR_ID" class="form-control"
+                                                        k-options="vm.fiscalYrOption" k-data-source="vm.fiscalYrDataSource" ng-model="vm.procForm.RF_FISCAL_YEAR_ID" required></select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" style="padding-top:5px">
+                                            <label class="col-md-5 control-label">
+                                                <span aria-required="true" class="required">*</span>Start Date
+                                            </label>
+                                            <div class="col-md-5">
+                                                <input type="text" class="form-control" ng-click="vm.yrStartDateOpen($event)" datepicker-popup="{{vm.dtFormat}}" name="YR_START_DATE" ng-model="vm.procForm.YR_START_DATE"
+                                                       is-open="vm.yrStartDateOpened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" required
+                                                       ng-disabled="true" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" style="padding-top:5px">
+                                            <label class="col-md-5 control-label">
+                                                <span aria-required="true" class="required">*</span>End Date
+                                            </label>
+                                            <div class="col-md-5">
+                                                <input type="text" class="form-control" ng-click="vm.yrEndDateOpen($event)" datepicker-popup="{{vm.dtFormat}}" name="YR_END_DATE" ng-model="vm.procForm.YR_END_DATE"
+                                                       is-open="vm.yrEndDateOpened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" required
+                                                       ng-disabled="true" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" style="padding-top:5px">
+
+                                            <div class="col-md-offset-5 col-md-7">
+                                                <button type="button" class="btn btn-sm blue" ng-click="vm.clndrProcess()" ng-class="{'disabled':!frmProdCapctyClndrProc.$valid}">Process</button>
+                                                <button type="button" class="btn btn-sm blue" ng-click="vm.reset();">Cancel</button>
+                                            </div>
+                                        </div>
+
+                                    </fieldset>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+
+
+                <div class="col-md-8" style="padding-right:0px;">
+
+
+                    <form class="form-horizontal" role="form" name="frmProdCapctyClndr" novalidate>                        
+                        <div class="form-body clearfix" style="padding-top:5px;">
+
+                            <div class="row">
+
+                                <div class="col-md-12" style="padding-left:0px;">
+                                    <fieldset class="custom-fieldset">
+                                        <legend class="custom-legend">Production Calender</legend>
+
+                                        <div class="form-group">
+                                            <div class="col-md-2">
+                                                @*<div class="input-icon right" style="padding-bottom:3px;">
+                                                    <i class="icon-magnifier"></i>
+                                                    <input type="text" class="form-control form-control-solid" ng-model="qFY_NAME_EN" placeholder="Year" ng-change="vm.clndrYearDataSource.filter( { field:'FY_NAME_EN', operator :'contains', value: qFY_NAME_EN })" 
+                                                           style="background-color: hsl(208, 56%, 46%); color: hsl(0, 0%, 100%); font-weight: bold; "
+                                                           ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" >
+                                                </div>*@
+
+                                                <label class="form-control-solid" style="background-color: hsl(208, 56%, 46%); color: hsl(0, 0%, 100%); font-weight: bold; width: 100%; padding-top: 5px; padding-bottom: 5px;">&nbsp;Year</label>
+
+                                                <div kendo-list-view k-selectable="'single'" k-data-source="vm.clndrYearDataSource" k-on-change="vm.onChangeClndrYear(dataItem)">
+                                                    <div k-template>
+                                                        <dd class="k-state-default" style="padding: 5px; border-bottom: solid 1px; border-color: lightgray; ">
+                                                            <b>{{dataItem.FY_NAME_EN}}</b>
+                                                        </dd>
+                                                    </div>
+                                                </div>
+                                                @*<div kendo-pager k-data-source="vm.clndrYearDataSource"></div>*@
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                @*<div class="input-icon right" style="padding-bottom:3px;">
+                                                    <i class="icon-magnifier"></i>
+                                                    <input type="text" class="form-control form-control-solid" ng-model="qMONTH_NAME_EN" placeholder="search month..." ng-change="vm.clndrMonthDataSource.filter( { field:'MONTH_NAME_EN', operator :'contains', value: qMONTH_NAME_EN })" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }">
+                                                </div>*@
+
+                                                <label class="form-control-solid" style="background-color: hsl(208, 56%, 46%); color: hsl(0, 0%, 100%); font-weight: bold; width: 100%; padding-top: 5px; padding-bottom: 5px;">&nbsp;Month</label>
+
+                                                <div kendo-list-view k-selectable="'single'" k-data-source="vm.clndrMonthDataSource" k-on-change="vm.onChangeClndrMonth(dataItem)">
+                                                    <div k-template>
+                                                        <dd class="k-state-default" style="padding: 5px; border-bottom: solid 1px; border-color: lightgray; ">
+                                                            <b>{{dataItem.MONTH_NAME_EN}}</b>
+                                                        </dd>
+                                                    </div>
+                                                </div>
+                                                <div kendo-pager k-data-source="vm.clndrMonthDataSource"></div>
+                                            </div>
+
+                                            <div class="col-md-7" >
+                                                <kendo-grid id="monthlyWeekGrid" k-options="vm.monthlyWeekGridOption" k-data-source="vm.monthlyWeekGridDataSource" @*style="padding-top:0px;"*@></kendo-grid>
+                                            </div>
+                                            
+                                        </div>
+
+                                       
+                                        @*<div class="form-group">
+                                            
+                                            <div class="col-md-10">
+                                                <button type="button" class="btn btn-sm green" ng-click="vm.save()" ng-show="vm.form.GMT_SW_MCN_SPEC_ID<1" ng-class="{'disabled':!frmSwMcnSpec.$valid}">Save</button>
+                                                <button type="button" class="btn btn-sm yellow-gold" ng-click="vm.save()" ng-show="vm.form.GMT_SW_MCN_SPEC_ID>0" ng-class="{'disabled':!frmSwMcnSpec.$valid}">Update</button>
+                                                <button type="button" class="btn btn-sm blue" ng-click="vm.reset();">Cancel</button>
+                                            </div>
+
+                                        </div>*@
+
+                                    </fieldset>
+
+
+
+
+
+
+                                </div>
+
+
+
+                            </div>
+
+                        </div>
+
+                    </form>
+
+
+                </div>
+
+
+            </div>
+        </div>
+        @*</form>*@
+    </div>
+</div>
+
+
+<style scoped>
+    .k-treeview .k-in {
+        padding: 5px;
+    }
+
+    /*div.k-treeview {
+        overflow: auto;
+    }*/
+
+    #ItemCategTreeview .k-sprite {
+        background-image: url("/Content/assets/global/img/coloricons-sprite.png");
+    }
+
+    .rootfolder {
+        background-position: 0 0;
+    }
+
+    .folder {
+        background-position: 0 -16px;
+    }
+
+    .pdf {
+        background-position: 0 -32px;
+    }
+
+    .html {
+        background-position: 0 -48px;
+    }
+
+    .image {
+        background-position: 0 -64px;
+    }
+
+    .demo-section {
+        float: left;
+        width: 200px;
+        margin: 0 60px 0 0;
+    }
+</style>

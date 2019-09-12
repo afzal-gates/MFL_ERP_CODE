@@ -1,0 +1,231 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 12px;
+    }
+
+    #grid tr td {
+        /* this makes the menu visibile */
+        overflow: visible;
+    }
+
+    #grid .k-grid-header {
+        padding-right: 0 !important;
+    }
+</style>
+
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Knitting</a>
+
+    </li>
+    <li>
+        <a href="#">{{vm.Title}}</a>
+    </li>
+</ul>
+
+
+<div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+    <div class="page-splash">
+        <div class="page-splash-message">
+            <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+        </div>
+    </div>
+</div>
+
+
+<div class="portlet box blue-dark" @*ng-controller="HrReportController as vm"*@>
+    
+    
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">            
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <form name="frmYdTrChaln" class="form-horizontal form-body" >           
+            <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+            
+            <div class="row">
+                <div class="col-md-12">
+
+                    <fieldset class="custom-fieldset" style="margin-bottom:5px" ng-disabled="vm.form.IS_FINALIZED=='Y'">
+                        <legend class="custom-legend">Challan Information</legend>
+
+                        <div class="row" style="margin:auto;" ng-show="vm.errors">
+                            <div class="alert alert-danger" role="alert">
+                                @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                                <div style="padding: 0px 0px 15px 25px; ">
+                                    <b>Please fix the following errors ....</b>
+                                </div>
+                                <ul ng-repeat="field in vm.errors">
+                                    <li ng-repeat="error in field" ng-bind="error"></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-1">Challan#</label>
+                            <div class="col-md-2" >
+                                <input type="text" class="form-control" name="CHALAN_NO" ng-model="vm.form.CHALAN_NO" readonly />
+                            </div>
+
+                            <label class="control-label col-md-offset-1 col-md-1">Date<span aria-required="true" class="custom-required">*</span></label>
+                            <div class="col-md-2" ng-class="{'has-error': (frmYdTrChaln.CHALAN_DT.$touched || frmYdTrChaln.$submitted) && frmYdTrChaln.CHALAN_DT.$error.required}">
+                                <input type="text" class="form-control" ng-click="vm.chlnDateOpen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                       name="CHALAN_DT" ng-model="vm.form.CHALAN_DT" is-open="vm.chlnDateOpened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" required />
+                            </div>
+
+                            <label class="control-label col-md-offset-1 col-md-1">Gate Pass#</label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" name="GATE_PASS_NO" ng-model="vm.form.GATE_PASS_NO" readonly />
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label class="control-label col-md-1">Party<span aria-required="true" class="custom-required">*</span></label>
+                            <div class="col-md-3" ng-class="{'has-error': (frmYdTrChaln.SCM_SUPPLIER_ID.$touched || frmYdTrChaln.$submitted) && frmYdTrChaln.SCM_SUPPLIER_ID.$error.required}">
+                                <select class="form-control" kendo-drop-down-list name="SCM_SUPPLIER_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                        k-data-text-field="'SUP_TRD_NAME_EN'" k-data-value-field="'SCM_SUPPLIER_ID'"
+                                        k-auto-bind="'true'" k-options="vm.supplierOption" k-data-source="vm.supplierDataSource" ng-model="vm.form.SCM_SUPPLIER_ID"
+                                        ng-disabled="vm.form.IS_FINALIZED=='Y'" required></select>
+                            </div>
+
+                            @*<label class="control-label col-md-1">Prog#<span aria-required="true" class="custom-required">*</span></label>
+                            <div class="col-md-3" ng-class="{'has-error': (frmYdTrChaln.KNT_SC_PRG_ISS_ID.$touched || frmYdTrChaln.$submitted) && frmYdTrChaln.KNT_SC_PRG_ISS_ID.$error.required}">
+                                <select class="form-control" kendo-drop-down-list name="KNT_SC_PRG_ISS_ID" k-option-label="'-- Knitting Program --'"
+                                        k-data-text-field="'PRG_ISS_NO'" k-data-value-field="'KNT_SC_PRG_ISS_ID'" k-filter="'Contains'"
+                                        k-auto-bind="'true'" k-data-source="vm.scoIssProgDataSource" ng-model="vm.form.KNT_SC_PRG_ISS_ID" 
+                                        required ng-disabled="vm.form.IS_FINALIZED=='Y'" style="width:100%;"></select>
+                                
+                            </div>*@
+
+                            @*<label class="control-label col-md-1">Rcv Chln<span aria-required="true" class="custom-required">*</span></label>*@
+                            @*<div class="col-md-3" ng-class="{'has-error': (frmYdTrChaln.MC_FAB_PROD_ORD_H_ID.$touched || frmYdTrChaln.$submitted) && frmYdTrChaln.MC_FAB_PROD_ORD_H_ID.$error.required}">
+                                <select class="form-control" kendo-drop-down-list name="MC_FAB_PROD_ORD_H_ID" k-option-label="'--Order#--'"
+                                        k-data-text-field="'MC_ORDER_NO_LST'" k-data-value-field="'MC_FAB_PROD_ORD_H_ID'" k-filter="'Contains'"
+                                        k-auto-bind="'true'" k-data-source="vm.fabProdOrderDs" ng-model="vm.form.MC_FAB_PROD_ORD_H_ID" k-on-data-bound="vm.onFabProdOrderBound(vm.form,kendoEvent)"
+                                        k-on-change="vm.onFabProdOrderChange(vm.form,kendoEvent)"
+                                        required ng-disabled="vm.form.IS_FINALIZED=='Y'" style="width:100%;"></select>
+                            </div>*@                                                      
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-1">Remarks</label>
+                            <div class="col-md-11">
+                                <textarea class="form-control" name="REMARKS" ng-model="vm.form.REMARKS" rows="2"></textarea>
+                            </div>
+                        </div>
+
+
+                    </fieldset>
+
+                    @*<pre>{{vm.form|json}}</pre>*@
+
+                    <div ng-init="Showed=true">
+                        <div class="col-md-3" ng-class="{'col-md-pull-0' : !Showed, 'col-md-3' : Showed }" ng-hide="!Showed" style="padding-left:0px;padding-right:0px">
+                            <fieldset class="custom-fieldset" style="min-width: inherit; margin-bottom: 5px" ng-disabled="vm.form.IS_FINALIZED=='Y'">
+                                <legend class="custom-legend">YD Receive Challan</legend>
+
+                                <div kendo-grid k-options="vm.ydRecvChalnOptions" k-data-source="vm.ydRecvChalnDataSource"></div>
+
+                                <div class="col-md-12" style="text-align:right;padding-right:0px;padding-top:5px">
+                                    <button type="button" class="btn btn-sm blue" ng-click="vm.includeChaln()">Include Challan</button>
+                                </div>
+                            </fieldset>
+                        </div>
+
+
+                        <div class="col-md-9" ng-class="{'col-md-9' : Showed, 'col-md-12' : !Showed }" style="padding-left:0px;padding-right:0px">
+                            <a class="btn btn-xs btn-link" ng-click="Showed= !Showed"><i class="fa" ng-class="{'fa-chevron-left' : Showed, 'fa-chevron-right' : !Showed }"></i> {{Showed?'Hide':'Show'}} YD Receive Challan List</a>
+
+                            <fieldset class="custom-fieldset" style="margin-bottom:5px" ng-disabled="vm.form.IS_FINALIZED=='Y'">
+                                <legend class="custom-legend">Challan Details</legend>
+
+                                <div kendo-grid id="chlnDtlGrid" k-options="vm.chlnDtlOptions" k-data-source="vm.chlnDtlDataSource"></div>
+                            </fieldset>
+
+                            @*<pre>{{vm.chlnDtlDataSource.data()|json}}</pre>*@
+                            @*<pre>{{frmYdTrChaln.$error|json}}</pre>*@
+
+                            <div class="col-md-12" style="padding-left:32px">
+                                <div class="form-group">
+                                    <button type="button" @*ng-disabled="rollDelvGridDataSource.length()<0"*@ class="btn btn-sm green" ng-show="vm.form.KNT_SCO_YD_TR_CHL_H_ID<1" ng-click="vm.submitData(token,'N')"
+                                            ng-class="{'disabled':!frmYdTrChaln.$valid||vm.form.KNT_SCO_YD_TR_CHL_H_ID==null||vm.form.SCM_SUPPLIER_ID==null||
+                                          vm.form.CHALAN_DT==null||vm.form.IS_FINALIZED=='Y'}">
+                                        Save
+                                    </button>
+                                    <button type="button" @*ng-disabled="rollDelvGridDataSource.length()<0"*@ class="btn btn-sm yellow-gold" ng-show="vm.form.KNT_SCO_YD_TR_CHL_H_ID>0" ng-click="vm.submitData(token,'N')"
+                                            ng-class="{'disabled':!frmYdTrChaln.$valid||vm.form.KNT_SCO_YD_TR_CHL_H_ID==null||vm.form.SCM_SUPPLIER_ID==null||
+                                          vm.form.CHALAN_NO==null||vm.form.CHALAN_DT==null||vm.form.IS_FINALIZED=='Y'}">
+                                        Update
+                                    </button>
+
+                                    <button type="button" @*ng-disabled="rollDelvGridDataSource.length()<0"*@ class="btn btn-sm blue" ng-show="vm.form.KNT_SCO_YD_TR_CHL_H_ID>0" ng-click="vm.submitData(token,'Y')"
+                                            ng-class="{'disabled':!frmYdTrChaln.$valid||vm.form.KNT_SCO_YD_TR_CHL_H_ID==null||vm.form.SCM_SUPPLIER_ID==null||
+                                          vm.form.CHALAN_NO==null||vm.form.CHALAN_DT==null||vm.form.IS_FINALIZED=='Y'}">
+                                        Finalize
+                                    </button>
+
+                                    <a class="btn btn-sm blue" href="/Knitting/Knit/ScoYdTrChaln?a=442/#/scoYdTrChalnH/0">Cancel</a>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+
+
+                                    <button type="button" class="btn btn-sm blue" ng-click="vm.printDeliveryChallan(vm.form.KNT_SCO_YD_TR_CHL_H_ID)" ng-show="vm.form.KNT_SCO_YD_TR_CHL_H_ID>0"
+                                            ng-class="{'disabled':vm.chlnDtlDataSource.length()<0}">
+                                        <i class="fa fa-print"></i> Print Challan
+                                    </button>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <a class="btn btn-sm blue-hoki" href="/Knitting/Knit/ScoYdTrChaln?a=442/#/scoYdTrChalnList?pSCM_SUPPLIER_ID={{vm.form.SCM_SUPPLIER_ID}}">Back to List</a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>                   
+                </div>
+
+
+                
+
+
+            </div>
+        </form>
+
+       
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+

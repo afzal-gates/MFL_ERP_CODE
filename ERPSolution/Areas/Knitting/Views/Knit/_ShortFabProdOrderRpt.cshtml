@@ -1,0 +1,359 @@
+﻿
+
+    <!-- BEGIN PAGE CONTENT-->
+<div class="portlet light" style="padding-top:0px;">
+    <div class="portlet-body" style="padding-top:5px;">
+        <div class="invoice">
+            <div class="row" style="margin:auto;">
+                <div class="col-xs-3 col-md-3 col-lg-3" style="text-align:left;">
+                    MultiTex ERP
+                </div>
+
+                <div class="col-xs-6 col-md-6 col-lg-6" style="text-align:center;">
+                    <h2 style="margin:0px;">{{vm.data[0].COMP_NAME_EN}}</h2>
+                    <h5 style="margin:3px;">{{vm.data[0].ADDRESS_EN}}</h5>
+                    <h4 style="margin:3px;"><b>Excess Requisition</b></h4>
+                </div>
+                <div class="col-xs-3 col-md-3 col-lg-3" style="text-align:right;">
+                    <a class="btn btn-sm btn-default hidden-print margin-bottom-5" onclick="javascript:window.print();">
+                        <i class="fa fa-print"></i> Print
+                    </a>
+
+                    <h6 style="margin:3px;"><b>Print Date:</b> {{vm.today|date:'dd-MMM-yyyy'}}</h6>
+                </div>
+
+            </div>
+
+            <br />
+
+            <div class="row">
+                
+                <div class="row" style="margin:auto;">
+                    <div class="col-xs-3 col-md-3 col-lg-3">
+                        <ul class="list-unstyled">
+                            <li>
+                                <b>Buyer</b> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;{{vm.data[0].BYR_ACC_GRP_NAME_EN}}
+                            </li>
+                            <li>
+                                <b>Style#</b> &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;{{vm.data[0].STYLE_NO}}
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-xs-6 col-md-6 col-lg-6">
+                        <ul class="list-unstyled">
+                            <li>
+                                <b>Order#</b> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;{{vm.data[0].MC_ORDER_NO_LST}}
+                            </li>
+                            <li>
+                                <b>Order Qty</b> &nbsp;&nbsp;&nbsp;&nbsp;{{vm.data[0].TOT_ORD_QTY}}
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-xs-3 col-md-3 col-lg-3">
+                        <ul class="list-unstyled">
+                            <li>
+                                <b>Requisition#</b> {{vm.data[0].SFAB_REQ_NO}}
+                            </li>
+                            <li>
+                                <b>Req Date</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{vm.data[0].SFAB_REQ_DT|date:vm.dtFormat}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                @*<pre>{{vm.data[0].itemsDiaList|json}}</pre>*@
+
+                <div class="row" style="margin:auto;">
+                    <div class="col-xs-12 col-md-12 col-lg-12">
+                        <b style="font-style:italic">Fabric Detail (WT in Kg)</b>
+
+                        <table class="table table-condensed table-striped custom-table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:20%;" rowspan="2">
+                                        <b>Color</b>
+                                    </th>
+                                    <th style="width:5%;" rowspan="2">
+                                        <b>Dye Lot#</b>
+                                    </th>
+                                    <th ng-repeat="itmDia in vm.data[0].itemsDiaList" style="text-align: center;">
+                                        <span>{{itmDia.FIN_DIA}}</span>
+                                    </th>
+                                    <th rowspan="2">Total</th>
+                                </tr>
+
+                                <tr>
+                                    <th ng-repeat="itmDia in vm.data[0].itemsDiaList" style="text-align: center;">
+                                        <span>{{itmDia.FAB_TYPE_SNAME}}</span>
+                                    </th>
+                                </tr>
+
+                                @*<tr>
+                                    <th ng-repeat="itmDia in vm.data[0].itemsDiaList" style="text-align: center;">
+                                        <span>WT in {{itmDia.QTY_MOU_CODE}}</span>
+                                    </th>
+                                </tr>*@
+
+                            </thead>
+
+                            <tbody>
+
+                                <tr ng-repeat="itmColor in vm.data">
+
+                                    <td>
+                                        {{itmColor.COLOR_NAME_EN}}
+                                    </td>
+
+                                    <td>
+                                        {{itmColor.DYE_LOT_NO}}
+                                    </td>
+
+                                    <td ng-repeat="itmDia in itmColor['itemsDiaList']" style="text-align: center;">
+                                        {{itmDia.RQD_FAB_QTY}}
+                                    </td>
+
+                                    <td>
+                                        {{itmColor.ROW_TOT_RQD_FAB_QTY}}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2"><b>Total</b></td>
+
+                                    <td ng-repeat="itm in vm.data[0]['itemsDiaList']" style="text-align: center;">
+                                        <b>{{vm.diaWiseSumQty(itm)}}</b>
+                                    </td>
+
+                                    <td>
+                                        <b>{{vm.grandTotSumQty()}}</b>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+
+                @*<pre>{{vm.data|json}}</pre>
+                <pre>{{vm.data[0]['itemsDiaList']|json}}</pre>*@
+
+
+                
+                <div class="row" style="margin:auto;" ng-show="vm.dataClcf.length>0">
+                    <div class="col-xs-12 col-md-12 col-lg-12">
+                        <b style="font-style:italic">Collar/Cuff Detail(Qty in Pcs)</b>
+
+                        <table class="table table-condensed table-striped custom-table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:20%;" rowspan="2">
+                                        <b>Color</b>
+                                    </th>
+
+                                    <th colspan="{{vm.collarLength}}" ng-if="vm.collarLength>0" style="text-align: center;">
+                                        <b>Collar</b>
+                                    </th>
+
+                                    <th colspan="{{vm.cuffLength}}" ng-if="vm.cuffLength>0" style="text-align: center;">
+                                        <b>Cuff</b>
+                                    </th>
+
+                                    <th rowspan="2"><b>Total</b></th>
+                                </tr>
+
+                                <tr>
+                                    <th ng-repeat="itmDia in vm.dataClcf[0].itemsDtl" style="text-align: center;">
+                                        <span><b>{{itmDia.MESUREMENT}}</b></span>
+                                    </th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                                <tr ng-repeat="itmColor in vm.dataClcf">
+
+                                    <td>
+                                        {{itmColor.COLOR_NAME_EN}}
+                                    </td>
+
+                                    <td ng-repeat="itmDia in itmColor['itemsDtl']" style="text-align: center;">
+                                        {{itmDia.RQD_PC_QTY}}
+                                    </td>
+
+                                    <td>
+                                        {{itmColor.ROW_TOT_RQD_PC_QTY}}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td><b>Total</b></td>
+
+                                    <td ng-repeat="itm in vm.dataClcf[0]['itemsDtl']" style="text-align: center;">
+                                        <b>{{vm.measWiseSumQty(itm)}}</b>
+                                    </td>
+
+                                    <td>
+                                        <b>{{vm.grandTotClcfSumQty()}}</b>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="row" style="margin:auto;" ng-show="vm.dataRsn.length>0">
+                    <div class="col-xs-12 col-md-12 col-lg-12">
+                        <b style="font-style:italic">Reason Detail</b>
+
+                        <table class="table table-condensed table-striped custom-table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:20%;">
+                                        <b>Type</b>
+                                    </th>
+
+                                    <th style="width:80%;">
+                                        <b>Description</b>
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <tr ng-repeat="itmRsn in vm.dataRsn">
+                                    <td>
+                                        {{itmRsn.SFAB_RSN_TYPE_NAME}}
+                                    </td>
+
+                                    <td>
+                                        {{itmRsn.REASON_DESC}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+
+
+                <div class="row" style="margin:auto;" ng-show="vm.dataResp.length>0">
+                    <div class="col-xs-6 col-md-6 col-lg-6">
+                        <b style="font-style:italic">Responsibility Detail</b>
+
+                        <table class="table table-condensed table-striped custom-table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:20%;">
+                                        <b>Department</b>
+                                    </th>
+
+                                    <th style="width:15%;">
+                                        <b>% Share</b>
+                                    </th>
+
+                                    <th style="width:15%;">
+                                        <b>Share Qty (Kg)</b>
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <tr ng-repeat="itmResp in vm.dataResp">
+                                    <td>
+                                        {{itmResp.RESP_DEPT_NAME}}
+                                    </td>
+
+                                    <td>
+                                        {{itmResp.PCT_DIST_QTY}}
+                                    </td>
+
+                                    <td>
+                                        {{itmResp.DIST_QTY}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+
+
+                <div class="row" style="margin:auto;">
+                    <div class="col-xs-12 col-md-12 col-lg-12">
+                        <ul class="list-unstyled">
+                            <li>
+                                <b>Remarks :</b> {{vm.data[0].REMARKS}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <br />
+            <br />
+
+            <div class="row" style="margin:auto;">
+
+                <div class="col-xs-3 col-md-3 col-lg-3 col-xs-offset-1 col-md-offset-1 col-lg-offset-1">
+                    <div align="center">
+                        <strong>{{vm.data[0].EMP_FULL_NAME_EN}}</strong>
+                        <address style="margin-bottom:0px">
+                            <strong>{{vm.data[0].DESIGNATION_NAME_EN}}, {{vm.data[0].CORE_DEPARTMENT_NAME}}</strong>
+                        </address>
+                        <address style="border-top:0.5px solid grey">
+                            <strong>Prepared By</strong>
+                        </address>
+                    </div>
+                </div>
+
+                                
+                <div class="col-xs-3 col-md-3 col-lg-3 col-xs-offset-1 col-md-offset-1 col-lg-offset-1">
+                    <div align="center">
+                        <strong>&nbsp;</strong>
+                        <address style="margin-bottom:0px">
+                            <strong>&nbsp;</strong>
+                        </address>
+
+                        <address style="border-top:0.5px solid grey">
+                            <strong>Cutting Incharge</strong>
+                        </address>
+                    </div>
+                </div>
+
+
+                <div class="col-xs-3 col-md-3 col-lg-3 col-xs-offset-1 col-md-offset-1 col-lg-offset-1">
+                    <div align="center">
+                        <strong>&nbsp;</strong>
+                        <address style="margin-bottom:0px">
+                            <strong>&nbsp;</strong>
+                        </address>
+
+                        <address style="border-top:0.5px solid grey">
+                            <strong>Authorized Signature</strong>
+                        </address>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END PAGE CONTENT-->
+
+
+

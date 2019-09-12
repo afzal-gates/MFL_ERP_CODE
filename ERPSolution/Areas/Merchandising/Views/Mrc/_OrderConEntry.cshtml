@@ -1,0 +1,375 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#">
+            Order Confirmation
+        </a>
+    </li>
+</ul>
+
+<style>
+    .k-grid {
+        font-size: 10px;
+    }
+
+        .k-grid td {
+            line-height: 2em;
+        }
+</style>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption">
+            Order Confirmation
+        </div>
+        <div class="tools">
+            <a href="" class="collapse" data-original-title="" title="">
+            </a>
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+
+             <div class="row" style="margin:auto;">
+
+                 <div class="row" style="margin:auto;">
+                     <div class="col-md-12" style="padding-top:5px;float:right;">
+                         <a class="btn btn-xs blue" ui-sref="OrderCon.Dtl({MC_STYLE_H_ID:0, MC_ORDER_H_ID : 0 })" ui-sref-opts="{reload : true}">
+                             <i class="fa fa-plus"></i> Add New
+                         </a>
+
+                         <a class="btn btn-xs blue" ng-click="edit=!edit">
+                             <i class="fa fa-pencil"></i> Edit
+                         </a>
+                     </div>
+
+                 </div>
+
+                 <fieldset class="custom-fieldset" style="padding-top: 0px; padding-bottom: 0px; margin-left: 30px; margin-right: 30px;" ng-if="edit">
+                     <legend class="custom-legend">
+
+                         <b>Search By</b>
+
+                     </legend>
+                     <div class="form-body">
+                         <div class="form-group">
+                             <label class="col-md-2 control-label" align="right">
+                                 Buyer A/C
+                             </label>
+                             <div class="col-md-3">
+                                 <select kendo-drop-down-list name="MC_BYR_ACC_ID_F" class="form-control"
+                                         options="vm.buyerAcListFilter" id="MC_BYR_ACC_ID_F" ng-model="MC_BYR_ACC_ID_F"></select>
+                             </div>
+
+
+                             <label class="col-md-1 control-label" align="right">
+                                 Style/Order
+                             </label>
+
+                             <div class="col-md-2">
+                                 <select class="form-control" kendo-drop-down-list name="MC_ORDER_H_ID_F" k-option-label="'--Order# --'"
+                                         k-data-text-field="'ORDER_NO'" k-data-value-field="'MC_ORDER_H_ID'" k-filter="'Contains'"
+                                         k-template="template"
+                                         k-auto-bind="'true'" k-data-source="vm.OrderListFilter" ng-model="MC_ORDER_H_ID_F"
+                                         required style="width:100%;" k-on-change="vm.onOrderChange(kendoEvent)"></select>
+
+
+   
+                             </div>
+                             <label class="col-md-1">
+                                 <button type="button" class="btn btn-sm blue" ng-disabled="!MC_ORDER_H_ID_F" ui-sref="OrderCon.Dtl({MC_STYLE_H_ID:MC_STYLE_H_ID_F,MC_ORDER_H_ID:MC_ORDER_H_ID_F})" ui-sref-opts="{reload:true}">
+                                     Load
+                                 </button>
+                             </label>
+
+
+                         </div>
+                         <br />
+                     </div>
+
+
+
+                 </fieldset>
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-md-5">
+                    <fieldset class="custom-fieldset" style="padding-top: 0px; padding-bottom: 0px; margin-left: 30px; margin-right: 30px;">
+                        <legend class="custom-legend">
+
+                            <b>Style Information</b>
+
+                        </legend>
+
+                        <form class="form-horizontal" role="form" name="StyleInOrderCon" novalidate ng-submit="vm.submitData(vm.form,token)">
+
+                            <div class="form-body" style="padding:0px;">
+
+                                <div class="form-group" ng-class="{ 'has-error': Style.LK_ORD_TYPE_ID.$invalid && !Style.LK_ORD_TYPE_ID.$pristine}">
+                                    <label class="col-md-4 control-label">
+                                        Order Type
+                                    </label>
+                                    <div class="col-md-8">
+                                        <div class="radio-list" style="margin-left:20px">
+                                            <label class="radio-inline" ng-repeat="item in vm.OrderTypeList">
+                                                <span class="checked"><input type="radio" name="LK_ORD_TYPE_ID" ng-model="vm.form.LK_ORD_TYPE_ID" ng-value="item.LOOKUP_DATA_ID" required></span>{{item.LK_DATA_NAME_EN}}
+                                            </label>
+                                        </div>
+
+                                        <p ng-show="Style.LK_ORD_TYPE_ID.$invalid && !Style.LK_ORD_TYPE_ID.$pristine" class="help-block">Please select Order Type</p>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">
+                                        Buyer A/C
+                                    </label>
+                                    <div class="col-md-8">
+                                        <div class="col-md-8" style="padding-left:0px;padding-right:3px;">
+                                            <select kendo-drop-down-list name="MC_BYR_ACC_ID" class="form-control"
+                                                    options="vm.buyerAcList" id="MC_BYR_ACC_ID" ng-model="vm.form.MC_BYR_ACC_ID" required></select>
+                                            <p ng-show="Style.MC_BYR_ACC_ID.$invalid && !Style.MC_BYR_ACC_ID.$pristine" class="help-block">Plase select buyer a/c.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">
+                                        Buyer
+                                    </label>
+                                    <div class="col-md-8">
+
+                                        <div class="col-md-8" style="padding-left:0px;padding-right:3px;">
+                                            <select kendo-drop-down-list name="MC_BUYER_ID" class="form-control"
+                                                    k-options="vm.buyerList" k-ng-delay="vm.buyerList" id="MC_BUYER_ID" ng-model="vm.form.MC_BUYER_ID" required></select>
+                                            <p ng-show="Style.MC_BUYER_ID.$invalid && !Style.MC_BUYER_ID.$pristine" class="help-block">Plase select buyer.</p>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.form.LK_ORD_TYPE_ID==174">
+                                    <label class="col-md-4 control-label">
+                                        Style #
+                                    </label>
+                                    <div class="col-md-8">
+
+                                        <select kendo-drop-down-list name="MC_STYLE_H_ID" class="form-control"
+                                                options="vm.styleData" id="MC_STYLE_H_ID" ng-model="vm.form.MC_STYLE_H_ID" required></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">
+                                        Style/Article #
+                                    </label>
+                                    <div class="col-md-8">
+
+                                        <div class="col-md-8" style="padding-left:0px;padding-right:3px;">
+                                            <input type="text" name="STYLE_NO" ng-model="vm.form.STYLE_NO" class="form-control" required ng-disabled="vm.form.LK_ORD_TYPE_ID==174" />
+                                            <p ng-show="Style.STYLE_NO.$invalid && !Style.STYLE_NO.$pristine" class="help-block text-warning">Please input Style/Article No.</p>
+                                        </div>
+                                        <div class="col-md-4" style="padding-left:0px;padding-right:0px;">
+                                            <input type="text" name="STYL_EXT_NO" ng-model="vm.form.STYL_EXT_NO" placeholder="Ext#" pattern="^[,\w]+$" class="form-control" ng-disabled="vm.form.LK_ORD_TYPE_ID==174" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">
+
+                                    </label>
+                                    <div class="col-md-8">
+                                        <span class="col-md-9" style="padding-left:0px;padding-right:3px;">
+
+                                            <div class="checkbox-list">
+                                                <label class="checkbox-inline" style="margin-left:20px">
+                                                    <span><input type="checkbox" ng-model="vm.form.HAS_SET" ng-true-value="'Y'" ng-false-value="'N'" ng-disabled="vm.form.LK_ORD_TYPE_ID==174">Set?</span>
+                                                </label>
+
+                                                <label class="checkbox-inline" style="margin-left: 1px; padding-left: 20px;">
+                                                    <span><input type="checkbox" ng-model="vm.form.HAS_MODEL" ng-change="vm.form.HAS_MODEL=='Y'?vm.form.HAS_COMBO='N':''" ng-true-value="'Y'" ng-false-value="'N'" ng-disabled="vm.form.LK_ORD_TYPE_ID==174">Mdl?</span>
+                                                </label>
+
+                                                <label class="checkbox-inline" style="margin-left: 1px; padding-left: 20px;">
+                                                    <span><input type="checkbox" ng-model="vm.form.HAS_COMBO" ng-change="vm.form.HAS_COMBO=='Y'?vm.form.HAS_MODEL='N':''" ng-true-value="'Y'" ng-false-value="'N'" ng-disabled="vm.form.LK_ORD_TYPE_ID==174">Cmb?</span>
+                                                </label>
+
+                                                <label class="checkbox-inline" style="margin-left: 1px; padding-left: 20px;">
+                                                    <span><input type="checkbox" ng-model="vm.form.HAS_MULTI_COL_PACK" ng-true-value="'Y'" ng-false-value="'N'" ng-disabled="vm.form.LK_ORD_TYPE_ID==174">Pair?</span>
+                                                </label>
+
+                                            </div>
+
+                                        </span>
+
+                                        <span class="col-md-3" style="padding-left: 0px; padding-right: 0px; " ng-if="vm.form.HAS_SET=='Y' && vm.form.HAS_MODEL=='Y'">
+                                            <input type="number" name="NO_OF_SET" ng-model="vm.form.NO_OF_SET" min="{{(vm.form.HAS_SET=='Y' && vm.form.HAS_MODEL=='Y')? 2 : 1 }}" max="{{(vm.form.HAS_SET=='Y' && vm.form.HAS_MODEL=='N')? 1 : 6 }}" class="form-control" placeholder="#OfSet" required ng-disabled="vm.form.LK_ORD_TYPE_ID==174" />
+                                        </span>
+
+
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">
+                                        Qty Unit
+                                    </label>
+                                    <div class="col-md-8">
+                                        <span class="col-md-6" style="padding-left:0px;padding-right:3px;">
+                                            <select kendo-drop-down-list name="QTY_MOU_ID" class="form-control"
+                                                    options="vm.MOUList" id="QTY_MOU_ID" ng-model="vm.form.QTY_MOU_ID" ng-disabled="vm.form.LK_ORD_TYPE_ID==174"></select>
+                                        </span>
+
+                                        <span class="col-md-6" style="padding-left: 0px; padding-right: 0px;">
+                                            <input type="number" name="PCS_PER_PACK" ng-model="vm.form.PCS_PER_PACK" placeholder="PcsPerUnit" class="form-control" style="height:26.28px;" ng-required="(vm.form.QTY_MOU_ID==2||vm.form.QTY_MOU_ID==12||vm.form.HAS_MULTI_COL_PACK=='Y')" ng-disabled="!(vm.form.QTY_MOU_ID==2||vm.form.QTY_MOU_ID==12||vm.form.HAS_MULTI_COL_PACK=='Y')" />
+                                        </span>
+                                    </div>
+                                </div>
+
+
+
+
+
+
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">
+                                        Style Desc.
+                                    </label>
+                                    <div class="col-md-8">
+                                        <textarea rows="2" name="STYLE_DESC" class="form-control" cols="50" ng-model="vm.form.STYLE_DESC" ng-disabled="vm.form.LK_ORD_TYPE_ID==174" required></textarea>
+                                        <p ng-show="Style.STYLE_DESC.$invalid && !Style.STYLE_DESC.$pristine" class="help-block">Please input Style Name</p>
+                                    </div>
+                                </div>
+                                @*<div class="form-group">
+                                    <label class="col-md-4 control-label">
+                                       Size Range
+                                    </label>
+                                    <div class="col-md-8">
+                                        <select kendo-multi-select options='vm.SizeList' id="MC_SIZE_LST" style="border: 1px solid #898383;" ng-model='vm.form.MC_SIZE_LST' class='form-control'></select>
+                                    </div>
+                                </div>*@
+
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">
+                                        Material Details
+                                    </label>
+                                    <div class="col-md-8">
+                                        <textarea rows="2" name="MATERIAL_DESC" class="form-control" cols="50" ng-model="vm.form.MATERIAL_DESC" ng-disabled="vm.form.LK_ORD_TYPE_ID==174"></textarea>
+                                        <p ng-show="Style.MATERIAL_DESC.$invalid && !Style.MATERIAL_DESC.$pristine" class="help-block">Please input Material Details</p>
+                                    </div>
+                                </div>
+
+                                @*<div class="form-group">
+                                    <label class="col-md-4 control-label">
+                                        Status
+                                    </label>
+                                    <div class="col-md-8">
+                                        <select kendo-drop-down-list name="LK_STYL_DEV_ID" class="form-control"
+                                                options="vm.DevelopedByList" id="LK_STYL_DEV_ID" ng-model="vm.form.LK_STYL_DEV_ID" required ng-disabled="vm.form.LK_ORD_TYPE_ID==174"></select>
+                                    </div>
+
+                                </div>*@
+
+                                <br />
+                                <div class="form-group" ng-if="vm.form.MC_STYLE_H_ID">
+                                    <div class="col-md-12">
+                                        <button type="button" class="btn btn-sm blue" ng-click="vm.goToStyleGallery(vm.form)">Style Gallery</button>
+
+                                        <button type="button" class="btn btn-sm grey-salt" ng-click="vm.goToFabricProjectionBooking(vm.form)">Fabric Booking: Projection Order</button>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="vm.form.STYL_EXT_NO">
+                                    <label class="col-md-4">
+                                        <button type="button" ng-if="!vm.form.MC_STYLE_H_ID" class="btn btn-sm blue" ng-click="vm.goToStyleGallery(vm.form)">Style Gallery</button>
+                                    </label>
+                                    <div class="col-md-6">
+                                        <button type="submit" ng-if="vm.form.MC_STYLE_H_ID" class="btn btn-sm yellow-gold" ng-class="{'disabled':!StyleInOrderCon.$valid}">Update</button>
+                                        <button type="submit" ng-if="!vm.form.MC_STYLE_H_ID" class="btn btn-sm green" ng-class="{'disabled':!StyleInOrderCon.$valid}">Save</button>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </form>
+                    </fieldset>
+                    <fieldset class="custom-fieldset" style="padding-top: 0px; padding-bottom: 0px; margin-left: 30px; margin-right: 30px;">
+                        <legend class="custom-legend">
+                            <b>Order Document Deadline</b>
+                           
+                        </legend>
+                        <div class="input-icon left">
+                            <i class="icon-magnifier"></i>
+                            <input type="text" class="form-control form-control-static" ng-model="q2" placeholder="Search" ng-change="q2?vm.PoListOfOrderDocRecvDeadlineDs.filter( { field:'STYLE_NO', operator :'contains', value: q2 }):vm.PoListOfOrderDocRecvDeadlineDs.filter({})" ng-model-options="{ debounce: { 'default': 1000, 'blur': 0 } }">
+                        </div>
+                        <div class="input-icon right">
+                            <select class="form-control" ng-model="q1" ng-change="vm.PoListOfOrderDocRecvDeadlineDs.filter( { field:'FILTER_TYPE', operator :'contains', value: q1 })" ng-model-options="{ debounce: { 'default': 1000, 'blur': 0 } }">
+                                <option value="">All</option>
+                                <option value="-1">Over Due</option>
+                                <option value="0">Today</option>
+                                <option value="1">Upcoming</option>
+                            </select>
+                        </div>
+                        <kendo-grid k-options="vm.PoListOfOrderDocRecvDeadlineOpt" id="PO_LIST_ORD_DOC_RECV_DL" k-data-source="vm.PoListOfOrderDocRecvDeadlineDs"></kendo-grid>
+
+                        
+                    </fieldset>
+
+                    
+                </div>
+                <div class="col-md-7">
+                    <fieldset class="custom-fieldset" style="padding-top: 0px; padding-bottom: 0px; margin-left: 30px; margin-right: 30px;">
+                        <legend class="custom-legend">
+
+                            <b>Order Information</b>
+
+                        </legend>
+                        <div data-ui-view="OrderDetail">
+
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            @*<div class="row" style="padding:10px;">
+                <fieldset class="custom-fieldset" style="padding-top: 0px; padding-bottom: 0px; margin-left: 30px; margin-right: 30px;">
+                    <legend class="custom-legend">
+
+                        <b>Marketing Cost Breakdown</b>
+
+                    </legend>
+                    <div data-ui-view="MktCostBreakDown">
+
+                    </div>
+                </fieldset>
+            </div>*@
+
+
+
+
+        </div>
+
+
+

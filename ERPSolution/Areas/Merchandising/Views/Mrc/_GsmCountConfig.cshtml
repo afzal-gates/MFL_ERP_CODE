@@ -1,0 +1,130 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+
+<style>
+    .col-md-offset-3 {
+        margin-left: 26% !important;
+    }
+
+    .k-grid-header th.k-header {
+        text-align: center !important;
+    }
+
+    .k-grid-header th.k-header, .k-filter-row th {
+        white-space: pre-wrap !important;
+    }
+</style>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <form class="form-horizontal" role="form" name="YarnCountConfigForm" novalidate ng-submit="vm.yarnCountConfigData(vm.form)">
+            <br />
+            <input id="access_token" data-ng-model="token" type="hidden"
+                   data-ng-init="token='@Session["access_token"]'" />
+
+            <div class="row" style="margin:auto;">
+                <div class="col-md-12">
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend">Search By</legend>
+                        <div class="form-group">
+                            <label class="col-md-1 control-label">
+                                Fab Typ
+                            </label>
+                            <div class="col-md-3">
+                                <select kendo-drop-down-list name="RF_FAB_TYPE_ID" class="form-control"
+                                        options="vm.FabricTypeList" id="RF_FAB_TYPE_ID" ng-model="vm.form.RF_FAB_TYPE_ID"></select>
+                            </div>
+
+                            <label class="col-md-1 control-label">
+                                Template
+                            </label>
+                            <div class="col-md-3">
+                                <select kendo-drop-down-list name="MC_FIB_COMB_TMPLT_ID" class="form-control"
+                                        options="TemplateList" id="MC_FIB_COMB_TMPLT_ID" ng-model="vm.form.MC_FIB_COMB_TMPLT_ID"></select>
+                            </div>
+
+
+                            <label class="col-md-1 control-label">
+                                Gauge
+                            </label>
+                            <div class="col-md-2">
+                                <select kendo-drop-down-list name="LK_MAC_GG_ID" class="form-control"
+                                        options="vm.MachineGaugeList" id="LK_MAC_GG_ID" ng-model="vm.form.LK_MAC_GG_ID"></select>
+                            </div>
+
+
+                            <div class="col-md-1">
+                                <button type="submit" class="btn btn-sm blue">
+                                    Load
+                                </button>
+                            </div>
+
+                        </div>
+                    </fieldset>
+                </div>
+
+
+            </div>
+            <br />
+            <div class="row" style="margin:auto;">
+                <div class="col-md-12">
+
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend">GSM wise Count Configuration</legend>
+                        <div class="row" style="padding-top:6px;padding-bottom:3px;">
+                            <div class="col-md-6" align="left">
+                                <a class="btn btn-xs blue" ng-click="addNew(vm.form)">
+                                    <i class="fa fa-plus"></i>Add New
+                                </a>
+                            </div>
+                        </div>
+
+                        <kendo-grid k-options="vm.gridOptions" id="kendoGrid"></kendo-grid>
+
+                        <div class="col-md-4" style="padding-top:10px; padding-bottom:10px;">
+                            <button type="button" class="btn btn-sm green" ng-click="vm.saveGridData(vm.form,token)" ng-disabled="YarnCountConfigForm.$invalid">Save</button>
+                            <button type="button" class="btn btn-sm default" ng-click="vm.yarnCountConfigData(vm.form)">Cancel</button>
+                        </div>
+
+                    </fieldset>
+
+                </div>
+
+
+
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+

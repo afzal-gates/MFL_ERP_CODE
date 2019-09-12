@@ -1,0 +1,305 @@
+﻿@*<style type="text/css">[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>*@
+
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#">Sample Fabric Booking</a>
+    </li>
+</ul>
+
+<style>
+    .modal-open .datetimepicker {
+        z-index: 0 !important;
+    }    
+</style>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+
+        <form class="form-horizontal" role="form" name="frmSampleBooking" @*ng-submit="vm.submitData(vm.form,token)"*@ novalidate>
+
+            <div class="form-body clearfix">
+                <div class="row" style="margin:auto;">                   
+
+                    <div>
+                        <div class="row" style="margin:auto;" ng-show="errors">
+                            <div class="alert alert-danger" role="alert">
+                                @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                                <div style="padding: 0px 0px 15px 25px; ">
+                                    <b>Please fix the following errors ....</b>
+                                </div>
+                                <ul ng-repeat="field in errors">
+                                    <li ng-repeat="error in field" ng-bind="error"></li>
+                                </ul>
+                            </div>
+                        </div>
+
+
+                        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;" ng-disabled="vm.form.MC_TNA_TASK_STATUS_ID>13">
+                            <legend class="custom-legend">&nbsp; <input type="checkbox" name="IS_PROG_PARAM" ng-model="vm.IS_PROG_PARAM" ng-init="vm.IS_PROG_PARAM='Y'" ng-true-value="'Y'" ng-false-value="'N'"> Program Parameter</legend>
+
+                            <input type="hidden" name="MC_SMP_REQ_H_ID" ng-model="vm.form.MC_SMP_REQ_H_ID" class="form-control" />
+
+                            <div class="form-group" ng-show="vm.IS_PROG_PARAM=='Y'">
+                                <label class="col-md-2">
+                                    <span aria-required="true" class="custom-required">*</span>Company
+                                </label>
+                                <div class="col-md-4">
+                                    <select class="form-control" kendo-drop-down-list name="HR_COMPANY_ID"
+                                            k-data-text-field="'COMP_NAME_EN'" k-data-value-field="'HR_COMPANY_ID'"
+                                            k-auto-bind="'true'" k-data-source="vm.form.HR_COMPANY_LIST" ng-model="vm.form.HR_COMPANY_ID"
+                                            ng-disabled="vm.form.MC_TNA_TASK_STATUS_ID>13"></select>
+
+                                    @*<select class="form-control" kendo-drop-down-list name="MC_BYR_ACC_ID" k-option-label="'-- Select Buyer A/C --'"
+                    k-data-text-field="'BYR_ACC_NAME_EN'" k-data-value-field="'MC_BYR_ACC_ID'"
+                    k-auto-bind="'true'" k-data-source="vm.buyerAcList" ng-model="vm.form.MC_BYR_ACC_ID"
+                    k-on-change="vm.buyerAcOnSelect(kendoEvent)" required></select>*@
+
+                                    @*<select kendo-combo-box class="form-control" name="HR_COMPANY_ID"
+                    k-filter="'contains'"
+                    k-ng-model="vm.form.HR_COMPANY_ID"
+                    k-options="vm.companyList"></select>*@
+
+                                    @*<select kendo-drop-down-list id="HR_COMPANY_ID" name="HR_COMPANY_ID" class="form-control" options="vm.companyList" ng-model="vm.form.HR_COMPANY_ID"></select>*@
+                                </div>
+
+                                <label class="col-md-2">
+                                    Program #
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" name="SMP_REQ_NO" ng-model="vm.form.SMP_REQ_NO" class="form-control" readonly />
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-show="vm.IS_PROG_PARAM=='Y'">
+                                <label class="col-md-2">
+                                    <span aria-required="true" class="custom-required">*</span>Buyer A/c
+                                </label>
+                                <div class="col-md-10">
+                                    <select class="form-control" kendo-multi-select name="MC_BYR_ACC_ID" k-placeholder="'Search...'" required @*ng-required="vm.formDtl.IS_YD=='Y'"*@
+                                            k-data-text-field="'BYR_ACC_NAME_EN'" k-data-value-field="'MC_BYR_ACC_ID'"
+                                            k-auto-bind="'true'" k-data-source="vm.MC_BYR_ACC_LIST" ng-model="vm.form.MC_BYR_ACC_ID_LIST"
+                                            ng-change="vm.onChangeByrAc()"
+                                            ng-disabled="vm.form.MC_TNA_TASK_STATUS_ID>13"></select>
+                                    @*{{MC_BYR_ACC_ID_LIST}}*@
+                                </div>
+
+
+                            </div>
+
+                            @*<span class="badge badge-warning">
+                                7
+                            </span>*@
+
+                            <div class="form-group" ng-show="vm.IS_PROG_PARAM=='Y'">
+                                <label class="col-md-2">
+                                    <span aria-required="true" class="custom-required">*</span>Date of Program
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" ng-click="vm.sfbReqDateOpen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                           name="SMP_REQ_DT" ng-model="vm.form.SMP_REQ_DT" is-open="vm.sfbReqDateOpened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" 
+                                           ng-disabled="true" />
+                                    @*<input type="datetime" kendo-date-time-picker class="form-control required datetimepicker" ng-model="vm.form.SMP_REQ_DT" interval="5" format="dd/MMM/yyyy hh:mm tt"
+                                           ng-disabled="vm.form.MC_TNA_TASK_STATUS_ID>13" required />*@
+                                </div>
+
+                                <label class="col-md-offset-2 col-md-2">
+                                    Progarm By
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="hidden" name="SMP_REQ_BY" ng-model="vm.form.SMP_REQ_BY" data-ng-init="vm.form.SMP_REQ_BY='@Session["multiLoginEmpId"]'" />
+                                    <textarea ng-model="vm.form.EMPLOYEE_PROFILE" rows="1" class="form-control"
+                                              data-ng-init="vm.form.EMPLOYEE_PROFILE='@Session["multiLoginEmpName"]' + ', '+'@Session["multiLoginEmpDesigName"]'+', '+'@Session["multiLoginEmpCoreDeptName"]'" ng-disabled="true" />
+                                    @*<textarea ng-model="vm.form.EMPLOYEE_PROFILE" rows="1" class="form-control"
+                    data-ng-init="vm.form.EMPLOYEE_PROFILE='@Session["multiLoginEmpCode"]'+', '+'@Session["multiLoginEmpName"]' + ', '+'@Session["multiLoginEmpDesigName"]'+', '+'@Session["multiLoginEmpCoreDeptName"]'" ng-disabled="true" />*@
+                                </div>
+                            </div>
+
+                            @*<div class="form-group">
+
+                <label class="col-md-2">
+                    <span aria-required="true" class="custom-required">*</span>Program #
+                </label>
+                <div class="col-md-4">
+                    <input type="text" name="SMP_REQ_NO" ng-model="vm.form.SMP_REQ_NO" class="form-control" readonly />
+                </div>
+
+                <label class="col-md-2">
+                    <span aria-required="true" class="custom-required">*</span>Date of Requisition
+                </label>
+                <div class="col-md-2">
+
+                    <input type="text" class="form-control" ng-click="vm.sfbReqDateOpen($event)" datepicker-popup="{{vm.dtFormat}}"
+                           ng-init="vm.form.SMP_REQ_DT=vm.today"
+                           name="SMP_REQ_DT" ng-model="vm.form.SMP_REQ_DT" is-open="vm.sfbReqDateOpened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                </div>
+            </div>*@
+
+                            <div class="form-group" ng-show="vm.IS_PROG_PARAM=='Y'">
+                                <label class="col-md-2">
+                                    <span aria-required="true" class="custom-required">*</span>Issue To
+                                    @*{{reqToList}}*@
+                                </label>
+                                <div class="col-md-4">
+                                    @*{{vm.form.SMP_REQ_TO_LIST}}*@
+                                    <select class="form-control" kendo-multi-select name="SMP_REQ_TO" k-placeholder="'Search...'" required
+                                            k-data-text-field="'LOGIN_ID'" k-data-value-field="'SC_USER_ID'" k-ng-dely="vm.userDataList"
+                                            k-auto-bind="'true'" k-data-source="vm.userDataList" ng-model="vm.form.SMP_REQ_TO_LIST"
+                                            ng-change="vm.onChangeReqToList()"
+                                            ng-disabled="vm.form.MC_TNA_TASK_STATUS_ID>13"></select>
+
+                                    @*<input type="text" class="form-control" name="REQ_TO_NAME_LST" ng-model="vm.form.REQ_TO_NAME_LST" readonly />*@
+
+                                </div>
+
+                                <label class="col-md-2" ng-show="false">
+                                    @*<span aria-required="true" class="custom-required">*</span>*@Attention
+                                </label>
+                                <div class="col-md-4" ng-show="false">
+                                    <select class="form-control" kendo-multi-select name="SMP_REQ_ATTN" k-placeholder="'Search...'"
+                                            k-data-text-field="'LOGIN_ID'" k-data-value-field="'SC_USER_ID'"
+                                            k-data-source="vm.userDataList" ng-model="vm.form.SMP_REQ_ATTN_LIST"                                            
+                                            k-auto-bind="'true'" ng-disabled="vm.form.MC_TNA_TASK_STATUS_ID>13"></select>
+                                    @*{{vm.form.SMP_REQ_ATTN|json}}*@
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="form-group" ng-show="vm.IS_PROG_PARAM=='Y'">
+                                <label class="col-md-2">
+                                </label>
+                                <div class="col-md-4">
+                                    <label class="checkbox-inline" @*style="margin-top:-25px;"*@>
+                                        <input type="checkbox" name="IS_REMARKS" ng-model="vm.form.IS_REMARKS" ng-init="IS_REMARKS='N'" ng-true-value="'Y'" ng-false-value="'N'">Remarks?
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-show="vm.IS_PROG_PARAM=='Y' && vm.form.IS_REMARKS=='Y'">
+                                <label class="col-md-2">
+                                    Remarks
+                                </label>
+                                <div class="col-md-10">
+                                    <textarea class="form-control" name="REMARKS" ng-model="vm.form.REMARKS" rows="2" ng-disabled="vm.form.MC_TNA_TASK_STATUS_ID>13"></textarea>
+                                </div>
+                            </div>
+
+                            @*<div class="form-group" ng-if="vm.form.ASSIGN_EMP_PROFILE!=null">
+                                <label class="col-md-2">&nbsp;</label>
+                                <div class="col-md-4">
+                                    {{vm.form.ASSIGN_EMP_PROFILE}}
+                                </div>
+
+                                <label class="col-md-2">&nbsp;</label>
+                                <div class="col-md-4">
+                                    {{vm.form.PROG_EMP_PROFILE}}
+                                </div>
+                            </div>*@
+
+
+                            @*<hr style="border-top: 1px solid green;" />*@
+
+                            @*<button ng-click="vm.next()">Next</button>*@
+                        </fieldset>
+
+                        <fieldset class="custom-fieldset" ng-if="vm.form.REVISION_NO>0">
+                            <legend class="custom-legend">&nbsp; <input type="checkbox" name="IS_REVISION" ng-model="vm.IS_REVISION" ng-init="vm.IS_REVISION='Y'" ng-true-value="'Y'" ng-false-value="'N'"> Revise Information</legend>
+
+                            <div class="form-group" ng-show="vm.IS_REVISION=='Y'">
+                                <label class="col-md-2 control-label">
+                                    Revision #
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" name="REVISION_NO" ng-model="vm.form.REVISION_NO" readonly />
+                                </div>
+
+                                <label class="col-md-offset-2 col-md-2 control-label">
+                                    @*<span aria-required="true" class="required">*</span>*@Revision Date
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" ng-click="vm.revisionDateOpen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                           name="REVISION_DT" ng-model="vm.form.REVISION_DT" is-open="vm.revisionDateOpened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-disabled="true" close-text="Close"
+                                           ng-disabled="true" />
+                                    @*<input type="datetime" kendo-date-time-picker class="form-control datetimepicker" ng-disabled="true" 
+                                           ng-model="vm.form.REVISION_DT" interval="5" format="dd/MMM/yyyy hh:mm tt" />*@
+                                </div>
+
+                            </div>
+
+                            <div class="form-group" ng-show="vm.IS_REVISION=='Y'">
+                                <label class="col-md-2 control-label">
+                                    Reason
+                                </label>
+                                <div class="col-md-10">
+                                    <textarea ng-model="vm.form.REV_REASON" rows="2" class="form-control" readonly />
+                                </div>
+                            </div>
+
+                        </fieldset>
+
+                        @*{{vm.form|json}}*@
+                        <div class="portlet-body" data-ui-view="SmplFabBookEntryDtl"></div>
+
+                     
+                        <br />
+                        <div class="row" style="margin:auto;" ng-show="errors">
+                            <div class="alert alert-danger" role="alert">
+                                @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                                <div style="padding: 0px 0px 15px 25px; ">
+                                    <b>Please fix the following errors ....</b>
+                                </div>
+                                <ul ng-repeat="field in errors">
+                                    <li ng-repeat="error in field" ng-bind="error"></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+
+                  
+
+                    
+
+                </div>
+
+
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@*<script>
+    $(".datetimepicker").kendoDateTimePicker({
+        //z-index: 0,
+        format: "dd/MMM/yyyy hh:mm tt" //"yyyy/MM/dd hh:mm tt"
+        //parseFormats: ["MMMM yyyy", "HH:mm"] //format also will be added to parseFormats
+    });
+</script>*@

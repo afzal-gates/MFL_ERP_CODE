@@ -1,0 +1,122 @@
+﻿@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Hr</a>
+
+    </li>
+    <li>
+        <a href="#">OT Approval List</a>
+    </li>
+</ul>
+
+
+<div class="portlet box blue-dark">
+
+    <input id="antiForgeryToken" data-ng-model="vm.antiForgeryToken" type="hidden"
+           data-ng-init="vm.antiForgeryToken='@GetAntiForgeryToken()'" />
+
+    <div class="portlet-title">
+        <div class="caption">
+            @*<i class="fa fa-gift"></i>*@ OT Approval List
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+        <div class="row">
+
+            <div class="col-md-12">
+                
+                <div class="col-md-11">
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend">Search</legend>
+
+                        <div class="col-md-4">
+                            <label class="col-md-4 control-label">OT From</label>
+                            <div class="col-md-8 input-group">
+                                <input type="text" class="form-control" id="OT_FROM_DATE" name="OT_FROM_DATE" ng-model="vm.form.OT_FROM_DATE"
+                                       style="padding-right:0px;"
+                                       datepicker-popup="{{vm.dtFormat}}" is-open="vm.otFromDateOpened"
+                                       datepicker-options="vm.dateOptions" close-text="Close" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn-calendar" ng-click="vm.otFromDateOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="col-md-4 control-label">OT To</label>
+                            <div class="col-md-8 input-group">
+                                <input type="text" class="form-control" id="OT_TO_DATE" name="OT_TO_DATE" ng-model="vm.form.OT_TO_DATE"
+                                       style="padding-right:0px;"
+                                       datepicker-popup="{{vm.dtFormat}}" is-open="vm.otToDateOpened"                                       
+                                       datepicker-options="vm.dateOptions" close-text="Close" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn-calendar" ng-click="vm.otToDateOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="col-md-3 control-label">Employee</label>
+                            <div class="col-md-6">
+                                <input type="text" id="EMPLOYEE_CODE_SEARCH" ng-model="vm.form.EMPLOYEE_CODE_SEARCH" placeholder="Search..." @*ng-disabled="vm.isEmployee!=true"*@
+                                       typeahead="item.EMPLOYEE_CODE as item.EMPLOYEE_CODE for item in emoloyeeAuto($viewValue)"
+                                       typeahead-min-length="3" typeahead-wait-ms="1000"
+                                       typeahead-on-select="onSelectItem($item)" typeahead-loading="loadingLocationsEmp" class="form-control" />
+                                <i ng-show="loadingLocationsEmp" class="glyphicon glyphicon-refresh"></i>                                
+                            </div>
+                            <div class="col-md-1">
+                                <button type="button" class="btn" ng-click="vm.otGridList()">Search</button>
+                            </div>
+                        </div>
+
+                        @*{{vm.form.HR_EMPLOYEE_ID}}*@
+                        @*<div class="col-md-1">
+                            <button type="button">Search</button>
+                        </div>*@
+
+                    </fieldset>                    
+                </div>
+                
+                <div class="col-md-1" style="padding-left:0px;padding-top:25px;">
+                    <a id="sample_editable_1_new" class="btn green" ng-click="vm.addNew()">
+                        Add <i class="fa fa-plus"></i>
+                    </a>
+                </div>
+
+                <div class="col-md-11">
+                    <label class="col-md-4 control-label">&nbsp;</label>
+                </div>
+                
+                <div class="col-md-12" >
+                    <div id="otApproveListGrid" kendo-grid @*ng-show="vm.isNext"*@></div>
+                </div>
+                
+
+            </div>
+
+        </div>
+    </div>
+
+</div>

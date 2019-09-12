@@ -1,0 +1,126 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Inventory</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+    <form name="formData" class="form-horizontal" style="background-color: white;">
+        <div class="portlet-body">
+
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend"><b>Conversion Info</b></legend>
+                <div><label id="lblMsgSub"></label></div>
+                <div class="row">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr class="row-border">
+                                <th style="width:15%">
+                                    <span aria-required="true" class="required">*</span>
+                                    Item Category
+                                </th>
+                                <th style="width:15%">
+                                    <span aria-required="true" class="required">*</span>
+                                    Item Description
+                                </th>
+                                <th style="width:15%">
+                                    <span aria-required="true" class="required">*</span>
+                                    From MoU
+                                </th>
+                                <th style="width:15%">
+                                    <span aria-required="true" class="required">*</span>
+                                    To MoU
+                                </th>
+
+                                <th style="width:15%">
+                                    <span aria-required="true" class="required">*</span>
+                                    Round Method
+                                </th>
+                                <th style="width:10%">
+                                    <span aria-required="true" class="required">*</span>
+                                    Conv. Factor
+                                </th>
+                                <th style="width:15%">
+                                    Action
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+
+                                    <select class="form-control required" kendo-drop-down-list name="INV_ITEM_CAT_ID" id="INV_ITEM_CAT_ID" k-option-label="'-- Select Category --'"
+                                            k-data-text-field="'ITEM_CAT_NAME_EN'" k-data-value-field="'INV_ITEM_CAT_ID'"
+                                            k-auto-bind="'true'" k-filter="'contains'" ng-model="vm.form.INV_ITEM_CAT_ID"
+                                            k-data-source="vm.itemCategoryList" k-on-change="vm.changeCategory(kendoEvent)"></select>
+
+                                    <input type="hidden" ng-model="vm.form.RF_ITM_MOU_CONV_ID" />
+
+                                </td>
+                                <td>
+
+                                    <select class="form-control required" kendo-drop-down-list name="INV_ITEM_ID" id="INV_ITEM_ID" k-option-label="'-- Select Item --'"
+                                            k-data-text-field="'ITEM_NAME_EN'" k-data-value-field="'INV_ITEM_ID'"
+                                            k-auto-bind="'true'" k-filter="'contains'" ng-model="vm.form.INV_ITEM_ID"
+                                            k-data-source="vm.itemList" k-delay="vm.itemList"></select>
+
+                                </td>
+                                <td>
+
+                                    <select kendo-drop-down-list name="FRM_MOU_ID" id="FRM_MOU_ID" class="form-control required"
+                                            options="vm.mOUList" ng-model="vm.form.FRM_MOU_ID"></select>
+                                </td>
+                                <td>
+
+                                    <select kendo-drop-down-list name="TO_MOU_ID" id="TO_MOU_ID" class="form-control required"
+                                            options="vm.mOUList" ng-model="vm.form.TO_MOU_ID"></select>
+                                </td>
+
+                                <td>
+
+                                    <select kendo-drop-down-list name="LK_ROUND_MTHD_ID" id="LK_ROUND_MTHD_ID" class="form-control required"
+                                            options="vm.roundMethodList" ng-model="vm.form.LK_ROUND_MTHD_ID"></select>
+                                </td>
+
+                                <td>
+
+                                    <input type="number" ng-model="vm.form.CONV_FACTOR" />
+                                </td>
+
+                                <td>
+                                    <button type="button" ng-if="vm.form.RF_ITM_MOU_CONV_ID>0" class="btn btn-sm yellow" ng-click="vm.submitAll(vm.form)">Update</button>
+                                    <button type="button" ng-if="!vm.form.RF_ITM_MOU_CONV_ID>0" class="btn btn-sm green" ng-click="vm.submitAll(vm.form)">Save</button>
+
+                                    <button type="button" class="btn btn-sm default" ng-click="vm.resetAll()">Clear</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+                    <div style="padding:3px;">
+                    </div>
+                    <div style="padding:2px;">
+                        <div kendo-grid="vm.webapiGrid" k-options="vm.gridOptions"></div>
+                    </div>
+                </div>
+            </fieldset>
+
+        </div>
+    </form>
+</div>

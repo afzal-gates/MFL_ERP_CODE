@@ -1,0 +1,161 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Knitting</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="row">
+    <div class="portlet box blue-dark">
+        <div class="portlet-title">
+            <div class="caption" @*ng-bind="vm.Title"*@>
+                {{vm.Title}}@*&nbsp;<span style="color:#ff4600" ng-show="vm.form.IS_ORD_FINALIZED == 'Y'"><b>[ Record Locked ]</b></span>*@
+            </div>
+            <div class="tools">
+            </div>
+        </div>
+
+        <div class="portlet-body form">
+            <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+                <div class="page-splash">
+                    <div class="page-splash-message">
+                        <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                    </div>
+                </div>
+            </div>
+
+            <ng-form class="form-horizontal" role="form" name="frmKnitSubcontractProg" novalidate>
+                <div class="form-body clearfix">
+                    <div class="row" style="margin:auto;">
+
+                        <fieldset class="custom-fieldset" ng-disabled="vm.form.LK_SC_PRG_STATUS_ID==538">
+                            <legend class="custom-legend"><b>Key Information</b></legend>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-1">
+                                    <span aria-required="true" class="required">*</span>Program#
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control required" name="PRG_RCV_NO" ng-model="vm.form.PRG_RCV_NO" ng-required="vm.form.IS_PRG_NO_AUTO=='Y'?false:true" ng-disabled="vm.form.IS_PRG_NO_AUTO=='Y'?true:false" />
+                                </div>
+                                <div class="col-md-1" ng-show="vm.form.KNT_SC_PRG_RCV_ID<1">
+                                    <label class="control-label checkbox-inline">
+                                        <input type="checkbox" name="IS_PRG_NO_AUTO" ng-model="vm.form.IS_PRG_NO_AUTO" ng-true-value="'Y'" ng-false-value="'N'"
+                                               ng-change="vm.isProgAuto()" /> Auto?
+                                    </label>
+                                </div>
+
+                                <label class="control-label col-md-1">
+                                    <span aria-required="true" class="required">*</span>Prog Date
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control required" ng-click="SC_PRG_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                           name="SC_PRG_DT" max-date="vm.today" ng-model="vm.form.SC_PRG_DT" is-open="SC_PRG_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close"
+                                           required />
+                                </div>
+
+                                <label class="control-label col-md-1">
+                                    <span aria-required="true" class="required">*</span>Party
+                                </label>
+                                <div class="col-md-3">
+                                    @*<select class="form-control" kendo-drop-down-list name="SCM_SUPPLIER_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                    k-data-text-field="'SUP_TRD_NAME_EN'" k-data-value-field="'SCM_SUPPLIER_ID'"
+                    k-auto-bind="'true'" k-data-source="vm.supplierList" ng-model="vm.form.SCM_SUPPLIER_ID" required></select>*@
+                                    <select class="form-control" kendo-drop-down-list name="SCM_SUPPLIER_ID" k-filter="'contains'" k-option-label="'-- Select --'"
+                                            k-data-text-field="'SUP_TRD_NAME_EN'" k-data-value-field="'SCM_SUPPLIER_ID'"
+                                            k-auto-bind="'true'" k-options="vm.supplierOption" k-data-source="vm.supplierDataSource" ng-model="vm.form.SCM_SUPPLIER_ID"
+                                            ng-disabled="vm.form.LK_SC_PRG_STATUS_ID==538" required></select>
+                                </div>
+
+                            </div>
+
+                        </fieldset>
+
+
+                        <div style="padding-top:5px;">
+                            <tabset>                                
+                                <tab heading="Color Wise Fabric Detail" active="vm.fabColorKPState" ui-sref="KntSubContProgH.FabColorKP" >
+                                    <div data-ui-view="KntSubContProgH.FabColorKP"></div>
+                                </tab>
+
+                                @*<tab heading="Yarn Receive" active="vm.yarnReceivState" ng-click="vm.goState()" disabled="true">
+                                    <div data-ui-view="KntSubContProgH.YarnReceive"></div>
+                                </tab>*@
+                            </tabset>
+                        </div>
+
+                        
+                        <div class="col-md-12" style="text-align:right;padding-top:0px">
+                            <div class="form-group">
+                                @*{{vm.form.KNT_SC_PRG_RCV_ID}}*@
+                                <button type="button" class="btn btn-sm green" ng-click="vm.batchSave('N')" ng-show="vm.form.KNT_SC_PRG_RCV_ID<1"
+                                        ng-class="{'disabled':frmKnitSubcontractProg.PRG_RCV_NO.$error.required||frmKnitSubcontractProg.SC_PRG_DT.$error.required||
+                                        frmKnitSubcontractProg.SCM_SUPPLIER_ID.$error.required||vm.form.LK_SC_PRG_STATUS_ID==538}">
+                                    Save
+                                </button>
+                                <button type="button" class="btn btn-sm yellow-gold" ng-click="vm.batchSave('N')" ng-show="vm.form.KNT_SC_PRG_RCV_ID>0"
+                                        ng-class="{'disabled':frmKnitSubcontractProg.PRG_RCV_NO.$error.required||frmKnitSubcontractProg.SC_PRG_DT.$error.required||
+                                        frmKnitSubcontractProg.SCM_SUPPLIER_ID.$error.required||vm.form.LK_SC_PRG_STATUS_ID==538}">
+                                    Update
+                                </button>
+                                <button type="button" class="btn btn-sm blue" ng-click="vm.cancel()">Cancel</button>
+                                
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <button type="button" class="btn btn-sm blue" ng-click="vm.batchSave('Y')" ng-show="vm.form.KNT_SC_PRG_RCV_ID>0"
+                                        ng-disabled="vm.form.LK_SC_PRG_STATUS_ID==538">
+                                    Finalize
+                                </button>
+
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <button type="button" class="btn btn-sm blue" ng-click="vm.printLedger()" ng-show="vm.form.KNT_SC_PRG_RCV_ID>0">Print</button>
+                                <button type="button" class="btn btn-sm blue-hoki" ng-click="vm.backToList()">Back to List</button>
+                            </div>
+                        </div>
+
+                        @*<pre>{{challanList|json}}</pre>*@
+
+
+                    </div>
+                </div>
+            </ng-form>
+
+        </div>
+
+
+    </div>
+</div>
+
+
+
+
+@*<div class="row">
+    <div ng-class="{'col-md-pull-0' : !Showed, 'col-md-2' : Showed }" style="padding-right:2px;">
+        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;" ng-hide="!Showed">
+            <legend class="custom-legend">Fabric Color List</legend>
+
+            <ul class="nav nav-pills nav-stacked">
+                <li ng-repeat="item in vm.FabColors" ng-class="{'active': item.MC_FAB_PROD_ORD_D_ID == vm.params.pMC_FAB_PROD_ORD_D_ID}">
+                    <a style="padding:3px;" ui-sref="KnitPlan({pMC_FAB_PROD_ORD_D_ID: item.MC_FAB_PROD_ORD_D_ID})">
+                        <b>{{item.COLOR_NAME_EN}}</b>
+                    </a>
+                </li>
+            </ul>
+        </fieldset>
+    </div>
+    <div ng-class="{'col-md-10' : Showed, 'col-md-12' : !Showed }" style="padding-left:5px;">
+
+        <a class="btn btn-xs btn-link" ng-click="Showed= !Showed"><i class="fa" ng-class="{'fa-chevron-left' : Showed, 'fa-chevron-right' : !Showed }"></i> {{Showed?'Hide':'Show'}} Color List</a>
+        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;">
+
+
+            <legend class="custom-legend">Fabric Order Info</legend>
+
+    </div>
+</div>*@

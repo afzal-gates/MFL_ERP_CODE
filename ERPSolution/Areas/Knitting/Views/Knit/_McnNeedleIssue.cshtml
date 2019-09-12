@@ -1,0 +1,449 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 12px;
+    }
+</style>
+
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Knitting</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+
+<div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+    <div class="page-splash">
+        <div class="page-splash-message">
+            <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+        </div>
+    </div>
+</div>
+
+<div class="portlet box blue-dark">
+
+
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <form class="form-horizontal form-body" name="frmOilReq4SubStr">
+            <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    <fieldset class="custom-fieldset" style="margin-bottom:5px">
+                        <legend class="custom-legend">Issue Information</legend>
+                        <div><label id="lblMsg"></label></div>
+
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>
+                                From Store
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control required" kendo-drop-down-list name="ISS_STR_ID" k-option-label="'-- Select Issue Store --'"
+                                        k-data-text-field="'STORE_NAME_EN'" k-data-value-field="'SCM_STORE_ID'" k-filter="'contains'"
+                                        k-auto-bind="'true'" k-options="vm.storeOptions" k-data-source="vm.storeDataSource"
+                                        ng-model="vm.form.ISS_STR_ID" required></select>
+                            </div>
+
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>
+                                To Store
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control required" kendo-drop-down-list name="RCV_STR_ID" k-option-label="'-- Select Receiving Store --'"
+                                        k-data-text-field="'STORE_NAME_EN'" k-data-value-field="'SCM_STORE_ID'" k-filter="'contains'"
+                                        k-auto-bind="'true'" k-options="vm.storeOptions" k-data-source="vm.storeDataSource"
+                                        ng-model="vm.form.RCV_STR_ID" required></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                Issue No
+                            </label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" name="ISS_REF_NO" placeholder="[Auto Gen]" ng-model="vm.form.ISS_REF_NO" readonly />
+                            </div>
+
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>
+                                Date of Issue
+                            </label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control required" ng-click="STR_ISS_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                       name="STR_ISS_DT" max-date="vm.today" is-open="STR_ISS_DT_LNopened" datepicker-options="dateOptions"
+                                       date-disabled="disabled(date, mode)" close-text="Close" ng-model="vm.form.STR_ISS_DT" required />
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            @*<label class="control-label col-md-2">
+                                    Issue By
+                                </label>
+                                <div class="col-md-3">
+                                    <input type="hidden" ng-model="vm.form.ISSUE_BY" data-ng-init="vm.form.ISSUE_BY='@Session["multiScUserId"]'" />
+                                    <input type="text" class="form-control" name="ISSUE_BY_NAME" ng-model="vm.form.ISSUE_BY_NAME" data-ng-init="vm.form.ISSUE_BY_NAME='@Session["multiLoginEmpName"]'" readonly />
+                                </div>*@
+
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>
+                                Issue By
+                            </label>
+                            <div class="col-md-3">
+                                <select id="customers" kendo-drop-down-list options="vm.userList" k-ng-delay="vm.userList" ng-model="vm.form.ISSUE_BY" class="form-control" style="width:100%;"></select>
+
+                                @*<select class="form-control required" kendo-drop-down-list name="ISSUE_BY" id="ISSUE_BY" k-option-label="'-- Select User --'"
+                                        k-data-text-field="'LOGIN_ID'" k-data-value-field="'SC_USER_ID'" k-filter="'contains'"
+                                        k-auto-bind="'true'" k-options="vm.userOptions" k-data-source="vm.userDataSource"
+                                        ng-model="vm.form.ISSUE_BY" required></select>*@
+                            </div>
+                        </div>
+
+
+                    </fieldset>
+                    <fieldset class="custom-fieldset" style="margin-bottom:5px">
+                        <legend class="custom-legend">Requisition Information</legend>
+
+                        <div class="row" style="margin:auto;" ng-show="vm.errors">
+                            <div class="alert alert-danger" role="alert">
+                                @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                                <div style="padding: 0px 0px 15px 25px; ">
+                                    <b>Please fix the following errors ....</b>
+                                </div>
+                                <ul ng-repeat="field in vm.errors">
+                                    <li ng-repeat="error in field" ng-bind="error"></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>
+                                Requisition For
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control" kendo-drop-down-list name="INV_ITEM_CAT_ID" k-option-label="'-- Select Category --'"
+                                        k-data-text-field="'ITEM_CAT_NAME_EN'" k-data-value-field="'INV_ITEM_CAT_ID'" k-filter="'contains'"
+                                        k-auto-bind="'true'" k-options="vm.categoryOptions" k-data-source="vm.categoryDataSource" @*k-ng-delay="vm.styleList"*@
+                                        ng-disabled="vm.form.RF_ACTN_STATUS_ID>44"
+                                        ng-model="vm.form.INV_ITEM_CAT_ID" required></select>
+                            </div>
+
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>
+                                Requisition Type
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control" kendo-drop-down-list name="RF_REQ_TYPE_ID" k-option-label="'-- Select Req Type --'"
+                                        k-data-text-field="'REQ_TYPE_NAME'" k-data-value-field="'RF_REQ_TYPE_ID'" k-filter="'contains'"
+                                        k-auto-bind="'true'" k-options="vm.reqTypeOptions" k-data-source="vm.reqTypeDataSource" disabled
+                                        ng-model="vm.form.RF_REQ_TYPE_ID" required></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>
+                                Company
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control" kendo-drop-down-list name="HR_COMPANY_ID" k-option-label="'-- Select Company --'"
+                                        k-data-text-field="'COMP_NAME_EN'" k-data-value-field="'HR_COMPANY_ID'" k-filter="'contains'"
+                                        k-auto-bind="'true'" k-options="vm.companyOptions" k-data-source="vm.companyDataSource" @*k-ng-delay="vm.styleList"*@
+                                        ng-disabled="vm.form.RF_ACTN_STATUS_ID>44"
+                                        ng-model="vm.form.HR_COMPANY_ID" required></select>
+                            </div>
+
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>
+                                Department
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control" kendo-drop-down-list name="HR_DEPARTMENT_ID" k-option-label="'-- Select Department --'"
+                                        k-data-text-field="'DEPARTMENT_NAME_EN'" k-data-value-field="'HR_DEPARTMENT_ID'" k-filter="'contains'"
+                                        k-auto-bind="'true'" k-options="vm.departmentOptions" k-data-source="vm.departmentDataSource" @*k-ng-delay="vm.styleList"*@
+                                        ng-disabled="vm.form.RF_ACTN_STATUS_ID>44"
+                                        ng-model="vm.form.HR_DEPARTMENT_ID" required></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>
+                                Store Requisition From
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control" kendo-drop-down-list name="FRM_REQ_STR_ID" k-option-label="'-- Select Store --'"
+                                        k-data-text-field="'STORE_NAME_EN'" k-data-value-field="'SCM_STORE_ID'" k-filter="'contains'"
+                                        k-auto-bind="'true'" k-options="vm.storeOptions" k-data-source="vm.storeDataSource" disabled
+                                        ng-model="vm.form.FRM_REQ_STR_ID" required></select>
+                            </div>
+
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>
+                                Store Requisition To
+                            </label>
+                            <div class="col-md-3">
+                                <select class="form-control" kendo-drop-down-list name="TO_REQ_STR_ID" k-option-label="'-- Select Store --'"
+                                        k-data-text-field="'STORE_NAME_EN'" k-data-value-field="'SCM_STORE_ID'" k-filter="'contains'"
+                                        k-auto-bind="'true'" k-options="vm.storeOptions" k-data-source="vm.storeDataSource" disabled
+                                        ng-model="vm.form.TO_REQ_STR_ID" required></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                Requisition No
+                            </label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" name="STR_REQ_NO" placeholder="[Auto Gen]" ng-model="vm.form.STR_REQ_NO" readonly />
+                            </div>
+
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>
+                                Date of Requisition
+                            </label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" ng-click="vm.STR_REQ_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                       name="STR_REQ_DT" max-date="vm.today" is-open="vm.STR_REQ_DT_LNopened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close"
+                                       disabled
+                                       ng-model="vm.form.STR_REQ_DT" required />
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                Requisition By
+                            </label>
+                            <div class="col-md-3">
+                                <input type="hidden" ng-model="vm.form.STR_REQ_BY" data-ng-init="vm.form.STR_REQ_BY='@Session["multiScUserId"]'" />
+                                <input type="text" class="form-control" name="STR_REQ_BY_NAME" ng-model="vm.form.STR_REQ_BY_NAME" data-ng-init="vm.form.STR_REQ_BY_NAME='@Session["multiLoginEmpName"]'" readonly />
+                                @*<textarea ng-model="vm.form.EMPLOYEE_PROFILE" rows="1" class="form-control"
+                                    data-ng-init="vm.form.EMPLOYEE_PROFILE='@Session["multiLoginEmpName"]' + ', '+'@Session["multiLoginEmpDesigName"]'+', '+'@Session["multiLoginEmpCoreDeptName"]'" ng-disabled="true" />*@
+                            </div>
+
+                            <label class="control-label col-md-2">
+                                <span aria-required="true" class="required">*</span>
+                                Requisition To
+                            </label>
+                            <div class="col-md-3">
+                                <select id="customers" kendo-drop-down-list options="vm.userList" k-ng-delay="vm.userList" ng-model="vm.form.STR_REQ_TO" class="form-control" style="width:100%;"></select>
+
+
+                                @*<select class="form-control" kendo-drop-down-list name="STR_REQ_TO" k-option-label="'-- Select User --'"
+                                        k-data-text-field="'LOGIN_ID'" k-data-value-field="'SC_USER_ID'" k-filter="'contains'"
+                                        k-auto-bind="'true'" k-options="vm.userOptions" k-data-source="vm.userDataSource"
+                                        ng-disabled="vm.form.RF_ACTN_STATUS_ID>44"
+                                        ng-model="vm.form.STR_REQ_TO" required></select>*@
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                Reason For
+                            </label>
+                            <div class="col-md-3">
+
+                                <select class="form-control" kendo-drop-down-list name="RF_NDL_REQ_TYPE_ID" k-option-label="'-- Select Reason --'"
+                                        k-data-text-field="'REQ_TYPE_NAME_EN'" k-data-value-field="'RF_NDL_REQ_TYPE_ID'" k-filter="'contains'"
+                                        k-auto-bind="'true'" k-options="vm.reasonList" k-data-source="vm.reasonList" disabled
+                                        ng-model="vm.form.RF_NDL_REQ_TYPE_ID" required></select>
+
+                                @*<select kendo-drop-down-list name="RF_NDL_REQ_TYPE_ID" id="RF_NDL_REQ_TYPE_ID" class="form-control required"
+                                    options="vm.reasonList" ng-model="vm.form.RF_NDL_REQ_TYPE_ID" required></select>*@
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                Remarks
+                            </label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" name="REQ_REMARKS" ng-model="vm.form.REQ_REMARKS" rows="2" ng-disabled="vm.form.RF_ACTN_STATUS_ID>44"></textarea>
+                            </div>
+
+                        </div>
+
+
+                    </fieldset>
+
+
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend"><b>Details Data</b></legend>
+                        <table style="width:100%">
+
+                            <tr>
+                                @*<td style="border: solid 1px black; width: 10%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                                        <b>Machine No</b>
+                                    </td>
+                                    <td style="border: solid 1px black; width: 15%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                                        <b>Operator</b>
+                                    </td>*@
+                                <td style="border: solid 1px black; width: 20%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                                    <b>Item</b>
+                                </td>
+
+                                <td style="border: solid 1px black; width: 10%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                                    <b>Maint. Stock (Pcs)</b>
+                                </td>
+                                <td style="border: solid 1px black; width: 10%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                                    <b>Sub Stock (Pcs)</b>
+                                </td>
+                                <td style="border: solid 1px black; width: 10%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                                    <b>Brocken Qty</b>
+                                </td>
+                                <td style="border: solid 1px black; width: 10%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                                    <b>Reqd. Qty</b>
+                                </td>
+
+                                <td style="border: solid 1px black; width: 5%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                                    <b>Issue Qty</b>
+                                </td>
+                                <td style="border: solid 1px black; width: 5%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                                    <a class="btn btn-success" ng-click="vm.copyAll();"><i class="fa fa-copy">Copy All</i></a>
+                                </td>
+
+                            </tr>
+                            <tr ng-repeat="item in vm.RequisitionDtlList">
+                                @*<td style="padding:5px;border:solid 1px black;width:10%;">
+                                        <select class="form-control required" kendo-drop-down-list name="KNT_MACHINE_ID" k-option-label="'-- Select Machine --'"
+                                                k-data-text-field="'KNT_MACHINE_NO'" k-data-value-field="'KNT_MACHINE_ID'" k-filter="'contains'"
+                                                k-auto-bind="'true'" k-data-source="vm.machineList" k-ng-delay="vm.machineList"
+                                                ng-model="item.KNT_MACHINE_ID" ng-change="vm.getOperatorList();"></select>
+
+                                    </td>
+                                    <td style="padding:5px;border:solid 1px black;width: 15%;">
+                                        {{item.EMP_FULL_NAME_EN}}
+
+                                    </td>*@
+                                <td style="padding:5px;border:solid 1px black;width:20%;">
+
+                                    <select class="form-control" kendo-drop-down-list name="INV_ITEM_ID" k-option-label="'-- Select Item --'"
+                                            k-data-text-field="'ITEM_NAME_EN'" k-data-value-field="'INV_ITEM_ID'" k-filter="'contains'"
+                                            k-auto-bind="'true'" k-options="vm.itemOptions" k-data-source="vm.itemDataSource"
+                                            ng-model="item.INV_ITEM_ID"></select>
+
+                                    <input type="hidden" ng-model="item.SCM_STR_NDL_ISS_D_ID" />
+                                    <input type="hidden" ng-model="item.KNT_MACHINE_ID" />
+                                    <input type="hidden" ng-model="item.SL_NO" />
+                                    <input type="hidden" ng-model="item.COST_PRICE" />
+                                </td>
+
+
+                                <td style="padding:5px;border:solid 1px black;width: 10%;">
+                                    <input type="text" name="CENTRAL_STR_STOCK" ng-model="item.CENTRAL_STR_STOCK" class="form-control" readonly="readonly" />
+                                </td>
+                                <td style="padding:5px;border:solid 1px black;width: 10%;">
+                                    <input type="text" name="SUB_STR_STOCK" ng-model="item.SUB_STR_STOCK" class="form-control" readonly="readonly" />
+
+                                </td>
+                                <td style="padding:5px;border:solid 1px black;width: 10%;">
+                                    <input type="text" name="BRK_QTY_PCS" ng-model="item.BRK_QTY_PCS" class="form-control" readonly="readonly" />
+
+                                </td>
+                                <td style="padding:5px;border:solid 1px black;width: 10%;">
+                                    <input type="text" name="RQD_QTY_PCS" ng-model="item.RQD_QTY_PCS" class="form-control" readonly />
+
+                                </td>
+                                <td style="padding:5px;border:solid 1px black;width: 10%;">
+                                    <input type="number" name="ISS_QTY_PCS" ng-model="item.ISS_QTY_PCS" min="1" class="form-control double" ng-change="vm.checkStock(item)" />
+
+                                </td>
+                                <td style="padding:5px;border:solid 1px black;width: 5%;">
+                                    <a class="btn btn-success" ng-click="vm.copyItem(item);"><i class="fa fa-copy">Copy</i></a>
+                                </td>
+                            </tr>
+                        </table>
+
+
+                        <div style="padding:3px;">
+                        </div>
+
+                    </fieldset>
+
+
+
+
+                </div>
+
+                <div class="col-md-12" style="padding-top:5px; padding-right:30px">
+                    <div class="form-group" @*style="text-align:right"*@>
+
+                        <div class="col-md-4">
+                            <button type="button" class="btn btn-sm blue" ui-sref="McnNeedleIssueList">Back To List</button>
+                            <button type="button" ng-if="vm.form.SCM_STR_NDL_ISS_H_ID>0 && vm.form.IS_FINALIZED=='N'" class="btn btn-sm green" ng-click="vm.submitAll(vm.form,'Y');">Finalized</button>
+                            <button type="button" ng-if="vm.form.SCM_STR_NDL_ISS_H_ID>0 && vm.form.IS_FINALIZED=='N'" class="btn btn-sm yellow-gold" ng-click="vm.submitAll(vm.form,'N');">Submit</button>
+                            <button type="button" ng-if="!vm.form.SCM_STR_NDL_ISS_H_ID>0" class="btn btn-sm green" ng-click="vm.submitAll(vm.form,'N');">Save</button>
+                            <button type="button" ng-if="!vm.form.SCM_STR_NDL_ISS_H_ID>0" class="btn btn-sm yellow-gold" ng-click="vm.backAll(vm.form);">Back To Requisition</button>
+                            <button type="button" class="btn btn-sm default" ui-sref="McnNeedleIssue({pSCM_STR_NDL_REQ_H_ID : 0})" ui-sref-opts="{reload: true}">Cancel</button>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="control-label col-md-5">
+                                <span aria-required="true" class="required">*</span>
+                                Take Action
+                            </label>
+                            <div class="col-md-7">
+                                <select class="form-control required" kendo-drop-down-list name="RF_ACTN_STATUS_ID" id="RF_ACTN_STATUS_ID" k-option-label="'-- Select Status --'"
+                                        k-data-text-field="'ACTN_STATUS_NAME'" k-data-value-field="'RF_ACTN_STATUS_ID'" k-filter="'contains'"
+                                        k-auto-bind="'true'" k-options="vm.actionOptions" k-data-source="vm.actionDataSource"
+                                        ng-model="vm.form.RF_ACTN_STATUS_ID_NEXT"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </form>
+
+
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,116 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Dyeing</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+    <form name="formData" class="form-horizontal" style="background-color: white;">
+        <div class="portlet-body">
+
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend"><b>Machine & Process Mapping</b></legend>
+                <div><label id="lblMsg"></label></div>
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label">
+                        <span aria-required="true" class="required">*</span>
+                        Dia Type
+                    </label>
+                    <div class="col-md-3">
+                        <select kendo-drop-down-list name="LK_DIA_TYPE_ID" id="LK_DIA_TYPE_ID" class="form-control required"
+                                options="vm.diaTypeList" ng-model="vm.form.LK_DIA_TYPE_ID" ng-change="vm.searchMappingList()"></select>
+                    </div>
+
+                    <label class="col-md-2 control-label">
+                        <span aria-required="true" class="requiredSub">*</span>
+                        Machine
+                    </label>
+                    <div class="col-md-3">
+
+                        <select kendo-drop-down-list name="DF_MACHINE_ID" id="DF_MACHINE_ID" class="form-control required"
+                                options="vm.machineList" ng-model="vm.form.DF_MACHINE_ID"></select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label">
+                        <span aria-required="true" class="required">*</span>
+                        Process
+                    </label>
+                    <div class="col-md-3">
+                        <select kendo-drop-down-list name="DF_PROC_TYPE_ID" id="DF_PROC_TYPE_ID" class="form-control required"
+                                options="vm.processList" ng-model="vm.form.DF_PROC_TYPE_ID" ng-change="vm.searchMappingList()"></select>
+                    </div>
+
+                    <label class="col-md-2 control-label">
+                        <span aria-required="true" class="required">*</span>
+                        Process Sequence
+                    </label>
+                    <div class="col-md-2">
+                        <input type="text" id="PROC_SEQ" class="form-control required" ng-model="vm.form.PROC_SEQ">
+
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label">
+                        <span aria-required="true" class="required">*</span>
+                        Batch Status
+                    </label>
+                    <div class="col-md-3">
+                        <select kendo-drop-down-list name="DYE_BT_STS_TYPE_ID" id="DYE_BT_STS_TYPE_ID" class="form-control required"
+                                options="vm.statusTypeList" ng-model="vm.form.DYE_BT_STS_TYPE_ID"></select>
+                        <br />
+                        <input type="checkbox" ng-model="vm.form.IS_DEFA_FINIS" name="IS_DEFA_FINIS" id="IS_DEFA_FINIS" ng-true-value="'Y'" ng-false-value="'N'" /><label for="IS_DEFA_FINIS">Is Default?</label>
+                    </div>
+
+                    <label class="col-md-2 control-label">
+                        <span aria-required="true" class="required">*</span>
+                        Next Status
+                    </label>
+                    <div class="col-md-3">
+                        <select kendo-multi-select name="NXT_BT_STS_TYPE_LST" id="NXT_BT_STS_TYPE_LST" class="form-control multiSelect"
+                                style="height:40px;" options="vm.statusTypeList" ng-model="vm.form.NXT_BT_STS_TYPE_LST"></select>
+                    </div>
+
+                </div>
+                <br />
+
+                <div class="form-group">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                        <button type="button" ng-if="vm.form.DF_MAP_MCN_PROC_ID>0" class="btn btn-sm yellow" ng-click="vm.submitAll(vm.form)">Update</button>
+                        <button type="button" ng-if="!vm.form.DF_MAP_MCN_PROC_ID>0" class="btn btn-sm green" ng-click="vm.submitAll(vm.form)">Save</button>
+
+                        <button type="button" class="btn btn-sm default" ng-click="vm.resetAll()">Clear</button>
+                    </div>
+
+                </div>
+
+                <div style="padding:3px;">
+                </div>
+                <div style="padding:10px;">
+                    <div kendo-grid="vm.webapiGrid" k-data-source="vm.machineProcessList" k-options=" vm.gridOptions"></div>
+                </div>
+
+            </fieldset>
+
+        </div>
+    </form>
+</div>

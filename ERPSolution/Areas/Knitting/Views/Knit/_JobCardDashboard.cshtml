@@ -1,0 +1,169 @@
+﻿
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Knitting</a>
+
+    </li>
+    <li>
+        <a href="#">Job Card Dashboard</a>
+    </li>
+</ul>
+
+
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body form-horizontal">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        <fieldset class="custom-fieldset">
+            <legend class="custom-legend"><b>Search</b></legend>
+            <div>
+                <div>
+                    <table class="clsTable">
+                        <thead>
+                            <tr class="clstd">
+                                <td class="clstd">
+                                    <b>Type</b>
+                                </td>
+                                <td class="clstd">
+                                    <b>Buyer A/C</b>
+                                </td>
+
+                                <td class="clstd">
+                                    <b>Shipment</b>
+                                </td>
+                                <td class="clstd">
+                                    <b>Work Style</b>
+                                </td>
+                                <td class="clstd">
+                                    <b>Order #</b>
+                                </td>
+
+                                <td class="clstd">
+                                    <b>Action</b>
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody class="clsthead">
+                            <tr class="clstd">
+                                <td class="clstd">
+                                    <select kendo-drop-down-list name="RF_FAB_PROD_CAT_ID" id="RF_FAB_PROD_CAT_ID" class="form-control"
+                                            options="productionTypeList" ng-model="search.RF_FAB_PROD_CAT_ID"></select>
+
+                                </td>
+                                <td class="clstd">
+                                    <select kendo-drop-down-list name="MC_BYR_ACC_ID" class="form-control"
+                                            k-options="buyerAcList" id="MC_BYR_ACC_ID" ng-model="search.MC_BYR_ACC_ID" required></select>
+
+                                </td>
+
+                                <td class="clstd">
+                                    <select class="form-control" kendo-drop-down-list name="MONTHOF" k-option-label="'-- Select Month --'"
+                                            k-data-text-field="'MONTHOF'" k-data-value-field="'MONTHOF'" k-filter="'contains'"
+                                            k-auto-bind="'true'" k-data-source="shipMonthList" k-ng-delay="shipMonthList" ng-model="search.MONTHOF"
+                                            k-on-change="onChangeShipMonth(kendoEvent)"></select>
+                                </td>
+
+                                <td class="clstd">
+                                    <select class="form-control" kendo-drop-down-list name="MC_FAB_PROD_ORD_H_ID" k-option-label="'--Style --'"
+                                            k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_FAB_PROD_ORD_H_ID'" k-filter="'Contains'"
+                                            k-template="template" k-value-template="valueTemplate"
+                                            k-auto-bind="'true'" k-data-source="StyleExtDs" ng-model="search.MC_FAB_PROD_ORD_H_ID"
+                                            k-on-change="onFabOrderChange(kendoEvent)" required></select>
+                                </td>
+                                <td class="clstd">
+                                    <select class="form-control" kendo-drop-down-list name="MC_FAB_PROD_ORD_H_ID" k-option-label="'--Order# --'"
+                                            k-data-text-field="'ORDER_NO_LST'" k-data-value-field="'MC_FAB_PROD_ORD_H_ID'" k-filter="'Contains'"
+                                            k-template="templateOh" k-value-template="valueTemplateOh"
+                                            k-auto-bind="'true'" k-data-source="FabOederByOhDs" ng-model="search.MC_FAB_PROD_ORD_H_ID"
+                                            required style="width:100%;"></select>
+
+                                </td>
+
+                                <td class="clstd">
+                                    <button class="btn btn-sm blue" ng-click="vm.showFabProdOrderList();"><i class='fa fa-search'></i> Show</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </fieldset>
+        <div style="padding:5px;">
+            <kendo-grid k-options="vm.gridOptions" id="FabProdOrderGrid" k-data-source="vm.gridOptionsDs">
+                <div k-detail-template>
+                    <div>
+                        <div kendo-grid k-options="vm.detailGridOptionsForSupp(dataItem)"></div>
+                    </div>
+                </div>
+
+            </kendo-grid>
+        </div>
+    </div>
+</div>
+
+@*<script type="text/x-kendo-template" id="JobCardDashBoardTemplate">
+    <div class="toolbar">
+        <div class="actions">
+
+            <form class="form-horizontal" role="form" name="JobCardDashBoard" novalidate
+                  ng-submit="vm.getJobCardList(vm.form.MC_BYR_ACC_ID,vm.form.MC_BUYER_ID,vm.form.MC_STYLE_H_EXT_ID)">
+                <label class="col-md-1 control-label" align="right">
+                    Buyer A/C
+                </label>
+                <div class="col-md-2" style="padding-left:0px;padding-right:5px;">
+
+                    <select kendo-drop-down-list name="MC_BYR_ACC_ID" class="form-control"
+                            k-options="vm.buyerAcList" id="MC_BYR_ACC_ID" ng-model="vm.form.MC_BYR_ACC_ID"></select>
+                </div>
+                <label class="col-md-1 control-label" align="right" style="padding-left:0px;padding-right:10px;">
+                    Buyer
+                </label>
+
+                <div class="col-md-2" style="padding-left:0px;padding-right:5px;">
+                    <select class="form-control" kendo-drop-down-list name="MC_BUYER_ID" k-option-label="'-- Select Buyer --'"
+                            k-data-text-field="'BUYER_NAME_EN'" k-data-value-field="'MC_BUYER_ID'"
+                            k-auto-bind="'true'" k-data-source="vm.BuyerListDs" ng-model="vm.form.MC_BUYER_ID"
+                            k-on-data-bound="vm.buyerListOnBound(kendoEvent)" k-on-change="vm.buyerListOnChange(kendoEvent)"></select>
+                </div>
+
+                <label class="col-md-1 control-label" align="right" style="padding-left:0px;padding-right:10px;">
+                    Style
+                </label>
+
+                <div class="col-md-2" style="padding-left:0px;padding-right:0px;">
+                    <select class="form-control" kendo-drop-down-list name="MC_STYLE_H_EXT_ID" k-option-label="'-- Select Style --'"
+                            k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_STYLE_H_EXT_ID'"
+                            k-auto-bind="'true'" k-data-source="vm.StyleExtDs" ng-model="vm.form.MC_STYLE_H_EXT_ID"></select>
+                </div>
+
+                <div class="col-md-1">
+                    <button type="submit" class="btn btn-sm default">
+                        <i class="fa fa-search"></i> Load
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</script>*@
+
+
+

@@ -1,0 +1,59 @@
+﻿<style>
+    .nav-tabs > li > a {
+        margin-right: 2px;
+        margin-bottom: 3px;
+        font-size: 13px;
+        line-height: 1.42857143;
+        border: 1px solid #231f1f;
+        border-radius: 4px 4px 0 0;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+</style>
+
+
+<div class="portlet box blue-dark">
+    @*<div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>*@
+
+    <div class="portlet-body">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+       
+
+        <div class="row well well-sm" style="margin:5px;">
+            <label class="col-md-1 control-label" style="padding-left: 0px; padding-right: 0px;">
+                Booking Month
+            </label>
+                <div class="col-md-2" style="padding-left:0px;padding-right:0px;">
+                    <select class="form-control" kendo-drop-down-list name="MONTHOF" k-option-label="'-- Select Month --'"
+                            k-data-text-field="'MONTHOF'" k-data-value-field="'MONTHOF'" k-filter="'contains'"
+                            k-auto-bind="'true'" k-data-source="vm.shipMonthList" ng-model="vm.form.MONTHOF"
+                            k-on-change="vm.onChangeShipMonth(vm.form,kendoEvent)"></select>
+                </div>
+        </div>
+
+
+        <div class="row" style="margin:5px;">
+
+            <tabset>
+                <tab ng-repeat="tab in vm.tabList" deselect="tab.IS_TAB_ACT=false" select="tab.IS_TAB_ACT=true;vm.onSelect(tab)" heading="{{tab.BYR_ACC_NAME_EN}}" active="tab.IS_TAB_ACT">
+                    <div data-ui-view="TabInside{{tab.IS_TAB_ACT?'':0}}"></div>
+                </tab>
+            </tabset>
+        </div>
+    </div>
+</div>
+
+

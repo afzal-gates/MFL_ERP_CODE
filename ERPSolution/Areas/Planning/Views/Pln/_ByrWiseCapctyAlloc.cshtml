@@ -1,0 +1,259 @@
+﻿
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Garments</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">            
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <form class="form-horizontal" role="form" name="frmByrWiseCapctyAlloc" novalidate>
+            <div class="form-body clearfix" style="padding-top:5px;">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <div class="row" style="margin:auto;" ng-show="vm.errors">
+                            <div class="alert alert-danger" role="alert">
+                                @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                                <div style="padding: 0px 0px 15px 25px; ">
+                                    <b>Please fix the following errors ....</b>
+                                </div>
+                                <ul ng-repeat="field in vm.errors">
+                                    <li ng-repeat="error in field" ng-bind="error"></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2" style="padding-left:0px;padding-right:0px">
+                            <fieldset class="custom-fieldset">
+                                <legend class="custom-legend">Search</legend>
+
+                                <div class="form-group">
+
+                                    <label class="col-md-3 control-label">
+                                        <span aria-required="true" class="required">*</span>Year
+                                    </label>
+                                    <div class="col-md-7">
+                                        <select class="form-control" kendo-drop-down-list name="RF_FISCAL_YEAR_ID" required
+                                                k-data-text-field="'FY_NAME_EN'" k-data-value-field="'RF_FISCAL_YEAR_ID'" k-option-label="'-- Select --'"
+                                                k-auto-bind="'true'" k-options="vm.clndrYearOption" k-data-source="vm.clndrYearDataSource" ng-model="vm.form.RF_FISCAL_YEAR_ID"></select>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <kendo-grid id="capctyMnGrid" k-options="vm.clndrMonthOption" k-data-source="vm.clndrMonthDataSource" @*k-on-change="vm.onChangeCapctyMn(dataItem)"*@></kendo-grid>
+                                    </div>
+                                </div>
+
+                            </fieldset>
+
+                            <fieldset class="custom-fieldset">
+                                <legend class="custom-legend">Free for Buyer Alloc [Pcs]</legend>
+
+                                <div class="form-group">
+
+                                    <div class="col-md-12">
+                                        <kendo-grid id="capctyFree4ByrAllocGrid" k-options="vm.mnCapctyFree4ByrAllocOption" k-data-source="vm.mnCapctyFree4ByrAllocDataSource" @*k-on-change="vm.onChangeCapctyMn(dataItem)"*@></kendo-grid>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+
+                        <fieldset class="custom-fieldset">
+                            <legend class="custom-legend">Buyer Wise Allocation</legend>
+
+                            @*<div class="form-group">*@
+                            <div class="col-md-12" style="padding-left:0px;padding-right:0px">
+                                <kendo-grid k-options="vm.mainMnByrWiseAllocOption" k-data-source="vm.mainMnByrWiseAllocDataSource">
+                                    <div k-detail-template ng-init="vm.detailExpand(dataItem);">
+                                        <div class="row" style="padding-left: 5px; padding-right: 5px; overflow: scroll;">
+
+                                            <table class="table table-striped" style="border-collapse: collapse; overflow:scroll;">
+                                                <thead>
+                                                    <tr class="danger" style="border: solid 1px lightgray;">
+                                                        <th rowspan="2" width="19%" style="border: solid 1px black; text-align: center; ">Week</th>
+                                                        <th width="27%" style="border: solid 1px black; text-align: center">Basic (Pcs)</th>
+                                                        <th width="27%" style="border: solid 1px black; text-align: center">Fancy (Pcs)</th>
+                                                        <th width="27%" style="border: solid 1px black; text-align: center">Polo (Pcs)</th>
+                                                    </tr>
+                                                    <tr class="danger">
+                                                        <th style="border: solid 1px black; text-align: center; padding-left: 0px; padding-right: 0px">
+                                                            <span class="col-md-4" style="padding-left: 0px; padding-right: 0px; border-right: 1px solid black">Alloc</span>
+                                                            <span class="col-md-4" style="padding-left: 0px; padding-right: 0px; border-right: 1px solid black">Booked</span>
+                                                            <span class="col-md-4" style="padding-left: 0px; padding-right: 0px; float: none;">Free</span>
+                                                        </th>
+                                                        <th style="border: solid 1px black; text-align: center; padding-left: 0px; padding-right: 0px; ">
+                                                            <span class="col-md-4" style="padding-left: 0px; padding-right: 0px; border-right: 1px solid black">Alloc</span>
+                                                            <span class="col-md-4" style="padding-left: 0px; padding-right: 0px; border-right: 1px solid black">Booked</span>
+                                                            <span class="col-md-4" style="padding-left: 0px; padding-right: 0px; float: none;">Free</span>
+                                                        </th>
+                                                        <th style="border: solid 1px black; text-align: center; padding-left: 0px; padding-right: 0px">
+                                                            <span class="col-md-4" style="padding-left: 0px; padding-right: 0px; border-right: 1px solid black">Alloc</span>
+                                                            <span class="col-md-4" style="padding-left: 0px; padding-right: 0px; border-right: 1px solid black">Booked</span>
+                                                            <span class="col-md-4" style="padding-left: 0px; padding-right: 0px; float: none;">Free</span>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    <tr ng-repeat="itmWK in dataItem.WEEK_LIST track by itmWK.WEEK_SL" style="border: solid 1px black;">
+                                                        <td style="border: solid 1px black;"><b>WK-{{itmWK.WEEK_SL}}</b> [{{itmWK.WEEK_NAME}}]</td>
+                                                        <td ng-repeat="itmWkGmtTyp in itmWK.WK_BYR_WISE_ALLOC_LIST track by itmWkGmtTyp.GMT_CAPACITY_BYR_ALLOC_ID" style="padding-left: 0px; padding-right: 0px; text-align: center; border: solid 1px black;">
+                                                            <span class="col-md-4" style="padding-left: 0px; padding-right: 0px; border-right: 1px solid black"
+                                                                  ng-class="{'has-error':frmByrWiseCapctyAlloc['ALLOC_PCS-{{itmWkGmtTyp.GMT_CAPACITY_BYR_ALLOC_ID}}'].$invalid}">
+
+                                                                <input type="number" class="form-control" name="ALLOC_PCS-{{itmWkGmtTyp.GMT_CAPACITY_BYR_ALLOC_ID}}" ng-model="itmWkGmtTyp.ALLOC_PCS"
+                                                                       ng-min="{{itmWkGmtTyp.BOOKED_PCS}}" style="text-align: center;" ng-change="vm.onChangeWkAllocPcs(itmWkGmtTyp)" />
+                                                            </span>
+                                                            <span class="col-md-4" style="padding-left: 0px; padding-right: 0px; border-right: 1px solid black">
+                                                                <input type="number" class="form-control" name="BOOKED_PCS" ng-model="itmWkGmtTyp.BOOKED_PCS" style="text-align: center;" disabled />
+                                                            </span>
+                                                            <span class="col-md-3" style="padding-left: 0px; padding-right: 0px;">
+                                                                @*{{itmWkGmtTyp.FREE_PCS}}*@
+                                                                <input type="number" class="form-control" name="FREE_PCS" ng-model="itmWkGmtTyp.FREE_PCS" style="text-align: center;" disabled />
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+
+                                                    @*<tr class="danger">
+                                                        <td style="border: solid 1px black;"><b>Buyer Total</b></td>
+                                                        <td style="border: solid 1px black; text-align: center; padding-left: 0px; padding-right: 0px">
+                                                            <span class="col-md-4" style="padding-left: 0px; padding-right: 0px; border-right: 1px solid black">
+                                                                <b>{{vm.wkByrWiseSummery.BASIC_ALLOC_PCS}}</b>
+                                                            </span>
+                                                            <span class="col-md-4" style="padding-left: 0px; padding-right: 0px; border-right: 1px solid black">
+                                                                <b>{{vm.wkByrWiseSummery.BASIC_BOOKED_PCS}}</b>
+                                                            </span>
+                                                            <span class="col-md-3" style="padding-left: 0px; padding-right: 0px; ">
+                                                                <b>{{vm.wkByrWiseSummery.BASIC_FREE_PCS}}</b>
+                                                            </span>
+                                                        </td>
+                                                        <td style="border: solid 1px black; text-align: center; padding-left: 0px; padding-right: 0px">
+                                                            <span class="col-md-4" style="padding-left: 0px; padding-right: 0px; border-right: 1px solid black">
+                                                                <b>{{vm.wkByrWiseSummery.FANCY_ALLOC_PCS}}</b>
+                                                            </span>
+                                                            <span class="col-md-4" style="padding-left: 0px; padding-right: 0px; border-right: 1px solid black">
+                                                                <b>{{vm.wkByrWiseSummery.FANCY_BOOKED_PCS}}</b>
+                                                            </span>
+                                                            <span class="col-md-3" style="padding-left: 0px; padding-right: 0px; ">
+                                                                <b>{{vm.wkByrWiseSummery.FANCY_FREE_PCS}}</b>
+                                                            </span>
+                                                        </td>
+                                                        <td style="border: solid 1px black; text-align: center; padding-left: 0px; padding-right: 0px">
+                                                            <span class="col-md-4" style="padding-left: 0px; padding-right: 0px; border-right: 1px solid black">
+                                                                <b>{{vm.wkByrWiseSummery.POLO_ALLOC_PCS}}</b>
+                                                            </span>
+                                                            <span class="col-md-4" style="padding-left: 0px; padding-right: 0px; border-right: 1px solid black">
+                                                                <b>{{vm.wkByrWiseSummery.POLO_BOOKED_PCS}}</b>
+                                                            </span>
+                                                            <span class="col-md-3" style="padding-left: 0px; padding-right: 0px; ">
+                                                                <b>{{vm.wkByrWiseSummery.POLO_FREE_PCS}}</b>
+                                                            </span>
+                                                        </td>                                                        
+                                                    </tr>*@
+                                                </tbody>
+
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </kendo-grid>
+                            </div>
+                            @*</div>*@
+
+                        </fieldset>
+
+                                              
+                        <div class="col-md-12" style="padding-left:0px;padding-top:5px;text-align:right">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <button type="button" class="btn btn-sm green" ng-click="vm.save()" ng-class="{'disabled':!frmByrWiseCapctyAlloc.$valid||vm.mainMnByrWiseAllocDataSource.data().length<1}" @*ng-show="vm.form.GMT_CAPACITY_MN_ID<1"*@>Save</button>
+                                    @*<button type="button" class="btn btn-sm yellow-gold" ng-click="vm.save()" ng-class="{'disabled':!frmByrWiseCapctyAlloc.$valid}" ng-show="vm.form.GMT_CAPACITY_MN_ID>0">Update</button>*@
+                                    
+                                    <button type="button" class="btn btn-sm blue" ng-click="vm.cancel()">Cancel</button>
+
+                                    @*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <button class="btn btn-sm blue-hoki" type="button" ng-click="vm.backToList()">
+                                        Back to List
+                                    </button>*@
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+        
+        @*<pre>{{frmByrWiseCapctyAlloc|json}}</pre>*@
+        
+       
+    </div>
+</div>
+
+
+<style scoped>
+    .k-treeview .k-in {
+        padding: 5px;
+    }
+
+    /*div.k-treeview {
+        overflow: auto;
+    }*/
+
+    #ItemCategTreeview .k-sprite {
+        background-image: url("/Content/assets/global/img/coloricons-sprite.png");
+    }
+
+    .rootfolder {
+        background-position: 0 0;
+    }
+
+    .folder {
+        background-position: 0 -16px;
+    }
+
+    .pdf {
+        background-position: 0 -32px;
+    }
+
+    .html {
+        background-position: 0 -48px;
+    }
+
+    .image {
+        background-position: 0 -64px;
+    }
+
+    .demo-section {
+        float: left;
+        width: 200px;
+        margin: 0 60px 0 0;
+    }
+</style>

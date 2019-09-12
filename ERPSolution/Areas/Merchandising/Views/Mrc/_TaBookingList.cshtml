@@ -1,0 +1,100 @@
+﻿
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="margin:auto;">
+            <div class="col-md-12">
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend">Search By</legend>
+
+                    <form class="form-horizontal" role="form" name="TnAFollowupForm" novalidate
+                          ng-submit="vm.getPoHeaderList(vm.form)">
+                        <label class="col-md-1 control-label" align="right">
+                            Buyer A/C
+                        </label>
+                        <div class="col-md-2" style="padding-left:0px;padding-right:5px;">
+
+                            <select kendo-drop-down-list name="MC_BYR_ACC_ID" class="form-control"
+                                    k-options="vm.buyerAcList" id="MC_BYR_ACC_ID" ng-model="vm.form.MC_BYR_ACC_ID"></select>
+                        </div>
+                        <label class="col-md-1 control-label" align="right" style="padding-left:0px;padding-right:10px;">
+                            Ship Month
+                        </label>
+
+                        <div class="col-md-2" style="padding-left:0px;padding-right:5px;">
+                            <select class="form-control" kendo-drop-down-list name="MONTHOF" k-option-label="'-- Select Month --'"
+                                    k-data-text-field="'MONTHOF'" k-data-value-field="'MONTHOF'" k-filter="'contains'"
+                                    k-auto-bind="'true'" k-data-source="vm.shipMonthList" ng-model="vm.form.MONTHOF"
+                                    k-on-change="vm.onChangeShipMonth(vm.form,kendoEvent)"></select>
+                        </div>
+
+                        <label class="col-md-1 control-label" align="right" style="padding-left:0px;padding-right:10px;">
+                            Style/Order
+                        </label>
+
+                        <div class="col-md-3" style="padding-left:0px;padding-right:0px;">
+                            <select class="form-control" kendo-drop-down-list name="MC_ORDER_H_ID" k-option-label="'--Order --'"
+                                    k-data-text-field="'ORDER_NO'" k-data-value-field="'MC_ORDER_H_ID'" k-filter="'Contains'"
+                                    k-template="template"
+                                    k-auto-bind="'true'" k-data-source="vm.oderListDs" ng-model="vm.form.MC_ORDER_H_ID"
+                                    required style="width:100%;border-bottom-width:1px;"></select>
+                        </div>
+
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-sm default" ng-disabled="!vm.form.MC_BYR_ACC_ID">
+                                Search
+                            </button>
+                        </div>
+                    </form>
+                </fieldset>
+            </div>
+
+        </div>
+        <div class="row" style="margin:auto;">
+            <div class="col-md-12">
+                <fieldset class="custom-fieldset">
+                    <legend class="custom-legend"> Trim & Accessories Booking List </legend>
+                    <div kendo-grid k-options="vm.taBookingPoHrdOpt" k-data-source="vm.taBookingPoHrdDs" id="idStyleExtentionList">
+
+                        <div k-detail-template>
+                            <div kendo-grid k-options="vm.taBookingPoHrdDtl(dataItem)"></div>
+                        </div>
+
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <br />
+    </div>
+</div>
+
+

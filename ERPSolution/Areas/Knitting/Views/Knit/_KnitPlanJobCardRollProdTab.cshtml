@@ -1,0 +1,619 @@
+﻿<div class="portlet">
+
+    <div class="portlet-title">
+        <div class="caption">
+            <h4 style="margin:0px;color:white;"><b>{{vm.Title}}</b></h4>
+        </div>
+        <div class="tools">
+            <button class="btn btn-xs" ng-click="vm.openPrinterConfigModal()">
+                <span class="item"> <span aria-hidden="true" class="icon-printer"></span>&nbsp;Printer Setting</span>
+            </button>
+
+            <button class="btn btn-xs" data-ui-sref="KnitPlanJobCardRollProdTab" ui-sref-opts="{reload:true}">
+                <span class="item"> <span aria-hidden="true" class="icon-reload"></span>&nbsp;Refresh</span>
+            </button>
+            &nbsp;
+            <button class="btn btn-xs" ng-click="vm.openConfigModal()">
+                <span class="item"> <span aria-hidden="true" class="icon-settings"></span>&nbsp;Settings</span>
+            </button>
+            <button class="btn btn-xs" style="color: #070a15;">
+                <a href="/">
+                    <span class="item"> <span aria-hidden="true" class="icon-home"></span></span>
+                </a>
+            </button>
+
+        </div>
+    </div>
+
+    <div class="portlet-body">
+        <div class="tiles">
+            <div class="tile image double" ng-repeat="n in OperatorList" style="height: 300px;">
+                <div class="tile-body">
+                    <img ng-src="{{'/UPLOAD_DOCS/EMP_PHOTOS/'+n.EMPLOYEE_CODE+'.jpg'}}" alt="" ng-click="vm.pinCodeModal(n)">
+                </div>
+                <div class="tile-object" style="background-color: #1f365d;">
+                    <div class="name">
+                        <b>{{n.EMPLOYEE_CODE+' - '+n.EMP_FULL_NAME_EN}}</b>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="FloorConfigModal.html">
+    <div class="modal-body">
+
+        <div id="splash-page" data-ng-show="showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h3 style="padding-top:10px;margin-top:3px;">
+                        <span class="item"> <span aria-hidden="true" class="icon-settings"></span>&nbsp;Tab Settings for Machine(s)</span>
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </h3>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div style="padding:5px;">
+
+
+                    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)"><h4 style="margin:0px;">{{alert.msg}}</h4></alert>
+
+                    <div class="row" style="padding-bottom:5px;">
+                        <div class="col-md-9">
+                            @*<h4 style="margin:0px;">Lead Time: <b>{{leadTime}}</b> Days</h4>*@
+                        </div>
+                        <div class="col-md-3" align="right">
+                            <div class="input-icon right">
+                                <i class="icon-magnifier" style="margin-top: 6px;"></i>
+                                <input type="text" class="form-control form-control-solid" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" ng-model="q" placeholder="search...">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <table class="table table-condensed table-striped table-bordered" style="margin-bottom: 0px">
+                        <thead>
+                            <tr>
+                                <th style="width: 20%;">
+                                    Floor
+                                </th>
+                                <th style="width: 40%;">
+                                    Machine #
+                                </th>
+                                <th style="width: 30%;">
+                                    DiaXGauge
+                                </th>
+                                <th style="width: 10%;">
+                                    #ofFeeder
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+
+                    @*<div class="table-scrollable" style="margin:0px;">
+
+                        </div>*@
+
+
+                    <div slimscroll="{height: 300,allowPageScroll:true,railVisible :true,allowPageScroll :true}">
+                        <table class="table table-condensed table-striped table-bordered" style="margin-bottom: 3px">
+                            <tbody>
+
+                                <tr ng-repeat="item in mcList|filter:q">
+
+                                    @*<td style="width: 20%;" rowspan="{{item.RF_LOCATION_ID_SPAN}}" ng-if="item.RF_LOCATION_ID_SL==item.RF_LOCATION_ID_SPAN">*@
+                                    <td style="width: 20%;">
+
+                                        @*{{item.RF_LOCATION_ID_SPAN}} {{item.RF_LOCATION_ID_SL}}*@
+                                        <div class="checkbox-list">
+                                            <label class="checkbox-list">
+                                                <span><input type="checkbox" ng-model="item.IS_SELECT_FLR" ng-change="FloorChange(item.RF_LOCATION_ID,item.IS_SELECT_FLR)"></span> {{item.LOCATION_NAME}}
+                                            </label>
+                                        </div>
+
+
+                                    </td>
+                                    <td style="width: 40%;">
+
+                                        <div class="checkbox-list">
+                                            <label class="checkbox-list">
+                                                <span><input type="checkbox" ng-model="item.IS_SELECT_MC"></span> {{item.KNT_MACHINE_NO}}
+                                            </label>
+                                        </div>
+
+
+                                    </td>
+                                    <td style="width: 30%;">
+                                        {{item.MC_DIA+' X '+item.MC_GAUGE_NAME}}
+                                    </td>
+                                    <td style="width: 10%;">
+                                        {{item.NO_FEEDER}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <button type="button" class="btn btn-sm green" ng-click="save(mcList)">Save</button>
+                                <button type="button" class="btn btn-sm default" ng-click="close()">Close</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="PinCodeModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h3 style="padding-top:10px;margin-top:3px;">
+                        <span class="item">
+                            <span aria-hidden="true" class="icon-key"></span>
+                            &nbsp;Pin Code
+                        </span>
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </h3>
+                </div>
+            </div>
+            <div class="portlet-body">
+
+
+                <div class="row" style="padding:5px;">
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)"><h4 style="margin:0px;">{{alert.msg}}</h4></alert>
+                            <div class="input-group">
+                                <div class="input-icon">
+                                    <i class="fa fa-lock fa-fw"></i>
+                                    <input class="form-control" type="password" ng-model="PIN_CODE" readonly style="height: 45px;font-size:30px;font-weight:800;" name="password" placeholder="Pin Code">
+                                </div>
+                                <span class="input-group-btn">
+                                    <button id="genpassword" ng-click="PIN_CODE = PIN_CODE.substring(0, PIN_CODE.length - 1);" class="btn btn-lg btn-warning" type="button">
+                                        <i class="fa fa-arrow-left fa-fw"></i>
+                                        Clear
+                                    </button>
+                                    <button id="genpassword" class="btn btn-lg btn-success" type="button" ng-click="save(PIN_CODE)" ng-disabled="PIN_CODE.length!=3">
+                                        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                        Enter
+                                        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="btn-group btn-group-justified">
+                                <a class="btn btn-lg btn-default" ng-click="PIN_CODE.length>2?'': PIN_CODE=PIN_CODE+'1'">
+                                    <h1 style="margin:0px;"><b>1</b></h1>
+                                </a>
+                                <a class="btn btn-lg btn-default" ng-click="PIN_CODE.length>2?'': PIN_CODE=PIN_CODE+'2'">
+                                    <h1 style="margin:0px;"><b>2</b></h1>
+                                </a>
+                                <a class="btn btn-lg btn-default" ng-click="PIN_CODE.length>2?'': PIN_CODE=PIN_CODE+'3'">
+                                    <h1 style="margin:0px;"><b>3</b></h1>
+                                </a>
+                            </div>
+                            <div class="btn-group btn-group-justified">
+                                <a class="btn btn-lg btn-default" ng-click="PIN_CODE.length>2?'': PIN_CODE=PIN_CODE+'4'">
+                                    <h1 style="margin:0px;"><b>4</b></h1>
+                                </a>
+                                <a class="btn btn-lg btn-default" ng-click="PIN_CODE.length>2?'': PIN_CODE=PIN_CODE+'5'">
+                                    <h1 style="margin:0px;"><b>5</b></h1>
+                                </a>
+                                <a class="btn btn-lg btn-default" ng-click="PIN_CODE.length>2?'': PIN_CODE=PIN_CODE+'6'">
+                                    <h1 style="margin:0px;"><b>6</b></h1>
+                                </a>
+                            </div>
+                            <div class="btn-group btn-group-justified" ng-click="PIN_CODE.length>2?'': PIN_CODE=PIN_CODE+'7'">
+                                <a class="btn btn-lg btn-default">
+                                    <h1 style="margin:0px;"><b>7</b></h1>
+                                </a>
+                                <a class="btn btn-lg btn-default" ng-click="PIN_CODE.length>2?'': PIN_CODE=PIN_CODE+'8'">
+
+                                    <h1 style="margin:0px;"><b>8</b></h1>
+                                </a>
+                                <a class="btn btn-lg btn-default" ng-click="PIN_CODE.length>2?'': PIN_CODE=PIN_CODE+'9'">
+                                    <h1 style="margin:0px;"><b>9</b></h1>
+                                </a>
+                            </div>
+                            <div class="btn-group btn-group-justified">
+                                <a class="btn btn-lg btn-default">
+                                </a>
+                                <a class="btn btn-lg btn-default" ng-click="PIN_CODE.length>2?'': PIN_CODE=PIN_CODE+'0'">
+                                    <h1 style="margin:0px;"><b>0</b></h1>
+                                </a>
+                                <a class="btn btn-lg btn-default">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="McSelectionModal.html">
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h3 style="padding-top:10px;margin-top:3px;">
+                        <span class="item">
+
+                            &nbsp;Choose Machine
+                        </span>
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                    </h3>
+                </div>
+            </div>
+            <div class="portlet-body">
+
+
+                <div class="row" style="padding:5px;">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="btn-group btn-group-justified">
+                                <a class="btn btn-lg btn-default" ng-click="save(itm)" ng-repeat="itm in OP.mc_list">
+                                    <h1 style="margin:0px;"><b>{{itm.KNT_MACHINE_NO}}</b></h1>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</script>
+
+
+<script type="text/ng-template" id="RollProductionModal.html">
+    <div class="modal-body">
+        <div class="portlet light ">
+            <div class="portlet-title" style="margin: 0px; min-height: 20px; height: 30px; padding-top: 0px;">
+                <div class="caption caption-md" style="padding:0px;">
+                    <span class="caption-subject theme-font-color bold uppercase">Knit Card Summary</span>
+                </div>
+                <div class="tools">
+                    <a href="javascript:;" ng-click="cancel()" class="remove" data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body" style=" padding-top: 0px;">
+                <div class="row list-separated" style=" margin-bottom: 0px;margin-top: 0px;">
+                    <div class="col-md-5 col-sm-5">
+                        <div class="font-blue-sharp font-md">
+                            Order#
+                        </div>
+                        <div class="font-md font-blue-dark">
+                            <span class="font-lg"><b>{{KnitCard.ORDER_NO_LIST+' ('+KnitCard.BYR_ACC_NAME_EN+' )'}}</b></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-3">
+                        <div class="font-blue-sharp font-md">
+                            Color
+                        </div>
+                        <div class="font-md font-blue-dark">
+                            <span class="font-lg"><b>{{KnitCard.COLOR_NAME_EN}}</b></span>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-sm-2">
+                        <div class="font-blue-sharp font-md">
+                            Fab Type
+                        </div>
+                        <div class="font-md font-blue-dark">
+                            <span class="font-lg"><b>{{KnitCard.FAB_TYPE_NAME}}</b></span>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-sm-2">
+                        <div class="font-blue-sharp font-md">
+                            Machine
+                        </div>
+                        <div class="font-md font-blue-dark">
+                            <span class="font-lg" style="font-weight:900;"> <b>{{KnitCard.KNT_MACHINE_NO}}</b></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row list-separated" style="background-color: black; margin-bottom: 0px; margin-top: 0px;font-size:40px;">
+
+                    <div class="col-md-3 col-sm-3">
+                        <div class="font-grey-mint font-sm">
+                            Knit Card No
+                        </div>
+                        <div class="uppercase font-blue-sharp" style="font-size:40px;">
+                            <b><b>{{KnitCard.JOB_CRD_NO}}</b></b>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-3">
+                        <div class="font-grey-mint font-sm">
+                            Assigned Quantity
+                        </div>
+                        <div class="uppercase font-yellow-gold" style="font-size:40px;">
+                            <b><b>{{KnitCard.ASIGN_QTY}}</b></b>  <span class="font-lg font-grey-mint">kg</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-3">
+                        <div class="font-grey-mint font-sm">
+                            Produced Quantity
+                        </div>
+                        <div class="uppercase font-yellow-gold" style="font-size:40px;">
+                            <b><b>{{KnitCard.PROD_QTY}}</b></b>  <span class="font-lg font-grey-mint">kg</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-3">
+                        <div class="font-grey-mint font-sm">
+                            Left Quantity
+                        </div>
+                        <div class="uppercase font-yellow-gold" style="font-size:40px;">
+                            <b><b>{{KnitCard.ASIGN_QTY-KnitCard.PROD_QTY}}</b></b> <span class="font-lg font-grey-mint">Kg</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row list-separated" style="background-color: white; margin-bottom: 0px; margin-top: 0px;font-size:40px;">
+
+                    <div class="col-md-12 col-sm-12">
+                        <div class="font-grey-cascade" style="font-size:20px;">
+                            Note: <b><b>{{KnitCard.PLAN_NOTE}}</b></b>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row list-separated" style="border: 1px solid chocolate; margin-bottom: 0px; margin-top: 0px; " ng-show="!hideEntry">
+                    <br />
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="input-group">
+                                <div class="input-icon">
+                                    <i class="fa" style="font-size:20px;font-weight:700">Weight</i>
+                                    <input class="form-control" type="text" ng-model="KnitCard.FAB_ROLL_WT" readonly style="height: 45px;font-size:40px;font-weight:800; padding-left: 100px;" ng-style="{'border': (CONFIRM_DISABLED || ((KnitCard.FAB_ROLL_WT*1) > 40))?'2px solid #d2691e':'1px solid green'}" name="password">
+                                </div>
+                                <span class="input-group-btn">
+                                    <button id="genpassword" ng-click="KnitCard.FAB_ROLL_WT = KnitCard.FAB_ROLL_WT.substring(0, KnitCard.FAB_ROLL_WT.length - 1);" class="btn btn-lg btn-warning" type="button">
+                                        <i class="fa fa-arrow-left fa-fw"></i>
+                                    </button>
+                                    <button ng-if="KnitCard.IS_KNT_CLOSED=='N'"  id="genpassword" class="btn btn-lg btn-success" type="button" ng-click="save(KnitCard)" ng-disabled="KnitCard.FAB_ROLL_WT.length==0||CONFIRM_DISABLED||(KnitCard.FAB_ROLL_WT*1) > 40">
+                                        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                        Confirm
+                                        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+
+                                    </button>
+
+                                    <span class="badge badge-danger" ng-if="KnitCard.IS_KNT_CLOSED=='Y'">[Closed]</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="btn-group btn-group-justified">
+                                <a class="btn btn-lg btn-default" ng-click="KnitCard.FAB_ROLL_WT.length>4?'': KnitCard.FAB_ROLL_WT=KnitCard.FAB_ROLL_WT+'1'">
+                                    <h1 style="margin:0px;"><b>1</b></h1>
+                                </a>
+                                <a class="btn btn-lg btn-default" ng-click="KnitCard.FAB_ROLL_WT.length>4?'': KnitCard.FAB_ROLL_WT=KnitCard.FAB_ROLL_WT+'2'">
+                                    <h1 style="margin:0px;"><b>2</b></h1>
+                                </a>
+                                <a class="btn btn-lg btn-default" ng-click="KnitCard.FAB_ROLL_WT.length>4?'': KnitCard.FAB_ROLL_WT=KnitCard.FAB_ROLL_WT+'3'">
+                                    <h1 style="margin:0px;"><b>3</b></h1>
+                                </a>
+                            </div>
+                            <div class="btn-group btn-group-justified">
+                                <a class="btn btn-lg btn-default" ng-click="KnitCard.FAB_ROLL_WT.length>4?'': KnitCard.FAB_ROLL_WT=KnitCard.FAB_ROLL_WT+'4'">
+                                    <h1 style="margin:0px;"><b>4</b></h1>
+                                </a>
+                                <a class="btn btn-lg btn-default" ng-click="KnitCard.FAB_ROLL_WT.length>4?'': KnitCard.FAB_ROLL_WT=KnitCard.FAB_ROLL_WT+'5'">
+                                    <h1 style="margin:0px;"><b>5</b></h1>
+                                </a>
+                                <a class="btn btn-lg btn-default" ng-click="KnitCard.FAB_ROLL_WT.length>4?'': KnitCard.FAB_ROLL_WT=KnitCard.FAB_ROLL_WT+'6'">
+                                    <h1 style="margin:0px;"><b>6</b></h1>
+                                </a>
+                            </div>
+                            <div class="btn-group btn-group-justified">
+                                <a class="btn btn-lg btn-default" ng-click="KnitCard.FAB_ROLL_WT.length>4?'': KnitCard.FAB_ROLL_WT=KnitCard.FAB_ROLL_WT+'7'">
+                                    <h1 style="margin:0px;"><b>7</b></h1>
+                                </a>
+                                <a class="btn btn-lg btn-default" ng-click="KnitCard.FAB_ROLL_WT.length>4?'': KnitCard.FAB_ROLL_WT=KnitCard.FAB_ROLL_WT+'8'">
+
+                                    <h1 style="margin:0px;"><b>8</b></h1>
+                                </a>
+                                <a class="btn btn-lg btn-default" ng-click="KnitCard.FAB_ROLL_WT.length>4?'': KnitCard.FAB_ROLL_WT=KnitCard.FAB_ROLL_WT+'9'">
+                                    <h1 style="margin:0px;"><b>9</b></h1>
+                                </a>
+                            </div>
+                            <div class="btn-group btn-group-justified">
+                                <a class="btn btn-lg btn-default" ng-click="KnitCard.FAB_ROLL_WT.length>4?'':  KnitCard.FAB_ROLL_WT= KnitCard.FAB_ROLL_WT+'.'">
+                                    <h1 style="margin:0px;"><b>.</b></h1>
+                                </a>
+                                <a class="btn btn-lg btn-default" ng-click="KnitCard.FAB_ROLL_WT.length>4?'': KnitCard.FAB_ROLL_WT=KnitCard.FAB_ROLL_WT+'0'">
+                                    <h1 style="margin:0px;"><b>0</b></h1>
+                                </a>
+                                <a class="btn btn-lg btn-default">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <br />
+                </div>
+            </div>
+        </div>
+
+
+        @*<div class="portlet grey-cascade box">
+                <div class="portlet-title">
+                    <div>
+                        <h3 style="padding-top:10px;margin-top:3px;">
+                             Roll Production
+                            <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                        </h3>
+                    </div>
+                </div>
+                <div class="portlet-body">
+
+
+                    <div class="row" style="padding:5px;">
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)"><h4 style="margin:0px;">{{alert.msg}}</h4></alert>
+                                <div class="input-group">
+                                    <div class="input-icon">
+                                        <i class="fa fa-lock fa-fw"></i>
+                                        <input class="form-control" type="password" ng-model="PIN_CODE" readonly style="height:34px;" name="password" placeholder="Pin Code">
+                                    </div>
+                                    <span class="input-group-btn">
+                                        <button id="genpassword" ng-click="PIN_CODE = PIN_CODE.substring(0, PIN_CODE.length - 1);" class="btn btn-small btn-warning" type="button">
+                                            <i class="fa fa-arrow-left fa-fw"></i>
+                                            Clear
+                                        </button>
+                                        <button id="genpassword" class="btn btn-small btn-success" type="button" ng-click="save(PIN_CODE)" ng-disabled="PIN_CODE.length!=4">
+                                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                            Enter
+                                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="btn-group btn-group-justified">
+                                    <a class="btn btn-default" ng-click="PIN_CODE.length>2?'': PIN_CODE=PIN_CODE+'1'">
+                                        <span class="badge badge-info">
+                                            <strong> 1 </strong>
+                                        </span>
+                                    </a>
+                                    <a class="btn btn-default" ng-click="PIN_CODE.length>2?'': PIN_CODE=PIN_CODE+'2'">
+                                        <span class="badge badge-info">
+                                            <strong> 2 </strong>
+                                        </span>
+                                    </a>
+                                    <a class="btn btn-default" ng-click="PIN_CODE.length>2?'': PIN_CODE=PIN_CODE+'3'">
+                                        <span class="badge badge-info">
+                                            <strong> 3 </strong>
+                                        </span>
+                                    </a>
+                                </div>
+                                <div class="btn-group btn-group-justified">
+                                    <a class="btn btn-default" ng-click="PIN_CODE.length>2?'': PIN_CODE=PIN_CODE+'4'">
+                                        <span class="badge badge-info">
+                                            <strong> 4 </strong>
+                                        </span>
+                                    </a>
+                                    <a class="btn btn-default" ng-click="PIN_CODE.length>2?'': PIN_CODE=PIN_CODE+'5'">
+                                        <span class="badge badge-info">
+                                            <strong> 5 </strong>
+                                        </span>
+                                    </a>
+                                    <a class="btn btn-default" ng-click="PIN_CODE.length>2?'': PIN_CODE=PIN_CODE+'6'">
+                                        <span class="badge badge-info">
+                                            <strong> 6 </strong>
+                                        </span>
+                                    </a>
+                                </div>
+                                <div class="btn-group btn-group-justified">
+                                    <a class="btn btn-default">
+                                        <span class="badge badge-info" ng-click="PIN_CODE.length>2?'': PIN_CODE=PIN_CODE+'7'">
+                                            <strong> 7 </strong>
+                                        </span>
+                                    </a>
+                                    <a class="btn btn-default" ng-click="PIN_CODE.length>2?'': PIN_CODE=PIN_CODE+'8'">
+                                        <span class="badge badge-info">
+                                            <strong> 8 </strong>
+                                        </span>
+                                    </a>
+                                    <a class="btn btn-default" ng-click="PIN_CODE.length>2?'': PIN_CODE=PIN_CODE+'9'">
+                                        <span class="badge badge-info">
+                                            <strong> 9 </strong>
+                                        </span>
+                                    </a>
+                                </div>
+                                <div class="btn-group btn-group-justified">
+                                    <a class="btn btn-default">
+                                        <span class="badge badge-info">
+                                            <strong> * </strong>
+                                        </span>
+                                    </a>
+                                    <a class="btn btn-default" ng-click="PIN_CODE.length>2?'': PIN_CODE=PIN_CODE+'0'">
+                                        <span class="badge badge-info">
+                                            <strong> 0 </strong>
+                                        </span>
+                                    </a>
+                                    <a class="btn btn-default">
+                                        <span class="badge badge-info">
+                                            <strong> # </strong>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>*@
+    </div>
+</script>
+
+<script type="text/ng-template" id="RollProductionError.html">
+    <div class="modal-body">
+        <div class="portlet light ">
+            <div class="portlet-title" style="margin: 0px; min-height: 20px; height: 30px; padding-top: 0px;">
+                <div class="caption caption-md" style="padding:0px;">
+                    <span class="caption-subject theme-font-color bold uppercase">Errors</span>
+                </div>
+                <div class="tools">
+                    <a href="javascript:;" ng-click="cancel()" class="remove" data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body" style=" padding-top: 0px;">
+                <div class="row list-separated" style="background-color: black; font-size:40px;margin:auto;">
+
+                    <div class="col-md-12 col-sm-12">
+                        <div class="font-yellow-gold" style="font-size:40px;">
+                            <b>{{errorText}}</b>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+

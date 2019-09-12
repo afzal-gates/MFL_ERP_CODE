@@ -1,0 +1,527 @@
+﻿
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Garments</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">            
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+
+        @*<form class="form-horizontal" role="form" name="BuyerForm" novalidate ng-submit="vm.submitBuyerData(vm.form,token)">*@
+
+        <div class="form-body clearfix">
+            <div class="row" style="margin: auto; padding-left: 0px; padding-right: 0px;">
+
+                <div class="col-md-4" style="padding-left:0px;padding-right:0px;">
+                  
+                    @*<div id="ItemCategTreeview" kendo-tree-view k-options="vm.thingsOptions"
+                         style="height:300px;overflow:scroll;"
+                         k-on-change="selectedItem = dataItem"
+                         k-ng-delay="vm.thingsOptions.dataSource">
+                    </div>
+                    
+                    <br />
+                    <kendo-grid k-options="vm.gridOptions" id="itemGrid"></kendo-grid>*@
+
+                    @*<fieldset class="custom-fieldset">
+                        <legend class="custom-legend">Machine List</legend>
+
+                        
+                        <div class="col-md-12" style="padding:0px">
+                            <kendo-grid k-options="vm.machineSpecGridOption" k-data-source="vm.machineSpecListDataSource"></kendo-grid>
+                        </div>
+
+                    </fieldset>*@
+
+                    <kendo-grid id="mcnSpecGrid" k-options="vm.machineSpecGridOption" k-data-source="vm.machineSpecListDataSource"></kendo-grid>
+
+                </div>
+
+
+
+                <div class="col-md-8" style="padding-right:0px;">
+
+                    <div class="row" style="margin:auto;" ng-if="vm.errors">
+                        <div class="alert alert-danger" role="alert">
+                            @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                            <div style="padding: 0px 0px 15px 25px; ">
+                                <b>Please fix the following errors ....</b>
+                            </div>
+                            <ul ng-repeat="field in vm.errors">
+                                <li ng-repeat="error in field" ng-bind="error"></li>
+                            </ul>
+                        </div>
+                    </div>
+                    @*<p style="clear:both;padding:0px;margin:0px">&nbsp;</p>*@
+
+                    <form class="form-horizontal" role="form" name="frmSwMcnSpec" novalidate>
+
+
+                        <div class="form-body clearfix" style="padding-top:0px;">
+
+                            <div class="row">
+
+                                <div class="col-md-12" style="padding-left:0px;">
+                                    <fieldset class="custom-fieldset">
+                                        <legend class="custom-legend">Key Information</legend>
+
+
+                                        <div class="form-group">
+
+                                            <label class="col-md-2 control-label">
+                                                <span aria-required="true" class="required">*</span>M/C Type
+                                            </label>
+                                            <div class="col-md-4">
+                                                <select kendo-drop-down-list name="GMT_SW_MCN_TYP_ID" class="form-control"
+                                                        k-options="vm.mcTypeOption" k-data-source="vm.mcTypeDataSource" ng-model="vm.form.GMT_SW_MCN_TYP_ID" required></select>
+                                            </div>
+
+                                            <label class="col-md-2 control-label">
+                                                Bed Type
+                                            </label>
+                                            <div class="col-md-4">
+                                                <select kendo-drop-down-list name="GMT_SM_BED_TYP_ID" class="form-control"
+                                                        k-options="vm.mcBedTypeOption" k-data-source="vm.mcBedTypeDataSource" ng-model="vm.form.GMT_SM_BED_TYP_ID" ></select>
+                                            </div>
+                                        </div>
+
+                                        
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">
+                                                <span aria-required="true" class="required">*</span>Stitch Type
+                                            </label>
+                                            <div class="col-md-4">
+                                                <select kendo-drop-down-list name="GMT_STCH_TYP_ID" class="form-control"
+                                                        k-options="vm.mcStitchTypeOption" k-data-source="vm.mcStitchTypeDataSource" ng-model="vm.form.GMT_STCH_TYP_ID" required></select>
+                                            </div>
+
+                                            <label class="col-md-2 control-label">
+                                                <span aria-required="true" class="required">*</span>SW Application
+                                            </label>
+                                            <div class="col-md-4">
+                                                <select kendo-drop-down-list name="GMT_SW_APP_TYP_ID" class="form-control"
+                                                        k-options="vm.mcSwAppTypeOption" k-data-source="vm.mcSwAppTypeDataSource" ng-model="vm.form.GMT_SW_APP_TYP_ID" required></select>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">
+                                                <span aria-required="true" class="required">*</span>M/C Spec
+                                            </label>
+                                            <div class="col-md-4">
+                                                <input type="text" class="form-control" ng-model="vm.form.SW_MCN_SPEC" required />
+                                            </div>
+
+                                            <label class="col-md-2 control-label">
+                                                <span aria-required="true" class="required">*</span>Short M/C Spec
+                                            </label>
+                                            <div class="col-md-4">
+                                                <input type="text" class="form-control" ng-model="vm.form.SW_MCN_SPEC_SHORT" required />
+                                            </div>                                            
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">
+                                                <span aria-required="true" class="required">*</span>Needle Count
+                                            </label>
+                                            <div class="col-md-2">
+                                                <input type="number" class="form-control" ng-model="vm.form.NDL_COUNT" min="1" max="99" maxlength="2" required />
+                                            </div>
+
+                                            <label class="col-md-offset-2 col-md-2 control-label">
+                                                <span aria-required="true" class="required">*</span>Standared RPM
+                                            </label>
+                                            <div class="col-md-2">
+                                                <input type="number" class="form-control" ng-model="vm.form.STD_RPM" min="1" max="99999" maxlength="5" required />
+                                            </div>                                           
+                                        </div>
+
+                                        <div class="form-group">                                            
+                                            <label class="col-md-2 control-label">
+                                                <span aria-required="true" class="required">*</span>Standared SPI
+                                            </label>
+                                            <div class="col-md-2">
+                                                <input type="number" class="form-control" ng-model="vm.form.STD_SPI" min="1" max="99" maxlength="2" required />
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="form-group">&nbsp;</div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <tabset>
+                                                    @* ============= Start Machine Thread Consumption =========== *@
+                                                    <tab heading="Thread Consumption" active="vm.thrdConsTab">
+                                                        
+                                                        <table class="table table-striped" style="border-collapse: collapse; overflow:scroll;">
+                                                            <thead>
+
+                                                                <tr style="border: solid 2px lightgray;">
+
+                                                                    <th style="border: solid 2px lightgray;">Thrd Type</th>
+                                                                    <th style="border: solid 2px lightgray;">No Of Needle</th>
+                                                                    <th style="border: solid 2px lightgray;">1Cm=?/Ndl</th>
+                                                                    <th style="border: solid 2px lightgray;">MoU</th>
+                                                                    <th style="border: solid 2px lightgray;">Cons Pct</th>
+                                                                    <th style="border: solid 2px lightgray;">Action</th>
+
+                                                                </tr>
+
+                                                            </thead>
+
+                                                            <tbody>
+
+                                                                <tr>
+                                                                    <td style="border: solid 2px lightgray; width: 25%;">
+                                                                        <select kendo-drop-down-list name="LK_THRD_TYPE_ID" class="form-control"
+                                                                                k-options="vm.mcThrdTypeOption" k-data-source="vm.mcThrdTypeDataSource" ng-model="vm.thrdConsForm.LK_THRD_TYPE_ID"></select>
+                                                                    </td>
+                                                                    <td style="border: solid 2px lightgray; width: 15%;">
+                                                                        <input type="number" class="form-control" ng-model="vm.thrdConsForm.THRD_COUNT" min="1" max="99" maxlength="2" />
+                                                                    </td>
+                                                                    <td style="border: solid 2px lightgray; width: 15%;">
+                                                                        <input type="number" class="form-control" ng-model="vm.thrdConsForm.THRD_CONS" />
+                                                                    </td>
+                                                                    <td style="border: solid 2px lightgray; width: 15%;">
+                                                                        <select kendo-drop-down-list name="CONS_MOU_ID" class="form-control" @*ng-disabled="true"*@
+                                                                                k-options="vm.thrdConsMouOption" k-data-source="vm.thrdConsMouDataSource" ng-model="vm.thrdConsForm.CONS_MOU_ID"></select>
+                                                                    </td>
+                                                                    <td style="border: solid 2px lightgray; width: 15%;">
+                                                                        <input type="number" class="form-control" ng-model="vm.thrdConsForm.PCT_CONS" />
+                                                                    </td>
+
+                                                                    <td style="border: solid 2px lightgray; width: 15%;">
+                                                                        <button type="button" class="btn btn-xs green" ng-click="vm.addThrdConsRow(vm.thrdConsForm);" ng-show="vm.thrdConsForm.GMT_SM_THRD_CONS_ID<1" title="Add"
+                                                                                ng-disabled="(vm.thrdConsForm.LK_THRD_TYPE_ID==''||vm.thrdConsForm.LK_THRD_TYPE_ID==null)||
+                                                                                (vm.thrdConsForm.THRD_COUNT==''||vm.thrdConsForm.THRD_COUNT==null)||
+                                                                                (vm.thrdConsForm.THRD_CONS==''||vm.thrdConsForm.THRD_CONS==null)||
+                                                                                (vm.thrdConsForm.CONS_MOU_ID==''||vm.thrdConsForm.CONS_MOU_ID==null)">
+                                                                            <i class='fa fa-plus'></i>
+                                                                        </button>
+                                                                        <button type="button" class="btn btn-xs yellow-gold" ng-click="vm.updateThrdConsRow(vm.thrdConsForm);" ng-show="vm.thrdConsForm.GMT_SM_THRD_CONS_ID>1" title="Update"
+                                                                                ng-disabled="(vm.thrdConsForm.LK_THRD_TYPE_ID==''||vm.thrdConsForm.LK_THRD_TYPE_ID==null)||
+                                                                                (vm.thrdConsForm.THRD_COUNT==''||vm.thrdConsForm.THRD_COUNT==null)||
+                                                                                (vm.thrdConsForm.THRD_CONS==''||vm.thrdConsForm.THRD_CONS==null)||
+                                                                                (vm.thrdConsForm.CONS_MOU_ID==''||vm.thrdConsForm.CONS_MOU_ID==null)">
+                                                                            <i class='fa fa-pencil'></i>
+                                                                        </button>
+                                                                        <button type="button" class="btn btn-xs blue" ng-click="vm.thrdConsReset();" title="Reset"><i class='fa fa-refresh'></i></button>
+                                                                    </td>
+                                                                </tr>
+
+                                                            </tbody>
+                                                        </table>
+
+                                                        <div class="col-md-12" style="padding:0px">
+                                                            <kendo-grid k-options="vm.thrdConsGridOption" k-data-source="vm.thrdConsGridDataSource"></kendo-grid>
+                                                        </div>
+
+                                                    </tab>
+                                                    @* ============= End Machine Thread Consumption =========== *@
+
+
+
+                                                    @* ============= Start Machine Guide =========== *@
+                                                    <tab heading="Guide/Folder/Attachment" active="vm.mcnGuideTab">
+                                                        <table class="table table-striped" style="border-collapse: collapse; overflow:scroll;">
+                                                            <thead>
+
+                                                                <tr style="border: solid 2px lightgray;">
+                                                                    <th style="border: solid 2px lightgray;">Guide Type</th>
+                                                                    <th style="border: solid 2px lightgray;">Description</th>                                                                    
+                                                                    <th style="border: solid 2px lightgray;">Action</th>
+                                                                </tr>
+
+                                                            </thead>
+
+                                                            <tbody>
+
+                                                                <tr>
+                                                                    <td style="border: solid 2px lightgray; width: 20%;">
+                                                                        <select kendo-drop-down-list name="GMT_SM_GUIDE_TYP_ID" class="form-control"
+                                                                                k-options="vm.mcGuideTypeOption" k-data-source="vm.mcGuideTypeDataSource" ng-model="vm.mcGuideForm.GMT_SM_GUIDE_TYP_ID"></select>
+                                                                    </td>
+                                                                    
+                                                                    <td style="border: solid 2px lightgray; width: 65%;">
+                                                                        <input type="text" class="form-control" ng-model="vm.mcGuideForm.MCN_GUIDE_DESC" />
+                                                                    </td>
+                                                                    
+
+                                                                    <td style="border: solid 2px lightgray; width: 15%;">
+                                                                        <button type="button" class="btn btn-xs green" ng-click="vm.addMcnGuideRow(vm.mcGuideForm);" ng-show="vm.mcGuideForm.GMT_SW_MCN_GUIDE_ID<1" title="Add"
+                                                                                ng-disabled="(vm.mcGuideForm.MCN_GUIDE_DESC==''||vm.mcGuideForm.MCN_GUIDE_DESC==null)||
+                                                                                (vm.mcGuideForm.GMT_SM_GUIDE_TYP_ID==''||vm.mcGuideForm.GMT_SM_GUIDE_TYP_ID==null)">
+                                                                            <i class='fa fa-plus'></i>
+                                                                        </button>
+                                                                        <button type="button" class="btn btn-xs yellow-gold" ng-click="vm.updateMcnGuideRow(vm.mcGuideForm);" ng-show="vm.mcGuideForm.GMT_SW_MCN_GUIDE_ID>1" title="Update"
+                                                                                ng-disabled="(vm.mcGuideForm.MCN_GUIDE_DESC==''||vm.mcGuideForm.MCN_GUIDE_DESC==null)||
+                                                                                (vm.mcGuideForm.GMT_SM_GUIDE_TYP_ID==''||vm.mcGuideForm.GMT_SM_GUIDE_TYP_ID==null)">
+                                                                            <i class='fa fa-pencil'></i>
+                                                                        </button>
+                                                                        <button type="button" class="btn btn-xs blue" ng-click="vm.mcnGuideReset();" title="Reset"><i class='fa fa-refresh'></i></button>
+                                                                    </td>
+                                                                </tr>
+
+                                                            </tbody>
+                                                        </table>
+
+                                                        <div class="col-md-12" style="padding:0px">
+                                                            <kendo-grid k-options="vm.mcnGuideGridOption" k-data-source="vm.mcnGuideGridDataSource"></kendo-grid>
+                                                        </div>
+                                                    </tab>
+                                                    @* ============= End Machine Guide =========== *@
+
+
+                                                    @* ============= Start Machine Profile =========== *@
+                                                    <tab heading="M/C Profile" active="vm.mcnProfile">
+                                                        
+                                                        <div class="form-group">
+
+                                                            <label class="col-md-2 control-label">
+                                                                <span aria-required="true" class="required">*</span>M/C Code#
+                                                            </label>
+                                                            <div class="col-md-4">
+                                                                <input type="text" class="form-control" ng-model="vm.mcProfileForm.MC_CODE_NO" />
+                                                            </div>
+
+                                                            <label class="col-md-2 control-label">
+                                                                <span aria-required="true" class="required">*</span>Supplier
+                                                            </label>
+                                                            <div class="col-md-4">
+                                                                <select kendo-drop-down-list name="SCM_SUPPLIER_ID" class="form-control"
+                                                                        k-options="vm.supplierOption" k-data-source="vm.supplierDataSource" ng-model="vm.mcProfileForm.SCM_SUPPLIER_ID" ></select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-2 control-label">
+                                                                <span aria-required="true" class="required">*</span>Brand
+                                                            </label>
+                                                            <div class="col-md-4">
+                                                                <select kendo-drop-down-list name="RF_BRAND_ID" class="form-control"
+                                                                        k-options="vm.brandOption" k-data-source="vm.brandDataSource" ng-model="vm.mcProfileForm.RF_BRAND_ID" ></select>
+                                                            </div>
+
+                                                            <label class="col-md-2 control-label">
+                                                                <span aria-required="true" class="required">*</span>Serial#
+                                                            </label>
+                                                            <div class="col-md-4">
+                                                                <input type="text" class="form-control" ng-model="vm.mcProfileForm.MC_SERIAL_NO" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-2 control-label">
+                                                                <span aria-required="true" class="required">*</span>Model
+                                                            </label>
+                                                            <div class="col-md-4">
+                                                                <input type="text" class="form-control" ng-model="vm.mcProfileForm.MODEL_NO" />
+                                                            </div>
+
+                                                            <label class="col-md-2 control-label">
+                                                                <span aria-required="true" class="required">*</span>Country
+                                                            </label>
+                                                            <div class="col-md-4">
+                                                                <select kendo-drop-down-list name="C_ORIGIN_ID" class="form-control"
+                                                                        k-options="vm.countryOption" k-data-source="vm.countryDataSource" ng-model="vm.mcProfileForm.C_ORIGIN_ID" ></select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-2 control-label">
+                                                                <span aria-required="true" class="required">*</span>Reg Date
+                                                            </label>
+                                                            <div class="col-md-3">
+                                                                <input type="text" class="form-control" ng-click="vm.regDateOpen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                                                       name="REG_DT" ng-model="vm.mcProfileForm.REG_DT" is-open="vm.regDateOpened" datepicker-options="dateOptions"
+                                                                       date-disabled="disabled(date, mode)" close-text="Close"  />
+                                                            </div>
+
+                                                            <label class="col-md-offset-1 col-md-2 control-label">
+                                                                <span aria-required="true" class="required">*</span>Prod Floor
+                                                            </label>
+                                                            <div class="col-md-4">
+                                                                <select kendo-drop-down-list name="HR_PROD_FLR_ID" class="form-control"
+                                                                        k-options="vm.prodFloorOption" k-data-source="vm.prodFloorDataSource" ng-model="vm.mcProfileForm.HR_PROD_FLR_ID" ></select>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-2 control-label">
+                                                                Remarks
+                                                            </label>
+                                                            <div class="col-md-10">
+                                                                <textarea rows="2" class="form-control" ng-model="vm.mcProfileForm.REMARKS"></textarea>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="form-group">                                                            
+                                                            <div class="col-md-offset-2 col-md-4">
+                                                                <label class="checkbox-inline">
+                                                                    <input type="checkbox" ng-model="vm.form.IS_HIRED" ng-true-value="'Y'" ng-false-value="'N'">Hired?
+                                                                </label>
+                                                            </div>
+
+                                                            <label class="col-md-2 control-label">
+                                                                <span aria-required="true" class="required">*</span>Status
+                                                            </label>
+                                                            <div class="col-md-4">
+                                                                <select kendo-drop-down-list name="LK_MAC_STATUS_ID" class="form-control"
+                                                                        k-options="vm.mcnStatusOption" k-data-source="vm.mcnStatusDataSource" ng-model="vm.mcProfileForm.LK_MAC_STATUS_ID" ></select>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        @*<pre>{{vm.mcProfileForm|json}}</pre>*@
+
+                                                        <div class="form-group">                                                           
+                                                            <div class="col-md-offset-2 col-md-10">
+                                                                <button type="button" class="btn btn-xs green" ng-click="vm.addMcnProfileRow(vm.mcProfileForm);" ng-show="vm.mcProfileForm.GMT_SW_MACHINE_ID<1" title="Add"
+                                                                        ng-disabled="(vm.mcProfileForm.MC_CODE_NO==''||vm.mcProfileForm.MC_CODE_NO==null)||
+                                                                        (vm.mcProfileForm.SCM_SUPPLIER_ID==''||vm.mcProfileForm.SCM_SUPPLIER_ID==null)||
+                                                                        (vm.mcProfileForm.RF_BRAND_ID==''||vm.mcProfileForm.RF_BRAND_ID==null)||
+                                                                        (vm.mcProfileForm.MC_SERIAL_NO==''||vm.mcProfileForm.MC_SERIAL_NO==null)||
+                                                                        (vm.mcProfileForm.MODEL_NO==''||vm.mcProfileForm.MODEL_NO==null)||
+                                                                        (vm.mcProfileForm.C_ORIGIN_ID==''||vm.mcProfileForm.C_ORIGIN_ID==null)||
+                                                                        (vm.mcProfileForm.REG_DT==''||vm.mcProfileForm.REG_DT==null)||
+                                                                        (vm.mcProfileForm.HR_PROD_FLR_ID==''||vm.mcProfileForm.HR_PROD_FLR_ID==null)||
+                                                                        (vm.mcProfileForm.LK_MAC_STATUS_ID==''||vm.mcProfileForm.LK_MAC_STATUS_ID==null)">
+                                                                    Add to Grid
+                                                                </button>
+                                                                <button type="button" class="btn btn-xs yellow-gold" ng-click="vm.updateMcnProfileRow(vm.mcProfileForm);" ng-show="vm.mcProfileForm.GMT_SW_MACHINE_ID>1" title="Update"
+                                                                        ng-disabled="(vm.mcProfileForm.MC_CODE_NO==''||vm.mcProfileForm.MC_CODE_NO==null)||
+                                                                        (vm.mcProfileForm.SCM_SUPPLIER_ID==''||vm.mcProfileForm.SCM_SUPPLIER_ID==null)||
+                                                                        (vm.mcProfileForm.RF_BRAND_ID==''||vm.mcProfileForm.RF_BRAND_ID==null)||
+                                                                        (vm.mcProfileForm.MC_SERIAL_NO==''||vm.mcProfileForm.MC_SERIAL_NO==null)||
+                                                                        (vm.mcProfileForm.MODEL_NO==''||vm.mcProfileForm.MODEL_NO==null)||
+                                                                        (vm.mcProfileForm.C_ORIGIN_ID==''||vm.mcProfileForm.C_ORIGIN_ID==null)||
+                                                                        (vm.mcProfileForm.REG_DT==''||vm.mcProfileForm.REG_DT==null)||
+                                                                        (vm.mcProfileForm.HR_PROD_FLR_ID==''||vm.mcProfileForm.HR_PROD_FLR_ID==null)||
+                                                                        (vm.mcProfileForm.LK_MAC_STATUS_ID==''||vm.mcProfileForm.LK_MAC_STATUS_ID==null)">
+                                                                    Update to Grid
+                                                                </button>
+                                                                <button type="button" class="btn btn-xs blue" ng-click="vm.mcnProfileReset();" title="Cancel">Cancel</button>
+                                                            </div>
+                                                        </div>
+                                                        
+
+                                                        <div class="col-md-12" style="padding:0px">
+                                                            <kendo-grid k-options="vm.mcnProfileGridOption" k-data-source="vm.mcnProfileGridDataSource"></kendo-grid>
+                                                        </div>
+
+                                                    </tab>
+                                                    @* ============= End Machine Profile =========== *@
+                                                </tabset>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            @*{{vm.form|json}}*@
+                                            <div class="col-md-10">
+                                                <button type="button" class="btn btn-sm green" ng-click="vm.save()" ng-show="vm.form.GMT_SW_MCN_SPEC_ID<1" ng-class="{'disabled':!frmSwMcnSpec.$valid}">Save</button>
+                                                <button type="button" class="btn btn-sm yellow-gold" ng-click="vm.save()" ng-show="vm.form.GMT_SW_MCN_SPEC_ID>0" ng-class="{'disabled':!frmSwMcnSpec.$valid}">Update</button>
+                                                <button type="button" class="btn btn-sm blue" ng-click="vm.reset();">Cancel</button>
+                                            </div>
+
+                                        </div>
+
+                                    </fieldset>
+
+
+
+
+
+
+                                </div>
+
+
+
+                            </div>
+
+
+
+                        </div>
+
+                    </form>
+
+
+                </div>
+
+
+            </div>
+        </div>
+        @*</form>*@
+    </div>
+</div>
+
+
+<style scoped>
+    .k-treeview .k-in {
+        padding: 5px;
+    }
+
+    /*div.k-treeview {
+        overflow: auto;
+    }*/
+
+    #ItemCategTreeview .k-sprite {
+        background-image: url("/Content/assets/global/img/coloricons-sprite.png");
+    }
+
+    .rootfolder {
+        background-position: 0 0;
+    }
+
+    .folder {
+        background-position: 0 -16px;
+    }
+
+    .pdf {
+        background-position: 0 -32px;
+    }
+
+    .html {
+        background-position: 0 -48px;
+    }
+
+    .image {
+        background-position: 0 -64px;
+    }
+
+    .demo-section {
+        float: left;
+        width: 200px;
+        margin: 0 60px 0 0;
+    }
+</style>

@@ -1,0 +1,214 @@
+﻿<div class="modal-body">
+    <div class="portlet grey-cascade box">
+       
+        <div class="portlet-title">
+            <div>
+                <h3 style="padding-top:10px;margin-top:3px;">
+                    Yarn Requisition for Program Ref#: <strong>{{ydPrgData.PRG_REF_NO}}</strong> <span ng-if="yrnStrReq.KNT_YRN_STR_REQ_H_ID>0"> [Requisition# <strong>{{yrnStrReq.STR_REQ_NO}}</strong>]</span>
+                    <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                </h3>
+            </div>
+        </div>
+        <div class="portlet-body">
+
+            @*<pre>{{yrnList4Req|json}}</pre>*@
+
+            <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;" ng-disabled="yrnStrReq.KNT_YRN_STR_REQ_H_ID>0">
+                <legend class="custom-legend">Yarn Required Info</legend>
+
+                <form name="frmYrnReq">
+
+                    @*<input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />*@
+
+                    <table class="table table-condensed table-striped table-bordered" style="padding:5px;" @*ng-if="data.KNT_PLAN_H_ID>0"*@>
+                        <thead>
+                            <tr class="site-table-header">
+                                <th style="width:15%;">
+                                    <small>
+                                        Order
+                                    </small>
+
+                                </th>
+
+                                <th style="width:10%;">
+                                    <small>
+                                        Color
+                                    </small>
+
+                                </th>
+
+                                <th style="width:20%;">
+                                    <small>
+                                        Yarn
+                                    </small>
+
+                                </th>
+                                <th style="width:10%;">
+                                    <small>
+                                        Barnd
+                                    </small>
+
+                                </th>
+
+                                <th style="width:10%;">
+                                    <small>
+                                        Yarn Lot
+                                    </small>
+
+                                </th>
+
+
+                                @*<th style="width:10%;" ng-if="data.IS_FBP_VISIBLE=='Y'">
+                                <small>
+                                    Part
+                                </small>
+
+                            </th>
+                            <th style="width:5%;" ng-if="data.IS_FBP_VISIBLE=='Y'">
+                                <small>
+                                    Ratio(%)
+                                </small>
+
+                            </th>
+
+
+                            <th style="width:5%;">
+                                <small>
+                                    SL
+                                </small>
+
+                            </th>*@
+
+
+                                <th style="width:10%;">
+                                    <small>
+                                        Req Yarn
+                                    </small>
+
+                                </th>
+                                <th style="width:10%;">
+                                    <small>
+                                        Req. Done
+                                    </small>
+
+                                </th>
+
+                                <th style="width:10%;">
+                                    <small>
+                                        New Requis.
+                                    </small>
+                                </th>
+
+                                <th style="width:5%;">
+                                    <small>
+                                        Cone
+                                    </small>
+                                </th>
+
+                                @*<th style="width:5%;">
+                                <small>
+                                    Action
+                                </small>
+                            </th>*@
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr ng-repeat="item in yrnList4Req track by $index">
+
+                                <td rowspan="{{item.ORD_ROW_SPAN}}" ng-show="item.ORD_SL==1">
+                                    {{item.MC_ORDER_NO_LST}}
+                                </td>
+
+                                <td rowspan="{{item.COLOR_ROW_SPAN}}" ng-show="item.COLOR_SL==1">
+                                    {{item.YD_COLOR_NAME}}
+                                </td>
+
+                                <td>
+                                    {{item.YR_SPEC_DESC}}
+                                </td>
+
+                                <td ng-class="{'has-error': (frmYrnReq['RQD_YRN_QTY-'+$index].$touched || frmYrnReq['RF_BRAND_ID-'+$index].$touched || frmYrnReq.$submitted) && frmYrnReq['RF_BRAND_ID-'+$index].$error.required}">
+                                   
+                                    <select class="form-control" kendo-drop-down-list name="RF_BRAND_ID-{{$index}}" k-option-label="'-- N/A --'"
+                                            k-data-text-field="'BRAND_NAME_EN'" k-data-value-field="'RF_BRAND_ID'"
+                                            k-auto-bind="'true'" k-data-source="item.brandListDs" k-ng-delay="item.brandListDs" ng-model="item.RF_BRAND_ID"
+                                            k-on-change="onChangeBrnad(item,kendoEvent,true,$index)" k-on-data-bound="onBoundBrnad(item,true,$index)"
+                                            ng-required="item.RQD_YRN_QTY>0" ></select>
+
+                                </td>
+
+
+                                <td ng-class="{'has-error': (frmYrnReq['RQD_YRN_QTY-'+$index].$touched || frmYrnReq['KNT_YRN_LOT_ID-'+$index].$touched || frmYrnReq.$submitted) && frmYrnReq['KNT_YRN_LOT_ID-'+$index].$error.required}">
+                                    <select class="form-control" kendo-drop-down-list
+                                            name="KNT_YRN_LOT_ID-{{$index}}"
+                                            k-option-label="'-- N/A --'"
+                                            k-data-text-field="'YRN_LOT_NO'"
+                                            k-data-value-field="'KNT_YRN_LOT_ID'"
+                                            k-filer="'contains'"
+                                            k-auto-bind="'true'"
+                                            k-data-source="item.yarnLotListDs"
+                                            k-ng-delay="item.yarnLotListDs"
+                                            ng-model="item.KNT_YRN_LOT_ID"
+                                            @*k-on-change="vm.onChangeYarnLot(itm,kendoEvent,true,$index)"
+                                            k-on-data-bound="vm.onBoundYarnLot(itm,true,$index)"*@
+                                            k-template="template"
+                                            k-value-template="value_template"
+                                            ng-required="item.RQD_YRN_QTY>0"
+                                            @*ng-disabled="form.IS_FINALIZED=='Y'" ng-required="form.IS_FINALIZED_M=='Y'"*@></select>
+                                </td>
+
+                                @*<td ng-if="data.IS_FBP_VISIBLE=='Y'">
+                                {{item.LK_YFAB_PART_NAME}}
+                            </td>
+
+                            <td ng-if="data.IS_FBP_VISIBLE=='Y'">
+                                {{item.RATIO_QTY}}
+                            </td>
+
+
+                            <td>
+                                {{item.STITCH_LEN}}
+                            </td>*@
+
+                                <td>
+                                    {{item.RQD_YD_QTY}}
+                                </td>
+
+                                <td>
+                                    {{item.REQ_YRN_QTY_DONE}}
+                                </td>
+
+
+                                <td ng-class="{'has-error': (frmYrnReq['RQD_YRN_QTY-'+$index].$touched || frmYrnReq.$submitted) && (frmYrnReq['RQD_YRN_QTY-'+$index].$error.required||frmYrnReq['RQD_YRN_QTY-'+$index].$error.min||frmYrnReq['RQD_YRN_QTY-'+$index].$error.max)}">
+                                    <input type="number" name="RQD_YRN_QTY-{{$index}}" min="1" max="{{item.RQD_YD_QTY-item.REQ_YRN_QTY_DONE}}" class="form-control" ng-model="item.RQD_YRN_QTY" />
+                                </td>
+
+                                <td @*ng-class="{'has-error': (frmYrnReq['RQD_CONE_QTY'+$index].$touched || frmYrnReq.$submitted) && (frmYrnReq['RQD_CONE_QTY'+$index].$error.min)}"*@>
+                                    <input type="number" name="RQD_CONE_QTY" min="0" class="form-control" ng-model="item.RQD_CONE_QTY" />
+                                </td>
+
+                                @*<td>
+                                <button type="button" class="btn btn-xs red" ng-click="vm.onRemoveReqRow($index, data.items)"><p class="fa fa-remove"></p></button>
+                            </td>*@
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+                <div class="row" style="padding-top:4px;padding-bottom:4px;" ng-show="yrnStrReq.KNT_YRN_STR_REQ_H_ID<1">
+                    <div class="col-md-12" style="text-align:right;">
+                        <button type="button" class="btn btn-xs green" ng-if="yrnList4Req.length>0" ng-click="createRequisition();" ng-disabled="frmYrnReq.$invalid"> Create Requisition</button>
+
+                        @*<a class="btn btn-xs btn-danger" ng-if="yrnList4Req.length>0" ng-click="vm.resetAdding()">Reset</a>*@
+                    </div>
+                </div>
+
+
+                @*<pre>{{frmYrnReq|json}}</pre>*@
+
+            </fieldset>
+
+        </div>
+    </div>
+</div>

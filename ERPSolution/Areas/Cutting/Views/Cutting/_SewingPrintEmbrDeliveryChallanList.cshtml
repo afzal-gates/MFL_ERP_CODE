@@ -1,0 +1,295 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Cutting</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption">
+            {{vm.Title}}
+        </div>
+        <div class="tools">
+        </div>
+
+        <div class="actions">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+        <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 5px;">
+            <legend class="custom-legend">Delivery Challan: Main</legend>
+            <table class="table table-condensed table-striped table-bordered" style="padding-left: 5px; padding-right: 5px; margin-bottom: 3px;">
+                <tbody>
+                    <tr>
+                        <td style="width: 100%; padding-bottom: 5px;" align="center">
+                            <form name="SewingDeliverychallanForm" ng-submit="vm.onSubmit(data)">
+                                <div class="input-group input-medium">
+
+                                    <oi-select ng-focus="onFocused()" oi-options="item.CHALAN_NO for item in sewDelChallanAuto($query) track by item.GMT_CUT_SEW_DLV_CHL_ID"
+                                               ng-model="data"
+                                               ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }"
+                                               placeholder="Search..." style="width: 200px;"
+                                               oi-select-options="{ cleanModel : true,maxlength:12, minlength: 4}" ng-change="vm.onSubmit(data)"></oi-select>
+
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-sm blue" ng-disabled="!data.GMT_CUT_SEW_DLV_CHL_ID" type="submit">Go</button>
+                                    </span>
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-sm btn-default" ng-click="vm.openDeliveryChallanSearch()"><i class="fa fa-search"></i> Search</button>
+                                    </span>
+                                </div>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            @*<pre>{{BundleDatas|json}}</pre>*@
+
+            <table class="table table-condensed table-striped table-bordered" style="padding:5px;" ng-repeat="(key, item) in BundleDatas.datas">
+
+                <thead>
+
+                    <tr style="border: 1px solid #cecece;" ng-if="key==0">
+                        <th style="border-right:hidden;">
+
+                        </th>
+                        <th colspan="7" style="color:navy; text-align:right;border-left:hidden;">
+                            Total Bundles: <b>{{BundleDatas.total_bundles}}</b>  >> Total Cutting Qty: <b>{{BundleDatas.total_cut_qty}}</b> >> Short/Addition: <b>{{BundleDatas.short_qty}}</b> >> Sent Qty: <b>{{BundleDatas.total_qty}}</b>
+                        </th>
+                    </tr>
+
+                    <tr style="border: 1px solid #cecece;">
+
+
+                        <th colspan="8">
+                            Buyer: {{item.BYR_ACC_GRP_NAME_EN}}>> Style: {{item.STYLE_NO}}>> Order: {{item.ORDER_NO}}>> Color: {{item.COLOR_NAME_EN}}>>Cutting No: {{item.CUTNG_NO}}
+                        </th>
+
+
+                    </tr>
+                    <tr>
+                        <th style="width:15%;">
+                            <small>
+                                Item
+                            </small>
+
+                        </th>
+
+                        <th style="width:10%;">
+                            <small>
+                                Country
+                            </small>
+
+                        </th>
+
+                        <th style="width:10%;">
+                            <small>
+                                Size
+                            </small>
+
+                        </th>
+
+                        <th style="width:5%;">
+                            <small>
+                                # of Bundle
+                            </small>
+
+                        </th>
+
+                        <th style="width:5%;">
+                            <small>
+                                Cutting Qty
+                            </small>
+
+                        </th>
+
+
+                        <th style="width:5%;">
+                            <small>
+                                Short
+                            </small>
+
+                        </th>
+
+
+
+                        <th style="width:5%;">
+                            <small>
+                                Sent
+                            </small>
+
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="itm in item.details" ng-if="itm.NO_OF_BNDL_SCANNED > 0">
+                        <td rowspan="{{itm.ITEM_SPAN}}" ng-if="itm.ITEM_SL==1">
+                            {{itm.ITEM_NAME_EN}}
+                        </td>
+
+                        <td rowspan="{{itm.COUNTRY_SPAN}}" ng-if="itm.COUNTRY_SL==1">
+                            {{itm.COUNTRY_NAME_EN}}
+                        </td>
+
+                        <td>
+                            {{itm.SIZE_CODE}}
+                        </td>
+
+
+                        <td>
+                            {{itm.NO_OF_BNDL_SCANNED}}
+                        </td>
+
+
+                        <td>
+                            {{itm.CUTTING_QTY}}
+                        </td>
+                        <td>
+                            {{itm.SHORT_QTY}}
+                        </td>
+                        <td>
+                            {{itm.FINAL_QTY}}
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" style="text-align:right;">
+                            <strong>Sub Total</strong>
+                        </td>
+                        <td>
+                            <b> {{item.TTL_NO_OF_BNDL_SCANNED}}</b>
+
+                        </td>
+
+                        <td>
+                            <b> {{item.TTL_CUTTING_QTY}}</b>
+
+                        </td>
+                        <td>
+                            <b>{{item.TTL_SHORT_QTY}}</b>
+
+                        </td>
+                        <td>
+                            <b>{{item.TTL_FINAL_QTY}}</b>
+
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+
+
+            <ng-form name="GmtCutPrintEmbrDelChallanForm">
+                <table class="table table-condensed table-striped borderless" style="margin-bottom:5px;">
+
+                    <thead>
+                        <tr style="border: 1px solid #cecece;">
+
+                            <th style="width:10%">
+                                Challan #
+                                <input type="text" name="CHALAN_NO" ng-model="challan.CHALAN_NO" class="form-control" readonly />
+                            </th>
+
+                            <th style="width:15%" ng-class="{'has-error': (GmtCutPrintEmbrDelChallanForm.RF_GARM_PART_ID.$touched || GmtCutPrintEmbrDelChallanForm.$submitted) && GmtCutPrintEmbrDelChallanForm.RF_GARM_PART_ID.$error.required}">
+                                
+                                    Part
+                                <select ng-disabled="challan.IS_FINALIZED=='Y'" k-filter="'contains'" kendo-multi-select k-data-source="PartDs" k-data-text-field="'GARM_PART_NAME'" k-data-value-field="'RF_GARM_PART_ID'" k-place-holder="'--Part--'"
+                                        style="border: 1px solid #898383;" name="RF_GARM_PART_LST" ng-model='challan.RF_GARM_PART_LST' class='form-control'
+                                        k-value-primitive="true" k-auto-bind="true" k-ng-delay="PartDs" required></select>
+                         
+
+                            </th>
+                            <th style="width:10%" ng-class="{'has-error': (GmtCutPrintEmbrDelChallanForm.LK_BNDL_MVM_RSN_ID.$touched || GmtCutPrintEmbrDelChallanForm.$submitted) && GmtCutPrintEmbrDelChallanForm.LK_BNDL_MVM_RSN_ID.$error.required}">
+                               
+                                    Service
+                                <select ng-disabled="challan.IS_FINALIZED=='Y'" k-filter="'contains'" class="form-control" kendo-drop-down-list name="LK_BNDL_MVM_RSN_ID" k-option-label="'--Select --'"
+                                        k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'"
+                                        k-auto-bind="'true'" k-data-source="DsService" ng-model="challan.LK_BNDL_MVM_RSN_ID" required></select>
+                                
+                            </th>
+
+                            <th style="width:10%" ng-class="{'has-error': (GmtCutPrintEmbrDelChallanForm.LK_SUPPLIER_CAT.$touched || GmtCutPrintEmbrDelChallanForm.$submitted) && GmtCutPrintEmbrDelChallanForm.LK_SUPPLIER_CAT.$error.required}">
+                                
+                                    Type
+                                    <select ng-disabled="challan.IS_FINALIZED=='Y'" k-filter="'contains'" class="form-control" kendo-drop-down-list name="LK_SUPPLIER_CAT" k-option-label="'--Select --'"
+                                            k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'"
+                                            k-auto-bind="'true'" k-data-source="DsSupCat" ng-model="challan.LK_SUPPLIER_CAT" required></select>
+                               
+                            </th>
+
+                            <th style="width: 5%;" ng-class="{'has-error': (GmtCutPrintEmbrDelChallanForm.NO_OF_BAG.$touched || GmtCutPrintEmbrDelChallanForm.$submitted) && GmtCutPrintEmbrDelChallanForm.NO_OF_BAG.$error.required}">
+                                
+                                    NoOfBag
+                                    <input type="number" ng-disabled="challan.IS_FINALIZED=='Y'" name="NO_OF_BAG" ng-model="challan.NO_OF_BAG" class="form-control" required />
+                               
+                            </th>
+
+
+                            <th style="width:20%">
+                                <span class="col-md-7" style="padding-left:0px;padding-right:0px;" ng-class="{'has-error': (GmtCutPrintEmbrDelChallanForm.SCM_SUPPLIER_ID.$touched || GmtCutPrintEmbrDelChallanForm.$submitted) && GmtCutPrintEmbrDelChallanForm.SCM_SUPPLIER_ID.$error.required}">
+                                    Delvery To
+                                    <select ng-disabled="challan.IS_FINALIZED=='Y'" k-filter="'contains'" class="form-control" kendo-drop-down-list name="SCM_SUPPLIER_ID" k-option-label="'--Select --'"
+                                            k-data-text-field="'SUP_SNAME'" k-data-value-field="'SCM_SUPPLIER_ID'"
+                                            k-auto-bind="'true'" k-data-source="DsSup" k-ng-delay="DsSup" ng-model="challan.SCM_SUPPLIER_ID" ng-required="challan.IS_TAG=='N'"></select>
+                                    
+                                </span>
+                                <span class="col-md-5" style="padding-left:3px;padding-right:0px;">
+                                    <br />
+                                    <div class="checkbox-list">
+                                        <label class="checkbox-inline" style="margin-left:20px;margin-top:0px;">
+                                            <span><input ng-disabled="challan.IS_FINALIZED=='Y'" type="checkbox" ng-model="challan.IS_TAG" ng-true-value="'Y'" ng-false-value="'N'"></span> BagTag Only?
+                                        </label>
+                                    </div>
+                                </span>
+
+
+                            </th>
+                            <th style="width: 8%;">
+
+                                GatePass No
+                                <input type="text" ng-disabled="challan.IS_FINALIZED=='Y'" name="GATE_PASS_NO" ng-model="challan.GATE_PASS_NO" class="form-control" />
+
+                            </th>
+
+                            <th style="width: 8%;">
+
+                                Vehicle No
+                                <input type="text" ng-disabled="challan.IS_FINALIZED=='Y'" name="VEHICLE_NO" ng-model="challan.VEHICLE_NO" class="form-control" />
+
+                            </th>
+                        </tr>
+
+                    </thead>
+                </table>
+                <table class="table table-condensed table-striped table-bordered" style="padding-left: 5px; padding-right: 5px; margin-bottom: 3px;">
+                    <tbody>
+                        <tr>
+                            <td style="width: 100%; padding-bottom: 5px;" align="left">
+                                <a class="btn btn-sm bg-yellow-gold" ng-class="{'disabled': GmtCutPrintEmbrDelChallanForm.$invalid || challan.IS_FINALIZED=='Y'}" ng-click="submitData(challan,GmtCutPrintEmbrDelChallanForm.$valid);GmtCutPrintEmbrDelChallanForm.$submitted=true;"> Update</a>
+                                <a class="btn btn-sm bg-grey-silver"><i class="fa fa-print"></i> Print Bag Tag</a>
+
+                                <a class="btn btn-sm bg-yellow-casablanca" ng-if="challan.GMT_CUT_PRN_DELV_CHL_H_ID" style="float:right;" ng-click="vm.printBndlChart4DelivChallan()"><i class="fa fa-print"></i> Print Bundle Chart</a>
+                                <a class="btn btn-sm bg-yellow-gold" ng-if="challan.IS_FINALIZED=='N'" ng-class="{'disabled': GmtCutPrintEmbrDelChallanForm.$invalid }" ng-click="submitData(challan,GmtCutPrintEmbrDelChallanForm.$valid,'N');GmtCutPrintEmbrDelChallanForm.$submitted=true;"> Update</a>
+                                <a class="btn btn-sm bg-purple-soft" ng-if="challan.IS_FINALIZED=='Y'" ng-click="submitData(challan,GmtCutPrintEmbrDelChallanForm.$valid,'Y');GmtCutPrintEmbrDelChallanForm.$submitted=true;"><i class="fa fa-print"></i> Re-challan</a>
+                                <a class="btn btn-sm bg-yellow-casablanca" ng-if="challan.GMT_CUT_PRN_DELV_CHL_H_ID" style="float:right;" ng-click="vm.printDelivChallan()"><i class="fa fa-print"></i> Print Delivery Challan</a>
+                                <a class="btn btn-sm bg-blue-chambray" ng-class="{'disabled': GmtCutPrintEmbrDelChallanForm.$invalid }" ng-if="challan.IS_FINALIZED=='N'" style="float:right;" ng-click="FinalizeAndDeliver(challan, GmtCutPrintEmbrDelChallanForm.$valid)">Finalize & Deliver</a>
+                                <button class="btn btn-sm blue" ng-if="challan.GMT_CUT_PRN_DELV_CHL_H_ID && challan.IS_FINALIZED=='N'" style="float:right;" ng-click="vm.openEmblsmntDelivChalnSearchModal4Merge()">Challan Merge</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </ng-form>
+
+        </fieldset>
+    </div>
+</div>

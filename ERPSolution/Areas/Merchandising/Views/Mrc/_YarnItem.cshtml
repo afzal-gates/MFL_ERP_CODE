@@ -1,0 +1,351 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+
+        <form class="form-horizontal" role="form" name="YarnItemRegForm" novalidate ng-submit="vm.submitData(vm.form,token)">
+
+            <div class="form-body clearfix">
+                <div class="row" style="margin:auto;padding-top:10px;">
+
+
+                    <input id="access_token" data-ng-model="token" type="hidden"
+                           data-ng-init="token='@Session["access_token"]'" />
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            Item Category
+                        </label>
+                        <div class="col-md-2">
+                            <select kendo-drop-down-list name="INV_ITEM_CAT_ID" class="form-control"
+                                    options="vm.ItemCategList" id="INV_ITEM_CAT_ID" ng-model="vm.form.INV_ITEM_CAT_ID"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            Item Code
+                        </label>
+                        <div class="col-md-2">
+                            <input type="text" name="ITEM_CODE" ng-model="vm.form.ITEM_CODE" class="form-control" readonly />
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            <span aria-required="true" class="required">*</span>
+                            Fiber Composition
+                        </label>
+                        <div class="col-md-3">
+
+                            <select kendo-drop-down-list name="RF_FIB_COMP_ID" class="form-control"
+                                    options="vm.FabricCompList" id="RF_FIB_COMP_ID" ng-model="vm.form.RF_FIB_COMP_ID" required></select>
+
+                            <div ng-messages="YarnItemRegForm.RF_FIB_COMP_ID.$error" ng-if="YarnItemRegForm.$submitted || !YarnItemRegForm.RF_FIB_COMP_ID.$pristine">
+                                <div ng-message="required" class="field-validation-error">The field Fiber Composition is required</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            <span aria-required="true" class="required">*</span>
+                            Yarn Count
+                        </label>
+                        <div class="col-md-3">
+                            <select kendo-drop-down-list name="RF_YRN_CNT_ID" class="form-control"
+                                    options="vm.YarnCountList" id="RF_YRN_CNT_ID" ng-model="vm.form.RF_YRN_CNT_ID" required></select>
+                            
+                            <div ng-messages="YarnItemRegForm.RF_YRN_CNT_ID.$error" ng-if="YarnItemRegForm.$submitted || !YarnItemRegForm.RF_YRN_CNT_ID.$pristine">
+                                <div ng-message="required" class="field-validation-error">The field Yarn Count is required</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            Spinning Process
+                        </label>
+                        <div class="col-md-3">
+                            <select kendo-drop-down-list name="LK_SPN_PRCS_ID" class="form-control"
+                                    options="vm.SpinFinList" id="LK_SPN_PRCS_ID" ng-model="vm.form.LK_SPN_PRCS_ID"></select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            Cotton Type
+                        </label>
+                        <div class="col-md-3">
+                            <select kendo-drop-down-list name="LK_COTN_TYPE_ID" class="form-control"
+                                    options="vm.CotnTypeList" id="LK_COTN_TYPE_ID" ng-model="vm.form.LK_COTN_TYPE_ID"></select>
+                        </div>
+                    </div>
+
+                    @*<div class="form-group">
+                        <label class="col-md-3 control-label">
+                            Yarn Category
+                        </label>
+                        <div class="col-md-3">
+                            <select kendo-drop-down-list name="RF_YR_CAT_ID" class="form-control"
+                                    options="vm.YarnCategoryList" id="RF_YR_CAT_ID" ng-model="vm.form.RF_YR_CAT_ID"></select>
+
+                        </div>
+                    </div>*@
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" style="padding-top: 10px;">
+                      
+                        </label>
+                        <div class="col-md-4">
+                            <div class="checkbox-list">
+                                <label class="checkbox-inline" style="margin-left:20px;">
+                                    <span><input type="checkbox"  ng-model="vm.form.IS_SLUB" ng-true-value="'Y'" ng-false-value="'N'"></span>Slub?
+                                </label>
+
+                                <label class="checkbox-inline" >
+                                    <span><input type="checkbox" ng-model="vm.form.IS_MELLANGE" ng-true-value="'Y'" ng-false-value="'N'"></span>Mellange?
+                                </label>
+
+                            </div>
+                        </div>
+                    </div>
+                    @*<div class="form-group">
+                        <label class="col-md-3 control-label" style="padding-top: 10px;">
+                            Is Slub?
+                        </label>
+                        <div class="col-md-1">
+                            <div class="checkbox-list">
+                                <label class="checkbox-inline" style="margin-left:20px;">
+                                    <span><input type="checkbox" style="margin-top:0px;" ng-model="vm.form.IS_SLUB" ng-true-value="'Y'" ng-false-value="'N'"></span>Slub?
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" style="padding-top: 10px;">
+                            Is Melange?
+                        </label>
+                        <div class="col-md-1">
+                            <div class="checkbox-list">
+                                <label class="checkbox-inline" style="margin-left:20px;">
+                                    <span><input type="checkbox" style="margin-top:0px;" ng-model="vm.form.IS_MELLANGE" ng-true-value="'Y'" ng-false-value="'N'"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>*@
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            Fancy Description
+                        </label>
+                        <div class="col-md-3">
+                            <textarea rows="1" name="FANCY_DESC" class="form-control" cols="50" ng-model="vm.form.FANCY_DESC"></textarea>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">
+                            <span aria-required="true" class="required">*</span>
+                            Yarn Description
+                        </label>
+                        <div class="col-md-4">
+                            <textarea rows="2" name="YR_SPEC_DESC" class="form-control" cols="50" ng-model="vm.form.YR_SPEC_DESC" required></textarea>
+
+                            <div ng-messages="YarnItemRegForm.YR_SPEC_DESC.$error" ng-if="YarnItemRegForm.$submitted || !YarnItemRegForm.YR_SPEC_DESC.$pristine">
+                                <div ng-message="required" class="field-validation-error">The field Yarn Description is required</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" style="padding-top: 10px;">
+                  
+                        </label>
+                        <div class="col-md-1">
+                            <div class="checkbox-list">
+                                <label class="checkbox-inline" style="margin-left: 20px; margin-top: 0px;">
+                                    <span><input type="checkbox" ng-model="vm.form.IS_ACTIVE" ng-true-value="'Y'" ng-false-value="'N'"> Active?</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-5 col-md-offset-3">
+                        <button type="submit" ng-if="vm.form.INV_ITEM_ID" class="btn btn-sm yellow-gold" ng-class="{'disabled':!YarnItemRegForm.$valid}">Update</button>
+                        <button type="submit" ng-if="!vm.form.INV_ITEM_ID" class="btn btn-sm green" ng-class="{'disabled':!YarnItemRegForm.$valid}">Save</button>
+                        <button type="button" class="btn btn-sm default" ng-click="vm.reset()">Cancel</button>
+                    </div>
+                </div>
+    
+                <div class="row" style="margin:auto;padding-top:10px;" ng-if="vm.errors">
+                    <div class="alert alert-warning" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                        <ul ng-repeat="field in vm.errors">
+                            <li ng-repeat="error in field" ng-bind="error"></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="row" style="padding-top:10px;margin:auto;">
+
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend">Yarn Item Specification List</legend>
+                        <kendo-grid k-options="vm.gridOptions" id="kendoGrid"></kendo-grid>
+
+                        <div style="padding-top:10px;padding-left:0px;margin:auto;">
+                            <div class="col-md-5">                                
+                                <span class="title">Export to</span>
+                                <button type="button" class="btn btn-sm" ng-click="vm.yarnListPrint()"><i class="fa fa-file-pdf-o"></i> pdf</button>
+                                <button type="button" class="btn btn-sm" ng-click="vm.yarnListPrint({IS_EXCEL_FORMAT:'Y'})"><i class="fa fa-file-excel-o"></i> excel</button>
+                            </div>
+                        </div>
+
+                    </fieldset>                       
+               </div>
+
+
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/ng-template" id="FabricCompositionGeneration.html">
+    <input id="access_token" data-ng-model="token" type="hidden"
+           data-ng-init="token='@Session["access_token"]'" />
+    <div class="modal-body">
+        <div class="portlet grey-cascade box">
+            <div class="portlet-title">
+                <div>
+                    <h3 class="title">
+                        New Fiber Composition
+                        <span class="pull-right"><i class="fa fa-times red" ng-click="vm.cancel(vm.form)"></i></span>
+                    </h3>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form class="form-horizontal" role="form" name="FiberComposition" novalidate>
+
+                    <div class="form-body clearfix">
+                        <div class="row" style="margin:auto;padding-top:10px;">
+
+
+                            <input id="access_token" data-ng-model="token" type="hidden"
+                                   data-ng-init="token='@Session["access_token"]'" />
+
+                            @*<div class="form-group">
+                                <label class="col-md-4 control-label">
+                                    <span aria-required="true" class="required">*</span>
+                                    Fiber Comp. Group
+                                </label>
+                                <div class="col-md-4">
+                                    <select kendo-drop-down-list name="RF_FIB_COMP_GRP_ID" class="form-control" ng-model="vm.form.RF_FIB_COMP_GRP_ID"
+                                            options="vm.FeederTypeList" id="RF_FIB_COMP_GRP_ID" required></select>
+                                </div>
+                            </div>*@
+
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">
+                                    <span aria-required="true" class="required">*</span>
+                                    Fiber Type
+                                </label>
+                                <div class="col-md-4">
+                                    <oi-select oi-options="item.LK_DATA_NAME_EN for item in vm.FiberCompositionTypeList track by item.LOOKUP_DATA_ID"
+                                                    ng-model="vm.form.LK_FIB_TYPE_LST"
+                                                    name="LK_FIB_TYPE_LST"
+                                                    style="border: 1px solid #898383;"
+                                                    multiple
+                                                    placeholder="Search..."
+                                                    required>
+                                    </oi-select>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group" ng-repeat="itm in vm.form.LK_FIB_TYPE_LST">
+                                <label class="col-md-4 control-label">
+                                    <span aria-required="true" class="required">*</span>
+                                    <span>
+                                        {{itm.LK_DATA_NAME_EN}} <b>(%)</b>
+                                    </span>
+
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="number" min="1" max="100" name="PERCENT{{$index}}" ng-model="itm.PERCENT" class="form-control" required />
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">
+
+                                    Composition Desc.
+                                </label>
+                                <div class="col-md-5">
+                                    <input type="text" name="FIB_COMP_NAME" ng-minlength="3" ng-model="vm.form.FIB_COMP_NAME" class="form-control" readonly />
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-5 col-md-offset-4">
+                                <button type="button" ng-if="vm.form.RF_FIB_COMP_ID" ng-click="vm.submitData(vm.form,token)" class="btn btn-sm yellow-gold" ng-class="{'disabled':!FiberComposition.$valid || vm.formDisabled}">Update</button>
+                                <button type="button" ng-if="!vm.form.RF_FIB_COMP_ID" ng-click="vm.submitData(vm.form,token)" class="btn btn-sm green" ng-class="{'disabled':!FiberComposition.$valid||vm.formDisabled}">Save</button>
+                                <button type="button" class="btn btn-sm default" ng-click="vm.cancel(vm.form)">Cancel</button>
+                            </div>
+
+                        </div>
+
+                        <div class="row" style="margin:auto;padding-top:10px;" ng-if="vm.errors.length>0">
+                            <div class="alert alert-warning" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                                <ul ng-repeat="field in vm.errors">
+                                    <li ng-repeat="error in field" ng-bind="error"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+
+
+
+

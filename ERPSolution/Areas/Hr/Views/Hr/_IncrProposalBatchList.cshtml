@@ -1,0 +1,125 @@
+﻿<style>
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-header th.k-header > .k-link {
+        /*padding-right: 0 !important;*/
+        font-size: 13px;
+    }
+</style>
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Hr</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" @*ng-bind="vm.Title"*@>
+            {{vm.Title}}
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+
+    <div class="portlet-body form">
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+
+        <form class="form-horizontal" role="form" name="frmIncrProposalBatchList" novalidate>
+            <div class="form-body clearfix">
+                <div class="row" style="margin:auto">
+
+                    <div class="row" style="margin:auto;" ng-show="vm.errors">
+                        <div class="alert alert-danger" role="alert">
+                            @*<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>*@
+                            <div style="padding: 0px 0px 15px 25px; ">
+                                <b>Please fix the following errors ....</b>
+                            </div>
+                            <ul ng-repeat="field in vm.errors">
+                                <li ng-repeat="error in field" ng-bind="error"></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    
+                    <fieldset class="custom-fieldset col-md-12">
+                        <legend class="custom-legend">Incriment Memo</legend>
+
+                        <div kendo-grid id="incrMemoGrid" k-options="vm.incrMemoGridOption" k-data-source="vm.incrMemoGridDataSource"></div>                            
+                    </fieldset>
+                    
+
+                    <fieldset class="custom-fieldset col-md-12">
+                        <legend class="custom-legend">Section Batch List</legend>
+
+                        <div kendo-grid id="incrProposalBatchGrid" k-options="vm.incrProposalBatchGridOption" k-data-source="vm.incrProposalBatchGridDataSource"></div>
+                    </fieldset>
+                    
+                </div>
+
+               
+
+            </div>
+        </form>
+
+
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*<div class="row">
+    <div class="col-md-6">
+        <fieldset class="custom-fieldset">
+            <legend class="custom-legend">Incriment Memo</legend>
+
+            <div kendo-grid id="incrMemoGrid" k-options="vm.incrMemoGridOption" k-data-source="vm.incrMemoGridDataSource"></div>            
+        </fieldset>
+    </div>
+
+    <div class="col-md-6" ng-show="vm.form.HR_INCR_MEMO_ID>0">
+        <fieldset class="custom-fieldset">
+            <legend class="custom-legend">Section Batch List</legend>
+
+            <div kendo-grid id="incrProposalBatchGrid" k-options="vm.incrProposalBatchGridOption" k-data-source="vm.incrProposalBatchGridDataSource"></div>
+        </fieldset>
+    </div>
+</div>*@
+
+
+@*<div kendo-grid id="incrEmpListGrid" k-options="vm.incrEmpListGridOption" k-data-source="vm.incrEmpListGridDataSource"></div>*@

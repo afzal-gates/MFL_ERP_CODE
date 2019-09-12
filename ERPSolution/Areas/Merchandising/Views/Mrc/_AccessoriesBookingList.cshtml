@@ -1,0 +1,357 @@
+﻿@{
+    ViewBag.Title = "Accessories Booking List";
+}
+
+<div class="portlet-body" data-ui-view>
+
+
+    <ul class="page-breadcrumb breadcrumb">
+        <li>
+            <a href="index.html">MultiTex ERP</a>
+
+        </li>
+        <li>
+            <a href="#">Merchandising</a>
+
+        </li>
+        <li>
+            <a href="#" ng-bind="vm.Title"></a>
+        </li>
+    </ul>
+
+    <div class="portlet box blue-dark">
+        <div class="portlet-title">
+            <div class="caption" ng-bind="vm.Title">
+            </div>
+            <div class="tools">
+            </div>
+        </div>
+        <form name="form" style="background-color: white;">
+            <div class="portlet-body">
+                <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+                    <div class="page-splash">
+                        <div class="page-splash-message">
+                            <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="padding:20px;">
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend"><b>Development of Trims & Accessories</b></legend>
+                        <div class="row" style="padding-left: 5px; padding-right: 5px;">
+                            <fieldset class="custom-fieldset">
+                                <legend class="custom-legend"><b></b></legend>
+                                <table class="clsTable">
+                                    <tbody class="clsthead">
+                                        <tr class="clstd">
+
+                                            <td class="clstd">
+                                                Buyer A/C
+                                            </td>
+                                            <td class="clstd">
+                                                Work Style
+                                            </td>
+                                            <td class="clstd">
+                                                Order #
+                                            </td>
+                                            <td class="clstd">
+                                                Order Type
+                                            </td>
+                                            <td class="clstd">
+                                                Shipment
+                                            </td>
+                                            <td class="clstd">
+                                                Action
+                                            </td>
+                                        </tr>
+                                        <tr class="clstd">
+
+                                            <td class="clstd">
+                                                <select class="form-control" kendo-drop-down-list name="MC_BYR_ACC_ID" k-option-label="'-- Select Buyer --'"
+                                                        k-data-text-field="'BYR_ACC_NAME_EN'" k-data-value-field="'MC_BYR_ACC_ID'" k-filter="'contains'"
+                                                        k-auto-bind="'true'" k-data-source="vm.buyerAccList" k-ng-delay="vm.buyerAccList" ng-model="vm.form.MC_BYR_ACC_ID"
+                                                        k-on-change="vm.styleListByBuyerAC(vm.form.MC_BYR_ACC_ID)" required></select>
+
+                                            </td>
+                                            <td class="clstd">
+                                                <select class="form-control" kendo-drop-down-list name="MC_STYLE_H_EXT_ID" k-option-label="'--Style --'"
+                                                        k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_STYLE_H_EXT_ID'" k-filter="'Contains'"
+                                                        k-template="vm.template" k-value-template="vm.valueTemplate"
+                                                        k-auto-bind="'true'" k-data-source="StyleExtDs" ng-model="vm.form.MC_STYLE_H_EXT_ID"></select>
+
+                                                @*<select class="form-control" kendo-drop-down-list name="STYLE_NO" k-option-label="'-- Select Style --'"
+                                                        k-data-text-field="'STYLE_NO'" k-data-value-field="'STYLE_NO'" k-filter="'contains'"
+                                                        k-auto-bind="'true'" k-data-source="vm.styleList" k-ng-delay="vm.styleList" ng-model="vm.form.STYLE_NO"
+                                                        k-on-change="vm.getDataByStyleId(kendoEvent)" required></select>*@
+                                            </td>
+                                            <td class="clstd">
+                                                <input type="text" name="ORDER_NO" ng-model="vm.form.ORDER_NO" class="form-control" />
+
+                                            </td>
+                                            <td class="clstd">
+                                                <select kendo-drop-down-list name="ORDER_TYPE" id="ORDER_TYPE" class="form-control"
+                                                        options="vm.OrderTypeList" ng-model="vm.form.ORDER_TYPE"></select>
+
+                                            </td>
+                                            <td class="clstd">
+                                                <select class="form-control" kendo-drop-down-list name="MONTHOF" k-option-label="'-- Select Month --'"
+                                                        k-data-text-field="'MONTHOF'" k-data-value-field="'MONTHOF'" k-filter="'contains'"
+                                                        k-auto-bind="'true'" k-data-source="vm.shipMonthList" k-ng-delay="vm.shipMonthList" ng-model="vm.form.MONTHOF"></select>
+
+                                            </td>
+                                            <td class="clstd">
+                                                <button class="btn btn-sm" ng-click="vm.showOrderScmList();"><i class='fa fa-search'>Search</i></button>
+                                                <button class="btn btn-sm" ng-click="vm.clearSearch();"><i class='fa fa-remove'>Clear</i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                            <div style="padding:5px;">
+
+
+                                @*<kendo-grid id="grid" k-options="vm.gridOptions">
+                                        <div k-detail-template>
+                                            <kendo-grid k-options="gridOptionsCDS" ng-init="vm.detailGridOptions(dataItem)">
+                                            </kendo-grid>
+                                            <button class="btn btn-sm yellow-gold" ng-click="vm.generatePO(dataItem);"><i class="fa fa-anchor">Generate PO</i></button>
+                                        </div>
+                                    </kendo-grid>*@
+
+                                @*<kendo-grid k-options="vm.gridOptions" id="grid">
+
+                                    </kendo-grid>*@
+
+                            </div>
+                        </div>
+                    </fieldset>
+
+
+                    <fieldset class="custom-fieldset">
+                        <legend class="custom-legend"><b>Details Data</b></legend>
+                        <table style="width:100%" class="clsTableMtex">
+
+                            <tr class="clstheadMtex">
+
+                                <td class="clstdMtex">
+                                    <b>Expand</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Buyer Name</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Style Description</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Style #</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Order #</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Order Type</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Order Qty</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Order Conf. Date</b>
+                                </td>
+                                <td class="clstdMtex">
+                                    <b>Shipment Date</b>
+                                </td>
+
+                                <td class="clstdMtex">
+                                    <b>Lead Time</b>
+                                </td>
+                            </tr>
+                            <tr class="clstdMtex" ng-repeat-start="item in vm.pendingFabProdOrderList" style="background-color:#f3fcfb">
+
+                                <td class="clstdMtex" style="width:80px;">
+                                    <a title="Down" ng-click="vm.addAllNewRecoed(item)" class="btn btn-xs green"><i class="fa fa-level-down"></i></a>
+                                </td>
+
+                                <td class="clstdMtex">
+                                    {{item.BYR_ACC_NAME_EN}}
+                                    <input type="hidden" name="MC_STYLE_H_ID" ng-model="item.MC_STYLE_H_ID" class="form-control" />
+
+                                </td>
+                                <td class="clstdMtex">
+                                    {{item.STYLE_DESC}}
+                                    <input type="hidden" name="MC_BUYER_ID" ng-model="item.MC_BUYER_ID" class="form-control" />
+
+                                </td>
+                                <td class="clstdMtex">
+                                    {{item.STYLE_NO}}
+
+                                </td>
+                                <td class="clstdMtex">
+                                    {{item.ORDER_NO}}
+                                </td>
+                                <td class="clstdMtex">
+                                    {{item.ORDER_TYPE_NAME_EN}}
+
+                                </td>
+
+                                <td class="clstdMtex">
+                                    {{item.TOT_ORD_QTY}}
+
+                                </td>
+                                <td class="clstdMtex">
+                                    {{item.ORD_CONF_DT|date:'dd-MM-yyyy'}}
+
+                                </td>
+                                <td class="clstdMtex">
+                                    {{item.SHIP_DT|date:'dd-MM-yyyy'}}
+
+                                </td>
+                                <td class="clstdMtex">
+                                    {{item.LEAD_TIME}}
+
+                                </td>
+
+                            </tr>
+                            <tr ng-show="item.IS_ACTIVE" style="width:100%;">
+                                <td></td>
+                                <td colspan="8">
+
+                                    <fieldset class="custom-fieldset">
+                                        <legend class="custom-legend"><b>BOM Data</b></legend>
+                                        <table style="width:100%;">
+                                            <thead>
+                                                <tr style="width:100%; background-color:#f1eeb9">
+                                                    <td class="clstd">
+                                                        <b>SL #</b>
+                                                    </td>
+                                                    <td class="clstd">
+                                                        <b>Requisition No</b>
+                                                    </td>
+                                                    <th class="clstd">
+                                                        <b>
+                                                            Requisition Date
+                                                        </b>
+                                                    </th>
+
+                                                    <th class="clstd">
+                                                        <b>
+                                                            Company Name
+                                                        </b>
+                                                    </th>
+
+                                                    <th class="clstd">
+                                                        <b>
+                                                            Department
+                                                        </b>
+                                                    </th>
+
+                                                    <th class="clstd">
+                                                        <b>
+                                                            Requisition Type
+                                                        </b>
+                                                    </th>
+
+                                                    <th class="clstd">
+                                                        <b>
+                                                            Order Info
+                                                        </b>
+                                                    </th>
+
+                                                    <th class="clstd">
+                                                        <b>
+                                                            Item Info
+                                                        </b>
+                                                    </th>
+
+                                                    <th class="clstd">
+                                                        <b>
+                                                           Edit
+                                                        </b>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="clsthead" style="width: 100%;" ng-repeat="item2 in item.AccesorriesList">
+
+                                                    <td class="clstd">
+                                                        {{$index+1}}
+
+                                                        <input type="hidden" name="SCM_PURC_REQ_H_ID" ng-model="item2.SCM_PURC_REQ_H_ID" class="form-control" />
+                                                        <input type="hidden" name="MC_FAB_PROD_ORD_H_ID" ng-model="item2.MC_FAB_PROD_ORD_H_ID" class="form-control" />
+                                                        <input type="hidden" name="MC_STYLE_H_ID" ng-model="item2.MC_STYLE_H_ID" class="form-control" />
+
+                                                        <input type="hidden" name="MC_STYLE_H_EXT_ID" ng-model="item2.MC_STYLE_H_EXT_ID" class="form-control" />
+                                                        <input type="hidden" name="INV_ITEM_LST" ng-model="item2.INV_ITEM_LST" class="form-control" />
+
+                                                    </td>
+
+                                                    <td class="clstd">
+                                                        {{item2.PURC_REQ_NO}}
+                                                    </td>
+                                                    
+                                                    <td class="clstd">
+                                                        {{item2.PURC_REQ_DT|date:'dd-MM-yyyy'}}
+
+                                                    </td>
+
+                                                    <td class="clstd">
+                                                        {{item2.COMP_NAME_EN}}
+                                                    </td>
+                                                    
+                                                    <td class="clstd">
+                                                        {{item2.DEPARTMENT_NAME_EN}}
+                                                    </td>
+                                                    
+                                                    <td class="clstd">
+                                                        {{item2.REQ_TYPE_NAME}}
+                                                    </td>
+
+                                                    <td class="clstd">
+                                                        {{item2.ORDER_NO_LST}}
+                                                    </td>
+
+                                                    <td>
+                                                        {{item2.ITEM_NAME_LIST}}
+                                                    </td>
+
+                                                    <td colspan="9" style="padding:10px;">
+                                                        <button class="btn btn-sm yellow-gold" ng-click="vm.generatePO(item2);"><i class="fa fa-edit"> Edit</i></button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </fieldset>
+                                </td>
+                            </tr>
+
+
+                            <tr ng-repeat-end></tr>
+                        </table>
+
+                        <div style="padding:3px;">
+                        </div>
+                        @*<div kendo-grid k-options="vm.gridOptionsItem" id="IDRequisitionDS" k-data-source="vm.IssueItemList"></div>*@
+
+
+                    </fieldset>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script type="text/x-kendo-template" id="template">
+    <div class="tabstrip">
+
+        <ul>
+            <li class="k-state-active" style="width:30%; border-radius:2px;">BOM</li>
+        </ul>
+        <div style="border-color:white;">
+            <div class="orders">
+            </div>
+        </div>
+
+    </div>
+</script>

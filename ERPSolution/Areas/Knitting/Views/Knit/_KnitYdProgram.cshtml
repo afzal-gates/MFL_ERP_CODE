@@ -1,0 +1,612 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+    </li>
+    <li>
+        <a href="#">Merchandising</a>
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+<!-- BEGIN SPLASH -->
+<div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+    <div class="page-splash">
+        <div class="page-splash-message">
+            <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+        </div>
+    </div>
+</div>
+<!-- END SPLASH -->
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body" ng-init="Showed=true">
+        <form role="form" name="YdProgramFrom" class="form-horizontal">
+
+            <div class="row" style="text-align:left;margin:auto;" ng-if="vm.params.pKNT_YD_PRG_H_ID">
+                <a class="btn btn-xs blue" ui-sref="KnitYdProgram" ui-sref-opts="{reload:true,inherit:false}">  <i class="fa fa-plus"></i>New Program</a>
+            </div>
+
+            <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;">
+                <legend class="custom-legend"> Program Info</legend>
+
+                <div class="form-group">
+                    <label class="col-md-2">
+                        Program Ref# (<span aria-required="true" class="custom-required">*</span>)
+                    </label>
+                    <div class="col-md-2" ng-class="{'has-error': (YdProgramFrom.PRG_REF_NO.$touched || YdProgramFrom.$submitted) && YdProgramFrom.PRG_REF_NO.$error.required}">
+                        <input type="text" class="form-control" name="PRG_REF_NO" ng-model="form.PRG_REF_NO" required ng-disabled="form.IS_FINALIZED=='Y'" />
+
+                    </div>
+
+                    <label class="col-md-2 col-md-offset-2" ng-if="!vm.params.pKNT_YD_PRG_H_ID" style="text-align:right;">
+                        Prev. Program
+                    </label>
+                    <div class="col-md-4" ng-if="!vm.params.pKNT_YD_PRG_H_ID">
+                        <select class="form-control" kendo-drop-down-list options="vm.kntProgDs"></select>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2">
+                        Buyer A/C (<span aria-required="true" class="custom-required">*</span>)
+                    </label>
+                    <div class="col-md-4" ng-class="{'has-error': (YdProgramFrom.MC_BYR_ACC_ID.$touched || YdProgramFrom.$submitted) && YdProgramFrom.MC_BYR_ACC_ID.$error.required}">
+
+                        <select kendo-drop-down-list name="MC_BYR_ACC_ID" class="form-control"
+                                k-options="vm.buyerAcList" id="MC_BYR_ACC_ID" ng-model="form.MC_BYR_ACC_ID" required></select>
+
+                    </div>
+
+
+                    <label class="col-md-offset-1 col-md-2">
+                        Progam Type (<span aria-required="true" class="custom-required">*</span>)
+                    </label>
+                    <div class="col-md-3" ng-class="{'has-error': (YdProgramFrom.RF_FAB_PROD_CAT_ID.$touched || YdProgramFrom.$submitted) && YdProgramFrom.RF_FAB_PROD_CAT_ID.$error.required}">
+
+                        <select class="form-control" kendo-drop-down-list name="RF_FAB_PROD_CAT_ID" k-option-label="'-- Select --'"
+                                k-data-text-field="'FAB_PROD_CAT_SNAME'" k-data-value-field="'RF_FAB_PROD_CAT_ID'"
+                                k-auto-bind="'true'" k-data-source="vm.FabProductionCatDs" ng-model="form.RF_FAB_PROD_CAT_ID" k-ng-dely="vm.FabProductionCatDs"
+                                k-on-change="vm.onProdCategoryChange(kendoEvent)" ng-disabled="(form.IS_FINALIZED=='Y'||(vm.params.pPARENT_ID && vm.params.pREV=='Y')||!form.MC_BYR_ACC_ID)"></select>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2">
+                        Order# List (<span aria-required="true" class="custom-required">*</span>)
+                    </label>
+                    <div class="col-md-4" ng-class="{'has-error': (YdProgramFrom.MC_FAB_PROD_ORD_H_ID.$touched || YdProgramFrom.$submitted) && YdProgramFrom.MC_FAB_PROD_ORD_H_ID.$error.required}">
+
+                        <select class="form-control" kendo-multi-select id="ORDER_LIST" name="MC_FAB_PROD_ORD_H_ID" k-option-label="'--Order# --'"
+                                k-data-text-field="'ORDER_NO_LST'" k-data-value-field="'MC_FAB_PROD_ORD_H_ID'" k-filter="'Contains'"
+                                k-item-template="templateOh" k-tag-template="valueTemplateOh"
+                                k-auto-bind="'true'" k-data-source="FabOederByOhDs" ng-model="form.MC_FAB_PROD_ORD_H_LST" k-on-change="vm.onOrderChange(kendoEvent)" k-on-data-bound="vm.onOrderDataBound(kendoEvent)"
+                                required style="width:100%;" ng-disabled="!form.RF_FAB_PROD_CAT_ID" ng-disabled="(form.IS_FINALIZED=='Y'||(vm.params.pPARENT_ID && vm.params.pREV=='Y')||!form.MC_BYR_ACC_ID)"></select>
+                    </div>
+
+                    <label class="col-md-offset-1 col-md-2">
+                        Supplier (<span aria-required="true" class="custom-required">*</span>)
+                    </label>
+                    <div class="col-md-3" ng-class="{'has-error': (YdProgramFrom.SCM_SUPPLIER_ID.$touched || YdProgramFrom.$submitted) && YdProgramFrom.SCM_SUPPLIER_ID.$error.required}">
+
+                        <select class="form-control" kendo-drop-down-list name="SCM_SUPPLIER_ID" k-option-label="'-- Select Buyer --'"
+                                k-data-text-field="'SUP_TRD_NAME_EN'" k-data-value-field="'SCM_SUPPLIER_ID'" k-ng-dely="vm.supplierDs"
+                                k-auto-bind="'true'" k-data-source="vm.supplierDs" ng-model="form.SCM_SUPPLIER_ID" ng-disabled="form.IS_FINALIZED=='Y'||(vm.params.pPARENT_ID && vm.params.pREV=='Y')" required></select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2">
+                        Program Date(<span aria-required="true" class="custom-required">*</span>)
+                    </label>
+                    <div class="col-md-4" ng-class="{'has-error': (YdProgramFrom.PRG_ISS_DT.$touched || YdProgramFrom.$submitted) && YdProgramFrom.PRG_ISS_DT.$error.required}">
+                        <input type="text" class="form-control" ng-click="vm.PRG_ISS_DT_OPEN($event)" datepicker-popup="{{vm.dtFormat}}"
+                               name="PRG_ISS_DT" ng-model="form.PRG_ISS_DT" is-open="vm.PRG_ISS_DT_OPENED" datepicker-options="dateOptions" required close-text="Close" ng-disabled="form.IS_FINALIZED=='Y'" />
+
+
+                    </div>
+
+                    <label class="col-md-offset-1 col-md-2">
+                        Delivery Target Date
+                    </label>
+                    <div class="col-md-3" ng-class="{'has-error': (YdProgramFrom.DELV_TGT_DT.$touched || YdProgramFrom.$submitted) && YdProgramFrom.DELV_TGT_DT.$error.required}">
+                        <input type="text" class="form-control" ng-click="vm.DELV_TGT_DT_OPEN($event)" datepicker-popup="{{vm.dtFormat}}"
+                               name="DELV_TGT_DT" ng-model="form.DELV_TGT_DT" min-date="form.PRG_ISS_DT" is-open="vm.DELV_TGT_DT_OPENED" datepicker-options="dateOptions" required close-text="Close" ng-disabled="form.IS_FINALIZED=='Y'" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2">
+                        Requested By
+                    </label>
+                    <div class="col-md-4">
+                        <textarea rows="2" ng-model="form.EMPLOYEE_PROFILE" rows="1" class="form-control"
+                                  data-ng-init="form.EMPLOYEE_PROFILE='@Session["multiLoginEmpName"]' + ', '+'@Session["multiLoginEmpDesigName"]'+', '+'@Session["multiLoginEmpCoreDeptName"]'" ng-disabled="true" ng-disabled="form.IS_FINALIZED=='Y'" />
+                    </div>
+
+                    <label class="col-md-offset-1 col-md-2">
+                    </label>
+                    <div class="col-md-3">
+                        <div class="checkbox-list">
+                            <label class="checkbox-inline" style="margin-left:20px;margin-top:-15px;">
+                                <span><input type="checkbox" ng-model="form.IS_FINALIZED_M" ng-true-value="'Y'" ng-false-value="'N'" ng-disabled="form.IS_FINALIZED=='Y'||!vm.params.pKNT_YD_PRG_H_ID"></span> Is Finalized?
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2">
+                    </label>
+                    <div class="col-md-3">
+                        <div class="checkbox-list">
+                            <label class="checkbox-inline" style="margin-left:20px;margin-top:-15px;">
+                                <span><input type="checkbox" ng-model="form.IS_REMARKS" ng-true-value="'Y'" ng-false-value="'N'" ng-disabled="form.IS_FINALIZED=='Y'"></span> Remarks
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-show="form.IS_REMARKS=='Y'">
+                    <label class="col-md-2">
+                        Remarks
+                    </label>
+                    <div class="col-md-7">
+                        <textarea rows="3" name="REMARKS" class="form-control" cols="50" ng-model="form.REMARKS" ng-disabled="form.IS_FINALIZED=='Y'"></textarea>
+                    </div>
+                </div>
+
+                <div class="row" style="margin:auto;padding-top:10px;" ng-if="vm.errors">
+                    <div class="col-md-5 col-md-offset-2">
+                        <div class="alert alert-warning" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                            <ul ng-repeat="field in vm.errors">
+                                <li ng-repeat="error in field" ng-bind="error"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </fieldset>
+
+
+
+            <div class="form-group">
+                <div class="col-md-12" style="padding-right:0px;">
+                    <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;">
+                        <legend class="custom-legend"> Feeder Plan </legend>
+                        <table class="table table-condensed table-striped table-bordered" style="padding:5px;">
+                            <thead>
+                                <tr class="site-table-header">
+
+                                    <th style="width:10%;">
+                                        <small>
+                                            Order/Style
+                                        </small>
+                                    </th>
+
+
+                                    <th style="width:20%;">
+
+                                        <small>
+                                            Combo Colors
+                                        </small>
+
+                                    </th>
+                                    <th style="width:10%;">
+
+                                        <small>
+                                            Req(Kg)
+                                        </small>
+
+                                    </th>
+
+                                    <th style="width:60%;">
+                                        <small>Solid Colors</small>
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+
+                                <tr ng-repeat="(key,item) in form.feeder_plans">
+                                    <td>
+                                        <b>{{item.ORDER_NO_LIST}}</b>
+                                        <span style="display:block;font-style:italic;font-size:11px;">
+                                            {{item.STYLE_NO}}
+                                        </span>
+
+                                    </td>
+                                    <td>
+                                        {{item.COLOR_NAME_EN}}
+                                        <br />
+                                        <span class="label label-warning label-sm" ng-click="form.feeder_plans.splice(key,1)" style="cursor:pointer;" ng-if="form.feeder_plans.length>1">
+                                            <i class="fa fa-times-circle"></i>
+                                            Clear
+                                        </span>
+                                    </td>
+                                    <td>{{item.NET_GFAB_QTY}}</td>
+
+                                    <td>
+                                        <table class="table table-condensed table-striped table-bordered" style="padding:0px;margin-bottom:0px;">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width:40%;">
+                                                        <small>
+                                                            Color
+                                                        </small>
+
+                                                    </th>
+                                                    <th style="width:30%;">
+                                                        <small>No of Feeder</small>
+                                                    </th>
+                                                    <th style="width:30%">Req Qtys(Kg)
+                                                        <a ng-if="!vm.params.pKNT_YD_PRG_H_ID" class="btn btn-xs btn-default" ng-click="vm.onFeedNoChange(item.NET_GFAB_QTY,item.details)"><i class="fa fa-refresh"></i> Refresh </a>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="itm in item.details">
+                                                    <td>{{itm.COLOR_NAME_EN}}</td>
+                                                    <td ng-class="{'has-error': (RQD_FDR_QTY_FORM.RQD_FDR_QTY.$touched || YdProgramFrom.$submitted) && (RQD_FDR_QTY_FORM.RQD_FDR_QTY.$error.required||RQD_FDR_QTY_FORM.RQD_FDR_QTY.$error.min)}">
+                                                        <ng-form name="RQD_FDR_QTY_FORM">
+                                                            <input class="form-control" type="number" min="0" name="RQD_FDR_QTY" ng-change="vm.onFeedNoChange(item.NET_GFAB_QTY,item.details,itm)" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" ng-model="itm.RQD_FDR_QTY"  ng-disabled="form.IS_FINALIZED=='Y'" />
+                                                        </ng-form>
+
+                                                        
+
+                                                    </td>
+                                                    <td ng-class="{'has-error': (CAL_YRN_QTY_FORM.CAL_YRN_QTY.$touched || YdProgramFrom.$submitted) && (CAL_YRN_QTY_FORM.CAL_YRN_QTY.$error.required||CAL_YRN_QTY_FORM.CAL_YRN_QTY.$error.min)}">
+
+                                                        <ng-form name="CAL_YRN_QTY_FORM">
+                                                            <input class="form-control" type="number" min="0" name="CAL_YRN_QTY" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" ng-model="itm.CAL_YRN_QTY"  ng-disabled="form.IS_FINALIZED=='Y'" />
+                                                        </ng-form>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+
+
+                            </tbody>
+                        </table>
+                    </fieldset>
+                </div>
+
+            </div>
+            <div class="form-group">
+                <div class="col-md-12">
+
+                    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)"><h4 style="margin:0px;">{{alert.msg}}</h4></alert>
+
+
+                    <fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;">
+                        <legend class="custom-legend">Color Combo Yarn Requirement</legend>
+
+                        <div class="row" style="margin:auto;text-align:right;" ng-show="form.IS_FINALIZED=='Y' && form.IS_REQS_DONE=='Y'">
+                            <div class="checkbox-list">
+                                <label class="checkbox-inline" style="margin-left:20px;margin-top:-10px;">
+                                    <span><input type="checkbox" ng-model="Showed" ng-true-value="false" ng-false-value="true"></span> Approval Status
+                                </label>
+                            </div>
+                        </div>
+
+
+                        <table class="table table-condensed table-striped table-bordered" style="padding:5px;">
+                            <thead>
+                                <tr class="site-table-header">
+                                    <th style="width:7%;">
+                                        <small>
+                                            Color/Order/Style
+                                        </small>
+                                    </th>
+                                    <th style="width:5%;">
+                                        <small>
+                                            Ref#
+                                        </small>
+                                    </th>
+                                    <th style="width:3%;">
+                                        <small>
+                                            YrDp?
+                                        </small>
+                                    </th>
+
+                                    <th style="width:10%;" ng-if="!Showed">
+                                        <small>
+                                            Status
+                                        </small>
+                                    </th>
+
+                                    <th style="width:10%;" ng-if="!Showed">
+                                        <small>
+                                            Date
+                                        </small>
+                                    </th>
+
+                                    <th style="width:30%;" ng-if="!Showed">
+                                        <small>
+                                            Comments
+                                        </small>
+                                    </th>
+                                    <th style="width:60%;" ng-show="Showed">
+                                        Yarn Information
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+
+                                <tr ng-repeat="item in form.col_reqs" ng-show="item.RQD_YD_QTY>0">
+                                    <td ng-class="{'has-error': (COLOR_NAME_EN_FORM.COLOR_NAME_EN.$touched || YdProgramFrom.$submitted) && COLOR_NAME_EN_FORM.COLOR_NAME_EN.$error.required}">
+
+                                        <ng-form name="COLOR_NAME_EN_FORM">
+                                            <input class="form-control" type="text" name="COLOR_NAME_EN" ng-model="item.COLOR_NAME_EN" required />
+                                        </ng-form>
+
+                                        <b style="display:block;">
+
+                                            [{{item.RQD_YD_QTY}} kg]
+                                        </b>
+                                        <b> ==>{{item.ORDER_NO_LIST}}</b>
+                                        <span style="display:block;font-style:italic;font-size:11px;">
+                                            ==>{{item.STYLE_NO}}
+                                        </span>
+
+                                    </td>
+
+
+                                    <td ng-class="{'has-error': (LK_YD_SRC_TYP_ID_FORM.LK_YD_SRC_TYP_ID.$touched || YdProgramFrom.$submitted) && LK_YD_SRC_TYP_ID_FORM.LK_YD_SRC_TYP_ID.$error.required}">
+                                        <ng-form name="LK_YD_SRC_TYP_ID_FORM">
+                                            <select class="form-control" kendo-drop-down-list name="LK_YD_SRC_TYP_ID" k-option-label="'-- Select --'"
+                                                    k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'" k-filter="'contains'"
+                                                    k-auto-bind="'true'" k-data-source="vm.YdSrcDs" ng-model="item.LK_YD_SRC_TYP_ID" k-ng-delay="vm.YdSrcDs"
+                                                    ng-required="item.RQD_YD_QTY>0" ng-disabled="form.IS_FINALIZED=='Y'"></select>
+                                        </ng-form>
+
+                                        <span style="display:block;padding-top:5px;border-top:1px solid" ng-class="{'has-error': (COL_REF_NO_FORM.COL_REF_NO.$touched || YdProgramFrom.$submitted) && COL_REF_NO_FORM.COL_REF_NO.$error.required}">
+                                            <ng-form name="COL_REF_NO_FORM">
+                                                <textarea class="form-control" rows="3"  placeholder="Write here" ng-if="(item.LK_YD_SRC_TYP_ID!='565' || item.LK_YD_SRC_TYP_ID!=565) && item.LK_YD_SRC_TYP_ID"  name="COL_REF_NO" ng-model="item.COL_REF_NO" ng-disabled="form.IS_FINALIZED=='Y'" required></textarea>
+                                            </ng-form>
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <input type="checkbox" name="IS_YDIP_RQD" ng-model="item.IS_YDIP_RQD" ng-true-value="'Y'" ng-false-value="'N'" ng-disabled="form.IS_FINALIZED=='Y'" />
+                                    </td>
+
+                                    <td ng-if="!Showed" ng-class="{'has-error': (LK_YD_APV_STS_ID_FORM.LK_YD_APV_STS_ID.$touched || YdProgramFrom.$submitted) && LK_YD_APV_STS_ID_FORM.LK_YD_APV_STS_ID.$error.required}">
+
+                                        <ng-form name="LK_YD_APV_STS_ID_FORM">
+                                            <select class="form-control" kendo-drop-down-list
+                                                    name="LK_YD_APV_STS_ID"
+                                                    k-option-label="'-- Status --'"
+                                                    k-data-text-field="'LK_DATA_NAME_EN'"
+                                                    k-data-value-field="'LOOKUP_DATA_ID'"
+                                                    k-filer="'contains'"
+                                                    k-auto-bind="'true'"
+                                                    k-data-source="vm.ApprovalStatusDs"
+                                                    ng-model="item.LK_YD_APV_STS_ID" required></select>
+                                        </ng-form>
+
+
+
+                                    </td>
+                                    <td ng-if="!Showed" ng-class="{'has-error': (APRVL_DT_FORM.APRVL_DT.$touched || YdProgramFrom.$submitted) && APRVL_DT_FORM.APRVL_DT.$error.required}">
+                                        <ng-form name="APRVL_DT_FORM">
+                                            <input type="text" class="form-control" ng-click="vm.APRVL_DT_OPEN($event,$index)" datepicker-popup="{{vm.dtFormat}}"
+                                                   name="APRVL_DT" ng-model="item.APRVL_DT" is-open="vm.APRVL_DT_OPENED[$index]" datepicker-options="dateOptions" ng-required="item.LK_YD_APV_STS_ID" close-text="Close" />
+                                        </ng-form>
+                                    </td>
+                                    <td ng-if="!Showed">
+                                        <input class="form-control" type="text" name="COMMENTS" ng-model="item.COMMENTS" />
+                                    </td>
+
+                                    <td ng-show="Showed" ng-if="item.RQD_YD_QTY>0">
+                                        <table class="table table-condensed table-striped table-bordered" style="padding:0px;margin-bottom:0px;">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width:15%">
+                                                        <small>Fab Type</small>
+                                                    </th>
+
+                                                    <th style="width:30%;">
+                                                        <small>
+                                                            Yarn
+                                                        </small>
+
+                                                    </th>
+
+                                                    <th style="width:15%">
+                                                        <small>
+                                                            Yarn Part
+                                                        </small>
+                                                    </th>
+
+                                                    @*<th style="width:10%;">
+                                                        <small>
+                                                            Brand
+                                                        </small>
+
+                                                    </th>
+                                                    <th style="width:10%;">
+                                                        <small>
+                                                            Lot
+                                                        </small>
+                                                    </th>*@
+                                                    <th style="width:10%">
+                                                        <small>Ratio</small>
+                                                    </th>
+
+                                                    <th style="width:10%;">
+                                                        <small>
+                                                            Req(Kg)
+                                                        </small>
+
+                                                    </th>
+
+                                                    <th style="width:10%;">
+                                                        <small>
+                                                            Req(Cone)
+                                                        </small>
+                                                    </th>
+                                                    <th style="width:10%;">
+                                                        <small>
+                                                            Action
+                                                        </small>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="itm in item.details">
+
+                                                    <td ng-class="{'has-error': (RF_FAB_TYPE_ID_FORM.RF_FAB_TYPE_ID.$touched || YdProgramFrom.$submitted) && RF_FAB_TYPE_ID_FORM.RF_FAB_TYPE_ID.$error.required}">
+                                                        <ng-form name="RF_FAB_TYPE_ID_FORM">
+                                                            <select class="form-control" kendo-drop-down-list name="RF_FAB_TYPE_ID" k-option-label="'-- Fab Type--'"
+                                                                    k-data-text-field="'FAB_TYPE_NAME'" k-data-value-field="'RF_FAB_TYPE_ID'" k-filter="'contains'"
+                                                                    k-auto-bind="'true'" k-data-source="vm.FabTypeDs" ng-model="itm.RF_FAB_TYPE_ID" k-ng-delay="vm.FabTypeDs"
+                                                                    required ng-disabled="form.IS_FINALIZED=='Y'" k-on-change="vm.onChangeFabType(itm,kendoEvent)"></select>
+
+                                                        </ng-form>
+                                                    </td>
+
+                                                    <td ng-class="{'has-error': (YARN_ITEM_ID_FORM.YARN_ITEM_ID.$touched || YdProgramFrom.$submitted) && YARN_ITEM_ID_FORM.YARN_ITEM_ID.$error.required}">
+                                                        <ng-form name="YARN_ITEM_ID_FORM">
+                                                            <select class="form-control" kendo-drop-down-list name="YARN_ITEM_ID" k-option-label="'-- Yarn Item --'"
+                                                                    k-data-text-field="'ITEM_NAME_EN'" k-data-value-field="'YARN_ITEM_ID'" k-filter="'contains'"
+                                                                    k-auto-bind="'true'" k-data-source="item.yarnItemListDs" ng-model="itm.YARN_ITEM_ID" k-ng-delay="item.yarnItemListDs"
+                                                                    @*k-on-change="vm.onChangeYarnItem(itm,kendoEvent,true,$index)"*@ k-template="vm.Yarntemplate" @*k-on-data-bound="vm.onBoundYarnItem(itm,true,$index)"*@ required ng-disabled="form.IS_FINALIZED=='Y'"></select>
+                                                        </ng-form>
+                                                    </td>
+
+
+                                                    <td ng-class="{'has-error': (LK_YFAB_PART_ID_FORM.LK_YFAB_PART_ID.$touched || YdProgramFrom.$submitted) && LK_YFAB_PART_ID_FORM.LK_YFAB_PART_ID.$error.required}">
+                                                        <ng-form name="LK_YFAB_PART_ID_FORM">
+                                                            <select class="form-control" kendo-drop-down-list name="LK_YFAB_PART_ID" k-option-label="'-- N/A --'"
+                                                                    k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'" k-filter="'contains'"
+                                                                    k-auto-bind="'true'" k-data-source="vm.PartListDs" ng-model="itm.LK_YFAB_PART_ID" k-ng-delay="vm.PartListDs"
+                                                                    ng-required="itm.IS_FBP_VISIBLE=='Y'" ng-disabled="form.IS_FINALIZED=='Y'"></select>
+                                                        </ng-form>
+
+                                                    </td>
+
+
+                                                    @*<td ng-class="{'has-error': (RF_BRAND_ID_FORM.RF_BRAND_ID.$touched || YdProgramFrom.$submitted) && RF_BRAND_ID_FORM.RF_BRAND_ID.$error.required}">
+                                                        <ng-form name="RF_BRAND_ID_FORM">
+                                                            <select class="form-control" kendo-drop-down-list name="RF_BRAND_ID" k-option-label="'-- N/A --'"
+                                                                    k-data-text-field="'BRAND_NAME_EN'" k-data-value-field="'RF_BRAND_ID'"
+                                                                    k-auto-bind="'true'" k-data-source="itm.brandListDs" k-ng-delay="itm.brandListDs" ng-model="itm.RF_BRAND_ID"
+                                                                    k-on-change="vm.onChangeBrnad(itm,kendoEvent,true,$index)" k-on-data-bound="vm.onBoundBrnad(itm,true,$index)" ng-disabled="form.IS_FINALIZED=='Y'" ng-required="form.IS_FINALIZED_M=='Y'"></select>
+
+                                                        </ng-form>
+
+                                                    </td>
+                                                    <td ng-class="{'has-error': (KNT_YRN_LOT_ID_FORM.KNT_YRN_LOT_ID.$touched || YdProgramFrom.$submitted) && KNT_YRN_LOT_ID_FORM.KNT_YRN_LOT_ID.$error.required}">
+                                                        <ng-form name="KNT_YRN_LOT_ID_FORM">
+
+                                                            <select class="form-control" kendo-drop-down-list
+                                                                    name="KNT_YRN_LOT_ID"
+                                                                    k-option-label="'-- N/A --'"
+                                                                    k-data-text-field="'YRN_LOT_NO'"
+                                                                    k-data-value-field="'KNT_YRN_LOT_ID'"
+                                                                    k-filer="'contains'"
+                                                                    k-auto-bind="'true'"
+                                                                    k-data-source="itm.yarnLotListDs"
+                                                                    k-ng-delay="itm.yarnLotListDs"
+                                                                    ng-model="itm.KNT_YRN_LOT_ID"
+                                                                    k-on-change="vm.onChangeYarnLot(itm,kendoEvent,true,$index)"
+                                                                    k-on-data-bound="vm.onBoundYarnLot(itm,true,$index)"
+                                                                    k-template="vm.template"
+                                                                    k-value-template="vm.value_template"
+                                                                    ng-disabled="form.IS_FINALIZED=='Y'" ng-required="form.IS_FINALIZED_M=='Y'"></select>
+                                                        </ng-form>
+                                                    </td>*@
+
+
+                                                    <td ng-class="{'has-error': (RATIO_QTY_FORM.RATIO_QTY.$touched || YdProgramFrom.$submitted) && (RATIO_QTY_FORM.RATIO_QTY.$error.required||RATIO_QTY_FORM.RATIO_QTY.$error.min)}">
+                                                        <ng-form name="RATIO_QTY_FORM">
+                                                            <input class="form-control" min="1" type="number" name="RATIO_QTY" ng-model="itm.RATIO_QTY" ng-disabled="form.IS_FINALIZED=='Y'" required />
+                                                        </ng-form>
+                                                    </td>
+
+                                                    <td ng-class="{'has-error': (RQD_YD_QTY_FORM.RQD_YD_QTY.$touched || YdProgramFrom.$submitted) && (RQD_YD_QTY_FORM.RQD_YD_QTY.$error.required||RQD_YD_QTY_FORM.RQD_YD_QTY.$error.min)}">
+                                                        <ng-form name="RQD_YD_QTY_FORM">
+                                                            <input class="form-control" type="number" min="1" name="RQD_YD_QTY" ng-model="itm.RQD_YD_QTY" ng-disabled="form.IS_FINALIZED=='Y'" required />
+                                                        </ng-form>
+                                                    </td>
+
+
+
+                                                    <td ng-class="{'has-error': (RQD_CONE_QTY_FORM.RQD_CONE_QTY.$touched || YdProgramFrom.$submitted) && (RQD_CONE_QTY_FORM.RQD_CONE_QTY.$error.required||RQD_CONE_QTY_FORM.RQD_CONE_QTY.$error.min)}">
+                                                        <ng-form name="RQD_CONE_QTY_FORM">
+                                                            <input class="form-control" type="number" min="1" name="RQD_CONE_QTY" ng-model="itm.RQD_CONE_QTY" ng-disabled="form.IS_FINALIZED=='Y'" required />
+                                                        </ng-form>
+                                                    </td>
+
+                                                    <td>
+                                                        <a class="btn btn-xs red" ng-if="$index>0" ng-click="vm.removeItem(item.details,$index)" ng-disabled="form.IS_FINALIZED=='Y'">
+                                                            <i class="fa fa-times"></i>
+                                                        </a>
+                                                        <a class="btn btn-xs blue-madison" ng-if="$index==(item.details.length-1)" ng-click="vm.addToList(itm,item.details);" ng-disabled="form.IS_FINALIZED=='Y'">
+                                                            <i class="fa fa-plus"></i>
+                                                        </a>
+                                                    </td>
+
+                                            </tbody>
+                                        </table>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </fieldset>
+                
+                    
+                    <fieldset class="custom-fieldset" ng-show="reqListShowed==true">
+                        <legend class="custom-legend">Yarn Requisition</legend>
+
+                        <div kendo-grid k-options="vm.reqGridOptions" k-data-source="vm.reqGridDataSource"></div>
+                    </fieldset>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-5">
+
+                    <button type="button" ui-sref="KnitYdProgramList" class="btn btn-sm blue">Program List</button>
+                    &nbsp;&nbsp;
+                    <button type="button" class="btn btn-sm yellow-gold" ng-if="vm.params.pKNT_YD_PRG_H_ID"  ng-click="vm.submitData(form,YdProgramFrom.$valid);YdProgramFrom.$submitted=true;">Update</button>
+
+                    <button type="button" class="btn btn-sm green" ng-if="!vm.params.pKNT_YD_PRG_H_ID" ng-click="vm.submitData(form,YdProgramFrom.$valid);YdProgramFrom.$submitted=true;">Save</button>
+                    <button type="button" class="btn btn-sm default" ng-click="vm.reset()">Cancel</button>
+                </div>
+
+                <div class="col-md-7" style="text-align:right;">
+                    <a class="btn btn-xs btn-link" ng-click="reqListShowed= !reqListShowed"><i class="fa" ng-class="{'fa-chevron-left' : reqListShowed, 'fa-chevron-right' : !reqListShowed }"></i> <b>{{reqListShowed?'Hide':'Show'}} Yarn Requisition List</b></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                    @*<button type="button" class="btn btn-sm blue" ng-if="form.IS_REVISABLE=='Y' && form.IS_FINALIZED=='Y' && form.IS_REQS_DONE=='Y'" ng-click="vm.makeRevise(form.KNT_YD_PRG_H_ID)">Revise</button>*@
+                    <button type="button" class="btn btn-sm blue" ng-if="form.IS_REVISABLE=='Y' && form.IS_FINALIZED=='Y' && form.RF_FAB_PROD_CAT_ID!=2 && form.IS_REQS_DONE=='Y'" ng-click="vm.makeRevise(form.KNT_YD_PRG_H_ID)">Revise</button>
+                    @*<button type="button" class="btn btn-sm purple" ng-if="form.IS_REQS_DONE=='N' && form.IS_FINALIZED=='Y'" ng-click="vm.makeRequisition(form.KNT_YD_PRG_H_ID)" >Make Yarn Requisition</button>*@
+                    
+                    <button type="button" class="btn btn-sm blue" ng-click="vm.openYrnReqModal({KNT_YRN_STR_REQ_H_ID: 0})" ng-if="form.KNT_YD_PRG_H_ID>0">Yarn Requisition</button>
+
+                    <button type="button" class="btn btn-sm default" ng-click="vm.printProgramRpt(form.KNT_YD_PRG_H_ID)" ng-if="form.KNT_YD_PRG_H_ID>0"><i class="fa fa-file-pdf-o"></i> Print Program</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>

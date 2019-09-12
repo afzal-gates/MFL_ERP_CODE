@@ -1,0 +1,135 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Dyeing Finishing</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+
+
+<div class="portlet box blue-dark">
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">
+        </div>
+        <div class="tools">
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+            <div class="page-splash">
+                <div class="page-splash-message">
+                    <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+                </div>
+            </div>
+        </div>
+        <input id="access_token" data-ng-model="token" type="hidden"
+               data-ng-init="token='@Session["access_token"]'" />
+        <input ng-model="vm.form.CREATED_BY" type="hidden"
+               data-ng-init="vm.form.CREATED_BY='@Session["multiScUserId"]'" />
+
+        <input id="access_token" ng-model="vm.form.LAST_UPDATED_BY" type="hidden"
+               ng-init="vm.form.LAST_UPDATED_BY='@Session["multiScUserId"]'" />
+
+        <fieldset class="custom-fieldset">
+            <legend class="custom-legend"><b>Searching Data</b></legend>
+            <table class="clsTable">
+                <thead class="clsthead">
+                    <tr>
+                        <th class="clstd">
+                            <span aria-required="true" class="required"></span>
+                            Requisition No
+                        </th>
+                        <th class="clstd" style="width:150px;">
+                            <span aria-required="true" class="required"></span>
+                            Date
+                        </th>
+                        <th class="clstd">
+                            <span aria-required="true" class="required"></span>
+                            Buyer
+                        </th>
+                        <th class="clstd">
+                            <span aria-required="true" class="required"></span>
+                            Style #
+                        </th>
+
+                        <th class="clstd">
+                            <span aria-required="true" class="required"></span>
+                            Order #
+                        </th>
+
+                        <th class="clstd">
+                            <span aria-required="true" class="required"></span>
+                            Shipment Date
+                        </th>
+
+                        <th class="clstd">
+                            <span aria-required="true" class="required"></span>
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="clstr">
+                        <td class="clstd">
+                            <input type="text" name="WASH_REQ_NO" ng-model="vm.form.WASH_REQ_NO" class="form-control" />
+                        </td>
+                        <td class="clstd">
+                            <input type="text" class="form-control required" ng-click="WASH_REQ_DT_LNopen($event)" datepicker-popup="{{vm.dtFormat}}"
+                                   name="WASH_REQ_DT" max-date="vm.today" ng-model="vm.form.WASH_REQ_DT" is-open="WASH_REQ_DT_LNopened"
+                                   datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" />
+
+                        </td>
+                        <td class="clstd" style="width:150px;">
+
+                            <select kendo-drop-down-list id="MC_BYR_ACC_GRP_ID" name="MC_BYR_ACC_GRP_ID" class="form-control requiredSub"
+                                    options="vm.buyerAcGrpList" ng-model="vm.form.MC_BYR_ACC_GRP_ID"></select>
+                        </td>
+                        <td class="clstd" style="width:150px;">
+
+                            <select kendo-drop-down-list name="STYLE_NO" id="STYLE_NO" class="form-control requiredSub3"
+                                    k-filter="'contains'" k-option-label="'-- Select Style No--'" k-template="vm.templateStyle" k-value-template="vm.valueTemplateStyle"
+                                    k-data-source="vm.StyleExtDs" ng-k-delay="vm.StyleExtDs" ng-model="vm.form.MC_STYLE_H_EXT_ID"
+                                    k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_STYLE_H_EXT_ID'" k-on-select="vm.getOrderList(kendoEvent)"
+                                    k-auto-bind="'true'"></select>
+                        </td>
+                        <td class="clstd">
+
+                            <select class="form-control" kendo-drop-down-list name="MC_ORDER_H_ID" id="MC_ORDER_H_ID" k-option-label="'-- Select Order --'"
+                                    k-data-text-field="'ORDER_NO'" k-data-value-field="'MC_ORDER_H_ID'" k-template="vm.templateOrder" k-value-template="vm.valueTemplateOrder"
+                                    k-auto-bind="'true'" k-data-source="vm.OrderDs" k-ng-delay="vm.OrderDs" k-filter="'contains'" k-on-select="vm.getShipmentList(kendoEvent);"
+                                    ng-model="vm.form.MC_ORDER_H_ID"></select>
+                        </td>
+
+                        <td class="clstd">
+
+                            <select class="form-control" kendo-drop-down-list name="MC_ORDER_SHIP_ID" id="MC_ORDER_SHIP_ID" k-option-label="'-- Select Shipment Date --'"
+                                    k-data-text-field="'SHIP_DT'" k-data-value-field="'MC_ORDER_SHIP_ID'" k-template="vm.template" k-value-template="vm.valueTemplate"
+                                    k-auto-bind="'true'" k-data-source="vm.shipmentDateDs" k-ng-delay="vm.shipmentDateDs" k-filter="'contains'"
+                                    ng-model="vm.form.MC_ORDER_SHIP_ID"></select>
+                        </td>
+
+                        <td class="clstd">
+                            <button type="button" class="btn btn-sm default" ng-click="vm.searchData()">Search</button>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </fieldset>
+
+
+        <div style="padding:5px;">
+            <kendo-grid k-options="vm.gridOptions" k-data-source="vm.gridOptionsDS">
+            </kendo-grid>
+        </div>
+    </div>
+</div>

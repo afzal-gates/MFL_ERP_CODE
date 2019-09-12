@@ -1,0 +1,258 @@
+﻿<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">MultiTex ERP</a>
+
+    </li>
+    <li>
+        <a href="#">Knitting</a>
+
+    </li>
+    <li>
+        <a href="#" ng-bind="vm.Title"></a>
+    </li>
+</ul>
+
+
+<div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+    <div class="page-splash">
+        <div class="page-splash-message">
+            <img src="~/Content/assets/global/img/ajax-loading.gif" />  <b>Please wait ....</b>
+        </div>
+    </div>
+</div>
+
+
+<div class="portlet box blue-dark" >
+    
+    
+    <div class="portlet-title">
+        <div class="caption" ng-bind="vm.Title">            
+        </div>
+        <div class="tools">
+            @*<a href="javascript:;" class="collapse">
+                </a>*@
+            @*<a href="#portlet-config" data-toggle="modal" class="config">
+                </a>
+                <a href="javascript:;" class="reload">
+                </a>*@
+            @*<a href="javascript:;" class="remove">
+                </a>*@
+        </div>
+    </div>
+
+    <div class="portlet-body">
+
+        <form class="form-horizontal form-body" name="frmCollarCuffStrRcv" >           
+            <input id="access_token" data-ng-model="token" type="hidden" data-ng-init="token='@Session["access_token"]'" />
+            
+            <div class="row">
+                <div class="col-md-12">
+
+                    <fieldset class="custom-fieldset" style="margin-bottom:5px">
+                        <legend class="custom-legend">Key Information</legend>
+
+
+                        <div class="form-group">
+
+                            <label class="control-label col-md-1"><span aria-required="true" class="required">*</span>Date</label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" ng-click="vm.rcvDateOpen($event)" datepicker-popup="{{vm.dtFormat}}" @*ng-change="vm.onChangeProdDate()"*@
+                                       name="RCV_DT" ng-model="vm.form.RCV_DT" is-open="vm.rcvDateOpened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close"
+                                       ng-disabled="vm.form.LK_CLCF_MVM_STS_ID>=571" required />
+                            </div>
+
+                            <label class="control-label col-md-offset-1 col-md-1"><span aria-required="true" class="required">*</span>Store</label>
+                            <div class="col-md-3">
+                                <select kendo-drop-down-list name="SCM_STORE_ID" id="SCM_STORE_ID" class="form-control"
+                                        options="vm.storeList" ng-model="vm.form.SCM_STORE_ID"
+                                        ng-disabled="vm.form.LK_CLCF_MVM_STS_ID>=571" required></select>
+                            </div>
+
+                                                       
+                        </div>
+
+
+                        <div class="form-group">
+                           
+                            <label class="control-label col-md-1"><span aria-required="true" class="required">*</span>Chln Type</label>
+                            <div class="col-md-3">
+                                <select class="form-control" kendo-drop-down-list name="LK_CLCF_CHL_TYP_ID" k-option-label="'-- Select --'"
+                                        k-data-text-field="'LK_DATA_NAME_EN'" k-data-value-field="'LOOKUP_DATA_ID'" k-filter="'contains'"
+                                        k-auto-bind="'true'" ng-model="vm.form.LK_CLCF_CHL_TYP_ID"
+                                        k-options="vm.chlnTypeOptions" k-data-source="vm.chlnTypeDataSource" k-ng-delay="vm.chlnTypeDataSource"
+                                        ng-disabled="true" required></select>
+                            </div>
+
+
+
+                            <label class="control-label col-md-1"><span aria-required="true" class="required" ng-show="vm.form.LK_CLCF_CHL_TYP_ID==560">*</span>Challan#</label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" ng-model="vm.form.CHALAN_NO" ng-disabled="vm.form.LK_CLCF_CHL_TYP_ID!=560 || vm.form.LK_CLCF_MVM_STS_ID>=571" ng-required="vm.form.LK_CLCF_CHL_TYP_ID==560" />
+                            </div>
+
+                            <label class="control-label col-md-1"><span aria-required="true" class="required" >*</span>Chln Date</label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" ng-click="vm.chlnDateOpen($event)" datepicker-popup="{{vm.dtFormat}}" @*ng-change="vm.onChangeProdDate()"*@
+                                       name="CHALAN_DT" ng-model="vm.form.CHALAN_DT" is-open="vm.chlnDateOpened" datepicker-options="dateOptions"
+                                       date-disabled="disabled(date, mode)" close-text="Close"
+                                       ng-disabled="vm.form.LK_CLCF_MVM_STS_ID>=571" required />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            
+                            <label class="control-label col-md-1">Gate Pass#</label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" name="GATE_PASS_NO" ng-model="vm.form.GATE_PASS_NO" ng-disabled="vm.form.LK_CLCF_MVM_STS_ID>=571" />
+                            </div>
+
+                            <label class="control-label col-md-1">Vehicle#</label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" name="VEHICLE_NO" ng-model="vm.form.VEHICLE_NO" ng-disabled="vm.form.LK_CLCF_MVM_STS_ID>=571" />
+                            </div>
+
+
+                            <label class="control-label col-md-1">Carrier</label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" name="CARRIER_NAME" ng-model="vm.form.CARRIER_NAME" ng-disabled="vm.form.LK_CLCF_MVM_STS_ID>=571" />
+                            </div>
+                        </div>
+                        
+                    </fieldset>
+
+                    @*<div class="portlet-body shuffle-animation" data-ui-view="KntCollarCuffOrdProdH.dtl" ></div>*@
+
+                    <fieldset class="custom-fieldset" style="margin-bottom:5px" ng-show="vm.form.LK_CLCF_MVM_STS_ID==570" >
+                        <legend class="custom-legend">Search Order and Color</legend>
+
+                        <kendo-grid id="orderColorSearchGrid" k-options="vm.orderColorSearchGridOption" k-data-source="vm.orderColorSearchGridDataSource" style="padding-top:0px;"></kendo-grid>
+                    </fieldset>
+
+                    <fieldset class="custom-fieldset" style="margin-bottom:5px" ng-show="vm.form.LK_CLCF_MVM_STS_ID==570" @*ng-show="vm.IS_NEXT=='Y'"*@>
+                        <legend class="custom-legend"></legend>
+
+                        @*<div class="form-group">
+                            <label class="control-label col-md-1">Buyer A/C</label>
+                            <div class="col-md-3">                               
+                                <select kendo-drop-down-list name="MC_BYR_ACC_GRP_ID" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                                        k-options="vm.buyerAcGrpList" ng-model="vm.formItem.MC_BYR_ACC_GRP_ID"
+                                        k-data-text-field="'BYR_ACC_GRP_NAME_EN'" k-data-value-field="'MC_BYR_ACC_GRP_ID'"
+                                        k-auto-bind="'true'"></select>
+                            </div>
+
+                            <label class="control-label col-md-1">Style/Order#</label>
+                            <div class="col-md-3">
+                                <select class="form-control" kendo-drop-down-list name="MC_STYLE_H_EXT_ID" k-option-label="'-- Select Order --'"
+                                        k-template="vm.templateOh" k-value-template="vm.valueTemplateOh"
+                                        k-data-text-field="'ORDER_NO'" k-data-value-field="'MC_STYLE_H_EXT_ID'" k-filter="'contains'"
+                                        k-auto-bind="'true'" k-options="vm.orderOption" k-data-source="vm.orderDataSource" k-ng-delay="vm.orderDataSource"
+                                        ng-model="vm.formItem.MC_STYLE_H_EXT_ID"></select>
+                            </div>
+
+                            <label class="control-label col-md-1">Color</label>
+                            <div class="col-md-2">
+                                <select class="form-control" kendo-drop-down-list name="MC_COLOR_ID" k-option-label="'-- Select Color --'"
+                                        k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'MC_COLOR_ID'" k-filter="'contains'"
+                                        k-auto-bind="'true'" k-options="vm.orderColorOption" k-data-source="vm.orderColorDataSource" k-ng-delay="vm.orderColorDataSource"
+                                        ng-model="vm.formItem.MC_COLOR_ID"></select>
+                            </div>
+
+                            <div class="col-md-1">
+                                <button type="button" class="btn btn-sm blue" ng-click="vm.nextLoad()"
+                                        ng-class="{'disabled':vm.formItem.MC_BYR_ACC_GRP_ID==null||(vm.formItem.MC_STYLE_H_EXT_ID==null||vm.formItem.MC_STYLE_H_EXT_ID=='')||
+                                        (vm.formItem.MC_COLOR_ID==null||vm.formItem.MC_COLOR_ID=='')}">
+                                    Next
+                                </button>
+                            </div>
+                        </div>*@
+
+                        
+                        <kendo-grid k-options="vm.clcfRcvGridOption" k-data-source="vm.clcfRcvGridDataSource" style="padding-top:0px;"></kendo-grid>
+
+                    </fieldset>
+
+                    <div class="col-md-12" style="text-align: right; padding-bottom:0px; padding-right:0px" ng-show="vm.form.LK_CLCF_MVM_STS_ID==570">
+                        <button type="button" class="btn btn-xs blue" ng-click="vm.addGrid4Rcv()" ng-disabled="vm.form.LK_CLCF_MVM_STS_ID>=571">Add to Grid</button>
+                    </div>
+
+                    <fieldset class="custom-fieldset" style="margin-bottom:5px">
+                        <legend class="custom-legend">Challan Detail</legend>
+
+                        <kendo-grid k-options="vm.clcfChlnRcvGridOption" k-data-source="vm.clcfChlnRcvGridDataSource" style="padding-top:0px;"></kendo-grid>
+
+
+                        <div class="col-md-12" style="padding-top:5px">
+                            <div class="form-group" style="text-align:right">
+                                <button class="btn btn-sm green" type="button" ng-click="vm.Save()" ng-show="vm.form.KNT_SCO_CHL_RCV_H_ID<1"
+                                        ng-class="{'disabled':frmCollarCuffStrRcv.$invalid||vm.clcfChlnRcvGridDataSource.data().length<1||vm.form.LK_CLCF_MVM_STS_ID>570}">
+                                    Save
+                                </button>
+
+                                <button class="btn btn-sm yellow-gold" type="button" ng-click="vm.Save()" ng-show="vm.form.KNT_SCO_CHL_RCV_H_ID>0"
+                                        ng-class="{'disabled':frmCollarCuffStrRcv.$invalid
+                                        ||(vm.form.LK_CLCF_MVM_STS_ID>570 && vm.form.USER_LEVEL=='')
+                                        ||(vm.form.LK_CLCF_MVM_STS_ID>570 && vm.form.USER_LEVEL=='CREATOR')
+                                        ||(vm.form.LK_CLCF_MVM_STS_ID>571 && vm.form.USER_LEVEL=='RECEIVER')}">
+                                    Update
+                                </button>
+
+                                <button class="btn btn-sm blue" type="button" ng-click="vm.cancel()"
+                                        @*ng-class="{'disabled':$parent.frmSampleProduction.$invalid||$parent.IS_PROD_SUBMIT=='Y'||$parent.HAS_DATA_PROD_GRID=='N'}"*@>
+                                    Cancel
+                                </button>
+
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <button class="btn btn-sm blue-hoki" type="button" ng-click="vm.backToList()"
+                                        @*ng-class="{'disabled':$parent.frmSampleProduction.$invalid||$parent.IS_PROD_SUBMIT=='Y'||$parent.HAS_DATA_PROD_GRID=='N'}"*@>
+                                    Back
+                                </button>
+
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <button class="btn btn-sm blue" type="button" ng-click="vm.submitChallan()" ng-if="vm.form.LK_CLCF_MVM_STS_ID==570 && vm.form.USER_LEVEL=='CREATOR'"
+                                        ng-class="{'disabled':frmCollarCuffStrRcv.$invalid||vm.form.KNT_SCO_CHL_RCV_H_ID<1}">
+                                    Submit
+                                </button>
+
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <button class="btn btn-sm blue" type="button" ng-click="vm.finalizeChallan()" ng-if="vm.form.LK_CLCF_MVM_STS_ID==571 && vm.form.USER_LEVEL=='RECEIVER'"
+                                        ng-class="{'disabled':frmCollarCuffStrRcv.$invalid||vm.form.KNT_SCO_CHL_RCV_H_ID<1}">
+                                    Finalize
+                                </button>
+
+
+                                @*<button type="button" ng-disabled="vm.clcfRcvGridDataSource.length()<0" class="btn btn-sm blue" ng-click="vm.Save('Y')"
+                                        ng-show="vm.clcfRcvGridDataSource.data()[0].KNT_CLCF_STR_RCV_ID>0"
+                                        ng-class="{'disabled':frmCollarCuffStrRcv.$invalid||vm.clcfRcvGridDataSource.data()[0].IS_FINALIZE=='Y'}">
+                                    Finalize
+                                </button>*@
+
+                                
+
+                            </div>
+                        </div>
+                    </fieldset>
+                    
+                    @*<pre>{{vm.form|json}}</pre>*@
+                    @*<pre>{{frmCollarCuffStrRcv.$error|json}}</pre>*@
+
+                </div>
+
+            </div>
+        </form>
+
+       
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+

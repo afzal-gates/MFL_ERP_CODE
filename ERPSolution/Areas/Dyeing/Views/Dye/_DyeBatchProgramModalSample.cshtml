@@ -1,0 +1,1423 @@
+﻿<div class="modal-body">
+    <div class="portlet grey-cascade box">
+        <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+
+        <div class="portlet-title">
+            <div>
+                <h3 style="padding-top:10px;margin-top:3px;">
+                    Requisition for Sample Batch Program
+                    <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                </h3>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <form class="form-horizontal" role="form" novalidate ng-submit="findGridData(search)">
+                        <div class="form-group">
+                            <div class="col-md-2" style="padding-right: 0px;">
+                                Buyer A/C as
+                                <select kendo-drop-down-list name="MC_BYR_ACC_GRP_ID" class="form-control"
+                                        k-options="buyerAcGrpList" id="MC_BYR_ACC_GRP_ID" ng-model="search.MC_BYR_ACC_GRP_ID" required></select>
+                            </div>
+
+
+                            <div class="col-md-2" style="padding-left: 3px; padding-right: 0px;">
+                                Ship Month
+                                <select class="form-control" kendo-drop-down-list name="MONTHOF" k-option-label="'-- Select Month --'"
+                                        k-data-text-field="'MONTHOF'" k-data-value-field="'MONTHOF'" k-filter="'contains'"
+                                        k-auto-bind="'true'" k-data-source="shipMonthList" k-ng-delay="shipMonthList" ng-model="search.MONTHOF"
+                                        k-on-change="onChangeShipMonth(kendoEvent)"></select>
+                            </div>
+
+                            <div class="col-md-1" style="padding-left: 3px; padding-right: 0px;">
+                                Col Type
+                                <select kendo-drop-down-list name="LK_COL_TYPE_ID" id="LK_COL_TYPE_ID" class="form-control"
+                                        options="ColourTypelist" ng-model="search.LK_COL_TYPE_ID"></select>
+                            </div>
+
+
+                            <div class="col-md-3" style="padding-left: 3px; padding-right: 0px;">
+                                Style
+                                <select class="form-control" kendo-drop-down-list name="MC_FAB_PROD_ORD_H_ID" k-option-label="'--Style --'"
+                                        k-data-text-field="'STYLE_NO'" k-data-value-field="'MC_FAB_PROD_ORD_H_ID'" k-filter="'Contains'"
+                                        k-template="template" k-value-template="valueTemplate"
+                                        k-auto-bind="'true'" k-data-source="StyleExtDs" ng-model="search.MC_FAB_PROD_ORD_H_IDD"
+                                        k-on-change="onFabOrderChange(kendoEvent)" required></select>
+                            </div>
+
+                            <div class="col-md-2" style="padding-left: 3px; padding-right: 0px;">
+                                Color
+                                <select class="form-control" kendo-drop-down-list name="MC_COLOR_ID" k-option-label="'--Color --'"
+                                        k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'MC_COLOR_ID'" k-filter="'Contains'"
+                                        k-auto-bind="'true'" k-data-source="colorDs" ng-model="search.MC_COLOR_ID"
+                                        required style="width:100%;"></select>
+                            </div>
+
+                            <div class="col-md-1" style="text-align: right; padding-left: 3px;">
+                                <br />
+                                <button class="btn btn-sm blue-hoki" type="submit"><i class="fa fa-search"></i>Load</button>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group" style="margin:auto;">
+                            <div kendo-grid k-options="gridSearchResultOpt" k-data-source="gridSearchResultDs" id="gridSearchResult"></div>
+                        </div>
+
+                        <br />
+
+                        <div class="form-group" style="margin:auto;">
+                            <div kendo-grid k-options="gridBatchOpt" k-data-source="gridBatchDs" id="gridBatchResult"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" style="margin:auto;">
+                        <p class="block" style="margin: 0px; font-size: 14px; background-color: rgb(236, 233, 248); padding-left: 2px;">
+                            Buyer A/C :
+                            <b>{{form.BYR_ACC_NAME_EN}}</b>
+
+                            &nbsp;
+                            Style :
+                            <b>{{form.STYLE_NO}}</b>
+
+                            &nbsp;
+
+                            Order # :
+                            <b>{{form.ORDER_NO_LIST}}</b>
+
+                            &nbsp;
+
+                            Color Name :
+                            <b>{{form.COLOR_NAME_EN}}</b>
+
+                        </p>
+                    </div>
+                    <br />
+                    <tabset justified="true">
+                        <tab heading="Knit Fabric" select="onSelect('KNIT')">
+                            <form class="form-horizontal" role="form" name="DyeingBatchPlan" novalidate>
+                                <br />
+                                <div style="border: 1px solid #333333; padding: 3px;">
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            <b>Dyeing M/C</b>
+                                        </label>
+                                        <div class="col-md-8" ng-class="{'has-error': (DyeingBatchPlan.DYE_MACHINE_ID.$touched || DyeingBatchPlan.$submitted) && DyeingBatchPlan.DYE_MACHINE_ID.$error.required}">
+                                            <select class="form-control" kendo-drop-down-list name="DYE_MACHINE_ID" k-option-label="'-- Dye M/C --'"
+                                                    k-data-text-field="'DYE_MACHINE_NO'" k-data-value-field="'id'"
+                                                    k-auto-bind="'true'" k-data-source="McDataDs" ng-model="form.DYE_MACHINE_ID" required
+                                                    k-on-change="onChangeDyeMc(kendoEvent,form)" @*k-on-data-bound="onBoundDyeMc(kendoEvent)"*@></select>
+                                            <span style="display:block;font-style:italic;color:red;">
+                                                Max Load : {{form.MAX_LOAD}} Kg at {{form.PCT_EFFCNCY+'% Efficienccy'}}
+                                            </span>
+
+                                            @*<select class="form-control" kendo-drop-down-list name="DYE_MACHINE_ID" k-option-label="'-- Dye M/C --'"
+                                                        k-data-text-field="'name'" k-data-value-field="'id'"
+                                                        k-auto-bind="'true'" k-data-source="McDataDs" ng-model="form.DYE_MACHINE_ID" required
+                                                        k-on-change="onChangeDyeMc(kendoEvent,form)"></select>
+                                                <span style="display:block;font-style:italic;color:red;">
+                                                    Max Load : {{form.MAX_LOAD}} Kg at {{form.PCT_EFFCNCY+'% Efficienccy'}}
+                                                </span>*@
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            <b>Dye Method</b>
+                                        </label>
+                                        <div class="col-md-8" ng-class="{'has-error': (DyeingBatchPlan.LK_DYE_MTHD_ID.$touched || DyeingBatchPlan.$submitted) && DyeingBatchPlan.LK_DYE_MTHD_ID.$error.required}">
+                                            <select class="form-control" kendo-drop-down-list name="LK_DYE_MTHD_ID" k-option-label="'-- Dyeing Method--'"
+                                                    k-data-text-field="'DYE_MTHD_NAME'" k-data-value-field="'LK_DYE_MTHD_ID'"
+                                                    k-auto-bind="'true'" k-data-source="DyeingMthdDs" ng-model="form.LK_DYE_MTHD_ID" required></select>
+
+                                            <input type="hidden" ng-model="form.FAB_COLOR_ID" required />
+                                            <input type="hidden" ng-model="form.RF_FAB_TYPE_ID" required />
+                                            <input type="hidden" ng-model="form.MC_FAB_PROD_ORD_H_ID" required />
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            <b>Load Time</b>
+                                        </label>
+                                        <div class="col-md-8" ng-class="{'has-error': (DyeingBatchPlan.LOAD_TIME.$touched || DyeingBatchPlan.$submitted) && DyeingBatchPlan.LOAD_TIME.$error.required}">
+                                            <input kendo-date-time-picker k-ng-model="form.LOAD_TIME" data-k-change="onChangeDate(form.LOAD_TIME,form.UN_LOAD_TIME,form)" name="LOAD_TIME" k-min="form.START_DT" k-options="datePickerOptions" data-k-format="'dd/MM/yyyy HH:mm'" k-interval="10" class="form-control" style="width: 100%;" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-4 control-label">
+                                            <b>Production Hr</b>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input type="number" class="form-control" min="1" name="DURATION" ng-blur="onChangeDuration(form.DURATION,form.LOAD_TIME,form)" ng-model="form.DURATION" required tabindex="0" />
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            <b>Unload Time</b>
+
+                                        </label>
+                                        <div class="col-md-8" ng-class="{'has-error': (DyeingBatchPlan.UN_LOAD_TIME.$touched || DyeingBatchPlan.$submitted) && DyeingBatchPlan.UN_LOAD_TIME.$error.required}">
+                                            <input kendo-date-time-picker k-ng-model="form.UN_LOAD_TIME" name="UN_LOAD_TIME" k-min="form.LOAD_TIME" k-rebind="form.LOAD_TIME" data-k-format="'dd/MM/yyyy HH:mm'" k-interval="10" class="form-control" k-options="datePickerOptions" style="width: 100%;" required tabindex="2" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            <b>Quantity(Kg)</b>
+                                        </label>
+                                        <div class="col-md-8" ng-class="{'has-error': (DyeingBatchPlan.RQD_PRD_QTY.$touched || DyeingBatchPlan.$submitted) && (DyeingBatchPlan.RQD_PRD_QTY.$error.required||DyeingBatchPlan.RQD_PRD_QTY.$error.min)}">
+                                            <input type="number" class="form-control" min="1" name="RQD_PRD_QTY" ng-model="form.RQD_PRD_QTY" required tabindex="1" ng-change="checkBatchQty();" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            <b>No of Batch</b>
+                                        </label>
+                                        <div class="col-md-3" ng-class="{'has-error': (DyeingBatchPlan.NO_OF_BATCH.$touched || DyeingBatchPlan.$submitted) && (DyeingBatchPlan.NO_OF_BATCH.$error.required||DyeingBatchPlan.NO_OF_BATCH.$error.min)}">
+                                            <input type="number" class="form-control" min="1" @*ng-change="DyeingBatchPlan.$valid =(form.NO_OF_BATCH*form.RQD_PRD_QTY)<=form.LOAD_TO_DO;DyeingBatchPlan.RQD_PRD_QTY.$error.max=(form.NO_OF_BATCH*form.RQD_PRD_QTY)>form.LOAD_TO_DO"*@ name="NO_OF_BATCH" ng-model="form.NO_OF_BATCH" required tabindex="2" />
+                                        </div>
+                                        <label class="col-md-3 control-label" ng-if="form.NO_OF_BATCH>1">
+                                            <b>Interval(Min)</b>
+                                        </label>
+                                        <div class="col-md-2" ng-if="form.NO_OF_BATCH>1" ng-class="{'has-error': (DyeingBatchPlan.INTERVAL.$touched || DyeingBatchPlan.$submitted) && (DyeingBatchPlan.INTERVAL.$error.required||DyeingBatchPlan.INTERVAL.$error.min)}">
+                                            <input type="number" class="form-control" min="0" name="INTERVAL" ng-model="form.INTERVAL" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            <b>+ Other Style/Order</b>
+                                        </label>
+                                        <div class="col-md-3">
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" ng-model="form.IS_ADD_OTH_ORD" ng-change="onChangeOtherOrder(form,34)" ng-true-value="'Y'" ng-false-value="'N'" style="top:5px;">
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" ng-repeat="itm in form.MC_FAB_PROD_ORD_H_ID_LST track by $index">
+                                        <label class="col-md-4 control-label">
+
+                                        </label>
+                                        <div class="col-md-6" ng-if="form.IS_ADD_OTH_ORD=='Y'">
+                                            <select class="form-control" kendo-drop-down-list name="MC_FAB_PROD_ORD_H_ID" k-option-label="'--Order# --'"
+                                                    k-data-text-field="'ORDER_NO_LST'" k-data-value-field="'MC_FAB_PROD_ORD_H_ID'" k-filter="'Contains'"
+                                                    k-template="templateOh" k-value-template="valueTemplateOh"
+                                                    k-auto-bind="'true'" k-data-source="FabOederByOhDsMerge" ng-model="form.MC_FAB_PROD_ORD_H_ID_LST[$index]"
+                                                    required style="width:100%;"></select>
+                                        </div>
+
+                                        <div class="col-md-1" style="text-align: left; padding-left: 2px;" ng-if="form.IS_ADD_OTH_ORD=='Y' && $last">
+                                            <button class="btn btn-xs blue" ng-click="addOtherOrder(form.MC_FAB_PROD_ORD_H_ID_LST)" type="button"><i class="fa fa-plus"></i></button>
+                                        </div>
+                                        <div class="col-md-1" style="text-align: left; padding-left: 2px;" ng-if="form.IS_ADD_OTH_ORD=='Y' && !$last">
+                                            <button class="btn btn-xs red" ng-click="remOtherOrder(form.MC_FAB_PROD_ORD_H_ID_LST,$index)" type="button">X</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <br />
+
+                                <br />
+                                <div style="border: 1px solid #333333; padding: 3px;">
+
+                                    <table class="table table-condensed table-hover table-bordered" style="margin:0px;">
+                                        <thead>
+                                            <tr style="background-color: #7f8dd4; color: #ffffff;">
+                                                <th style="width:12%">
+                                                    <small>Batch#</small>
+                                                </th>
+                                                <th style="width:4%">
+                                                    <small>Lot#</small>
+
+                                                </th>
+
+                                                <th style="width:12%">
+                                                    <small>Order#</small>
+
+                                                </th>
+                                                <th style="width:5%">
+                                                    <small>Group</small>
+
+                                                </th>
+                                                <th style="width:5%">
+                                                    <small>Req</small>
+
+                                                </th>
+
+                                                <th style="width:3%">
+                                                    <small>Qty</small>
+
+                                                </th>
+
+                                                @*<th style="width:30%;text-align:center;">
+                                                        <small>Availability</small>
+                                                    </th>*@
+                                            </tr>
+                                        </thead>
+                                        <tbody ng-repeat="it in form.requirements">
+                                            <tr style="background-color: #c4ebc8;">
+                                                <td rowspan="2" ng-class="{'has-error': (requirements.DYE_BATCH_NO.$touched || DyeingBatchPlan.$submitted) && requirements.DYE_BATCH_NO.$error.required}">
+                                                    <ng-form name="requirements">
+                                                        <input type="text" class="form-control" name="DYE_BATCH_NO" required ng-model="it.DYE_BATCH_NO" ng-if="it.MC_FAB_PROD_ORD_H_SL==1" />
+                                                    </ng-form>
+
+                                                </td>
+
+                                                <td rowspan="2" ng-class="{'has-error': (requirements.DYE_LOT_NO.$touched || DyeingBatchPlan.$submitted) && requirements.DYE_LOT_NO.$error.required}">
+                                                    <ng-form name="requirements">
+                                                        <input type="text" class="form-control" name="DYE_LOT_NO" required ng-model="it.DYE_LOT_NO" ng-if="it.MC_FAB_PROD_ORD_H_SL==1" />
+                                                    </ng-form>
+
+                                                </td>
+
+
+                                                <td rowspan="2">
+                                                    <span ng-if="it.MC_FAB_PROD_ORD_H_SL==1">{{it.ORDER_NO_LIST}}</span>
+
+                                                </td>
+                                                <td rowspan="2">
+                                                    <span style="display:block;font-weight:bold;" ng-style="{'color': !it.FAB_GROUP? 'red':''}">{{it.FAB_GROUP||'Not Set'}}</span>
+                                                    <span style="display:block;font-style:italic;" ng-if="it.IS_FLAT_CIR=='C'"> <small>*{{it.FAB_TYPE_NAME}}</small> </span>
+                                                    <span style="display:block;font-style:italic;"> <small>*{{it.FIB_COMP_NAME}}</small> </span>
+
+                                                    <span style="display:block;font-style:italic;"> <strong style="color:red;">{{it.WASH_TYPE_TXT}}</strong> </span>
+                                                    <span style="display:block;font-style:italic;"> <strong style="color:red;">{{it.FINISH_TYPE_TXT}}</strong> </span>
+
+                                                </td>
+                                                <td>
+                                                    {{it.RQD_PRD_QTY}} kg
+                                                </td>
+                                                <td>
+                                                    <input type="number" min="0" class="form-control" ng-model="it.ACT_BATCH_QTY" />
+                                                </td>
+                                                @*<td style="background-color: #cfa8e2; ">
+                                                        <table class="table table-condensed table-hover table-bordered" ng-if="it.IS_FLAT_CIR=='C'" style="margin:0px;">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>
+
+                                                                        <small>Yarn Details</small>
+                                                                    </th>
+                                                                    <th>
+
+                                                                        <small>Fin Dia</small>
+                                                                    </th>
+                                                                    <th>
+
+                                                                        <small>GSM</small>
+                                                                    </th>
+                                                                    <th>
+
+                                                                        <small>Avail</small>
+                                                                    </th>
+                                                                    <th>
+
+                                                                        <small>Assign</small>
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr ng-repeat="noncol in it.non_col_cu_avail">
+                                                                    <td>
+                                                                        {{noncol.KNT_YRN_LOT_LST}}
+                                                                    </td>
+                                                                    <td>
+                                                                        {{noncol.FIN_DIA}}
+                                                                    </td>
+                                                                    <td>
+                                                                        {{noncol.FIN_GSM}}
+                                                                    </td>
+                                                                    <td>
+                                                                        {{noncol.RCV_ROLL_WT}}
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="number" class="form-control" ng-model="noncol.ASSIGN_QTY" />
+
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <table class="table table-condensed table-hover table-bordered" ng-if="it.IS_FLAT_CIR=='F'" style="margin:0px;">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>
+                                                                        <small>Size</small>
+
+                                                                    </th>
+                                                                    <th>
+
+                                                                        <small>Measurement</small>
+                                                                    </th>
+                                                                    <th>
+
+                                                                        <small>Available</small>
+                                                                    </th>
+                                                                    <th>
+
+                                                                        <small>Assign</small>
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr ng-repeat="col in it.col_cu_avail">
+                                                                    <td>
+                                                                        {{col.SIZE_CODE}}
+                                                                    </td>
+                                                                    <td>
+                                                                        {{col.MESUREMENT}}
+                                                                    </td>
+                                                                    <td>
+                                                                        {{col.PRD_QTY}}
+                                                                    </td>
+
+                                                                    <td>
+                                                                        <input type="number" class="form-control" ng-model="col.ASSIGN_QTY" />
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>*@
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+                                <div class="form-group form-actions">
+                                    <div class="col-md-12">
+                                        <button type="button" ng-if="form.DYE_BATCH_PLAN_ID<0" class="btn green btn-sm" ng-click="save(form,DyeingBatchPlan.$valid);DyeingBatchPlan.$submitted=true;"> Save</button>
+                                        <button type="button" ng-if="form.DYE_BATCH_PLAN_ID>0" class="btn btn-sm yellow-gold" ng-click="save(form,DyeingBatchPlan.$valid);DyeingBatchPlan.$submitted=true">Update</button>
+                                        <button type="button" class="btn btn-default btn-sm" ng-click="cancel()">Close</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </tab>
+                        <tab heading="Woven Fabric" select="onSelect('WOVEN')">
+
+                            <form class="form-horizontal" role="form" name="DyeingBatchPlanWoven" novalidate>
+
+                                <br />
+                                <div style="border: 1px solid #333333; padding: 3px;">
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            <b>Dyeing M/C</b>
+                                        </label>
+                                        <div class="col-md-8" ng-class="{'has-error': (DyeingBatchPlanWoven.DYE_MACHINE_ID.$touched || DyeingBatchPlanWoven.$submitted) && DyeingBatchPlanWoven.DYE_MACHINE_ID.$error.required}">
+                                            <select class="form-control" kendo-drop-down-list name="DYE_MACHINE_ID" k-option-label="'-- Dye M/C --'"
+                                                    k-data-text-field="'DYE_MACHINE_NO'" k-data-value-field="'id'"
+                                                    k-auto-bind="'true'" k-data-source="McDataDs" k-ng-delay="McDataDs" ng-model="formWoven.DYE_MACHINE_ID" required
+                                                    k-on-change="onChangeDyeMc(kendoEvent,formWoven)" @*k-on-data-bound="onBoundDyeMc(kendoEvent)"*@></select>
+                                            <span style="display:block;font-style:italic;color:red;">
+                                                Max Load : {{formWoven.MAX_LOAD}} Kg at {{formWoven.PCT_EFFCNCY+'% Efficienccy'}}
+                                            </span>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            <b>Dye Method</b>
+                                        </label>
+                                        <div class="col-md-8" ng-class="{'has-error': (DyeingBatchPlanWoven.LK_DYE_MTHD_ID.$touched || DyeingBatchPlanWoven.$submitted) && DyeingBatchPlanWoven.LK_DYE_MTHD_ID.$error.required}">
+                                            <select class="form-control" kendo-drop-down-list name="LK_DYE_MTHD_ID" k-option-label="'-- Dyeing Method--'"
+                                                    k-data-text-field="'DYE_MTHD_NAME'" k-data-value-field="'LK_DYE_MTHD_ID'"
+                                                    k-auto-bind="'true'" k-data-source="DyeingMthdDs" ng-model="formWoven.LK_DYE_MTHD_ID" required></select>
+                                            <input type="hidden" ng-model="formWoven.MC_FAB_PROD_ORD_H_ID" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            <b>Color</b>
+                                        </label>
+                                        <div class="col-md-8" ng-class="{'has-error': (DyeingBatchPlanWoven.FAB_COLOR_ID.$touched || DyeingBatchPlanWoven.$submitted) && DyeingBatchPlanWoven.FAB_COLOR_ID.$error.required}">
+                                            <select class="form-control" kendo-drop-down-list name="FAB_COLOR_ID" k-option-label="'--Color--'"
+                                                    k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'MC_COLOR_ID'"
+                                                    k-auto-bind="'true'" k-data-source="formWoven.color_list_ds" k-on-change="onChangeColor(kendoEvent,35,formWoven)" ng-model="formWoven.FAB_COLOR_ID" required></select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            <b>Load Time</b>
+                                        </label>
+                                        <div class="col-md-8" ng-class="{'has-error': (DyeingBatchPlanWoven.LOAD_TIME.$touched || DyeingBatchPlanWoven.$submitted) && DyeingBatchPlanWoven.LOAD_TIME.$error.required}">
+
+                                            <input kendo-date-time-picker k-ng-model="formWoven.LOAD_TIME" @*data-k-change="onChangeDateTrims(formWoven.LOAD_TIME,formWoven.UN_LOAD_TIME,formWoven)"*@ name="LOAD_TIME" k-min="formWoven.START_DT" k-options="datePickerOptions" data-k-format="'dd/MM/yyyy HH:mm'" k-interval="10" class="form-control" style="width: 100%;" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-4 control-label">
+                                            <b>Production Hr</b>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input type="number" class="form-control" min="1" name="DURATION" ng-blur="onChangeDuration(formWoven.DURATION,formWoven.LOAD_TIME,formWoven)" ng-model="formWoven.DURATION" required tabindex="0" />
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            <b>Unload Time</b>
+
+                                        </label>
+                                        <div class="col-md-8" ng-class="{'has-error': (DyeingBatchPlanWoven.UN_LOAD_TIME.$touched || DyeingBatchPlanWoven.$submitted) && DyeingBatchPlanWoven.UN_LOAD_TIME.$error.required}">
+                                            <input kendo-date-time-picker k-ng-model="formWoven.UN_LOAD_TIME" name="UN_LOAD_TIME" k-min="formWoven.LOAD_TIME" k-rebind="formWoven.LOAD_TIME" data-k-format="'dd/MM/yyyy HH:mm'" k-interval="10" class="form-control" k-options="datePickerOptions" style="width: 100%;" required tabindex="2" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            <b>Quantity(Kg)</b>
+                                        </label>
+                                        <div class="col-md-8" ng-class="{'has-error': (DyeingBatchPlanWoven.RQD_PRD_QTY.$touched || DyeingBatchPlanWoven.$submitted) && (DyeingBatchPlanWoven.RQD_PRD_QTY.$error.required||DyeingBatchPlanWoven.RQD_PRD_QTY.$error.min)}">
+                                            <input type="number" class="form-control" min="1" name="RQD_PRD_QTY" ng-model="formWoven.RQD_PRD_QTY" required tabindex="1" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            <b>No of Batch</b>
+                                        </label>
+                                        <div class="col-md-3" ng-class="{'has-error': (DyeingBatchPlanWoven.NO_OF_BATCH.$touched || DyeingBatchPlanWoven.$submitted) && (DyeingBatchPlanWoven.NO_OF_BATCH.$error.required||DyeingBatchPlanWoven.NO_OF_BATCH.$error.min)}">
+                                            <input type="number" class="form-control" min="1" @*ng-change="DyeingBatchPlanWoven.$valid =(form.NO_OF_BATCH*form.RQD_PRD_QTY)<=form.LOAD_TO_DO;DyeingBatchPlanWoven.RQD_PRD_QTY.$error.max=(form.NO_OF_BATCH*form.RQD_PRD_QTY)>form.LOAD_TO_DO"*@ name="NO_OF_BATCH" ng-model="formWoven.NO_OF_BATCH" required tabindex="2" />
+                                        </div>
+                                        <label class="col-md-3 control-label" ng-if="formWoven.NO_OF_BATCH>1">
+                                            <b>Interval(Min)</b>
+                                        </label>
+                                        <div class="col-md-2" ng-if="formWoven.NO_OF_BATCH>1" ng-class="{'has-error': (DyeingBatchPlanWoven.INTERVAL.$touched || DyeingBatchPlanWoven.$submitted) && (DyeingBatchPlanWoven.INTERVAL.$error.required||DyeingBatchPlanWoven.INTERVAL.$error.min)}">
+                                            <input type="number" class="form-control" min="0" name="INTERVAL" ng-model="formWoven.INTERVAL" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            <b>+ Other Order</b>
+                                        </label>
+                                        <div class="col-md-3">
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" ng-model="formWoven.IS_ADD_OTH_ORD" ng-change="onChangeOtherOrder(formWoven,7)" ng-true-value="'Y'" ng-false-value="'N'" style="top:5px;">
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" ng-repeat="itm in formWoven.MC_FAB_PROD_ORD_H_ID_LST track by $index">
+                                        <label class="col-md-4 control-label">
+
+                                        </label>
+                                        <div class="col-md-6" ng-if="formWoven.IS_ADD_OTH_ORD=='Y'">
+                                            <select class="form-control" kendo-drop-down-list name="MC_FAB_PROD_ORD_H_ID" k-option-label="'--Order# --'"
+                                                    k-data-text-field="'ORDER_NO_LST'" k-data-value-field="'MC_FAB_PROD_ORD_H_ID'" k-filter="'Contains'"
+                                                    k-template="templateOh" k-value-template="valueTemplateOh"
+                                                    k-auto-bind="'true'" k-data-source="FabOederByOhDsMerge" ng-model="formWoven.MC_FAB_PROD_ORD_H_ID_LST[$index]"
+                                                    required style="width:100%;"></select>
+                                        </div>
+
+                                        <div class="col-md-1" style="text-align: left; padding-left: 2px;" ng-if="formWoven.IS_ADD_OTH_ORD=='Y' && $last">
+                                            <button class="btn btn-xs blue" ng-click="addOtherOrder(formWoven.MC_FAB_PROD_ORD_H_ID_LST)" type="button"><i class="fa fa-plus"></i></button>
+                                        </div>
+                                        <div class="col-md-1" style="text-align: left; padding-left: 2px;" ng-if="formWoven.IS_ADD_OTH_ORD=='Y' && !$last">
+                                            <button class="btn btn-xs red" ng-click="remOtherOrder(formWoven.MC_FAB_PROD_ORD_H_ID_LST,$index)" type="button">X</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" ng-repeat="item in df_data">
+                                        <label class="col-md-4 control-label">
+                                            <b>{{item.PROCESS_GROUP_NAME}}</b>
+                                        </label>
+                                        <div class="col-md-8">
+                                            <div class="checkbox-list">
+
+
+                                                <label class="checkbox-inline" ng-repeat="itm in item.items">
+
+
+                                                    <span><input type="checkbox" ng-model="itm.IS_SELECTED" ng-true-value="'Y'" ng-false-value="'N'"> {{itm.DF_PROC_TYPE_NAME}}</span>
+
+                                                </label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <br />
+                                <div style="border: 1px solid #333333; padding: 3px;">
+
+                                    <table class="table table-condensed table-hover table-bordered" style="margin:0px;">
+                                        <thead>
+                                            <tr style="background-color: #7f8dd4; color: #ffffff;">
+
+                                                <th style="width:12%">
+                                                    <small>Batch#</small>
+                                                </th>
+                                                <th style="width:4%">
+                                                    <small>Lot#</small>
+
+                                                </th>
+
+                                                <th style="width:10%">
+                                                    <small>Order</small>
+                                                </th>
+
+                                                <th style="width:20%">
+                                                    <small>Trims</small>
+                                                </th>
+                                                <th style="width:8%">
+                                                    <span style="display:block;">
+                                                        <small>Ttl Req</small>
+                                                    </span>
+
+                                                    <span style="display:block;">
+                                                        <small>Ttl Bt/Blnc</small>
+                                                    </span>
+
+                                                    <span style="display:block;">
+                                                        <small>Available</small>
+                                                    </span>
+                                                </th>
+
+                                                <th style="width:5%">
+                                                    <small>Qty[Yds](thisBt)</small>
+                                                </th>
+                                                <th style="width:5%">
+                                                    <small>Qty[Kg](thisBt)</small>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody ng-repeat="it in formWoven.requirements" ng-if="formWoven.requirements.length>0">
+                                            <tr style="background-color: #c4ebc8;">
+
+                                                <td rowspan="{{it.MC_FAB_PROD_ORD_H_SPAN}}" ng-if="it.MC_FAB_PROD_ORD_H_SL==1" ng-class="{'has-error': (requirements.DYE_BATCH_NO.$touched || DyeingBatchPlanWoven.$submitted) && requirements.DYE_BATCH_NO.$error.required}">
+                                                    <ng-form name="requirements">
+                                                        <input type="text" class="form-control" name="DYE_BATCH_NO" required ng-model="it.DYE_BATCH_NO" ng-if="it.MC_FAB_PROD_ORD_H_SL==1" />
+                                                    </ng-form>
+
+                                                </td>
+
+                                                <td rowspan="{{it.MC_FAB_PROD_ORD_H_SPAN}}" ng-if="it.MC_FAB_PROD_ORD_H_SL==1" ng-class="{'has-error': (requirements.DYE_LOT_NO.$touched || DyeingBatchPlanWoven.$submitted) && requirements.DYE_LOT_NO.$error.required}">
+                                                    <ng-form name="requirements">
+                                                        <input type="text" class="form-control" name="DYE_LOT_NO" required ng-model="it.DYE_LOT_NO" ng-if="it.MC_FAB_PROD_ORD_H_SL==1" />
+                                                    </ng-form>
+
+                                                </td>
+
+
+                                                <td rowspan="{{it.MC_FAB_PROD_ORD_H_SPAN}}" ng-if="it.MC_FAB_PROD_ORD_H_SL==1">
+                                                    <span>{{it.ORDER_NO_LIST}}</span>
+                                                </td>
+                                                <td>
+                                                    {{it.ITEM_SPEC_AUTO}}
+                                                </td>
+                                                <td>
+
+                                                    <span style="display:block;">{{it.NET_DY_QTY}}</span>
+                                                    <span style="display:block;">{{it.TTL_BT+' / '+it.LEFT_TO_BT}}</span>
+                                                    <span style="display:block;">{{it.STK_BALANCE}}</span>
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control" ng-model="it.RQD_QTY_YDS" />
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control" ng-model="it.RQD_QTY_KG" />
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="form-group form-actions">
+                                    <div class="col-md-6">
+                                        <button type="button" class="btn green btn-sm" ng-click="saveWovenTrims(formWoven,DyeingBatchPlanWoven.$valid,7);DyeingBatchPlanWoven.$submitted=true"> Save</button>
+
+                                        <button type="button" class="btn btn-default btn-sm" ng-click="cancel()">Close</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <a ng-disabled="!formWoven.DYE_BATCH_PLAN_ID" href="/Merchandising/Mrc/DyeingProg4BulkBookingMnul?a=224/#/dyeProg4BulkMnul/{{formWoven.MC_FAB_PROD_ORD_H_ID}}?pRF_FAB_PROD_CAT_ID={{formWoven.RF_FAB_PROD_CAT_ID}}&pMC_BYR_ACC_GRP_ID={{formWoven.MC_BYR_ACC_GRP_ID}}&pMC_STYLE_H_EXT_ID={{formWoven.MC_STYLE_H_EXT_ID}}" target="_blank" class="btn btn-sm btn-block blue">+ Add Dye Program ( Knit/Woven )</a>
+                                    </div>
+
+                                </div>
+
+                            </form>
+
+                        </tab>
+                        <tab heading="Trim & Accessories" select="onSelect('TRIMS')">
+                            <form class="form-horizontal" role="form" name="DyeingBatchPlanTrims" novalidate>
+
+                                <br />
+                                <div style="border: 1px solid #333333; padding: 3px;">
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            <b>Dyeing M/C</b>
+                                        </label>
+                                        <div class="col-md-8" ng-class="{'has-error': (DyeingBatchPlanTrims.DYE_MACHINE_ID.$touched || DyeingBatchPlanTrims.$submitted) && DyeingBatchPlanTrims.DYE_MACHINE_ID.$error.required}">
+                                            <select class="form-control" kendo-drop-down-list name="DYE_MACHINE_ID" k-option-label="'-- Dye M/C --'"
+                                                    k-data-text-field="'DYE_MACHINE_NO'" k-data-value-field="'id'"
+                                                    k-auto-bind="'true'" k-data-source="McDataDs" k-ng-delay="McDataDs" ng-model="formTrims.DYE_MACHINE_ID" required
+                                                    k-on-change="onChangeDyeMc(kendoEvent,formTrims)"></select>
+                                            <span style="display:block;font-style:italic;color:red;">
+                                                Max Load : {{formTrims.MAX_LOAD}} Kg at {{formTrims.PCT_EFFCNCY+'% Efficienccy'}}
+                                            </span>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            <b>Dye Method</b>
+                                        </label>
+                                        <div class="col-md-8" ng-class="{'has-error': (DyeingBatchPlanTrims.LK_DYE_MTHD_ID.$touched || DyeingBatchPlanTrims.$submitted) && DyeingBatchPlanTrims.LK_DYE_MTHD_ID.$error.required}">
+                                            <select class="form-control" kendo-drop-down-list name="LK_DYE_MTHD_ID" k-option-label="'-- Dyeing Method--'"
+                                                    k-data-text-field="'DYE_MTHD_NAME'" k-data-value-field="'LK_DYE_MTHD_ID'"
+                                                    k-auto-bind="'true'" k-data-source="DyeingMthdDs" ng-model="formTrims.LK_DYE_MTHD_ID" required></select>
+                                            <input type="hidden" ng-model="formTrims.MC_FAB_PROD_ORD_H_ID" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            <b>Color</b>
+                                        </label>
+                                        <div class="col-md-8" ng-class="{'has-error': (DyeingBatchPlanTrims.FAB_COLOR_ID.$touched || DyeingBatchPlanTrims.$submitted) && DyeingBatchPlanTrims.FAB_COLOR_ID.$error.required}">
+                                            <select class="form-control" kendo-drop-down-list name="FAB_COLOR_ID" k-option-label="'--Color--'"
+                                                    k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'MC_COLOR_ID'"
+                                                    k-auto-bind="'true'" k-data-source="formTrims.color_list_ds" k-on-change="onChangeColor(kendoEvent,7,formTrims)" ng-model="formTrims.FAB_COLOR_ID" required></select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            <b>Load Time</b>
+                                        </label>
+                                        <div class="col-md-8" ng-class="{'has-error': (DyeingBatchPlanTrims.LOAD_TIME.$touched || DyeingBatchPlanTrims.$submitted) && DyeingBatchPlanTrims.LOAD_TIME.$error.required}">
+
+                                            <input kendo-date-time-picker k-ng-model="formTrims.LOAD_TIME" @*data-k-change="onChangeDateTrims(formTrims.LOAD_TIME,formTrims.UN_LOAD_TIME,formTrims)"*@ name="LOAD_TIME" k-min="formTrims.START_DT" k-options="datePickerOptions" data-k-format="'dd/MM/yyyy HH:mm'" k-interval="10" class="form-control" style="width: 100%;" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-4 control-label">
+                                            <b>Production Hr</b>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input type="number" class="form-control" min="1" name="DURATION" ng-blur="onChangeDuration(formTrims.DURATION,formTrims.LOAD_TIME,formTrims)" ng-model="formTrims.DURATION" required tabindex="0" />
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            <b>Unload Time</b>
+
+                                        </label>
+                                        <div class="col-md-8" ng-class="{'has-error': (DyeingBatchPlanTrims.UN_LOAD_TIME.$touched || DyeingBatchPlanTrims.$submitted) && DyeingBatchPlanTrims.UN_LOAD_TIME.$error.required}">
+                                            <input kendo-date-time-picker k-ng-model="formTrims.UN_LOAD_TIME" name="UN_LOAD_TIME" k-min="formTrims.LOAD_TIME" k-rebind="formTrims.LOAD_TIME" data-k-format="'dd/MM/yyyy HH:mm'" k-interval="10" class="form-control" k-options="datePickerOptions" style="width: 100%;" required tabindex="2" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            <b>Quantity(Kg)</b>
+                                        </label>
+                                        <div class="col-md-8" ng-class="{'has-error': (DyeingBatchPlanTrims.RQD_PRD_QTY.$touched || DyeingBatchPlanTrims.$submitted) && (DyeingBatchPlanTrims.RQD_PRD_QTY.$error.required||DyeingBatchPlanTrims.RQD_PRD_QTY.$error.min)}">
+                                            <input type="number" class="form-control" min="1" name="RQD_PRD_QTY" ng-model="formTrims.RQD_PRD_QTY" required tabindex="1" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            <b>No of Batch</b>
+                                        </label>
+                                        <div class="col-md-3" ng-class="{'has-error': (DyeingBatchPlanTrims.NO_OF_BATCH.$touched || DyeingBatchPlanTrims.$submitted) && (DyeingBatchPlanTrims.NO_OF_BATCH.$error.required||DyeingBatchPlanTrims.NO_OF_BATCH.$error.min)}">
+                                            <input type="number" class="form-control" min="1" @*ng-change="DyeingBatchPlanTrims.$valid =(form.NO_OF_BATCH*form.RQD_PRD_QTY)<=form.LOAD_TO_DO;DyeingBatchPlanTrims.RQD_PRD_QTY.$error.max=(form.NO_OF_BATCH*form.RQD_PRD_QTY)>form.LOAD_TO_DO"*@ name="NO_OF_BATCH" ng-model="formTrims.NO_OF_BATCH" required tabindex="2" />
+                                        </div>
+                                        <label class="col-md-3 control-label" ng-if="formTrims.NO_OF_BATCH>1">
+                                            <b>Interval(Min)</b>
+                                        </label>
+                                        <div class="col-md-2" ng-if="formTrims.NO_OF_BATCH>1" ng-class="{'has-error': (DyeingBatchPlanTrims.INTERVAL.$touched || DyeingBatchPlanTrims.$submitted) && (DyeingBatchPlanTrims.INTERVAL.$error.required||DyeingBatchPlanTrims.INTERVAL.$error.min)}">
+                                            <input type="number" class="form-control" min="0" name="INTERVAL" ng-model="formTrims.INTERVAL" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">
+                                            <b>+ Other Order</b>
+                                        </label>
+                                        <div class="col-md-3">
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" ng-model="formTrims.IS_ADD_OTH_ORD" ng-change="onChangeOtherOrder(formTrims,7)" ng-true-value="'Y'" ng-false-value="'N'" style="top:5px;">
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" ng-repeat="itm in formTrims.MC_FAB_PROD_ORD_H_ID_LST track by $index">
+                                        <label class="col-md-4 control-label">
+
+                                        </label>
+                                        <div class="col-md-6" ng-if="formTrims.IS_ADD_OTH_ORD=='Y'">
+                                            <select class="form-control" kendo-drop-down-list name="MC_FAB_PROD_ORD_H_ID" k-option-label="'--Order# --'"
+                                                    k-data-text-field="'ORDER_NO_LST'" k-data-value-field="'MC_FAB_PROD_ORD_H_ID'" k-filter="'Contains'"
+                                                    k-template="templateOh" k-value-template="valueTemplateOh"
+                                                    k-auto-bind="'true'" k-data-source="FabOederByOhDsMerge" ng-model="formTrims.MC_FAB_PROD_ORD_H_ID_LST[$index]"
+                                                    required style="width:100%;"></select>
+                                        </div>
+
+                                        <div class="col-md-1" style="text-align: left; padding-left: 2px;" ng-if="formTrims.IS_ADD_OTH_ORD=='Y' && $last">
+                                            <button class="btn btn-xs blue" ng-click="addOtherOrder(formTrims.MC_FAB_PROD_ORD_H_ID_LST)" type="button"><i class="fa fa-plus"></i></button>
+                                        </div>
+                                        <div class="col-md-1" style="text-align: left; padding-left: 2px;" ng-if="formTrims.IS_ADD_OTH_ORD=='Y' && !$last">
+                                            <button class="btn btn-xs red" ng-click="remOtherOrder(formTrims.MC_FAB_PROD_ORD_H_ID_LST,$index)" type="button">X</button>
+                                        </div>
+                                    </div>
+
+                                    @*<div class="form-group form-actions">
+                                            <div class="col-md-offset-4 col-md-8">
+                                                <button type="button" ng-if="form.DYE_BATCH_PLAN_ID<0" class="btn green btn-sm" ng-click="save(form,DyeingBatchPlanTrims.$valid);DyeingBatchPlanTrims.$submitted=true" ng-class="{'disabled':!form.MC_FAB_PROD_ORD_H_ID}"> Save</button>
+                                                <button type="button" ng-if="form.DYE_BATCH_PLAN_ID>0" class="btn btn-sm yellow-gold" ng-click="save(form,DyeingBatchPlanTrims.$valid);DyeingBatchPlanTrims.$submitted=true">Update</button>
+                                                <button type="button" class="btn btn-default btn-sm" ng-click="cancel()">Close</button>
+                                            </div>
+                                        </div>*@
+
+                                </div>
+                                <br />
+                                <div style="border: 1px solid #333333; padding: 3px;">
+
+                                    <table class="table table-condensed table-hover table-bordered" style="margin:0px;">
+                                        <thead>
+                                            <tr style="background-color: #7f8dd4; color: #ffffff;">
+
+                                                <th style="width:12%">
+                                                    <small>Batch#</small>
+                                                </th>
+                                                <th style="width:4%">
+                                                    <small>Lot#</small>
+
+                                                </th>
+
+                                                <th style="width:10%">
+                                                    <small>Order</small>
+                                                </th>
+
+                                                <th style="width:20%">
+                                                    <small>Trims</small>
+                                                </th>
+                                                <th style="width:8%">
+                                                    <span style="display:block;">
+                                                        <small>Ttl Req</small>
+                                                    </span>
+
+                                                    <span style="display:block;">
+                                                        <small>Ttl Bt/Blnc</small>
+                                                    </span>
+
+                                                    <span style="display:block;">
+                                                        <small>Available</small>
+                                                    </span>
+                                                </th>
+
+                                                <th style="width:5%">
+                                                    <small>Qty[Yds](thisBt)</small>
+                                                </th>
+                                                <th style="width:5%">
+                                                    <small>Qty[Kg](thisBt)</small>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody ng-repeat="it in formTrims.requirements" ng-if="formTrims.requirements.length>0">
+                                            <tr style="background-color: #c4ebc8;">
+
+                                                <td rowspan="{{it.MC_FAB_PROD_ORD_H_SPAN}}" ng-if="it.MC_FAB_PROD_ORD_H_SL==1" ng-class="{'has-error': (requirements.DYE_BATCH_NO.$touched || DyeingBatchPlanTrims.$submitted) && requirements.DYE_BATCH_NO.$error.required}">
+                                                    <ng-form name="requirements">
+                                                        <input type="text" class="form-control" name="DYE_BATCH_NO" required ng-model="it.DYE_BATCH_NO" ng-if="it.MC_FAB_PROD_ORD_H_SL==1" />
+                                                    </ng-form>
+                                                </td>
+                                                <td rowspan="{{it.MC_FAB_PROD_ORD_H_SPAN}}" ng-if="it.MC_FAB_PROD_ORD_H_SL==1" ng-class="{'has-error': (requirements.DYE_LOT_NO.$touched || DyeingBatchPlanTrims.$submitted) && requirements.DYE_LOT_NO.$error.required}">
+                                                    <ng-form name="requirements">
+                                                        <input type="text" class="form-control" name="DYE_LOT_NO" required ng-model="it.DYE_LOT_NO" ng-if="it.MC_FAB_PROD_ORD_H_SL==1" />
+                                                    </ng-form>
+
+                                                </td>
+
+                                                <td rowspan="{{it.MC_FAB_PROD_ORD_H_SPAN}}" ng-if="it.MC_FAB_PROD_ORD_H_SL==1">
+                                                    <span>{{it.ORDER_NO_LIST}}</span>
+                                                </td>
+                                                <td>
+                                                    {{it.ITEM_SPEC_AUTO}}
+                                                </td>
+                                                <td>
+                                                    <span style="display:block;">{{it.NET_DY_QTY+' '+it.MOU_CODE}}</span>
+                                                    <span style="display:block;">{{it.TTL_BT+' / '+it.LEFT_TO_BT}}</span>
+                                                    <span style="display:block;">{{it.STK_BALANCE}}</span>
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control" ng-model="it.RQD_QTY_YDS" />
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control" ng-model="it.RQD_QTY_KG" />
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="form-group form-actions">
+                                    <div class="col-md-6">
+                                        <button type="button" ng-if="form.DYE_BATCH_PLAN_ID<0" class="btn green btn-sm" ng-click="saveWovenTrims(formTrims,DyeingBatchPlanTrims.$valid,35);DyeingBatchPlanTrims.$submitted=true"> Save</button>
+                                        <button type="button" class="btn btn-default btn-sm" ng-click="cancel()">Close</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <a ng-disabled="!formTrims.DYE_BATCH_PLAN_ID" href="/Merchandising/Mrc/DyeingProg4BulkBookingMnul?a=224/#/dyeProg4BulkMnul/{{formTrims.MC_FAB_PROD_ORD_H_ID}}?pRF_FAB_PROD_CAT_ID={{formTrims.RF_FAB_PROD_CAT_ID}}&pMC_BYR_ACC_GRP_ID={{formTrims.MC_BYR_ACC_GRP_ID}}&pMC_STYLE_H_EXT_ID={{formTrims.MC_STYLE_H_EXT_ID}}" target="_blank" class="btn btn-sm btn-block blue">+ Add Dye Program ( Knit/Woven )</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </tab>
+                    </tabset>
+
+
+                </div>
+
+            </div>
+            <div class="row form-horizontal" style="margin:auto;">
+
+                <table class="table table-condensed table-striped table-bordered" style="padding:0px;">
+                    <thead>
+                        <tr class="site-table-header">
+                            <th width="1%">
+
+                            </th>
+
+                            <th width="3%">
+                                <small>
+                                    Program#
+                                </small>
+                            </th>
+
+                            <th width="5%">
+                                <small>
+                                    Buyer A/C
+                                </small>
+                            </th>
+
+                            <th width="5%">
+                                <small>
+                                    Style
+                                </small>
+                            </th>
+
+                            <th width="10%">
+                                <small>
+                                    Order #
+                                </small>
+                            </th>
+
+                            <th width="3%">
+                                <small>
+                                    Priority
+                                </small>
+                            </th>
+
+
+                            <th width="8%">
+                                <small>
+                                    Color
+                                </small>
+                            </th>
+
+                            <th width="3%">
+                                <small>
+                                    Req(Kg)
+                                </small>
+                            </th>
+
+                            <th width="8%">
+                                <small>
+                                    Load
+                                </small>
+                            </th>
+
+                            <th width="8%">
+                                <small>
+                                    Unload
+                                </small>
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody ng-repeat="itm in dyePrograms">
+                        <tr>
+                            <td width="1%" rowspan="2" ng-style="{'background-color':itm.IS_SELECTED_BT?'#42c041':''}">
+                                <div class="checkbox-list" ng-if="itm.IS_BATCH_CREATED<1">
+                                    <label class="checkbox-list">
+                                        <span><input type="checkbox" ng-if="itm.IS_FAB_REQ_DONE=='N'" ng-model="itm.IS_SELECTED_BT"></span>
+
+                                    </label>
+
+                                </div>
+                            </td>
+
+                            <td width="3%" rowspan="2">
+                                {{itm.DYE_BATCH_PLAN_ID}}
+                                <span style="display:block;"></span>
+                                <span style="display:block;font-size:11px;font-style:italic;" ng-if="itm.DYE_BATCH_NO_LST">
+                                    [{{itm.DYE_BATCH_NO_LST}}]
+                                </span>
+                                <span style="display:block;" ng-if="itm.IS_BATCH_CREATED<1">
+                                    <a class="btn btn-xs btn-danger" ng-click="remove(itm)"> <i class="fa fa-times"></i> Delete</a>
+                                </span>
+
+                                <span style="display:block;" ng-if="itm.IS_BATCH_CREATED<1">
+                                    <input type="checkbox" ng-model="itm.IS_BATCH_STORE" id="IS_BATCH_STORE_{{itm.DYE_BATCH_PLAN_ID}}_{{$index}}"
+                                           ng-true-value="'Y'" ng-false-value="'N'" ng-click="onIsBatchStoreClick(itm);" />
+                                    <label for="IS_BATCH_STORE_{{itm.DYE_BATCH_PLAN_ID}}_{{$index}}">Is Batch Store?</label>
+                                </span>
+
+                                <span style="display:block;">
+                                    <a class="btn btn-xs btn-success" ng-click="printBatchCard(itm)"> <i class="fa fa-print"></i> Print Batch Card</a>
+                                </span>
+
+                            </td>
+
+                            <td width="5%">
+                                {{itm.BYR_ACC_NAME_EN}}
+                            </td>
+
+                            <td width="5%">
+                                {{itm.WORK_STYLE_NO}}
+                            </td>
+
+                            <td width="10%">
+                                {{itm.ORDER_NO_LIST}}
+                            </td>
+
+                            <td width="3%" ng-init="itm.PRIORITY_NO=$index+1">
+                                {{itm.PRIORITY_NO}}
+                            </td>
+
+
+                            <td width="8%">
+
+
+                                <span style="display:block;"> {{itm.COLOR_NAME_EN}}</span>
+                                <span style="display:block;font-size:11px;font-style:italic;color:red;" ng-if="!itm.LD_RECIPE_NO"> No Labdip Ref# Set</span>
+                                <span title="Lot, Dia Wise Knitting Production Report" ng-click="openLotDiaWiseKnitProd(itm)" style="display: block;font-style:italic;cursor: pointer;"><i class="fa fa fa-file-pdf-o"></i>Knitting Prod By Lot</span>
+
+                            </td>
+
+                            <td width="3%">
+
+                                {{itm.RQD_PRD_QTY}}
+
+                            </td>
+
+                            <td width="8%">
+
+                                {{itm.LOAD_TIME | date:'dd-MMM-yy hh:mma'}}
+
+                            </td>
+
+                            <td width="8%">
+                                {{itm.UN_LOAD_TIME| date:'dd-MMM-yy hh:mma'}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="5%" colspan="10">
+                                <details ng-click="itm.IS_OPEN_REQ = !itm.IS_OPEN_REQ;onRequirementClick(itm);itm.IS_OPEN_DF_PRC = !itm.IS_OPEN_DF_PRC; getDfProcessTypeData(itm)">
+                                    <summary class="large_bold_black">
+                                        <strong><b>Details</b></strong>
+                                    </summary>
+
+                                    <table class="table table-condensed table-hover table-bordered" style="margin:0px;" ng-if="itm.INV_ITEM_CAT_ID==34">
+                                        <thead>
+                                            <tr style="background-color: #7f8dd4; color: #ffffff;">
+
+                                                <th style="width:10%">
+                                                    <small>Batch#</small>
+
+                                                </th>
+                                                <th style="width:5%">
+                                                    <small>Lot#</small>
+                                                </th>
+
+                                                <th style="width:10%">
+                                                    <small>Order#</small>
+
+                                                </th>
+                                                <th style="width:8%">
+                                                    <small>Fab Group</small>
+
+                                                </th>
+
+                                                <th style="width:5%">
+                                                    <small>Cal. [Kg]</small>
+
+                                                </th>
+
+                                                <th style="width:5%">
+                                                    <small>Req. [Kg]</small>
+                                                </th>
+
+
+                                                <th style="width:40%;text-align:center;">
+                                                    <small>Availability</small>
+
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody ng-repeat="it in itm.requirements">
+
+                                            <tr style="background-color: #c4ebc8;">
+
+                                                <td rowspan="2">
+                                                    <input type="text" class="form-control" ng-model="it.DYE_BATCH_NO" ng-init="onChangeQty(itm)" ng-if="it.MC_FAB_PROD_ORD_H_SL==1" ng-disabled="itm.IS_BATCH_CREATED>0" />
+                                                    <span style="display:block;font-weight:700;font-style:italic;color:blueviolet;" ng-if="it.MC_FAB_PROD_ORD_H_SL==1">
+                                                        Total: {{it.BT_TOTAL}} Kg
+                                                    </span>
+
+                                                </td>
+                                                <td rowspan="2">
+                                                    <input type="text" class="form-control" ng-model="it.DYE_LOT_NO" ng-if="it.MC_FAB_PROD_ORD_H_SL==1" ng-disabled="itm.IS_BATCH_CREATED>0" />
+                                                </td>
+
+                                                <td rowspan="2">
+                                                    {{it.ORDER_NO_LIST}}
+                                                </td>
+                                                <td rowspan="2">
+                                                    {{it.FAB_GROUP}}
+                                                    <span style="display:block;font-style:italic;" ng-if="it.IS_FLAT_CIR=='C'"><small>{{it.FAB_TYPE_NAME}}</small></span>
+                                                    <span style="display:block;font-style:italic;"><small>{{it.FIB_COMP_NAME}}</small></span>
+                                                    <span style="display:block;font-style:italic;"><small>{{it.LK_DIA_TYPE_ID == 327? 'Open' : (it.LK_DIA_TYPE_ID == 328? 'tube': 'Open/Tube')   }}</small></span>
+
+                                                    <span style="display:block;font-style:italic;"> <strong style="color:red;">{{it.WASH_TYPE_TXT}}</strong> </span>
+                                                    <span style="display:block;font-style:italic;"> <strong style="color:red;">{{it.FINISH_TYPE_TXT}}</strong> </span>
+
+                                                    <input type="hidden" ng-model="it.RF_FIB_COMP_ID" />
+                                                    <input type="hidden" ng-model="it.RF_FAB_TYPE_ID" />
+                                                    <input type="hidden" ng-model="it.LK_DIA_TYPE_ID" />
+                                                </td>
+
+                                                <td>
+                                                    {{it.RQD_PRD_QTY}} kg
+                                                </td>
+
+                                                <td ng-if="it.IS_FLAT_CIR=='F'">
+                                                    <input type="number" min="0" class="form-control" ng-model="it.ACT_BATCH_QTY" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" ng-disabled="itm.IS_BATCH_CREATED>0" ng-change="onChangeQty(itm)" />
+                                                </td>
+
+                                                <td ng-if="it.IS_FLAT_CIR=='C' && it.non_col_cu_avail.length==0">
+                                                    <input type="number" min="0" class="form-control" ng-model="it.ACT_BATCH_QTY" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" ng-disabled="itm.IS_BATCH_CREATED >0" ng-change="onChangeQty(itm)" />
+                                                </td>
+
+                                                <td ng-if="it.IS_FLAT_CIR=='C' && it.non_col_cu_avail.length>0">
+                                                    <input type="number" min="0" class="form-control" ng-model="it.ACT_BATCH_QTY" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" ng-change="onChangeQty(itm)" readonly />
+                                                </td>
+
+
+
+
+
+                                                <td rowspan="2" style="background-color: #cfa8e2; ">
+                                                    <table class="table table-condensed table-hover table-bordered" ng-if="it.IS_FLAT_CIR=='C'" style="margin:0px;">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>
+
+                                                                    <small>Yarn Details</small>
+                                                                </th>
+                                                                <th>
+
+                                                                    <small>Fin Dia</small>
+                                                                </th>
+                                                                <th>
+
+                                                                    <small>GSM</small>
+                                                                </th>
+                                                                <th>
+
+                                                                    <small>Code No</small>
+                                                                </th>
+                                                                <th>
+
+                                                                    <small>Available</small>
+                                                                </th>
+                                                                <th>
+
+                                                                    <small>Assign</small>
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="noncol in it.non_col_cu_avail">
+                                                                <td>
+                                                                    {{noncol.KNT_YRN_LOT_LST}}
+                                                                </td>
+                                                                <td>
+                                                                    {{noncol.FIN_DIA}}
+                                                                </td>
+                                                                <td>
+                                                                    {{noncol.FIN_GSM}}
+                                                                </td>
+
+                                                                <td>
+                                                                    {{noncol.JOB_CRD_NO}}
+                                                                </td>
+                                                                <td>
+                                                                    {{noncol.RCV_ROLL_WT}}
+                                                                    <input type="hidden" ng-model="noncol.RF_FIB_COMP_ID" />
+                                                                    <input type="hidden" ng-model="noncol.RF_FAB_TYPE_ID" />
+                                                                    <input type="hidden" ng-model="noncol.LK_DIA_TYPE_ID" />
+                                                                </td>
+                                                                <td>
+                                                                    <input type="number" class="form-control" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" ng-change="onChangeQtyD(itm,it)" ng-model="noncol.ASSIGN_QTY" ng-disabled="itm.IS_BATCH_CREATED>0" />
+
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <table class="table table-condensed table-hover table-bordered" ng-if="it.IS_FLAT_CIR=='F'" style="margin:0px;">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>
+                                                                    <small>Yarn Details</small>
+                                                                </th>
+
+                                                                <th>
+                                                                    <small>Size</small>
+                                                                </th>
+                                                                <th>
+
+                                                                    <small>Measurement</small>
+                                                                </th>
+                                                                <th>
+
+                                                                    <small>Available</small>
+                                                                </th>
+                                                                <th>
+
+                                                                    <small>Assign</small>
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="col in it.col_cu_avail">
+                                                                <td>
+                                                                    <small>
+                                                                        {{col.KNT_YRN_LOT_LST}}
+                                                                    </small>
+                                                                </td>
+
+                                                                <td>
+                                                                    {{col.SIZE_CODE}}
+                                                                </td>
+                                                                <td>
+                                                                    {{col.MESUREMENT}}
+                                                                </td>
+                                                                <td>
+                                                                    {{col.PRD_QTY}}
+                                                                </td>
+
+                                                                <td>
+                                                                    <input type="number" class="form-control" ng-model="col.ASSIGN_QTY" ng-disabled="itm.IS_BATCH_CREATED>0" />
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+
+                                                </td>
+                                            </tr>
+
+                                            <tr ng-if="it.IS_FLAT_CIR=='F'">
+
+                                                <td colspan="4">
+                                                    <span style="padding-left:1px;padding-right:2px;border-right:2px solid green;" ng-repeat="i in it.col_cu_reqs">
+                                                        {{i.SIZE_CODE+'('+i.MESUREMENT +')'}}-<b>{{i.RQD_PC_QTY}}</b>Pcs
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <table class="table table-condensed table-hover table-bordered" style="margin:0px;" ng-if="itm.INV_ITEM_CAT_ID==35 || itm.INV_ITEM_CAT_ID==7">
+                                        <thead>
+                                            <tr style="background-color: #7f8dd4; color: #ffffff;">
+
+                                                <th style="width:10%">
+                                                    <small>Batch#</small>
+
+                                                </th>
+                                                <th style="width:5%">
+                                                    <small>Lot#</small>
+                                                </th>
+
+
+                                                <th style="width:10%">
+                                                    <small>Order#</small>
+
+                                                </th>
+                                                <th style="width:8%">
+                                                    <small>Item</small>
+
+                                                </th>
+
+                                                <th style="width:5%">
+                                                    <small>Req. [Yd]</small>
+
+                                                </th>
+
+                                                <th style="width:5%">
+                                                    <small>Req. [Kg]</small>
+                                                </th>
+
+
+                                                <th style="width:40%;text-align:center;">
+                                                    <small>Availability</small>
+
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody ng-repeat="it in itm.requirements">
+                                            <tr style="background-color: #c4ebc8;">
+
+                                                <td rowspan="{{it.MC_FAB_PROD_ORD_H_SPAN}}">
+                                                    <ng-form name="FabReqBlkFormD">
+                                                        <div ng-class="{'has-error': (FabReqBlkFormD.DYE_BATCH_NO.$touched || FabReqBlkForm.$submitted) && (FabReqBlkFormD.DYE_BATCH_NO.$error.required||FabReqBlkFormD.DYE_BATCH_NO.$error.minlength||FabReqBlkFormD.DYE_BATCH_NO.$error.maxlength)}">
+                                                            <input type="text" class="form-control" name="DYE_BATCH_NO" ng-model="it.DYE_BATCH_NO" ng-init="onChangeQty(itm)" ng-minlength="itm.IS_SELECTED_BT?10:0" ng-maxlength="itm.IS_SELECTED_BT?10:100" ng-if="it.MC_FAB_PROD_ORD_H_SL==1" ng-disabled="itm.IS_BATCH_CREATED>0" ng-required="itm.IS_SELECTED_BT" />
+                                                        </div>
+                                                    </ng-form>
+                                                </td>
+
+                                                <td rowspan="{{it.MC_FAB_PROD_ORD_H_SPAN}}">
+                                                    <input type="text" class="form-control" ng-model="it.DYE_LOT_NO" ng-if="it.MC_FAB_PROD_ORD_H_SL==1" ng-disabled="itm.IS_BATCH_CREATED>0" />
+                                                </td>
+
+                                                <td rowspan="{{it.MC_FAB_PROD_ORD_H_SPAN}}">
+                                                    {{it.ORDER_NO_LIST}}
+                                                </td>
+                                                <td rowspan="{{it.MC_FAB_PROD_ORD_H_SPAN}}">
+                                                    {{it.ITEM_SPEC_AUTO}}
+                                                </td>
+
+                                                <td>
+                                                    <input type="number" min="0" class="form-control" ng-model="it.RQD_QTY_YDS" ng-disabled="itm.IS_BATCH_CREATED>0" />
+                                                </td>
+                                                <td>
+                                                    <input type="number" min="0" class="form-control" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" ng-change="onChangeQtyD(itm,it)" ng-model="it.RQD_QTY_KG" ng-disabled="itm.IS_BATCH_CREATED>0" />
+                                                </td>
+
+
+
+                                                <td rowspan="2" style="background-color: #cfa8e2; ">
+
+                                                    <table class="table table-condensed table-hover table-bordered" style="margin:0px;">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>
+                                                                    <small>Req</small>
+                                                                </th>
+
+                                                                <th>
+                                                                    <small>Ttl Bt/Balance</small>
+                                                                </th>
+
+                                                                <th>
+
+                                                                    <small>Available</small>
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="col in it.woven_trims_avai">
+                                                                <td>
+                                                                    {{col.NET_DY_QTY+' '+col.MOU_CODE}}
+                                                                </td>
+
+                                                                <td>
+                                                                    {{col.TTL_BT+' / '+ col.LEFT_TO_BT +' '+col.MOU_CODE}}
+                                                                </td>
+
+                                                                <td>
+                                                                    {{col.STK_BALANCE+' '+col.MOU_CODE}}
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </details>
+                                <details open="open">
+                                    <summary class="large_bold_black" style="text-align:right;">
+                                        <strong><b>Special Process</b></strong>
+                                    </summary>
+
+                                    <div class="form-group" ng-repeat="dta in itm.df_data">
+
+                                        <label class="col-md-3 control-label">
+                                            <b>{{dta.PROCESS_GROUP_NAME}}</b>
+                                        </label>
+                                        <div class="col-md-9">
+                                            <div class="checkbox-list">
+                                                <label class="checkbox-inline" ng-repeat="dt in dta.items">
+                                                    <span><input type="checkbox" ng-model="dt.IS_SELECTED" ng-true-value="'Y'" ng-false-value="'N'"> {{dt.DF_PROC_TYPE_NAME}}</span>
+                                                </label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </details>
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+
+                <div class="row">
+                    <div class="col-md-5">
+                        <button type="submit" class="btn btn-sm yellow-gold" ng-click="submitData(dyePrograms)" ng-disabled="vm.disabledEdit">Save</button>
+                        <button type="submit" class="btn btn-sm blue" ng-click="createRequisition(dyePrograms)">Create Requisition</button>
+                        <button type="button" class="btn btn-sm default" ng-click="cancel()">Cancel</button>
+                    </div>
+                    <div class="col-md-7" align="right">
+                        @*<button type="button" class="btn btn-sm" ng-disabled="vm.HR_COMPANY_ID<1" ng-click="vm.printBatchProgam('N')"><i class="fa fa-file-pdf-o"></i>Program List(pdf)</button>
+                    <button type="button" class="btn btn-sm" ng-disabled="vm.HR_COMPANY_ID<1" ng-click="vm.printBatchProgam('Y')"><i class="fa fa-file-excel-o"></i>Program List(excel)</button>
+                    <button type="button" class="btn btn-sm" ng-click="vm.printPendingLabdipRecepi()"><i class="fa fa-file-pdf-o"></i> Pending Labdips Recipe</button>*@
+                        @*<button type="submit" class="btn btn-sm blue" ng-click="createRequisition(dyePrograms)">Create Requisition</button>*@
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

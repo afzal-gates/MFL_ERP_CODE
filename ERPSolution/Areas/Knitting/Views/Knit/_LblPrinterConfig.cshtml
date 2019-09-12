@@ -1,0 +1,42 @@
+﻿<div class="modal-body">
+    <div id="splash-page" data-ng-show="showSplash" class="dissolve-animation">
+        <div class="page-splash">
+            <div class="page-splash-message">
+                <b>Please wait ....</b>
+            </div>
+        </div>
+    </div>
+
+    <div class="portlet grey-cascade box">
+        <div class="portlet-title">
+            <div>
+                <h3 style="padding-top:10px;margin-top:3px;">
+                    <span class="item"> <span aria-hidden="true" class="icon-settings"></span>&nbsp;Label Printer Setting</span>
+                    <span class="pull-right"><i class="fa fa-times red" ng-click="cancel()"></i></span>
+                </h3>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <form role="form" class="form-horizontal">
+                <div style="padding:5px;" class="row">
+                    <div class="form-group">
+                        <label class="col-md-5 control-label"></label>
+                        <div class="col-md-5">
+                            <div class="radio-list">
+                                <label ng-repeat="itm in PrinterList">
+                                    <input type="radio" name="PRNTR_ADDRESS" ng-model="$parent.PRNTR_ADDRESS" ng-value="itm.PRNTR_ADDRESS"> {{itm.RLBL_PRNTR_NAME}}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin:auto;">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-sm green" ng-click="save(PRNTR_ADDRESS)">Save</button>
+                            <button type="button" class="btn btn-sm default" ng-click="close()">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

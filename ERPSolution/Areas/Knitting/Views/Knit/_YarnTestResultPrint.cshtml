@@ -1,0 +1,260 @@
+﻿
+
+<div class="portlet light print" style="padding-top:0px;">
+    <div class="portlet-body" style="padding-top:5px;">
+        <div class="invoice">
+            <div class="row" style="margin:auto;">
+                <div class="col-xs-2 col-md-2 col-lg-2" style="text-align:right;">
+                </div>
+
+                <div class="col-xs-8 col-md-8 col-lg-8" style="text-align:center;">
+                    <h4 style="margin:0px;"><b>MULTIFABS LIMITED</b></h4>
+                    <h6 style="margin:3px;"><b>Nayapara, Kashimpur, Gazipur.</b></b></h6>
+                    <h5 style="margin:3px;">Yarn Test Report</h5>
+                </div>
+                <div class="col-xs-2 col-md-2 col-lg-2" style="text-align:right;">
+                    <a class="btn btn-sm btn-default hidden-print margin-bottom-5" onclick="javascript:window.print();">
+                        <i class="fa fa-print"></i> Print
+                    </a>
+                </div>
+
+            </div>
+
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend"><b>Yarn Lot Receive Details</b></legend>
+
+                <table style="width:100%">
+
+                    <tr>
+                        <td style="border: solid 1px black; width: 40%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                            <b>L/C No</b>
+                        </td>
+                        <td style="border: solid 1px black; width: 60%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>{{vm.form.IMP_LC_NO}}</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border: solid 1px black; width: 40%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>Normal Yarn Count</b>
+                        </td>
+
+                        <td style="border: solid 1px black; width: 60%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>{{vm.form.YR_SPEC_DESC}}</b>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td style="border: solid 1px black; width: 40%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>Yarn Lot</b>
+                        </td>
+
+                        <td style="border: solid 1px black; width: 60%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>{{vm.form.YRN_LOT_NO}}</b>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td style="border: solid 1px black; width: 40%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>Lot Qty(Kg)</b>
+                        </td>
+                        <td style="border: solid 1px black; width: 60%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>{{vm.form.RCV_QTY}} Kg</b>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td style="border: solid 1px black; width: 40%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>Yarn Composition</b>
+                        </td>
+                        <td style="border: solid 1px black; width: 60%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>{{vm.form.FIB_COMP_NAME}}</b>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="border: solid 1px black; width: 40%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>Yarn Supplier</b>
+                        </td>
+                        <td style="border: solid 1px black; width: 60%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>{{vm.form.SUP_TRD_NAME_EN}}</b>
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td style="border: solid 1px black; width: 40%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>Fabric Construction</b>
+                        </td>
+                        <td style="border: solid 1px black; width: 60%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>{{vm.form.FAB_TYPE_NAME}}</b>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="border: solid 1px black; width: 40%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>Sample Weight</b>
+                        </td>
+                        <td style="border: solid 1px black; width: 60%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>{{vm.form.RQD_QTY}} Kg</b>
+                        </td>
+                    </tr>
+
+                </table>
+            </fieldset>
+
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend"><b>Yarn Test Report</b></legend>
+
+                <table style="width:100%">
+
+                    <tr ng-repeat="item in vm.YarnTestParamList">
+                        <td style="border: solid 1px black; width: 5%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                            {{$index+1}}
+                        </td>
+                        <td style="border: solid 1px black; width: 45%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                            {{item.TST_PARAM_NAME_EN}}
+                            <input type="hidden" ng-model="item.RF_YRN_TST_PARAM_ID" />
+                        </td>
+
+                        <td style="border: solid 1px black; width: 25%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            @*<input type="text" ng-model="item.TST_PARAM_VAL" class="required" />*@
+                            {{item.TST_PARAM_VAL}}
+                        </td>
+                    </tr>
+
+
+                </table>
+                <div style="padding:10px;"></div>
+
+            </fieldset>
+
+
+            <fieldset class="custom-fieldset">
+                <legend class="custom-legend"><b>Fabric Test Report</b></legend>
+
+                <table style="width:100%">
+
+                    <tr>
+                        <td style="border: solid 1px black; width: 5%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                            <b>SL #</b>
+                        </td>
+                        <td style="border: solid 1px black; width: 45%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                            <b>Parameters</b>
+                        </td>
+                        <td ng-repeat="cg in vm.colorGrpList" style="border: solid 1px black; width: 25%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>{{cg.COLOR_GRP_NAME}}({{cg.COLOR_NAME_EN}})</b>
+
+                        </td>
+
+                    </tr>
+                    <tr ng-repeat="item in vm.defectTypeList">
+                        <td style="border: solid 1px black; width: 5%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                            {{$index+1}}
+                        </td>
+                        <td style="border: solid 1px black; width: 45%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                            {{item.DY_DFCT_TYPE_NAME}}
+                            <input type="hidden" ng-model="item.RF_DY_DFCT_TYPE_ID" />
+                        </td>
+                        <td ng-repeat="col in vm.YarnTestColorList" ng-if="item.RF_DY_DFCT_TYPE_ID==col.RF_DY_DFCT_TYPE_ID" style="border: solid 1px black; width: 25%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            {{col.COMMENTS}}
+
+                            <input type="hidden" ng-model="item.KNT_YRN_LOT_TEST_R2_ID" />
+                            <input type="hidden" ng-model="item.KNT_YRN_LOT_TEST_D11_ID" />
+                            <input type="hidden" ng-model="item.MC_COLOR_ID" />
+
+                        </td>
+
+                    </tr>
+
+                </table>
+
+
+                <div style="padding:10px;"></div>
+
+                <table style="width:100%;">
+                    <tr>
+                        <td style="border: solid 1px black; width: 20%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                            <b>Color</b>
+                        </td>
+                        <td style="border: solid 1px black; width: 40%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                            <b>Test Status</b>
+                        </td>
+                        <td style="border: solid 1px black; width: 40%; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; ">
+                            <b>Comments</b>
+                        </td>
+                    </tr>
+                    <tr ng-repeat="cg in vm.colorGrpStatusList">
+                        <td style="border: solid 1px black; width: 20%; padding-top: 5px; padding-bottom: 5px; padding-left:5px;">
+                            <b>{{cg.COLOR_GRP_NAME}}({{cg.COLOR_NAME_EN}})</b>
+                            <input type="hidden" ng-model="cg.KNT_YRN_LOT_TEST_D11_ID" />
+
+                        </td>
+                        <td style="border: solid 1px black; width: 40%; padding: 5px;">
+
+                            {{cg.STATUS_NOTE}}
+
+                        </td>
+                        <td style="border: solid 1px black; width: 40%; padding: 5px;">
+                            {{cg.TEST_NOTE}}
+                        </td>
+                    </tr>
+
+                </table>
+
+            </fieldset>
+
+        </div>
+
+
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+
+        <div class="row" style="margin:auto;">
+
+            <div class="col-xs-1 col-md-1 col-lg-1">
+            </div>
+            <div class="col-xs-2 col-md-2 col-lg-2">
+                <div align="center">
+                    <address style="border-top:0.5px solid grey">
+                        <strong>Prepared By</strong>
+                    </address>
+                </div>
+            </div>
+
+            <div class="col-xs-2 col-md-2 col-lg-2">
+                <div align="center">
+                    <address style="border-top:0.5px solid grey">
+                        <strong>Quality Manager</strong>
+                    </address>
+                </div>
+            </div>
+            <div class="col-xs-2 col-md-2 col-lg-2">
+                <div align="center">
+                    <address style="border-top:0.5px solid grey">
+                        <strong>AGM Knitting</strong>
+                    </address>
+                </div>
+            </div>
+            <div class="col-xs-2 col-md-2 col-lg-2">
+                <div align="center">
+                    <address style="border-top:0.5px solid grey">
+                        <strong>Head of Marketing</strong>
+                    </address>
+                </div>
+            </div>
+            <div class="col-xs-2 col-md-2 col-lg-2">
+                <div align="center">
+                    <address style="border-top:0.5px solid grey">
+                        <strong>Director</strong>
+                    </address>
+                </div>
+            </div>
+            <div class="col-xs-1 col-md-1 col-lg-1">
+            </div>
+        </div>
+    </div>
+</div>

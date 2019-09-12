@@ -1,0 +1,72 @@
+﻿<br />
+<fieldset class="custom-fieldset" style="padding-top: 0px;padding-bottom: 0px;">
+    <legend class="custom-legend">Assign Tasks/Actions</legend>
+    <form class="form-horizontal" role="form" name="TnaTemplateDtlForm" novalidate ng-submit="vm.addToGrid(vm.form,token)">
+
+        <div class="form-body" style="padding:0px;">
+            <input id="access_token" data-ng-model="token" type="hidden"
+                   data-ng-init="token='@Session["access_token"]'" />
+            <input ng-model="vm.form.CREATED_BY" type="hidden"
+                   data-ng-init="vm.form.CREATED_BY='@Session["multiScUserId"]'" />
+
+            <input id="access_token" ng-model="vm.form.LAST_UPDATED_BY" type="hidden"
+                   ng-init="vm.form.LAST_UPDATED_BY='@Session["multiScUserId"]'" />
+
+
+            <div class="form-group">
+                <div class="col-md-2">
+                    Inquiry #
+                    <input type="text" name="TASK_ORD_NO" ng-model="vm.form.TASK_ORD_NO" class="form-control" required />
+                </div>
+                <div class="col-md-2">
+                    Buyer
+                    <select kendo-drop-down-list name="MC_TNA_TASK_ID" class="form-control"
+                            options="vm.TaskGroupList" id="MC_TNA_TASK_ID" ng-model="vm.form.MC_TNA_TASK_ID"></select>
+                </div>
+
+                <div class="col-md-2">
+                    Trade Term
+                    <select kendo-drop-down-list name="MC_TNA_TASK_ID" class="form-control"
+                            options="vm.TaskGroupList" id="MC_TNA_TASK_ID" ng-model="vm.form.MC_TNA_TASK_ID"></select>
+                </div>
+
+                <div class="col-md-2">
+                    MOU(Quantity)
+                    <select kendo-drop-down-list name="MC_TNA_TASK_ID" class="form-control"
+                            options="vm.TaskGroupList" id="MC_TNA_TASK_ID" ng-model="vm.form.MC_TNA_TASK_ID"></select>
+                </div>
+
+                <div class="col-md-2">
+                    MOU(Measurement)
+                    <select kendo-drop-down-list name="MC_TNA_TASK_ID" class="form-control"
+                            options="vm.TaskGroupList" id="MC_TNA_TASK_ID" ng-model="vm.form.MC_TNA_TASK_ID"></select>
+                </div>
+
+                <div class="col-md-2">
+                    Currency
+                    <select kendo-drop-down-list name="MC_TNA_TASK_ID" class="form-control"
+                            options="vm.TaskGroupList" id="MC_TNA_TASK_ID" ng-model="vm.form.MC_TNA_TASK_ID"></select>
+                </div>
+
+            </div>
+
+            <div class="row" style="padding-top:10px;">
+                <div class="col-md-4 col-md-offset-4" align="center">
+                    <button type="submit" ng-if="vm.form.MC_BUYER_ID" class="btn btn-sm yellow-gold" ng-class="{'disabled':!BuyerForm.$valid}">Update</button>
+                    <button type="submit" ng-if="!vm.form.MC_BUYER_ID" class="btn btn-sm green" ng-class="{'disabled':!BuyerForm.$valid}">Save</button>
+                    <button type="button" class="btn btn-sm default" ui-sref="BuyerEntry({MC_BUYER_ID : null})" ui-sref-opts="{reload: true}">Cancel</button>
+                </div>
+            </div>
+            <div class="row" style="margin:auto;padding-top:10px;" ng-if="vm.errors">
+                <div class="alert alert-warning" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                    <ul ng-repeat="field in vm.errors">
+                        <li ng-repeat="error in field" ng-bind="error"></li>
+                    </ul>
+                </div>
+            </div>
+            <br />
+        </div>
+    </form>
+</fieldset>
+<div data-ui-view></div>

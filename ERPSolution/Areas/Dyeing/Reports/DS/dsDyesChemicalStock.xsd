@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="dsDyesChemicalStock" targetNamespace="http://tempuri.org/dsDyesChemicalStock.xsd" xmlns:mstns="http://tempuri.org/dsDyesChemicalStock.xsd" xmlns="http://tempuri.org/dsDyesChemicalStock.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="ConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="ConnectionString (Web.config)" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.ConnectionString.ConnectionString" Provider="System.Data.OracleClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="dsDyesChemicalStockTableAdapter" GeneratorDataComponentClassName="dsDyesChemicalStockTableAdapter" Name="dsDyesChemicalStock" UserDataComponentName="dsDyesChemicalStockTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="ConnectionString (Web.config)" DbObjectName="MTEX.SCM_STORE" DbObjectType="Table" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT I.ITEM_NAME_EN,S.STORE_NAME_EN,SUM(nvl(SC.RCV_QTY ,0)-(nvl(SC.ISSUE_QTY,0)+nvl(SC.ADJ_QTY,0))) STOCK_QTY,AVG(SC.COST_PRICE) BDT_PRICE,AVG(SC.UNIT_PRICE) UNIT_PRICE
+
+From DYE_ITEM_STK STK
+Join DYE_STK_CONS SC ON STK.DC_ITEM_ID=SC.DC_ITEM_ID AND STK.SCM_STORE_ID=SC.SCM_STORE_ID
+JOIN INV_ITEM i ON STK.DC_ITEM_ID=I.INV_ITEM_ID
+Join INV_ITEM_CAT IC ON I.INV_ITEM_CAT_ID=IC.INV_ITEM_CAT_ID
+Join SCM_STORE S ON STK.SCM_STORE_ID=S.SCM_STORE_ID
+Where nvl(SC.RCV_QTY ,0)-(nvl(SC.ISSUE_QTY,0)+nvl(SC.ADJ_QTY,0))&gt;0
+Group By  I.ITEM_NAME_EN,S.STORE_NAME_EN</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="ITEM_NAME_EN" DataSetColumn="ITEM_NAME_EN" />
+              <Mapping SourceColumn="STORE_NAME_EN" DataSetColumn="STORE_NAME_EN" />
+              <Mapping SourceColumn="STOCK_QTY" DataSetColumn="STOCK_QTY" />
+              <Mapping SourceColumn="BDT_PRICE" DataSetColumn="BDT_PRICE" />
+              <Mapping SourceColumn="UNIT_PRICE" DataSetColumn="UNIT_PRICE" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="dsDyesChemicalStock" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="dsDyesChemicalStock" msprop:Generator_UserDSName="dsDyesChemicalStock">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="dsDyesChemicalStock" msprop:Generator_TableClassName="dsDyesChemicalStockDataTable" msprop:Generator_TableVarName="tabledsDyesChemicalStock" msprop:Generator_TablePropName="_dsDyesChemicalStock" msprop:Generator_RowDeletingName="dsDyesChemicalStockRowDeleting" msprop:Generator_RowChangingName="dsDyesChemicalStockRowChanging" msprop:Generator_RowEvHandlerName="dsDyesChemicalStockRowChangeEventHandler" msprop:Generator_RowDeletedName="dsDyesChemicalStockRowDeleted" msprop:Generator_UserTableName="dsDyesChemicalStock" msprop:Generator_RowChangedName="dsDyesChemicalStockRowChanged" msprop:Generator_RowEvArgName="dsDyesChemicalStockRowChangeEvent" msprop:Generator_RowClassName="dsDyesChemicalStockRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ITEM_NAME_EN" msprop:Generator_ColumnVarNameInTable="columnITEM_NAME_EN" msprop:Generator_ColumnPropNameInRow="ITEM_NAME_EN" msprop:Generator_ColumnPropNameInTable="ITEM_NAME_ENColumn" msprop:Generator_UserColumnName="ITEM_NAME_EN">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="250" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="STORE_NAME_EN" msprop:Generator_ColumnVarNameInTable="columnSTORE_NAME_EN" msprop:Generator_ColumnPropNameInRow="STORE_NAME_EN" msprop:Generator_ColumnPropNameInTable="STORE_NAME_ENColumn" msprop:Generator_UserColumnName="STORE_NAME_EN">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="STOCK_QTY" msprop:Generator_ColumnVarNameInTable="columnSTOCK_QTY" msprop:Generator_ColumnPropNameInRow="STOCK_QTY" msprop:Generator_ColumnPropNameInTable="STOCK_QTYColumn" msprop:Generator_UserColumnName="STOCK_QTY" type="xs:decimal" minOccurs="0" />
+              <xs:element name="BDT_PRICE" msprop:Generator_ColumnVarNameInTable="columnBDT_PRICE" msprop:Generator_ColumnPropNameInRow="BDT_PRICE" msprop:Generator_ColumnPropNameInTable="BDT_PRICEColumn" msprop:Generator_UserColumnName="BDT_PRICE" type="xs:decimal" minOccurs="0" />
+              <xs:element name="UNIT_PRICE" msprop:Generator_ColumnVarNameInTable="columnUNIT_PRICE" msprop:Generator_ColumnPropNameInRow="UNIT_PRICE" msprop:Generator_ColumnPropNameInTable="UNIT_PRICEColumn" msprop:Generator_UserColumnName="UNIT_PRICE" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:dsDyesChemicalStock" />
+      <xs:field xpath="mstns:ITEM_NAME_EN" />
+      <xs:field xpath="mstns:STORE_NAME_EN" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>

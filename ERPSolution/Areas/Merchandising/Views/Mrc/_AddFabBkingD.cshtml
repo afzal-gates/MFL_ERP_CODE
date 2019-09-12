@@ -1,0 +1,306 @@
+﻿<div class="col-md-12">
+    <fieldset class="custom-fieldset" ng-disabled="$parent.form.RF_ACTN_STATUS_ID==90">
+        <legend class="custom-legend"><b>Fabric Detail</b></legend>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">Fab Color</label>
+            <div class="col-md-3">
+                <span class="col-md-8" style="padding-left:0px;padding-right:0px;">
+                    <select class="form-control" kendo-drop-down-list name="FAB_COLOR_ID" k-option-label="'--Select--'"
+                            ng-model="$parent.fabOrder.FAB_COLOR_ID" k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'MC_COLOR_ID'"
+                            k-options="$parent.colorListOption" k-data-source="$parent.colorListDataSource" k-filter="'contains'" k-auto-bind="'true'"
+                            k-on-change=""></select>
+                </span>
+                <span class="col-md-2" style="padding-left:5px;padding-right:0px;">
+                    <label class="control-label checkbox-inline">
+                        <input type="checkbox" name="IS_CONTRAST" ng-model="$parent.fabOrder.IS_CONTRAST" ng-true-value="'Y'" ng-false-value="'N'" title="Contrast?" 
+                               ng-change="vm.onChangeContrast()" />Contrast?
+                    </label>
+                </span>
+            </div>
+
+            <label class="col-md-1 control-label">GMT Color</label>
+            <div class="col-md-3">
+                <select class="form-control" kendo-drop-down-list name="GMT_COLOR_ID" k-option-label="'--Select--'"
+                        ng-model="$parent.fabOrder.GMT_COLOR_ID" k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'MC_COLOR_ID'"
+                        k-options="$parent.gmtColorListOption" k-data-source="$parent.colorListDataSource" k-filter="'contains'" k-auto-bind="'true'"
+                        k-on-change="" ng-disabled="$parent.fabOrder.IS_CONTRAST=='N'"></select>
+                @*<select class="form-control" kendo-multi-select k-placeholder="'Search GMT Color...'"
+                        name="GMT_COLOR_LST" ng-model="$parent.fabOrder.GMT_COLOR_ID_LST"
+                        k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'MC_COLOR_ID'"
+                        k-data-source="$parent.colorListDataSource" k-ng-delay="$parent.colorListDataSource"
+                        ng-disabled="$parent.fabOrder.IS_CONTRAST=='N'"></select>*@
+            </div>
+
+            <label class="col-md-1 control-label">Color Spec</label>
+            <div class="col-md-2">
+                <input type="text" class="form-control" name="SP_INSTRUCTION" ng-model="$parent.fabOrder.SP_INSTRUCTION" />
+            </div>
+        </div>
+
+
+        <div class="form-group">
+          
+            <label class="col-md-2 control-label">Fabric</label>
+            <div class="col-md-7">
+                <select class="form-control" kendo-drop-down-list name="MC_STYLE_D_FAB_ID" k-option-label="'--Select--'"
+                        ng-model="$parent.fabOrder.MC_STYLE_D_FAB_ID" k-data-text-field="'FABRIC_DESC'" k-data-value-field="'MC_STYLE_D_FAB_ID'"
+                        k-options="$parent.styleFabricOption" k-data-source="$parent.styleFabricDataSource" k-filter="'contains'" k-auto-bind="'true'"
+                        k-on-change=""></select>
+            </div>
+
+            <label class="col-md-1 control-label">Fin Dia</label>
+            <div class="col-md-2">
+                <select kendo-drop-down-list name="FIN_DIA_N_DIA_TYPE" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                        k-auto-bind="'true'" ng-model="$parent.fabOrder.FIN_DIA_N_DIA_TYPE"
+                        k-data-text-field="'FIN_DIA_N_DIA_TYPE'" k-data-value-field="'FIN_DIA_N_DIA_TYPE'"
+                        k-options="$parent.finDiaList" k-data-source="$parent.finDiaDataSource"></select>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">Fin Fabric(Kg)</label>
+            <div class="col-md-1">
+                <input type="number" class="form-control" name="RQD_FFAB_QTY" ng-model="$parent.fabOrder.RQD_FFAB_QTY" min="1" ng-change="vm.onChangeNetFfQty()" />
+            </div>
+
+            <label class="col-md-1 control-label">P/Loss (%)</label>
+            <div class="col-md-1">
+                <input type="number" class="form-control" name="PCT_LOSS_QTY" ng-model="$parent.fabOrder.PCT_LOSS_QTY" ng-change="vm.onChangeNetFfQty()" />
+            </div>
+
+            <label class="col-md-1 control-label">G/Fab(Kg)</label>
+            <div class="col-md-1">
+                <input type="number" class="form-control" name="RQD_GFAB_QTY" ng-model="$parent.fabOrder.RQD_GFAB_QTY" readonly />
+            </div>
+
+
+            <div class="col-md-3">
+                <button type='button' class='btn btn-xs blue' ng-click='vm.addRow($parent.fabOrder)' ng-show="vm.isAddToGrid == 'Y'"
+                        ng-disabled="$parent.fabOrder.FAB_COLOR_ID<1||$parent.fabOrder.GMT_COLOR_ID<1||($parent.fabOrder.RQD_FFAB_QTY==''||$parent.fabOrder.RQD_FFAB_QTY==null||$parent.fabOrder.RQD_FFAB_QTY<1||($parent.fabOrder.IS_FIN_DIA_REQ=='Y' && ($parent.fabOrder.FIN_DIA_N_DIA_TYPE==null||$parent.fabOrder.FIN_DIA_N_DIA_TYPE=='')))" title="Add To Grid">
+                    <i class="fa fa-plus"> Add</i>
+                </button>
+                <button type='button' class='btn btn-xs yellow-gold' ng-click='vm.updateFabOrder($parent.fabOrder)' ng-show="vm.isAddToGrid == 'N'"
+                        ng-disabled="$parent.fabOrder.FAB_COLOR_ID<1||$parent.fabOrder.GMT_COLOR_ID<1||($parent.fabOrder.RQD_FFAB_QTY==''||$parent.fabOrder.RQD_FFAB_QTY==null||$parent.fabOrder.RQD_FFAB_QTY<1||($parent.fabOrder.IS_FIN_DIA_REQ=='Y' && ($parent.fabOrder.FIN_DIA_N_DIA_TYPE==null||$parent.fabOrder.FIN_DIA_N_DIA_TYPE=='')))" title="Update">
+                    <i class="fa fa-pencil"> Update</i>
+                </button>
+                <button class="btn btn-xs blue" ng-click="vm.cancelToGrid()" ng-show="vm.isAddToGrid=='N'" title="Cancel"><i class="fa fa-refresh"> Cancel</i></button>
+            </div>
+        </div>
+
+
+
+
+
+        @*<div class="col-md-2">
+            <div class="form-group">
+                <label class="control-label">Color</label>
+                <select class="form-control" kendo-drop-down-list name="FAB_COLOR_ID" k-option-label="'--Select--'"
+                        ng-model="$parent.fabOrder.FAB_COLOR_ID" k-data-text-field="'COLOR_NAME_EN'" k-data-value-field="'MC_COLOR_ID'"
+                        k-options="$parent.colorListOption" k-data-source="$parent.colorListDataSource" k-filter="'contains'" k-auto-bind="'true'"
+                        k-on-change=""></select>
+            </div>
+        </div>
+
+        <div class="col-md-1" >
+            <div class="form-group">
+                <label class="control-label">Spec</label>
+                <input type="text" class="form-control" name="SP_INSTRUCTION" ng-model="$parent.fabOrder.SP_INSTRUCTION" />
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group">
+                <label class="control-label">Fabric</label>
+                <select class="form-control" kendo-drop-down-list name="MC_STYLE_D_FAB_ID" k-option-label="'--Select--'"
+                        ng-model="$parent.fabOrder.MC_STYLE_D_FAB_ID" k-data-text-field="'FABRIC_DESC'" k-data-value-field="'MC_STYLE_D_FAB_ID'"
+                        k-options="$parent.styleFabricOption" k-data-source="$parent.styleFabricDataSource" k-filter="'contains'" k-auto-bind="'true'"
+                        k-on-change=""></select>
+            </div>
+        </div>
+        
+        <div class="col-md-2">
+            <div class="form-group">
+                <label class="control-label">Fin Dia</label>
+                <select kendo-drop-down-list name="FIN_DIA_N_DIA_TYPE" class="form-control" k-filter="'contains'" k-option-label="'-- Select --'"
+                        k-auto-bind="'true'" ng-model="$parent.fabOrder.FIN_DIA_N_DIA_TYPE"
+                        k-data-text-field="'FIN_DIA_N_DIA_TYPE'" k-data-value-field="'FIN_DIA_N_DIA_TYPE'"
+                        k-options="$parent.finDiaList" k-data-source="$parent.finDiaDataSource"></select>
+            </div>
+        </div>
+        
+        <div class="col-md-1">
+            <div class="form-group">
+                <label class="control-label">F.Fab(Kg)</label>
+                <input type="number" class="form-control" name="RQD_FFAB_QTY" ng-model="$parent.fabOrder.RQD_FFAB_QTY" min="1" ng-change="vm.onChangeNetFfQty()" />
+            </div>
+        </div>
+
+        <div class="col-md-1" >
+            <div class="form-group">
+                <label class="control-label">PL(%)</label>
+                <input type="number" class="form-control" name="PCT_LOSS_QTY" ng-model="$parent.fabOrder.PCT_LOSS_QTY" ng-change="vm.onChangeNetFfQty()" />
+            </div>
+        </div>
+
+        <div class="col-md-1">
+            <div class="form-group">
+                <label class="control-label">G.Fab(Kg)</label>
+                <input type="number" class="form-control" name="RQD_GFAB_QTY" ng-model="$parent.fabOrder.RQD_GFAB_QTY" readonly />
+            </div>
+        </div>
+
+        <div class="col-md-1">
+            <div class="form-group" style="margin-bottom:10px">&nbsp;</div>
+            <div class="form-group">
+                
+                <button type='button' class='btn btn-xs blue' ng-click='vm.addRow($parent.fabOrder)' ng-show="vm.isAddToGrid == 'Y'"
+                        ng-disabled="($parent.fabOrder.RQD_FFAB_QTY==''||$parent.fabOrder.RQD_FFAB_QTY==null||$parent.fabOrder.RQD_FFAB_QTY<1||($parent.fabOrder.IS_FIN_DIA_REQ=='Y' && ($parent.fabOrder.FIN_DIA_N_DIA_TYPE==null||$parent.fabOrder.FIN_DIA_N_DIA_TYPE=='')))" title="Add To Grid">
+                    <i class="fa fa-plus"></i>
+                </button>
+                <button type='button' class='btn btn-xs yellow-gold' ng-click='vm.updateFabOrder($parent.fabOrder)' ng-show="vm.isAddToGrid == 'N'" ng-disabled="($parent.fabOrder.RQD_FFAB_QTY==''||$parent.fabOrder.RQD_FFAB_QTY==null||$parent.fabOrder.RQD_FFAB_QTY<1||($parent.fabOrder.IS_FIN_DIA_REQ=='Y' && ($parent.fabOrder.FIN_DIA_N_DIA_TYPE==null||$parent.fabOrder.FIN_DIA_N_DIA_TYPE=='')))" title="Update">
+                    <i class="fa fa-pencil"></i>
+                </button>
+                <button class="btn btn-xs blue" ng-click="vm.cancelToGrid()" ng-show="vm.isAddToGrid=='N'" title="Cancel"><i class="fa fa-refresh"></i></button>
+
+            </div>
+        </div>*@
+
+        <div class="col-md-12" style="padding:0px">
+            <kendo-grid k-options="$parent.fabOrderGridOption" k-data-source="$parent.fabOrderGridDataSource" style="padding-top:0px;">
+                <div k-detail-template ng-init="$parent.detailExpand(dataItem);">
+
+                    <div>
+                        <div class="row" style="padding-left: 5px; padding-right: 5px; overflow: scroll;">
+
+                            <div>
+
+                                <table class="table table-striped" style="border-collapse: collapse; overflow:scroll;">
+                                    <thead>
+
+                                        <tr style="border: solid 2px lightgray;">
+
+                                            <th ng-class="{'warning':itmSize.RF_GARM_PART_ID==12}" ng-repeat="itmSize in dataItem.collarCuffReqList" style="border: solid 2px lightgray; text-align: center;">
+                                                <span>{{itmSize.MESUREMENT}}</span>
+                                            </th>
+                                        </tr>
+
+
+                                        <tr>
+                                            <th ng-class="{'warning':itmSize.RF_GARM_PART_ID==12}" ng-repeat="itmSize in dataItem.collarCuffReqList" style="border: solid 2px lightgray; text-align: center; ">
+                                                {{itmSize.SIZE_CODE_LST}}
+                                            </th>
+                                        </tr>
+
+                                        @*<tr>
+                                                <th style="border: solid 2px lightgray;">Req.(Pcs)</th>
+                                                <th ng-class="{'warning':itmSize.RF_GARM_PART_ID==12}" ng-repeat="itmSize in dataItem.collarCuffProdList[0]['ordSizeList']" style="border: solid 2px lightgray; text-align: center; ">
+                                                    {{itmSize.RQD_PCS_QTY}}
+                                                </th>
+                                                <th style="border: solid 2px lightgray; text-align: center;">
+                                                    {{vm.reqRowTotCollarQty}}
+                                                </th>
+                                            </tr>*@
+
+                                    </thead>
+
+                                    <tbody class="clstdMtex">
+
+                                        <tr>
+
+                                            <td ng-class="{'warning':itmSize.RF_GARM_PART_ID==12}" ng-repeat="itmSize in dataItem.collarCuffReqList" style="border: solid 2px lightgray;padding-left:0px;padding-right:0px; ">
+
+                                                <input type="number" class='form-control' ng-style="{'background-color':itmSize.RF_GARM_PART_ID==12?'hsl(50, 81%, 94%)':''}" ng-model="itmSize.RQD_PC_QTY" min="0"
+                                                       ng-change="" style="text-align: center;">
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+
+                                </table>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </kendo-grid>
+        </div>
+
+
+        @*<pre>{{$parent.fabOrder|json}}</pre>*@
+        
+    </fieldset>
+
+    <div class="col-md-12" style="padding-top:5px">
+        <div class="form-group">
+
+            <button type="button" class="btn btn-sm green" ng-click="vm.save()" ng-show="$parent.form.MC_BLK_ADFB_REQ_H_ID<1"
+                    ng-class="{'disabled':!$parent.frmAddFabBk.$valid || $parent.form.RF_ACTN_STATUS_ID==90 || $parent.fabOrderGridDataSource.data().length<1}">
+                Save
+            </button>
+            <button type="button" class="btn btn-sm yellow-gold" ng-click="vm.save()" ng-show="$parent.form.MC_BLK_ADFB_REQ_H_ID>0"
+                    ng-class="{'disabled':!$parent.frmAddFabBk.$valid || $parent.form.RF_ACTN_STATUS_ID==90 || ($parent.form.RF_ACTN_STATUS_ID==88 && $parent.userLavelData.USER_APPROVER_NAME!='APPROVER')}">
+                Update
+            </button>
+
+            @*<button type="button" class="btn btn-sm blue" ng-click="vm.cancel()">Cancel</button>*@
+            <a class="btn btn-sm blue" href="/Merchandising/Mrc/AddFabBking?a=360/#/addFabBkingH/0/dtl">Cancel</a>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <a class="btn btn-sm blue" href="/Merchandising/Mrc/AddFabBking?a=360/#/addFabBkingList">Back to List</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="button" class="btn btn-sm blue" ng-click="vm.submit()" ng-show="$parent.form.MC_BLK_ADFB_REQ_H_ID>0 && ($parent.form.RF_ACTN_STATUS_ID==16||$parent.form.RF_ACTN_STATUS_ID==89) && $parent.userLavelData.USER_APPROVER_NAME!='APPROVER'">
+                Submit
+            </button>
+            <button type="button" class="btn btn-sm blue" ng-click="vm.approve()" ng-show="$parent.form.MC_BLK_ADFB_REQ_H_ID>0 && $parent.form.RF_ACTN_STATUS_ID==88 && $parent.userLavelData.USER_APPROVER_NAME=='APPROVER'">
+                Approve
+            </button>
+
+            @*<pre>{{$parent.form|json}}</pre>
+                <pre>{{$parent.userLavelData|json}}</pre>*@
+
+            <button type="button" class="btn btn-sm blue" ng-click="vm.reviseModal($parent.form.MC_BLK_ADFB_REQ_H_ID)"
+                    ng-show="$parent.form.MC_BLK_ADFB_REQ_H_ID>0 && $parent.form.RF_ACTN_STATUS_ID==90" ng-disabled="$parent.form.IS_ACTIVE!='Y'">
+                Revise
+            </button>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="/Merchandising/Mrc/AddFabBkingRpt?a=360/#/addFabBkingRpt?pMC_BLK_ADFB_REQ_H_ID={{$parent.form.MC_BLK_ADFB_REQ_H_ID}}" target="_blank" class="btn btn-sm blue"
+               ng-show="$parent.form.RF_ACTN_STATUS_ID>=16">
+                Print
+            </a>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

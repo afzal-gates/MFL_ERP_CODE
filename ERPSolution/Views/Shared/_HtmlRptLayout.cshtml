@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-ng-app="multitex.report">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css">
+
+    <link href="~/Content/site.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css">
+
+    <link href="~/Content/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/assets/admin/pages/css/invoice.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/assets/global/css/components-rounded.css" id="style_components" rel="stylesheet" type="text/css" />
+    <style>
+        .table thead tr th {
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .invoice table {
+            margin: 0px 0 5px 0;
+        }
+    </style>
+
+</head>
+<body class="page-header-fixed page-sidebar-closed-hide-logo" style="font-size:10px;">
+    @RenderBody()
+
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>   
+    <!-- AngularJs -->
+    <script src="~/Scripts/angular/angular.min.js"></script>
+    @*<script src="~/Scripts/angular.js"></script>*@
+    <script src="~/Scripts/angular/angular-sanitize.min.js"></script>
+    <script src="~/Scripts/angular/angular-ui-router.min.js"></script>
+    <script src="~/Scripts/angular/angular-confirm.js"></script>
+
+    <!-- Utility JS Scripts -->
+    <script src="~/Scripts/lodash.min.js"></script>
+    <script src="~/Content/assets/global/plugins/toastr/toastr.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/xml2json.min.js?v=1"></script>
+    <script src="~/Scripts/angular-xml.min.js?v=1"></script>
+
+
+    <!-- Main Module -->
+    <script src="~/Client/app/report.module.js"></script>
+
+    <!-- Reusable Blocks/Modules -->
+    <script src="~/Client/app/blocks/exception/exception.module.js"></script>
+    <script src="~/Client/app/blocks/exception/exception-handler.provider.js"></script>
+    <script src="~/Client/app/blocks/exception/exception.js"></script>
+    <script src="~/Client/app/blocks/logger/logger.module.js"></script>
+    <script src="~/Client/app/blocks/logger/logger.js"></script>
+
+    <!--Sub Module-->
+    <script src="~/Areas/Merchandising/Client/app/mrc.module.js"></script>
+    <script src="~/Areas/Knitting/Client/app/knitting.module.js"></script>
+    <script src="~/Areas/Dyeing/Client/app/dyeing.module.js"></script>
+
+    <!-- core module -->
+    <script src="~/Client/app/blocks/router/router.module.js"></script>
+    <script src="~/Client/app/blocks/router/routehelper.js"></script>
+
+    <!-- Kendo Directives -->
+    <script src="~/Content/kendo/js/kendo.all.min.js"></script>
+
+
+    <!--Service-->
+    
+
+
+    @RenderSection("angularscripts", required: false)
+
+    <script type="text/javascript">
+        angular.module('multitex.report').value('access_token', '@Session["access_token"]');
+        angular.module('multitex.report').value('cur_date_server', '@Session["multiServerCurrDate"]');
+        angular.module('multitex.report').value('cur_user_id', '@Session["multiScUserId"]');
+        angular.module('multitex.report').value('multi_login_dept_id', '@Session["multiLoginDeptId"]');
+    </script>
+
+</body>
+
+
+
+<!-- END BODY -->
+</html>
